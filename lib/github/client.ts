@@ -1,11 +1,5 @@
-/**
- * GitHub Client
- * Handles GitHub API interactions and authentication
- * 
- * TODO: Migrate GitHubClient from lib/github.ts to this file to consolidate GitHub client logic
- * For now, this re-exports the existing implementation to avoid duplication
- */
+import { Octokit } from "octokit";
 
-// Re-export the existing GitHubClient for now
-export { GitHubClient, githubClient } from '@/lib/github'
-export type { GitHubConfig } from '@/lib/github'
+export const github = new Octokit({
+  auth: process.env.GITHUB_TOKEN || undefined,
+});
