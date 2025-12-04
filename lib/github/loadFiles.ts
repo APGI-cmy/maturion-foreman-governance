@@ -75,5 +75,10 @@ export async function loadDirectory(
  * @returns Decoded string
  */
 export function decodeContent(content: string): string {
-  return Buffer.from(content, 'base64').toString('utf-8')
+  try {
+    return Buffer.from(content, 'base64').toString('utf-8')
+  } catch (error) {
+    console.error('Failed to decode base64 content:', error)
+    throw new Error('Invalid base64 content')
+  }
 }
