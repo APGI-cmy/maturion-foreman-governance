@@ -103,7 +103,7 @@ async function loadMarkdownFiles(
     } else if (entry.isFile() && entry.name.endsWith('.md')) {
       // Load markdown file
       const content = await readFile(fullPath, 'utf-8');
-      const relativePath = fullPath.replace(baseDir + '/', '');
+      const relativePath = fullPath.substring(baseDir.length + 1);
       
       files.push({
         path: relativePath,
@@ -112,5 +112,3 @@ async function loadMarkdownFiles(
     }
   }
 }
-
-
