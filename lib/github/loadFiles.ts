@@ -6,9 +6,15 @@ export type ForemanBehaviourFile = {
 };
 
 export async function loadForemanBehaviourFiles(): Promise<ForemanBehaviourFile[]> {
-  const owner = process.env.FOREMAN_BEHAVIOUR_REPO_OWNER!;
-  const repo = process.env.FOREMAN_BEHAVIOUR_REPO_NAME!;
-  const basePath = process.env.FOREMAN_BEHAVIOUR_DIR!;
+  const owner = process.env.FOREMAN_BEHAVIOUR_REPO_OWNER;
+  const repo = process.env.FOREMAN_BEHAVIOUR_REPO_NAME;
+  const basePath = process.env.FOREMAN_BEHAVIOUR_DIR;
+
+  if (!owner || !repo || !basePath) {
+    throw new Error(
+      'Missing required environment variables: FOREMAN_BEHAVIOUR_REPO_OWNER, FOREMAN_BEHAVIOUR_REPO_NAME, FOREMAN_BEHAVIOUR_DIR'
+    );
+  }
 
   const { data } = await github.rest.repos.getContent({
     owner,
