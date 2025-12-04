@@ -75,7 +75,6 @@ export interface TriggerBuilderTaskAction extends ForemanAction {
     context?: Record<string, any>
   }
   requiresApproval: true
-  organisationId: string
 }
 
 export interface ForemanConfig {

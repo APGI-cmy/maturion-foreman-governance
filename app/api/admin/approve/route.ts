@@ -12,7 +12,7 @@ import {
   executeBuilderTask,
   validateGovernanceRules
 } from '@/lib/foreman/dispatch'
-import { BuilderTaskStatus } from '@/types/builder'
+import { BuilderTaskStatus, BuilderType } from '@/types/builder'
 
 interface ApprovalRequest {
   taskId: string
@@ -165,7 +165,11 @@ export async function GET(request: NextRequest) {
   }
   
   // List tasks (with optional filters)
-  const filter: any = {}
+  const filter: {
+    builder?: BuilderType
+    status?: BuilderTaskStatus
+    approved?: boolean
+  } = {}
   
   if (status) {
     filter.status = status
