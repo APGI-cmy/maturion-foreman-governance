@@ -115,6 +115,11 @@ FOREMAN_BEHAVIOUR_DIR=path/to/behavior/files
 
 # Organization ID (optional)
 MATURION_ORG_ID=your_org_id
+
+# Autonomous Builds (optional, default: false)
+# When set to 'true', builder tasks are auto-approved and executed
+# When 'false', all tasks require manual approval via /api/admin/approve
+MATURION_ALLOW_AUTONOMOUS_BUILDS=false
 ```
 
 **Note:** For basic webhook endpoint testing, you can start with an empty `.env.local` file. The application will return clear error messages about missing configuration when needed.
@@ -273,6 +278,64 @@ Manually trigger Foreman tasks.
 - `run-build-wave` - Execute a build wave
 - `run-self-test` - Run system diagnostics
 - `apply-file-changes` - Apply file changes via GitHub API
+
+### POST /api/foreman/run-build
+
+Execute a complete build sequence: Architecture → Builder → QA → PR Pipeline.
+
+**Request:**
+```json
+{
+  "organisationId": "org_123",
+  "triggerSource": "issue_command",
+  "triggerContext": {},
+  "autonomousBuildEnabled": false,
+  "skipArchitectureAnalysis": false,
+  "createPR": true,
+  "owner": "MaturionISMS",
+  "repo": "example-repo",
+  "branch": "feature/build-sequence",
+  "baseBranch": "main"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "sequenceId": "seq_1234567890_abc123",
+  "status": "completed",
+  "prUrl": "https://github.com/owner/repo/pull/42",
+  "message": "Build sequence completed successfully."
+}
+```
+
+**Query Parameters (GET):**
+- `sequenceId` - Get specific build sequence details
+- `organisationId` - Filter sequences by organisation
+- `status` - Filter sequences by status
+
+**Build Sequence Workflow:**
+1. **Architecture Analysis** - Detect gaps and implementation needs
+2. **Task Generation** - Create builder tasks from architecture analysis
+3. **Builder Dispatch** - Send tasks to appropriate builders
+4. **Approval** - Tasks await approval (unless autonomous builds enabled)
+5. **Execution** - Execute approved builder tasks
+6. **QA Cycle** - Validate builder outputs with QA and QA-of-QA
+7. **PR Assembly** - Create pull request with results
+8. **Completion** - Mark sequence as completed
+
+**Autonomous Builds:**
+
+When `MATURION_ALLOW_AUTONOMOUS_BUILDS=true`, the build sequence:
+- Auto-approves all builder tasks
+- Executes tasks without manual intervention
+- Completes end-to-end without human approval
+
+When `false` (default):
+- Tasks pause at `pending_approval` state
+- Admin must approve via `/api/admin/approve`
+- Provides human oversight for all code generation
 
 ## Builder Agents
 
