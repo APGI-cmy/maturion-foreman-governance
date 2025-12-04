@@ -158,13 +158,13 @@ export async function dispatchBuilderTask(
       description: task.taskDescription
     })
     
-    // Log autonomous action
+    // Log autonomous action (task creation, not execution result)
     logAutonomousAction({
       timestamp: new Date(),
       organisationId: request.organisationId,
       builder: task.builder,
       taskId: task.id,
-      result: 'success'
+      result: 'success' // Note: This indicates successful task creation, not execution
     })
   } else {
     console.log(`[Dispatch] Task ${task.id} created and awaiting approval`)
@@ -443,11 +443,25 @@ export function validateGovernanceRules(task: BuilderTask): boolean {
   
   // Rule 5: Compliance safeguard - Check for compliance violations
   if (safeguards.includes('compliance')) {
-    // Future: Check compliance rules from governance files
-    // For now, ensure no secrets in output
-    if (task.output && JSON.stringify(task.output).match(/(?:password|secret|key|token)[\s]*[:=][\s]*['"][^'"]+['"]/i)) {
-      console.error('[Governance] Compliance Gate Violation: Potential secret detected in output')
-      return false
+    // Check for potential secrets in output
+    // This is a basic pattern - production should use dedicated secrets scanning
+    if (task.output) {
+      const outputStr = JSON.stringify(task.output)
+      
+      // Pattern 1: Common secret key patterns with values in quotes
+      const quotedSecretPattern = /(?:password|secret|key|token|api[_-]?key|private[_-]?key|auth|credential)[\s]*[:=][\s]*['"][^'"]{8,}['"]/i
+      
+      // Pattern 2: JWT tokens
+      const jwtPattern = /eyJ[A-Za-z0-9-_]+\.eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+/
+      
+      // Pattern 3: Common API key formats (alphanumeric strings of significant length)
+      const apiKeyPattern = /(?:password|secret|key|token)[\s]*[:=][\s]*[A-Za-z0-9]{20,}/i
+      
+      if (quotedSecretPattern.test(outputStr) || jwtPattern.test(outputStr) || apiKeyPattern.test(outputStr)) {
+        console.error('[Governance] Compliance Gate Violation: Potential secret detected in output')
+        // TODO: Integrate with dedicated secrets detection library (e.g., truffleHog, gitleaks)
+        return false
+      }
     }
   }
   

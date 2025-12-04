@@ -42,9 +42,13 @@ export function isAutonomousBuildEnabled(configValue?: boolean): boolean {
     return configValue
   }
   
-  // Import and use the centralized function
-  const { isAutonomousModeEnabled } = require('./dispatch')
-  return isAutonomousModeEnabled()
+  // Check new environment variable first
+  if (process.env.MATURION_AUTONOMOUS_MODE !== undefined) {
+    return process.env.MATURION_AUTONOMOUS_MODE === 'true'
+  }
+  
+  // Fall back to legacy variable for backwards compatibility
+  return process.env.MATURION_ALLOW_AUTONOMOUS_BUILDS === 'true'
 }
 
 /**

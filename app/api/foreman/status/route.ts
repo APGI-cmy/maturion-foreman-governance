@@ -52,8 +52,9 @@ export async function GET(request: NextRequest) {
     const safeguards = getAutonomousSafeguards()
     
     // Determine which gates are required
-    const qaGateRequired = safeguards.includes('qa') || true // Always required
-    const qaOfQaGateRequired = true // Always required
+    // QA and QA-of-QA are always required regardless of safeguards config
+    const qaGateRequired = true
+    const qaOfQaGateRequired = true
     const complianceGateRequired = safeguards.includes('compliance')
     const testGateRequired = safeguards.includes('tests')
     
@@ -66,7 +67,7 @@ export async function GET(request: NextRequest) {
       safeguards,
       gitSha,
       currentWave,
-      version: '0.1.0', // From package.json
+      version: '0.1.0', // TODO: Import from package.json
       environment: process.env.NODE_ENV || 'development',
       uptime: process.uptime(),
       timestamp: new Date().toISOString()
