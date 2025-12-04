@@ -1,34 +1,41 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from "next/server";
+import { runForeman } from "@/lib/foreman/orchestrator";
 
-/**
- * GitHub Webhook handler
- * Receives webhook events from GitHub
- */
-export async function POST(request: NextRequest) {
-  try {
-    const payload = await request.json()
-    const event = request.headers.get('x-github-event')
-    
-    console.log('Received GitHub webhook:', event)
-    console.log('Payload:', payload)
-    
-    // TODO: Validate webhook signature
-    // TODO: Process different event types
-    // TODO: Trigger Foreman tasks based on events
-    
-    return NextResponse.json({ received: true })
-  } catch (error) {
-    console.error('Webhook error:', error)
-    return NextResponse.json(
-      { received: false, error: 'Failed to process webhook' },
-      { status: 500 }
-    )
+async function verifyGitHubSignature(req: NextRequest, rawBody: string) {
+  // TODO: Add HMAC verification later
+  return true;
+}
+
+export async function POST(req: NextRequest) {
+  const delivery = req.headers.get("x-github-delivery");
+  const event = req.headers.get("x-github-event") || "unknown";
+
+  const raw = await req.text();
+  await verifyGitHubSignature(req, raw);
+
+  const payload = JSON.parse(raw);
+
+  const interesting = ["issues", "issue_comment", "pull_request"];
+  if (!interesting.includes(event)) {
+    return NextResponse.json({ ok: true, ignored: true });
   }
+
+  const orgId =
+    process.env.MATURION_ORG_ID ||
+    payload.installation?.account?.id?.toString() ||
+    "unknown-org";
+
+  const actions = await runForeman({
+    organisationId: orgId,
+    trigger: "github_webhook",
+    event: { delivery, event, payload },
+  });
+
+  console.log("[Foreman Actions]", actions);
+
+  return NextResponse.json({ ok: true, actions });
 }
 
 export async function GET() {
-  return NextResponse.json({ 
-    message: 'GitHub webhook endpoint',
-    method: 'POST only'
-  })
+  return NextResponse.json({ status: "OK" });
 }
