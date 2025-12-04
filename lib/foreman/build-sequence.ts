@@ -7,12 +7,13 @@ import OpenAI from 'openai'
 import { loadForemanBehaviourFiles } from '@/lib/github/loadFiles'
 import { compileForemanContext } from './behaviours'
 import { dispatchBuilderTask, executeBuilderTask, getBuilderTask } from './dispatch'
-import { BuilderType, BuilderRequest, QAResult } from '@/types/builder'
+import { BuilderType, BuilderRequest, BuilderTask, QAResult } from '@/types/builder'
 import { 
   BuildSequence, 
   BuildSequenceConfig, 
   ArchitectureGap,
-  BuildSequenceStatus 
+  BuildSequenceStatus,
+  AIGeneratedTaskRequest
 } from '@/types/build-sequence'
 
 const openai = new OpenAI({
@@ -29,6 +30,20 @@ const sequenceStore = new Map<string, BuildSequence>()
  */
 function generateSequenceId(): string {
   return `seq_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`
+}
+
+/**
+ * Check if autonomous builds are enabled
+ * Centralizes the logic for checking both config and environment variable
+ */
+export function isAutonomousBuildEnabled(configValue?: boolean): boolean {
+  // Config takes precedence over environment variable
+  if (configValue !== undefined) {
+    return configValue
+  }
+  
+  // Fall back to environment variable
+  return process.env.MATURION_ALLOW_AUTONOMOUS_BUILDS === 'true'
 }
 
 /**
@@ -97,7 +112,7 @@ Return a JSON array of architecture gaps with the following structure:
 export async function generateBuildTasks(
   organisationId: string,
   gaps: ArchitectureGap[]
-): Promise<BuilderRequest[]> {
+): Promise<AIGeneratedTaskRequest[]> {
   console.log('[BuildSequence] Generating build tasks from gaps...')
   
   if (gaps.length === 0) {
@@ -162,7 +177,7 @@ Return a JSON array of builder tasks with the following structure:
  */
 export async function runQACycle(
   organisationId: string,
-  builderTasks: any[]
+  builderTasks: BuilderTask[]
 ): Promise<QAResult[]> {
   console.log('[BuildSequence] Running QA cycle...')
   
@@ -182,8 +197,8 @@ export async function runQACycle(
     const qaTask = await dispatchBuilderTask('qa', qaRequest)
     console.log(`[BuildSequence] QA task created: ${qaTask.id}`)
     
-    // Check if autonomous builds are enabled
-    const autonomousBuilds = process.env.MATURION_ALLOW_AUTONOMOUS_BUILDS === 'true'
+    // Use centralized autonomous builds check
+    const autonomousBuilds = isAutonomousBuildEnabled()
     
     if (autonomousBuilds) {
       // Auto-approve and execute QA task
@@ -268,14 +283,13 @@ export async function runBuildSequence(
     )
     
     // Step 3: Dispatch tasks to builders
-    const autonomousBuilds = config.autonomousBuildEnabled ?? 
-      process.env.MATURION_ALLOW_AUTONOMOUS_BUILDS === 'true'
+    const autonomousBuilds = isAutonomousBuildEnabled(config.autonomousBuildEnabled)
     
     for (const taskRequest of taskRequests) {
-      // Extract builder type from the task request (it's part of the AI response)
-      const builderType = (taskRequest as any).builder as BuilderType
+      // Extract builder type and create proper request
+      const builderType = taskRequest.builder
       
-      // Create proper BuilderRequest without the builder field
+      // Create BuilderRequest without the builder field
       const request: BuilderRequest = {
         module: taskRequest.module,
         taskDescription: taskRequest.taskDescription,

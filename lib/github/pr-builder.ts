@@ -6,7 +6,7 @@
 import { Octokit } from 'octokit'
 import { github } from './client'
 import { PRContext, ChangeRecord, ComplianceResult } from '@/types/build-sequence'
-import { QAResult } from '@/types/builder'
+import { QAResult, BuilderTask } from '@/types/builder'
 
 /**
  * Generate PR title from context
@@ -164,12 +164,12 @@ export function generatePRDescription(context: PRContext): string {
 /**
  * Extract change records from builder outputs
  */
-export function extractChangeRecords(builderOutputs: any[]): ChangeRecord[] {
+export function extractChangeRecords(builderOutputs: BuilderTask[]): ChangeRecord[] {
   const records: ChangeRecord[] = []
   
   builderOutputs.forEach(output => {
     if (output.output?.artifacts) {
-      output.output.artifacts.forEach((artifact: any) => {
+      output.output.artifacts.forEach((artifact) => {
         records.push({
           type: 'addition', // Default to addition, could be enhanced
           file: artifact.path || artifact.name,
@@ -300,7 +300,7 @@ export async function updatePullRequest(
  * Assemble complete PR context from build sequence
  */
 export function assemblePRContext(
-  builderOutputs: any[],
+  builderOutputs: BuilderTask[],
   qaResults: QAResult[],
   description?: string
 ): PRContext {

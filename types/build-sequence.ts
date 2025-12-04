@@ -3,7 +3,7 @@
  * Type definitions for build sequence orchestration
  */
 
-import { BuilderTask, BuilderType, QAResult } from './builder'
+import { BuilderTask, BuilderType, BuilderRequest, QAResult } from './builder'
 
 export interface ArchitectureGap {
   area: string
@@ -38,18 +38,48 @@ export type BuildSequenceStatus =
   | 'completed'
   | 'failed'
 
+// Specific trigger context types for different sources
+export interface WebhookTriggerContext {
+  event: string
+  payload?: Record<string, any>
+}
+
+export interface IssueCommandTriggerContext {
+  issue?: string
+  issueNumber?: number
+  repository?: string
+  command?: string
+}
+
+export interface ScheduledTriggerContext {
+  schedule: string
+  branch?: string
+  cron?: string
+}
+
+export type TriggerContext = 
+  | WebhookTriggerContext 
+  | IssueCommandTriggerContext 
+  | ScheduledTriggerContext
+  | Record<string, any>
+
 export interface BuildSequenceConfig {
   organisationId: string
   triggerSource: 'webhook' | 'issue_command' | 'scheduled'
-  triggerContext?: any
+  triggerContext?: TriggerContext
   autonomousBuildEnabled?: boolean
   skipArchitectureAnalysis?: boolean
+}
+
+// AI-generated task request (includes builder field)
+export interface AIGeneratedTaskRequest extends BuilderRequest {
+  builder: BuilderType
 }
 
 export interface PRContext {
   title: string
   description: string
-  builderOutputs: any[]
+  builderOutputs: BuilderTask[]
   qaResults: QAResult[]
   changeRecords: ChangeRecord[]
   complianceResults: ComplianceResult[]
@@ -69,3 +99,4 @@ export interface ComplianceResult {
   message: string
   details?: any
 }
+
