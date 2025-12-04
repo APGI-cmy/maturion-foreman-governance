@@ -13,6 +13,8 @@ const taskStore = new Map<string, BuilderTask>()
 
 /**
  * Autonomous action log store (for auditing)
+ * TODO: In production, implement log rotation or use persistent storage (database)
+ * to avoid memory leaks from indefinite accumulation
  */
 interface AutonomousActionLog {
   timestamp: Date
@@ -20,6 +22,7 @@ interface AutonomousActionLog {
   builder: BuilderType
   taskId: string
   wave?: string
+  action: 'task_created' | 'task_executed' | 'task_failed'
   result: 'success' | 'fail'
   reason?: string
 }
@@ -158,13 +161,14 @@ export async function dispatchBuilderTask(
       description: task.taskDescription
     })
     
-    // Log autonomous action (task creation, not execution result)
+    // Log autonomous action - task creation and auto-approval
     logAutonomousAction({
       timestamp: new Date(),
       organisationId: request.organisationId,
       builder: task.builder,
       taskId: task.id,
-      result: 'success' // Note: This indicates successful task creation, not execution
+      action: 'task_created',
+      result: 'success'
     })
   } else {
     console.log(`[Dispatch] Task ${task.id} created and awaiting approval`)
@@ -359,6 +363,7 @@ export async function executeBuilderTask(taskId: string): Promise<BuilderTask> {
         organisationId: task.input.organisationId as string,
         builder: task.builder,
         taskId: task.id,
+        action: 'task_executed',
         result: 'success'
       })
     }
@@ -377,6 +382,7 @@ export async function executeBuilderTask(taskId: string): Promise<BuilderTask> {
         organisationId: task.input.organisationId as string,
         builder: task.builder,
         taskId: task.id,
+        action: 'task_failed',
         result: 'fail',
         reason: error instanceof Error ? error.message : 'Unknown error'
       })
@@ -444,22 +450,28 @@ export function validateGovernanceRules(task: BuilderTask): boolean {
   // Rule 5: Compliance safeguard - Check for compliance violations
   if (safeguards.includes('compliance')) {
     // Check for potential secrets in output
-    // This is a basic pattern - production should use dedicated secrets scanning
+    // TODO: Integrate with dedicated secrets scanning library (e.g., truffleHog, gitleaks)
+    // for production-grade detection including:
+    // - Multi-line secrets
+    // - Escaped quotes handling
+    // - AWS keys, GitHub tokens, private keys, etc.
+    // - Entropy-based detection
     if (task.output) {
       const outputStr = JSON.stringify(task.output)
       
       // Pattern 1: Common secret key patterns with values in quotes
+      // Note: May not catch multi-line secrets or escaped quotes
       const quotedSecretPattern = /(?:password|secret|key|token|api[_-]?key|private[_-]?key|auth|credential)[\s]*[:=][\s]*['"][^'"]{8,}['"]/i
       
       // Pattern 2: JWT tokens
       const jwtPattern = /eyJ[A-Za-z0-9-_]+\.eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+/
       
       // Pattern 3: Common API key formats (alphanumeric strings of significant length)
+      // Note: May miss keys with hyphens, underscores, or special characters
       const apiKeyPattern = /(?:password|secret|key|token)[\s]*[:=][\s]*[A-Za-z0-9]{20,}/i
       
       if (quotedSecretPattern.test(outputStr) || jwtPattern.test(outputStr) || apiKeyPattern.test(outputStr)) {
         console.error('[Governance] Compliance Gate Violation: Potential secret detected in output')
-        // TODO: Integrate with dedicated secrets detection library (e.g., truffleHog, gitleaks)
         return false
       }
     }
