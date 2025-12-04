@@ -558,6 +558,108 @@ npm run lint
 npx tsc --noEmit
 ```
 
+### Testing
+
+The repository includes comprehensive test scripts for all major components:
+
+#### Test Build Sequence Orchestration
+```bash
+npx tsx scripts/test-build-sequence.ts
+```
+
+#### Test PR Builder Utility
+```bash
+npx tsx scripts/test-pr-builder.ts
+```
+
+#### Test Autonomous Builds
+```bash
+npx tsx scripts/test-autonomous-builds.ts
+```
+
+#### Test API Endpoint (requires dev server running)
+```bash
+# Terminal 1: Start dev server
+npm run dev
+
+# Terminal 2: Run API tests
+npx tsx scripts/test-run-build-api.ts
+```
+
+#### Run Complete Workflow Example
+```bash
+npx tsx scripts/example-complete-workflow.ts
+```
+
+This demonstrates all build sequence scenarios including manual approval, autonomous builds, and PR assembly.
+
+## Usage Examples
+
+### Example 1: Trigger a Manual Build Sequence
+
+```bash
+curl -X POST http://localhost:3000/api/foreman/run-build \
+  -H "Content-Type: application/json" \
+  -d '{
+    "organisationId": "org_123",
+    "triggerSource": "issue_command",
+    "triggerContext": {
+      "issue": "Implement user dashboard",
+      "issueNumber": 42
+    }
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "sequenceId": "seq_1234567890_abc123",
+  "status": "awaiting_approval",
+  "message": "Build sequence created. Tasks await manual approval."
+}
+```
+
+### Example 2: Autonomous Build with PR Creation
+
+```bash
+curl -X POST http://localhost:3000/api/foreman/run-build \
+  -H "Content-Type: application/json" \
+  -d '{
+    "organisationId": "org_123",
+    "triggerSource": "scheduled",
+    "autonomousBuildEnabled": true,
+    "createPR": true,
+    "owner": "MaturionISMS",
+    "repo": "example-repo",
+    "branch": "feature/automated-build",
+    "baseBranch": "main"
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "sequenceId": "seq_1234567890_xyz789",
+  "status": "completed",
+  "prUrl": "https://github.com/MaturionISMS/example-repo/pull/123",
+  "message": "Build sequence completed successfully."
+}
+```
+
+### Example 3: Check Build Sequence Status
+
+```bash
+curl http://localhost:3000/api/foreman/run-build?sequenceId=seq_1234567890_abc123
+```
+
+### Example 4: List All Build Sequences
+
+```bash
+curl http://localhost:3000/api/foreman/run-build?organisationId=org_123
+```
+
 ## Project Structure
 
 ```
