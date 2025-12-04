@@ -3,7 +3,7 @@ import { loadForemanBehaviourFiles } from "@/lib/github/loadFiles";
 import { compileForemanContext } from "./behaviours";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY || "placeholder",
 });
 
 export async function runForeman(input: any) {
@@ -13,7 +13,7 @@ export async function runForeman(input: any) {
     input.organisationId
   );
 
-  const messages = [
+  const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
     { role: "system", content: systemPrompt },
     {
       role: "user",
@@ -24,9 +24,9 @@ export async function runForeman(input: any) {
     },
   ];
 
-  const res = await openai.responses.create({
-    model: "gpt-4.1",
-    input: messages,
+  const res = await openai.chat.completions.create({
+    model: "gpt-4",
+    messages: messages,
     response_format: {
       type: "json_schema",
       json_schema: {
@@ -39,6 +39,9 @@ export async function runForeman(input: any) {
     },
   });
 
-  const json = res.output[0].content[0].text;
+  const json = res.choices[0]?.message?.content;
+  if (!json) {
+    throw new Error("No response content from OpenAI");
+  }
   return JSON.parse(json);
 }
