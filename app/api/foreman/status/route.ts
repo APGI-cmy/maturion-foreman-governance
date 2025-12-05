@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     const testGateRequired = safeguards.includes('tests')
     
     // Check initialization status
-    const initialization = await checkInitializationStatus()
+    const initialization = checkInitializationStatus()
     const initializationSummary = getInitializationSummary(initialization)
     
     const status: ForemanStatusResponse = {

@@ -235,10 +235,13 @@ function checkOrganizationId(): InitializationCheckResult {
     }
   }
 
+  // Mask the organization ID for security (show only first 8 characters)
+  const maskedOrgId = orgId.length > 8 ? `${orgId.substring(0, 8)}...` : '***'
+
   return {
     name: 'Organization ID',
     status: 'ready',
-    message: `Organization ID configured: ${orgId}`,
+    message: `Organization ID configured: ${maskedOrgId}`,
     required: false
   }
 }
@@ -246,7 +249,7 @@ function checkOrganizationId(): InitializationCheckResult {
 /**
  * Perform comprehensive initialization check
  */
-export async function checkInitializationStatus(): Promise<InitializationStatus> {
+export function checkInitializationStatus(): InitializationStatus {
   const checks: InitializationCheckResult[] = [
     checkGitHubConfiguration(),
     checkOpenAIConfiguration(),
