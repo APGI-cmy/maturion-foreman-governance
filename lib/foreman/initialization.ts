@@ -156,15 +156,19 @@ function checkBehaviorFiles(): InitializationCheckResult {
     }
 
     // Count all behavior files
-    const countFiles = (dir: string): number => {
+    const countFiles = (dir: string, depth = 0, maxDepth = 5): number => {
       let count = 0
+      // Prevent stack overflow on deep directories
+      if (depth > maxDepth) {
+        return count
+      }
       try {
         const entries = readdirSync(dir, { withFileTypes: true })
         for (const entry of entries) {
           if (entry.isFile() && entry.name.endsWith('.md')) {
             count++
           } else if (entry.isDirectory()) {
-            count += countFiles(join(dir, entry.name))
+            count += countFiles(join(dir, entry.name), depth + 1, maxDepth)
           }
         }
       } catch {
@@ -178,7 +182,7 @@ function checkBehaviorFiles(): InitializationCheckResult {
     return {
       name: 'Behavior Files',
       status: 'ready',
-      message: `${fileCount} behavior files loaded from local directory`,
+      message: `${fileCount} behavior files found in local directory`,
       required: true
     }
   } catch (error) {

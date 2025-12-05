@@ -230,7 +230,7 @@ Response:
       {
         "name": "Behavior Files",
         "status": "ready",
-        "message": "13 behavior files loaded from local directory",
+        "message": "13 behavior files found in local directory",
         "required": true
       },
       {
@@ -242,7 +242,7 @@ Response:
       {
         "name": "Organization ID",
         "status": "ready",
-        "message": "Organization ID configured: org_123",
+        "message": "Organization ID configured: org_matu...",
         "required": false
       }
     ],
