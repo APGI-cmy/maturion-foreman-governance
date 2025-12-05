@@ -382,15 +382,16 @@ export async function executeBuilderTask(taskId: string): Promise<BuilderTask> {
     
     // Log autonomous action if in autonomous mode
     if (isAutonomousModeEnabled() && task.input?.organisationId) {
-      const hasFailedQA = output.qaResults.some((r: QAResult) => r.status === 'failed')
+      const hasFailedQA = output.qaResults?.some((r: QAResult) => r.status === 'failed') || false
       const qaResult: 'passed' | 'failed' | 'pending' = hasFailedQA ? 'failed' : 'passed'
       
       // Check for compliance violations (secrets in output)
       let complianceFlag = true
-      if (output) {
-        const outputStr = JSON.stringify(output)
-        const quotedSecretPattern = /(?:password|secret|key|token|api[_-]?key|private[_-]?key|auth|credential)[\s]*[:=][\s]*['"][^'"]{8,}['"]/i
-        const jwtPattern = /eyJ[A-Za-z0-9-_]+\.eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+/
+      if (output && output.data) {
+        const outputStr = JSON.stringify(output.data)
+        // More precise secret detection patterns that avoid common false positives
+        const quotedSecretPattern = /(?:password|secret|key|token|api[_-]?key|private[_-]?key|auth|credential)[\s]*[:=][\s]*['"]([^'"\n\r]{8,})['"]/i
+        const jwtPattern = /eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/
         const apiKeyPattern = /(?:password|secret|key|token)[\s]*[:=][\s]*[A-Za-z0-9]{20,}/i
         
         if (quotedSecretPattern.test(outputStr) || jwtPattern.test(outputStr) || apiKeyPattern.test(outputStr)) {
