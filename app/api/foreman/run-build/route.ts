@@ -130,8 +130,12 @@ export async function POST(request: NextRequest) {
     
     if (generateReport) {
       try {
-        const gitSha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GIT_SHA
+        const gitSha = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GIT_SHA || 'unknown'
         const foremanVersion = process.env.npm_package_version || '0.1.0'
+        
+        if (gitSha === 'unknown') {
+          console.warn('[RunBuild] Git SHA not available from environment variables')
+        }
         
         const report = generateBuildReport(sequence, {
           pilotWave,

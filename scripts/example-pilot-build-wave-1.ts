@@ -12,7 +12,7 @@
  */
 
 console.log('🚀 Pilot Build Wave 1 - Complete Workflow Example')
-console.log('=' .repeat(60))
+console.log('='.repeat(60))
 console.log('')
 
 // Simulate a complete pilot build sequence
@@ -184,7 +184,7 @@ async function runPilotBuildExample() {
   }
   
   console.log('📊 Build Sequence Details')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   console.log(`Sequence ID: ${mockSequence.id}`)
   console.log(`Organisation: ${mockSequence.organisationId}`)
   console.log(`Status: ${mockSequence.status}`)
@@ -194,7 +194,7 @@ async function runPilotBuildExample() {
   console.log('')
   
   console.log('🏗️  Architecture Gaps Detected')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   mockSequence.architectureGaps.forEach((gap, index) => {
     console.log(`${index + 1}. ${gap.area} (${gap.priority})`)
     console.log(`   ${gap.description}`)
@@ -203,7 +203,7 @@ async function runPilotBuildExample() {
   console.log('')
   
   console.log('⚙️  Builder Tasks Executed')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   mockSequence.tasks.forEach((task, index) => {
     console.log(`${index + 1}. ${task.builder.toUpperCase()} - ${task.module}`)
     console.log(`   ${task.taskDescription}`)
@@ -213,7 +213,7 @@ async function runPilotBuildExample() {
   console.log('')
   
   console.log('✅ QA Validation Results')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   const passedChecks = mockSequence.qaResults.filter(r => r.status === 'passed').length
   const failedChecks = mockSequence.qaResults.filter(r => r.status === 'failed').length
   const warningChecks = mockSequence.qaResults.filter(r => r.status === 'warning').length
@@ -231,7 +231,7 @@ async function runPilotBuildExample() {
   console.log('')
   
   console.log('📝 Generating Build Report')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   
   const report = generateBuildReport(mockSequence, {
     pilotWave: true,
@@ -248,7 +248,7 @@ async function runPilotBuildExample() {
   console.log('')
   
   console.log('📄 Report Summary')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   console.log(`Tasks Executed: ${report.tasksExecuted.length}`)
   console.log(`Builders Used: ${report.buildersUsed.length}`)
   console.log(`QA Checks: ${report.qaResults.totalChecks}`)
@@ -256,17 +256,17 @@ async function runPilotBuildExample() {
   console.log('')
   
   console.log('🔨 Builders Used')
-  console.log('-' .repeat(60))
+  console.log('-'.repeat(60))
   report.buildersUsed.forEach(builder => {
     console.log(`${builder.builder}: ${builder.tasksCompleted} tasks, ${builder.artifactsGenerated} artifacts`)
   })
   console.log('')
   
   console.log('📋 Full Markdown Report Preview')
-  console.log('=' .repeat(60))
+  console.log('='.repeat(60))
   const markdownReport = generateMarkdownReport(report)
   console.log(markdownReport)
-  console.log('=' .repeat(60))
+  console.log('='.repeat(60))
   console.log('')
   
   console.log('✨ Pilot Build Wave 1 Example Complete!')

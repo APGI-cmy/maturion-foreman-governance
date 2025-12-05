@@ -169,9 +169,9 @@ async function testPilotBuild() {
   console.log('\n✅ Command detection test completed')
   
   console.log('')
-  console.log('=' .repeat(50))
+  console.log('='.repeat(50))
   console.log('🎉 All pilot build tests completed!')
-  console.log('=' .repeat(50))
+  console.log('='.repeat(50))
 }
 
 // Run tests

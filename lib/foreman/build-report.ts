@@ -319,8 +319,8 @@ function determineOverallStatus(sequence: BuildSequence): 'PASS' | 'FAIL' {
 }
 
 function calculateTaskDuration(task: BuilderTask): number | undefined {
-  // BuilderTask doesn't have completedAt, so we can't calculate exact duration
-  // Return undefined for now - this could be enhanced by adding completedAt to BuilderTask type
+  // TODO: BuilderTask type needs a completedAt field to calculate duration
+  // For now, we return undefined. This should be enhanced when the type is updated.
   return undefined
 }
 
@@ -390,11 +390,13 @@ function compileComplianceResults(sequence: BuildSequence): ComplianceResultSumm
     issues.push('Organisation ID missing from sequence')
   }
   
-  // Check for breaking changes (simplified - in reality would analyze commits)
-  const noBreakingChanges = true // Assume no breaking changes for now
+  // TODO: Implement actual breaking change detection by analyzing git diffs
+  // For now, we assume no breaking changes in pilot builds
+  const noBreakingChanges = true
   
-  // Check for secrets (simplified - would use actual secret detection)
-  const noSecretsDetected = true // Assume no secrets for now
+  // TODO: Implement actual secret detection using secret scanning patterns
+  // For now, we assume no secrets (pilot builds are code-gen focused)
+  const noSecretsDetected = true
   
   // Check audit log (simplified - would verify log completeness)
   const auditLogComplete = sequence.tasks.length > 0
