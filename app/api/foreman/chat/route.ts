@@ -8,8 +8,13 @@ import OpenAI from 'openai';
 import { compileForemanChatContext, extractChatMetadata } from '@/lib/foreman/chat-profile';
 import type { ChatRequest, ChatResponse, ForemanAction } from '@/types/foreman';
 
+// Validate API key is present
+if (!process.env.OPENAI_API_KEY) {
+  console.warn('[Chat] OPENAI_API_KEY not set - chat functionality will not work');
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'placeholder',
+  apiKey: process.env.OPENAI_API_KEY || '',
 });
 
 /**
@@ -18,6 +23,17 @@ const openai = new OpenAI({
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check if OpenAI API key is configured
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.' 
+        },
+        { status: 500 }
+      );
+    }
+
     const body: ChatRequest = await request.json();
     const { message, organisationId, conversationId, contextFlags } = body;
 

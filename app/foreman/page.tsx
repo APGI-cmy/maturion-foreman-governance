@@ -6,25 +6,10 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-  metadata?: {
-    wave?: string;
-    module?: string;
-    actionType?: string;
-    builderType?: string;
-    complexity?: string;
-    tags?: string[];
-  };
-  proposedActions?: any[];
-}
+import type { ChatMessage, ChatMessageMetadata } from '@/types/foreman';
 
 export default function ForemanChatPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
@@ -39,11 +24,13 @@ export default function ForemanChatPage() {
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
 
-    const userMessage: Message = {
+    const userMessage: ChatMessage = {
       id: `msg_${Date.now()}_user`,
       role: 'user',
       content: inputMessage,
       timestamp: new Date(),
+      organisationId: '', // Will be set by server
+      conversationId: conversationId || '', // Will be set by server
     };
 
     // Add user message to chat
@@ -60,7 +47,7 @@ export default function ForemanChatPage() {
         body: JSON.stringify({
           message: inputMessage,
           conversationId: conversationId,
-          organisationId: process.env.NEXT_PUBLIC_MATURION_ORG_ID,
+          // Organisation ID is set server-side from environment or request context
         }),
       });
 
@@ -73,32 +60,42 @@ export default function ForemanChatPage() {
         }
 
         // Add Foreman's response to chat
-        const foremanMessage: Message = {
+        const foremanMessage: ChatMessage = {
           id: `msg_${Date.now()}_assistant`,
           role: 'assistant',
           content: data.response.replyText,
           timestamp: new Date(data.timestamp),
           metadata: data.response.metadata,
-          proposedActions: data.response.proposedActions,
+          organisationId: '', // Set by server
+          conversationId: data.conversationId,
         };
+
+        // Add proposed actions as a separate property if needed for display
+        if (data.response.proposedActions) {
+          (foremanMessage as any).proposedActions = data.response.proposedActions;
+        }
 
         setMessages((prev) => [...prev, foremanMessage]);
       } else {
         // Handle error
-        const errorMessage: Message = {
+        const errorMessage: ChatMessage = {
           id: `msg_${Date.now()}_error`,
           role: 'assistant',
           content: `Error: ${data.error || 'Failed to get response from Foreman'}`,
           timestamp: new Date(),
+          organisationId: '',
+          conversationId: conversationId || '',
         };
         setMessages((prev) => [...prev, errorMessage]);
       }
     } catch (error) {
-      const errorMessage: Message = {
+      const errorMessage: ChatMessage = {
         id: `msg_${Date.now()}_error`,
         role: 'assistant',
         content: `Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
         timestamp: new Date(),
+        organisationId: '',
+        conversationId: conversationId || '',
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -206,11 +203,11 @@ export default function ForemanChatPage() {
               )}
 
               {/* Proposed Actions */}
-              {message.proposedActions && message.proposedActions.length > 0 && (
+              {(message as any).proposedActions && (message as any).proposedActions.length > 0 && (
                 <div className="mt-3 pt-3 border-t border-gray-200">
                   <p className="text-sm font-semibold mb-2">Proposed Actions:</p>
                   <div className="space-y-2">
-                    {message.proposedActions.map((action, idx) => (
+                    {(message as any).proposedActions.map((action: any, idx: number) => (
                       <div
                         key={idx}
                         className="text-sm bg-gray-50 px-3 py-2 rounded border border-gray-200"
