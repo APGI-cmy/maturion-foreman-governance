@@ -20,6 +20,86 @@ export default function ForemanChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Detect pilot build command
+  const detectPilotBuildCommand = (message: string): boolean => {
+    const lowerMessage = message.toLowerCase();
+    // Use regex patterns similar to orchestrator for precision
+    const patterns = [
+      /\/foreman\s+run\s+pilot/i,
+      /@?foreman[,\s]+run\s+pilot/i,
+      /run\s+pilot\s+build\s+wave/i
+    ];
+    
+    return patterns.some(pattern => pattern.test(lowerMessage));
+  };
+
+  // Trigger pilot build
+  const triggerPilotBuild = async () => {
+    const pilotMessage: ChatMessage = {
+      id: `msg_${Date.now()}_system`,
+      role: 'assistant',
+      content: '🚀 Triggering Pilot Build Wave...',
+      timestamp: new Date(),
+      organisationId: '',
+      conversationId: conversationId || '',
+    };
+
+    setMessages((prev) => [...prev, pilotMessage]);
+
+    try {
+      const response = await fetch('/api/foreman/run-build', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pilot: true,
+          organisationId: 'maturion_isms',
+          autonomousBuildEnabled: true,
+          createPR: true,
+          generateReport: true,
+          pilotWave: true,
+          waveNumber: 1,
+          feature: 'foreman-status-dashboard',
+          owner: 'MaturionISMS',
+          repo: 'maturion-foreman-app',
+          branch: 'foreman/pilot-wave',
+          baseBranch: 'main',
+        }),
+      });
+
+      const data = await response.json();
+
+      const resultMessage: ChatMessage = {
+        id: `msg_${Date.now()}_result`,
+        role: 'assistant',
+        content: data.success
+          ? `✅ Pilot Build Wave initiated successfully!\n\n` +
+            `Sequence ID: ${data.sequenceId}\n` +
+            `Status: ${data.status}\n` +
+            `${data.prUrl ? `PR: ${data.prUrl}\n` : ''}` +
+            `${data.reportPath ? `Report: ${data.reportPath}\n` : ''}\n` +
+            `${data.message || ''}`
+          : `❌ Pilot Build Wave failed: ${data.error || 'Unknown error'}`,
+        timestamp: new Date(),
+        organisationId: '',
+        conversationId: conversationId || '',
+      };
+
+      setMessages((prev) => [...prev, resultMessage]);
+    } catch (error) {
+      const errorMessage: ChatMessage = {
+        id: `msg_${Date.now()}_error`,
+        role: 'assistant',
+        content: `❌ Failed to trigger pilot build: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        timestamp: new Date(),
+        organisationId: '',
+        conversationId: conversationId || '',
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    }
+  };
+
   // Send message to Foreman
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -35,8 +115,16 @@ export default function ForemanChatPage() {
 
     // Add user message to chat
     setMessages((prev) => [...prev, userMessage]);
+    const currentMessage = inputMessage;
     setInputMessage('');
     setIsLoading(true);
+
+    // Check if this is a pilot build command
+    if (detectPilotBuildCommand(currentMessage)) {
+      await triggerPilotBuild();
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch('/api/foreman/chat', {
@@ -45,7 +133,7 @@ export default function ForemanChatPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: inputMessage,
+          message: currentMessage,
           conversationId: conversationId,
           // Organisation ID is set server-side from environment or request context
         }),
@@ -111,15 +199,30 @@ export default function ForemanChatPage() {
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
-        <h1 className="text-2xl font-bold text-gray-900">Foreman Chat</h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Ask Foreman about architecture, builds, QA, and compliance
-        </p>
-        {conversationId && (
-          <p className="text-xs text-gray-400 mt-1">
-            Conversation ID: {conversationId}
-          </p>
-        )}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Foreman Chat</h1>
+            <p className="text-sm text-gray-600 mt-1">
+              Ask Foreman about architecture, builds, QA, and compliance
+            </p>
+            {conversationId && (
+              <p className="text-xs text-gray-400 mt-1">
+                Conversation ID: {conversationId}
+              </p>
+            )}
+          </div>
+          <button
+            onClick={async () => {
+              setIsLoading(true);
+              await triggerPilotBuild();
+              setIsLoading(false);
+            }}
+            disabled={isLoading}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium transition-colors text-sm"
+          >
+            🚀 Run Pilot Build
+          </button>
+        </div>
       </div>
 
       {/* Messages Area */}
