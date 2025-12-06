@@ -44,4 +44,7 @@ next-env.d.ts
 !/data/projects/.gitkeep
 
 # memory data (unified memory fabric)
-/memory
+# Track directory structure and README files, but ignore memory.json files
+# This allows the memory system to work locally while keeping the repo clean
+/memory/*/*.json
+!/memory/projects/foreman_app_sandbox.json
