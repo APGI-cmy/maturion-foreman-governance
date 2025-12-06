@@ -38,4 +38,7 @@ next-env.d.ts
 # build reports (test artifacts)
 /reports/*.md
 !/reports/.gitkeep
-!/reports/FOREMAN_GOVERNANCE_DIAGNOSTIC_REPORT.md
+
+# project data (local storage)
+/data/projects/*.json
+!/data/projects/.gitkeep
