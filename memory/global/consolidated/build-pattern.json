@@ -1,9 +1,9 @@
 [
   {
-    "id": "kb_20251206_008",
-    "category": "architecture_principle",
+    "id": "kb_20251206_007",
+    "category": "build_pattern",
     "summary": "Build pattern observation 1 (observed 5 times)",
-    "lesson": "Architecture pattern 'pattern' should be consistently applied across projects to maintain system coherence.",
+    "lesson": "Pattern 'build' observed across 5 instances. Review and incorporate into operational procedures.",
     "appliesTo": [
       "GlobalUI",
       "Builder",
@@ -19,7 +19,7 @@
     "governanceLinks": [],
     "confidence": 0.5,
     "importance": "medium",
-    "timestamp": "2025-12-06T19:21:28.668Z",
+    "timestamp": "2025-12-06T19:21:28.667Z",
     "metadata": {
       "consolidatedFrom": 5,
       "firstSeen": "2025-12-06T19:21:28.665Z",
