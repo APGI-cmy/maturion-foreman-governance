@@ -70,10 +70,13 @@ const DEFAULT_CONFIG: DriftMonitorConfig = {
 const MEMORY_VERSION = '1.0.0'
 
 /**
- * JSON schema validator
+ * JSON schema validator - create new instance per detection to avoid conflicts
  */
-const ajv = new Ajv({ allErrors: true })
-addFormats(ajv)
+function createValidator(): Ajv {
+  const validator = new Ajv({ allErrors: true })
+  addFormats(validator)
+  return validator
+}
 
 /**
  * Load JSON schema from file
@@ -122,6 +125,7 @@ export async function detectSchemaDrift(
   
   for (const entry of issueEntries) {
     if (schemas['historical-issues']) {
+      const ajv = createValidator()
       const validate = ajv.compile(schemas['historical-issues'])
       const issueData = extractHistoricalIssue(entry)
       
@@ -148,6 +152,7 @@ export async function detectSchemaDrift(
   
   for (const entry of lessonEntries) {
     if (schemas['knowledge-base']) {
+      const ajv = createValidator()
       const validate = ajv.compile(schemas['knowledge-base'])
       const lessonData = extractArchitectureLesson(entry)
       
@@ -174,6 +179,7 @@ export async function detectSchemaDrift(
   
   for (const entry of patternEntries) {
     if (schemas['reasoning-patterns']) {
+      const ajv = createValidator()
       const validate = ajv.compile(schemas['reasoning-patterns'])
       const patternData = extractReasoningPattern(entry)
       
