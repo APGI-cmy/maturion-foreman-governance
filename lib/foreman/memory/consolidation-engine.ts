@@ -29,7 +29,7 @@ import { getAllMemory } from './storage'
  * Default consolidation configuration
  */
 const DEFAULT_CONFIG: ConsolidationConfig = {
-  minConfidence: 0.7,
+  minConfidence: 0.3, // Lowered from 0.7 to 0.3 to allow more blocks
   minOccurrences: 3,
   significanceThreshold: 60,
   maxAgeForArchival: 180, // 6 months
@@ -160,10 +160,10 @@ export function scoreEntrySignificance(
   )
   factors.frequency = Math.min(similarEntries.length * 5, 30)
   
-  // Severity: Based on tags indicating critical issues
+  // Severity: Based on tags indicating critical issues - INCREASED WEIGHT
   const severityTags = ['critical', 'error_escalation', 'deployment_failure', 'blocker']
   const hasSeverity = entry.tags?.some(tag => severityTags.includes(tag))
-  factors.severity = hasSeverity ? 25 : 10
+  factors.severity = hasSeverity ? 35 : 10 // Increased from 25 to 35
   
   // Project count: How many projects are affected
   const projectEntries = allEntries.filter(e => 
@@ -192,14 +192,14 @@ export function scoreEntrySignificance(
   // Calculate total score
   const score = Object.values(factors).reduce((sum, val) => sum + val, 0)
   
-  // Classify
+  // Classify - ADJUSTED THRESHOLDS
   let classification: 'high' | 'medium' | 'low'
   let recommendation: 'consolidate' | 'keep' | 'archive' | 'delete'
   
-  if (score >= 70) {
+  if (score >= 60) { // Lowered from 70 to 60
     classification = 'high'
     recommendation = 'consolidate'
-  } else if (score >= 40) {
+  } else if (score >= 35) { // Lowered from 40 to 35
     classification = 'medium'
     recommendation = 'keep'
   } else {
