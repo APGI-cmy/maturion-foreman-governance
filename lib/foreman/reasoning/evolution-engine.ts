@@ -50,6 +50,21 @@ const SCORING_WEIGHTS = {
 }
 
 /**
+ * Normalization constants for scoring
+ */
+const NORMALIZATION_CONSTANTS = {
+  MAX_RELEVANCE_USAGE: 100,  // Assume 100+ uses is maximum relevance
+  MAX_ARCHITECTURE_CONFLICTS: 10 // Assume 10+ conflicts is worst case
+}
+
+/**
+ * Governance event limits
+ */
+const GOVERNANCE_CONFIG = {
+  MAX_EVENTS_STORED: 1000  // Keep only last 1000 events to prevent unbounded growth
+}
+
+/**
  * Evolution cycle configuration
  */
 export interface EvolutionConfig {
@@ -98,8 +113,8 @@ export function calculatePatternScore(metrics: PatternPerformanceMetrics): numbe
   } = metrics
 
   // Normalize values
-  const normalizedRelevance = Math.min(relevance / 100, 1.0) // Assume 100+ uses is max
-  const normalizedConflicts = Math.max(0, 1 - (architectureConflicts / 10)) // Assume 10+ conflicts is worst
+  const normalizedRelevance = Math.min(relevance / NORMALIZATION_CONSTANTS.MAX_RELEVANCE_USAGE, 1.0)
+  const normalizedConflicts = Math.max(0, 1 - (architectureConflicts / NORMALIZATION_CONSTANTS.MAX_ARCHITECTURE_CONFLICTS))
 
   // Calculate weighted score
   let score = 0
@@ -115,21 +130,14 @@ export function calculatePatternScore(metrics: PatternPerformanceMetrics): numbe
 }
 
 /**
- * Analyze pattern performance from memory entries
+ * Analyze pattern performance from a pre-loaded memory array (more efficient)
+ * @param pattern - The pattern to analyze
+ * @param allMemory - Pre-loaded and flattened memory entries
  */
-export async function analyzePatternPerformance(
-  pattern: ReasoningPattern
-): Promise<PatternPerformanceMetrics> {
-  // Load all memory to analyze pattern usage
-  const allMemoryObj = await getAllMemory()
-  
-  // Flatten all memory entries into a single array
-  const allMemory: MemoryEntry[] = [
-    ...allMemoryObj.global,
-    ...allMemoryObj.foreman,
-    ...Object.values(allMemoryObj.projects).flat()
-  ]
-  
+function analyzePatternPerformanceFromMemory(
+  pattern: ReasoningPattern,
+  allMemory: MemoryEntry[]
+): PatternPerformanceMetrics {
   // Find memory entries that reference this pattern
   const patternUsages = allMemory.filter(entry => {
     const metadata = entry.metadata as any
@@ -192,6 +200,26 @@ export async function analyzePatternPerformance(
     usageCount,
     lastUsed: pattern.usageCount ? new Date().toISOString() : undefined
   }
+}
+
+/**
+ * Analyze pattern performance from memory entries
+ * This version loads memory on-demand (use analyzePatternPerformanceFromMemory for better performance)
+ */
+export async function analyzePatternPerformance(
+  pattern: ReasoningPattern
+): Promise<PatternPerformanceMetrics> {
+  // Load all memory to analyze pattern usage
+  const allMemoryObj = await getAllMemory()
+  
+  // Flatten all memory entries into a single array
+  const allMemory: MemoryEntry[] = [
+    ...allMemoryObj.global,
+    ...allMemoryObj.foreman,
+    ...Object.values(allMemoryObj.projects).flat()
+  ]
+  
+  return analyzePatternPerformanceFromMemory(pattern, allMemory)
 }
 
 /**
@@ -308,9 +336,9 @@ export async function logEvolutionEvent(event: EvolutionEvent): Promise<void> {
   // Add new event
   events.push(event)
 
-  // Keep only last 1000 events to prevent unbounded growth
-  if (events.length > 1000) {
-    events = events.slice(-1000)
+  // Keep only last N events to prevent unbounded growth
+  if (events.length > GOVERNANCE_CONFIG.MAX_EVENTS_STORED) {
+    events = events.slice(-GOVERNANCE_CONFIG.MAX_EVENTS_STORED)
   }
 
   // Save back
@@ -372,7 +400,7 @@ export async function runEvolutionCycle(
 
   console.log(`[Evolution] Starting evolution cycle (${cycleType}) at ${timestamp}`)
 
-  // Load all memory first
+  // Load all memory once and cache the flattened array for performance
   const allMemoryObj = await getAllMemory()
   const allMemory: MemoryEntry[] = [
     ...allMemoryObj.global,
@@ -395,8 +423,8 @@ export async function runEvolutionCycle(
   // Analyze each pattern
   for (const pattern of patterns) {
     try {
-      // Analyze performance
-      const metrics = await analyzePatternPerformance(pattern)
+      // Analyze performance (pass cached memory for efficiency)
+      const metrics = analyzePatternPerformanceFromMemory(pattern, allMemory)
 
       // Skip if not enough usage data
       if (metrics.usageCount < (finalConfig.minUsageCount || 0)) {

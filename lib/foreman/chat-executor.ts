@@ -1354,6 +1354,9 @@ async function executeShowEvolvedPatterns(
   statusUpdates: ChatStatusUpdate[],
   params: any
 ): Promise<{ success: boolean }> {
+  // Display configuration
+  const PATTERN_DESCRIPTION_MAX_LENGTH = 100
+
   try {
     statusUpdates.push({
       timestamp: new Date(),
@@ -1390,14 +1393,14 @@ async function executeShowEvolvedPatterns(
       if (data.patterns?.stable && (!filterType || filterType === 'stable')) {
         patternInfo.push(`\n**Stable Patterns (${data.patterns.stable.length}):**`)
         data.patterns.stable.slice(0, 5).forEach((p: any) => {
-          patternInfo.push(`  - ${p.name}: ${p.description.substring(0, 100)}...`)
+          patternInfo.push(`  - ${p.name}: ${p.description.substring(0, PATTERN_DESCRIPTION_MAX_LENGTH)}...`)
         })
       }
 
       if (data.patterns?.monitored && (!filterType || filterType === 'monitored')) {
         patternInfo.push(`\n**Monitored Patterns (${data.patterns.monitored.length}):**`)
         data.patterns.monitored.slice(0, 5).forEach((p: any) => {
-          patternInfo.push(`  - ${p.name}: ${p.description.substring(0, 100)}...`)
+          patternInfo.push(`  - ${p.name}: ${p.description.substring(0, PATTERN_DESCRIPTION_MAX_LENGTH)}...`)
         })
       }
 
