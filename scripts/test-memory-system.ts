@@ -308,9 +308,9 @@ async function testMemorySystem() {
   console.log()
   
   // Summary
-  console.log('=' .repeat(60))
+  console.log('='.repeat(60))
   console.log('Test Summary')
-  console.log('=' .repeat(60))
+  console.log('='.repeat(60))
   console.log(`Total Tests: ${totalTests}`)
   console.log(`Passed: ${passedTests}`)
   console.log(`Failed: ${totalTests - passedTests}`)

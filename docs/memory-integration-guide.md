@@ -287,7 +287,7 @@ export async function completeMilestone(
     {
       completedAt: new Date().toISOString(),
       deliverables,
-      prUrl: prUrl
+      prUrl
     },
     { projectId }
   )
