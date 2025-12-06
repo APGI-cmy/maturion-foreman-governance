@@ -80,7 +80,7 @@ describe('Regression Prevention', () => {
     // Even with bad metrics, we should detect regression
     assert.ok(newScore < pattern.performanceScore!, 'Should detect performance degradation')
 
-    const proposal = generateEvolutionProposal(pattern, degradedMetrics, ['test_evidence'])
+    const proposal = generateEvolutionProposal(pattern, degradedMetrics, ['memory_usage_analysis', 'qa_report_failure'])
 
     // Proposal should exist (significant change detected)
     assert.ok(proposal, 'Should generate proposal for significant change')

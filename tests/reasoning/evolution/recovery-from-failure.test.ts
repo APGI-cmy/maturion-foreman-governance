@@ -16,6 +16,16 @@ import { ReasoningPattern, PatternPerformanceMetrics } from '../../../types/reas
 import fs from 'fs'
 import path from 'path'
 
+/**
+ * Performance score thresholds for pattern classification
+ * These match the thresholds defined in evolution-engine.ts
+ */
+const SCORE_THRESHOLDS = {
+  STABLE: 0.8,      // score >= 0.8 → promoted to long-term stable patterns
+  MONITORED_MIN: 0.4, // 0.4 <= score < 0.8 → monitored
+  RETIREMENT: 0.4   // score < 0.4 → candidates for retirement
+}
+
 describe('Recovery from Failure', () => {
   
   beforeEach(async () => {
@@ -370,8 +380,8 @@ describe('Recovery from Failure', () => {
     const score = calculatePatternScore(recoveringMetrics)
 
     // Should be in monitored range, not retirement
-    assert.ok(score >= 0.4 || Math.abs(score - 0.4) < 0.01, `Recovering pattern should not be below retirement threshold, got ${score.toFixed(2)}`)
-    assert.ok(score < 0.8, `Recovering pattern should not yet be stable, got ${score.toFixed(2)}`)
+    assert.ok(score >= SCORE_THRESHOLDS.RETIREMENT || Math.abs(score - SCORE_THRESHOLDS.RETIREMENT) < 0.01, `Recovering pattern should not be below retirement threshold, got ${score.toFixed(2)}`)
+    assert.ok(score < SCORE_THRESHOLDS.STABLE, `Recovering pattern should not yet be stable, got ${score.toFixed(2)}`)
 
     const classification = classifyPattern(score)
     assert.ok(
