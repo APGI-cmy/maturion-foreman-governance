@@ -38,6 +38,85 @@ import { loadMemorySnapshot } from '@/lib/foreman/reasoning/engine'
 const MAX_CONTEXT_SIZE_BYTES = 50 * 1024
 
 /**
+ * Memory context metrics for monitoring
+ */
+export interface MemoryContextMetrics {
+  timestamp: string
+  builderType: BuilderType
+  module: string
+  sizeBytes: number
+  historicalIssuesCount: number
+  architectureLessonsCount: number
+  reasoningPatternsCount: number
+  governanceRulesCount: number
+  memoryReferencesCount: number
+  wasTrimmed: boolean
+  compilationTimeMs?: number
+}
+
+/**
+ * In-memory metrics store for production monitoring
+ * In production, this should be sent to a monitoring service (e.g., DataDog, CloudWatch)
+ */
+const metricsStore: MemoryContextMetrics[] = []
+const MAX_METRICS_STORED = 100 // Keep last 100 for memory safety
+
+/**
+ * Record memory context metrics for monitoring
+ */
+function recordMetrics(metrics: MemoryContextMetrics): void {
+  metricsStore.push(metrics)
+  
+  // Keep only the last MAX_METRICS_STORED entries
+  if (metricsStore.length > MAX_METRICS_STORED) {
+    metricsStore.shift()
+  }
+  
+  // Log metrics for production monitoring
+  console.log(`[Memory Metrics] ${JSON.stringify(metrics)}`)
+}
+
+/**
+ * Get recent memory context metrics
+ * Useful for production monitoring and alerting
+ */
+export function getMemoryMetrics(limit: number = 10): MemoryContextMetrics[] {
+  return metricsStore.slice(-limit)
+}
+
+/**
+ * Get aggregate memory context statistics
+ */
+export function getMemoryStats(): {
+  averageSize: number
+  maxSize: number
+  minSize: number
+  trimmedPercentage: number
+  totalCompilations: number
+} {
+  if (metricsStore.length === 0) {
+    return {
+      averageSize: 0,
+      maxSize: 0,
+      minSize: 0,
+      trimmedPercentage: 0,
+      totalCompilations: 0
+    }
+  }
+  
+  const sizes = metricsStore.map(m => m.sizeBytes)
+  const trimmedCount = metricsStore.filter(m => m.wasTrimmed).length
+  
+  return {
+    averageSize: sizes.reduce((a, b) => a + b, 0) / sizes.length,
+    maxSize: Math.max(...sizes),
+    minSize: Math.min(...sizes),
+    trimmedPercentage: (trimmedCount / metricsStore.length) * 100,
+    totalCompilations: metricsStore.length
+  }
+}
+
+/**
  * Compile memory context for a builder task
  * 
  * @param request - Builder request
@@ -50,6 +129,8 @@ export async function compileBuilderMemoryContext(
   builderType: BuilderType,
   projectId?: string
 ): Promise<BuilderMemoryContext> {
+  const startTime = Date.now()
+  
   console.log('[Memory Injector] Compiling memory context for builder task...')
   console.log(`[Memory Injector] Builder: ${builderType}, Module: ${request.module}`)
 
@@ -85,10 +166,31 @@ export async function compileBuilderMemoryContext(
   const contextJson = JSON.stringify(context)
   context.sizeBytes = Buffer.byteLength(contextJson, 'utf8')
 
+  let wasTrimmed = false
+  
   // Validate size limit
   if (context.sizeBytes > MAX_CONTEXT_SIZE_BYTES) {
     console.warn(`[Memory Injector] Context size (${context.sizeBytes} bytes) exceeds limit (${MAX_CONTEXT_SIZE_BYTES} bytes)`)
-    return trimMemoryContext(context)
+    const trimmedContext = trimMemoryContext(context)
+    wasTrimmed = true
+    
+    // Record metrics for the trimmed context
+    const compilationTimeMs = Date.now() - startTime
+    recordMetrics({
+      timestamp: new Date().toISOString(),
+      builderType,
+      module: request.module,
+      sizeBytes: trimmedContext.sizeBytes,
+      historicalIssuesCount: trimmedContext.historicalIssues.length,
+      architectureLessonsCount: trimmedContext.architectureLessons.length,
+      reasoningPatternsCount: trimmedContext.reasoningPatterns.length,
+      governanceRulesCount: trimmedContext.governanceRules.length,
+      memoryReferencesCount: trimmedContext.memoryReferences.length,
+      wasTrimmed: true,
+      compilationTimeMs
+    })
+    
+    return trimmedContext
   }
 
   console.log(`[Memory Injector] Memory context compiled:`)
@@ -97,6 +199,22 @@ export async function compileBuilderMemoryContext(
   console.log(`  - Reasoning patterns: ${context.reasoningPatterns.length}`)
   console.log(`  - Governance rules: ${context.governanceRules.length}`)
   console.log(`  - Size: ${context.sizeBytes} bytes`)
+
+  // Record metrics for production monitoring
+  const compilationTimeMs = Date.now() - startTime
+  recordMetrics({
+    timestamp: new Date().toISOString(),
+    builderType,
+    module: request.module,
+    sizeBytes: context.sizeBytes,
+    historicalIssuesCount: context.historicalIssues.length,
+    architectureLessonsCount: context.architectureLessons.length,
+    reasoningPatternsCount: context.reasoningPatterns.length,
+    governanceRulesCount: context.governanceRules.length,
+    memoryReferencesCount: context.memoryReferences.length,
+    wasTrimmed: false,
+    compilationTimeMs
+  })
 
   return context
 }
