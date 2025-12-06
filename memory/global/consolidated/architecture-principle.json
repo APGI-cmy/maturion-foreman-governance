@@ -10,19 +10,19 @@
       "PartPulse"
     ],
     "originEntries": [
-      "global_build_pattern_1_1765048888665_6iespeh",
-      "global_build_pattern_2_1765048888666_l6b4je0",
-      "global_build_pattern_3_1765048888666_wt3xivv",
-      "global_build_pattern_4_1765048888666_3l7fqtf",
-      "global_build_pattern_5_1765048888666_vhq0141"
+      "global_build_pattern_1_1765048979781_jl0e38o",
+      "global_build_pattern_2_1765048979781_setbqm6",
+      "global_build_pattern_3_1765048979781_1jb8wsg",
+      "global_build_pattern_4_1765048979781_zcgc10t",
+      "global_build_pattern_5_1765048979782_wc785ss"
     ],
     "governanceLinks": [],
     "confidence": 0.5,
     "importance": "medium",
-    "timestamp": "2025-12-06T19:21:28.668Z",
+    "timestamp": "2025-12-06T19:22:59.783Z",
     "metadata": {
       "consolidatedFrom": 5,
-      "firstSeen": "2025-12-06T19:21:28.665Z",
+      "firstSeen": "2025-12-06T19:22:59.781Z",
       "validationCount": 0
     }
   }
