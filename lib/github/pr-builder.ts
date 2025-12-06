@@ -87,6 +87,25 @@ export function generatePRDescription(context: PRContext): string {
       sections.push(`**Status:** ${output.status}`)
       sections.push('')
       
+      // Memory Context Section
+      if (output.memoryContext) {
+        sections.push('**Memory Context:**')
+        sections.push(`- Memory references: ${output.memoryContext.memoryReferences.length}`)
+        sections.push(`- Governance rules enforced: ${output.memoryContext.governanceRules.length}`)
+        sections.push(`- Architecture lessons applied: ${output.memoryContext.architectureLessons.length}`)
+        sections.push(`- Historical issues reviewed: ${output.memoryContext.historicalIssues.length}`)
+        sections.push(`- Reasoning patterns applied: ${output.memoryContext.reasoningPatterns.length}`)
+        sections.push('')
+        
+        if (output.memoryContext.governanceRules.length > 0) {
+          sections.push('**Governance Rules Applied:**')
+          output.memoryContext.governanceRules.forEach(rule => {
+            sections.push(`- ${rule.rule}: ${rule.description}`)
+          })
+          sections.push('')
+        }
+      }
+      
       if (output.output?.artifacts && output.output.artifacts.length > 0) {
         sections.push('**Artifacts:**')
         output.output.artifacts.forEach((artifact: any) => {

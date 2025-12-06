@@ -5,6 +5,7 @@
 
 import { BuilderType, BuilderRequest, BuilderTask, BuilderTaskStatus, QAResult } from '@/types/builder'
 import { getBuilderCapability, isTaskTypeSupported } from '@/lib/builder/capabilities'
+import { compileBuilderMemoryContext } from '@/lib/builder/memory-injector'
 
 /**
  * In-memory task store (in production, this would be a database)
@@ -145,12 +146,29 @@ export async function dispatchBuilderTask(
       throw new Error(`Missing required field: ${field}`)
     }
   }
+
+  // MEMORY INJECTION: Compile memory context for builder
+  // This runs drift monitoring and loads relevant memory
+  console.log('[Dispatch] Injecting memory context into builder task...')
+  let memoryContext
+  try {
+    memoryContext = await compileBuilderMemoryContext(
+      request,
+      builder,
+      request.metadata?.projectId as string | undefined
+    )
+    console.log(`[Dispatch] Memory context injected: ${memoryContext.memoryReferences.length} references`)
+  } catch (error) {
+    console.error('[Dispatch] Failed to compile memory context:', error)
+    // If memory compilation fails (e.g., drift detected), throw error
+    throw new Error(`Memory injection failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  }
   
   // Determine initial status based on autonomous mode
   const autonomousMode = isAutonomousModeEnabled()
   const initialStatus: BuilderTaskStatus = autonomousMode ? 'approved' : 'pending_approval'
   
-  // Create task
+  // Create task with memory context
   const task: BuilderTask = {
     id: generateTaskId(),
     builder,
@@ -164,7 +182,8 @@ export async function dispatchBuilderTask(
       ...request,
       context: request.context || {},
       metadata: request.metadata || {}
-    }
+    },
+    memoryContext // Attach memory context to task
   }
   
   // If autonomous mode, auto-approve immediately
