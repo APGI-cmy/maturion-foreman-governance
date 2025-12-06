@@ -11,7 +11,9 @@ import type {
   MilestoneStatus,
   DashboardBlocker,
   PhaseTimeline,
-  DeploymentReadiness
+  DeploymentReadiness,
+  SCurvePoint,
+  MemorySnapshot
 } from '@/types/project'
 
 /**
@@ -429,7 +431,7 @@ function formatDeploymentReadinessSection(readiness: DeploymentReadiness): strin
   return lines.join('\n')
 }
 
-function formatSCurveSummary(sCurveData: any[]): string {
+function formatSCurveSummary(sCurveData: SCurvePoint[]): string {
   const lines: string[] = []
   
   lines.push('## S-Curve Progress')
@@ -453,7 +455,7 @@ function formatSCurveSummary(sCurveData: any[]): string {
   return lines.join('\n')
 }
 
-function formatMemorySnapshotsSection(snapshots: any[]): string {
+function formatMemorySnapshotsSection(snapshots: MemorySnapshot[]): string {
   const lines: string[] = []
   
   lines.push('## 🧠 Memory Snapshots')
