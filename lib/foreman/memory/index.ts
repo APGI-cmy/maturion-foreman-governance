@@ -66,9 +66,13 @@ export async function writeMemoryAfterAction(
 ): Promise<MemoryEntry> {
   console.log(`[Memory] Writing memory after action (type: ${event.type}, scope: ${event.scope})`)
   
+  // Create a more structured key with event type and random component for uniqueness
+  const random = Math.random().toString(36).substring(2, 9)
+  const timestamp = Date.now()
+  
   const writeContext: MemoryWriteContext = {
     scope: event.scope,
-    key: `${event.type}_${Date.now()}`,
+    key: `${event.type}_${timestamp}_${random}`,
     value: {
       type: event.type,
       description: event.description,

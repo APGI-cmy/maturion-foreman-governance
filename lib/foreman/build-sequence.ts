@@ -15,7 +15,7 @@ import {
   BuildSequenceStatus,
   AIGeneratedTaskRequest
 } from '@/types/build-sequence'
-import { recordWaveCompletion, recordArchitectureDecision } from './memory'
+import { recordWaveCompletion, recordArchitectureDecision, recordQAFailure } from './memory'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'placeholder',
@@ -252,7 +252,6 @@ export async function runQACycle(
     
     // Record QA failure in memory for learning
     try {
-      const { recordQAFailure } = await import('./memory')
       await recordQAFailure(
         'QA cycle execution failure',
         { 

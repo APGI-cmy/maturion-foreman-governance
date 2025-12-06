@@ -96,7 +96,8 @@ function writeMemoryFile(filePath: string, entries: MemoryEntry[]): void {
  */
 function generateMemoryId(scope: MemoryScope, key: string): string {
   const timestamp = Date.now()
-  return `${scope}_${key}_${timestamp}`.replace(/[^a-zA-Z0-9_-]/g, '_')
+  const random = Math.random().toString(36).substring(2, 9)
+  return `${scope}_${key}_${timestamp}_${random}`.replace(/[^a-zA-Z0-9_-]/g, '_')
 }
 
 /**
@@ -170,8 +171,8 @@ export async function readMemory(context: MemoryReadContext): Promise<MemoryQuer
   // Filter by tags if provided
   if (context.tags && context.tags.length > 0) {
     entries = entries.filter((e) => {
-      if (!e.tags) return false
-      return context.tags!.some((tag) => e.tags!.includes(tag))
+      if (!e.tags || e.tags.length === 0) return false
+      return context.tags!.some((tag) => e.tags && e.tags.includes(tag))
     })
   }
   
