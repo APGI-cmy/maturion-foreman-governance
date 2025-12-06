@@ -6,8 +6,8 @@
  * Prevents memory bloat, repetition, contradictions, and reasoning degradation.
  */
 
-import * as fs from 'fs'
-import * as path from 'path'
+import fs from 'fs'
+import path from 'path'
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import {

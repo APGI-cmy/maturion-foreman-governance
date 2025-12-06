@@ -49,11 +49,18 @@ import {
   applyPattern
 } from './patterns'
 import { DriftReport } from '@/types/drift'
+import fs from 'fs'
+import path from 'path'
 
 /**
  * Current memory version
  */
 const MEMORY_VERSION = '1.0.0'
+
+/**
+ * Consolidation threshold for automatic triggering
+ */
+const CONSOLIDATION_THRESHOLD = 30
 
 /**
  * Load memory snapshot for reasoning
@@ -673,8 +680,6 @@ export { runDriftMonitoring, createMemorySnapshot } from '@/lib/foreman/memory'
  * Load consolidated knowledge blocks
  */
 function loadConsolidatedKnowledge(): KnowledgeBlock[] {
-  const fs = require('fs')
-  const path = require('path')
   const basePath = path.join(process.cwd(), 'memory', 'global', 'consolidated')
   
   if (!fs.existsSync(basePath)) {
@@ -721,8 +726,8 @@ async function checkConsolidationTrigger(
     allMemory.foreman.length +
     Object.values(allMemory.projects).flat().length
   
-  if (totalEntries >= 30) {
-    console.log(`[MARE] Consolidation threshold reached (${totalEntries} entries)`)
+  if (totalEntries >= CONSOLIDATION_THRESHOLD) {
+    console.log(`[MARE] Consolidation threshold reached (${totalEntries} entries, threshold: ${CONSOLIDATION_THRESHOLD})`)
     
     // Trigger consolidation
     try {
