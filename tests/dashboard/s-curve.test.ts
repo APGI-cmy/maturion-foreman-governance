@@ -190,7 +190,7 @@ describe('S-Curve Generation', () => {
       // Should be a valid date
       const parsedDate = new Date(point.date)
       assert(
-        !isNaN(parsedDate.getTime()),
+        !isNaN(parsedDate.getTime()) && parsedDate.toISOString().startsWith(point.date),
         `S-curve date should be valid: ${point.date}`
       )
     }

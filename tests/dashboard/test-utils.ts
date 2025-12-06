@@ -17,6 +17,25 @@ export function loadFixture(filename: string): Project {
 }
 
 /**
+ * Compare two dashboard responses excluding timestamp fields
+ */
+export function compareDashboards(
+  dashboard1: any,
+  dashboard2: any,
+  excludeFields: string[] = ['lastUpdated']
+): boolean {
+  const filtered1 = { ...dashboard1 }
+  const filtered2 = { ...dashboard2 }
+  
+  for (const field of excludeFields) {
+    delete filtered1[field]
+    delete filtered2[field]
+  }
+  
+  return JSON.stringify(filtered1) === JSON.stringify(filtered2)
+}
+
+/**
  * Assert helper for test comparisons
  */
 export function assert(condition: boolean, message: string): void {
