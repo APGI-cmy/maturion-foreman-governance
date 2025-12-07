@@ -25,6 +25,11 @@ import {
   generateVercelSimulationReport,
 } from './vercel-simulation-qa';
 import { recordQAMiss } from '../memory/qa-miss-tracker';
+import {
+  runQIWMonitoring,
+  generateQIWReportMarkdown
+} from '../watchdog/quality-integrity-watchdog';
+import { QIWReport } from '@/types/watchdog';
 
 export interface EnhancedQAResult {
   passed: boolean;
@@ -34,10 +39,12 @@ export interface EnhancedQAResult {
     logParsingPassed: boolean;
     zeroWarningPassed: boolean;
     vercelSimulationPassed: boolean;
+    qiwPassed: boolean;
   };
   logParsing: ReturnType<typeof parseAllLogs>;
   zeroWarning: ReturnType<typeof runZeroWarningPolicy>;
   vercelSimulation: ReturnType<typeof runVercelSimulation>;
+  qiwReport: QIWReport;
   overallSummary: string;
   blockersFound: string[];
   reportMarkdown: string;
@@ -162,12 +169,36 @@ export function runEnhancedQA(options?: {
     };
   }
 
+  // Step 5: Quality Integrity Watchdog (QIW)
+  console.log('[Enhanced QA] Step 5: Running Quality Integrity Watchdog...');
+  const qiwReport = runQIWMonitoring({
+    logsDir,
+    projectDir,
+    blockOnCritical: true,
+    blockOnErrors: true,
+    blockOnWarnings: false,
+    writeGovernanceMemory: true,
+    enabledChannels: ['build', 'lint', 'test']
+  });
+  const qiwPassed = qiwReport.passed;
+
+  if (!qiwPassed) {
+    blockersFound.push(qiwReport.summary);
+    console.error(`[Enhanced QA] ${qiwReport.summary}`);
+    
+    // Add specific QIW blockers
+    if (qiwReport.qaBlocked) {
+      blockersFound.push(`QIW detected ${qiwReport.allAnomalies.length} quality integrity violations`);
+    }
+  }
+
   // Determine overall pass/fail
   const passed =
     logsExist &&
     logParsingPassed &&
     zeroWarningPassed &&
-    vercelSimulationPassed;
+    vercelSimulationPassed &&
+    qiwPassed;
 
   const overallSummary = passed
     ? '✅ Enhanced QA: ALL CHECKS PASSED - Quality Integrity Contract satisfied'
@@ -200,6 +231,10 @@ export function runEnhancedQA(options?: {
     reportSections.push(generateVercelSimulationReport(vercelSimulation));
   }
 
+  // Add QIW report
+  reportSections.push('\n---\n');
+  reportSections.push(generateQIWReportMarkdown(qiwReport));
+
   const reportMarkdown = reportSections.join('\n');
 
   return {
@@ -210,10 +245,12 @@ export function runEnhancedQA(options?: {
       logParsingPassed,
       zeroWarningPassed,
       vercelSimulationPassed,
+      qiwPassed,
     },
     logParsing,
     zeroWarning,
     vercelSimulation,
+    qiwReport,
     overallSummary,
     blockersFound,
     reportMarkdown,
