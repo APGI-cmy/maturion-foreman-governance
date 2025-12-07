@@ -31,7 +31,7 @@ import {
 } from '@/types/retirement'
 import { MemoryEntry, MemoryScope } from '@/types/memory'
 import { KnowledgeBlock } from '@/types/consolidation'
-import { getAllMemory } from './storage'
+import { getAllMemory, flattenMemory } from './storage'
 import { DriftReport } from '@/types/drift'
 
 /**
@@ -605,11 +605,7 @@ export async function runRetirement(
   
   // Load all memory
   const allMemory = await getAllMemory()
-  const allEntries: MemoryEntry[] = [
-    ...allMemory.global,
-    ...allMemory.foreman,
-    ...Object.values(allMemory.projects).flat()
-  ]
+  const allEntries = flattenMemory(allMemory)
   
   // Filter out already retired entries
   const activeEntries = allEntries.filter(e => !e.value._retired?.retired)
@@ -729,11 +725,7 @@ export async function restoreEntry(request: RestorationRequest): Promise<Restora
  */
 export async function getRetirementStatistics(): Promise<RetirementStatistics> {
   const allMemory = await getAllMemory()
-  const allEntries: MemoryEntry[] = [
-    ...allMemory.global,
-    ...allMemory.foreman,
-    ...Object.values(allMemory.projects).flat()
-  ]
+  const allEntries = flattenMemory(allMemory)
   
   const activeEntries = allEntries.filter(e => !e.value._retired?.retired)
   const retiredEntries = allEntries.filter(e => e.value._retired?.retired)
@@ -757,7 +749,7 @@ export async function getRetirementStatistics(): Promise<RetirementStatistics> {
   }
   
   retiredEntries.forEach(e => {
-    const reason = e.value._retired?.reason
+    const reason = e.value._retired?.reason as RetirementReason | undefined
     if (reason) {
       retirementsByReason[reason] = (retirementsByReason[reason] || 0) + 1
     }
