@@ -231,3 +231,25 @@ export interface AnalyticsSummary {
     alerts: string[]
   }
 }
+
+/**
+ * Analytics Event - Single analytics event instance
+ */
+export interface AnalyticsEvent {
+  id: string
+  type: string
+  timestamp: string
+  data: Record<string, any>
+  metadata?: Record<string, any>
+}
+
+/**
+ * Analytics Metric - Performance metric measurement
+ */
+export interface AnalyticsMetric {
+  name: string
+  value: number
+  unit: string
+  timestamp: string
+  tags?: string[]
+}

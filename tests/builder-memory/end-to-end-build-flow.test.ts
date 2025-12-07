@@ -196,7 +196,7 @@ describe('End-to-End Build Flow', () => {
 
     // Memory references should be tracked
     assert.ok(
-      (task.memoryContext?.memoryReferences?.length ?? 0) > 0,
+      task.memoryContext?.memoryReferences && task.memoryContext.memoryReferences.length > 0,
       'Should track memory references'
     )
 
