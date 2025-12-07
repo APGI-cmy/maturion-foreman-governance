@@ -4,6 +4,8 @@
 
 The Maturion Foreman operates under an **autonomy-first governance model**, where systematic QA validation and compliance checks replace traditional human review processes.
 
+**Governance is enforced through the Quality Integrity Contract (QIC).** See [`/foreman/true-north-architecture.md`](/foreman/true-north-architecture.md) and [`/foreman/qa/quality-integrity-contract.md`](/foreman/qa/quality-integrity-contract.md).
+
 ## Autonomy Classification
 
 ### Autonomy Class: A1 – QA-Gated Autonomous Orchestration
@@ -15,6 +17,7 @@ The Maturion Foreman operates under an **autonomy-first governance model**, wher
 - **Zero human bottlenecks** in standard workflows
 - **Systematic validation** replaces subjective review
 - **Architecture and QA are supreme** authorities
+- **QIC enforces quality integrity** automatically
 
 ## When Foreman Acts Without Human Review
 
@@ -30,9 +33,15 @@ Foreman executes autonomously when **all** of these conditions are met:
    - Respects True North principles (security, quality, compliance, integrity)
    - Does not introduce architectural anti-patterns
    - Maintains consistency with existing patterns
+   - **Complies with QIC requirements**
 
-3. **The change passes QA & compliance checks**
-   - All QA validation checks pass (type safety, code quality, tests, etc.)
+3. **The change passes QA & compliance checks (QIC)**
+   - **QIC-1**: Build logs parsed, no build errors
+   - **QIC-2**: Lint runs in strict mode, zero errors
+   - **QIC-3**: Runtime integrity validated
+   - **QIC-4**: Deployment simulation successful
+   - **QIC-5**: No silent failures detected
+   - **QIC-6**: QI Incidents recorded if failures occur
    - QA-of-QA meta-review confirms QA process is sound
    - Compliance checks pass (no secrets, organization ID present, audit logging)
    - Test coverage meets minimum thresholds (if applicable)
