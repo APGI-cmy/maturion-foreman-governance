@@ -10,6 +10,10 @@
  * - Avoids hallucination or ungrounded assumptions
  * - Behaves consistently across all Foreman agents
  * - Produces interpretable outputs
+ * 
+ * GSR Integration:
+ * - Enforces Governance Supremacy Rule at all reasoning phases
+ * - Ensures governance rules override user requests and implementation context
  */
 
 import {
@@ -48,6 +52,7 @@ import {
   findApplicablePatterns,
   applyPattern
 } from './patterns'
+import { validateGovernanceAtPhase } from '../governance/gsr-enforcement'
 import { DriftReport } from '@/types/drift'
 import fs from 'fs'
 import path from 'path'
@@ -676,8 +681,52 @@ export async function reason(
   context: ReasoningContext,
   options: { skipDriftCheck?: boolean, skipConsolidationCheck?: boolean } = {}
 ): Promise<ReasoningResult> {
+  console.log('[MARE] Starting reasoning process...')
+  console.log('[MARE] Context:', {
+    intent: context.intent,
+    phase: context.phase,
+    subsystem: context.subsystem,
+    projectId: context.projectId
+  })
+  
+  // GSR-5: Governance check at intent interpretation phase
+  console.log('[MARE] GSR-5: Validating governance at intent interpretation...')
+  const intentGovernanceCheck = validateGovernanceAtPhase('intent', {
+    userRequest: context.intent
+  })
+  
+  if (!intentGovernanceCheck.allowed) {
+    console.error('[MARE] Governance violation at intent phase:', intentGovernanceCheck.reason)
+    throw new Error(`Governance override: ${intentGovernanceCheck.reason}`)
+  }
+  
+  // Step 1: Load memory snapshot with drift monitoring and consolidation checks
   const snapshot = await loadMemorySnapshot(context, options)
-  return await executeReasoning(snapshot, context)
+  
+  // GSR-5: Governance check at planning phase
+  console.log('[MARE] GSR-5: Validating governance at planning phase...')
+  const planningGovernanceCheck = validateGovernanceAtPhase('planning', {
+    userRequest: context.intent
+  })
+  
+  if (!planningGovernanceCheck.allowed) {
+    console.error('[MARE] Governance violation at planning phase:', planningGovernanceCheck.reason)
+    throw new Error(`Governance override: ${planningGovernanceCheck.reason}`)
+  }
+  
+  // Step 2: Execute reasoning based on memory
+  const result = await executeReasoning(snapshot, context)
+  
+  // GSR-5: Add governance supremacy note to reasoning
+  if (context.phase === 'qa' || context.phase === 'build' || context.phase === 'deployment') {
+    result.recommendedActions.unshift(
+      'GOVERNANCE SUPREMACY RULE: 100% QA passing is required before any build handover or PR merge. No exceptions for pre-existing, unrelated, minor, historical, or out-of-scope failures.'
+    )
+  }
+  
+  console.log('[MARE] Reasoning process complete')
+  
+  return result
 }
 
 /**
