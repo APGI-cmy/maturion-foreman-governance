@@ -1,1 +1,248 @@
-[]
+[
+  {
+    "originalEntry": {
+      "id": "entry_1",
+      "scope": "global",
+      "key": "test_entry",
+      "value": {
+        "description": "Test entry"
+      },
+      "metadata": {
+        "createdAt": "2025-12-07T11:56:25.363Z",
+        "updatedAt": "2025-12-07T11:56:25.363Z",
+        "createdBy": "test",
+        "version": 1
+      },
+      "tags": [
+        "test"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test retirement",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:56:25.364Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "entry_with_metadata",
+      "scope": "global",
+      "key": "metadata_test",
+      "value": {
+        "description": "Entry with metadata",
+        "data": {
+          "important": "information",
+          "nested": {
+            "value": "preserved"
+          }
+        }
+      },
+      "metadata": {
+        "createdAt": "2024-01-01T00:00:00Z",
+        "updatedAt": "2024-06-01T00:00:00Z",
+        "createdBy": "original-creator",
+        "version": 5
+      },
+      "tags": [
+        "important",
+        "metadata",
+        "test"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:56:25.367Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "versioned_entry",
+      "scope": "global",
+      "key": "version_test",
+      "value": {
+        "description": "Versioned entry"
+      },
+      "metadata": {
+        "createdAt": "2025-12-07T11:56:25.368Z",
+        "updatedAt": "2025-12-07T11:56:25.368Z",
+        "createdBy": "test",
+        "version": 3
+      },
+      "tags": [
+        "version"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:56:25.368Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "recoverable_entry",
+      "scope": "global",
+      "key": "recovery_test",
+      "value": {
+        "description": "Entry to be recovered",
+        "data": {
+          "critical": "data"
+        }
+      },
+      "metadata": {
+        "createdAt": "2025-12-07T11:56:25.369Z",
+        "updatedAt": "2025-12-07T11:56:25.369Z",
+        "createdBy": "test",
+        "version": 1
+      },
+      "tags": [
+        "recoverable"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test recovery",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:56:25.370Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "entry_1",
+      "scope": "global",
+      "key": "test_entry",
+      "value": {
+        "description": "Test entry"
+      },
+      "metadata": {
+        "createdAt": "2025-12-07T11:57:29.786Z",
+        "updatedAt": "2025-12-07T11:57:29.786Z",
+        "createdBy": "test",
+        "version": 1
+      },
+      "tags": [
+        "test"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test retirement",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:57:29.787Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "entry_with_metadata",
+      "scope": "global",
+      "key": "metadata_test",
+      "value": {
+        "description": "Entry with metadata",
+        "data": {
+          "important": "information",
+          "nested": {
+            "value": "preserved"
+          }
+        }
+      },
+      "metadata": {
+        "createdAt": "2024-01-01T00:00:00Z",
+        "updatedAt": "2024-06-01T00:00:00Z",
+        "createdBy": "original-creator",
+        "version": 5
+      },
+      "tags": [
+        "important",
+        "metadata",
+        "test"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:57:29.792Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "versioned_entry",
+      "scope": "global",
+      "key": "version_test",
+      "value": {
+        "description": "Versioned entry"
+      },
+      "metadata": {
+        "createdAt": "2025-12-07T11:57:29.794Z",
+        "updatedAt": "2025-12-07T11:57:29.794Z",
+        "createdBy": "test",
+        "version": 3
+      },
+      "tags": [
+        "version"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:57:29.794Z",
+    "archiveVersion": 1
+  },
+  {
+    "originalEntry": {
+      "id": "recoverable_entry",
+      "scope": "global",
+      "key": "recovery_test",
+      "value": {
+        "description": "Entry to be recovered",
+        "data": {
+          "critical": "data"
+        }
+      },
+      "metadata": {
+        "createdAt": "2025-12-07T11:57:29.796Z",
+        "updatedAt": "2025-12-07T11:57:29.796Z",
+        "createdBy": "test",
+        "version": 1
+      },
+      "tags": [
+        "recoverable"
+      ]
+    },
+    "retirementInfo": {
+      "reason": "staleness",
+      "severity": "low",
+      "lifecycle": "archival",
+      "explanation": "Test recovery",
+      "manualReviewRequired": false
+    },
+    "archivedAt": "2025-12-07T11:57:29.797Z",
+    "archiveVersion": 1
+  }
+]

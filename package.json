@@ -11,12 +11,16 @@
     "test:dashboard": "tsx --test tests/dashboard/*.test.ts",
     "test:drift": "tsx --test tests/memory-drift/*.test.ts",
     "test:qa": "tsx --test tests/qa/*.test.ts",
+    "test:qic": "tsx --test tests/qic/*.test.ts",
     "test:all": "tsx --test tests/**/*.test.ts",
     "test:watch": "tsx --test --watch tests/dashboard/*.test.ts",
     "test:structural": "tsx --test tests/qa-structural/*.test.ts",
     "typecheck": "tsc --noEmit",
     "typecheck:production": "tsc --noEmit --exclude 'tests/**/*'",
-    "qa:full": "npm run lint && npm run test:structural && npm run build"
+    "qa:full": "npm run lint && npm run test:structural && npm run build",
+    "qiel": "tsx scripts/run-qiel.ts",
+    "qiel:quick": "tsx scripts/run-qiel.ts --quick",
+    "qiel:full": "tsx scripts/run-qiel.ts --full"
   },
   "dependencies": {
     "ajv": "^8.17.1",
