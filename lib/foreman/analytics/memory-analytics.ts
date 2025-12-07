@@ -7,6 +7,7 @@ import { getAllMemory } from '../memory/storage'
 import { runDriftMonitoring } from '../memory/drift-monitor'
 import { MemoryHealthMetrics, MemoryGrowthTrend } from '@/types/analytics'
 import { MemoryEntry } from '@/types/memory'
+import { getEntryAgeInDays, getEntryDateString } from './date-utils'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -62,20 +63,13 @@ export async function getMemoryHealthMetrics(): Promise<MemoryHealthMetrics> {
     }
     
     // Calculate age
-    if (entry.metadata?.createdAt) {
-      const createdAt = new Date(entry.metadata.createdAt).getTime()
-      if (!isNaN(createdAt)) {
-        const ageMs = now - createdAt
-        const ageDays = ageMs / (1000 * 60 * 60 * 24)
-        
-        if (!isNaN(ageDays) && ageDays >= 0) {
-          totalAge += ageDays
-          oldestAge = Math.max(oldestAge, ageDays)
-          
-          if (ageDays > STALE_THRESHOLD_DAYS) {
-            staleCount++
-          }
-        }
+    const ageDays = getEntryAgeInDays(entry)
+    if (ageDays > 0) {
+      totalAge += ageDays
+      oldestAge = Math.max(oldestAge, ageDays)
+      
+      if (ageDays > STALE_THRESHOLD_DAYS) {
+        staleCount++
       }
     }
     
@@ -135,18 +129,14 @@ export async function getMemoryGrowthTrend(): Promise<MemoryGrowthTrend[]> {
   const trendMap = new Map<string, { active: number; consolidated: number; archived: number }>()
   
   for (const entry of allMemory) {
-    if (!entry.metadata?.createdAt) continue
+    const dateString = getEntryDateString(entry)
+    if (!dateString) continue
     
-    const createdDate = new Date(entry.metadata.createdAt)
-    if (isNaN(createdDate.getTime())) continue
-    
-    const date = createdDate.toISOString().split('T')[0]
-    
-    if (!trendMap.has(date)) {
-      trendMap.set(date, { active: 0, consolidated: 0, archived: 0 })
+    if (!trendMap.has(dateString)) {
+      trendMap.set(dateString, { active: 0, consolidated: 0, archived: 0 })
     }
     
-    const trend = trendMap.get(date)!
+    const trend = trendMap.get(dateString)!
     
     if (entry.tags?.includes('consolidated') || entry.scope === 'global') {
       trend.consolidated++

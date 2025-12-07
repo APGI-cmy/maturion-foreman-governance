@@ -6,6 +6,7 @@
 import { ConsolidationAnalytics } from '@/types/analytics'
 import { getAllMemory } from '../memory/storage'
 import { MemoryEntry } from '@/types/memory'
+import { getEntryDateString } from './date-utils'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -54,18 +55,14 @@ export async function getConsolidationAnalytics(): Promise<ConsolidationAnalytic
   const eventMap = new Map<string, { blocksCreated: number; entriesProcessed: number }>()
   
   for (const entry of consolidatedEntries) {
-    if (!entry.metadata?.createdAt) continue
+    const dateString = getEntryDateString(entry)
+    if (!dateString) continue
     
-    const createdDate = new Date(entry.metadata.createdAt)
-    if (isNaN(createdDate.getTime())) continue
-    
-    const date = createdDate.toISOString().split('T')[0]
-    
-    if (!eventMap.has(date)) {
-      eventMap.set(date, { blocksCreated: 0, entriesProcessed: 0 })
+    if (!eventMap.has(dateString)) {
+      eventMap.set(dateString, { blocksCreated: 0, entriesProcessed: 0 })
     }
     
-    const event = eventMap.get(date)!
+    const event = eventMap.get(dateString)!
     event.blocksCreated++
     
     // Estimate entries processed from metadata
