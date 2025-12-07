@@ -102,7 +102,7 @@ export async function performSafeMerge(
     // 5. Verify merge success
 
     const syncEvent: DesktopSyncEvent = {
-      id: `sync_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `sync_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
       timestamp: new Date().toISOString(),
       eventType: 'sync_completed',
       repositoryId,
@@ -121,7 +121,7 @@ export async function performSafeMerge(
     const errorMessage = (error as Error).message;
 
     const syncEvent: DesktopSyncEvent = {
-      id: `sync_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `sync_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
       timestamp: new Date().toISOString(),
       eventType: 'sync_failed',
       repositoryId,
@@ -173,7 +173,7 @@ export async function checkLocalBuilderHealth(
   const ready = issues.length === 0;
 
   const healthEvent: DesktopSyncEvent = {
-    id: `health_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `health_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
     timestamp: new Date().toISOString(),
     eventType: 'health_check',
     repositoryId: 'all',
@@ -268,7 +268,7 @@ export async function startPeriodicHealthCheck(
           console.warn(`Drift detected for ${repoId}:`, driftResult);
 
           const driftEvent: DesktopSyncEvent = {
-            id: `drift_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            id: `drift_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
             timestamp: new Date().toISOString(),
             eventType: 'drift_detected',
             repositoryId: repoId,
@@ -294,6 +294,14 @@ export async function startPeriodicHealthCheck(
 
   console.log(`Started periodic health check (interval: ${config.healthCheckInterval} minutes)`);
   return intervalId;
+}
+
+/**
+ * Stop periodic health checks
+ */
+export function stopPeriodicHealthCheck(intervalId: NodeJS.Timeout): void {
+  clearInterval(intervalId);
+  console.log('Stopped periodic health check');
 }
 
 /**

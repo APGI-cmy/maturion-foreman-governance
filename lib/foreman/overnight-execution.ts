@@ -64,8 +64,11 @@ function detectDependencies(issues: IssueWithDependencies[]): Map<number, Depend
     const dependencyMatches = issue.body.match(/depends\s+on\s+#(\d+)/gi);
     if (dependencyMatches) {
       for (const match of dependencyMatches) {
-        const issueNum = parseInt(match.match(/#(\d+)/)![1], 10);
-        dependencies.push(issueNum);
+        const issueNumMatch = match.match(/#(\d+)/);
+        if (issueNumMatch) {
+          const issueNum = parseInt(issueNumMatch[1], 10);
+          dependencies.push(issueNum);
+        }
       }
     }
 
@@ -73,8 +76,11 @@ function detectDependencies(issues: IssueWithDependencies[]): Map<number, Depend
     const blockedMatches = issue.body.match(/blocked\s+by\s+#(\d+)/gi);
     if (blockedMatches) {
       for (const match of blockedMatches) {
-        const issueNum = parseInt(match.match(/#(\d+)/)![1], 10);
-        dependencies.push(issueNum);
+        const issueNumMatch = match.match(/#(\d+)/);
+        if (issueNumMatch) {
+          const issueNum = parseInt(issueNumMatch[1], 10);
+          dependencies.push(issueNum);
+        }
       }
     }
 
@@ -301,7 +307,7 @@ export async function runOvernightExecution(
   repo: string,
   config: OvernightExecutionConfig = DEFAULT_CONFIG
 ): Promise<OvernightExecutionRun> {
-  const runId = `overnight_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const runId = `overnight_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   const startTime = new Date().toISOString();
 
   console.log(`\n╔════════════════════════════════════════════════════════════╗`);

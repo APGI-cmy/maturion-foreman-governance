@@ -236,7 +236,7 @@ export async function executeWithEscalation<T>(
 
         // Success!
         const event: EscalationEvent = {
-          id: `esc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          id: `esc_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
           timestamp: new Date().toISOString(),
           taskId: context.taskType,
           fromModel: config.defaultModel,
@@ -294,7 +294,7 @@ export async function executeWithEscalation<T>(
   } catch (error) {
     // All attempts failed
     const event: EscalationEvent = {
-      id: `esc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `esc_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
       timestamp: new Date().toISOString(),
       taskId: context.taskType,
       fromModel: config.defaultModel,

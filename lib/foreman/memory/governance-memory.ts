@@ -25,7 +25,7 @@ const governanceEvents: GovernanceEvent[] = [];
  */
 export async function logGovernanceEvent(event: GovernanceEvent): Promise<void> {
   const fullEvent: GovernanceEvent = {
-    id: event.id || `gov_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: event.id || `gov_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
     timestamp: event.timestamp || new Date().toISOString(),
     ...event,
   };
