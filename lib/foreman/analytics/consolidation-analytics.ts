@@ -54,7 +54,12 @@ export async function getConsolidationAnalytics(): Promise<ConsolidationAnalytic
   const eventMap = new Map<string, { blocksCreated: number; entriesProcessed: number }>()
   
   for (const entry of consolidatedEntries) {
-    const date = new Date(entry.createdAt).toISOString().split('T')[0]
+    if (!entry.metadata?.createdAt) continue
+    
+    const createdDate = new Date(entry.metadata.createdAt)
+    if (isNaN(createdDate.getTime())) continue
+    
+    const date = createdDate.toISOString().split('T')[0]
     
     if (!eventMap.has(date)) {
       eventMap.set(date, { blocksCreated: 0, entriesProcessed: 0 })

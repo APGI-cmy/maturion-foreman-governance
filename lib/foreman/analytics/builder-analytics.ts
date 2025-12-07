@@ -33,7 +33,7 @@ export async function getBuilderPerformanceAnalytics(): Promise<BuilderPerforman
   
   // Filter builder-related memory entries
   const builderEntries = allMemory.filter(
-    entry => entry.tags?.includes('builder') || entry.createdBy?.includes('builder')
+    entry => entry.tags?.includes('builder') || entry.metadata?.createdBy?.includes('builder')
   )
   
   // Group by builder
@@ -48,7 +48,7 @@ export async function getBuilderPerformanceAnalytics(): Promise<BuilderPerforman
   }>()
   
   for (const entry of builderEntries) {
-    const builderId = entry.createdBy || 'unknown'
+    const builderId = entry.metadata?.createdBy || 'unknown'
     
     if (!builderMap.has(builderId)) {
       builderMap.set(builderId, {

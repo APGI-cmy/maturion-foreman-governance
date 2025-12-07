@@ -46,8 +46,11 @@ export async function getProjectIntelligenceAnalytics(): Promise<ProjectIntellig
       .filter(issue => issue.location.includes(project.id)).length
     
     // Count memory usage
+    // For project memory, check if it's in the project scope or tagged with project ID
     const projectMemory = allMemory.filter(
-      entry => entry.projectId === project.id
+      entry => entry.scope === 'project' || 
+               entry.tags?.includes(`project:${project.id}`) ||
+               entry.value?.projectId === project.id
     )
     
     const activeMemoryUsage = projectMemory.filter(
@@ -82,8 +85,8 @@ export async function getProjectIntelligenceAnalytics(): Promise<ProjectIntellig
     
     if (project.milestones) {
       const sortedMilestones = [...project.milestones].sort((a, b) => {
-        const aDate = a.completedAt || a.dueDate || new Date().toISOString()
-        const bDate = b.completedAt || b.dueDate || new Date().toISOString()
+        const aDate = a.completedAt || new Date().toISOString()
+        const bDate = b.completedAt || new Date().toISOString()
         return aDate.localeCompare(bDate)
       })
       

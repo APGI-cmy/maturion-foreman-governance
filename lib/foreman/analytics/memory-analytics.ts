@@ -62,8 +62,8 @@ export async function getMemoryHealthMetrics(): Promise<MemoryHealthMetrics> {
     }
     
     // Calculate age
-    if (entry.createdAt) {
-      const createdAt = new Date(entry.createdAt).getTime()
+    if (entry.metadata?.createdAt) {
+      const createdAt = new Date(entry.metadata.createdAt).getTime()
       if (!isNaN(createdAt)) {
         const ageMs = now - createdAt
         const ageDays = ageMs / (1000 * 60 * 60 * 24)
@@ -135,9 +135,9 @@ export async function getMemoryGrowthTrend(): Promise<MemoryGrowthTrend[]> {
   const trendMap = new Map<string, { active: number; consolidated: number; archived: number }>()
   
   for (const entry of allMemory) {
-    if (!entry.createdAt) continue
+    if (!entry.metadata?.createdAt) continue
     
-    const createdDate = new Date(entry.createdAt)
+    const createdDate = new Date(entry.metadata.createdAt)
     if (isNaN(createdDate.getTime())) continue
     
     const date = createdDate.toISOString().split('T')[0]

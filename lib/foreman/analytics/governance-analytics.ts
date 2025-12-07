@@ -82,7 +82,7 @@ export async function getGovernanceAlignmentAnalytics(): Promise<GovernanceAlign
   
   // Count governance updates affecting memory
   const governanceUpdateEntries = allMemory.filter(
-    entry => entry.type === 'governance_update' || 
+    entry => entry.value?.type === 'governance_update' || 
              entry.tags?.includes('governance_update')
   )
   const governanceUpdatesAffectingMemory = governanceUpdateEntries.length
