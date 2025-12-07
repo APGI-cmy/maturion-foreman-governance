@@ -4,6 +4,8 @@
 
 In the Maturion system, **Quality Assurance is not optional**. QA is the primary gatekeeper for all code that enters the repository. This is not a supplement to human review—it is the *replacement* for human review.
 
+**QA enforcement is governed by the Quality Integrity Contract (QIC).** See [`/foreman/qa/quality-integrity-contract.md`](/foreman/qa/quality-integrity-contract.md) for complete specification.
+
 ## Why QA Enforcement is Supreme
 
 ### The Problem with Human Code Review
@@ -86,12 +88,12 @@ This meta-review ensures the QA framework remains robust and effective.
 
 ## QA Validation Pipeline
 
-Every build sequence includes QA validation:
+Every build sequence includes QA validation per the Quality Integrity Contract (QIC):
 
 ```
-Builder Outputs → QA Builder → QA Results → PR Assembly Gate
-                      ↓
-                  QA-of-QA
+Builder Outputs → QA Builder → QIC Validation → QA Results → PR Assembly Gate
+                       ↓
+                   QA-of-QA
 ```
 
 ### Step 1: Artifact Collection
@@ -101,21 +103,61 @@ QA Builder receives all artifacts from code-writing builders:
 - Configuration changes
 - Documentation updates
 
-### Step 2: Validation Execution
+### Step 2: QIC Validation Execution
 
-QA Builder runs validation suite:
+QA Builder runs QIC validation suite (see QIC requirements):
 
+**QIC-1: Build Integrity**
+```typescript
+{
+  "check": "build_integrity",
+  "status": "passed",
+  "message": "Build logs contain no error patterns"
+}
+```
+
+**QIC-2: Lint Integrity**
+```typescript
+{
+  "check": "lint_integrity",
+  "status": "passed", 
+  "message": "Lint runs in strict mode with zero errors"
+}
+```
+
+**QIC-3: Runtime Integrity**
+```typescript
+{
+  "check": "runtime_integrity",
+  "status": "passed",
+  "message": "All runtime checks passed"
+}
+```
+
+**QIC-4: Deployment Simulation**
+```typescript
+{
+  "check": "deployment_simulation",
+  "status": "passed",
+  "message": "Preview and production builds succeeded"
+}
+```
+
+**QIC-5: Silent Failure Prevention**
+```typescript
+{
+  "check": "silent_failure_prevention",
+  "status": "passed",
+  "message": "No silent failures detected"
+}
+```
+
+**Additional Checks**
 ```typescript
 {
   "check": "type_safety",
   "status": "passed",
   "message": "All TypeScript types are properly defined"
-}
-
-{
-  "check": "linting",
-  "status": "passed", 
-  "message": "Code passes ESLint rules"
 }
 
 {
@@ -138,10 +180,26 @@ QA results aggregated into overall assessment:
 - **Warnings Only**: Proceed with warnings noted in PR
 - **Any Failed**: Block PR assembly until issues resolved
 
-### Step 4: QA-of-QA Review
+### Step 4: QIC-6 Governance Memory Integration
+
+**All QA failures are recorded as QI Incidents** per QIC-6:
+```typescript
+import { recordQIIncident } from '@/lib/foreman/governance/qic-loader'
+
+if (checkResult.status === 'failed') {
+  await recordQIIncident(checkResult, {
+    buildId: currentBuildId,
+    sequenceId: currentSequenceId,
+    commitSha: currentCommitSha,
+    branch: currentBranch,
+  })
+}
+```
+
+### Step 5: QA-of-QA Review
 
 Meta-review validates the QA process:
-- Were all necessary checks performed?
+- Were all QIC requirements checked?
 - Are results accurate and actionable?
 - Is the QA configuration appropriate?
 
