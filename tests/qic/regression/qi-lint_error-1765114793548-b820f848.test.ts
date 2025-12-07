@@ -23,7 +23,7 @@ describe('Regression: LintError', () => {
     const lintLog = fs.readFileSync(lintLogPath, 'utf-8');
     
     // Pattern that should NOT appear in lint log
-    const errorPattern = /Lint.*error.*detected.*885.*Error/i;
+    const errorPattern = /Lint.*error.*detected.*88:5.*Error/i;
     
     assert.ok(
       !errorPattern.test(lintLog),
