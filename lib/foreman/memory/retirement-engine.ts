@@ -274,9 +274,7 @@ export function detectObsolescenceRetirement(
         explanation: `Entry references obsolete components or features`,
         recommendedAction: 'deprecate',
         metadata: {
-          ageInDays: entry.metadata?.createdAt 
-            ? Math.floor((Date.now() - new Date(entry.metadata.createdAt).getTime()) / (1000 * 60 * 60 * 24))
-            : 0
+          ageInDays: Math.floor((Date.now() - new Date(entry.metadata.createdAt).getTime()) / (1000 * 60 * 60 * 24))
         }
       })
     }
