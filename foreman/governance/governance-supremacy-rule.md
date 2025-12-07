@@ -1,270 +1,403 @@
 # Governance Supremacy Rule (GSR)
 
-## True North → Governance Model → Universal Enforcement
+## Overview
 
-This document defines the **Governance Supremacy Rule (GSR)** — an architectural doctrine that ensures governance rules apply universally, including to the governance system itself.
+The Governance Supremacy Rule (GSR) is a foundational principle in the Maturion Foreman system that ensures **Foreman NEVER hands over or accepts a build unless 100% of QA passes**, regardless of whether failures are:
 
-## Philosophy
+- Pre-existing
+- Unrelated
+- Minor
+- Historical
+- Outside the PR scope
 
-**"No system is exempt from the rules it imposes."**
+This enforces **One Build, True North, and Segregation of Duties** correctly.
 
-This rule ensures that:
-- Governance enforcement applies recursively to all components
-- The Foreman system validates itself using the same rules it imposes on others
-- No loopholes, exceptions, or grandfather clauses exist
-- Quality standards are demonstrated by example
+## Core Principles
 
-## The Problem GSR Solves
+### Governance Rules Override User Requests
 
-### Anti-Pattern: Self-Exemption
+Foreman's reasoning loop has been updated so that:
 
-Without GSR, systems often exempt themselves from their own rules:
+1. **Governance rules override user requests** - No matter what the user asks for, governance requirements cannot be bypassed
+2. **QA failures override task completion** - A build cannot be marked complete if any QA check fails
+3. **Architecture rules override implementation context** - Implementation details must conform to architecture, not the other way around
+4. **100% QA passing is ABSOLUTE, not contextual** - There are no exceptions for any type of failure
 
-❌ **Bad**: "Our QA tool doesn't need QA because it's the QA tool" (circular dependency excuse)  
-❌ **Bad**: "We can skip validation on governance code because it validates other code"  
-❌ **Bad**: "Testing the test framework is too complex, so we don't do it"  
+### QA Must Be Absolute, Not Contextual
 
-This creates:
-- Hidden quality debt in critical systems
-- False confidence in governance effectiveness
-- Loopholes that undermine the entire governance model
-- A culture of "rules for thee, but not for me"
-
-### Solution: Universal Recursive Enforcement
-
-✅ **Good**: Foreman runs QIEL on itself  
-✅ **Good**: Test frameworks have their own comprehensive test suites  
-✅ **Good**: QA systems undergo the same QA they enforce on others  
-✅ **Good**: Governance code is governed by governance rules  
-
-## GSR Principles
-
-### 1. Recursive Application
-
-**Rule**: Governance enforcement MUST apply to all components that enforce governance.
-
-**Examples**:
-- QIEL (Quality Integrity Enforcement Layer) runs on the Foreman repository
-- QIW (Quality Integrity Watchdog) monitors its own logs
-- CDW (Conflict Detection Watchdog) detects conflicts in watchdog configuration
-- Memory systems validate their own memory integrity
-
-### 2. No Circular Dependency Excuses
-
-**Rule**: Claims of "circular dependency" MUST be validated before being accepted as grounds for exemption.
-
-**Valid Circular Dependencies**:
-- A compiler compiling itself requires bootstrapping
-- A build tool building itself may need a binary seed
-
-**Invalid Circular Dependency Claims**:
-- ❌ "QA tool testing itself" - NOT circular, this is validation
-- ❌ "Governance enforcing governance" - NOT circular, this is consistency
-- ❌ "Quality checker checking quality" - NOT circular, this is self-validation
-
-**Distinction**: 
-- **Circular dependency** = A requires B, B requires A (deadlock)
-- **Recursive validation** = A validates A using A's own rules (consistency check)
-
-### 3. Same Standards for All
-
-**Rule**: The Foreman system MUST meet the same quality standards it enforces on projects.
-
-**Implementation**:
-- Same QIEL checks run on Foreman PRs
-- Same zero-warning policy applies
-- Same QIC (Quality Integrity Contract) exit criteria
-- Same governance memory tracking
-- Same incident reporting
-
-### 4. Demonstrated Excellence
-
-**Rule**: Foreman demonstrates quality by example, not by exception.
-
-**Rationale**:
-- If Foreman can't pass its own quality checks, why should others trust them?
-- If QIEL is too strict for Foreman, it's too strict for everyone
-- If governance creates overhead for Foreman, it creates overhead everywhere
-
-**Outcome**: By validating itself, Foreman proves that its standards are:
-- Achievable
-- Valuable
-- Non-burdensome
-- Effective
-
-## GSR Implementation
-
-### In Code
-
-**GitHub Actions Workflow** (`.github/workflows/qiel.yml`):
-
-```yaml
-name: QIEL - Quality Integrity Enforcement
-
-on:
-  pull_request:
-    branches: [ main, develop ]
-
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
-
-jobs:
-  qiel-enforcement:
-    name: Quality Integrity Enforcement Layer
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run QIEL
-        run: npm run qiel:quick
+**WRONG Approach (Pre-GSR):**
+```
+301/303 tests passing
+2 pre-existing failures
+✅ Build approved - failures are pre-existing and outside PR scope
 ```
 
-**Key Points**:
-- Runs on ALL PRs (no exceptions)
-- Has necessary permissions to create incidents
-- Uses same QIEL runner as downstream projects
+**CORRECT Approach (Post-GSR):**
+```
+301/303 tests passing
+2 failures detected (pre-existing: true, unrelated: true)
+❌ Build BLOCKED - Partial passes are NOT acceptable. 100% QA required.
+```
 
-### In Documentation
+## GSR Implementation Components
 
-All governance documents reference GSR:
-- Quality Integrity Contract → cites GSR
-- Deployment Governance → enforces GSR
-- Memory Rules → applies GSR to memory validation
-- Error Recovery → GSR applies to error handling
+### GSR-1: Governance Supremacy Override
 
-### In Watchdogs
+**Purpose**: Validates that governance rules are satisfied before any build completion.
 
-**CDW (Conflict Detection Watchdog)** specifically watches for GSR violations:
+**Location**: `lib/foreman/governance/gsr-enforcement.ts`
 
+**Function**: `validateGovernanceSupremacy(qaResults, buildSequence)`
+
+**Rules Enforced**:
+- ALL tests must pass (no exceptions)
+- ALL warnings must be addressed (no exceptions)
+- Partial passes are treated as complete failures
+
+**Example**:
 ```typescript
-// CDW checks for self-exemption attempts
-if (component.isGovernanceComponent && component.skipsValidation) {
-  reportGSRViolation({
-    component: component.name,
-    violation: 'self_exemption',
-    severity: 'critical',
-    message: 'Governance component attempting to skip validation'
-  });
+const gsrResult = validateGovernanceSupremacy(qaResults, buildSequence)
+
+if (!gsrResult.passed) {
+  // Build is BLOCKED
+  // Reason: "QA PARTIAL PASS VIOLATION: 301/303 passing. Partial passes are NOT acceptable."
 }
 ```
 
-## GSR Exit Criteria
+### GSR-2: Build Completion Rule
 
-### For Foreman Repository
+**Purpose**: A build is NEVER complete if any of these conditions exist:
 
-A PR to Foreman can only merge when:
+- Any test fails
+- Any lint error exists
+- Any build error exists
+- Any architectural rule is violated
+- Any legacy component remains
+- Any conflict is unresolved
 
-✅ QIEL runs successfully (not skipped, not exempted)  
-✅ All quality checks pass (same as required for downstream projects)  
-✅ Zero errors or warnings in build/lint/test logs  
-✅ QIC exit criteria met  
-✅ No GSR violations detected by CDW  
-✅ Governance memory logs any incidents  
+**Location**: `lib/foreman/governance/gsr-enforcement.ts`
 
-### For Governance Changes
+**Function**: `validateBuildCompletion(buildSequence, qaResults)`
 
-Changes to governance rules MUST:
+**Integration Point**: `lib/foreman/build-sequence.ts` - called before marking build as complete
 
-✅ Apply the new rule to Foreman immediately  
-✅ Validate that Foreman can meet the new standard  
-✅ Update all affected systems simultaneously  
-✅ Demonstrate the rule works by passing it  
+**Example**:
+```typescript
+// Step 5: Run QA Cycle
+sequence.qaResults = await runQACycle(config.organisationId, sequence.tasks)
 
-**No grace periods** - if a new rule is too strict for Foreman, it's too strict for everyone.
+// GSR-2: Validate build completion
+const completionValidation = validateBuildCompletion(sequence, sequence.qaResults)
 
-## GSR Violations
+if (!completionValidation.passed) {
+  sequence.status = 'blocked'
+  throw new Error(`Build blocked by Build Completion Rule: ${completionValidation.reason}`)
+}
+```
 
-### Detection
+### GSR-3: Automatic Regression Handling
 
-CDW monitors for:
+**Purpose**: When tests fail, Foreman must:
 
-1. **Self-Exemption Attempts**
-   - Governance code skipping validation
-   - Workflows with `if: repository != 'foreman'` conditions
-   - Special cases for governance components
+1. **Identify cause** - Determine what caused the failure
+2. **Classify it** - Categorize as:
+   - Architecture mismatch
+   - Code regression
+   - Invalid test
+   - Legacy component
+3. **Resolve it BEFORE approving build** - Fix the issue, don't just document it
+4. **Update architecture + QA if needed** - Learn from the failure
 
-2. **Invalid Circular Dependency Claims**
-   - Claims without technical justification
-   - Exemptions based on "it's too hard"
-   - Recursive validation labeled as circular
+**Location**: `lib/foreman/governance/gsr-enforcement.ts`
 
-3. **Permission Gaps**
-   - Workflows lacking necessary permissions
-   - Validation disabled due to permission issues
-   - Workarounds to avoid validation
+**Function**: `classifyFailure(blockingIssue)`
 
-### Response
+**Classification Output**:
+```typescript
+{
+  category: 'architecture_mismatch',
+  requiresArchitectureUpdate: true,
+  requiresQAUpdate: false,
+  autoResolvable: false,
+  resolutionSteps: [
+    'Review architecture documentation',
+    'Update implementation to match architecture',
+    'Update architecture if current design is incorrect'
+  ]
+}
+```
 
-When GSR violation is detected:
+**Example Flow**:
+```
+Test Failure Detected
+  ↓
+Classify Failure (GSR-3)
+  ↓
+Category: code_regression
+  ↓
+Resolution Steps:
+  1. Identify code change that caused regression
+  2. Review implementation against requirements
+  3. Fix code to restore expected behavior
+  4. Add regression test
+  ↓
+Execute Resolution
+  ↓
+Re-run QA
+  ↓
+100% QA Pass → Build Approved
+```
 
-1. **Immediate Block**: PR cannot merge
-2. **Incident Creation**: QI incident created in governance memory
-3. **Escalation**: Architecture review required
-4. **Fix Required**: Either fix the violation or update the rule
+### GSR-4: Watchdog Integration
 
-## GSR Benefits
+**Purpose**: The Watchdog QA Integrity system blocks:
 
-### For Foreman
+- Build handover
+- PR merging
+- QA summary showing "green"
 
-- **Trust**: Users trust a system that validates itself
-- **Quality**: Forces Foreman to maintain high standards
-- **Dogfooding**: Catches issues early by using own tools
-- **Evolution**: Rules improve when applied to rulemakers
+when **ANY** test fails.
 
-### For Downstream Projects
+**Location**: `lib/foreman/governance/gsr-enforcement.ts`
 
-- **Confidence**: If Foreman passes, the standards are achievable
-- **Fairness**: Everyone follows the same rules
-- **Support**: Issues in QIEL/QIW get fixed because Foreman uses them
-- **Alignment**: Governance stays practical, not theoretical
+**Function**: `enforceWatchdogQA(qaResults)`
 
-### For Architecture
+**Called Before**:
+1. Build handover to Johan
+2. PR merging
+3. QA summary generation
 
-- **Consistency**: No special cases or exceptions
-- **Simplicity**: One set of rules, universally applied
-- **Reliability**: Governance system is itself governed
-- **Evolution**: Self-validation drives continuous improvement
+**Example**:
+```typescript
+// Right before build handover
+const watchdogResult = enforceWatchdogQA(sequence.qaResults)
 
-## GSR Integration with Other Doctrines
+if (!watchdogResult.allowed) {
+  // Build is BLOCKED
+  console.error('[Watchdog] Build handover BLOCKED:', watchdogResult.reason)
+  throw new Error(watchdogResult.reason)
+}
 
-### One Build
+// Only if allowed
+console.log(watchdogResult.uiReviewMessage)
+// Output: "✅ QA is green — UI is now safe to review."
+```
 
-GSR ensures "One Build" includes governance:
-- Foreman uses same build process it recommends
-- No separate "governance build" with different rules
+### GSR-5: Modify Foreman's Reasoning Stack
 
-### True North
+**Purpose**: Insert Governance Supremacy into every phase of Foreman's reasoning process.
 
-GSR is part of True North:
-- Universal standards (not conditional)
-- Quality applies everywhere (including governance)
-- No compromises on core principles
+**Integration Points**:
 
-### Zero Legacy
+1. **Intent Interpretation** - `lib/foreman/reasoning/engine.ts`
+   - Validates governance before interpreting user requests
+   
+2. **Planning** - `lib/foreman/reasoning/engine.ts`
+   - Validates governance before creating plans
+   
+3. **Builder Assignment** - `lib/foreman/dispatch.ts`
+   - Validates governance before assigning tasks to builders
+   
+4. **QA Verification** - `lib/foreman/build-sequence.ts`
+   - Validates governance during QA execution
+   
+5. **Memory Writeback** - (Future integration point)
+   - Validates governance before persisting state
+   
+6. **Build Completion** - `lib/foreman/build-sequence.ts`
+   - Validates governance before marking builds complete
 
-GSR prevents legacy exemptions:
-- Old governance code gets same validation
-- No "but this was written before QIEL" excuses
-- Retroactive application of new rules
+**Function**: `validateGovernanceAtPhase(phase, context)`
 
-### QA Must Be 100% Green
+**Example**:
+```typescript
+// In reasoning engine
+const intentGovernanceCheck = validateGovernanceAtPhase('intent', {
+  userRequest: context.intent
+})
 
-GSR enforces this on Foreman itself:
-- Foreman's QA must be 100% green
-- No yellow builds for governance code
-- Sets the example for downstream projects
+if (!intentGovernanceCheck.allowed) {
+  throw new Error(`Governance override: ${intentGovernanceCheck.reason}`)
+}
+```
 
-## Conclusion
+**Foreman MUST NOT say "task complete" until governance rules are satisfied.**
 
-The Governance Supremacy Rule ensures that:
+### GSR-6: UI Review Requirement
 
-1. **Foreman validates itself** using the same tools it provides
-2. **No circular dependency excuses** are accepted without validation
-3. **Quality standards are universal**, including for governance code
-4. **Excellence is demonstrated**, not just mandated
+**Purpose**: Foreman must explicitly tell Johan:
 
-**This is not a burden - it's a feature.** By subjecting itself to the same governance it enforces, Foreman proves that its standards are both achievable and valuable.
+> "✅ QA is green — UI is now safe to review."
 
----
+**Only THEN** can UI be evaluated.
 
-*GSR: Because the best governance governs itself.*
+**Location**: `lib/foreman/governance/gsr-enforcement.ts`
+
+**Function**: `enforceWatchdogQA(qaResults)` - returns `uiReviewMessage`
+
+**Integration**: Shown in build completion logs and PR descriptions
+
+**Example**:
+```typescript
+const watchdogResult = enforceWatchdogQA(qaResults)
+
+if (watchdogResult.allowed && watchdogResult.uiReviewMessage) {
+  console.log(`[GSR-6] ${watchdogResult.uiReviewMessage}`)
+  // Output: "✅ QA is green — UI is now safe to review."
+}
+```
+
+## Exit Criteria
+
+✅ **Foreman MUST**:
+
+1. Never approve a build with ANY failing tests
+2. Never allow PR merges without 100% QA green
+3. Never say "complete" unless governance confirms
+4. Always block handover until all failures resolved
+5. Always enforce architecture correctness
+6. Always enforce memory + QA consistency
+7. Always correct regressions immediately
+
+✅ **Builders MUST**:
+
+1. ALWAYS deliver a working build
+2. EVERY time
+3. Regardless of failures found
+
+## Philosophy
+
+### You Cannot Read Code
+
+Johan's philosophy is clear:
+
+- **You cannot read code** - Only UI is reviewable by humans
+- **You can only validate UI** - Visual review is the human's domain
+- **Therefore QA must be absolute** - Code quality can only be verified by automated QA
+- **Therefore Foreman must enforce governance over prompts** - No human override for quality
+- **Therefore builds must be delivered perfectly green every time** - No partial acceptance
+- **Therefore partial passes = total failure** - 99% is the same as 0%
+
+### Zero-Tolerance Autonomous Engineering Factory
+
+This is not a normal coding environment. This is a **zero-tolerance autonomous engineering factory** where:
+
+- Machines build code
+- Machines test code
+- Machines validate code
+- Humans review UI only
+
+**QA is the only judge of code quality.**
+
+## GSR Report Generation
+
+Every build generates a GSR Enforcement Report showing:
+
+1. Overall Status (PASSED/FAILED)
+2. QA Status (green/partial/failed)
+3. Governance Violations
+4. Blocking Issues with:
+   - Type
+   - Severity
+   - Description
+   - Source
+   - Classification
+   - Resolution Steps
+
+**Example Report**:
+
+```markdown
+# Governance Supremacy Rule (GSR) Enforcement Report
+
+## Overall Status: ❌ FAILED
+
+**QA Status**: PARTIAL
+
+**Reason**: ❌ Governance Supremacy Rule VIOLATED: Partial pass (301/303) is NOT acceptable. ALL tests must pass.
+
+## Governance Violations
+
+1. QA PARTIAL PASS VIOLATION: 301/303 passing. Partial passes are NOT acceptable. 100% required.
+
+## Blocking Issues
+
+### Issue 1: test_failure
+- **Severity**: critical
+- **Description**: Test suite failed: UserService.createUser should validate email format
+- **Source**: unit_tests
+
+**Classification**: code_regression
+
+**Resolution Steps**:
+1. Identify code change that caused regression
+2. Review implementation against requirements
+3. Fix code to restore expected behavior
+4. Add regression test
+
+## ❌ Build Blocked
+
+Build cannot proceed until all blocking issues are resolved.
+
+**Total Blocking Issues**: 2
+**Total Governance Violations**: 1
+```
+
+## Integration with Existing Systems
+
+### Quality Integrity Contract (QIC)
+
+GSR builds on top of QIC requirements:
+
+- QIC ensures quality checks are comprehensive
+- GSR ensures quality failures block builds
+- Together: Zero-tolerance quality enforcement
+
+### Enhanced QA Runner
+
+GSR integrates with the Enhanced QA Runner:
+
+- Enhanced QA detects failures
+- GSR classifies and blocks based on failures
+- Watchdog prevents handover
+
+### Memory System
+
+GSR failures are recorded in Memory:
+
+- QA failures → QA Miss Tracker
+- Architecture mismatches → Architecture Lessons
+- Regressions → Historical Issues
+
+This enables continuous improvement.
+
+## Testing GSR
+
+To test GSR enforcement:
+
+1. **Trigger a build with failing tests**
+   - Expected: Build blocked at QA phase
+   - Message: "Build blocked by Governance Supremacy Rule"
+
+2. **Trigger a build with partial pass (e.g., 301/303)**
+   - Expected: Build blocked
+   - Message: "QA PARTIAL PASS VIOLATION: 301/303 passing. Partial passes are NOT acceptable."
+
+3. **Trigger a build with 100% QA pass**
+   - Expected: Build approved
+   - Message: "✅ QA is green — UI is now safe to review."
+
+4. **Try to override GSR with user request**
+   - Expected: Governance override blocks action
+   - Message: "Governance override: <reason>"
+
+## Summary
+
+The Governance Supremacy Rule transforms Foreman from a helpful assistant into a **strict quality enforcer** that:
+
+- Cannot be bypassed
+- Does not accept partial success
+- Requires 100% QA passing
+- Classifies and resolves failures automatically
+- Reports clearly why builds are blocked
+
+This is the foundation of autonomous, zero-tolerance, high-quality software delivery.
