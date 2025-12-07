@@ -858,6 +858,89 @@ const qicConfig = await initializeQualityFramework()
 // QIC is now enforced for this system
 ```
 
+### QIEL - Quality Integrity Enforcement Layer
+
+The **Quality Integrity Enforcement Layer (QIEL)** implements the Quality Integrity Contract through a comprehensive suite of 8 enforcement subsystems.
+
+**QIEL Documentation**: See [`/docs/QIEL_README.md`](docs/QIEL_README.md) for complete documentation.
+
+#### QIEL Components
+
+1. **QIEL-1: Build Log Parser** - Parses build logs for error patterns
+2. **QIEL-2: Lint Log Parser** - Validates linting with zero-warning policy
+3. **QIEL-3: Test Log Validator** - Ensures test integrity
+4. **QIEL-4: Deployment Simulation** - Simulates preview and production deployments
+5. **QIEL-5: Schema Cohesion Validator** - Validates engine schema consistency
+6. **QIEL-6: Engine Load Validator** - Ensures all engines initialize cleanly
+7. **QIEL-7: QI Incident Writer** - Records quality failures in Governance Memory
+8. **QIEL-8: Regression Test Generator** - Auto-generates tests from failures
+
+#### Running QIEL
+
+```bash
+# Quick QIEL check (logs + schemas only)
+npm run qiel:quick
+
+# Full QIEL check (all validations)
+npm run qiel:full
+
+# Custom QIEL run
+npx tsx scripts/run-qiel.ts --logs-dir /tmp --report ./qiel-report.md
+```
+
+#### Using QIEL Programmatically
+
+```typescript
+import { runQIEL, runQuickQIEL } from '@/lib/foreman/qa';
+
+// Quick check
+const result = await runQuickQIEL('/tmp');
+
+// Full check with options
+const result = await runQIEL({
+  logsDir: '/tmp',
+  skipDeploymentSimulation: false,
+  skipEngineValidation: false,
+  buildId: 'build-123',
+  commitSha: 'abc123',
+});
+
+// Check result
+if (!result.passed) {
+  console.error('QIEL failed:', result.blockersFound);
+  console.error('QI Incidents:', result.qiIncidents.length);
+}
+```
+
+#### QIEL in CI/CD
+
+QIEL includes a GitHub Actions workflow template at `.github/workflows/qiel-template.yml` that:
+- Runs on every push and pull request
+- Generates comprehensive QIEL reports
+- Comments PR with results
+- Creates QI Incident issues on failure
+- Auto-commits regression tests
+
+#### QI Incidents
+
+Quality failures are recorded as QI Incidents in Governance Memory for:
+- Architecture improvement recommendations
+- QA rule enhancements
+- Regression test generation
+- System self-evolution
+
+#### Exit Criteria
+
+QIEL enforces these non-negotiable requirements:
+- ✅ Build logs contain zero errors or warnings
+- ✅ Lint logs contain zero errors or warnings
+- ✅ Tests contain zero errors or warnings
+- ✅ Preview & production deploys both succeed
+- ✅ All engines initialize cleanly
+- ✅ All schemas match
+- ✅ Zero silent failures detected
+- ✅ Zero unresolved QI incidents
+
 ### Key Components
 
 - **API Routes** (`/app/api/`)
