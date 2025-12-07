@@ -798,6 +798,66 @@ Planned improvements for the chat interface:
 
 ## Architecture
 
+### Quality Integrity Contract (QIC)
+
+The Foreman App enforces the **Quality Integrity Contract (QIC)**, a governance layer that prevents false positives in QA systems and ensures quality integrity across all Maturion applications.
+
+**QIC Documentation**: See [`/foreman/qa/quality-integrity-contract.md`](foreman/qa/quality-integrity-contract.md) for complete specification.
+
+**True North Architecture**: See [`/foreman/true-north-architecture.md`](foreman/true-north-architecture.md) for architectural principles.
+
+#### QIC Requirements
+
+All QA systems must implement these 7 requirements:
+
+1. **QIC-1: Build Integrity** - Build logs parsed for error patterns; exit codes insufficient
+2. **QIC-2: Lint Integrity** - Lint runs in strict mode with zero errors
+3. **QIC-3: Runtime Integrity** - Runtime failures detected and blocked
+4. **QIC-4: Deployment Simulation** - Preview and production builds must succeed
+5. **QIC-5: Silent Failure Prevention** - Detect failures without explicit errors
+6. **QIC-6: Governance Memory Integration** - All failures recorded as QI Incidents
+7. **QIC-7: Auto-Propagation** - QIC applies to all apps automatically
+
+#### QI Incidents
+
+All quality failures are recorded as **Quality Integrity Incidents** in Governance Memory:
+
+```typescript
+interface QualityIntegrityIncident {
+  id: string
+  timestamp: string
+  incidentType: 'build_error' | 'lint_error' | 'runtime_error' | 
+                'silent_failure' | 'schema_mismatch' | 'deployment_failure'
+  severity: 'critical' | 'high' | 'medium' | 'low'
+  source: string
+  description: string
+  details: any
+  metadata: {
+    buildId?: string
+    sequenceId?: string
+    commitSha?: string
+    branch?: string
+  }
+}
+```
+
+These incidents are used by Foreman to:
+- Improve architecture based on failure patterns
+- Enhance QA detection rules
+- Add engine constraints
+- Generate regression tests
+
+#### Using QIC in Your Code
+
+```typescript
+import { initializeQualityFramework } from '@/lib/foreman/governance/qic-loader'
+
+// Initialize QIC at app startup
+const qicConfig = await initializeQualityFramework()
+
+// QIC is now enforced for this system
+```
+
 ### Key Components
 
 - **API Routes** (`/app/api/`)
