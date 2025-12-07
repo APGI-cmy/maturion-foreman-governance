@@ -109,7 +109,12 @@ describe('Fallback Triggering Logic', () => {
   it('should trigger fallback on high complexity', async () => {
     const highComplexityTask: BuilderTask = {
       ...mockTask,
-      metadata: { complexity: 'high' },
+      input: {
+        module: mockTask.module,
+        taskDescription: mockTask.taskDescription,
+        organisationId: 'test-org',
+        metadata: { complexity: 'high' },
+      },
     }
     
     const result = await shouldTriggerFallback(highComplexityTask)

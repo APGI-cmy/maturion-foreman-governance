@@ -113,7 +113,7 @@ export async function shouldTriggerFallback(
 
   // Check for high complexity escalation
   if (conditions.high_complexity_escalation) {
-    const highComplexity = task.metadata?.complexity === 'high'
+    const highComplexity = task.input?.metadata?.complexity === 'high'
     if (highComplexity) {
       return { shouldFallback: true, reason: 'high_complexity' }
     }
