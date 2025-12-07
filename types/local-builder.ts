@@ -10,6 +10,8 @@ export interface LocalBuilderConfig {
   fallback_interval_minutes: number
   local_repo_path: string
   conditions: FallbackConditions
+  health_check_timeout_ms?: number
+  execution_timeout_ms?: number
 }
 
 export interface FallbackConditions {

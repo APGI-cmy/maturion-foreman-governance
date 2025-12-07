@@ -37,13 +37,15 @@ export async function checkLocalBuilderHealth(): Promise<boolean> {
     return false
   }
 
+  const timeoutMs = localBuilderConfig.health_check_timeout_ms || 5000
+
   try {
     const response = await fetch(localBuilderConfig.health_url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      signal: AbortSignal.timeout(5000), // 5 second timeout
+      signal: AbortSignal.timeout(timeoutMs),
     })
 
     return response.ok
@@ -148,6 +150,8 @@ export async function executeWithLocalBuilder(
     metadata: task.input?.metadata,
   }
 
+  const timeoutMs = localBuilderConfig.execution_timeout_ms || 300000
+
   try {
     const response = await fetch(localBuilderConfig.builder_url, {
       method: 'POST',
@@ -155,7 +159,7 @@ export async function executeWithLocalBuilder(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(300000), // 5 minute timeout
+      signal: AbortSignal.timeout(timeoutMs),
     })
 
     if (!response.ok) {

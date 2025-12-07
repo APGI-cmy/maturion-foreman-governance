@@ -173,8 +173,8 @@ describe('Local Builder Error Handling', () => {
 })
 
 describe('Fallback Performance', () => {
-  it('should respect fallback interval configuration', () => {
-    const { getLocalBuilderConfig } = require('@/lib/foreman/local-builder')
+  it('should respect fallback interval configuration', async () => {
+    const { getLocalBuilderConfig } = await import('@/lib/foreman/local-builder')
     const config = getLocalBuilderConfig()
 
     assert.strictEqual(config.fallback_interval_minutes, 30, 'Fallback interval should be 30 minutes')
@@ -182,14 +182,14 @@ describe('Fallback Performance', () => {
   })
 
   it('should handle pipeline timeout correctly', async () => {
-    const { shouldTriggerFallback } = require('@/lib/foreman/local-builder')
+    const { shouldTriggerFallback } = await import('@/lib/foreman/local-builder')
     
     const mockTask = {
       id: 'timeout-test',
-      builder: 'ui',
+      builder: 'ui' as const,
       module: 'timeout-module',
       taskDescription: 'Test timeout',
-      status: 'approved',
+      status: 'approved' as const,
       approved: true,
       createdAt: new Date(),
       updatedAt: new Date(),
