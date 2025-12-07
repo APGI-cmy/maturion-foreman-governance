@@ -574,5 +574,437 @@
       "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
       "reviewRequired": false
     }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.488Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "entry_1",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.491Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "entry_with_metadata",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.493Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "versioned_entry",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.495Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "recoverable_entry",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.753Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.757Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.760Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.765Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:37:25.768Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:45.992Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "entry_1",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:45.998Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "entry_with_metadata",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.000Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "versioned_entry",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.002Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "recoverable_entry",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.268Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.272Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.276Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.282Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:38:46.285Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.419Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "entry_1",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.423Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "entry_with_metadata",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.426Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "versioned_entry",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.428Z",
+    "actor": "retirement-engine",
+    "scope": "global",
+    "action": "retirement",
+    "details": {
+      "entryId": "recoverable_entry",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/global/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.696Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.702Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.708Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.712Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
+  },
+  {
+    "type": "memory_retirement",
+    "timestamp": "2025-12-07T13:42:20.714Z",
+    "actor": "retirement-engine",
+    "scope": "project",
+    "action": "retirement",
+    "details": {
+      "entryId": "project_init_foreman_app_sandbox_1733494800000",
+      "reason": "staleness",
+      "lifecycle": "archival",
+      "previousState": "active",
+      "newState": "archival",
+      "archiveLocation": "/home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/archive/project/2025/12/retired-entries.json",
+      "reviewRequired": false
+    }
   }
 ]

@@ -221,3 +221,14 @@ export interface RetirementStatistics {
   lastRetirementRun: string
   nextScheduledRun?: string
 }
+
+/**
+ * Retirement Decision - Decision made about a candidate
+ */
+export interface RetirementDecision {
+  candidateId: string
+  action: 'retire' | 'archive' | 'deprecate' | 'keep' | 'manual_review'
+  reason: string
+  approvedBy?: string
+  approvedAt?: string
+}
