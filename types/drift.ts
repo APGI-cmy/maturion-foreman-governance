@@ -142,3 +142,16 @@ export interface MemoryIntegritySnapshot {
   capturedAt: string
   checksum?: string
 }
+
+/**
+ * Drift Entry - Single drift detection instance
+ */
+export interface DriftEntry {
+  id: string
+  type: DriftType
+  severity: DriftSeverity
+  detectedAt: string
+  description: string
+  affectedEntries: string[]
+  recommendation: string
+}
