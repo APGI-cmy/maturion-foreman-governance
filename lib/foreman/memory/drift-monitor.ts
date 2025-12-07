@@ -37,6 +37,7 @@ import {
   ReasoningPattern,
   ProjectMemory
 } from '@/types/reasoning'
+import { BuilderFeedback } from '@/types/builder-feedback'
 import { getAllMemory } from './index'
 
 /**
@@ -613,13 +614,13 @@ export async function detectAgentExperienceDrift(): Promise<DriftCheckResult> {
   }
   
   try {
-    const feedbackHistory = JSON.parse(fs.readFileSync(feedbackPath, 'utf-8'))
+    const feedbackHistory: BuilderFeedback[] = JSON.parse(fs.readFileSync(feedbackPath, 'utf-8'))
     
     // Get recent feedback (last 30 days)
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
     
-    const recentFeedback = feedbackHistory.filter((f: any) => 
+    const recentFeedback = feedbackHistory.filter((f: BuilderFeedback) => 
       new Date(f.timestamp) >= thirtyDaysAgo
     )
     
@@ -633,7 +634,7 @@ export async function detectAgentExperienceDrift(): Promise<DriftCheckResult> {
     }
     
     // Check 1: High difficulty rate
-    const highDifficultyCount = recentFeedback.filter((f: any) => f.difficultyScore > 0.7).length
+    const highDifficultyCount = recentFeedback.filter((f: BuilderFeedback) => f.difficultyScore > 0.7).length
     const highDifficultyRate = highDifficultyCount / recentFeedback.length
     
     if (highDifficultyRate > 0.5) {
@@ -653,7 +654,7 @@ export async function detectAgentExperienceDrift(): Promise<DriftCheckResult> {
     }
     
     // Check 2: Missing memory patterns
-    const missingMemoryCount = recentFeedback.filter((f: any) => 
+    const missingMemoryCount = recentFeedback.filter((f: BuilderFeedback) => 
       f.missingMemoryDetected && f.missingMemoryDetected.length > 0
     ).length
     
@@ -673,7 +674,7 @@ export async function detectAgentExperienceDrift(): Promise<DriftCheckResult> {
     }
     
     // Check 3: Governance conflicts
-    const governanceConflictCount = recentFeedback.filter((f: any) => 
+    const governanceConflictCount = recentFeedback.filter((f: BuilderFeedback) => 
       f.governanceConflicts && f.governanceConflicts.length > 0
     ).length
     

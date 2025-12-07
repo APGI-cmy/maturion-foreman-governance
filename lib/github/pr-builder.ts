@@ -7,6 +7,7 @@ import { Octokit } from 'octokit'
 import { github } from './client'
 import { PRContext, ChangeRecord, ComplianceResult } from '@/types/build-sequence'
 import { QAResult, BuilderTask } from '@/types/builder'
+import { BuilderFeedback } from '@/types/builder-feedback'
 
 /**
  * Generate PR title from context
@@ -365,10 +366,10 @@ export function assemblePRContext(
 export function generateBuilderFeedback(
   taskId: string,
   context: PRContext
-): any {
-  const feedback: any = {
+): BuilderFeedback {
+  const feedback: BuilderFeedback = {
     taskId,
-    builder: 'copilot' as const,
+    builder: 'copilot',
     difficultyScore: calculateDifficultyScore(context),
     timestamp: new Date().toISOString()
   }

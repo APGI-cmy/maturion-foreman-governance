@@ -90,7 +90,19 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const days = parseInt(searchParams.get('days') || '30', 10)
+    const daysParam = searchParams.get('days') || '30'
+    const days = parseInt(daysParam, 10)
+    
+    // Validate days parameter
+    if (isNaN(days) || days < 1 || days > 365) {
+      return NextResponse.json(
+        {
+          error: 'Invalid days parameter',
+          message: 'Days must be between 1 and 365'
+        },
+        { status: 400 }
+      )
+    }
     
     // Import getFeedbackStatistics dynamically to avoid circular dependencies
     const { getFeedbackStatistics } = await import('@/lib/foreman/feedback/processor')
