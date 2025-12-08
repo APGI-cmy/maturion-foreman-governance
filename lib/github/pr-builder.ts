@@ -8,6 +8,8 @@ import { github } from './client'
 import { PRContext, ChangeRecord, ComplianceResult } from '@/types/build-sequence'
 import { QAResult, BuilderTask } from '@/types/builder'
 import { BuilderFeedback } from '@/types/builder-feedback'
+import { enforcePRGatekeeper } from '@/lib/foreman/pr-gatekeeper'
+import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory'
 
 /**
  * Generate PR title from context
@@ -260,15 +262,68 @@ export function generateComplianceResults(qaResults: QAResult[]): ComplianceResu
 
 /**
  * Create a Pull Request with assembled context
+ * 
+ * CRITICAL: PR Gatekeeper enforcement is mandatory
+ * This function should only be called after PR Gatekeeper has validated QIEL compliance
  */
 export async function createPullRequest(
   owner: string,
   repo: string,
   branch: string,
   baseBranch: string,
-  context: PRContext
+  context: PRContext,
+  options?: {
+    skipGatekeeperCheck?: boolean; // Only for emergency use, logs governance violation
+    buildId?: string;
+    sequenceId?: string;
+  }
 ): Promise<string> {
   console.log('[PRBuilder] Creating pull request...')
+  
+  const { skipGatekeeperCheck = false, buildId, sequenceId } = options || {};
+  
+  // PR GATEKEEPER ENFORCEMENT
+  // This is a safety check - gatekeeper should have been called earlier
+  // If it wasn't called, we MUST call it now
+  if (!skipGatekeeperCheck) {
+    console.log('[PRBuilder] Verifying PR Gatekeeper compliance...')
+    
+    const gatekeeperResult = await enforcePRGatekeeper({
+      buildId,
+      sequenceId,
+      logsDir: '/tmp',
+    })
+    
+    if (!gatekeeperResult.allowed) {
+      // PR GATEKEEPER BLOCKED
+      console.error('[PRBuilder] PR CREATION BLOCKED BY GATEKEEPER')
+      console.error('[PRBuilder] Reason:', gatekeeperResult.reason)
+      console.error('[PRBuilder] This PR violates governance - aborting')
+      
+      throw new Error(`PR blocked by governance: ${gatekeeperResult.reason}`)
+    }
+    
+    console.log('[PRBuilder] ✅ PR Gatekeeper check passed')
+  } else {
+    // Log governance violation - skipping gatekeeper is a red flag
+    console.warn('[PRBuilder] ⚠️  WARNING: PR Gatekeeper check SKIPPED')
+    console.warn('[PRBuilder] This may indicate a governance bypass attempt')
+    
+    await logGovernanceEvent({
+      type: 'pr_gatekeeper_skipped',
+      severity: 'high',
+      description: 'PR creation attempted with gatekeeper check skipped',
+      metadata: {
+        owner,
+        repo,
+        branch,
+        baseBranch,
+        buildId,
+        sequenceId,
+        timestamp: new Date().toISOString(),
+      },
+    })
+  }
   
   const title = context.title || generatePRTitle(context)
   const body = generatePRDescription(context)
@@ -284,10 +339,48 @@ export async function createPullRequest(
     })
     
     console.log(`[PRBuilder] Pull request created: ${response.data.html_url}`)
+    
+    // Log successful PR creation to governance
+    await logGovernanceEvent({
+      type: 'pr_created',
+      severity: 'info',
+      description: `Pull request created: ${response.data.html_url}`,
+      metadata: {
+        owner,
+        repo,
+        branch,
+        baseBranch,
+        prNumber: response.data.number,
+        prUrl: response.data.html_url,
+        buildId,
+        sequenceId,
+        gatekeeperSkipped: skipGatekeeperCheck,
+        timestamp: new Date().toISOString(),
+      },
+    })
+    
     return response.data.html_url
     
   } catch (error) {
     console.error('[PRBuilder] Failed to create pull request:', error)
+    
+    // Log PR creation failure to governance
+    await logGovernanceEvent({
+      type: 'pr_creation_failed',
+      severity: 'high',
+      description: 'Pull request creation failed',
+      metadata: {
+        owner,
+        repo,
+        branch,
+        baseBranch,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        buildId,
+        sequenceId,
+        timestamp: new Date().toISOString(),
+      },
+    })
+    
     throw error
   }
 }
