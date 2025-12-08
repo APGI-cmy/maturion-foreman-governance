@@ -119,12 +119,12 @@ export async function POST(request: NextRequest) {
       { role: 'system', content: context.systemPrompt }
     ];
 
-    // Add conversation history as a single assistant message containing the compressed history
-    // This preserves context while minimizing token usage
+    // Add conversation history as part of the system context to preserve token efficiency
+    // while maintaining conversation continuity
     if (context.conversationHistory && context.conversationHistory.trim().length > 0) {
       messages.push({ 
-        role: 'assistant', 
-        content: `Previous conversation context:\n${context.conversationHistory}` 
+        role: 'system', 
+        content: `Previous conversation summary:\n${context.conversationHistory}` 
       });
     }
 

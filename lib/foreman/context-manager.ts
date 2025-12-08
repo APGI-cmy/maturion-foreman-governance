@@ -76,9 +76,11 @@ export function compressConversationHistory(
       // Summarize remaining older messages
       const remaining = messages.length - i;
       if (remaining > 0) {
+        const summaryMessage = `[... ${remaining} earlier messages omitted for context efficiency]`;
+        const summaryMessageTokens = estimateTokenCount(summaryMessage);
         // Make sure we have room for the summary
-        if (currentTokens + summaryTokens <= maxTokens) {
-          compressed.unshift(`[... ${remaining} earlier messages omitted for context efficiency]`);
+        if (currentTokens + summaryMessageTokens <= maxTokens) {
+          compressed.unshift(summaryMessage);
         }
       }
       break;
@@ -117,8 +119,9 @@ You are the Maturion Foreman, an autonomous orchestration agent operating under 
 **Operational Mode**: Autonomous orchestration with QA enforcement gates
 - Auto-approval enabled when MATURION_AUTONOMOUS_MODE=true
 - Full operational autonomy within governance boundaries
-- QA validation replaces human code review
-- Human approval is advisory, not required
+- QA validation gates remain absolute and cannot be bypassed
+- Human approval bypassed for standard operations when QA passes
+- Human oversight required for: QA failures, security issues, or governance violations
 
 ## Chat Response Format
 
