@@ -47,7 +47,7 @@ describe('Drift Detection - Softened Rules', () => {
     assert.strictEqual(result.driftDetected, true)
     assert.strictEqual(result.driftType, 'softened_rule')
     assert.strictEqual(result.severity, 'critical')
-    assert.ok(result.description.includes('softened rule'))
+    assert.ok(result.description.includes('soften rule'))
   })
   
   it('should detect when threshold is lowered', () => {

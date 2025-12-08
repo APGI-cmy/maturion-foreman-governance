@@ -203,18 +203,36 @@ export class GovernanceFirstMindset {
     ]
     
     const actionLower = action.toLowerCase()
+    const words = actionLower.split(/\s+/)
     
-    // Check if action contains developer keywords
-    for (const devAction of developerActions) {
-      if (actionLower.includes(devAction)) {
-        return false // Not acting as auditor
+    // Get the primary verb (usually the first word)
+    const primaryVerb = words[0]
+    
+    // Check if primary verb is an auditor action
+    for (const audAction of auditorActions) {
+      if (primaryVerb === audAction || primaryVerb.startsWith(audAction)) {
+        return true // Acting as auditor
       }
     }
     
-    // Check if action contains auditor keywords
+    // Check if primary verb is a developer action
+    for (const devAction of developerActions) {
+      if (primaryVerb === devAction || primaryVerb.startsWith(devAction)) {
+        return false // Acting as developer
+      }
+    }
+    
+    // If primary verb doesn't match, check if action contains any auditor keywords
     for (const audAction of auditorActions) {
       if (actionLower.includes(audAction)) {
         return true // Acting as auditor
+      }
+    }
+    
+    // Check if action contains developer keywords (as secondary check)
+    for (const devAction of developerActions) {
+      if (actionLower.includes(devAction)) {
+        return false // Not acting as auditor
       }
     }
     

@@ -8,7 +8,6 @@
  */
 
 import { governanceFirstMindset, FORBIDDEN_ACTIONS } from './mindset'
-import { recordMemory } from '@/lib/foreman/memory/storage'
 
 /**
  * Drift Detection Result
@@ -334,12 +333,12 @@ export class ForemanGovernanceDriftDetector {
   /**
    * Record drift incident
    */
-  private async recordDrift(drift: {
+  private recordDrift(drift: {
     driftType: DriftType
     severity: 'critical' | 'high' | 'medium' | 'low'
     description: string
     actionTaken: string[]
-  }): Promise<DriftDetectionResult> {
+  }): DriftDetectionResult {
     // Add to detection log
     this.detectionLog.push({
       timestamp: new Date(),
@@ -348,58 +347,65 @@ export class ForemanGovernanceDriftDetector {
       resolved: false
     })
     
-    // Create governance incident in memory
+    // Create governance incident in memory (async, but don't wait)
     const incidentId = `foreman_drift_${drift.driftType}_${Date.now()}`
     
+    // Record to memory asynchronously without blocking
+    this.recordToMemoryAsync(incidentId, drift).catch(error => {
+      console.error('[FOREMAN DRIFT] Failed to record drift incident:', error)
+    })
+    
+    console.error(`[FOREMAN DRIFT DETECTED] ${drift.severity.toUpperCase()}: ${drift.description}`)
+    console.error(`[FOREMAN DRIFT] Actions taken: ${drift.actionTaken.join(', ')}`)
+    console.error(`[FOREMAN DRIFT] Incident created: ${incidentId}`)
+    
+    return {
+      driftDetected: true,
+      driftType: drift.driftType,
+      severity: drift.severity,
+      description: drift.description,
+      actionTaken: drift.actionTaken,
+      incidentCreated: true,
+      incidentId
+    }
+  }
+  
+  /**
+   * Record drift to memory asynchronously
+   */
+  private async recordToMemoryAsync(incidentId: string, drift: {
+    driftType: DriftType
+    severity: 'critical' | 'high' | 'medium' | 'low'
+    description: string
+    actionTaken: string[]
+  }): Promise<void> {
     try {
-      await recordMemory({
-        id: incidentId,
+      const { writeMemory } = await import('../memory/storage')
+      await writeMemory({
         scope: 'global',
-        category: 'governance',
-        type: 'incident',
-        tags: ['foreman_drift', drift.driftType, 'governance_violation', drift.severity],
+        key: incidentId,
         value: {
-          incident: {
-            type: 'foreman_behavioral_drift',
+          type: 'foreman_behavioral_drift',
+          description: drift.description,
+          data: {
             driftType: drift.driftType,
             severity: drift.severity,
-            description: drift.description,
             actionTaken: drift.actionTaken,
             timestamp: new Date().toISOString(),
             resolved: false
           }
         },
+        tags: ['foreman_drift', drift.driftType, 'governance_violation', drift.severity],
+        category: 'governance',
         metadata: {
           source: 'ForemanGovernanceDriftDetector',
           detectionTime: new Date().toISOString(),
           requiresCorrection: true
         }
       })
-      
-      console.error(`[FOREMAN DRIFT DETECTED] ${drift.severity.toUpperCase()}: ${drift.description}`)
-      console.error(`[FOREMAN DRIFT] Actions taken: ${drift.actionTaken.join(', ')}`)
-      console.error(`[FOREMAN DRIFT] Incident created: ${incidentId}`)
-      
-      return {
-        driftDetected: true,
-        driftType: drift.driftType,
-        severity: drift.severity,
-        description: drift.description,
-        actionTaken: drift.actionTaken,
-        incidentCreated: true,
-        incidentId
-      }
     } catch (error) {
-      console.error('[FOREMAN DRIFT] Failed to record drift incident:', error)
-      
-      return {
-        driftDetected: true,
-        driftType: drift.driftType,
-        severity: drift.severity,
-        description: drift.description,
-        actionTaken: drift.actionTaken,
-        incidentCreated: false
-      }
+      // Silently fail - drift is still logged locally
+      throw error
     }
   }
   
