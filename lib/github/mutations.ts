@@ -204,9 +204,6 @@ export async function closeIssue(
         approvalRequired: false,
         governanceTags: [],
       },
-      metadata: {
-        errorDetails: error,
-      },
     })
     throw error
   }
@@ -508,6 +505,7 @@ export async function createPR(config: PRConfig): Promise<GitHubPR> {
         governanceTags: governanceLabels,
       },
       metadata: {
+        autonomousMode: process.env.MATURION_AUTONOMOUS_MODE === 'true',
         buildSequenceId: config.metadata.buildSequenceId,
       },
     })
