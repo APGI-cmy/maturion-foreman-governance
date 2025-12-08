@@ -235,21 +235,25 @@ export function generateAllLogs(
 /**
  * Validate that log files exist and are readable
  */
-export function validateLogsExist(): {
+export function validateLogsExist(logsDir: string = '/tmp'): {
   allExist: boolean;
   build: boolean;
   lint: boolean;
   test: boolean;
   missing: string[];
 } {
-  const build = fs.existsSync(QIEL_CONFIG.logPaths.build);
-  const lint = fs.existsSync(QIEL_CONFIG.logPaths.lint);
-  const test = fs.existsSync(QIEL_CONFIG.logPaths.test);
+  const buildPath = logsDir === '/tmp' ? QIEL_CONFIG.logPaths.build : path.join(logsDir, 'build.log');
+  const lintPath = logsDir === '/tmp' ? QIEL_CONFIG.logPaths.lint : path.join(logsDir, 'lint.log');
+  const testPath = logsDir === '/tmp' ? QIEL_CONFIG.logPaths.test : path.join(logsDir, 'test.log');
+  
+  const build = fs.existsSync(buildPath);
+  const lint = fs.existsSync(lintPath);
+  const test = fs.existsSync(testPath);
 
   const missing: string[] = [];
-  if (!build) missing.push(QIEL_CONFIG.logPaths.build);
-  if (!lint) missing.push(QIEL_CONFIG.logPaths.lint);
-  if (!test) missing.push(QIEL_CONFIG.logPaths.test);
+  if (!build) missing.push(buildPath);
+  if (!lint) missing.push(lintPath);
+  if (!test) missing.push(testPath);
 
   return {
     allExist: build && lint && test,
