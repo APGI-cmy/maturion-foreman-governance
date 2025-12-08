@@ -35,6 +35,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# QIEL auto-generated files
+qiel-env-report.md
+/tmp/*.log
+
 # build reports (test artifacts)
 /reports/*.md
 !/reports/.gitkeep
