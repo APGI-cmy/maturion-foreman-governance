@@ -44,23 +44,23 @@ This architecture ensures:
 ### 2. Segregation of Duties
 
 ```
-┌─────────────────────────────────────────┐
-│         FOREMAN (Orchestrator)          │
-│  - GitHub issue/PR lifecycle mgmt       │
-│  - PR assembly and metadata             │
-│  - Governance enforcement               │
-│  - Branch protection rules              │
-└──────────────┬──────────────────────────┘
+┌──────────────────────────────────────────────┐
+│       FOREMAN (Orchestrator)                 │
+│  - GitHub issue/PR lifecycle management      │
+│  - PR assembly and metadata                  │
+│  - Governance enforcement                    │
+│  - Branch protection rules                   │
+└──────────────┬───────────────────────────────┘
                │ delegates
                ▼
-┌─────────────────────────────────────────┐
-│       BUILDER AGENTS (Code Writers)     │
-│  - UI Builder: Component code           │
-│  - API Builder: Endpoint code           │
-│  - Schema Builder: Type definitions     │
-│  - Integration Builder: External APIs   │
-│  - QA Builder: Test generation          │
-└─────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│       BUILDER AGENTS (Code Writers)          │
+│  - UI Builder: Component code                │
+│  - API Builder: Endpoint code                │
+│  - Schema Builder: Type definitions          │
+│  - Integration Builder: External APIs        │
+│  - QA Builder: Test generation               │
+└──────────────────────────────────────────────┘
 ```
 
 **Key Boundary**: Foreman manages GitHub _resources and metadata_; Builders manage _code content_.
@@ -289,10 +289,12 @@ interface GitHubMutationEvent {
     | 'issue_reopened'
     | 'issue_commented'
     | 'issue_labeled'
+    | 'issue_assigned'
     | 'pr_created'
     | 'pr_updated'
     | 'pr_labeled'
     | 'pr_commented'
+    | 'pr_reviewed'
     | 'branch_protection_updated'
     | 'governance_metadata_applied'
   
@@ -656,11 +658,11 @@ async function executeMutationWithRollback(
 ```
 
 **Rollback Support**:
-- ✅ `labelIssue` → Remove labels
-- ✅ `commentOnIssue` → Delete comment (if allowed)
-- ✅ `createPR` → Close PR
-- ❌ `closeIssue` → Cannot rollback (use `reopenIssue` manually)
-- ❌ `branch_protection_updated` → Requires manual governance review
+- ✅ `labelIssue` → Remove labels (requires `issues: write` permission)
+- ✅ `commentOnIssue` → Delete comment (requires `issues: write` permission, only for bot-authored comments)
+- ✅ `createPR` → Close PR (requires `pull_requests: write` permission)
+- ❌ `closeIssue` → Cannot automatically rollback (use `reopenIssue` manually with governance approval)
+- ❌ `branch_protection_updated` → Requires manual governance review and approval to revert
 
 ---
 
@@ -852,11 +854,11 @@ tagWithComplianceStatus(owner: string, repo: string, prNumber: number, complianc
 - `/foreman/identity/foreman-identity.md` - Foreman's authority and constraints
 - `/foreman/governance/secrets-management.md` - Secrets detection rules
 
-### Implementation Files
-- `/lib/github/mutations.ts` - Mutation API (to be implemented)
-- `/lib/foreman/governance/github-governance.ts` - Governance validation (to be implemented)
-- `/types/github-events.ts` - Event schemas (to be implemented)
-- `/lib/github/client.ts` - GitHub API client (existing, to be extended)
+### Implementation Files (relative to project root)
+- `lib/github/mutations.ts` - Mutation API (to be implemented in Issue 2)
+- `lib/foreman/governance/github-governance.ts` - Governance validation (to be implemented in Issue 2)
+- `types/github-events.ts` - Event schemas (to be implemented in Issue 2)
+- `lib/github/client.ts` - GitHub API client (existing, to be extended in Issue 2)
 
 ---
 
