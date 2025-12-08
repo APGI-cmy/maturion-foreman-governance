@@ -10,11 +10,9 @@ export {
   parseAllLogs,
   validateLogsExist,
   generateLogParsingReport,
-  loadAllowedWarnings,
   type LogParsingResult,
   type ErrorEntry,
   type WarningEntry,
-  type AllowedWarnings,
 } from './log-parsing-qa';
 
 // Zero-Warning Policy (QIEL-2)
