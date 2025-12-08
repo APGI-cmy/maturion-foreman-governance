@@ -143,6 +143,7 @@ export default function ForemanChatPage() {
         body: JSON.stringify({
           message: currentMessage,
           conversationId: conversationId,
+          conversationHistory: messages, // Send conversation history for context
           // Organisation ID is set server-side from environment or request context
         }),
       });
@@ -174,11 +175,29 @@ export default function ForemanChatPage() {
 
         setMessages((prev) => [...prev, foremanMessage]);
       } else {
-        // Handle error
+        // Handle error with better messaging
+        let errorContent = `Error: ${data.error || 'Failed to get response from Foreman'}`;
+        
+        // Check for context overflow error
+        if (data.errorType === 'context_overflow') {
+          errorContent = `⚠️ **Context Window Exceeded**\n\n${data.error}\n\n`;
+          if (data.suggestion) {
+            errorContent += `💡 **Suggestion**: ${data.suggestion}`;
+          }
+          
+          // Optionally clear conversation after showing error
+          setTimeout(() => {
+            if (confirm('Would you like to start a new conversation?')) {
+              setMessages([]);
+              setConversationId(null);
+            }
+          }, 1000);
+        }
+        
         const errorMessage: ChatMessage = {
           id: `msg_${Date.now()}_error`,
           role: 'assistant',
-          content: `Error: ${data.error || 'Failed to get response from Foreman'}`,
+          content: errorContent,
           timestamp: new Date(),
           organisationId: '',
           conversationId: conversationId || '',
@@ -304,6 +323,22 @@ export default function ForemanChatPage() {
                   disabled={isLoading}
                   className="flex-1 px-4 py-3 bg-foremanOffice-background border border-foremanOffice-border rounded-lg text-foremanOffice-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-foremanOffice-primary focus:border-transparent disabled:opacity-50"
                 />
+                {messages.length > 0 && (
+                  <button
+                    onClick={() => {
+                      if (confirm('Clear conversation history? This will start a fresh chat.')) {
+                        setMessages([]);
+                        setConversationId(null);
+                        setExecutionStatus(null);
+                      }
+                    }}
+                    disabled={isLoading}
+                    className="px-4 py-3 bg-foremanOffice-background border border-foremanOffice-border text-foremanOffice-text rounded-lg hover:bg-foremanOffice-panel disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Clear conversation"
+                  >
+                    🗑️
+                  </button>
+                )}
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || !inputMessage.trim()}
@@ -312,9 +347,16 @@ export default function ForemanChatPage() {
                   {isLoading ? 'Sending...' : 'Send'}
                 </button>
               </div>
-              <p className="text-xs text-gray-600 mt-2">
-                Foreman uses GPT-4 with organization-specific governance rules
-              </p>
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-xs text-gray-600">
+                  Foreman uses GPT-4 with organization-specific governance rules
+                </p>
+                {messages.length > 0 && (
+                  <p className="text-xs text-gray-500">
+                    {messages.length} message{messages.length !== 1 ? 's' : ''} in conversation
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
