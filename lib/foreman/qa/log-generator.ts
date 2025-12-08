@@ -61,7 +61,7 @@ function executeAndLog(
       cwd,
       encoding: 'utf-8',
       timeout,
-      shell: true, // REQUIRED for 2>&1 redirection
+      shell: '/bin/bash', // REQUIRED for 2>&1 redirection
     });
 
     // Write output to log file
