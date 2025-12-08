@@ -119,9 +119,13 @@ export async function POST(request: NextRequest) {
       { role: 'system', content: context.systemPrompt }
     ];
 
-    // Add conversation history if present
-    if (context.conversationHistory) {
-      messages.push({ role: 'user', content: context.conversationHistory });
+    // Add conversation history as a single assistant message containing the compressed history
+    // This preserves context while minimizing token usage
+    if (context.conversationHistory && context.conversationHistory.trim().length > 0) {
+      messages.push({ 
+        role: 'assistant', 
+        content: `Previous conversation context:\n${context.conversationHistory}` 
+      });
     }
 
     // Add current user message

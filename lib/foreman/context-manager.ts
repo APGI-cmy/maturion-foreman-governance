@@ -208,10 +208,8 @@ export function buildOptimizedContext(
   const useCondensed = options.useCondensedPrompt ?? false;
   const maxConvTokens = options.maxConversationTokens ?? MAX_CONVERSATION_TOKENS;
 
-  // Build system prompt
-  const systemPrompt = useCondensed
-    ? createCondensedSystemPrompt(organisationId)
-    : createCondensedSystemPrompt(organisationId); // Always use condensed for now
+  // Build system prompt (always use condensed for now to prevent context overflow)
+  const systemPrompt = createCondensedSystemPrompt(organisationId);
 
   // Compress conversation history
   const conversationHistory = compressConversationHistory(messages, maxConvTokens);
@@ -222,13 +220,19 @@ export function buildOptimizedContext(
   // Calculate totals
   const validation = validateContextSize(systemPrompt, conversationHistory, userMessage);
 
+  // Determine if actual compression occurred
+  const wasCompressed = messages.length > 0 && (
+    conversationHistory.includes('earlier messages omitted') || 
+    estimateTokenCount(conversationHistory) < estimateTokenCount(messages.map(compressMessage).join('\n\n'))
+  );
+
   return {
     systemPrompt,
     conversationHistory,
     userMessage,
     metadata: {
       totalTokens: validation.totalTokens,
-      compressed: messages.length > 0,
+      compressed: wasCompressed,
       messagesIncluded: messages.length
     }
   };

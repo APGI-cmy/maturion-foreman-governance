@@ -182,16 +182,9 @@ export default function ForemanChatPage() {
         if (data.errorType === 'context_overflow') {
           errorContent = `⚠️ **Context Window Exceeded**\n\n${data.error}\n\n`;
           if (data.suggestion) {
-            errorContent += `💡 **Suggestion**: ${data.suggestion}`;
+            errorContent += `💡 **Suggestion**: ${data.suggestion}\n\n`;
           }
-          
-          // Optionally clear conversation after showing error
-          setTimeout(() => {
-            if (confirm('Would you like to start a new conversation?')) {
-              setMessages([]);
-              setConversationId(null);
-            }
-          }, 1000);
+          errorContent += `You can click the 🗑️ button below to clear the conversation and start fresh.`;
         }
         
         const errorMessage: ChatMessage = {
