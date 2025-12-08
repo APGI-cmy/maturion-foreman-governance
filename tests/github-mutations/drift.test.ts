@@ -56,7 +56,7 @@ describe('GitHub Mutations Drift Detection', () => {
     ]
     
     for (const fn of requiredFunctions) {
-      assert(typeof mutations[fn] === 'function', `${fn} should be exported as function`)
+      assert(typeof (mutations as any)[fn] === 'function', `${fn} should be exported as function`)
     }
     
     console.log(`✓ All ${requiredFunctions.length} required mutation functions exported`)
@@ -78,7 +78,7 @@ describe('GitHub Mutations Drift Detection', () => {
     ]
     
     for (const fn of requiredFunctions) {
-      assert(typeof governance[fn] === 'function', `${fn} should be exported as function`)
+      assert(typeof (governance as any)[fn] === 'function', `${fn} should be exported as function`)
     }
     
     console.log(`✓ All ${requiredFunctions.length} required governance functions exported`)
@@ -96,7 +96,7 @@ describe('GitHub Mutations Drift Detection', () => {
     ]
     
     for (const type of requiredTypes) {
-      assert(types[type] !== undefined, `${type} should be exported`)
+      assert((types as any)[type] !== undefined, `${type} should be exported`)
     }
     
     console.log(`✓ All ${requiredTypes.length} required types exported`)
@@ -119,7 +119,7 @@ describe('GitHub Mutations Drift Detection', () => {
     const governanceLabelsValues = Object.values(types.GOVERNANCE_LABELS)
     
     for (const label of expectedLabels) {
-      assert(governanceLabelsValues.includes(label), `${label} should be in GOVERNANCE_LABELS`)
+      assert(governanceLabelsValues.includes(label as any), `${label} should be in GOVERNANCE_LABELS`)
     }
     
     console.log(`✓ All ${expectedLabels.length} governance labels defined`)
