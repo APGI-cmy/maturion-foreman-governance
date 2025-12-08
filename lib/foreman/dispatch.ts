@@ -18,6 +18,7 @@ import {
   isLocalBuilderEnabled 
 } from './local-builder'
 import { FallbackEvent } from '@/types/local-builder'
+import { detectGovernanceDrift } from './governance/drift-detector';
 
 /**
  * In-memory task store (in production, this would be a database)
