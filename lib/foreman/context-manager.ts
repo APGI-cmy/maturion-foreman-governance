@@ -54,6 +54,8 @@ export function compressConversationHistory(
 
   let compressed: string[] = [];
   let currentTokens = 0;
+  const summaryText = `[... earlier messages omitted for context efficiency]`;
+  const summaryTokens = estimateTokenCount(summaryText);
 
   // Process messages in reverse (most recent first)
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -74,7 +76,10 @@ export function compressConversationHistory(
       // Summarize remaining older messages
       const remaining = messages.length - i;
       if (remaining > 0) {
-        compressed.unshift(`[... ${remaining} earlier messages omitted for context efficiency]`);
+        // Make sure we have room for the summary
+        if (currentTokens + summaryTokens <= maxTokens) {
+          compressed.unshift(`[... ${remaining} earlier messages omitted for context efficiency]`);
+        }
       }
       break;
     }
