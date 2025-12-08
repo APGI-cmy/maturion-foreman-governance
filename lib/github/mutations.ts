@@ -37,10 +37,20 @@ import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory'
 
 /**
  * Get GitHub client with installation token
+ * 
+ * SECURITY NOTE: In production, this should use a secure secrets management
+ * service (e.g., AWS Secrets Manager, HashiCorp Vault, Azure Key Vault)
+ * instead of directly accessing environment variables.
+ * 
+ * For GitHub App installations, this should:
+ * 1. Generate a JWT from the app's private key
+ * 2. Exchange JWT for an installation token
+ * 3. Use the installation token for API calls
+ * 4. Cache tokens until they expire
  */
 async function getGitHubClient(): Promise<Octokit> {
-  // In production, this would use GitHub App authentication
-  // For now, we'll use a personal access token from environment
+  // TODO: Implement proper GitHub App authentication with JWT
+  // TODO: Add secrets management service integration
   const token = process.env.GITHUB_TOKEN || process.env.GITHUB_APP_INSTALLATION_TOKEN
   
   if (!token) {

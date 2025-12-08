@@ -174,20 +174,22 @@ export async function detectSecrets(text: string): Promise<{
   console.log('[GitHub Governance] Scanning for secrets...')
   
   const secretPatterns = [
-    // API keys
-    { pattern: /[a-zA-Z0-9_-]{20,}/g, name: 'API_KEY' },
-    // GitHub tokens
+    // GitHub tokens (gh prefix patterns)
     { pattern: /gh[p|s|o|u|r]_[a-zA-Z0-9]{36,}/g, name: 'GITHUB_TOKEN' },
-    // AWS keys
+    // AWS keys (AKIA prefix)
     { pattern: /AKIA[0-9A-Z]{16}/g, name: 'AWS_KEY' },
-    // Private keys
+    // Private keys (PEM format)
     { pattern: /-----BEGIN [A-Z ]+PRIVATE KEY-----/g, name: 'PRIVATE_KEY' },
-    // JWT tokens
+    // JWT tokens (three base64 segments)
     { pattern: /eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/g, name: 'JWT_TOKEN' },
-    // Generic passwords
-    { pattern: /password\s*[=:]\s*["']?[a-zA-Z0-9!@#$%^&*()_+-=]{8,}/gi, name: 'PASSWORD' },
-    // Generic secrets
-    { pattern: /secret\s*[=:]\s*["']?[a-zA-Z0-9!@#$%^&*()_+-=]{8,}/gi, name: 'SECRET' },
+    // OpenAI API keys (sk- prefix)
+    { pattern: /sk-[a-zA-Z0-9]{32,}/g, name: 'OPENAI_KEY' },
+    // Generic passwords (with assignment operator)
+    { pattern: /password\s*[=:]\s*["']?[\w!@#$%^&*()_+\-=]{8,}/gi, name: 'PASSWORD' },
+    // Generic secrets (with assignment operator)
+    { pattern: /secret\s*[=:]\s*["']?[\w!@#$%^&*()_+\-=]{8,}/gi, name: 'SECRET' },
+    // API keys with common prefixes
+    { pattern: /api[_-]?key\s*[=:]\s*["']?[\w\-]{20,}["']?/gi, name: 'API_KEY' },
   ]
   
   const foundPatterns: string[] = []
