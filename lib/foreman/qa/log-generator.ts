@@ -61,7 +61,7 @@ function executeAndLog(
       cwd,
       encoding: 'utf-8',
       timeout,
-      shell: true, // REQUIRED for 2>&1 redirection
+      shell: process.env.SHELL || '/bin/bash', // Use system shell, fallback to bash
     });
 
     // Write output to log file
@@ -198,6 +198,32 @@ export function generateTestLog(
 }
 
 /**
+ * Clean up auto-generated regression tests before running tests
+ * These are gitignored but may exist from previous QIEL runs
+ */
+function cleanupRegressionTests(): void {
+  const regressionDir = path.join(process.cwd(), 'tests/qic/regression');
+  
+  if (fs.existsSync(regressionDir)) {
+    try {
+      const files = fs.readdirSync(regressionDir);
+      const testFiles = files.filter(f => f.startsWith('qi-') && f.endsWith('.test.ts'));
+      
+      for (const file of testFiles) {
+        fs.unlinkSync(path.join(regressionDir, file));
+      }
+      
+      if (testFiles.length > 0) {
+        console.log(`[QIEL] Cleaned up ${testFiles.length} auto-generated regression test(s)`);
+      }
+    } catch (error) {
+      // Ignore errors - regression tests are optional
+      console.log(`[QIEL] Note: Could not clean regression tests: ${error}`);
+    }
+  }
+}
+
+/**
  * Run all log generation steps
  * Returns summary of all log generation results
  */
@@ -211,6 +237,9 @@ export function generateAllLogs(
 } {
   console.log('[QIEL] Generating all logs by running actual commands...');
   console.log('[QIEL] This matches GitHub Actions workflow execution\n');
+  
+  // Clean up regression tests before running tests to avoid circular dependency
+  cleanupRegressionTests();
 
   const buildLog = generateBuildLog(projectDir);
   const lintLog = generateLintLog(projectDir);
@@ -235,21 +264,30 @@ export function generateAllLogs(
 /**
  * Validate that log files exist and are readable
  */
-export function validateLogsExist(): {
+export function validateLogsExist(logsDir: string = '/tmp'): {
   allExist: boolean;
   build: boolean;
   lint: boolean;
   test: boolean;
   missing: string[];
 } {
-  const build = fs.existsSync(QIEL_CONFIG.logPaths.build);
-  const lint = fs.existsSync(QIEL_CONFIG.logPaths.lint);
-  const test = fs.existsSync(QIEL_CONFIG.logPaths.test);
+  // Helper to get log path - use config paths for /tmp, otherwise construct path
+  const getLogPath = (filename: string, configPath: string): string => {
+    return logsDir === '/tmp' ? configPath : path.join(logsDir, filename);
+  };
+  
+  const buildPath = getLogPath('build.log', QIEL_CONFIG.logPaths.build);
+  const lintPath = getLogPath('lint.log', QIEL_CONFIG.logPaths.lint);
+  const testPath = getLogPath('test.log', QIEL_CONFIG.logPaths.test);
+  
+  const build = fs.existsSync(buildPath);
+  const lint = fs.existsSync(lintPath);
+  const test = fs.existsSync(testPath);
 
   const missing: string[] = [];
-  if (!build) missing.push(QIEL_CONFIG.logPaths.build);
-  if (!lint) missing.push(QIEL_CONFIG.logPaths.lint);
-  if (!test) missing.push(QIEL_CONFIG.logPaths.test);
+  if (!build) missing.push(buildPath);
+  if (!lint) missing.push(lintPath);
+  if (!test) missing.push(testPath);
 
   return {
     allExist: build && lint && test,
