@@ -375,11 +375,14 @@ export function validateGitHubWorkflowAlignment(): {
 
     // Simple text-based validation (without YAML parser dependency)
     
-    // Check Node version
-    const nodeVersionMatch = workflowContent.match(/node-version:\s*['"]?(\d+)['"]?/);
-    if (nodeVersionMatch && nodeVersionMatch[1] !== NODE_VERSION) {
+    // Check Node version - extracts major version only (e.g., "20" from "20.0.0")
+    // Matches: node-version: '20' or node-version: '20.15.0'
+    const nodeVersionMatch = workflowContent.match(/node-version:\s*['"]?(\d+)(?:\.\d+(?:\.\d+)?)?['"]?/);
+    const workflowMajorVersion = nodeVersionMatch ? nodeVersionMatch[1] : null;
+    
+    if (workflowMajorVersion && workflowMajorVersion !== NODE_VERSION) {
       differences.push(
-        `Node version mismatch: Config=${NODE_VERSION}, Workflow=${nodeVersionMatch[1]}`
+        `Node version mismatch: Config=${NODE_VERSION}, Workflow=${workflowMajorVersion}`
       );
     }
 

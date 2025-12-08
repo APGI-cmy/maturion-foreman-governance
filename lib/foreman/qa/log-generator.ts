@@ -55,14 +55,13 @@ function executeAndLog(
     }
 
     // Execute command with output capture
-    // Using shell to enable 2>&1 redirection
+    // ALWAYS use shell to enable stderr redirection (2>&1) to match GitHub Actions
     const output = execSync(command, {
       cwd,
       encoding: 'utf-8',
       stdio: 'pipe', // Capture all output
       timeout,
-      // Don't throw on non-zero exit if continueOnError is true
-      ...(continueOnError ? { shell: true } : {}),
+      shell: true, // REQUIRED for 2>&1 redirection
     });
 
     // Write output to log file
@@ -78,7 +77,16 @@ function executeAndLog(
     };
   } catch (error: any) {
     // Command failed, but we still want to capture the output
-    const output = error.stdout || error.stderr || error.message || '';
+    // When using shell: true, the output is in error.output array
+    // error.output format: [stdin, stdout, stderr]
+    let output = '';
+    if (error.output && Array.isArray(error.output)) {
+      const [, stdout, stderr] = error.output;
+      output = (stdout || '') + (stderr || '');
+    } else {
+      // Fallback to error properties
+      output = error.stdout || error.stderr || error.message || '';
+    }
     
     // Write output to log file even on failure
     fs.writeFileSync(logPath, output, 'utf-8');
@@ -87,7 +95,7 @@ function executeAndLog(
     console.log(`[Log Generator] Output written to ${logPath}`);
 
     return {
-      success: false,
+      success: continueOnError, // Allow continuation if configured
       exitCode: error.status || 1,
       output,
     };

@@ -80,23 +80,30 @@ function compareEnvironments(): {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
     const scripts = packageJson.scripts || {};
 
-    // Check required scripts exist
-    const requiredScripts = {
-      'typecheck': QIEL_CONFIG.execution.buildCommands.typecheck.replace('npm run ', ''),
-      'lint': QIEL_CONFIG.execution.buildCommands.lint.replace('npm run ', ''),
-      'test:all': QIEL_CONFIG.execution.buildCommands.test.replace('npm run ', ''),
-      'qiel:quick': 'qiel:quick',
-      'qiel:full': 'qiel:full',
-    };
+    // Required scripts derived from unified config to maintain single source of truth
+    const requiredScripts: string[] = [
+      // Build commands from config
+      ...Object.keys(QIEL_CONFIG.execution.buildCommands).map(cmd => {
+        // Extract script name from command like "npm run typecheck" -> "typecheck"
+        const command = QIEL_CONFIG.execution.buildCommands[cmd as keyof typeof QIEL_CONFIG.execution.buildCommands];
+        return command.replace(/^npm run /, '');
+      }),
+      // QIEL commands
+      'qiel:quick',
+      'qiel:full',
+    ];
 
-    for (const [scriptName, _] of Object.entries(requiredScripts)) {
+    // Remove duplicates
+    const uniqueRequiredScripts = Array.from(new Set(requiredScripts));
+
+    for (const scriptName of uniqueRequiredScripts) {
       if (!scripts[scriptName]) {
         differences.push(`Missing required script in package.json: ${scriptName}`);
         recommendations.push(`Add "${scriptName}" script to package.json`);
       }
     }
 
-    if (Object.keys(requiredScripts).every(s => scripts[s])) {
+    if (uniqueRequiredScripts.every(s => scripts[s])) {
       console.log('✅ All required npm scripts are present\n');
     }
   } else {

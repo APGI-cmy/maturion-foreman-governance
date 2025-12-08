@@ -45,25 +45,31 @@ const DEFAULT_CONFIG: QIWConfig = {
 /**
  * Error patterns for different log types
  * Based on Quality Integrity Contract and unified config
+ * Memoized to avoid recreating RegExp objects on every access
  */
-const ERROR_PATTERNS: Record<QIWChannel, RegExp[]> = {
-  build: QIEL_CONFIG.qiw.errorPatterns.build.map(p => new RegExp(p, 'i')),
-  lint: QIEL_CONFIG.qiw.errorPatterns.lint.map(p => new RegExp(p, 'i')),
-  test: QIEL_CONFIG.qiw.errorPatterns.test.map(p => new RegExp(p, 'i')),
-  deployment_simulation: QIEL_CONFIG.qiw.errorPatterns.deployment_simulation.map(p => new RegExp(p, 'i')),
-  runtime_initialization: QIEL_CONFIG.qiw.errorPatterns.runtime_initialization.map(p => new RegExp(p, 'i')),
-}
+const ERROR_PATTERNS: Record<QIWChannel, RegExp[]> = (() => {
+  const patterns: Partial<Record<QIWChannel, RegExp[]>> = {};
+  patterns.build = QIEL_CONFIG.qiw.errorPatterns.build.map(p => new RegExp(p, 'i'));
+  patterns.lint = QIEL_CONFIG.qiw.errorPatterns.lint.map(p => new RegExp(p, 'i'));
+  patterns.test = QIEL_CONFIG.qiw.errorPatterns.test.map(p => new RegExp(p, 'i'));
+  patterns.deployment_simulation = QIEL_CONFIG.qiw.errorPatterns.deployment_simulation.map(p => new RegExp(p, 'i'));
+  patterns.runtime_initialization = QIEL_CONFIG.qiw.errorPatterns.runtime_initialization.map(p => new RegExp(p, 'i'));
+  return patterns as Record<QIWChannel, RegExp[]>;
+})();
 
 /**
  * Warning patterns for different log types (from unified config)
+ * Memoized to avoid recreating RegExp objects on every access
  */
-const WARNING_PATTERNS: Record<QIWChannel, RegExp[]> = {
-  build: QIEL_CONFIG.qiw.warningPatterns.build.map(p => new RegExp(p, 'i')),
-  lint: QIEL_CONFIG.qiw.warningPatterns.lint.map(p => new RegExp(p, 'i')),
-  test: QIEL_CONFIG.qiw.warningPatterns.test.map(p => new RegExp(p, 'i')),
-  deployment_simulation: QIEL_CONFIG.qiw.warningPatterns.deployment_simulation.map(p => new RegExp(p, 'i')),
-  runtime_initialization: QIEL_CONFIG.qiw.warningPatterns.runtime_initialization.map(p => new RegExp(p, 'i')),
-}
+const WARNING_PATTERNS: Record<QIWChannel, RegExp[]> = (() => {
+  const patterns: Partial<Record<QIWChannel, RegExp[]>> = {};
+  patterns.build = QIEL_CONFIG.qiw.warningPatterns.build.map(p => new RegExp(p, 'i'));
+  patterns.lint = QIEL_CONFIG.qiw.warningPatterns.lint.map(p => new RegExp(p, 'i'));
+  patterns.test = QIEL_CONFIG.qiw.warningPatterns.test.map(p => new RegExp(p, 'i'));
+  patterns.deployment_simulation = QIEL_CONFIG.qiw.warningPatterns.deployment_simulation.map(p => new RegExp(p, 'i'));
+  patterns.runtime_initialization = QIEL_CONFIG.qiw.warningPatterns.runtime_initialization.map(p => new RegExp(p, 'i'));
+  return patterns as Record<QIWChannel, RegExp[]>;
+})();
 
 /**
  * Generate unique anomaly ID
