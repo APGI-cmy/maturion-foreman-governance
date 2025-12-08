@@ -246,6 +246,11 @@ describe('QIEL Environment Diff Tool', () => {
       // Validate that all enabled channels have patterns
       qiw.enabledChannels.forEach(channel => {
         const channelKey = channel as keyof typeof qiw.errorPatterns;
+        // Validate channel exists in error patterns before accessing
+        assert.ok(
+          channelKey in qiw.errorPatterns,
+          `Channel ${channel} should exist in error patterns`
+        );
         assert.ok(
           qiw.errorPatterns[channelKey],
           `Error patterns should be defined for channel: ${channel}`
@@ -303,9 +308,17 @@ describe('QIEL Environment Diff Tool', () => {
       const testFile = path.join(logDir, '.qiel-test-write');
       try {
         fs.writeFileSync(testFile, 'test', 'utf-8');
-        fs.unlinkSync(testFile);
       } catch (error) {
         assert.fail(`Should be able to write to log directory: ${error}`);
+      } finally {
+        // Ensure cleanup happens even if assertions fail
+        try {
+          if (fs.existsSync(testFile)) {
+            fs.unlinkSync(testFile);
+          }
+        } catch {
+          // Ignore cleanup errors
+        }
       }
     });
   });

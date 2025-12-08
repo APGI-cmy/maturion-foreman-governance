@@ -61,7 +61,7 @@ function executeAndLog(
       cwd,
       encoding: 'utf-8',
       timeout,
-      shell: '/bin/bash', // REQUIRED for 2>&1 redirection
+      shell: process.env.SHELL || '/bin/bash', // Use system shell, fallback to bash
     });
 
     // Write output to log file
