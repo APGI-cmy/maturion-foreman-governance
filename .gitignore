@@ -74,3 +74,4 @@ preflight-validation-report.md
 
 # QIEL regression tests (auto-generated, committed by workflow only)
 /tests/qic/regression/qi-*.test.ts
+qiel-*.md
