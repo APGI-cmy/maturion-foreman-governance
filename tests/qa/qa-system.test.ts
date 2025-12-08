@@ -1,11 +1,11 @@
 /**
- * Tests for Enhanced QA System
+ * Tests for Enhanced QA System (STRICT MODE)
  * 
  * Validates:
  * - Log parsing detects errors and warnings
- * - Zero-warning policy enforcement
+ * - STRICT zero-warning policy enforcement (NO WHITELISTING)
  * - Error pattern matching
- * - Whitelist functionality
+ * - All warnings are blockers
  */
 
 import { describe, it, after } from 'node:test';
@@ -72,7 +72,7 @@ error: Unexpected token
     fs.unlinkSync(logPath);
   });
 
-  it('should detect warnings and check whitelist', () => {
+  it('should detect warnings in STRICT mode (no whitelisting)', () => {
     const testLog = `
 Building...
 Warning: This is a test warning
@@ -86,28 +86,27 @@ Build completed
     
     assert.strictEqual(result.exists, true);
     assert.ok(result.warnings.length > 0, 'Should detect warnings');
-    assert.ok(result.unwhitelistedWarnings.length > 0, 'Warning should not be whitelisted');
-    assert.strictEqual(result.passed, false, 'Should fail with unwhitelisted warnings');
+    // STRICT MODE: All warnings block, no whitelisting
+    assert.strictEqual(result.passed, false, 'Should fail with ANY warnings in strict mode');
 
     fs.unlinkSync(logPath);
   });
 
-  it('should pass with whitelisted warnings', () => {
+  it('should pass ONLY with zero warnings in STRICT mode', () => {
     const testLog = `
 Building...
-Schema not found: /home/runner/work/maturion-foreman-app/maturion-foreman-app/memory/schemas/historical-issues-schema.json
-Build completed
+Build completed successfully
 `;
-    const logPath = path.join(testLogsDir, 'test-whitelisted.log');
+    const logPath = path.join(testLogsDir, 'test-clean.log');
     fs.mkdirSync(testLogsDir, { recursive: true });
     fs.writeFileSync(logPath, testLog);
 
     const result = parseLogFile(logPath, 'build');
     
     assert.strictEqual(result.exists, true);
-    // This warning is in the whitelist, so it should be filtered out
-    assert.strictEqual(result.unwhitelistedWarnings.length, 0, 'Whitelisted warning should be filtered');
-    assert.strictEqual(result.passed, true, 'Should pass with only whitelisted warnings');
+    // STRICT MODE: Only passes with ZERO warnings
+    assert.strictEqual(result.warnings.length, 0, 'Should have zero warnings');
+    assert.strictEqual(result.passed, true, 'Should pass with zero warnings');
 
     fs.unlinkSync(logPath);
   });

@@ -259,9 +259,9 @@ export function generateLogParsingReport(results: {
     sections.push('');
   }
 
-  if (results.build.unwhitelistedWarnings.length > 0) {
-    sections.push('### Build Unwhitelisted Warnings\n');
-    results.build.unwhitelistedWarnings.forEach(warn => {
+  if (results.build.warnings.length > 0) {
+    sections.push('### Build Warnings\n');
+    results.build.warnings.forEach(warn => {
       sections.push(`- Line ${warn.line}: ${warn.message}`);
     });
     sections.push('');
