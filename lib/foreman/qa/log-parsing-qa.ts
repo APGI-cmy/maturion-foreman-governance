@@ -249,7 +249,6 @@ export function generateLogParsingReport(results: {
   sections.push(`- **Parsed**: ${results.build.parsed ? 'Yes' : 'No'}`);
   sections.push(`- **Errors**: ${results.build.errors.length}`);
   sections.push(`- **Warnings**: ${results.build.warnings.length}`);
-  sections.push(`- **Unwhitelisted Warnings**: ${results.build.unwhitelistedWarnings.length}`);
   sections.push(`- **Status**: ${results.build.passed ? '✅ PASSED' : '❌ FAILED'}\n`);
 
   if (results.build.errors.length > 0) {
