@@ -294,6 +294,291 @@ describe('Drift Detection - Acting as Developer', () => {
   })
 })
 
+describe('Drift Detection - Modified QIEL Patterns', () => {
+  it('should detect when QIEL patterns are modified', () => {
+    const result = foremanDriftDetector.detectModifiedQIELPatterns({
+      patternType: 'error_pattern',
+      originalPattern: { strict: true },
+      modifiedPattern: { strict: false },
+      reason: 'Too many false positives'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'modified_qiel_patterns')
+    assert.strictEqual(result.severity, 'critical')
+    assert.ok(result.description.includes('QIEL pattern'))
+  })
+})
+
+describe('Drift Detection - File Renaming to Hide Failures', () => {
+  it('should detect when files are renamed to hide failures', () => {
+    const result = foremanDriftDetector.detectRenamedFilesToHideFailures({
+      originalPath: 'failing-test.spec.ts',
+      newPath: 'failing-test.spec.ts.bak',
+      reason: 'Temporarily exclude from test suite'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'renamed_files_to_hide_failures')
+    assert.strictEqual(result.severity, 'critical')
+    assert.ok(result.description.includes('rename file'))
+  })
+})
+
+describe('Drift Detection - Modified TypeScript Config Strictness', () => {
+  it('should detect when TypeScript strictness is reduced', () => {
+    const result = foremanDriftDetector.detectModifiedTsConfigStrictness({
+      setting: 'strictNullChecks',
+      wasEnabled: true,
+      isEnabled: false,
+      configFile: 'tsconfig.json',
+      reason: 'Too many null errors'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'modified_tsconfig_strictness')
+    assert.strictEqual(result.severity, 'critical')
+  })
+  
+  it('should not detect drift when strictness is increased', () => {
+    const result = foremanDriftDetector.detectModifiedTsConfigStrictness({
+      setting: 'strictNullChecks',
+      wasEnabled: false,
+      isEnabled: true
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
+describe('Drift Detection - Relaxed Governance Thresholds', () => {
+  it('should detect when governance thresholds are relaxed', () => {
+    const result = foremanDriftDetector.detectRelaxedGovernanceThresholds({
+      thresholdName: 'qa_pass_percentage',
+      originalValue: 100,
+      newValue: 95,
+      reason: '95% is good enough'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'relaxed_governance_thresholds')
+    assert.strictEqual(result.severity, 'critical')
+  })
+  
+  it('should not detect drift when threshold is maintained or increased', () => {
+    const result = foremanDriftDetector.detectRelaxedGovernanceThresholds({
+      thresholdName: 'qa_pass_percentage',
+      originalValue: 95,
+      newValue: 100
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
+describe('Drift Detection - PR with Incomplete QA', () => {
+  it('should detect when PR is created with incomplete QA', () => {
+    const result = foremanDriftDetector.detectCreatedPRWithIncompleteQA({
+      qielPassed: false,
+      hasWarnings: true,
+      hasErrors: false,
+      hasFailures: false,
+      prAttempted: true
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'created_pr_with_incomplete_qa')
+    assert.strictEqual(result.severity, 'critical')
+  })
+  
+  it('should not detect drift when QA is complete and passed', () => {
+    const result = foremanDriftDetector.detectCreatedPRWithIncompleteQA({
+      qielPassed: true,
+      hasWarnings: false,
+      hasErrors: false,
+      hasFailures: false,
+      prAttempted: true
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+  
+  it('should not detect drift when PR not attempted', () => {
+    const result = foremanDriftDetector.detectCreatedPRWithIncompleteQA({
+      qielPassed: false,
+      hasWarnings: true,
+      hasErrors: true,
+      hasFailures: true,
+      prAttempted: false
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
+describe('Drift Detection - Ignored Anomalies', () => {
+  it('should detect when anomalies are ignored', () => {
+    const result = foremanDriftDetector.detectIgnoredAnomalies({
+      anomalyType: 'QIW_ANOMALY',
+      anomalyCount: 5,
+      ignored: true,
+      reason: 'Low severity'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'ignored_anomalies')
+    assert.strictEqual(result.severity, 'critical')
+  })
+  
+  it('should not detect drift when anomalies are investigated', () => {
+    const result = foremanDriftDetector.detectIgnoredAnomalies({
+      anomalyType: 'QIW_ANOMALY',
+      anomalyCount: 5,
+      ignored: false
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
+describe('Drift Detection - Filtered Logs', () => {
+  it('should detect when logs are filtered to hide failures', () => {
+    const result = foremanDriftDetector.detectFilteredLogsToAvoidFailure({
+      logType: 'error',
+      filtered: true,
+      filteredCount: 10,
+      reason: 'Reduce noise'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'filtered_logs_to_avoid_failure')
+    assert.strictEqual(result.severity, 'critical')
+  })
+})
+
+describe('Drift Detection - QIEL False Positives', () => {
+  it('should detect when QIEL false positives are accepted', () => {
+    const result = foremanDriftDetector.detectAcceptedQIELFalsePositives({
+      falsePositiveCount: 3,
+      accepted: true,
+      reason: 'Known issues'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'accepted_qiel_false_positives')
+    assert.strictEqual(result.severity, 'high')
+  })
+})
+
+describe('Drift Detection - Alternative Logic Not Aligned', () => {
+  it('should detect when alternative logic contradicts governance', () => {
+    const result = foremanDriftDetector.detectUsedAlternativeLogicNotAligned({
+      alternativeApproach: 'Skip validation for speed',
+      governancePrinciple: 'Zero-tolerance QA',
+      reason: 'Faster execution'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'used_alternative_logic_not_aligned')
+    assert.strictEqual(result.severity, 'critical')
+  })
+})
+
+describe('Drift Detection - Removed Tests or Samples', () => {
+  it('should detect when tests are removed', () => {
+    const result = foremanDriftDetector.detectRemovedTestsOrSamples({
+      itemType: 'test',
+      itemPath: 'src/__tests__/failing.test.ts',
+      removed: true,
+      reason: 'Test keeps failing'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'removed_tests_or_samples')
+    assert.strictEqual(result.severity, 'critical')
+  })
+  
+  it('should detect when samples are removed', () => {
+    const result = foremanDriftDetector.detectRemovedTestsOrSamples({
+      itemType: 'sample',
+      itemPath: 'samples/problematic.ts',
+      removed: true
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+  })
+  
+  it('should not detect drift when items are not removed', () => {
+    const result = foremanDriftDetector.detectRemovedTestsOrSamples({
+      itemType: 'test',
+      itemPath: 'src/__tests__/valid.test.ts',
+      removed: false
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
+describe('Drift Detection - Suppressed Errors', () => {
+  it('should detect when errors are suppressed', () => {
+    const result = foremanDriftDetector.detectSuppressedErrors({
+      errorType: 'TypeError',
+      suppressionMethod: '@ts-ignore',
+      suppressed: true,
+      reason: 'Legacy code'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'suppressed_errors')
+    assert.strictEqual(result.severity, 'critical')
+  })
+})
+
+describe('Drift Detection - Loosened QIEL Parsing', () => {
+  it('should detect when QIEL parsing is loosened', () => {
+    const result = foremanDriftDetector.detectLoosenedQIELParsing({
+      parsingRule: 'error_pattern_matching',
+      wasStrict: true,
+      isStrict: false,
+      reason: 'Too restrictive'
+    })
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'loosened_qiel_parsing')
+    assert.strictEqual(result.severity, 'critical')
+  })
+  
+  it('should not detect drift when parsing strictness is increased', () => {
+    const result = foremanDriftDetector.detectLoosenedQIELParsing({
+      parsingRule: 'error_pattern_matching',
+      wasStrict: false,
+      isStrict: true
+    })
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
+describe('Drift Detection - Acting as Developer', () => {
+  it('should detect when Foreman acts as developer', () => {
+    const result = foremanDriftDetector.detectActedAsDeveloper(
+      'Code the new feature'
+    )
+    
+    assert.strictEqual(result.driftDetected, true)
+    assert.strictEqual(result.driftType, 'acted_as_developer')
+    assert.ok(result.description.includes('acted as developer'))
+  })
+  
+  it('should not detect drift for auditor actions', () => {
+    const result = foremanDriftDetector.detectActedAsDeveloper(
+      'Validate the code quality'
+    )
+    
+    assert.strictEqual(result.driftDetected, false)
+  })
+})
+
 describe('Comprehensive Drift Detection', () => {
   it('should detect multiple types of drift in one check', async () => {
     const results = await detectGovernanceDrift({
@@ -326,6 +611,33 @@ describe('Comprehensive Drift Detection', () => {
     })
     
     assert.strictEqual(results.length, 0)
+  })
+  
+  it('should detect comprehensive drift across all new categories', async () => {
+    const results = await detectGovernanceDrift({
+      qielPatternModified: {
+        patternType: 'error_regex',
+        originalPattern: /error/i,
+        modifiedPattern: /warning/i,
+        reason: 'Reduce failures'
+      },
+      anomaliesIgnored: {
+        anomalyType: 'QIW_PATTERN_MISMATCH',
+        anomalyCount: 3,
+        ignored: true,
+        reason: 'Not important'
+      },
+      errorsSuppressed: {
+        errorType: 'TypeScript Error',
+        suppressionMethod: '@ts-ignore',
+        suppressed: true
+      }
+    })
+    
+    assert.ok(results.length >= 3)
+    assert.ok(results.some(r => r.driftType === 'modified_qiel_patterns'))
+    assert.ok(results.some(r => r.driftType === 'ignored_anomalies'))
+    assert.ok(results.some(r => r.driftType === 'suppressed_errors'))
   })
 })
 

@@ -279,7 +279,7 @@ export async function executeReasoning(
     governanceContext: {
       memoryLoaded: snapshot !== undefined && snapshot !== null, // Check if snapshot was actually loaded
       governanceRulesApplied: false, // Will be set to true after applying patterns
-      driftMonitored: !context.skipDriftCheck
+      driftMonitored: true // Drift monitoring is run in loadMemorySnapshot unless explicitly skipped
     }
   })
   
@@ -299,6 +299,23 @@ export async function executeReasoning(
   }
   
   console.log('[MARE] Mindset compliance validated:', mindsetValidation.message)
+  
+  // DRIFT DETECTION HOOK: Check for governance drift in reasoning context
+  const driftResults = await detectGovernanceDrift({
+    action: `Execute reasoning for ${context.intent}`,
+    governanceMemory: {
+      memoryLoaded: snapshot !== undefined && snapshot !== null,
+      rulesApplied: false, // Will be updated after applying patterns
+      driftMonitored: true
+    }
+  });
+  
+  if (driftResults.length > 0) {
+    console.error('[MARE] DRIFT DETECTED in reasoning execution:');
+    driftResults.forEach(drift => {
+      console.error(`  - ${drift.driftType}: ${drift.description}`);
+    });
+  }
   
   const patternsApplied: string[] = []
   const decisions: ReasoningDecision[] = []

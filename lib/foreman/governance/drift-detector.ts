@@ -36,6 +36,18 @@ export type DriftType =
   | 'attempted_forbidden_action'
   | 'ignored_governance_memory'
   | 'acted_as_developer'
+  | 'modified_qiel_patterns'
+  | 'renamed_files_to_hide_failures'
+  | 'modified_tsconfig_strictness'
+  | 'relaxed_governance_thresholds'
+  | 'created_pr_with_incomplete_qa'
+  | 'ignored_anomalies'
+  | 'filtered_logs_to_avoid_failure'
+  | 'accepted_qiel_false_positives'
+  | 'used_alternative_logic_not_aligned'
+  | 'removed_tests_or_samples'
+  | 'suppressed_errors'
+  | 'loosened_qiel_parsing'
 
 /**
  * Foreman Governance Drift Detector
@@ -331,6 +343,363 @@ export class ForemanGovernanceDriftDetector {
   }
   
   /**
+   * Detect if Foreman modified QIEL patterns
+   */
+  detectModifiedQIELPatterns(context: {
+    patternType: string
+    originalPattern: any
+    modifiedPattern: any
+    reason?: string
+  }): DriftDetectionResult {
+    const description = `Foreman attempted to modify QIEL pattern: ${context.patternType}. Original: ${JSON.stringify(context.originalPattern)}, Modified: ${JSON.stringify(context.modifiedPattern)}. Reason: ${context.reason || 'None'}. QIEL patterns must remain strict and cannot be softened.`
+    
+    return this.recordDrift({
+      driftType: 'modified_qiel_patterns',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Revert QIEL pattern to original',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory',
+        'Re-run QIEL with original patterns'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman renamed files to hide failures
+   */
+  detectRenamedFilesToHideFailures(context: {
+    originalPath: string
+    newPath: string
+    reason?: string
+  }): DriftDetectionResult {
+    const description = `Foreman attempted to rename file to hide failures: "${context.originalPath}" -> "${context.newPath}". Reason: ${context.reason || 'None'}. File renaming to avoid QA is FORBIDDEN.`
+    
+    return this.recordDrift({
+      driftType: 'renamed_files_to_hide_failures',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Revert file rename',
+        'Create governance incident',
+        'Fix underlying issue instead',
+        'Block PR creation',
+        'Log to Governance Memory'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman modified tsconfig strictness
+   */
+  detectModifiedTsConfigStrictness(context: {
+    setting: string
+    wasEnabled: boolean
+    isEnabled: boolean
+    configFile?: string
+    reason?: string
+  }): DriftDetectionResult {
+    if (context.wasEnabled === context.isEnabled) {
+      return this.noDrift()
+    }
+    
+    if (!context.wasEnabled && context.isEnabled) {
+      // This is good - increasing strictness
+      return this.noDrift()
+    }
+    
+    const description = `Foreman reduced TypeScript strictness in ${context.configFile || 'tsconfig.json'}: ${context.setting}. Was enabled: ${context.wasEnabled}, Is enabled: ${context.isEnabled}. Reason: ${context.reason || 'None'}. TypeScript strictness cannot be reduced.`
+    
+    return this.recordDrift({
+      driftType: 'modified_tsconfig_strictness',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Revert tsconfig changes',
+        'Create governance incident',
+        'Fix type errors instead of loosening strictness',
+        'Block PR creation',
+        'Log to Governance Memory'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman relaxed governance thresholds
+   */
+  detectRelaxedGovernanceThresholds(context: {
+    thresholdName: string
+    originalValue: number
+    newValue: number
+    reason?: string
+  }): DriftDetectionResult {
+    if (context.newValue >= context.originalValue) {
+      // This is good - maintaining or increasing threshold
+      return this.noDrift()
+    }
+    
+    const description = `Foreman attempted to relax governance threshold: ${context.thresholdName}. Original: ${context.originalValue}, New: ${context.newValue}. Reason: ${context.reason || 'None'}. Governance thresholds cannot be relaxed.`
+    
+    return this.recordDrift({
+      driftType: 'relaxed_governance_thresholds',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Revert threshold to original value',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman created PR with incomplete QA
+   */
+  detectCreatedPRWithIncompleteQA(context: {
+    qielPassed: boolean
+    hasWarnings: boolean
+    hasErrors: boolean
+    hasFailures: boolean
+    prAttempted: boolean
+  }): DriftDetectionResult {
+    if (!context.prAttempted) {
+      return this.noDrift()
+    }
+    
+    if (context.qielPassed && !context.hasWarnings && !context.hasErrors && !context.hasFailures) {
+      // QA is complete - no drift
+      return this.noDrift()
+    }
+    
+    const issues: string[] = []
+    if (!context.qielPassed) issues.push('QIEL not passed')
+    if (context.hasWarnings) issues.push('Warnings present')
+    if (context.hasErrors) issues.push('Errors present')
+    if (context.hasFailures) issues.push('Failures present')
+    
+    const description = `Foreman attempted to create PR with incomplete QA: ${issues.join(', ')}. PR creation requires 100% QA pass - ZERO errors, ZERO warnings, ZERO failures.`
+    
+    return this.recordDrift({
+      driftType: 'created_pr_with_incomplete_qa',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Block PR creation',
+        'Create governance incident',
+        'Fix all QA issues before PR',
+        'Log to Governance Memory',
+        'Require 100% QA pass'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman ignored anomalies
+   */
+  detectIgnoredAnomalies(context: {
+    anomalyType: string
+    anomalyCount: number
+    ignored: boolean
+    reason?: string
+  }): DriftDetectionResult {
+    if (!context.ignored || context.anomalyCount === 0) {
+      return this.noDrift()
+    }
+    
+    const description = `Foreman ignored ${context.anomalyCount} anomalies of type: ${context.anomalyType}. Reason: ${context.reason || 'None'}. Anomalies MUST be investigated and resolved - ignoring is FORBIDDEN.`
+    
+    return this.recordDrift({
+      driftType: 'ignored_anomalies',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Stop and investigate anomalies',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory',
+        'Resolve all anomalies before proceeding'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman filtered logs to avoid showing failures
+   */
+  detectFilteredLogsToAvoidFailure(context: {
+    logType: string
+    filtered: boolean
+    filteredCount: number
+    reason?: string
+  }): DriftDetectionResult {
+    if (!context.filtered || context.filteredCount === 0) {
+      return this.noDrift()
+    }
+    
+    const description = `Foreman filtered ${context.filteredCount} ${context.logType} logs to avoid showing failures. Reason: ${context.reason || 'None'}. Log filtering to hide failures is FORBIDDEN.`
+    
+    return this.recordDrift({
+      driftType: 'filtered_logs_to_avoid_failure',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Stop log filtering',
+        'Show all logs unfiltered',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman accepted false positives in QIEL
+   */
+  detectAcceptedQIELFalsePositives(context: {
+    falsePositiveCount: number
+    accepted: boolean
+    reason?: string
+  }): DriftDetectionResult {
+    if (!context.accepted || context.falsePositiveCount === 0) {
+      return this.noDrift()
+    }
+    
+    const description = `Foreman accepted ${context.falsePositiveCount} false positives in QIEL results. Reason: ${context.reason || 'None'}. False positives indicate QIEL configuration issues and must be fixed, not accepted.`
+    
+    return this.recordDrift({
+      driftType: 'accepted_qiel_false_positives',
+      severity: 'high',
+      description,
+      actionTaken: [
+        'Investigate and fix QIEL configuration',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory',
+        'Fix false positive root cause'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman used alternative logic not aligned with True North
+   */
+  detectUsedAlternativeLogicNotAligned(context: {
+    alternativeApproach: string
+    governancePrinciple: string
+    reason?: string
+  }): DriftDetectionResult {
+    const description = `Foreman used alternative logic not aligned with True North: "${context.alternativeApproach}". This contradicts governance principle: "${context.governancePrinciple}". Reason: ${context.reason || 'None'}. All logic must align with True North Philosophy.`
+    
+    return this.recordDrift({
+      driftType: 'used_alternative_logic_not_aligned',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Stop alternative approach',
+        'Revert to governance-aligned logic',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory',
+        'Regenerate reasoning pattern'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman removed tests or samples
+   */
+  detectRemovedTestsOrSamples(context: {
+    itemType: 'test' | 'sample'
+    itemPath: string
+    removed: boolean
+    reason?: string
+  }): DriftDetectionResult {
+    if (!context.removed) {
+      return this.noDrift()
+    }
+    
+    const description = `Foreman attempted to remove ${context.itemType}: "${context.itemPath}". Reason: ${context.reason || 'None'}. Removing tests/samples to reduce failures is FORBIDDEN. Fix the underlying issue instead.`
+    
+    return this.recordDrift({
+      driftType: 'removed_tests_or_samples',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Restore removed test/sample',
+        'Fix underlying issue instead of removing',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman suppressed errors
+   */
+  detectSuppressedErrors(context: {
+    errorType: string
+    suppressionMethod: string
+    suppressed: boolean
+    reason?: string
+  }): DriftDetectionResult {
+    if (!context.suppressed) {
+      return this.noDrift()
+    }
+    
+    const description = `Foreman suppressed errors of type: ${context.errorType} using method: ${context.suppressionMethod}. Reason: ${context.reason || 'None'}. Error suppression is FORBIDDEN. Errors must be FIXED, not suppressed.`
+    
+    return this.recordDrift({
+      driftType: 'suppressed_errors',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Remove error suppression',
+        'Fix errors instead of suppressing',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory'
+      ]
+    })
+  }
+  
+  /**
+   * Detect if Foreman loosened QIEL parsing rules
+   */
+  detectLoosenedQIELParsing(context: {
+    parsingRule: string
+    wasStrict: boolean
+    isStrict: boolean
+    reason?: string
+  }): DriftDetectionResult {
+    if (context.wasStrict === context.isStrict) {
+      return this.noDrift()
+    }
+    
+    if (!context.wasStrict && context.isStrict) {
+      // This is good - increasing strictness
+      return this.noDrift()
+    }
+    
+    const description = `Foreman loosened QIEL parsing rule: ${context.parsingRule}. Was strict: ${context.wasStrict}, Is strict: ${context.isStrict}. Reason: ${context.reason || 'None'}. QIEL parsing must remain strict.`
+    
+    return this.recordDrift({
+      driftType: 'loosened_qiel_parsing',
+      severity: 'critical',
+      description,
+      actionTaken: [
+        'Revert QIEL parsing to strict mode',
+        'Create governance incident',
+        'Block PR creation',
+        'Log to Governance Memory',
+        'Re-run QIEL with strict parsing'
+      ]
+    })
+  }
+  
+  /**
    * Record drift incident
    */
   private recordDrift(drift: {
@@ -401,16 +770,13 @@ export class ForemanGovernanceDriftDetector {
             severity: drift.severity,
             actionTaken: drift.actionTaken,
             timestamp: new Date().toISOString(),
-            resolved: false
+            resolved: false,
+            source: 'ForemanGovernanceDriftDetector',
+            requiresCorrection: true
           }
         },
         tags: ['foreman_drift', drift.driftType, 'governance_violation', drift.severity],
-        category: 'governance',
-        metadata: {
-          source: 'ForemanGovernanceDriftDetector',
-          detectionTime: new Date().toISOString(),
-          requiresCorrection: true
-        }
+        createdBy: 'foreman_drift_detector'
       })
     } catch (error) {
       // Silently fail - drift is still logged locally
@@ -543,6 +909,77 @@ export async function detectGovernanceDrift(context: {
     rulesApplied: boolean
     driftMonitored: boolean
   }
+  qielPatternModified?: {
+    patternType: string
+    originalPattern: any
+    modifiedPattern: any
+    reason?: string
+  }
+  fileRenamed?: {
+    originalPath: string
+    newPath: string
+    reason?: string
+  }
+  tsconfigModified?: {
+    setting: string
+    wasEnabled: boolean
+    isEnabled: boolean
+    configFile?: string
+    reason?: string
+  }
+  governanceThresholdRelaxed?: {
+    thresholdName: string
+    originalValue: number
+    newValue: number
+    reason?: string
+  }
+  prWithIncompleteQA?: {
+    qielPassed: boolean
+    hasWarnings: boolean
+    hasErrors: boolean
+    hasFailures: boolean
+    prAttempted: boolean
+  }
+  anomaliesIgnored?: {
+    anomalyType: string
+    anomalyCount: number
+    ignored: boolean
+    reason?: string
+  }
+  logsFiltered?: {
+    logType: string
+    filtered: boolean
+    filteredCount: number
+    reason?: string
+  }
+  qielFalsePositivesAccepted?: {
+    falsePositiveCount: number
+    accepted: boolean
+    reason?: string
+  }
+  alternativeLogicUsed?: {
+    alternativeApproach: string
+    governancePrinciple: string
+    reason?: string
+  }
+  testsOrSamplesRemoved?: {
+    itemType: 'test' | 'sample'
+    itemPath: string
+    removed: boolean
+    reason?: string
+  }
+  errorsSuppressed?: {
+    errorType: string
+    suppressionMethod: string
+    suppressed: boolean
+    reason?: string
+  }
+  qielParsingLoosened?: {
+    parsingRule: string
+    wasStrict: boolean
+    isStrict: boolean
+    reason?: string
+  }
 }): Promise<DriftDetectionResult[]> {
   const results: DriftDetectionResult[] = []
   
@@ -582,6 +1019,55 @@ export async function detectGovernanceDrift(context: {
   
   if (context.governanceMemory) {
     results.push(foremanDriftDetector.detectIgnoredGovernanceMemory(context.governanceMemory))
+  }
+  
+  // New drift detection categories
+  if (context.qielPatternModified) {
+    results.push(foremanDriftDetector.detectModifiedQIELPatterns(context.qielPatternModified))
+  }
+  
+  if (context.fileRenamed) {
+    results.push(foremanDriftDetector.detectRenamedFilesToHideFailures(context.fileRenamed))
+  }
+  
+  if (context.tsconfigModified) {
+    results.push(foremanDriftDetector.detectModifiedTsConfigStrictness(context.tsconfigModified))
+  }
+  
+  if (context.governanceThresholdRelaxed) {
+    results.push(foremanDriftDetector.detectRelaxedGovernanceThresholds(context.governanceThresholdRelaxed))
+  }
+  
+  if (context.prWithIncompleteQA) {
+    results.push(foremanDriftDetector.detectCreatedPRWithIncompleteQA(context.prWithIncompleteQA))
+  }
+  
+  if (context.anomaliesIgnored) {
+    results.push(foremanDriftDetector.detectIgnoredAnomalies(context.anomaliesIgnored))
+  }
+  
+  if (context.logsFiltered) {
+    results.push(foremanDriftDetector.detectFilteredLogsToAvoidFailure(context.logsFiltered))
+  }
+  
+  if (context.qielFalsePositivesAccepted) {
+    results.push(foremanDriftDetector.detectAcceptedQIELFalsePositives(context.qielFalsePositivesAccepted))
+  }
+  
+  if (context.alternativeLogicUsed) {
+    results.push(foremanDriftDetector.detectUsedAlternativeLogicNotAligned(context.alternativeLogicUsed))
+  }
+  
+  if (context.testsOrSamplesRemoved) {
+    results.push(foremanDriftDetector.detectRemovedTestsOrSamples(context.testsOrSamplesRemoved))
+  }
+  
+  if (context.errorsSuppressed) {
+    results.push(foremanDriftDetector.detectSuppressedErrors(context.errorsSuppressed))
+  }
+  
+  if (context.qielParsingLoosened) {
+    results.push(foremanDriftDetector.detectLoosenedQIELParsing(context.qielParsingLoosened))
   }
   
   // Filter out no-drift results

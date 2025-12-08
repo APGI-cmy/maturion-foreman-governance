@@ -19,6 +19,7 @@ import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory';
 import { selectModel, executeWithEscalation } from '@/lib/foreman/model-escalation';
 import { checkLocalBuilderHealth } from '@/lib/foreman/desktop-sync';
 import { github } from '@/lib/github/client';
+import { detectGovernanceDrift } from '@/lib/foreman/governance/drift-detector';
 
 const DEFAULT_CONFIG: OvernightExecutionConfig = {
   enabled: process.env.OVERNIGHT_EXECUTION_ENABLED === 'true',
@@ -390,6 +391,34 @@ async function executeIssue(
       driftCheckPassed: true,
       governanceCheckPassed: true,
     };
+
+    // DRIFT DETECTION HOOK: Check if proceeding with overnight tasks when QA is not 100%
+    const qaPassedFully = qaResults.passed && qaResults.failedChecks === 0;
+    if (!qaPassedFully) {
+      const driftResults = await detectGovernanceDrift({
+        action: 'proceed_with_overnight_execution',
+        partialQAAccepted: {
+          totalTests: qaResults.totalChecks,
+          passedTests: qaResults.passedChecks,
+          failedTests: qaResults.failedChecks,
+          accepted: true, // We're attempting to proceed
+        },
+        qaBypass: {
+          qaCheckName: 'overnight_execution_qa',
+          bypassed: !qaPassedFully,
+          reason: 'Attempting to proceed with overnight execution despite QA failures'
+        }
+      });
+
+      if (driftResults.length > 0) {
+        console.error(`[Overnight Execution] DRIFT DETECTED for issue #${issue.issueNumber}:`);
+        driftResults.forEach(drift => {
+          console.error(`  - ${drift.driftType}: ${drift.description}`);
+        });
+        // Block execution
+        throw new Error(`Governance drift detected: Cannot proceed with overnight execution when QA is not 100% passed. Drifts: ${driftResults.map(d => d.driftType).join(', ')}`);
+      }
+    }
 
     // Simulate governance validation
     const governanceResults: GovernanceValidationSummary = {

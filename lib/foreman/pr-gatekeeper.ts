@@ -34,6 +34,7 @@ import { runQIEL, QIELResult } from './qa/qiel-runner';
 import { QIEL_CONFIG } from './qiel-config';
 import { logGovernanceEvent } from './memory/governance-memory';
 import { writeMemory } from './memory/storage';
+import { detectGovernanceDrift } from './governance/drift-detector';
 
 /**
  * PR Gatekeeper Result
@@ -97,6 +98,26 @@ export async function enforcePRGatekeeper(options?: {
   let qielResult: QIELResult;
   const blockingIssues: string[] = [];
   const governanceViolations: string[] = [];
+
+  // DRIFT DETECTION HOOK: Check if attempting PR creation with incomplete QA
+  console.log('[PR Gatekeeper] Running drift detection...');
+  const driftCheckResults = await detectGovernanceDrift({
+    action: 'create_pull_request',
+    prWithIncompleteQA: {
+      qielPassed: false, // Will be updated after QIEL runs
+      hasWarnings: false,
+      hasErrors: false,
+      hasFailures: false,
+      prAttempted: true,
+    }
+  });
+
+  if (driftCheckResults.length > 0) {
+    console.warn('[PR Gatekeeper] Drift detected during PR gatekeeper invocation:');
+    driftCheckResults.forEach(drift => {
+      console.warn(`  - ${drift.driftType}: ${drift.description}`);
+    });
+  }
 
   try {
     // Run QIEL EXACTLY as GitHub Actions does
@@ -232,6 +253,27 @@ export async function enforcePRGatekeeper(options?: {
   // Determine if PR creation is allowed
   const allowed = qielResult.passed && blockingIssues.length === 0;
 
+  // DRIFT DETECTION HOOK: Detect if attempting to create PR with incomplete QA
+  if (!allowed) {
+    const finalDriftCheck = await detectGovernanceDrift({
+      prWithIncompleteQA: {
+        qielPassed: qielResult.passed,
+        hasWarnings: !qielResult.checks.zeroWarningPassed,
+        hasErrors: !qielResult.checks.buildLogsPassed || !qielResult.checks.lintLogsPassed,
+        hasFailures: !qielResult.checks.testLogsPassed,
+        prAttempted: true,
+      }
+    });
+
+    if (finalDriftCheck.length > 0) {
+      console.error('[PR Gatekeeper] GOVERNANCE DRIFT DETECTED: Attempting PR creation with incomplete QA');
+      finalDriftCheck.forEach(drift => {
+        console.error(`  - ${drift.driftType}: ${drift.description}`);
+        governanceViolations.push(`DRIFT_${String(drift.driftType).toUpperCase()}`);
+      });
+    }
+  }
+
   // Construct reason message
   let reason: string;
   if (allowed) {
@@ -322,38 +364,36 @@ async function recordGovernanceIncident(incident: {
   timestamp: string;
 }): Promise<void> {
   try {
+    // Use timestamp-based ID with random suffix for uniqueness
+    const incidentId = `pr_gatekeeper_block_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    
     await writeMemory({
-      entry: {
-        id: `pr_gatekeeper_block_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
-        scope: 'global',
-        category: 'governance',
-        type: 'incident',
-        tags: [
-          'pr_gatekeeper',
-          'pr_creation_blocked',
-          'governance_violation',
-          'qiel_failure',
-          ...incident.governanceViolations.map(v => v.toLowerCase()),
-        ],
-        value: {
-          incident: {
-            type: incident.type,
-            reason: incident.reason,
-            blockingIssues: incident.blockingIssues,
-            governanceViolations: incident.governanceViolations,
-            qielPassed: incident.qielResult?.passed || false,
-            qiIncidents: incident.qielResult?.qiIncidents.length || 0,
-            buildId: incident.buildId,
-            sequenceId: incident.sequenceId,
-            timestamp: incident.timestamp,
-          },
-        },
-        metadata: {
+      scope: 'global',
+      key: incidentId,
+      value: {
+        incident: {
+          type: incident.type,
+          reason: incident.reason,
+          blockingIssues: incident.blockingIssues,
+          governanceViolations: incident.governanceViolations,
+          qielPassed: incident.qielResult?.passed || false,
+          qiIncidents: incident.qielResult?.qiIncidents.length || 0,
+          buildId: incident.buildId,
+          sequenceId: incident.sequenceId,
+          timestamp: incident.timestamp,
           source: 'PRGatekeeper',
           requiresCorrection: true,
           severity: 'critical',
         },
-      }
+      },
+      tags: [
+        'pr_gatekeeper',
+        'pr_creation_blocked',
+        'governance_violation',
+        'qiel_failure',
+        ...incident.governanceViolations.map(v => v.toLowerCase()),
+      ],
+      createdBy: 'pr_gatekeeper'
     });
 
     console.log('[PR Gatekeeper] Governance incident recorded to memory fabric');
