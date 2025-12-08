@@ -236,7 +236,10 @@ export class GovernanceFirstMindset {
       }
     }
     
-    // Default to auditor stance if unclear
+    // Default to auditor stance if unclear, but log for review
+    if (actionLower.trim().length > 0) {
+      console.warn(`[Governance Mindset] Action classification unclear: "${action}". Defaulting to auditor stance. Consider explicit classification.`)
+    }
     return true
   }
   

@@ -352,7 +352,16 @@ export class ForemanGovernanceDriftDetector {
     
     // Record to memory asynchronously without blocking
     this.recordToMemoryAsync(incidentId, drift).catch(error => {
-      console.error('[FOREMAN DRIFT] Failed to record drift incident:', error)
+      console.error('[FOREMAN DRIFT] CRITICAL: Failed to record drift incident to memory:', error)
+      console.error('[FOREMAN DRIFT] Incident details (local backup):', JSON.stringify({
+        incidentId,
+        driftType: drift.driftType,
+        severity: drift.severity,
+        description: drift.description,
+        actionTaken: drift.actionTaken,
+        timestamp: new Date().toISOString()
+      }, null, 2))
+      // Consider implementing a fallback file-based storage mechanism here
     })
     
     console.error(`[FOREMAN DRIFT DETECTED] ${drift.severity.toUpperCase()}: ${drift.description}`)
@@ -444,8 +453,13 @@ export class ForemanGovernanceDriftDetector {
       if (modified.length < original.length) return true
     }
     
-    // Default: if they're different, assume it might be weakened
-    return original !== modified
+    // Default: if they're different and we can't determine type, log for review
+    if (original !== modified) {
+      console.warn(`[Governance Drift] Rule change detected but type unclear: ${JSON.stringify(original)} -> ${JSON.stringify(modified)}. May require manual review.`)
+      return false // Conservative: don't flag as weakened if unclear
+    }
+    
+    return false
   }
   
   /**

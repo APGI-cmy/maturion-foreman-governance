@@ -474,8 +474,12 @@ export async function runBuildSequence(
             requiresCorrection: true
           }
         })
+        console.log('[BuildSequence] Mindset violation incident recorded successfully')
       } catch (memError) {
-        console.error('[BuildSequence] Failed to record mindset violation:', memError)
+        console.error('[BuildSequence] CRITICAL: Failed to record mindset violation incident:', memError)
+        // This is critical - mindset violations MUST be recorded
+        // We still block the build, but alert that the incident wasn't persisted
+        console.error('[BuildSequence] WARNING: Mindset violation occurred but was not persisted to governance memory')
       }
       
       throw new Error(`Governance-First Mindset violation: ${mindsetValidation.violations.join(', ')}`)

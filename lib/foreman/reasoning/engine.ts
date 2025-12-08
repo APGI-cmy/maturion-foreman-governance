@@ -277,7 +277,7 @@ export async function executeReasoning(
   const mindsetValidation = validateMindsetCompliance({
     action: `Reasoning execution for ${context.intent}`,
     governanceContext: {
-      memoryLoaded: true,
+      memoryLoaded: snapshot !== undefined && snapshot !== null, // Check if snapshot was actually loaded
       governanceRulesApplied: false, // Will be set to true after applying patterns
       driftMonitored: !context.skipDriftCheck
     }
