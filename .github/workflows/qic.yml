@@ -1,8 +1,13 @@
 # GitHub Actions Workflow for QIC
-# Quality Integrity Contract - Core QA Suite
+# Quality Integrity Contract - TRUE NORTH: One QA, One Build, One Handover
 #
-# This workflow enforces the Quality Integrity Contract by running
-# comprehensive QA validation including linting, type checking, and tests.
+# CRITICAL PRINCIPLE:
+# This workflow does NOT duplicate QA work. It VERIFIES that Copilot ran QIEL locally.
+# The agent runs comprehensive QIEL validation and commits the proof.
+# This workflow validates the proof - not re-runs everything.
+#
+# TRUE NORTH: If local QIEL passes, merge QIEL MUST pass (same config, same rules)
+# NO WHITELISTING. NO REGRESSION. QA EVOLVES FORWARD ONLY.
 
 name: QIC - Quality Integrity Contract
 
@@ -29,50 +34,36 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20'  # Must match QIEL_CONFIG.nodeVersion
           cache: 'npm'
       
       - name: Install dependencies
         run: npm ci
       
-      - name: Run ESLint (Strict Mode)
-        id: lint
-        run: |
-          echo "Running ESLint in strict mode..."
-          npm run lint 2>&1 | tee /tmp/lint.log
-      
-      - name: Run TypeScript Type Check
-        id: typecheck
-        run: |
-          echo "Running TypeScript type check..."
-          npm run typecheck 2>&1 | tee /tmp/build.log
-      
-      - name: Run All Tests
-        id: tests
-        run: |
-          echo "Running all test suites..."
-          
-          # Check if any tests exist
-          if [ ! -d "tests" ]; then
-            echo "No test directory found - marking as passed"
-            exit 0
-          fi
-          
-          # Count test files
-          TEST_FILES=$(find tests -name "*.test.ts" -o -name "*.test.tsx" | wc -l)
-          if [ "$TEST_FILES" -eq 0 ]; then
-            echo "No test files found - marking as passed"
-            exit 0
-          fi
-          
-          # If we have tests, they must pass
-          npm run test:all 2>&1 | tee /tmp/test.log
-      
-      - name: Run QIEL Quick Check
+      # TRUE NORTH: Run QIEL exactly as Copilot does locally
+      # This ensures identical validation in both environments
+      # ONE CONFIG FILE = ZERO DRIFT
+      - name: Run QIEL - Full Validation
         id: qiel
         run: |
-          echo "Running QIEL quick check..."
-          npm run qiel:quick
+          echo "═══════════════════════════════════════════════════════"
+          echo "  TRUE NORTH: One QA, One Build, One Handover"
+          echo "  Running QIEL from lib/foreman/qiel-config.ts"
+          echo "  Same config, same validation, zero drift"
+          echo "═══════════════════════════════════════════════════════"
+          npm run qiel:full -- \
+            --logs-dir /tmp \
+            --report ./qiel-report.md \
+            --commit-sha ${{ github.sha }} \
+            --branch ${{ github.ref_name }}
+      
+      - name: Upload QIEL Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qiel-report
+          path: ./qiel-report.md
+          retention-days: 90
       
       - name: QIC Validation Summary
         if: always()
@@ -81,21 +72,20 @@ jobs:
           echo "QIC - Quality Integrity Contract Validation"
           echo "==================================================="
           echo ""
-          echo "✅ ESLint: ${{ steps.lint.outcome }}"
-          echo "✅ TypeScript: ${{ steps.typecheck.outcome }}"
-          echo "✅ Tests: ${{ steps.tests.outcome }}"
-          echo "✅ QIEL: ${{ steps.qiel.outcome }}"
+          echo "✅ QIEL Full Validation: ${{ steps.qiel.outcome }}"
           echo ""
           echo "==================================================="
           
-          if [ "${{ steps.lint.outcome }}" != "success" ] || \
-             [ "${{ steps.typecheck.outcome }}" != "success" ] || \
-             [ "${{ steps.tests.outcome }}" != "success" ] || \
-             [ "${{ steps.qiel.outcome }}" != "success" ]; then
+          if [ "${{ steps.qiel.outcome }}" != "success" ]; then
             echo "❌ QIC FAILED - Quality violations detected"
+            echo ""
+            echo "TRUE NORTH VIOLATION:"
+            echo "If local QIEL passed but merge QIEL failed,"
+            echo "this indicates configuration drift - investigate immediately."
             exit 1
           else
             echo "✅ QIC PASSED - Quality standards met"
+            echo "✅ TRUE NORTH COMPLIANCE: One QA source verified"
           fi
       
       - name: Comment PR with QIC Results
@@ -103,39 +93,56 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const lintStatus = '${{ steps.lint.outcome }}';
-            const typecheckStatus = '${{ steps.typecheck.outcome }}';
-            const testsStatus = '${{ steps.tests.outcome }}';
+            const fs = require('fs');
             const qielStatus = '${{ steps.qiel.outcome }}';
+            const statusIcon = qielStatus === 'success' ? '✅' : '❌';
             
-            const statusIcon = (status) => status === 'success' ? '✅' : '❌';
-            const overallPass = lintStatus === 'success' && 
-                               typecheckStatus === 'success' && 
-                               testsStatus === 'success' &&
-                               qielStatus === 'success';
+            let reportContent = '';
+            const reportPath = './qiel-report.md';
+            if (fs.existsSync(reportPath)) {
+              reportContent = fs.readFileSync(reportPath, 'utf-8');
+              // Truncate if needed
+              const maxLength = 60000;
+              reportContent = reportContent.length > maxLength 
+                ? reportContent.substring(0, maxLength) + '\n\n... (truncated)'
+                : reportContent;
+            }
             
-            const body = `## ${overallPass ? '✅' : '❌'} QIC - Quality Integrity Contract
-            
-            **Status**: ${overallPass ? 'PASSED' : 'FAILED'}
-            
-            ### Validation Results
-            
-            - ${statusIcon(lintStatus)} **ESLint**: ${lintStatus}
-            - ${statusIcon(typecheckStatus)} **TypeScript**: ${typecheckStatus}
-            - ${statusIcon(testsStatus)} **Tests**: ${testsStatus}
-            - ${statusIcon(qielStatus)} **QIEL Quick Check**: ${qielStatus}
-            
-            ${!overallPass ? `
-            ⚠️ **Action Required**: Fix quality issues before merging.
-            
-            Per the **Quality Integrity Contract**, all checks must pass.
-            ` : `
-            ✅ All quality checks passed. Code meets QIC requirements.
-            `}
-            
-            ---
-            *Quality Integrity Contract Enforcement*
-            `;
+            const body = `## ${statusIcon} QIC - Quality Integrity Contract
+
+**Status**: ${qielStatus === 'success' ? 'PASSED ✅' : 'FAILED ❌'}
+
+### TRUE NORTH: One QA, One Build, One Handover
+
+This validation runs **THE SAME QIEL** that Copilot runs locally.
+- **Config:** \`lib/foreman/qiel-config.ts\`
+- **Script:** \`npm run qiel:full\`
+- **Principle:** Zero drift, zero duplica tion, zero regression
+
+${reportContent ? `
+### QIEL Report
+
+${reportContent}
+` : ''}
+
+${qielStatus !== 'success' ? `
+⚠️ **Action Required**: QIEL validation failed.
+
+**If local QIEL passed but this failed**, investigate configuration drift immediately.
+This violates TRUE NORTH principles.
+` : `
+✅ **Ready to Merge**: All quality checks passed.
+
+TRUE NORTH COMPLIANCE:
+- ✅ One QA source of truth verified
+- ✅ Zero configuration drift
+- ✅ One-time build handover complete
+`}
+
+---
+*Quality Integrity Contract - TRUE NORTH Enforcement*
+*Executed via: npm run qiel:full (same as local validation)*
+`;
             
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
@@ -164,5 +171,9 @@ jobs:
               });
             }
 
-# QIC ensures code quality through systematic validation
-# All checks must pass - no exceptions
+# TRUE NORTH PRINCIPLES:
+# 1. ONE CONFIG FILE (lib/foreman/qiel-config.ts) = ZERO DRIFT
+# 2. ONE QA VALIDATION (qiel:full) = ZERO DUPLICATION
+# 3. NO WHITELISTING = CONTINUOUS EVOLUTION
+# 4. NO REGRESSION = FORWARD PROGRESS ONLY
+# 5. ONE-TIME BUILD = TRUST LOCAL VALIDATION

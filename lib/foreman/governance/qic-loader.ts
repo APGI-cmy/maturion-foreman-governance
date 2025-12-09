@@ -13,7 +13,7 @@ import { writeMemory } from '@/lib/foreman/memory/storage'
 /**
  * QIC Version - increment when QIC rules change
  */
-export const QIC_VERSION = '1.0.0'
+export const QIC_VERSION = '1.1.0' // Bumped for Wiring Integrity Enforcement
 
 /**
  * Build error patterns that must be detected per QIC-1
@@ -42,6 +42,7 @@ export async function loadQICRules(): Promise<QICConfig> {
     deploymentSimulationEnabled: true,
     silentFailurePreventionEnabled: true,
     governanceMemoryIntegrationEnabled: true,
+    wiringIntegrityEnabled: true, // NEW: Wiring Integrity Enforcement (WIE)
     enforcedBy: 'qa-builder',
     appliesTo: 'all-apps',
   }
@@ -62,6 +63,7 @@ export function validateQICCompliance(config: QICConfig): void {
     'deploymentSimulationEnabled',
     'silentFailurePreventionEnabled',
     'governanceMemoryIntegrationEnabled',
+    'wiringIntegrityEnabled', // NEW: WIE is mandatory
   ]
   
   for (const check of requiredChecks) {
@@ -258,5 +260,6 @@ export function getQICEnforcementStatus(config: QICConfig): Record<string, boole
     'QIC-5: Silent Failure Prevention': config.silentFailurePreventionEnabled,
     'QIC-6: Governance Memory Integration': config.governanceMemoryIntegrationEnabled,
     'QIC-7: Auto-Propagation': config.appliesTo === 'all-apps',
+    'QIC-8: Wiring Integrity Enforcement (WIE)': config.wiringIntegrityEnabled || false, // NEW
   }
 }

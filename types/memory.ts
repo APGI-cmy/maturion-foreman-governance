@@ -160,6 +160,7 @@ export interface QICConfig {
   deploymentSimulationEnabled: boolean   // QIC-4
   silentFailurePreventionEnabled: boolean // QIC-5
   governanceMemoryIntegrationEnabled: boolean // QIC-6
+  wiringIntegrityEnabled?: boolean       // QIC-8: Wiring Integrity Enforcement (WIE)
   enforcedBy: string            // Which component enforces QIC
   appliesTo: string             // Scope of application
 }

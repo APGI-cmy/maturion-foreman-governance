@@ -139,6 +139,14 @@ function checkUnusedVariables(lintLog: string): string[] {
 
 /**
  * Check for deprecated API usage in all logs
+ * 
+ * TRUE NORTH PRINCIPLE: NO WHITELISTING
+ * This function detects ALL deprecated usage - no exceptions.
+ * If npm packages show deprecated warnings, the proper fix is:
+ * - Upgrade the packages to non-deprecated versions
+ * - NOT to filter/whitelist the warnings
+ * 
+ * Constitutional Rule: No unilateral softening of quality requirements.
  */
 function checkDeprecatedAPIs(
   buildLog: string,
