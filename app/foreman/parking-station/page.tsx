@@ -5,7 +5,7 @@
  * Centralized dashboard for viewing and managing proposed upgrades
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { 
   ParkingStationEntry, 
   ParkingStationStats,
@@ -30,7 +30,7 @@ export default function ParkingStationPage() {
   const [selectedEntries, setSelectedEntries] = useState<Set<string>>(new Set());
 
   // Load entries
-  const loadEntries = async () => {
+  const loadEntries = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -51,7 +51,7 @@ export default function ParkingStationPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [categoryFilter, statusFilter, waveFilter, searchQuery]);
 
   // Run scan
   const runScan = async () => {
@@ -105,7 +105,7 @@ export default function ParkingStationPage() {
   // Load on mount and filter changes
   useEffect(() => {
     loadEntries();
-  }, [categoryFilter, statusFilter, waveFilter, searchQuery]);
+  }, [loadEntries]);
 
   // Get priority color
   const getPriorityColor = (priority: number): string => {
