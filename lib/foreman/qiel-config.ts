@@ -246,6 +246,7 @@ export const QIEL_EXECUTION_CONFIG = {
       'deployment_simulation_passed',
       'schema_cohesion_passed',
       'engine_load_passed',
+      'feature_deployment_passed',
     ],
   },
 

@@ -117,6 +117,7 @@ jobs:
           echo "Checking for secrets in code..."
           
           # Check for common secret patterns (basic check)
+          # Exclude test files as they often contain example secrets
           SECRET_PATTERNS=(
             "password\s*=\s*['\"][^'\"]{8,}['\"]"
             "api[_-]?key\s*=\s*['\"][^'\"]{16,}['\"]"
@@ -127,7 +128,13 @@ jobs:
           SECRETS_FOUND=0
           
           for pattern in "${SECRET_PATTERNS[@]}"; do
-            if git grep -iE "$pattern" -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.json' 2>/dev/null; then
+            # Exclude tests, examples, and documentation
+            if git grep -iE "$pattern" -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.json' \
+               | grep -v "^tests/" \
+               | grep -v "^docs/" \
+               | grep -v ".test.ts" \
+               | grep -v ".example" \
+               | grep -v "README.md" 2>/dev/null; then
               SECRETS_FOUND=1
             fi
           done
