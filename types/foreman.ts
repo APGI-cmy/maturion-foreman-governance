@@ -288,6 +288,7 @@ export interface ChatRequest {
   organisationId?: string
   conversationId?: string
   contextFlags?: string[]
+  conversationHistory?: ChatMessage[]
 }
 
 export interface ChatResponse {

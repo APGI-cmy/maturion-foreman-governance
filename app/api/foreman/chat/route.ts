@@ -6,10 +6,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { compileForemanChatContext, extractChatMetadata } from '@/lib/foreman/chat-profile';
-import type { ChatRequest, ChatResponse, ForemanAction } from '@/types/foreman';
+import type { ChatRequest, ChatResponse, ForemanAction, ChatMessage } from '@/types/foreman';
 import { executeChatActions } from '@/lib/foreman/chat-executor';
 import { isAutonomousModeEnabled } from '@/lib/foreman/dispatch';
 import { foremanLogger, LogLevel } from '@/lib/logging/foremanLogger';
+import { 
+  buildOptimizedContext, 
+  estimateTokenCount, 
+  MAX_TOTAL_TOKENS,
+  createCondensedSystemPrompt 
+} from '@/lib/foreman/context-manager';
 
 // Validate API key is present
 if (!process.env.OPENAI_API_KEY) {
@@ -38,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body: ChatRequest = await request.json();
-    const { message, organisationId, conversationId, contextFlags } = body;
+    const { message, organisationId, conversationId, contextFlags, conversationHistory } = body;
 
     // Validate required fields
     if (!message || message.trim().length === 0) {
@@ -58,24 +64,74 @@ export async function POST(request: NextRequest) {
       organisationId: orgId,
       conversationId: convId,
       messageLength: message.length,
-      contextFlags: contextFlags || []
+      contextFlags: contextFlags || [],
+      historyLength: conversationHistory?.length || 0
     });
 
-    // Compile Foreman chat context with behavior files
-    const systemPrompt = await compileForemanChatContext(orgId);
-
-    // Build user message with context
+    // Build user message with context flags
     let userMessage = message;
     if (contextFlags && contextFlags.length > 0) {
       userMessage = `Context flags: ${contextFlags.join(', ')}\n\n${message}`;
     }
 
-    // Call OpenAI with chat-specific instructions
+    // Build optimized context to prevent token overflow
+    const context = buildOptimizedContext(
+      conversationHistory || [],
+      userMessage,
+      orgId,
+      { useCondensedPrompt: true }
+    );
+
+    console.log('[Chat] Context optimization:', {
+      totalTokens: context.metadata.totalTokens,
+      maxAllowed: MAX_TOTAL_TOKENS,
+      messagesIncluded: context.metadata.messagesIncluded,
+      compressed: context.metadata.compressed
+    });
+
+    // Validate context size
+    if (context.metadata.totalTokens > MAX_TOTAL_TOKENS) {
+      console.warn('[Chat] Context still too large after optimization, using minimal context');
+      // Fall back to minimal context
+      const minimalSystemPrompt = createCondensedSystemPrompt(orgId);
+      const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+        { role: 'system', content: minimalSystemPrompt },
+        { role: 'user', content: userMessage }
+      ];
+
+      try {
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4',
+          messages: messages,
+          temperature: 0.7,
+          max_tokens: 2000,
+        });
+
+        const rawResponse = completion.choices[0]?.message?.content || '';
+        return buildSuccessResponse(rawResponse, convId, orgId);
+      } catch (error) {
+        return handleChatError(error, 'minimal_context');
+      }
+    }
+
+    // Build message array with conversation history if available
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userMessage }
+      { role: 'system', content: context.systemPrompt }
     ];
 
+    // Add conversation history as part of the system context to preserve token efficiency
+    // while maintaining conversation continuity
+    if (context.conversationHistory && context.conversationHistory.trim().length > 0) {
+      messages.push({ 
+        role: 'system', 
+        content: `Previous conversation summary:\n${context.conversationHistory}` 
+      });
+    }
+
+    // Add current user message
+    messages.push({ role: 'user', content: context.userMessage });
+
+    // Call OpenAI with optimized context
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: messages,
@@ -211,6 +267,22 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('[Chat] Error processing chat message:', error);
     
+    // Check if it's a context length error
+    if (error instanceof Error && 
+        (error.message.includes('maximum context length') || 
+         error.message.includes('too many tokens') ||
+         error.message.includes('400'))) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Context window exceeded. Try a shorter message or start a new conversation.',
+          errorType: 'context_overflow',
+          timestamp: new Date().toISOString()
+        },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       {
         success: false,
@@ -220,6 +292,75 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Build success response from raw AI output
+ */
+function buildSuccessResponse(rawResponse: string, convId: string, orgId: string) {
+  let chatResponse: ChatResponse;
+  try {
+    const parsed = JSON.parse(rawResponse);
+    chatResponse = {
+      replyText: parsed.replyText || rawResponse,
+      proposedActions: parsed.proposedActions || [],
+      telemetry: parsed.telemetry || {
+        subSystemsInvolved: ['chat', 'orchestrator']
+      },
+      metadata: extractChatMetadata(rawResponse),
+      autonomyIntent: parsed.autonomyIntent || 'proposal_only'
+    };
+  } catch {
+    // Not JSON, treat as plain text response
+    chatResponse = {
+      replyText: rawResponse,
+      proposedActions: [],
+      telemetry: {
+        subSystemsInvolved: ['chat', 'orchestrator']
+      },
+      metadata: extractChatMetadata(rawResponse),
+      autonomyIntent: 'proposal_only'
+    };
+  }
+
+  return NextResponse.json({
+    success: true,
+    conversationId: convId,
+    response: chatResponse,
+    timestamp: new Date().toISOString()
+  });
+}
+
+/**
+ * Handle chat errors with appropriate fallback messages
+ */
+function handleChatError(error: unknown, context: string) {
+  console.error(`[Chat] Error in ${context}:`, error);
+  
+  if (error instanceof Error && 
+      (error.message.includes('maximum context length') || 
+       error.message.includes('too many tokens') ||
+       error.message.includes('400'))) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Your message history is too long. Please start a new conversation.',
+        errorType: 'context_overflow',
+        suggestion: 'Try refreshing the page to start a fresh conversation with Foreman.',
+        timestamp: new Date().toISOString()
+      },
+      { status: 400 }
+    );
+  }
+
+  return NextResponse.json(
+    {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      timestamp: new Date().toISOString()
+    },
+    { status: 500 }
+  );
 }
 
 /**
