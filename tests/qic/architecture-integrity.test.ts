@@ -18,6 +18,11 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import fs from 'fs/promises';
 import path from 'path';
+import {
+  isProtectedArchitectureFile,
+  analyzeArchitectureImpact,
+  getProtectionCategory,
+} from '../../lib/foreman/architecture/file-detector';
 
 describe('QIC Constitutional: Architecture Change Approval Enforcement (CS2)', () => {
   describe('Architecture Directory Protection', () => {
@@ -341,6 +346,92 @@ describe('QIC Constitutional: Architecture Change Approval Enforcement (CS2)', (
       }
 
       console.log('✓ No automated merging of architecture changes');
+    });
+  });
+
+  describe('CS2 - Architecture Change Request System', () => {
+    it('should identify protected architecture files correctly', () => {
+      const protectedFiles = [
+        'docs/architecture/test.md',
+        'docs/governance/test.md',
+        'foreman/constitution/README.md',
+        'foreman/governance/rules.md',
+        '.github/foreman/agent-contract.md',
+        'foreman/true-north-architecture.md',
+        'builder_protocol.md',
+      ];
+
+      protectedFiles.forEach(file => {
+        assert.ok(
+          isProtectedArchitectureFile(file),
+          `CS2: ${file} should be identified as protected`
+        );
+      });
+      
+      console.log('✓ CS2: All protected architecture files correctly identified');
+    });
+
+    it('should categorize protected files by protection type', () => {
+      const testCases = [
+        { file: 'foreman/constitution/README.md', expectedCategory: 'Constitutional Files' },
+        { file: '.github/foreman/agent-contract.md', expectedCategory: 'Agent Contract' },
+        { file: 'foreman/governance/rules.md', expectedCategory: 'Governance Rules' },
+        { file: 'docs/architecture/test.md', expectedCategory: 'Architecture Documentation' },
+        { file: 'builder_protocol.md', expectedCategory: 'Builder Protocol' },
+      ];
+
+      testCases.forEach(({ file, expectedCategory }) => {
+        const category = getProtectionCategory(file);
+        assert.strictEqual(
+          category,
+          expectedCategory,
+          `CS2: ${file} should be categorized as ${expectedCategory}`
+        );
+      });
+      
+      console.log('✓ CS2: All protection categories correctly assigned');
+    });
+
+    it('should analyze architecture impact with correct risk levels', () => {
+      // Critical risk - constitutional changes
+      const criticalFiles = ['foreman/constitution/README.md'];
+      const criticalImpact = analyzeArchitectureImpact(criticalFiles);
+      assert.strictEqual(
+        criticalImpact.riskLevel,
+        'critical',
+        'CS2: Constitutional changes must be critical risk'
+      );
+
+      // High risk - governance changes
+      const highFiles = ['foreman/governance/rules.md'];
+      const highImpact = analyzeArchitectureImpact(highFiles);
+      assert.strictEqual(
+        highImpact.riskLevel,
+        'high',
+        'CS2: Governance changes must be high risk'
+      );
+      
+      console.log('✓ CS2: Architecture impact risk levels correctly determined');
+    });
+
+    it('should not identify non-protected files as protected', () => {
+      const nonProtectedFiles = [
+        'src/app.ts',
+        'lib/util.ts',
+        'README.md',
+        'package.json',
+        'tests/test.ts',
+      ];
+
+      nonProtectedFiles.forEach(file => {
+        assert.strictEqual(
+          isProtectedArchitectureFile(file),
+          false,
+          `CS2: ${file} should NOT be identified as protected`
+        );
+      });
+      
+      console.log('✓ CS2: Non-protected files correctly excluded');
     });
   });
 });

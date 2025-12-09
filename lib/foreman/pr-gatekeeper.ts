@@ -35,6 +35,11 @@ import { QIEL_CONFIG } from './qiel-config';
 import { logGovernanceEvent } from './memory/governance-memory';
 import { writeMemory } from './memory/storage';
 import { detectGovernanceDrift } from './governance/drift-detector';
+import {
+  isProtectedArchitectureFile,
+  filterProtectedFiles,
+  validateArchitectureChangeApproval,
+} from './architecture';
 
 /**
  * PR Gatekeeper Result
@@ -46,6 +51,8 @@ export interface PRGatekeeperResult {
   blockingIssues: string[];
   governanceViolations: string[];
   timestamp: string;
+  architectureApprovalRequired?: boolean;
+  requiredACR?: string;
 }
 
 /**
@@ -98,6 +105,61 @@ export async function enforcePRGatekeeper(options?: {
   let qielResult: QIELResult;
   const blockingIssues: string[] = [];
   const governanceViolations: string[] = [];
+  let architectureApprovalRequired = false;
+  let requiredACR: string | undefined;
+
+  // ARCHITECTURE CHANGE APPROVAL CHECK (CS2)
+  // This MUST come before QIEL to block PRs touching architecture without ACR
+  console.log('[PR Gatekeeper] Checking architecture change approval requirements...');
+  
+  // In a full implementation, we would get the list of changed files from git
+  // For now, this is a placeholder that assumes changedFiles would be passed in options
+  const changedFiles = (options as any)?.changedFiles || [];
+  
+  if (changedFiles.length > 0) {
+    const protectedFiles = filterProtectedFiles(changedFiles);
+    
+    if (protectedFiles.length > 0) {
+      console.log(`[PR Gatekeeper] Found ${protectedFiles.length} protected architecture file(s)`);
+      
+      // Check if ACR approval exists
+      const acrId = (options as any)?.acrId;
+      const approvalCheck = await validateArchitectureChangeApproval(protectedFiles, acrId);
+      
+      if (!approvalCheck.approved) {
+        architectureApprovalRequired = true;
+        requiredACR = approvalCheck.requiredACR || 'NEW_ACR_REQUIRED';
+        
+        blockingIssues.push('Architecture changes require approved ACR');
+        blockingIssues.push(approvalCheck.reason);
+        governanceViolations.push('ARCHITECTURE_CHANGE_WITHOUT_APPROVAL');
+        
+        // Log critical governance event
+        await logGovernanceEvent({
+          type: 'pr_blocked_architecture_approval_missing',
+          severity: 'critical',
+          description: 'PR creation blocked: Architecture changes require approved ACR',
+          metadata: {
+            protectedFiles,
+            reason: approvalCheck.reason,
+            requiredACR,
+            buildId,
+            sequenceId,
+            timestamp,
+          },
+        });
+        
+        console.error('[PR Gatekeeper] ❌ Architecture approval check FAILED');
+        console.error(`  Reason: ${approvalCheck.reason}`);
+        console.error(`  Protected files: ${protectedFiles.join(', ')}`);
+      } else {
+        console.log('[PR Gatekeeper] ✅ Architecture approval check PASSED');
+        if (approvalCheck.existingACR) {
+          console.log(`  Approved ACR: ${approvalCheck.existingACR.id}`);
+        }
+      }
+    }
+  }
 
   // DRIFT DETECTION HOOK: Check if attempting PR creation with incomplete QA
   console.log('[PR Gatekeeper] Running drift detection...');
@@ -348,6 +410,8 @@ export async function enforcePRGatekeeper(options?: {
     blockingIssues,
     governanceViolations,
     timestamp,
+    architectureApprovalRequired,
+    requiredACR,
   };
 }
 
