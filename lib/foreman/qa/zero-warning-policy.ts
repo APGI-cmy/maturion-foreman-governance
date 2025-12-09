@@ -4,13 +4,24 @@
  * Enforces the STRICT zero-warning policy across build, lint, and TypeScript compilation.
  * 
  * Philosophy: Warnings are errors waiting to happen. A clean build means ZERO warnings.
- * NO EXCEPTIONS. NO WHITELISTING.
  * 
  * Per GSR-QA-STRICT-001: ALL warnings are treated as blockers.
+ * 
+ * Governance-Approved Exceptions:
+ * - Warnings may ONLY be suppressed if listed in foreman/qa/allowed-warnings.json
+ * - Each allowed warning must be approved by Johan (NOT Foreman)
+ * - Each allowed warning must have a Parking Station tech-debt entry
+ * - Foreman may NOT add warnings to the allowlist autonomously
  */
 
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  loadAllowedWarnings,
+  isWarningAllowed,
+  validateAllowedWarnings,
+  type AllowedWarning,
+} from './allowed-warnings-loader';
 
 export interface ZeroWarningPolicyResult {
   passed: boolean;
@@ -19,8 +30,11 @@ export interface ZeroWarningPolicyResult {
   typescriptWarnings: string[];
   unusedVariables: string[];
   deprecatedAPIs: string[];
+  allowedWarnings: string[];
+  blockedWarnings: string[];
   totalIssues: number;
   summary: string;
+  governanceViolations: string[];
 }
 
 /**
@@ -176,7 +190,7 @@ function checkDeprecatedAPIs(
 
 /**
  * Run STRICT zero-warning policy checks on all logs
- * GSR-QA-STRICT-001: NO whitelisting, ALL warnings block
+ * GSR-QA-STRICT-001: Warnings must be in governance-approved allowlist or QA fails
  */
 export function runZeroWarningPolicy(
   logsDir: string = '/tmp'
@@ -196,25 +210,85 @@ export function runZeroWarningPolicy(
     ? fs.readFileSync(testLogPath, 'utf-8')
     : '';
 
-  // Check all warning types - STRICT MODE: No whitelisting
+  // Load governance-approved allowed warnings
+  const allowedWarningsConfig = loadAllowedWarnings();
+  const governanceViolations: string[] = [];
+
+  // Validate allowlist integrity
+  const validation = validateAllowedWarnings(allowedWarningsConfig);
+  if (!validation.valid) {
+    governanceViolations.push(...validation.errors);
+  }
+  
+  // Log warnings (non-blocking issues)
+  if (validation.warnings && validation.warnings.length > 0) {
+    validation.warnings.forEach(warning => {
+      console.warn(`[Zero-Warning] ${warning}`);
+    });
+  }
+
+  // Check all warning types - STRICT MODE: No automatic whitelisting
   const buildWarnings = checkBuildWarnings(buildLog);
   const lintWarnings = checkLintWarnings(lintLog);
   const typescriptWarnings = checkTypescriptWarnings(buildLog, lintLog);
   const unusedVariables = checkUnusedVariables(lintLog);
   const deprecatedAPIs = checkDeprecatedAPIs(buildLog, lintLog, testLog);
 
-  const totalIssues =
-    buildWarnings.length +
-    lintWarnings.length +
-    typescriptWarnings.length +
-    unusedVariables.length +
-    deprecatedAPIs.length;
+  // Collect all warnings
+  const allWarnings = [
+    ...buildWarnings,
+    ...lintWarnings,
+    ...typescriptWarnings,
+    ...unusedVariables,
+    ...deprecatedAPIs,
+  ];
 
+  // Separate allowed vs blocked warnings
+  const allowedWarnings: string[] = [];
+  const blockedWarnings: string[] = [];
+
+  for (const warning of allWarnings) {
+    const { allowed, matchedEntry } = isWarningAllowed(warning, allowedWarningsConfig);
+    if (allowed) {
+      allowedWarnings.push(warning);
+      const approvedBy = matchedEntry?.approved_by || 'unknown';
+      const targetWave = matchedEntry?.target_wave || 'unknown';
+      console.log(
+        `[Zero-Warning] ALLOWED (governance): ${warning.substring(0, 100)}... ` +
+        `(approved by ${approvedBy}, target: ${targetWave})`
+      );
+    } else {
+      blockedWarnings.push(warning);
+      console.error(
+        `[Zero-Warning] BLOCKED: ${warning.substring(0, 100)}...`
+      );
+    }
+  }
+
+  // QA passes ONLY if no blocked warnings AND no governance violations
+  const totalIssues = blockedWarnings.length + governanceViolations.length;
   const passed = totalIssues === 0;
 
-  const summary = passed
-    ? 'Zero-warning policy (STRICT): PASSED - No warnings found'
-    : `Zero-warning policy (STRICT): FAILED - ${totalIssues} issues found (${buildWarnings.length} build, ${lintWarnings.length} lint, ${typescriptWarnings.length} TypeScript, ${unusedVariables.length} unused vars, ${deprecatedAPIs.length} deprecated APIs)`;
+  let summary: string;
+  if (passed && allWarnings.length === 0) {
+    summary = 'Zero-warning policy (STRICT): PASSED - No warnings found';
+  } else if (passed && allowedWarnings.length > 0) {
+    summary = 
+      `Zero-warning policy (STRICT): PASSED - ${allowedWarnings.length} warnings allowed by governance, ` +
+      `${blockedWarnings.length} blocked, ${governanceViolations.length} violations`;
+  } else {
+    summary = 
+      `Zero-warning policy (STRICT): FAILED - ${totalIssues} issues found ` +
+      `(${blockedWarnings.length} blocked warnings, ${governanceViolations.length} governance violations)`;
+  }
+
+  // Log technical debt for allowed warnings
+  if (allowedWarnings.length > 0) {
+    console.warn(
+      `[Zero-Warning] TECHNICAL DEBT: ${allowedWarnings.length} warnings allowed by governance. ` +
+      `These must be eliminated in their target waves.`
+    );
+  }
 
   return {
     passed,
@@ -223,8 +297,11 @@ export function runZeroWarningPolicy(
     typescriptWarnings,
     unusedVariables,
     deprecatedAPIs,
+    allowedWarnings,
+    blockedWarnings,
     totalIssues,
     summary,
+    governanceViolations,
   };
 }
 
@@ -243,6 +320,46 @@ export function generateZeroWarningReport(
   sections.push(`**Total Issues**: ${result.totalIssues}\n`);
   sections.push(`**Summary**: ${result.summary}\n`);
 
+  // Governance violations (highest priority)
+  if (result.governanceViolations.length > 0) {
+    sections.push('## ⚠️ GOVERNANCE VIOLATIONS\n');
+    sections.push('**CRITICAL**: These violations must be fixed immediately.\n');
+    result.governanceViolations.forEach((violation, idx) => {
+      sections.push(`${idx + 1}. ${violation}`);
+    });
+    sections.push('');
+  }
+
+  // Blocked warnings (must be fixed or added to allowlist with approval)
+  if (result.blockedWarnings.length > 0) {
+    sections.push('## ❌ Blocked Warnings (Not in Allowlist)\n');
+    sections.push(
+      '**These warnings are NOT governance-approved and MUST be fixed.**\n'
+    );
+    sections.push(
+      'To suppress a warning, it must be added to `foreman/qa/allowed-warnings.json` ' +
+      'with Johan\'s approval and a Parking Station tech-debt entry.\n'
+    );
+    result.blockedWarnings.forEach((warning, idx) => {
+      sections.push(`${idx + 1}. ${warning}`);
+    });
+    sections.push('');
+  }
+
+  // Allowed warnings (technical debt)
+  if (result.allowedWarnings.length > 0) {
+    sections.push('## ⚠️ Allowed Warnings (Technical Debt)\n');
+    sections.push(
+      '**These warnings are governance-approved but represent TECHNICAL DEBT.**\n'
+    );
+    sections.push('They must be eliminated in their target waves.\n');
+    result.allowedWarnings.forEach((warning, idx) => {
+      sections.push(`${idx + 1}. ${warning}`);
+    });
+    sections.push('');
+  }
+
+  // Detailed breakdown by category
   if (result.buildWarnings.length > 0) {
     sections.push('## Build Warnings\n');
     result.buildWarnings.forEach((warning, idx) => {
@@ -285,14 +402,20 @@ export function generateZeroWarningReport(
 
   if (result.passed) {
     sections.push(
-      '✅ **All checks passed (STRICT MODE)** - Zero warnings detected\n'
+      '✅ **All checks passed (STRICT MODE)** - Zero non-allowed warnings detected\n'
     );
   } else {
     sections.push(
-      '❌ **STRICT MODE VIOLATION** - ALL warnings must be fixed before proceeding\n'
+      '❌ **STRICT MODE VIOLATION** - ALL non-allowed warnings must be fixed before proceeding\n'
     );
     sections.push(
-      '**GSR-QA-STRICT-001**: Zero-tolerance QA policy enforced - no whitelisting allowed\n'
+      '**GSR-QA-STRICT-001**: Zero-tolerance QA policy enforced\n'
+    );
+    sections.push(
+      '**To suppress a warning**: Add it to foreman/qa/allowed-warnings.json with:\n' +
+      '  - Johan\'s approval (NOT Foreman)\n' +
+      '  - A Parking Station tech-debt entry\n' +
+      '  - A target wave for elimination\n'
     );
   }
 

@@ -29,6 +29,8 @@ import {
   runQIWMonitoring,
   generateQIWReportMarkdown
 } from '../watchdog/quality-integrity-watchdog';
+import { loadAllowedWarnings } from './allowed-warnings-loader';
+import { syncAllowedWarningsToParkingStation } from './parking-station-integration';
 import { QIWReport } from '@/types/watchdog';
 import * as fs from 'fs';
 
@@ -54,13 +56,13 @@ export interface EnhancedQAResult {
 /**
  * Run complete enhanced QA suite
  */
-export function runEnhancedQA(options?: {
+export async function runEnhancedQA(options?: {
   projectDir?: string;
   logsDir?: string;
   skipVercelSimulation?: boolean;
   buildSequenceId?: string;
   projectId?: string;
-}): EnhancedQAResult {
+}): Promise<EnhancedQAResult> {
   const {
     projectDir = process.cwd(),
     logsDir = '/tmp',
@@ -141,6 +143,27 @@ export function runEnhancedQA(options?: {
   if (!zeroWarningPassed) {
     blockersFound.push(zeroWarning.summary);
     console.error(`[Enhanced QA] ${zeroWarning.summary}`);
+  }
+
+  // Sync allowed warnings to Parking Station (technical debt tracking)
+  if (zeroWarning.allowedWarnings.length > 0) {
+    console.log('[Enhanced QA] Syncing allowed warnings to Parking Station...');
+    try {
+      const allowedWarningsConfig = loadAllowedWarnings();
+      const syncResult = await syncAllowedWarningsToParkingStation(
+        allowedWarningsConfig.warnings
+      );
+      console.log(
+        `[Enhanced QA] Parking Station sync: ${syncResult.created} created, ` +
+        `${syncResult.updated} updated, ${syncResult.errors.length} errors`
+      );
+      if (syncResult.errors.length > 0) {
+        console.error('[Enhanced QA] Parking Station sync errors:', syncResult.errors);
+      }
+    } catch (error) {
+      console.error('[Enhanced QA] Failed to sync to Parking Station:', error);
+      // Don't block QA on parking station sync failures
+    }
   }
 
   // Step 4: Vercel simulation (optional)
@@ -263,7 +286,7 @@ export function runEnhancedQA(options?: {
 /**
  * Quick QA check (logs only, skip Vercel simulation)
  */
-export function runQuickQA(logsDir: string = '/tmp'): EnhancedQAResult {
+export async function runQuickQA(logsDir: string = '/tmp'): Promise<EnhancedQAResult> {
   return runEnhancedQA({
     logsDir,
     skipVercelSimulation: true,
@@ -273,10 +296,10 @@ export function runQuickQA(logsDir: string = '/tmp'): EnhancedQAResult {
 /**
  * Full QA check (including Vercel simulation)
  */
-export function runFullQA(
+export async function runFullQA(
   projectDir: string = process.cwd(),
   logsDir: string = '/tmp'
-): EnhancedQAResult {
+): Promise<EnhancedQAResult> {
   return runEnhancedQA({
     projectDir,
     logsDir,
