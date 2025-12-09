@@ -25,7 +25,9 @@
     "qiel:quick": "tsx scripts/run-qiel.ts --quick",
     "qiel:full": "tsx scripts/run-qiel.ts --full",
     "overnight": "tsx scripts/run-overnight-execution.ts",
-    "overnight:dry-run": "tsx scripts/run-overnight-execution.ts --dry-run"
+    "overnight:dry-run": "tsx scripts/run-overnight-execution.ts --dry-run",
+    "wave2": "tsx scripts/run-wave2-execution.ts",
+    "wave2:dry-run": "tsx scripts/run-wave2-execution.ts --dry-run"
   },
   "dependencies": {
     "ajv": "^8.17.1",
