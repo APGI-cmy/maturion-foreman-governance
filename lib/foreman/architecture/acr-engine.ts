@@ -182,24 +182,66 @@ export async function getACR(acrId: string): Promise<ArchitectureChangeRequest |
  * Query ACRs based on filters
  */
 export async function queryACRs(filters?: ACRQueryFilters): Promise<ArchitectureChangeRequest[]> {
-  // In a full implementation, this would query the memory fabric with filters
-  // For now, we'll implement a basic version
+  // Query all ACRs from global scope with 'acr' tag
+  const result = await readMemory({
+    scope: ACR_STORAGE_SCOPE,
+    tags: ['acr'],
+  });
   
-  // This is a simplified implementation - in production, this would use
-  // proper memory fabric query capabilities
-  console.warn('[ACR Engine] queryACRs: Simplified implementation - filters not fully supported');
+  let acrs: ArchitectureChangeRequest[] = result.entries.map(e => e.value as ArchitectureChangeRequest);
   
-  return [];
+  // Apply filters if provided
+  if (filters) {
+    // Filter by status
+    if (filters.status) {
+      const statuses = Array.isArray(filters.status) ? filters.status : [filters.status];
+      acrs = acrs.filter(acr => statuses.includes(acr.status));
+    }
+    
+    // Filter by risk level
+    if (filters.riskLevel) {
+      const riskLevels = Array.isArray(filters.riskLevel) ? filters.riskLevel : [filters.riskLevel];
+      acrs = acrs.filter(acr => riskLevels.includes(acr.riskLevel));
+    }
+    
+    // Filter by file pattern
+    if (filters.filePattern) {
+      const pattern = new RegExp(filters.filePattern);
+      acrs = acrs.filter(acr => 
+        acr.impact.affectedFiles.some(file => pattern.test(file))
+      );
+    }
+    
+    // Filter by component
+    if (filters.component) {
+      acrs = acrs.filter(acr =>
+        acr.impact.affectedComponents.includes(filters.component!)
+      );
+    }
+    
+    // Filter by date range
+    if (filters.createdAfter) {
+      acrs = acrs.filter(acr => new Date(acr.createdAt) >= filters.createdAfter!);
+    }
+    
+    if (filters.createdBefore) {
+      acrs = acrs.filter(acr => new Date(acr.createdAt) <= filters.createdBefore!);
+    }
+    
+    // Apply limit
+    if (filters.limit) {
+      acrs = acrs.slice(0, filters.limit);
+    }
+  }
+  
+  return acrs;
 }
 
 /**
  * Get all pending ACRs
  */
 export async function getPendingACRs(): Promise<ArchitectureChangeRequest[]> {
-  // In production, this would query memory fabric for all ACRs with status=pending
-  // For now, return empty array as a placeholder
-  console.warn('[ACR Engine] getPendingACRs: Simplified implementation - returns empty array');
-  return [];
+  return queryACRs({ status: 'pending' });
 }
 
 /**

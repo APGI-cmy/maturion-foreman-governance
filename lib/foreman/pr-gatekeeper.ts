@@ -71,6 +71,8 @@ export async function enforcePRGatekeeper(options?: {
   commitSha?: string;
   branch?: string;
   logsDir?: string;
+  changedFiles?: string[];
+  acrId?: string;
 }): Promise<PRGatekeeperResult> {
   const {
     buildId,
@@ -112,9 +114,10 @@ export async function enforcePRGatekeeper(options?: {
   // This MUST come before QIEL to block PRs touching architecture without ACR
   console.log('[PR Gatekeeper] Checking architecture change approval requirements...');
   
-  // In a full implementation, we would get the list of changed files from git
-  // For now, this is a placeholder that assumes changedFiles would be passed in options
-  const changedFiles = (options as any)?.changedFiles || [];
+  // Get changed files from options (caller must provide)
+  // In production, this would be extracted from git diff or GitHub API
+  const changedFiles = options?.changedFiles || [];
+  const acrId = options?.acrId;
   
   if (changedFiles.length > 0) {
     const protectedFiles = filterProtectedFiles(changedFiles);
@@ -123,7 +126,6 @@ export async function enforcePRGatekeeper(options?: {
       console.log(`[PR Gatekeeper] Found ${protectedFiles.length} protected architecture file(s)`);
       
       // Check if ACR approval exists
-      const acrId = (options as any)?.acrId;
       const approvalCheck = await validateArchitectureChangeApproval(protectedFiles, acrId);
       
       if (!approvalCheck.approved) {
