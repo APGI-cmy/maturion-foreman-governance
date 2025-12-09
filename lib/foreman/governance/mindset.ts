@@ -193,7 +193,8 @@ export class GovernanceFirstMindset {
     // Auditor/Governor actions
     const auditorActions = [
       'enforce', 'validate', 'audit', 'verify', 'check', 'inspect',
-      'certify', 'approve', 'reject', 'block', 'flag', 'report'
+      'certify', 'approve', 'reject', 'block', 'flag', 'report',
+      'reasoning', 'execute', 'analyze', 'review', 'assess'
     ]
     
     // Developer actions (should be delegated to builders)

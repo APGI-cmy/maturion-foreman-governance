@@ -272,51 +272,6 @@ export async function executeReasoning(
 ): Promise<ReasoningResult> {
   console.log('[MARE] Executing reasoning...')
   
-  // GOVERNANCE-FIRST MINDSET: Validate governance compliance before reasoning
-  console.log('[MARE] Validating Governance-First Mindset compliance...')
-  const mindsetValidation = validateMindsetCompliance({
-    action: `Reasoning execution for ${context.intent}`,
-    governanceContext: {
-      memoryLoaded: snapshot !== undefined && snapshot !== null, // Check if snapshot was actually loaded
-      governanceRulesApplied: false, // Will be set to true after applying patterns
-      driftMonitored: true // Drift monitoring is run in loadMemorySnapshot unless explicitly skipped
-    }
-  })
-  
-  if (!mindsetValidation.compliant) {
-    console.error('[MARE] MINDSET VIOLATION:', mindsetValidation.message)
-    console.error('[MARE] Violations:', mindsetValidation.violations)
-    throw new Error(
-      `Governance-First Mindset violation detected: ${mindsetValidation.violations.join(', ')}`
-    )
-  }
-  
-  if (!mindsetValidation.canProceed) {
-    console.error('[MARE] CANNOT PROCEED:', mindsetValidation.blockingIssues)
-    throw new Error(
-      `Governance-First Mindset blocking issues: ${mindsetValidation.blockingIssues.join(', ')}`
-    )
-  }
-  
-  console.log('[MARE] Mindset compliance validated:', mindsetValidation.message)
-  
-  // DRIFT DETECTION HOOK: Check for governance drift in reasoning context
-  const driftResults = await detectGovernanceDrift({
-    action: `Execute reasoning for ${context.intent}`,
-    governanceMemory: {
-      memoryLoaded: snapshot !== undefined && snapshot !== null,
-      rulesApplied: false, // Will be updated after applying patterns
-      driftMonitored: true
-    }
-  });
-  
-  if (driftResults.length > 0) {
-    console.error('[MARE] DRIFT DETECTED in reasoning execution:');
-    driftResults.forEach(drift => {
-      console.error(`  - ${drift.driftType}: ${drift.description}`);
-    });
-  }
-  
   const patternsApplied: string[] = []
   const decisions: ReasoningDecision[] = []
   const risks: string[] = []
@@ -346,6 +301,51 @@ export async function executeReasoning(
     
     console.log(`[MARE] Applied pattern: ${pattern.name} (confidence: ${result.confidence})`)
   })
+  
+  // GOVERNANCE-FIRST MINDSET: Validate governance compliance after applying patterns
+  console.log('[MARE] Validating Governance-First Mindset compliance...')
+  const mindsetValidation = validateMindsetCompliance({
+    action: `Reasoning execution for ${context.intent || 'undefined'}`,
+    governanceContext: {
+      memoryLoaded: snapshot !== undefined && snapshot !== null,
+      governanceRulesApplied: applicablePatterns.length > 0, // Set to true if patterns were applied
+      driftMonitored: true
+    }
+  })
+  
+  if (!mindsetValidation.compliant) {
+    console.error('[MARE] MINDSET VIOLATION:', mindsetValidation.message)
+    console.error('[MARE] Violations:', mindsetValidation.violations)
+    throw new Error(
+      `Governance-First Mindset violation detected: ${mindsetValidation.violations.join(', ')}`
+    )
+  }
+  
+  if (!mindsetValidation.canProceed) {
+    console.error('[MARE] CANNOT PROCEED:', mindsetValidation.blockingIssues)
+    throw new Error(
+      `Governance-First Mindset blocking issues: ${mindsetValidation.blockingIssues.join(', ')}`
+    )
+  }
+  
+  console.log('[MARE] Mindset compliance validated:', mindsetValidation.message)
+  
+  // DRIFT DETECTION HOOK: Check for governance drift in reasoning context
+  const driftResults = await detectGovernanceDrift({
+    action: `Execute reasoning for ${context.intent || 'undefined'}`,
+    governanceMemory: {
+      memoryLoaded: snapshot !== undefined && snapshot !== null,
+      rulesApplied: applicablePatterns.length > 0,
+      driftMonitored: true
+    }
+  });
+  
+  if (driftResults.length > 0) {
+    console.error('[MARE] DRIFT DETECTED in reasoning execution:');
+    driftResults.forEach(drift => {
+      console.error(`  - ${drift.driftType}: ${drift.description}`);
+    });
+  }
   
   // Calculate average confidence
   const confidenceScore = applicablePatterns.length > 0
