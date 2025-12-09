@@ -183,7 +183,7 @@ export function verifyConstitutionalHashes(baseline?: FileHash[]): HashVerificat
         expectedHash: baseline?.hash,
         message: 'File exists in baseline but is now missing'
       })
-    } else if (!baseline) {
+    } else if (baseline === undefined) {
       results.push({
         file: filePath,
         status: 'failed',

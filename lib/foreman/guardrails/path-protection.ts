@@ -278,6 +278,7 @@ export function detectSuppressions(filePath: string): {
       { type: 'ts-nocheck', regex: /@ts-nocheck/i },
       { type: 'ts-expect-error', regex: /@ts-expect-error/i },
       { type: 'prettier-ignore', regex: /prettier-ignore/i },
+      { type: 'NOSONAR', regex: /NOSONAR/i },
     ]
     
     lines.forEach((line, index) => {
