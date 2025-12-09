@@ -21,8 +21,9 @@ import { getACR } from './acr-engine';
 
 /**
  * ACR Storage Scope
+ * Using 'global' scope as ACRs are system-wide governance artifacts
  */
-const ACR_STORAGE_SCOPE = 'architecture_change_requests';
+const ACR_STORAGE_SCOPE = 'global' as const;
 
 /**
  * Approve an Architecture Change Request

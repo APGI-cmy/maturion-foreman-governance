@@ -21,8 +21,9 @@ import { analyzeArchitectureImpact } from './file-detector';
 
 /**
  * ACR Storage Scope
+ * Using 'global' scope as ACRs are system-wide governance artifacts
  */
-const ACR_STORAGE_SCOPE = 'architecture_change_requests';
+const ACR_STORAGE_SCOPE = 'global' as const;
 
 /**
  * Generate a unique ACR ID
@@ -170,7 +171,11 @@ export async function getACR(acrId: string): Promise<ArchitectureChangeRequest |
     key: acrId,
   });
   
-  return result?.value as ArchitectureChangeRequest || null;
+  if (result.entries.length === 0) {
+    return null;
+  }
+  
+  return result.entries[0].value as ArchitectureChangeRequest;
 }
 
 /**
