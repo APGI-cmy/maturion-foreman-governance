@@ -12,6 +12,7 @@
     "test:drift": "tsx --test tests/memory-drift/*.test.ts",
     "test:qa": "tsx --test tests/qa/*.test.ts",
     "test:qic": "tsx --test tests/qic/*.test.ts",
+    "test:governance": "tsx --test tests/governance/*.test.ts",
     "test:all": "tsx --test tests/**/*.test.ts",
     "test:watch": "tsx --test --watch tests/dashboard/*.test.ts",
     "test:structural": "tsx --test tests/qa-structural/*.test.ts",
