@@ -21,6 +21,8 @@ export default function ForemanChatPage() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [executionStatus, setExecutionStatus] = useState<ChatExecutionStatus | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [currentModel, setCurrentModel] = useState<string>('gpt-4');
+  const [modelEscalated, setModelEscalated] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when messages change
@@ -154,6 +156,13 @@ export default function ForemanChatPage() {
         // Set conversation ID if this is the first message
         if (!conversationId && data.conversationId) {
           setConversationId(data.conversationId);
+        }
+
+        // Update current model indicator if provided
+        if (data.modelUsed) {
+          setCurrentModel(data.modelUsed);
+          // Check if model was escalated (not gpt-4)
+          setModelEscalated(data.modelUsed !== 'gpt-4');
         }
 
         // Handle execution status if present
@@ -341,9 +350,23 @@ export default function ForemanChatPage() {
                 </button>
               </div>
               <div className="flex justify-between items-center mt-2">
-                <p className="text-xs text-gray-600">
-                  Foreman uses GPT-4 with organization-specific governance rules
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs text-gray-600">
+                    Current model:
+                  </p>
+                  <span className={`text-xs font-mono px-2 py-0.5 rounded ${
+                    modelEscalated 
+                      ? 'bg-yellow-900/30 text-yellow-400 border border-yellow-700/50' 
+                      : 'bg-blue-900/30 text-blue-400 border border-blue-700/50'
+                  }`}>
+                    {currentModel}
+                  </span>
+                  {modelEscalated && (
+                    <span className="text-xs text-yellow-400" title="Model escalated for complex task">
+                      ⬆️ Escalated
+                    </span>
+                  )}
+                </div>
                 {messages.length > 0 && (
                   <p className="text-xs text-gray-500">
                     {messages.length} message{messages.length !== 1 ? 's' : ''} in conversation
