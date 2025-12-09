@@ -19,6 +19,9 @@ import {
 } from './types';
 import { analyzeArchitectureImpact } from './file-detector';
 
+// Re-export types for test files
+export type { CreateACROptions } from './types';
+
 /**
  * ACR Storage Scope
  * Using 'global' scope as ACRs are system-wide governance artifacts

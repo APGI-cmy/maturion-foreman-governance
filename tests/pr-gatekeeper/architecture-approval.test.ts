@@ -69,11 +69,11 @@ describe('PR Gatekeeper Architecture Approval', () => {
       'README.md',
     ];
 
-    const protected = filterProtectedFiles(files);
+    const protectedFiles = filterProtectedFiles(files);
 
-    assert.strictEqual(protected.length, 2, 'Should find 2 protected files');
-    assert.ok(protected.includes('docs/architecture/test.md'), 'Should include architecture doc');
-    assert.ok(protected.includes('foreman/constitution/README.md'), 'Should include constitution file');
+    assert.strictEqual(protectedFiles.length, 2, 'Should find 2 protected files');
+    assert.ok(protectedFiles.includes('docs/architecture/test.md'), 'Should include architecture doc');
+    assert.ok(protectedFiles.includes('foreman/constitution/README.md'), 'Should include constitution file');
   });
 
   it('should handle various file path formats', () => {
