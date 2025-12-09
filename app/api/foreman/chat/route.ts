@@ -96,6 +96,11 @@ export async function POST(request: NextRequest) {
 
     // Determine task complexity for model selection
     const taskComplexity = analyzeMessageComplexity(userMessage, conversationHistory || []);
+    
+    // Get current quota usage
+    const { getQuotaUsage } = await import('@/lib/foreman/model-escalation');
+    const quotaUsage = getQuotaUsage();
+    
     const modelContext: ModelSelectionContext = {
       taskType: taskComplexity.taskType,
       complexity: taskComplexity.complexity,
@@ -103,8 +108,8 @@ export async function POST(request: NextRequest) {
       isArchitectureTask: taskComplexity.isArchitecture,
       isGovernanceTask: taskComplexity.isGovernance,
       isMilestoneNearing: false,
-      existingEscalationsToday: 0,
-      quotaRemaining: 100
+      existingEscalationsToday: quotaUsage.daily,
+      quotaRemaining: Math.max(0, 50 - quotaUsage.daily) // Default daily limit is 50
     };
 
     // Select appropriate model using escalation logic
@@ -117,8 +122,11 @@ export async function POST(request: NextRequest) {
       taskComplexity: taskComplexity.complexity
     });
 
-    // Calculate dynamic max_tokens based on context
-    const dynamicMaxTokens = calculateDynamicMaxTokens(context.metadata.totalTokens);
+    // Calculate dynamic max_tokens based on context and selected model
+    const dynamicMaxTokens = calculateDynamicMaxTokens(
+      context.metadata.totalTokens,
+      modelSelection.selectedModel
+    );
 
     console.log('[Chat] Token budget:', {
       contextTokens: context.metadata.totalTokens,
@@ -513,19 +521,20 @@ function analyzeMessageComplexity(message: string, history: ChatMessage[]): {
 }
 
 /**
- * Calculate dynamic max_tokens based on context size
+ * Calculate dynamic max_tokens based on context size and selected model
  * Ensures total tokens (context + completion) stay within model limits
  */
-function calculateDynamicMaxTokens(contextTokens: number): number {
-  // Conservative limits for different models
-  const MODEL_LIMITS = {
+function calculateDynamicMaxTokens(contextTokens: number, model: ModelTier): number {
+  // Model-specific context limits
+  const MODEL_LIMITS: Record<ModelTier, number> = {
     'gpt-4': 8192,
     'gpt-4-turbo': 128000,
-    'gpt-5.1': 128000, // Placeholder - adjust when actual limits known
+    'gpt-5.1': 128000, // Placeholder - adjust when actual limits are known
+    'local-builder': 8192 // Conservative default for local models
   };
   
-  // Use gpt-4 limit as baseline (most conservative)
-  const modelLimit = MODEL_LIMITS['gpt-4'];
+  // Get limit for selected model
+  const modelLimit = MODEL_LIMITS[model] || MODEL_LIMITS['gpt-4'];
   
   // Reserve buffer for safety
   const safetyBuffer = 500;
@@ -534,8 +543,9 @@ function calculateDynamicMaxTokens(contextTokens: number): number {
   const availableTokens = modelLimit - contextTokens - safetyBuffer;
   
   // Ensure minimum and maximum bounds
+  // Higher models can use more tokens for completion
   const minTokens = 500;
-  const maxTokens = 4000;
+  const maxTokens = model === 'gpt-4' ? 2000 : 4000;
   
   return Math.max(minTokens, Math.min(maxTokens, availableTokens));
 }
