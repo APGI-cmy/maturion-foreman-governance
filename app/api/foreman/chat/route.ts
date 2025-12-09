@@ -242,7 +242,7 @@ export async function POST(request: NextRequest) {
     // Add compression notice if prompt was compressed
     if (context.metadata.promptCompressed && context.metadata.promptCompressionRatio) {
       const compressionPercent = ((1 - context.metadata.promptCompressionRatio) * 100).toFixed(0);
-      const notice = `\n\n💡 **Long prompt compressed** — Your prompt was compressed by ${compressionPercent}% while preserving critical details.\n\n`;
+      const notice = `\n\n💡 **Long prompt compressed** - Your prompt was compressed by ${compressionPercent}% while preserving critical details.\n\n`;
       chatResponse.replyText = notice + chatResponse.replyText;
     }
 

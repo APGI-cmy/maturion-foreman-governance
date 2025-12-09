@@ -123,6 +123,11 @@ function isSupportedFileType(contentType: string, filename: string): boolean {
 }
 
 /**
+ * PDF processing error message
+ */
+const PDF_NOT_SUPPORTED_ERROR = 'PDF processing not yet implemented - please use text or markdown files';
+
+/**
  * Extract content from file based on type
  */
 async function extractContent(
@@ -137,14 +142,14 @@ async function extractContent(
     if (fileType === 'pdf') {
       // PDF processing would require a library like pdf-parse
       // For now, return a placeholder
-      throw new Error('PDF processing not yet implemented - please use text or markdown files');
+      throw new Error(PDF_NOT_SUPPORTED_ERROR);
     }
     return file.toString('utf-8');
   }
 
   // Handle File (client-side)
   if (fileType === 'pdf') {
-    throw new Error('PDF processing not yet implemented - please use text or markdown files');
+    throw new Error(PDF_NOT_SUPPORTED_ERROR);
   }
 
   return await file.text();
