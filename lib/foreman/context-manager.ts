@@ -269,7 +269,7 @@ export async function buildOptimizedContext(
     console.log(`[ContextManager] Large prompt detected: ${userMessageTokens} tokens, applying compression`);
     
     const compressionOptions: CompressionOptions = {
-      targetMaxTokens: 2000, // More aggressive compression - reduced from 4000
+      targetMaxTokens: 2000, // Aggressive compression for economic model use
       preserveGovernance: true,
       preserveArchitecture: true,
       preserveCriticalInstructions: true,

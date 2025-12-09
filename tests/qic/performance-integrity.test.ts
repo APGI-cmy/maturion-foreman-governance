@@ -111,8 +111,11 @@ describe('QIC Constitutional: Performance Fix Enforcement (CS5)', () => {
           console.log(`  ... and ${allTodos.length - 5} more`);
         }
         
-        // For now, we'll warn but not fail - these need to be tracked in Parking Station
         console.log('⚠ TODOs should be moved to Parking Station');
+        console.log('⚠ Constitutional requirement: Track in memory/parking-station/ or fix immediately');
+        
+        // For now, this is a warning. Future: make this fail if Parking Station entry doesn't exist
+        // assert.fail('TODO comments must be tracked in Parking Station or fixed');
       } else {
         console.log('✓ No TODO comments found');
       }
