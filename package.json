@@ -17,7 +17,7 @@
     "test:structural": "tsx --test tests/qa-structural/*.test.ts",
     "test:overnight": "tsx --test tests/overnight-execution/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "typecheck:production": "tsc --noEmit --exclude 'tests/**/*'",
+    "typecheck:production": "tsc --noEmit",
     "qa:full": "npm run lint && npm run test:structural && npm run build",
     "qa:diff": "tsx scripts/qiel-env-diff.ts",
     "qa:preflight": "tsx scripts/pre-flight-validation.ts",
