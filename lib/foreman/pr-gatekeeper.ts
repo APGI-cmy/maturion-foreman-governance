@@ -189,6 +189,7 @@ export async function enforcePRGatekeeper(options?: {
           deploymentSimulationPassed: false,
           schemaCohesionPassed: false,
           engineLoadPassed: false,
+          featureDeploymentPassed: false,
         },
         results: {} as any,
         qiIncidents: [],

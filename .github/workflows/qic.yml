@@ -1,0 +1,168 @@
+# GitHub Actions Workflow for QIC
+# Quality Integrity Contract - Core QA Suite
+#
+# This workflow enforces the Quality Integrity Contract by running
+# comprehensive QA validation including linting, type checking, and tests.
+
+name: QIC - Quality Integrity Contract
+
+on:
+  push:
+    branches: [ main, develop, 'feature/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  qic-validation:
+    name: Quality Integrity Contract Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint (Strict Mode)
+        id: lint
+        run: |
+          echo "Running ESLint in strict mode..."
+          npm run lint 2>&1 | tee /tmp/lint.log
+      
+      - name: Run TypeScript Type Check
+        id: typecheck
+        run: |
+          echo "Running TypeScript type check..."
+          npm run typecheck 2>&1 | tee /tmp/build.log
+      
+      - name: Run All Tests
+        id: tests
+        run: |
+          echo "Running all test suites..."
+          
+          # Check if any tests exist
+          if [ ! -d "tests" ]; then
+            echo "No test directory found - marking as passed"
+            exit 0
+          fi
+          
+          # Count test files
+          TEST_FILES=$(find tests -name "*.test.ts" -o -name "*.test.tsx" | wc -l)
+          if [ "$TEST_FILES" -eq 0 ]; then
+            echo "No test files found - marking as passed"
+            exit 0
+          fi
+          
+          # If we have tests, they must pass
+          npm run test:all 2>&1 | tee /tmp/test.log
+      
+      - name: Run QIEL Quick Check
+        id: qiel
+        run: |
+          echo "Running QIEL quick check..."
+          npm run qiel:quick
+      
+      - name: QIC Validation Summary
+        if: always()
+        run: |
+          echo "==================================================="
+          echo "QIC - Quality Integrity Contract Validation"
+          echo "==================================================="
+          echo ""
+          echo "✅ ESLint: ${{ steps.lint.outcome }}"
+          echo "✅ TypeScript: ${{ steps.typecheck.outcome }}"
+          echo "✅ Tests: ${{ steps.tests.outcome }}"
+          echo "✅ QIEL: ${{ steps.qiel.outcome }}"
+          echo ""
+          echo "==================================================="
+          
+          if [ "${{ steps.lint.outcome }}" != "success" ] || \
+             [ "${{ steps.typecheck.outcome }}" != "success" ] || \
+             [ "${{ steps.tests.outcome }}" != "success" ] || \
+             [ "${{ steps.qiel.outcome }}" != "success" ]; then
+            echo "❌ QIC FAILED - Quality violations detected"
+            exit 1
+          else
+            echo "✅ QIC PASSED - Quality standards met"
+          fi
+      
+      - name: Comment PR with QIC Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const lintStatus = '${{ steps.lint.outcome }}';
+            const typecheckStatus = '${{ steps.typecheck.outcome }}';
+            const testsStatus = '${{ steps.tests.outcome }}';
+            const qielStatus = '${{ steps.qiel.outcome }}';
+            
+            const statusIcon = (status) => status === 'success' ? '✅' : '❌';
+            const overallPass = lintStatus === 'success' && 
+                               typecheckStatus === 'success' && 
+                               testsStatus === 'success' &&
+                               qielStatus === 'success';
+            
+            const body = `## ${overallPass ? '✅' : '❌'} QIC - Quality Integrity Contract
+            
+            **Status**: ${overallPass ? 'PASSED' : 'FAILED'}
+            
+            ### Validation Results
+            
+            - ${statusIcon(lintStatus)} **ESLint**: ${lintStatus}
+            - ${statusIcon(typecheckStatus)} **TypeScript**: ${typecheckStatus}
+            - ${statusIcon(testsStatus)} **Tests**: ${testsStatus}
+            - ${statusIcon(qielStatus)} **QIEL Quick Check**: ${qielStatus}
+            
+            ${!overallPass ? `
+            ⚠️ **Action Required**: Fix quality issues before merging.
+            
+            Per the **Quality Integrity Contract**, all checks must pass.
+            ` : `
+            ✅ All quality checks passed. Code meets QIC requirements.
+            `}
+            
+            ---
+            *Quality Integrity Contract Enforcement*
+            `;
+            
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('QIC - Quality Integrity Contract')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+# QIC ensures code quality through systematic validation
+# All checks must pass - no exceptions

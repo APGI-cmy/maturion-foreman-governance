@@ -1,0 +1,60 @@
+# CODEOWNERS - Governance Guardrail
+# 
+# This file defines ownership rules for critical governance and infrastructure files.
+# These paths require explicit human (Johan) approval before merging.
+#
+# Purpose: Prevent Foreman from modifying core governance, CI/CD, or architectural
+# safeguards without human oversight.
+#
+# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# =============================================================================
+# CRITICAL GOVERNANCE FILES - REQUIRE JOHAN'S APPROVAL
+# =============================================================================
+
+# GitHub Actions Workflows - CI/CD Infrastructure
+# Protects QIEL, QIC, deploy checks, and all automation
+.github/workflows/** @MaturionISMS/admins
+
+# CODEOWNERS itself must be protected
+.github/CODEOWNERS @MaturionISMS/admins
+
+# Governance Documentation and Rules
+# Protects all governance policies, rules, and contracts
+docs/governance/** @MaturionISMS/admins
+
+# Foreman Governance Rules
+# Protects autonomy rules, deployment governance, QA contracts
+foreman/governance/** @MaturionISMS/admins
+
+# Foreman Constitutional Files
+# Protects core architectural and operational rules
+foreman/autonomy-rules.md @MaturionISMS/admins
+foreman/true-north-architecture.md @MaturionISMS/admins
+
+# =============================================================================
+# NOTES FOR JOHAN
+# =============================================================================
+#
+# These paths are now protected. Foreman can:
+# - Open PRs that modify these files
+# - Request reviews for these changes
+#
+# Foreman CANNOT:
+# - Merge PRs affecting these paths without your approval
+# - Bypass CODEOWNERS protection
+# - Modify branch protection rules
+#
+# When Foreman opens a PR touching these paths:
+# 1. GitHub will automatically request your review
+# 2. PR cannot be merged until you approve
+# 3. This applies even if all CI checks pass
+#
+# To grant approval:
+# 1. Review the PR changes carefully
+# 2. Click "Review changes" > "Approve" in GitHub UI
+# 3. PR becomes mergeable after your approval
+#
+# =============================================================================
+
+# End of CODEOWNERS

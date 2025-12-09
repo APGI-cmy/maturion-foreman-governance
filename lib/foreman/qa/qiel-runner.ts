@@ -56,6 +56,10 @@ import {
   generateEngineLoadReport,
 } from './engine-load-validator';
 import {
+  runFeatureDeploymentValidation,
+  generateFeatureDeploymentReport,
+} from './feature-deployment-validator';
+import {
   recordQIIncident,
   recordBuildErrorIncident,
   recordLintErrorIncident,
@@ -82,6 +86,7 @@ export interface QIELResult {
     deploymentSimulationPassed: boolean;
     schemaCohesionPassed: boolean;
     engineLoadPassed: boolean;
+    featureDeploymentPassed: boolean;
   };
   results: {
     logGeneration: ReturnType<typeof generateAllLogs>;
@@ -91,6 +96,7 @@ export interface QIELResult {
     deploymentSimulation: ReturnType<typeof runVercelSimulation>;
     schemaCohesion: Awaited<ReturnType<typeof runSchemaCohesionValidation>>;
     engineLoad: Awaited<ReturnType<typeof runEngineLoadValidation>>;
+    featureDeployment: ReturnType<typeof runFeatureDeploymentValidation>;
   };
   qiIncidents: QualityIntegrityIncident[];
   regressionTestsGenerated: number;
@@ -348,6 +354,41 @@ export async function runQIEL(options?: {
     };
   }
 
+  // ========== QIEL-7: Feature Deployment Validation ==========
+  console.log('🎯 [QIEL-7] Validating feature deployment...');
+  const featureDeployment = runFeatureDeploymentValidation(projectDir);
+  const featureDeploymentPassed = featureDeployment.passed;
+
+  if (!featureDeploymentPassed) {
+    blockersFound.push(`Feature deployment validation failed: ${featureDeployment.summary}`);
+    console.error(`❌ ${featureDeployment.summary}`);
+    
+    // Record QI Incidents for feature deployment failures
+    for (const error of featureDeployment.errors) {
+      const incident = await recordQIIncident({
+        incidentType: 'deployment_failure',
+        severity: 'critical',
+        source: 'feature-deployment-validator',
+        description: `Feature deployment validation failed: ${error}`,
+        details: {
+          error,
+          summary: featureDeployment.summary,
+          checks: featureDeployment.checks,
+        },
+        buildId,
+        sequenceId,
+        commitSha,
+        branch,
+      });
+      if (incident.incident) {
+        qiIncidents.push(incident.incident);
+      }
+    }
+  } else {
+    console.log(`✅ ${featureDeployment.summary}`);
+  }
+  console.log('');
+
   // ========== QIEL-8: Auto-Generate Regression Tests ==========
   let regressionTestsGenerated = 0;
   if (qiIncidents.length > 0) {
@@ -369,7 +410,8 @@ export async function runQIEL(options?: {
     zeroWarningPassed &&
     deploymentSimulationPassed &&
     schemaCohesionPassed &&
-    engineLoadPassed;
+    engineLoadPassed &&
+    featureDeploymentPassed;
 
   console.log('═══════════════════════════════════════════════════════');
   if (passed) {
@@ -409,6 +451,7 @@ export async function runQIEL(options?: {
   reportSections.push(`- [${deploymentSimulationPassed ? 'x' : ' '}] Preview & production deploys both succeed`);
   reportSections.push(`- [${engineLoadPassed ? 'x' : ' '}] All engines initialize cleanly`);
   reportSections.push(`- [${schemaCohesionPassed ? 'x' : ' '}] All schemas match`);
+  reportSections.push(`- [${featureDeploymentPassed ? 'x' : ' '}] All features properly deployed and wired`);
   reportSections.push(`- [${passed ? 'x' : ' '}] Zero silent failures detected`);
   reportSections.push(`- [${qiIncidents.length === 0 ? 'x' : ' '}] QI system logs zero incidents`);
   reportSections.push(`- [${passed ? 'x' : ' '}] Governance Memory records zero unresolved QI incidents\n`);
@@ -455,6 +498,9 @@ export async function runQIEL(options?: {
     reportSections.push('\n---\n');
     reportSections.push(generateEngineLoadReport(engineLoad));
   }
+  
+  reportSections.push('\n---\n');
+  reportSections.push(generateFeatureDeploymentReport(featureDeployment));
 
   const reportMarkdown = reportSections.join('\n');
 
@@ -471,6 +517,7 @@ export async function runQIEL(options?: {
       deploymentSimulationPassed,
       schemaCohesionPassed,
       engineLoadPassed,
+      featureDeploymentPassed,
     },
     results: {
       logGeneration,
@@ -480,6 +527,7 @@ export async function runQIEL(options?: {
       deploymentSimulation,
       schemaCohesion,
       engineLoad,
+      featureDeployment,
     },
     qiIncidents,
     regressionTestsGenerated,
