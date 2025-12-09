@@ -219,6 +219,13 @@ export function runZeroWarningPolicy(
   if (!validation.valid) {
     governanceViolations.push(...validation.errors);
   }
+  
+  // Log warnings (non-blocking issues)
+  if (validation.warnings && validation.warnings.length > 0) {
+    validation.warnings.forEach(warning => {
+      console.warn(`[Zero-Warning] ${warning}`);
+    });
+  }
 
   // Check all warning types - STRICT MODE: No automatic whitelisting
   const buildWarnings = checkBuildWarnings(buildLog);
@@ -244,9 +251,11 @@ export function runZeroWarningPolicy(
     const { allowed, matchedEntry } = isWarningAllowed(warning, allowedWarningsConfig);
     if (allowed) {
       allowedWarnings.push(warning);
+      const approvedBy = matchedEntry?.approved_by || 'unknown';
+      const targetWave = matchedEntry?.target_wave || 'unknown';
       console.log(
         `[Zero-Warning] ALLOWED (governance): ${warning.substring(0, 100)}... ` +
-        `(approved by ${matchedEntry?.approved_by}, target: ${matchedEntry?.target_wave})`
+        `(approved by ${approvedBy}, target: ${targetWave})`
       );
     } else {
       blockedWarnings.push(warning);

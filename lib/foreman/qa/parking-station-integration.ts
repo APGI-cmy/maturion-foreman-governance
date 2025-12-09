@@ -77,14 +77,16 @@ export function createDeprecatedDependencyEntry(
  */
 function extractPackageNameFromPattern(pattern: string): string {
   // Try to extract package name from common patterns
+  // Handles: npm packages, scoped packages (@types/node), packages with dots
   // e.g., "npm warn deprecated rimraf@" -> "rimraf"
-  const match = pattern.match(/([a-z0-9-]+)@/i);
+  // e.g., "npm warn deprecated @types/node@" -> "@types/node"
+  const match = pattern.match(/([a-zA-Z0-9._@/-]+)@/);
   if (match) {
     return match[1];
   }
   
   // Try to extract from word boundaries
-  const wordMatch = pattern.match(/\b([a-z][a-z0-9-]+)\b/i);
+  const wordMatch = pattern.match(/\b(@?[a-z][a-z0-9._-]*(?:\/[a-z][a-z0-9._-]*)?)\b/i);
   if (wordMatch) {
     return wordMatch[1];
   }

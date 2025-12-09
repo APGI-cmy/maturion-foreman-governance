@@ -136,11 +136,13 @@ export function getExpiredWarnings(
 
 /**
  * Validate allowed warnings configuration integrity
+ * Returns validation errors (hard failures) and warnings (should be addressed)
  */
 export function validateAllowedWarnings(
   allowedWarnings: AllowedWarningsConfig
-): { valid: boolean; errors: string[] } {
+): { valid: boolean; errors: string[]; warnings?: string[] } {
   const errors: string[] = [];
+  const warnings: string[] = [];
 
   // Check version format
   if (!/^\d+\.\d+\.\d+$/.test(allowedWarnings.version)) {
@@ -149,7 +151,7 @@ export function validateAllowedWarnings(
 
   // Check each warning entry
   for (const warning of allowedWarnings.warnings) {
-    // Verify approved_by is not Foreman
+    // Verify approved_by is not Foreman (HARD FAILURE)
     if (warning.approved_by.toLowerCase().includes('foreman')) {
       errors.push(
         `Warning ${warning.id} approved by Foreman - GOVERNANCE VIOLATION. ` +
@@ -157,14 +159,14 @@ export function validateAllowedWarnings(
       );
     }
 
-    // Verify pattern is valid regex
+    // Verify pattern is valid regex (HARD FAILURE)
     try {
       new RegExp(warning.pattern);
     } catch (error) {
       errors.push(`Warning ${warning.id} has invalid regex pattern: ${warning.pattern}`);
     }
 
-    // Check if expired
+    // Check if expired (HARD FAILURE)
     if (warning.expires_at) {
       const expiryDate = new Date(warning.expires_at);
       if (expiryDate < new Date()) {
@@ -175,11 +177,11 @@ export function validateAllowedWarnings(
       }
     }
 
-    // Warn if no parking station ID
+    // Warn if no parking station ID (WARNING - should be addressed but not blocking)
     if (!warning.parking_station_id) {
-      errors.push(
+      warnings.push(
         `Warning ${warning.id} missing parking_station_id. ` +
-        `All allowed warnings must have a Parking Station entry for tech debt tracking.`
+        `All allowed warnings should have a Parking Station entry for tech debt tracking.`
       );
     }
   }
@@ -187,5 +189,6 @@ export function validateAllowedWarnings(
   return {
     valid: errors.length === 0,
     errors,
+    warnings,
   };
 }

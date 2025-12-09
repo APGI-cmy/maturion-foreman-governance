@@ -31,7 +31,7 @@ describe('QIW Integration with Enhanced QA', () => {
     }
   }
 
-  it('should integrate QIW into Enhanced QA and pass with clean logs', () => {
+  it('should integrate QIW into Enhanced QA and pass with clean logs', async () => {
     setupTestLogs()
     
     // Create clean log files
@@ -39,7 +39,7 @@ describe('QIW Integration with Enhanced QA', () => {
     fs.writeFileSync(path.join(testLogsDir, 'lint.log'), 'No issues found\n', 'utf-8')
     fs.writeFileSync(path.join(testLogsDir, 'test.log'), 'All tests passed\n', 'utf-8')
     
-    const result = runEnhancedQA({
+    const result = await runEnhancedQA({
       logsDir: testLogsDir,
       skipVercelSimulation: true
     })
@@ -59,7 +59,7 @@ describe('QIW Integration with Enhanced QA', () => {
     cleanupTestLogs()
   })
 
-  it('should block QA when QIW detects errors', () => {
+  it('should block QA when QIW detects errors', async () => {
     setupTestLogs()
     
     // Create logs with errors
@@ -67,7 +67,7 @@ describe('QIW Integration with Enhanced QA', () => {
     fs.writeFileSync(path.join(testLogsDir, 'lint.log'), 'No issues found\n', 'utf-8')
     fs.writeFileSync(path.join(testLogsDir, 'test.log'), 'All tests passed\n', 'utf-8')
     
-    const result = runEnhancedQA({
+    const result = await runEnhancedQA({
       logsDir: testLogsDir,
       skipVercelSimulation: true
     })
@@ -87,7 +87,7 @@ describe('QIW Integration with Enhanced QA', () => {
     cleanupTestLogs()
   })
 
-  it('should include QIW report in markdown output', () => {
+  it('should include QIW report in markdown output', async () => {
     setupTestLogs()
     
     // Create clean log files
@@ -95,7 +95,7 @@ describe('QIW Integration with Enhanced QA', () => {
     fs.writeFileSync(path.join(testLogsDir, 'lint.log'), 'No issues found\n', 'utf-8')
     fs.writeFileSync(path.join(testLogsDir, 'test.log'), 'All tests passed\n', 'utf-8')
     
-    const result = runEnhancedQA({
+    const result = await runEnhancedQA({
       logsDir: testLogsDir,
       skipVercelSimulation: true
     })

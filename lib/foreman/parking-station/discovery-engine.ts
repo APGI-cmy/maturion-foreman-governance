@@ -238,14 +238,25 @@ function extractFutureSectionItems(
 ): ParkingStationEntry[] {
   const entries: ParkingStationEntry[] = []
   
-  // Find all "Future" section headers
-  const sectionRegex = /^##+ (?:Future|Next Steps|Roadmap|Known Limitations?)(?: (?:Enhancements?|Improvements?|Work|Features?|Considerations?))?\s*$/gim
+  // Pattern for section headers:
+  // - Matches: ## Future, ### Future Enhancements, ## Next Steps, ## Roadmap
+  // - Matches: ## Known Limitations, ### Known Limitation & Future Work
+  const futureSectionPatterns = [
+    /^##+ Future(?:\s+(?:Enhancements?|Improvements?|Work|Features?|Considerations?))?/i,
+    /^##+ Next Steps/i,
+    /^##+ Roadmap/i,
+    /^##+ Known Limitations?(?:\s+&?\s+Future)?/i,
+  ]
+  
   const lines = content.split('\n')
   
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     
-    if (sectionRegex.test(line)) {
+    // Check if this line matches any future section pattern
+    const isFutureSection = futureSectionPatterns.some(pattern => pattern.test(line))
+    
+    if (isFutureSection) {
       // Found a Future section, extract items until next major heading
       const sectionLevel = (line.match(/^#+/) || ['##'])[0].length
       const items: string[] = []
