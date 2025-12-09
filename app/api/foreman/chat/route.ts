@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body: ChatRequest = await request.json();
-    const { message, organisationId, conversationId, contextFlags, conversationHistory } = body;
+    const { message, organisationId, conversationId, contextFlags, conversationHistory, files, systemContext } = body;
 
     // Validate required fields
     if (!message || message.trim().length === 0) {
@@ -70,16 +70,62 @@ export async function POST(request: NextRequest) {
       conversationId: convId,
       messageLength: message.length,
       contextFlags: contextFlags || [],
-      historyLength: conversationHistory?.length || 0
+      historyLength: conversationHistory?.length || 0,
+      filesCount: files?.length || 0,
+      hasSystemContext: !!systemContext,
     });
 
-    // Build user message with context flags
+    // WIRING INTEGRITY: Log component invocation checkpoint
+    console.log('[Chat] WIRING_CHECKPOINT: Starting context pipeline');
+
+    // WIRING INTEGRITY: Process uploaded files using file-processor
+    let fileContext = '';
+    if (files && files.length > 0) {
+      console.log('[Chat] WIRING_CHECKPOINT: Invoking file-processor for uploaded files');
+      const { processUploadedFile, fileToContext } = await import('@/lib/foreman/context/file-processor');
+      
+      for (const file of files) {
+        try {
+          const buffer = Buffer.from(file.content, 'utf-8');
+          const processed = await processUploadedFile(buffer, file.filename, file.contentType);
+          const context = await fileToContext(processed, { targetMaxTokens: 4000 });
+          fileContext += context + '\n\n';
+          
+          console.log('[Chat] WIRING_CHECKPOINT: file-processor processed file', {
+            filename: file.filename,
+            tokens: processed.tokens,
+            hasGovernance: processed.metadata.hasGovernanceContent,
+            hasArchitecture: processed.metadata.hasArchitectureContent,
+          });
+        } catch (error) {
+          console.error('[Chat] Error processing file:', file.filename, error);
+          fileContext += `\n\n[Error processing file ${file.filename}: ${error instanceof Error ? error.message : 'Unknown error'}]\n\n`;
+        }
+      }
+      
+      console.log('[Chat] WIRING_CHECKPOINT: file-processor invocation complete', {
+        filesProcessed: files.length,
+      });
+    }
+
+    // Build user message with context flags and file context
     let userMessage = message;
     if (contextFlags && contextFlags.length > 0) {
       userMessage = `Context flags: ${contextFlags.join(', ')}\n\n${message}`;
     }
+    
+    // Add file context if present
+    if (fileContext) {
+      userMessage = userMessage + '\n\n' + fileContext;
+    }
+    
+    // Add system context if present
+    if (systemContext) {
+      userMessage = userMessage + '\n\n---\nSystem Context:\n' + systemContext;
+    }
 
-    // Build optimized context to prevent token overflow (now supports large prompts)
+    // WIRING INTEGRITY: Invoking context-manager
+    console.log('[Chat] WIRING_CHECKPOINT: Invoking context-manager (buildOptimizedContext)');
     const context = await buildOptimizedContext(
       conversationHistory || [],
       userMessage,
@@ -99,8 +145,17 @@ export async function POST(request: NextRequest) {
       promptCompressionRatio: context.metadata.promptCompressionRatio,
     });
 
+    // WIRING INTEGRITY: Confirm context-manager invocation complete
+    console.log('[Chat] WIRING_CHECKPOINT: context-manager invocation complete', {
+      promptCompressorInvoked: context.metadata.promptCompressed || false,
+      compressionRatio: context.metadata.promptCompressionRatio,
+    });
+
     // Determine task complexity for model selection
     const taskComplexity = analyzeMessageComplexity(userMessage, conversationHistory || []);
+    
+    // WIRING INTEGRITY: Invoking model-escalation
+    console.log('[Chat] WIRING_CHECKPOINT: Invoking model-escalation (selectModel)');
     
     // Get current quota usage
     const { getQuotaUsage } = await import('@/lib/foreman/model-escalation');
@@ -138,6 +193,13 @@ export async function POST(request: NextRequest) {
         : modelSelection.escalationReason,
       taskComplexity: taskComplexity.complexity,
       contextTokens: context.metadata.totalTokens,
+    });
+
+    // WIRING INTEGRITY: Confirm model-escalation invocation complete
+    console.log('[Chat] WIRING_CHECKPOINT: model-escalation invocation complete', {
+      modelEscalatorInvoked: true,
+      finalModel,
+      escalated: modelSelection.escalated || wasEscalatedForContext,
     });
 
     // Calculate dynamic max_tokens based on context and selected model

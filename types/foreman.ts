@@ -289,6 +289,12 @@ export interface ChatRequest {
   conversationId?: string
   contextFlags?: string[]
   conversationHistory?: ChatMessage[]
+  files?: {
+    filename: string
+    content: string
+    contentType: string
+  }[]
+  systemContext?: string
 }
 
 export interface ChatResponse {
