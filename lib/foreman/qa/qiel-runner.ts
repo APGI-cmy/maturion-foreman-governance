@@ -366,15 +366,19 @@ export async function runQIEL(options?: {
     // Record QI Incidents for feature deployment failures
     for (const error of featureDeployment.errors) {
       const incident = await recordQIIncident({
-        id: `qi_feature_deployment_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-        timestamp: new Date().toISOString(),
+        incidentType: 'deployment_failure',
         severity: 'critical',
-        category: 'deployment',
         source: 'feature-deployment-validator',
         description: `Feature deployment validation failed: ${error}`,
-        resolution: 'Fix feature wiring and deployment issues',
-        status: 'open',
-        organisationId: 'maturion_isms',
+        details: {
+          error,
+          summary: featureDeployment.summary,
+          checks: featureDeployment.checks,
+        },
+        buildId,
+        sequenceId,
+        commitSha,
+        branch,
       });
       if (incident.incident) {
         qiIncidents.push(incident.incident);
