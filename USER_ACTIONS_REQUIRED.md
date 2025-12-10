@@ -33,37 +33,94 @@ The Build Philosophy requires Foreman to:
 
 ### Solution Options
 
-#### Option A: Update GitHub Personal Access Token (RECOMMENDED)
+#### Option A: Verify and Approve Fine-Grained Token (RECOMMENDED IF YOU HAVE ONE)
+
+**The Most Common Issue**: Fine-grained tokens require **organization approval** even when "All repositories" is selected.
+
+**Quick Diagnosis**:
+1. Go to [GitHub Settings → Personal access tokens (fine-grained)](https://github.com/settings/tokens?type=beta)
+2. Click on your "Maturion Foreman" token
+3. Look for "**Access on the MaturionISMS organization**" section
+4. Check status:
+   - ✅ Shows "Update" with "Cancel" = **Approved** (good!)
+   - ⏳ Shows "Pending approval" = **Needs admin approval**
+   - ❌ Shows "Request access" = **Not requested yet**
+
+**If Status is Pending or Not Requested**:
+
+1. **Request Organization Access**:
+   - Click "Request access" or "Update" button for MaturionISMS
+   
+2. **Approve the Request** (you are the admin):
+   - Go to: [Organization PAT Requests](https://github.com/organizations/MaturionISMS/settings/personal-access-tokens/pending_requests)
+   - Find your token request
+   - Click "Approve"
+   - Wait 1-2 minutes for approval to take effect
+
+3. **Verify Approval**:
+   ```bash
+   npx tsx scripts/validate-github-token.ts
+   ```
+
+4. **Update Environment Variables**:
+   - Regenerate the token (optional but recommended after approval)
+   - Update `.env.local` with the token
+   - Update Vercel environment variables
+   - Redeploy application
+
+**Required Token Configuration**:
+- ✅ **Repository access**: All repositories (current and future)
+- ✅ **Organization**: MaturionISMS (must show as **approved**, not pending)
+- ✅ **Permissions**:
+  - Contents: Read and write
+  - Pull requests: Read and write  
+  - Issues: Read and write
+  - Metadata: Read-only (mandatory)
+  - Workflows: Read and write (if modifying GitHub Actions)
+  - Variables: Read and write
+  - Deployments: Read and write
+
+**Advantages**:
+- ✅ More secure (granular permissions)
+- ✅ Better audit trail
+- ✅ Modern GitHub best practice
+
+**Disadvantages**:
+- ⚠️ Requires organization approval step
+- ⚠️ Slightly more complex setup
+
+---
+
+#### Option B: Use Classic Personal Access Token (SIMPLER ALTERNATIVE)
+
+If fine-grained tokens continue to have approval issues, use a classic PAT:
 
 **Steps**:
-1. Go to [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-2. Find the token currently used in `GITHUB_TOKEN` environment variable
-   - OR create a new fine-grained personal access token
-3. **Required Permissions**:
-   - ✅ Repository access: `MaturionISMS/maturion-isms`
-   - ✅ Contents: Read (to read files and directories)
-   - ✅ Metadata: Read (to access repository information)
-   - ✅ Pull requests: Read and write (for full PR operations)
-   - ✅ Issues: Read and write (for issue operations)
-4. Update `.env` file:
+1. Go to [GitHub Settings → Personal access tokens → Tokens (classic)](https://github.com/settings/tokens)
+2. Click "Generate new token (classic)"
+3. Set the following scopes:
+   - ✅ `repo` (full control of private repositories)
+   - ✅ `workflow` (update GitHub Action workflows)
+   - ✅ `read:org` (read organization data)
+4. Generate and copy token immediately
+5. Update `.env.local`:
    ```bash
-   GITHUB_TOKEN=github_pat_YOUR_NEW_TOKEN_HERE
+   GITHUB_TOKEN=ghp_your_classic_token_here
    ```
-5. Restart Foreman App
-6. Verify access by running:
+6. Update Vercel environment variables
+7. Verify access:
    ```bash
-   curl -H "Authorization: token YOUR_TOKEN" \
-        https://api.github.com/repos/MaturionISMS/maturion-isms
+   npx tsx scripts/validate-github-token.ts
    ```
 
 **Advantages**:
-- ✅ Quick setup
-- ✅ Direct control over permissions
-- ✅ Works immediately
+- ✅ **No organization approval required** - Works immediately
+- ✅ Simpler setup
+- ✅ Proven compatibility
 
 **Disadvantages**:
-- ⚠️ Token has broad access to all repositories
-- ⚠️ Needs manual renewal
+- ⚠️ Less granular permissions
+- ⚠️ Access to all repositories in all organizations
 
 ---
 
@@ -129,7 +186,32 @@ The Build Philosophy requires Foreman to:
 
 ### Verification After Enabling Access
 
-Once access is enabled, Foreman will automatically:
+Run the automated validation script:
+
+```bash
+npx tsx scripts/validate-github-token.ts
+```
+
+This script will:
+- ✅ Test GitHub API authentication
+- ✅ Verify MaturionISMS organization access
+- ✅ Check maturion-isms repository access
+- ✅ Confirm required permissions
+- ✅ Test read access to repository contents
+- ✅ Validate governance repository access
+
+Expected output:
+```
+✅ Authenticated as: YourUsername
+✅ Can access MaturionISMS organization
+✅ Can access maturion-isms repository
+✅ Can read maturion-isms repository contents
+✅ All critical tests passed!
+```
+
+**If validation fails**, see detailed troubleshooting: [docs/GITHUB_TOKEN_TROUBLESHOOTING.md](docs/GITHUB_TOKEN_TROUBLESHOOTING.md)
+
+Once access is enabled and verified, Foreman will automatically:
 1. ✅ Scan `maturion-isms/architecture/modules/`
 2. ✅ Analyze architectural patterns
 3. ✅ Compare with Foreman App architecture
