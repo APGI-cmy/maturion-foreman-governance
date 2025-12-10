@@ -61,7 +61,7 @@ export async function processUserFeedback(
   }
   
   // Record feedback
-  await recordUserFeedback(incident, feedback);
+  await recordUserFeedback(incident, feedback, userId);
   await saveIncident(incident);
   
   console.log(`[Incident Engine] User feedback for ${incidentId}: ${feedback}`);

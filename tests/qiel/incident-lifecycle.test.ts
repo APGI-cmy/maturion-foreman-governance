@@ -16,13 +16,13 @@ import {
   recordFixAttempt,
   canAutoClose,
   getNextAction,
-} from '../../../lib/foreman/incidents/incident-engine';
+} from '@/lib/foreman/incidents/incident-engine';
 import {
   loadIncident,
   deleteIncident,
   getActiveIncidents,
   getResolvedIncidents,
-} from '../../../lib/foreman/incidents/storage';
+} from '@/lib/foreman/incidents/storage';
 
 describe('QIEL: Incident Lifecycle Validation', () => {
   let testIncidentId: string;
@@ -245,11 +245,11 @@ describe('QIEL: Incident Lifecycle Validation', () => {
       const resolved = await getResolvedIncidents();
 
       assert.ok(
-        !active.some(i => i.id === newIncident.id),
+        !active.some((i) => i.id === newIncident.id),
         'Resolved incident should not be in active list'
       );
       assert.ok(
-        resolved.some(i => i.id === newIncident.id),
+        resolved.some((i) => i.id === newIncident.id),
         'Resolved incident should be in resolved list'
       );
 

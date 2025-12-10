@@ -155,7 +155,8 @@ export async function updateIncidentState(
  */
 export async function recordUserFeedback(
   incident: Incident,
-  feedback: UserFeedbackType
+  feedback: UserFeedbackType,
+  userId?: string
 ): Promise<Incident> {
   incident.user_feedback = feedback;
   incident.updated_at = new Date().toISOString();
@@ -164,6 +165,9 @@ export async function recordUserFeedback(
   if (feedback === 'resolved') {
     incident.state = 'resolved';
     incident.resolved_at = new Date().toISOString();
+    if (userId) {
+      incident.resolved_by = userId;
+    }
   } else {
     // Non-resolved feedback triggers investigation or fixing
     incident.state = incident.state === 'pending' ? 'investigating' : 'fixing';
