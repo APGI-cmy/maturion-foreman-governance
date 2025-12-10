@@ -10,6 +10,66 @@ This checklist ensures that **every architecture design is complete** before QA 
 
 ---
 
+## Maturion Architectural Design Principles
+
+**Based on ISMS and Foreman App Architectural Patterns**
+
+Every architecture document in the Maturion ecosystem follows these principles:
+
+### 1. **Comprehensive Documentation Structure**
+   - **Purpose Section**: Clear statement of what the component does and why it exists
+   - **System Overview**: High-level description with ASCII diagrams showing component relationships
+   - **Core Components**: Detailed breakdown of each component with file locations
+   - **Data Models**: Complete TypeScript type definitions
+   - **API Specifications**: Full endpoint documentation with request/response schemas
+   - **Governance Integration**: How the component interacts with governance memory and QA
+   - **Error Handling**: Comprehensive error scenarios and recovery strategies
+
+### 2. **Separation of Concerns**
+   - Clear boundaries between components (e.g., Foreman orchestrates, Builders write code)
+   - Each component has a single, well-defined responsibility
+   - Dependencies are explicitly stated and minimized
+   - Interfaces are clearly defined between components
+
+### 3. **Governance-First Design**
+   - Every architecture includes governance memory hooks
+   - All state changes must log to governance memory
+   - Constitutional requirements are embedded (GSR, QIC, QIEL)
+   - Audit trails are built-in, not added later
+
+### 4. **True North Alignment**
+   - All architectures reference True North principles
+   - Quality is enforced by systems, not humans
+   - Architecture evolves through governance memory
+   - Autonomy within strict boundaries
+
+### 5. **Complete Specifications Before Building**
+   - Every function signature is specified
+   - Every type is fully defined
+   - Every API endpoint has request/response schemas
+   - Every user flow is documented
+   - No "TBD" or "TODO" in architecture - complete it first
+
+### 6. **ASCII Architecture Diagrams**
+   - Visual representation of component relationships
+   - Data flow diagrams
+   - System boundary illustrations
+   - Makes architecture immediately comprehensible
+
+**Example Pattern from Parking Station Architecture:**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Component System                          │
+├─────────────────────────────────────────────────────────────┤
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │   Discovery  │───▶│   Storage    │───▶│      UI      │  │
+│  │    Engine    │    │   Service    │    │   Dashboard  │  │
+│  └──────────────┘    └──────────────┘    └──────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Checklist Categories
 
 ### 1. User Interface (UI) Architecture
