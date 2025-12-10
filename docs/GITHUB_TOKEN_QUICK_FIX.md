@@ -21,9 +21,15 @@ You have a fine-grained GitHub personal access token configured with:
 
 This is a GitHub security feature - organization-owned repositories require explicit admin approval for fine-grained tokens, separate from the repository access setting.
 
+**UPDATE**: If you see "There aren't any personal access token requests" at the organization settings, it means your token is either already approved OR you're the organization owner (no approval needed). **The issue is something else** - see below.
+
 ---
 
 ## The Quick Fix (2 minutes)
+
+### Scenario A: You See Pending Approval Requests
+
+If at https://github.com/organizations/MaturionISMS/settings/personal-access-tokens/pending_requests you see pending requests:
 
 ### Step 1: Check Organization Approval Status
 
@@ -31,7 +37,7 @@ This is a GitHub security feature - organization-owned repositories require expl
 2. Click on your "Maturion Foreman" token
 3. Scroll to "**Access on the MaturionISMS organization**"
 4. Check the status:
-   - ✅ "Update" button with "Cancel" = Already approved (skip to Step 3)
+   - ✅ "Update" button with "Cancel" = Already approved (skip to Scenario B)
    - ⏳ "Pending approval" = Needs approval (continue to Step 2)
    - ❌ "Request access" button = Not requested (continue to Step 2)
 
@@ -71,6 +77,69 @@ Expected output:
 ✅ Can read maturion-isms repository contents
 ✅ All critical tests passed!
 ```
+
+---
+
+### Scenario B: No Pending Approval Requests ("There aren't any personal access token requests")
+
+If you see "There aren't any personal access token requests for this organization", your token is likely already approved OR you're the org owner. The 404 error is caused by something else.
+
+**Most Common Causes**:
+
+#### Fix 1: Regenerate Token and Update .env.local
+
+Your token value might be outdated:
+
+1. Go to: https://github.com/settings/tokens?type=beta
+2. Click your "Maturion Foreman" token
+3. Verify:
+   - Repository access: "All repositories" ✅
+   - Organization: MaturionISMS (Active) ✅
+   - Contents permission: "Read and write" ✅
+4. Click "**Regenerate token**" at the bottom
+5. **Copy the new token immediately**
+6. Update `.env.local`:
+   ```env
+   GITHUB_TOKEN=github_pat_NEW_TOKEN_VALUE_HERE
+   ```
+7. Verify:
+   ```bash
+   npm run validate:github-token
+   ```
+
+#### Fix 2: Verify Repository Exists
+
+The repository `maturion-isms` might not exist:
+
+1. Visit: https://github.com/MaturionISMS/maturion-isms
+2. **If 404**: Repository doesn't exist or has a different name
+3. **If you see the repo**: Token should work after regenerating
+
+#### Fix 3: Check Token Scope
+
+Even with "All repositories" selected, the token might not include all repos:
+
+1. Go to token settings
+2. Look for exact text: "This applies to all current and future repositories that you can access in this organization"
+3. **If it says "Only select repositories"**: Change to "All repositories"
+
+#### Fix 4: Use Classic Token Instead
+
+If fine-grained token continues to fail:
+
+1. Go to: https://github.com/settings/tokens/new
+2. Select scopes: `repo`, `workflow`
+3. Generate and copy token
+4. Update `.env.local`:
+   ```env
+   GITHUB_TOKEN=ghp_your_classic_token_here
+   ```
+5. Verify:
+   ```bash
+   npm run validate:github-token
+   ```
+
+**See detailed troubleshooting**: [docs/GITHUB_TOKEN_NO_PENDING_APPROVALS.md](./GITHUB_TOKEN_NO_PENDING_APPROVALS.md)
 
 ### Step 4: Update Environment Variables (if token was regenerated)
 

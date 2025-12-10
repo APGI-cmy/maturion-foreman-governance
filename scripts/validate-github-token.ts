@@ -234,6 +234,20 @@ async function validateToken() {
       info('Cannot determine token scopes (this is normal for fine-grained tokens)');
       info('Permissions are determined by repository access settings');
     }
+    
+    // Additional check for fine-grained tokens: organization permissions
+    if (tokenType === 'Fine-Grained Personal Access Token') {
+      console.log('\n⚠️  Important for fine-grained tokens:');
+      console.log('Fine-grained tokens require ORGANIZATION PERMISSIONS to access org repos.');
+      console.log('\nTo add organization permissions:');
+      console.log('1. Go to: https://github.com/settings/tokens');
+      console.log('2. Edit your token');
+      console.log('3. Scroll to "Organization permissions"');
+      console.log('4. Add "Members: Read-only" permission');
+      console.log('5. Regenerate token and update GITHUB_TOKEN');
+      console.log('\nWithout organization permissions, you will get 404 errors on org repositories!');
+      console.log('See: ADD_ORGANIZATION_PERMISSIONS.md for detailed instructions\n');
+    }
   } catch (err) {
     warning('Could not check token permissions details');
   }
