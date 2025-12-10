@@ -20,6 +20,9 @@ import { selectPilotIssue, PilotIssue } from './pilot-selection'
 import { commentOnIssue, createPR } from '@/lib/github/mutations'
 import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory'
 
+// Re-export PilotIssue for API consumers
+export type { PilotIssue } from './pilot-selection'
+
 export interface ExecutionPlan {
   issueNumber: number
   title: string
