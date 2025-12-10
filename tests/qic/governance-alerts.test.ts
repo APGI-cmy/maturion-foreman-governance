@@ -21,7 +21,7 @@
 import * as path from 'path';
 import * as fs from 'fs/promises';
 
-// Import alert system modules (will fail until implemented)
+// Import alert system modules
 import {
   createAlert,
   acknowledgeAlert,
@@ -32,7 +32,7 @@ import {
   AlertCategory,
   AlertSeverity,
   AlertState,
-} from '../../../lib/foreman/alerts/alert-model';
+} from '../../lib/foreman/alerts/alert-model';
 
 import {
   raiseAlert,
@@ -42,7 +42,7 @@ import {
   getAlert,
   acknowledgeAlertById,
   dismissAlertById,
-} from '../../../lib/foreman/alerts/alert-engine';
+} from '../../lib/foreman/alerts/alert-engine';
 
 import {
   saveAlert,
@@ -50,12 +50,12 @@ import {
   listAlerts,
   getActiveAlerts as storageGetActiveAlerts,
   getCriticalAlerts,
-} from '../../../lib/foreman/alerts/storage';
+} from '../../lib/foreman/alerts/storage';
 
 import {
   queryGovernanceEvents,
   clearGovernanceEvents,
-} from '../../../lib/foreman/memory/governance-memory';
+} from '../../lib/foreman/memory/governance-memory';
 
 // Test utilities
 interface TestResult {
@@ -65,9 +65,14 @@ interface TestResult {
 }
 
 const testResults: TestResult[] = [];
+const tests: Array<{ name: string; fn: () => Promise<void> | void }> = [];
 
 function test(name: string, fn: () => Promise<void> | void): void {
-  (async () => {
+  tests.push({ name, fn });
+}
+
+async function runTests(): Promise<void> {
+  for (const { name, fn } of tests) {
     try {
       await fn();
       testResults.push({ passed: true, message: `✓ ${name}` });
@@ -77,16 +82,16 @@ function test(name: string, fn: () => Promise<void> | void): void {
       console.error(`✗ ${name}`);
       console.error(`  Error: ${error instanceof Error ? error.message : String(error)}`);
     }
-  })();
+  }
 }
 
 async function cleanup(): Promise<void> {
-  // Clean up test alert files
+  // Clean up test alert files and index
   const alertsDir = path.join(process.cwd(), 'memory', 'alerts');
   try {
     const files = await fs.readdir(alertsDir);
     for (const file of files) {
-      if (file.startsWith('alert_test_')) {
+      if (file.endsWith('.json')) {
         await fs.unlink(path.join(alertsDir, file));
       }
     }
@@ -605,8 +610,8 @@ test('Alert Severity: High severity (4-5) sets sound=true by default', () => {
 // TEST RESULTS SUMMARY
 // ============================================================================
 
-setTimeout(async () => {
-  await cleanup();
+(async () => {
+  await runTests();
   
   console.log('\n' + '='.repeat(80));
   console.log('CS4 GOVERNANCE ALERTS QIC TEST RESULTS');
@@ -639,4 +644,4 @@ setTimeout(async () => {
     console.log('Build Philosophy: All tests passing. CS4 implementation complete.');
     process.exit(0);
   }
-}, 1000);
+})();
