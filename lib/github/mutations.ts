@@ -1094,8 +1094,7 @@ export async function mergePR(
     // - Proper approval authority
     if (!approval || !approval.approvedBy) {
       throw new GovernanceViolationError(
-        'PR merge requires governance approval',
-        { prNumber, owner, repo }
+        `PR merge requires governance approval. PR ${owner}/${repo}#${prNumber} cannot be merged without proper approval.`
       )
     }
     
@@ -1198,7 +1197,7 @@ export async function validatePRReadyForMerge(
     
     // Check PR status checks
     if (pr.head.sha) {
-      const { data: checks: statusChecks } = await octokit.rest.repos.getCombinedStatusForRef({
+      const { data: statusChecks } = await octokit.rest.repos.getCombinedStatusForRef({
         owner,
         repo,
         ref: pr.head.sha,
