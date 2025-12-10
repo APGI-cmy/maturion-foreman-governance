@@ -134,26 +134,23 @@ export async function loadAlert(alertId: string): Promise<Alert | null> {
  */
 export async function listAlerts(filter?: AlertFilter): Promise<Alert[]> {
   const index = await loadIndex();
-  let alertIds = index.alerts.map(a => a.id);
   
-  // Apply filters using index for efficiency
+  // Apply filters cumulatively
+  let filteredIndexEntries = [...index.alerts];
+  
   if (filter?.category) {
-    alertIds = index.alerts
-      .filter(a => a.category === filter.category)
-      .map(a => a.id);
+    filteredIndexEntries = filteredIndexEntries.filter(a => a.category === filter.category);
   }
   
   if (filter?.type) {
-    alertIds = index.alerts
-      .filter(a => a.type === filter.type)
-      .map(a => a.id);
+    filteredIndexEntries = filteredIndexEntries.filter(a => a.type === filter.type);
   }
   
   if (filter?.state) {
-    alertIds = index.alerts
-      .filter(a => a.state === filter.state)
-      .map(a => a.id);
+    filteredIndexEntries = filteredIndexEntries.filter(a => a.state === filter.state);
   }
+  
+  const alertIds = filteredIndexEntries.map(a => a.id);
   
   // Load full alerts
   const alerts: Alert[] = [];

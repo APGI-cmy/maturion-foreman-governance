@@ -52,6 +52,7 @@ export default function GovernanceAlertsPage() {
 
   const handleAcknowledge = async (alertId: string) => {
     try {
+      // TODO: Replace with actual user ID from authentication context
       const response = await fetch(`/api/foreman/alerts/${alertId}/acknowledge`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -68,6 +69,7 @@ export default function GovernanceAlertsPage() {
 
   const handleDismiss = async (alertId: string) => {
     try {
+      // TODO: Replace with actual user ID from authentication context
       const response = await fetch(`/api/foreman/alerts/${alertId}/dismiss`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

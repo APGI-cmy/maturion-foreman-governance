@@ -23,12 +23,16 @@ export async function POST(
     });
   } catch (error) {
     console.error('Error dismissing alert:', error);
+    
+    // Check for specific error codes
+    const isValidationError = error instanceof Error && (error as any).code === 'ALERT_REQUIRES_ACKNOWLEDGMENT';
+    
     return NextResponse.json(
       { 
         success: false, 
         error: error instanceof Error ? error.message : 'Failed to dismiss alert'
       },
-      { status: error instanceof Error && error.message.includes('must be acknowledged') ? 400 : 500 }
+      { status: isValidationError ? 400 : 500 }
     );
   }
 }

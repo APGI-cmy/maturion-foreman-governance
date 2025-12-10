@@ -121,7 +121,9 @@ export function acknowledgeAlert(alert: Alert, userId: string): Alert {
 export function dismissAlert(alert: Alert, userId: string): Alert {
   // Validate: Cannot dismiss if requires_ack and not acknowledged
   if (alert.requires_ack && alert.state !== 'acknowledged') {
-    throw new Error('Alert must be acknowledged before dismissal');
+    const error = new Error('Alert must be acknowledged before dismissal');
+    (error as any).code = 'ALERT_REQUIRES_ACKNOWLEDGMENT';
+    throw error;
   }
 
   return {
