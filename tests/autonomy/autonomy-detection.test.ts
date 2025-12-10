@@ -49,4 +49,6 @@ console.log('\n' + '='.repeat(50));
 console.log('Overall:', allPassed ? 'ALL TESTS PASSED ✓' : 'SOME TESTS FAILED ✗');
 console.log('='.repeat(50));
 
-process.exit(allPassed ? 0 : 1);
+if (!allPassed) {
+  throw new Error('Autonomy detection tests failed');
+}

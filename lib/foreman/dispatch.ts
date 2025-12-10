@@ -68,12 +68,12 @@ export function isAutonomousModeEnabled(): boolean {
     return process.env.FOREMAN_AUTONOMY_ENABLED === 'true'
   }
   
-  // Check new environment variable
+  // Check legacy environment variable (deprecated)
   if (process.env.MATURION_AUTONOMOUS_MODE !== undefined) {
     return process.env.MATURION_AUTONOMOUS_MODE === 'true'
   }
   
-  // Fall back to legacy variable for backwards compatibility
+  // Fall back to older legacy variable for backwards compatibility (deprecated)
   return process.env.MATURION_ALLOW_AUTONOMOUS_BUILDS === 'true'
 }
 
