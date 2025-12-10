@@ -1092,6 +1092,8 @@ GITHUB_WEBHOOK_SECRET=your_webhook_secret
 OPENAI_API_KEY=your_openai_key
 
 # GitHub Token (required for loading behavior files from external repo)
+# Use either a fine-grained token (with org approval) or classic token
+# See docs/GITHUB_TOKEN_TROUBLESHOOTING.md for detailed setup guide
 GITHUB_TOKEN=your_personal_access_token
 
 # Foreman Governance Repository (REQUIRED for production)
@@ -1122,6 +1124,27 @@ MATURION_AUTONOMOUS_GUARDS=qa,compliance,tests
 # Legacy (deprecated, use MATURION_AUTONOMOUS_MODE instead)
 MATURION_ALLOW_AUTONOMOUS_BUILDS=true
 ```
+
+**GitHub Token Setup**:
+
+The `GITHUB_TOKEN` is required for accessing private repositories. Choose one:
+
+**Option 1: Fine-Grained Personal Access Token** (Recommended)
+- More secure with granular permissions
+- Requires organization approval for MaturionISMS
+- See [docs/GITHUB_TOKEN_TROUBLESHOOTING.md](docs/GITHUB_TOKEN_TROUBLESHOOTING.md) for detailed setup
+
+**Option 2: Classic Personal Access Token**
+- Simpler setup, no organization approval needed
+- Works immediately but has broader access
+
+**Validation**:
+```bash
+# Verify your token is configured correctly
+npx tsx scripts/validate-github-token.ts
+```
+
+**Troubleshooting**: If you encounter token access issues, see [docs/GITHUB_TOKEN_TROUBLESHOOTING.md](docs/GITHUB_TOKEN_TROUBLESHOOTING.md) for solutions.
 
 **Note:** For basic webhook endpoint testing, you can start with an empty `.env.local` file. The application will return clear error messages about missing configuration when needed.
 
