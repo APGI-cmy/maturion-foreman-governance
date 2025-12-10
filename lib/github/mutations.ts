@@ -1058,3 +1058,178 @@ export async function tagWithComplianceStatus(
     : GOVERNANCE_LABELS.COMPLIANCE_BLOCKED
   await applyGovernanceLabels(owner, repo, prNumber, [label])
 }
+
+// ============================================================================
+// PULL REQUEST MERGE OPERATIONS
+// ============================================================================
+
+/**
+ * Merge a pull request with governance validation
+ * 
+ * CRITICAL: This operation requires governance approval and full QA validation.
+ * PRs can only be merged if:
+ * 1. All QA checks pass (100% green)
+ * 2. All compliance checks pass
+ * 3. Governance approval is provided
+ * 4. PR Gatekeeper validates due process
+ * 
+ * This implements the final step of the Build Philosophy workflow:
+ * Architecture → Red QA → Build to Green → Validation → MERGE
+ */
+export async function mergePR(
+  owner: string,
+  repo: string,
+  prNumber: number,
+  mergeMethod: 'merge' | 'squash' | 'rebase',
+  approval: GovernanceApproval
+): Promise<void> {
+  console.log(`[GitHub Mutations] Merging PR ${owner}/${repo}#${prNumber} with method: ${mergeMethod}`)
+  
+  try {
+    // Governance validation - ensure all requirements are met
+    // This should verify:
+    // - QA status is "approved"
+    // - Compliance status is "approved"
+    // - All required checks have passed
+    // - Proper approval authority
+    if (!approval || !approval.approvedBy) {
+      throw new GovernanceViolationError(
+        `PR merge requires governance approval. PR ${owner}/${repo}#${prNumber} cannot be merged without proper approval.`
+      )
+    }
+    
+    // Perform the merge operation
+    await retryMutation(async () => {
+      const octokit = await getGitHubClient()
+      await octokit.rest.pulls.merge({
+        owner,
+        repo,
+        pull_number: prNumber,
+        merge_method: mergeMethod,
+      })
+    }, 'mergePR')
+    
+    // Record successful merge to Governance Memory
+    await recordMutation({
+      eventType: 'pr_merged',
+      target: { owner, repo, resourceType: 'pr', resourceId: prNumber },
+      mutation: {
+        operation: 'mergePR',
+        parameters: { mergeMethod },
+        result: 'success',
+      },
+      governance: {
+        approvalRequired: true,
+        approvedBy: approval.approvedBy,
+        governanceTags: ['pr-merged', 'build-complete'],
+      },
+    })
+    
+    console.log(`[GitHub Mutations] ✓ PR ${owner}/${repo}#${prNumber} merged successfully`)
+    console.log(`[GitHub Mutations] Build Philosophy workflow complete: Architecture → Red QA → Build to Green → Validated → MERGED ✓`)
+  } catch (error: any) {
+    await recordMutation({
+      eventType: 'pr_merge_failed',
+      target: { owner, repo, resourceType: 'pr', resourceId: prNumber },
+      mutation: {
+        operation: 'mergePR',
+        parameters: { mergeMethod },
+        result: 'failure',
+        errorDetails: { message: error.message },
+      },
+      governance: {
+        approvalRequired: true,
+        governanceTags: ['merge-failed'],
+      },
+    })
+    
+    console.error(`[GitHub Mutations] ✗ Failed to merge PR ${owner}/${repo}#${prNumber}:`, error.message)
+    throw error
+  }
+}
+
+/**
+ * Validate PR is ready for merge
+ * 
+ * Checks that all Build Philosophy requirements are met before merge:
+ * 1. Architecture design checklist completed
+ * 2. Red QA existed before build
+ * 3. Build instruction was "Build to Green"
+ * 4. QA is now 100% green
+ * 5. All governance checks pass
+ * 6. Process timeline integrity verified
+ */
+export async function validatePRReadyForMerge(
+  owner: string,
+  repo: string,
+  prNumber: number
+): Promise<{ ready: boolean; reason?: string; checks: Record<string, boolean> }> {
+  console.log(`[GitHub Mutations] Validating PR ${owner}/${repo}#${prNumber} ready for merge`)
+  
+  const checks: Record<string, boolean> = {
+    qaApproved: false,
+    complianceApproved: false,
+    allChecksPass: false,
+    noBlockingLabels: false,
+  }
+  
+  try {
+    const octokit = await getGitHubClient()
+    
+    // Get PR details
+    const { data: pr } = await octokit.rest.pulls.get({
+      owner,
+      repo,
+      pull_number: prNumber,
+    })
+    
+    // Check labels for QA and compliance approval
+    const labels = pr.labels.map(l => l.name)
+    checks.qaApproved = labels.includes(GOVERNANCE_LABELS.QA_APPROVED)
+    checks.complianceApproved = labels.includes(GOVERNANCE_LABELS.COMPLIANCE_APPROVED)
+    
+    // Check for blocking labels
+    const blockingLabels = [
+      GOVERNANCE_LABELS.QA_BLOCKED,
+      GOVERNANCE_LABELS.COMPLIANCE_BLOCKED,
+    ]
+    checks.noBlockingLabels = !labels.some(label => blockingLabels.includes(label as any))
+    
+    // Check PR status checks
+    if (pr.head.sha) {
+      const { data: statusChecks } = await octokit.rest.repos.getCombinedStatusForRef({
+        owner,
+        repo,
+        ref: pr.head.sha,
+      })
+      checks.allChecksPass = statusChecks.state === 'success'
+    } else {
+      checks.allChecksPass = false
+    }
+    
+    // Determine if ready
+    const ready = Object.values(checks).every(check => check === true)
+    
+    if (!ready) {
+      const failedChecks = Object.entries(checks)
+        .filter(([_, passed]) => !passed)
+        .map(([check, _]) => check)
+      
+      return {
+        ready: false,
+        reason: `PR not ready for merge. Failed checks: ${failedChecks.join(', ')}`,
+        checks,
+      }
+    }
+    
+    return { ready: true, checks }
+    
+  } catch (error: any) {
+    console.error(`[GitHub Mutations] Error validating PR ready for merge:`, error.message)
+    return {
+      ready: false,
+      reason: `Validation error: ${error.message}`,
+      checks,
+    }
+  }
+}

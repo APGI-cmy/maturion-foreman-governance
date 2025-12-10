@@ -35,6 +35,8 @@ export type GitHubMutationEventType =
   | 'pr_reviewed'
   | 'pr_review_requested'
   | 'pr_assigned'
+  | 'pr_merged'
+  | 'pr_merge_failed'
   | 'branch_protection_updated'
   | 'governance_metadata_applied'
 
