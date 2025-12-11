@@ -241,8 +241,11 @@ export async function getBuilderTelemetry(builder: string): Promise<BuilderTelem
       ? completedTasks.reduce((a, b) => a + b.retries, 0) / completedTasks.length
       : 0
 
-  // Count fallbacks (in real implementation, track actual fallback events)
-  const fallback_rate = 0 // Placeholder
+  // Count fallbacks from metrics (track actual fallback events)
+  const fallbackCount = metrics.taskHistory.filter((t) => 
+    t.taskId.includes('fallback') // Simple heuristic for now
+  ).length
+  const fallback_rate = completedTasks.length > 0 ? fallbackCount / completedTasks.length : 0
 
   // Error type distribution
   const errorTypes: Record<string, number> = {}

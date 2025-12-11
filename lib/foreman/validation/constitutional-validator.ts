@@ -116,22 +116,27 @@ export async function checkSecretsInCode(
     secrets.push(...awsAccessKeyMatches.map((m) => `AWS Access Key: ${m}`))
   }
 
-  const awsSecretPattern = /(?:aws_secret_access_key\s*=\s*['"][A-Za-z0-9/+=]{40}['"])/gi
+  const awsSecretPattern = /(?:aws_secret_access_key\s*=\s*['"][A-Za-z0-9/+=]{40,}['"])/gi
   const awsSecretMatches = code.match(awsSecretPattern)
   if (awsSecretMatches) {
     secrets.push(...awsSecretMatches.map(() => 'AWS Secret Access Key (redacted)'))
   }
 
   // Pattern for generic API keys in assignments
-  const genericApiKeyPattern = /(?:api[_-]?key|apikey|api[_-]?secret)\s*[:=]\s*['"]([^'"]{20,})['"](?!.*process\.env)/gi
+  const genericApiKeyPattern = /(?:api[_-]?key|apikey|api[_-]?secret)\s*[:=]\s*['"]([^'"]{20,})['"]/gi
   const genericMatches = [...code.matchAll(genericApiKeyPattern)]
   for (const match of genericMatches) {
     // Skip if it's in a comment
     const lineStart = code.lastIndexOf('\n', match.index || 0)
     const line = code.substring(lineStart, match.index)
-    if (!line.trim().startsWith('//') && !line.trim().startsWith('*') && !line.trim().startsWith('/*')) {
-      secrets.push(`API Key/Secret: ${match[1].substring(0, 10)}...`)
+    if (line.trim().startsWith('//') || line.trim().startsWith('*') || line.trim().startsWith('/*')) {
+      continue
     }
+    // Skip if the value references process.env
+    if (match[1].includes('process.env') || match[0].includes('process.env')) {
+      continue
+    }
+    secrets.push(`API Key/Secret: ${match[1].substring(0, 10)}...`)
   }
 
   // Exclude environment variable usage (these are OK)
