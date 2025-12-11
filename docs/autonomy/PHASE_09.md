@@ -278,10 +278,10 @@ The Model Escalation Governor is node #10 in the Constitutional Supervision Grap
 
 - [x] Escalation policy types defined (allowed/forbidden/mandatory)
 - [x] Type definitions created
-- [ ] All escalations logged with justification
-- [ ] Justification required for non-mandatory escalations
-- [ ] Forbidden escalations blocked
-- [ ] Foreman uses GPT-5.1 only when needed
+- [x] All escalations logged with justification
+- [x] Justification required for non-mandatory escalations
+- [x] Forbidden escalations blocked
+- [x] Foreman uses GPT-5.1 only when needed
 - [ ] Dashboard indicator showing current model
 - [ ] Budget visualization in dashboard
 
