@@ -385,28 +385,32 @@ async function validatePerformance(action: SupervisionAction, timestamp: string)
 async function validateDrift(action: SupervisionAction, timestamp: string): Promise<NodeValidationResult> {
   try {
     // Detect governance drift with context about the current action
-    const driftResult = await detectGovernanceDrift({
-      context: 'supervision_validation',
+    const driftResults = await detectGovernanceDrift({
       action: action.type,
-      metadata: action.context,
     });
     
-    if (driftResult.driftDetected && driftResult.severity === 'critical') {
+    // Check for critical drift first
+    const criticalDrift = driftResults.find(d => d.driftDetected && d.severity === 'critical');
+    if (criticalDrift) {
       return {
         nodeId: 'drift_detector',
         status: 'blocked',
-        message: `Critical drift detected: ${driftResult.description}`,
-        blockers: [driftResult.driftType || 'unknown_drift'],
+        message: `Critical drift detected: ${criticalDrift.description}`,
+        blockers: [criticalDrift.driftType || 'unknown_drift'],
         timestamp,
       };
     }
     
-    if (driftResult.driftDetected && (driftResult.severity === 'high' || driftResult.severity === 'medium')) {
+    // Check for high/medium drift
+    const significantDrift = driftResults.find(d => 
+      d.driftDetected && (d.severity === 'high' || d.severity === 'medium')
+    );
+    if (significantDrift) {
       return {
         nodeId: 'drift_detector',
         status: 'warning',
-        message: `Drift detected: ${driftResult.description}`,
-        warnings: [driftResult.driftType || 'unknown_drift'],
+        message: `Drift detected: ${significantDrift.description}`,
+        warnings: [significantDrift.driftType || 'unknown_drift'],
         timestamp,
       };
     }
