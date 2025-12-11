@@ -37,9 +37,9 @@ function extractImports(content: string, filePath: string): Array<{name: string,
     const namedMatch = line.match(/import\s+\{\s*([^}]+)\s*\}\s+from\s+['"]([^'"]+)['"]/);
     if (namedMatch) {
       const names = namedMatch[1].split(',').map(n => n.trim());
-      const module = namedMatch[2];
+      const modulePath = namedMatch[2];
       names.forEach(name => {
-        imports.push({ name, from: module, line: index + 1 });
+        imports.push({ name, from: modulePath, line: index + 1 });
       });
     }
   });
@@ -135,9 +135,9 @@ function validateFileImports(filePath: string, baseDir: string): MissingExport[]
     }
     
     const moduleContent = fs.readFileSync(modulePath, 'utf-8');
-    const exports = extractExports(moduleContent);
+    const exportedNames = extractExports(moduleContent);
     
-    if (!exports.includes(imp.name)) {
+    if (!exportedNames.includes(imp.name)) {
       missing.push({
         file: filePath.replace(baseDir + '/', ''),
         line: imp.line,

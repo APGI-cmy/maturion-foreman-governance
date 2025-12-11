@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface Alert {
   id: string;
@@ -26,11 +26,7 @@ export default function GovernanceAlertsPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('all');
 
-  useEffect(() => {
-    fetchAlerts();
-  }, [filter]);
-
-  const fetchAlerts = async () => {
+  const fetchAlerts = useCallback(async () => {
     try {
       const params = new URLSearchParams();
       if (filter !== 'all') {
@@ -48,7 +44,11 @@ export default function GovernanceAlertsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    fetchAlerts();
+  }, [fetchAlerts]);
 
   const handleAcknowledge = async (alertId: string) => {
     try {
