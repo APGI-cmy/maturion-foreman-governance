@@ -29,7 +29,7 @@ import {
 } from './supervision-graph';
 import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory';
 import { runGuardrailChecks } from '@/lib/foreman/guardrails/runtime';
-import { checkQICCompliance } from '@/lib/foreman/governance/qic-loader';
+import { initializeQualityFramework } from '@/lib/foreman/governance/qic-loader';
 import { detectDrift } from '@/lib/foreman/governance/drift-detector';
 
 /**
@@ -301,29 +301,24 @@ async function validateGuardrails(action: SupervisionAction, timestamp: string):
 
 async function validateQIC(action: SupervisionAction, timestamp: string): Promise<NodeValidationResult> {
   try {
-    const compliance = await checkQICCompliance();
+    // Initialize QIC framework which loads and validates compliance
+    const qicConfig = await initializeQualityFramework();
     
-    if (!compliance.compliant) {
-      return {
-        nodeId: 'qic',
-        status: 'blocked',
-        message: 'QIC compliance failed',
-        blockers: compliance.violations || [],
-        timestamp,
-      };
-    }
-    
+    // If initialization succeeds, QIC compliance is verified
     return {
       nodeId: 'qic',
       status: 'approved',
       message: 'QIC compliance verified',
+      metadata: { version: qicConfig.version },
       timestamp,
     };
   } catch (error) {
+    // If QIC validation fails, block the action
     return {
       nodeId: 'qic',
-      status: 'approved',
-      message: 'QIC check skipped (not applicable)',
+      status: 'blocked',
+      message: 'QIC compliance failed',
+      blockers: [error instanceof Error ? error.message : 'QIC validation error'],
       timestamp,
     };
   }
