@@ -42,18 +42,42 @@ Each entry includes:
 
 ---
 
-### 2025-12-11T05:56:00.000Z - Autonomy Status Endpoint Creation
+### 2025-12-11T08:50:00.000Z - PHASE_08 & PHASE_09 Implementation
 
-**Action**: Create `/api/debug/autonomy` endpoint  
+**Action**: Implement Constitutional Supervision Graph and Model Escalation Governor  
 **Decision**: Allowed  
-**Constitutional Layer**: None (within operational bounds)  
+**Constitutional Layer**: CS1 (Guardrails) + All Constitutional Layers  
 **Details**:
-- Purpose: System status visibility
-- Risk Level: Low
-- Mutation: New file creation only
-- QA Required: Yes
 
-**Outcome**: Endpoint created successfully
+#### Constitutional Supervision Graph (PHASE_08)
+- Implemented 12 constitutional nodes with priority-based evaluation
+- Created formal graph with 12 edges defining allowed/forbidden/conditional flows
+- Runtime enforcement validates every autonomous action through all nodes
+- Complete integration with existing guardrails, QIC, QIEL, drift detection
+- Test validation shows proper blocking behavior for constitutional violations
+
+#### Model Escalation Governor (PHASE_09)
+- Defined 9 escalation policies (allowed/forbidden/mandatory)
+- Implemented cognitive budgeting (10M tokens/day, $100/day, 50 escalations/day)
+- Created justification requirements for high-cost escalations
+- Integrated as node #10 in supervision graph
+
+**Files Created**:
+- `types/supervision.ts`
+- `lib/foreman/constitution/supervision-graph.ts`
+- `lib/foreman/constitution/supervision-runtime.ts`
+- `lib/foreman/cognition/model-escalation-governor.ts`
+- `lib/foreman/cognition/index.ts`
+- `docs/autonomy/PHASE_08.md`
+- `docs/autonomy/PHASE_09.md`
+- `tests/supervision-graph.test.ts`
+
+**Builder Routing**: None (infrastructure layer)  
+**Model Escalation**: None (implementation layer)  
+**Wave Status**: Wave 3 - Deep Constitutional Runtime  
+**QA Required**: Yes (tests created and passing)
+
+**Outcome**: ✅ Successfully implemented constitutional supervision infrastructure
 
 ---
 
