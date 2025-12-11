@@ -18,8 +18,11 @@ import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory';
 
 /**
  * Model costs (USD per 1M tokens)
+ * Includes legacy model names for backward compatibility
  */
 const MODEL_COSTS: Record<ModelTier, { input: number; output: number }> = {
+  'gpt-4': { input: 2.50, output: 10.00 },        // Legacy - same as gpt-4o
+  'gpt-4-turbo': { input: 3.00, output: 12.00 },  // Legacy - same as gpt-4.1
   'gpt-4o-mini': { input: 0.15, output: 0.60 },
   'gpt-4o': { input: 2.50, output: 10.00 },
   'gpt-4.1': { input: 3.00, output: 12.00 },
@@ -81,7 +84,7 @@ export async function governModelEscalation(
       policyType: 'forbidden',
       governanceChecks: [{ checkType: 'policy', passed: false, message: 'No policy found', blockers: ['Unknown reason'] }],
       budgetImpact: { tokens: 0, cost: 0, escalations: 0 },
-      fallbackChain: ['gpt-4o-mini', 'local-builder'],
+      fallbackChain: ['gpt-4o-mini', 'gpt-4', 'local-builder'],
     };
   }
   
@@ -104,7 +107,7 @@ export async function governModelEscalation(
       policyType: policy.policyType,
       governanceChecks: checks,
       budgetImpact: { tokens: 0, cost: 0, escalations: 0 },
-      fallbackChain: ['gpt-4o-mini', 'local-builder'],
+      fallbackChain: ['gpt-4o-mini', 'gpt-4', 'local-builder'],
     };
   }
   
@@ -126,7 +129,7 @@ export async function governModelEscalation(
         policyType: policy.policyType,
         governanceChecks: checks,
         budgetImpact: { tokens: 0, cost: 0, escalations: 0 },
-        fallbackChain: ['gpt-4o-mini', 'local-builder'],
+        fallbackChain: ['gpt-4o-mini', 'gpt-4', 'local-builder'],
       };
     }
   }
@@ -142,7 +145,7 @@ export async function governModelEscalation(
       policyType: policy.policyType,
       governanceChecks: checks,
       budgetImpact: { tokens: 0, cost: 0, escalations: 0 },
-      fallbackChain: ['gpt-4o-mini', 'local-builder'],
+      fallbackChain: ['gpt-4o-mini', 'gpt-4', 'local-builder'],
     };
   }
   
@@ -169,7 +172,7 @@ export async function governModelEscalation(
     governanceChecks: checks,
     justification,
     budgetImpact: { tokens: estimatedTokens, cost, escalations: 1 },
-    fallbackChain: [policy.targetModel, 'gpt-4.1', 'gpt-4o', 'gpt-4o-mini', 'local-builder'].filter((v, i, a) => a.indexOf(v) === i) as ModelTier[],
+    fallbackChain: [policy.targetModel, 'gpt-4.1', 'gpt-4o', 'gpt-4o-mini', 'gpt-4', 'local-builder'].filter((v, i, a) => a.indexOf(v) === i) as ModelTier[],
   };
 }
 

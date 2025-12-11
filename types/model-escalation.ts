@@ -5,7 +5,14 @@
  * Enhanced for PHASE_09 - Model Escalation Governor
  */
 
-export type ModelTier = 'gpt-4o-mini' | 'gpt-4o' | 'gpt-4.1' | 'gpt-5.1' | 'local-builder';
+export type ModelTier = 
+  | 'gpt-4'           // Legacy support - maps to gpt-4o
+  | 'gpt-4-turbo'     // Legacy support - maps to gpt-4.1
+  | 'gpt-4o-mini'     // PHASE_09: Default model
+  | 'gpt-4o'          // PHASE_09: Medium tasks
+  | 'gpt-4.1'         // PHASE_09: Heavy tasks
+  | 'gpt-5.1'         // PHASE_09: Constitutional reasoning
+  | 'local-builder';  // Fallback
 
 export type EscalationReason = 
   | 'heavy_task'
