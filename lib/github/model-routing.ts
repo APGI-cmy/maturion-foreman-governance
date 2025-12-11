@@ -1,4 +1,14 @@
 /**
+ * Error message patterns for struggle detection
+ * These patterns identify specific error types across different environments
+ */
+const STRUGGLE_PATTERNS = {
+  INVALID_CODE: ['TypeError', 'SyntaxError', 'Cannot read property', 'ReferenceError'],
+  MISSING_IMPORTS: ['Cannot find name', 'Cannot find module', 'Module not found'],
+  QIC_FAILURE: ['QIC validation failed', 'Quality gate', 'QIC check failed'],
+} as const;
+
+/**
  * GitHub Builder Model Routing Engine
  * 
  * Central Master Routing Engine for GitHub AI builders.
@@ -128,6 +138,12 @@ interface TierConfig {
       action: string;
     };
   };
+  costConfig?: {
+    baseCost: number;
+  };
+  deEscalationConfig?: {
+    successStreakThreshold: number;
+  };
 }
 
 /**
@@ -140,7 +156,10 @@ function loadTierConfig(): TierConfig {
     return JSON.parse(content);
   } catch (error) {
     // Fallback to default config if file not found
-    console.warn('Tier config not found, using default configuration');
+    // Log to stderr rather than console.warn for production compatibility
+    if (process.env.NODE_ENV !== 'test') {
+      process.stderr.write('Warning: Tier config not found, using default configuration\n');
+    }
     return getDefaultTierConfig();
   }
 }
@@ -238,8 +257,8 @@ function estimateCost(tier: ModelTier): number {
   const config = loadTierConfig();
   const costMultiplier = config.tiers[tier].costMultiplier;
 
-  // Base cost per request (arbitrary unit)
-  const baseCost = 0.01;
+  // Get base cost from config, or use default
+  const baseCost = config.costConfig?.baseCost ?? 0.01;
   return baseCost * costMultiplier;
 }
 
@@ -334,7 +353,7 @@ export function detectStruggle(attempts: BuildAttempt[]): StruggleSignal | null 
 
   // Priority 1: Detect QIC failures (immediate escalation)
   const hasQICFailure = attempts.some((a) =>
-    a.errorMessage?.includes('QIC validation failed')
+    STRUGGLE_PATTERNS.QIC_FAILURE.some((pattern) => a.errorMessage?.includes(pattern))
   );
   if (hasQICFailure) {
     return {
@@ -346,11 +365,8 @@ export function detectStruggle(attempts: BuildAttempt[]): StruggleSignal | null 
   }
 
   // Priority 2: Detect invalid code generation (syntax errors, type errors)
-  const hasInvalidCode = attempts.some(
-    (a) =>
-      a.errorMessage?.includes('TypeError') ||
-      a.errorMessage?.includes('SyntaxError') ||
-      a.errorMessage?.includes('Cannot read property')
+  const hasInvalidCode = attempts.some((a) =>
+    STRUGGLE_PATTERNS.INVALID_CODE.some((pattern) => a.errorMessage?.includes(pattern))
   );
   if (hasInvalidCode) {
     return {
@@ -362,10 +378,8 @@ export function detectStruggle(attempts: BuildAttempt[]): StruggleSignal | null 
   }
 
   // Priority 3: Detect missing imports (2+ occurrences)
-  const missingImportCount = attempts.filter(
-    (a) =>
-      a.errorMessage?.includes('Cannot find name') ||
-      a.errorMessage?.includes('Cannot find module')
+  const missingImportCount = attempts.filter((a) =>
+    STRUGGLE_PATTERNS.MISSING_IMPORTS.some((pattern) => a.errorMessage?.includes(pattern))
   ).length;
   if (missingImportCount >= 2) {
     return {
@@ -418,13 +432,16 @@ export function escalateTier(
  * De-escalate if consistent success with minimal retries.
  */
 export function considerDeEscalation(history: TaskHistory[]): boolean {
-  // Need at least 3 tasks for de-escalation consideration
-  if (history.length < 3) {
+  const config = loadTierConfig();
+  const threshold = config.deEscalationConfig?.successStreakThreshold ?? 3;
+
+  // Need at least threshold tasks for de-escalation consideration
+  if (history.length < threshold) {
     return false;
   }
 
-  // Check last 3 tasks
-  const recentHistory = history.slice(-3);
+  // Check last N tasks (where N = threshold)
+  const recentHistory = history.slice(-threshold);
 
   // All must be successful
   const allSuccess = recentHistory.every((task) => task.outcome === 'success');

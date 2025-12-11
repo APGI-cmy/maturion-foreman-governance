@@ -51,5 +51,11 @@
       "threshold": 2,
       "action": "escalate"
     }
+  },
+  "costConfig": {
+    "baseCost": 0.01
+  },
+  "deEscalationConfig": {
+    "successStreakThreshold": 3
   }
 }
