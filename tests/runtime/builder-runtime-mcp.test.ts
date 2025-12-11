@@ -63,13 +63,9 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
-      // assert.ok(result.artifacts, 'Response should have artifacts field')
-      // assert.ok(result.qaResults, 'Response should have qaResults field')
-      // assert.ok(result.success !== undefined, 'Response should have success field')
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate MCP response structure')
+      assert.ok(result.artifacts, 'Response should have artifacts field')
+      assert.ok(result.qaResults, 'Response should have qaResults field')
+      assert.ok(result.success !== undefined, 'Response should have success field')
       
     } finally {
       delete process.env.SIMULATE_INCOMPLETE_MCP_RESPONSE
@@ -85,11 +81,7 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
-      // assert.ok(result.artifacts && result.artifacts.length > 0, 'Should have artifacts')
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate artifact presence in MCP output')
+      assert.ok(result.artifacts && result.artifacts.length > 0, 'Should have artifacts')
       
     } finally {
       delete process.env.SIMULATE_MISSING_ARTIFACTS
@@ -106,16 +98,12 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
-      // if (result.artifacts) {
-      //   for (const artifact of result.artifacts) {
-      //     assert.ok(artifact.content, 'Each artifact should have content')
-      //     assert.ok(artifact.path, 'Each artifact should have path')
-      //   }
-      // }
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate diff completeness')
+      if (result.artifacts) {
+        for (const artifact of result.artifacts) {
+          assert.ok(artifact.content, 'Each artifact should have content')
+          assert.ok(artifact.path, 'Each artifact should have path')
+        }
+      }
       
     } finally {
       delete process.env.SIMULATE_INCOMPLETE_DIFFS
@@ -132,14 +120,10 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
       // In case of timeout, runtime should either:
       // 1. Retry the operation
       // 2. Return a structured error response
-      // assert.ok(result.success === false || result.error, 'Should handle timeout gracefully')
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not handle MCP timeouts properly')
+      assert.ok(result.success === false || result.error, 'Should handle timeout gracefully')
       
     } finally {
       delete process.env.SIMULATE_MCP_TIMEOUT
@@ -156,14 +140,10 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
-      // assert.ok(
-      //   result.artifacts && result.artifacts.length > 0,
-      //   'Output must include patches/artifacts'
-      // )
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate that patches are present in output')
+      assert.ok(
+        result.artifacts && result.artifacts.length > 0,
+        'Output must include patches/artifacts'
+      )
       
     } finally {
       delete process.env.SIMULATE_MISSING_PATCHES
@@ -180,16 +160,12 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
       // Build to Green requires COMPLETE success, not partial
-      // assert.strictEqual(result.success, true, 'Should require complete success')
-      // if (result.qaResults) {
-      //   const allPassed = result.qaResults.every(qa => qa.status === 'passed')
-      //   assert.strictEqual(allPassed, true, 'All QA checks must pass')
-      // }
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime accepts partial success instead of requiring full completion')
+      assert.strictEqual(result.success, true, 'Should require complete success')
+      if (result.qaResults) {
+        const allPassed = result.qaResults.every(qa => qa.status === 'passed')
+        assert.strictEqual(allPassed, true, 'All QA checks must pass')
+      }
       
     } finally {
       delete process.env.SIMULATE_PARTIAL_SUCCESS
@@ -205,18 +181,14 @@ describe('MCP Execution', () => {
     try {
       const result = await executeBuilderWithMCP('maturion-builder', task, config)
       
-      // Uncomment for Green QA:
-      // if (result.artifacts) {
-      //   for (const artifact of result.artifacts) {
-      //     assert.ok(
-      //       ['code', 'test', 'doc'].includes(artifact.type),
-      //       'Artifact type must be valid'
-      //     )
-      //   }
-      // }
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate artifact types')
+      if (result.artifacts) {
+        for (const artifact of result.artifacts) {
+          assert.ok(
+            ['code', 'test', 'doc'].includes(artifact.type),
+            'Artifact type must be valid'
+          )
+        }
+      }
       
     } finally {
       delete process.env.SIMULATE_INVALID_ARTIFACT_TYPE
@@ -234,12 +206,8 @@ describe('MCP Execution', () => {
     
     const result = await executeBuilderWithMCP('maturion-builder', task, config)
     
-    // Uncomment for Green QA:
-    // assert.ok(result, 'Should return result')
-    // assert.strictEqual(result.success, true, 'Should succeed')
-    // assert.ok(result.artifacts, 'Should have artifacts')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('MCP execution validation not fully implemented')
+    assert.ok(result, 'Should return result')
+    assert.strictEqual(result.success, true, 'Should succeed')
+    assert.ok(result.artifacts, 'Should have artifacts')
   })
 })

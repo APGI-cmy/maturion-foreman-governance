@@ -60,15 +60,11 @@ describe('Task Validation', () => {
     const task = createMockTask({ architecture: undefined as any })
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for missing architecture')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('Architecture document missing')),
-    //   'Should report missing architecture'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not properly validate missing architecture')
+    assert.strictEqual(result.valid, false, 'Should fail for missing architecture')
+    assert.ok(
+      result.violations.some(v => v.includes('Architecture document missing')),
+      'Should report missing architecture'
+    )
   })
   
   it('should FAIL when architecture is not checklist-validated', () => {
@@ -84,15 +80,11 @@ describe('Task Validation', () => {
     
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for unvalidated architecture')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('not validated against checklist')),
-    //   'Should report unvalidated architecture'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate architecture checklist compliance')
+    assert.strictEqual(result.valid, false, 'Should fail for unvalidated architecture')
+    assert.ok(
+      result.violations.some(v => v.includes('not validated against checklist')),
+      'Should report unvalidated architecture'
+    )
   })
   
   it('should FAIL when architecture is incomplete', () => {
@@ -108,30 +100,22 @@ describe('Task Validation', () => {
     
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for incomplete architecture')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('incomplete')),
-    //   'Should report incomplete architecture'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not enforce complete architecture requirement')
+    assert.strictEqual(result.valid, false, 'Should fail for incomplete architecture')
+    assert.ok(
+      result.violations.some(v => v.includes('incomplete')),
+      'Should report incomplete architecture'
+    )
   })
   
   it('should FAIL when Red QA is missing', () => {
     const task = createMockTask({ qaSuite: undefined as any })
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for missing QA suite')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('QA suite missing')),
-    //   'Should report missing QA suite'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate Red QA presence')
+    assert.strictEqual(result.valid, false, 'Should fail for missing QA suite')
+    assert.ok(
+      result.violations.some(v => v.includes('QA suite missing')),
+      'Should report missing QA suite'
+    )
   })
   
   it('should FAIL when QA suite is not RED (failing)', () => {
@@ -150,15 +134,11 @@ describe('Task Validation', () => {
     
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for green QA')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('must be "red"')),
-    //   'Should require RED QA status'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not enforce Red QA requirement (tests must be failing)')
+    assert.strictEqual(result.valid, false, 'Should fail for green QA')
+    assert.ok(
+      result.violations.some(v => v.includes('must be "red"')),
+      'Should require RED QA status'
+    )
   })
   
   it('should FAIL when QA has zero failing tests', () => {
@@ -175,71 +155,48 @@ describe('Task Validation', () => {
     
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail when no tests are failing')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('no failing tests')),
-    //   'Should require failing tests'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate that Red QA has failing tests')
+    assert.strictEqual(result.valid, false, 'Should fail when no tests are failing')
+    assert.ok(
+      result.violations.some(v => v.includes('no failing tests')),
+      'Should require failing tests'
+    )
   })
   
   it('should FAIL when buildInstruction is not exactly "Build to Green"', () => {
     const task = createMockTask({ buildInstruction: 'Build the feature' as any })
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for wrong instruction')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('Invalid build instruction')),
-    //   'Should reject non-standard instruction'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not enforce exact "Build to Green" instruction')
+    assert.strictEqual(result.valid, false, 'Should fail for wrong instruction')
+    assert.ok(
+      result.violations.some(v => v.includes('Invalid build instruction')),
+      'Should reject non-standard instruction'
+    )
   })
   
   it('should FAIL when acceptance criteria are missing', () => {
     const task = createMockTask({ acceptanceCriteria: [] })
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for missing acceptance criteria')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('Acceptance criteria missing')),
-    //   'Should require acceptance criteria'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate acceptance criteria presence')
+    assert.strictEqual(result.valid, false, 'Should fail for missing acceptance criteria')
+    assert.ok(
+      result.violations.some(v => v.includes('Acceptance criteria missing')),
+      'Should require acceptance criteria'
+    )
   })
   
   it('should FAIL when acceptance criteria are undefined', () => {
     const task = createMockTask({ acceptanceCriteria: undefined as any })
     const result = validateTaskFormat(task)
     
-    // Uncomment to make test PASS (Green QA)
-    // assert.strictEqual(result.valid, false, 'Should fail for undefined acceptance criteria')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not handle undefined acceptance criteria')
+    assert.strictEqual(result.valid, false, 'Should fail for undefined acceptance criteria')
   })
   
   it('should successfully prepare a valid Build to Green task', () => {
     const task = createMockTask()
     const result = prepareBuilderTask(task)
     
-    // This test should eventually pass when implementation is complete
-    // For now, make it fail to ensure Red QA
-    
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.valid, true, 'Should prepare valid task')
-    // assert.ok(result.payload, 'Should create payload')
-    // assert.strictEqual(result.payload.buildInstruction, 'Build to Green')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Task preparation not fully implemented')
+    assert.strictEqual(result.valid, true, 'Should prepare valid task')
+    assert.ok(result.payload, 'Should create payload')
+    assert.strictEqual(result.payload.buildInstruction, 'Build to Green')
   })
 })

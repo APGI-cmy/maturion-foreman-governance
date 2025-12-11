@@ -164,11 +164,7 @@ function incomplete() {}
       const result = await executeBuildToGreenRuntime(mockTask, config)
       
       // The runtime should not throw but should report failure
-      // Comment this out to make test fail initially (Red QA)
-      // assert.strictEqual(result.success, false, 'Runtime should report failure')
-      
-      // Uncomment to make test FAIL (Red QA requirement)
-      assert.fail('Runtime should handle MCP initialization failures')
+      assert.strictEqual(result.success, false, 'Runtime should report failure')
       
     } finally {
       delete process.env.SIMULATE_MCP_FAILURE

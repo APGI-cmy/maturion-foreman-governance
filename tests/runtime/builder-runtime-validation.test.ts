@@ -92,16 +92,12 @@ describe('Output Validation', () => {
     try {
       const result = await validateBuilderOutput(output, task, config)
       
-      // Uncomment for Green QA:
-      // assert.strictEqual(result.valid, false, 'Should fail when QA is still red')
-      // assert.strictEqual(result.qaTransition.achieved, false, 'QA transition should not be achieved')
-      // assert.ok(
-      //   result.violations.some(v => v.includes('did not transition')),
-      //   'Should report failed transition'
-      // )
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate Red → Green QA transition')
+      assert.strictEqual(result.valid, false, 'Should fail when QA is still red')
+      assert.strictEqual(result.qaTransition.achieved, false, 'QA transition should not be achieved')
+      assert.ok(
+        result.violations.some(v => v.includes('did not transition')),
+        'Should report failed transition'
+      )
       
     } finally {
       delete process.env.SIMULATE_QA_STILL_RED
@@ -128,15 +124,11 @@ describe('Output Validation', () => {
     
     const result = await validateBuilderOutput(output, task, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.valid, false, 'Should fail for forbidden path modification')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('Protected paths modified')),
-    //   'Should detect workflow modification'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not protect workflow files from modification')
+    assert.strictEqual(result.valid, false, 'Should fail for forbidden path modification')
+    assert.ok(
+      result.violations.some(v => v.includes('Protected paths modified')),
+      'Should detect workflow modification'
+    )
   })
   
   it('should FAIL when output modifies forbidden paths (constitution)', async () => {
@@ -159,15 +151,11 @@ describe('Output Validation', () => {
     
     const result = await validateBuilderOutput(output, task, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.valid, false, 'Should fail for constitution modification')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('Protected paths modified')),
-    //   'Should detect constitution modification'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not protect constitution files from modification')
+    assert.strictEqual(result.valid, false, 'Should fail for constitution modification')
+    assert.ok(
+      result.violations.some(v => v.includes('Protected paths modified')),
+      'Should detect constitution modification'
+    )
   })
   
   it('should FAIL when output modifies forbidden paths (BUILD_PHILOSOPHY)', async () => {
@@ -190,11 +178,7 @@ describe('Output Validation', () => {
     
     const result = await validateBuilderOutput(output, task, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.valid, false, 'Should fail for BUILD_PHILOSOPHY modification')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not protect BUILD_PHILOSOPHY.md from modification')
+    assert.strictEqual(result.valid, false, 'Should fail for BUILD_PHILOSOPHY modification')
   })
   
   it('should FAIL when output contains TODO comments', () => {
@@ -213,16 +197,12 @@ describe('Output Validation', () => {
     
     const result = enforceCS5(output)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.passed, false, 'CS5 should fail for TODO comments')
-    // assert.ok(result.violations.length > 0, 'Should have violations')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('TODO')),
-    //   'Should detect TODO comment'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not enforce CS5 (no TODOs) properly')
+    assert.strictEqual(result.passed, false, 'CS5 should fail for TODO comments')
+    assert.ok(result.violations.length > 0, 'Should have violations')
+    assert.ok(
+      result.violations.some(v => v.includes('TODO')),
+      'Should detect TODO comment'
+    )
   })
   
   it('should FAIL when output contains FIXME comments', () => {
@@ -241,15 +221,11 @@ describe('Output Validation', () => {
     
     const result = enforceCS5(output)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.passed, false, 'CS5 should fail for FIXME comments')
-    // assert.ok(
-    //   result.violations.some(v => v.includes('FIXME')),
-    //   'Should detect FIXME comment'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not detect FIXME comments')
+    assert.strictEqual(result.passed, false, 'CS5 should fail for FIXME comments')
+    assert.ok(
+      result.violations.some(v => v.includes('FIXME')),
+      'Should detect FIXME comment'
+    )
   })
   
   it('should FAIL when output contains HACK comments', () => {
@@ -268,11 +244,7 @@ describe('Output Validation', () => {
     
     const result = enforceCS5(output)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.passed, false, 'CS5 should fail for HACK comments')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not detect HACK comments')
+    assert.strictEqual(result.passed, false, 'CS5 should fail for HACK comments')
   })
   
   it('should FAIL when output contains lint errors', async () => {
@@ -299,15 +271,11 @@ describe('Output Validation', () => {
     try {
       const result = await validateBuilderOutput(output, task, config)
       
-      // Uncomment for Green QA:
-      // assert.strictEqual(result.valid, false, 'Should fail when lint errors present')
-      // assert.ok(
-      //   result.violations.some(v => v.includes('Lint')),
-      //   'Should report lint failures'
-      // )
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate lint compliance')
+      assert.strictEqual(result.valid, false, 'Should fail when lint errors present')
+      assert.ok(
+        result.violations.some(v => v.includes('Lint')),
+        'Should report lint failures'
+      )
       
     } finally {
       delete process.env.SIMULATE_LINT_FAILURE
@@ -338,15 +306,11 @@ describe('Output Validation', () => {
     try {
       const result = await validateBuilderOutput(output, task, config)
       
-      // Uncomment for Green QA:
-      // assert.strictEqual(result.valid, false, 'Should fail when type errors present')
-      // assert.ok(
-      //   result.violations.some(v => v.includes('Type check')),
-      //   'Should report type check failures'
-      // )
-      
-      // Make test FAIL initially (Red QA requirement)
-      assert.fail('Runtime does not validate type checking')
+      assert.strictEqual(result.valid, false, 'Should fail when type errors present')
+      assert.ok(
+        result.violations.some(v => v.includes('Type check')),
+        'Should report type check failures'
+      )
       
     } finally {
       delete process.env.SIMULATE_TYPECHECK_FAILURE
@@ -380,11 +344,7 @@ describe('Output Validation', () => {
     
     const result = await validateBuilderOutput(output, task, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.valid, true, 'Should pass for clean output')
-    // assert.strictEqual(result.qaTransition.achieved, true, 'QA should transition to green')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Output validation not fully implemented')
+    assert.strictEqual(result.valid, true, 'Should pass for clean output')
+    assert.strictEqual(result.qaTransition.achieved, true, 'QA should transition to green')
   })
 })

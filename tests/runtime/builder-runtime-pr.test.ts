@@ -110,16 +110,12 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should fail to create PR without diffs')
-    // assert.ok(result.error, 'Should provide error message')
-    // assert.ok(
-    //   result.error?.includes('no diffs') || result.error?.includes('no artifacts'),
-    //   'Should report missing diffs'
-    // )
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate presence of diffs before PR creation')
+    assert.strictEqual(result.success, false, 'Should fail to create PR without diffs')
+    assert.ok(result.error, 'Should provide error message')
+    assert.ok(
+      result.error?.includes('no diffs') || result.error?.includes('no artifacts'),
+      'Should report missing diffs'
+    )
   })
   
   it('should FAIL when trying to create PR with undefined artifacts', async () => {
@@ -137,11 +133,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should handle undefined artifacts')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not handle undefined artifacts properly')
+    assert.strictEqual(result.success, false, 'Should handle undefined artifacts')
   })
   
   it('should FAIL when PR metadata is missing (task ID)', async () => {
@@ -168,11 +160,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should fail without task ID')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate task metadata presence')
+    assert.strictEqual(result.success, false, 'Should fail without task ID')
   })
   
   it('should FAIL when PR metadata is missing (issue number)', async () => {
@@ -199,11 +187,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should fail without valid issue number')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate issue number')
+    assert.strictEqual(result.success, false, 'Should fail without valid issue number')
   })
   
   it('should FAIL when evidence trail is empty', async () => {
@@ -230,11 +214,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should fail without evidence trail')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate evidence trail completeness')
+    assert.strictEqual(result.success, false, 'Should fail without evidence trail')
   })
   
   it('should FAIL when validation has failures but PR is attempted', async () => {
@@ -268,11 +248,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should not create PR with failed validation')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime allows PR creation with failed validations')
+    assert.strictEqual(result.success, false, 'Should not create PR with failed validation')
   })
   
   it('should FAIL when trying to create PR with empty commit set', async () => {
@@ -298,11 +274,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should fail with empty commits')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate that commits have actual content')
+    assert.strictEqual(result.success, false, 'Should fail with empty commits')
   })
   
   it('should FAIL when PR title generation is missing task description', async () => {
@@ -329,11 +301,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, false, 'Should fail without task description')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('Runtime does not validate PR title generation requirements')
+    assert.strictEqual(result.success, false, 'Should fail without task description')
   })
   
   it('should successfully create PR with complete valid data', async () => {
@@ -367,11 +335,7 @@ describe('PR Creation', () => {
     
     const result = await createPRWithEvidence(task, output, validation, evidence, config)
     
-    // Uncomment for Green QA:
-    // assert.strictEqual(result.success, true, 'Should create PR successfully')
-    // assert.ok(result.prUrl, 'Should provide PR URL')
-    
-    // Make test FAIL initially (Red QA requirement)
-    assert.fail('PR creation not fully implemented')
+    assert.strictEqual(result.success, true, 'Should create PR successfully')
+    assert.ok(result.prUrl, 'Should provide PR URL')
   })
 })
