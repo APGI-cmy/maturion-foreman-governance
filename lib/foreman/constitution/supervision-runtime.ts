@@ -30,7 +30,7 @@ import {
 import { logGovernanceEvent } from '@/lib/foreman/memory/governance-memory';
 import { runGuardrailChecks } from '@/lib/foreman/guardrails/runtime';
 import { initializeQualityFramework } from '@/lib/foreman/governance/qic-loader';
-import { detectDrift } from '@/lib/foreman/governance/drift-detector';
+import { detectGovernanceDrift } from '@/lib/foreman/governance/drift-detector';
 
 /**
  * In-memory supervision log
@@ -384,24 +384,29 @@ async function validatePerformance(action: SupervisionAction, timestamp: string)
 
 async function validateDrift(action: SupervisionAction, timestamp: string): Promise<NodeValidationResult> {
   try {
-    const driftResult = await detectDrift();
+    // Detect governance drift with context about the current action
+    const driftResult = await detectGovernanceDrift({
+      context: 'supervision_validation',
+      action: action.type,
+      metadata: action.context,
+    });
     
-    if (driftResult.hasDrift && driftResult.severity === 'critical') {
+    if (driftResult.driftDetected && driftResult.severity === 'critical') {
       return {
         nodeId: 'drift_detector',
         status: 'blocked',
-        message: 'Critical drift detected',
-        blockers: driftResult.driftTypes || [],
+        message: `Critical drift detected: ${driftResult.description}`,
+        blockers: [driftResult.driftType || 'unknown_drift'],
         timestamp,
       };
     }
     
-    if (driftResult.hasDrift) {
+    if (driftResult.driftDetected && (driftResult.severity === 'high' || driftResult.severity === 'medium')) {
       return {
         nodeId: 'drift_detector',
         status: 'warning',
-        message: 'Minor drift detected',
-        warnings: driftResult.driftTypes || [],
+        message: `Drift detected: ${driftResult.description}`,
+        warnings: [driftResult.driftType || 'unknown_drift'],
         timestamp,
       };
     }
@@ -416,7 +421,7 @@ async function validateDrift(action: SupervisionAction, timestamp: string): Prom
     return {
       nodeId: 'drift_detector',
       status: 'approved',
-      message: 'Drift check skipped',
+      message: 'Drift check skipped (not critical for this action)',
       timestamp,
     };
   }
