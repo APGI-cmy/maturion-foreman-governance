@@ -285,5 +285,3 @@ describe('Parking Station UI - Data Integrity', () => {
     }
   })
 })
-
-console.log('✅ Parking Station UI Red QA Tests defined')
