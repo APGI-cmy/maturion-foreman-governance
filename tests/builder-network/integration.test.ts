@@ -55,7 +55,7 @@ describe('Builder Network - Copilot Detection', () => {
     assert.ok(Array.isArray(capabilities?.capabilities), 'Capabilities should be an array')
     assert.ok(capabilities?.capabilities.includes('code_generation'), 'Should include code_generation capability')
     assert.strictEqual(capabilities?.healthStatus, 'healthy', 'Health status should be healthy')
-    assert.strictEqual(capabilities?.protocolVersion, '1.0.0', 'Protocol version should be 1.0.0')
+    assert.strictEqual(capabilities?.protocolVersion, '1.1', 'Protocol version should be 1.1')
   })
 
   it('should return null capabilities when Copilot unavailable', async () => {
@@ -88,7 +88,7 @@ describe('Builder Network - Local Builder Detection', () => {
       assert.ok(Array.isArray(capabilities?.capabilities), 'Capabilities should be an array')
       assert.ok(capabilities?.capabilities.includes('code_generation'), 'Should include code_generation')
       assert.ok(capabilities?.capabilities.includes('large_refactors'), 'Should include large_refactors')
-      assert.strictEqual(capabilities?.protocolVersion, '1.0.0', 'Protocol version should be 1.0.0')
+      assert.strictEqual(capabilities?.protocolVersion, '1.1', 'Protocol version should be 1.1')
     } else {
       assert.strictEqual(capabilities, null, 'Should return null when disabled')
     }
