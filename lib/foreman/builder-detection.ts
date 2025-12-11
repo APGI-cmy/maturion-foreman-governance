@@ -100,10 +100,12 @@ export async function getCopilotCapabilities(): Promise<BuilderCapabilities | nu
       'code_generation',
       'incremental_changes',
       'pr_creation',
-      'issue_handling'
+      'issue_handling',
+      'build_to_green', // v1.1 capability
+      'constitutional_compliance' // v1.1 capability
     ],
     healthStatus: 'healthy',
-    protocolVersion: '1.0.0'
+    protocolVersion: '1.1' // Updated to v1.1
   }
 }
 
@@ -143,10 +145,12 @@ export async function getLocalCapabilities(): Promise<BuilderCapabilities | null
       'large_refactors',
       'multi_file_operations',
       'deep_architectural_changes',
-      'offline_operation'
+      'offline_operation',
+      'build_to_green', // v1.1 capability
+      'constitutional_compliance' // v1.1 capability
     ],
     healthStatus: healthy ? 'healthy' : 'unavailable',
-    protocolVersion: '1.0.0'
+    protocolVersion: '1.1' // Updated to v1.1
   }
 }
 
