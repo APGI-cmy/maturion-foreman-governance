@@ -10,27 +10,12 @@
 
 import { describe, it } from 'node:test'
 import * as assert from 'node:assert'
-
-// These functions need to be implemented in the builder runtime layer
-async function getBuilderHeartbeat(builder: string): Promise<any> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('getBuilderHeartbeat not implemented - Red QA test')
-}
-
-async function getBuilderHealthStatus(builder: string): Promise<any> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('getBuilderHealthStatus not implemented - Red QA test')
-}
-
-async function getBuilderTelemetry(builder: string): Promise<any> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('getBuilderTelemetry not implemented - Red QA test')
-}
-
-async function detectStaleHeartbeat(builder: string, maxAgeSeconds: number): Promise<{ isStale: boolean; age: number }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('detectStaleHeartbeat not implemented - Red QA test')
-}
+import {
+  getBuilderHeartbeat,
+  getBuilderHealthStatus,
+  getBuilderTelemetry,
+  detectStaleHeartbeat,
+} from '@/lib/foreman/telemetry/builder-telemetry'
 
 describe('Builder Heartbeat Mechanism', () => {
   it('should report heartbeat with required fields', async () => {

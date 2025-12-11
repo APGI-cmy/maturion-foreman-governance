@@ -12,27 +12,12 @@
 
 import { describe, it } from 'node:test'
 import * as assert from 'node:assert'
-
-// These functions need to be implemented in the builder runtime layer
-async function enforceGovernanceSupremacy(qaResult: any): Promise<{ buildAllowed: boolean; reason?: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('enforceGovernanceSupremacy not implemented - Red QA test')
-}
-
-async function validateBuildPhilosophyCompliance(request: any): Promise<{ compliant: boolean; violations: string[] }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('validateBuildPhilosophyCompliance not implemented - Red QA test')
-}
-
-async function checkSecretsInCode(code: string): Promise<{ hasSecrets: boolean; secrets: string[] }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('checkSecretsInCode not implemented - Red QA test')
-}
-
-async function generateAuditLog(event: any): Promise<{ logged: boolean; logId: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('generateAuditLog not implemented - Red QA test')
-}
+import {
+  enforceGovernanceSupremacy,
+  checkSecretsInCode,
+  generateAuditLog,
+} from '@/lib/foreman/validation/constitutional-validator'
+import { validateBuildPhilosophyCompliance } from '@/lib/foreman/validation/protocol-validator'
 
 describe('CS1: Governance Supremacy Rule Enforcement', () => {
   it('should block build when QA has any failing tests', async () => {

@@ -10,32 +10,14 @@
 
 import { describe, it } from 'node:test'
 import * as assert from 'node:assert'
-
-// These functions need to be implemented in the builder runtime layer
-async function executeWithFallback(request: any): Promise<any> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('executeWithFallback not implemented - Red QA test')
-}
-
-async function getFallbackChain(builder: string): Promise<string[]> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('getFallbackChain not implemented - Red QA test')
-}
-
-async function simulateBuilderFailure(builder: string, failureType: string): Promise<void> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('simulateBuilderFailure not implemented - Red QA test')
-}
-
-async function getFallbackLogs(taskId: string): Promise<any[]> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('getFallbackLogs not implemented - Red QA test')
-}
-
-async function validateFallbackContextPreservation(taskId: string): Promise<{ preserved: boolean; missing: string[] }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('validateFallbackContextPreservation not implemented - Red QA test')
-}
+import {
+  executeWithFallback,
+  getFallbackChain,
+  simulateBuilderFailure,
+  getFallbackLogs,
+  validateFallbackContextPreservation,
+  clearSimulatedFailures,
+} from '@/lib/foreman/fallback/multi-builder-fallback'
 
 describe('Fallback Chain Definition', () => {
   it('should define fallback from Copilot to Local Builder', async () => {

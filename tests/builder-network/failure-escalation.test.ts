@@ -11,32 +11,13 @@
 
 import { describe, it } from 'node:test'
 import * as assert from 'node:assert'
-
-// These functions need to be implemented in the builder runtime layer
-async function detectImpossibleQA(qaResult: any, attempts: number): Promise<{ impossible: boolean; reason: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('detectImpossibleQA not implemented - Red QA test')
-}
-
-async function detectArchitectureTestContradiction(architecture: any, tests: any): Promise<{ contradicts: boolean; details: string[] }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('detectArchitectureTestContradiction not implemented - Red QA test')
-}
-
-async function shouldEscalateAfterRetries(failures: any[]): Promise<{ shouldEscalate: boolean; reason: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('shouldEscalateAfterRetries not implemented - Red QA test')
-}
-
-async function detectArchitecturalAmbiguity(error: any, architecture: any): Promise<{ ambiguous: boolean; missing: string[] }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('detectArchitecturalAmbiguity not implemented - Red QA test')
-}
-
-async function escalateToForeman(escalation: any): Promise<{ escalated: boolean; escalationId: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('escalateToForeman not implemented - Red QA test')
-}
+import {
+  detectImpossibleQA,
+  detectArchitectureTestContradiction,
+  shouldEscalateAfterRetries,
+  detectArchitecturalAmbiguity,
+  escalateToForeman,
+} from '@/lib/foreman/escalation/failure-escalation'
 
 describe('Impossible QA Detection and Escalation', () => {
   it('should detect when tests contradict each other', async () => {

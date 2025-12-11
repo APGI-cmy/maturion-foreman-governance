@@ -10,27 +10,12 @@
 
 import { describe, it } from 'node:test'
 import * as assert from 'node:assert'
-
-// These functions need to be implemented in the builder runtime layer
-async function attemptPhilosophyTreeModification(builder: string, filePath: string): Promise<{ allowed: boolean; error?: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('attemptPhilosophyTreeModification not implemented - Red QA test')
-}
-
-async function validatePhilosophyTreeReference(request: any): Promise<{ valid: boolean; error?: string }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('validatePhilosophyTreeReference not implemented - Red QA test')
-}
-
-async function checkBuilderPhilosophyTreeInterpretation(builder: string): Promise<{ interprets: boolean; evidence: string[] }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('checkBuilderPhilosophyTreeInterpretation not implemented - Red QA test')
-}
-
-async function validateForemanPhilosophyContext(request: any): Promise<{ fromForeman: boolean; context: any }> {
-  // TODO: Implement in builder runtime layer
-  throw new Error('validateForemanPhilosophyContext not implemented - Red QA test')
-}
+import {
+  attemptPhilosophyTreeModification,
+  validatePhilosophyTreeReference,
+  checkBuilderPhilosophyTreeInterpretation,
+  validateForemanPhilosophyContext,
+} from '@/lib/foreman/validation/protocol-validator'
 
 describe('Philosophy Tree Protection', () => {
   it('should refuse to modify Philosophy Tree files', async () => {
