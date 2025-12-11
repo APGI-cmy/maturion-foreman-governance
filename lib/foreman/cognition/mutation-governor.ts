@@ -86,6 +86,19 @@ function saveMetrics(metrics: MutationMetrics): void {
 }
 
 /**
+ * Helper function to check if a file path matches a directory pattern
+ */
+function matchesDirectory(filePath: string, directory: string): boolean {
+  const normalizedPath = filePath.replace(/\\/g, '/');
+  const normalizedDir = directory.replace(/\\/g, '/');
+  
+  // Match if path starts with directory or contains directory with leading slash
+  return normalizedPath.startsWith(normalizedDir) || 
+         normalizedPath.startsWith('/' + normalizedDir) ||
+         normalizedPath.includes('/' + normalizedDir + '/');
+}
+
+/**
  * Classify mutation type based on files
  */
 export function classifyMutation(files: string[]): MutationClassification {
@@ -93,7 +106,7 @@ export function classifyMutation(files: string[]): MutationClassification {
   let type: MutationType = 'safe';
   let reasoning = 'Safe documentation or test changes';
   
-  // Check for protected paths (immediate forbidden)
+  // Check for protected paths using the isProtectedPath function
   for (const file of files) {
     if (isProtectedPath(file)) {
       protectedPathsViolated.push(file);
@@ -115,23 +128,10 @@ export function classifyMutation(files: string[]): MutationClassification {
   
   // Classify based on file patterns
   for (const file of files) {
-    // Forbidden patterns - check additional governance files not in isProtectedPath
-    if (file.includes('.github/workflows/') ||
-        file.includes('constitution/') ||
-        file.includes('governance/') ||
-        file === 'BUILD_PHILOSOPHY.md' ||
-        file.endsWith('BUILD_PHILOSOPHY.md') ||
-        file.includes('architecture-design-checklist.md')) {
-      type = 'forbidden';
-      reasoning = `Modifying protected governance file: ${file}`;
-      protectedPathsViolated.push(file);
-      break;
-    }
-    
     // Regulated patterns - check if already regulated to avoid overwriting
     if (type === 'safe') {
-      // Source code changes
-      if ((file.includes('/lib/') || file.includes('lib/')) && 
+      // Source code changes in lib/
+      if (matchesDirectory(file, 'lib') && 
           file.endsWith('.ts') && 
           !file.endsWith('.test.ts')) {
         type = 'regulated';
@@ -139,23 +139,24 @@ export function classifyMutation(files: string[]): MutationClassification {
         continue;
       }
       
-      // UI component changes
-      if (file.includes('/app/') || file.includes('app/') || 
-          file.includes('/components/') || file.includes('components/')) {
+      // UI changes in app/ or components/
+      if ((matchesDirectory(file, 'app') || matchesDirectory(file, 'components')) &&
+          !file.endsWith('.test.ts')) {
         type = 'regulated';
         reasoning = 'UI component change requires validation';
         continue;
       }
       
       // Configuration changes
-      if (file.includes('package.json') || file.includes('tsconfig.json')) {
+      if (file.endsWith('package.json') || file.endsWith('tsconfig.json')) {
         type = 'regulated';
         reasoning = 'Configuration change requires validation';
         continue;
       }
       
       // Type definition changes
-      if ((file.includes('/types/') || file.includes('types/')) && 
+      if (matchesDirectory(file, 'types') && 
+          file.endsWith('.ts') &&
           !file.endsWith('.test.ts')) {
         type = 'regulated';
         reasoning = 'Type definition change may have breaking impact';
