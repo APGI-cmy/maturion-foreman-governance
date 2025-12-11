@@ -10,9 +10,9 @@ export async function escalateToForeman(escalation: BuilderEscalation): Promise<
   
   await logGovernanceEvent({
     type: 'builder_escalation',
-    level: 'warning',
-    message: `Builder ${escalation.builder} escalating: ${escalation.issue}`,
-    context: {
+    severity: 'high',
+    description: `Builder ${escalation.builder} escalating: ${escalation.issue}`,
+    metadata: {
       escalation_type: escalation.escalation_type,
       task_id: escalation.task_id,
       details: escalation.details,
