@@ -1,0 +1,15 @@
+{
+  "dailyStats": {
+    "date": "2025-12-11",
+    "totalMutations": 0,
+    "blockedMutations": 0,
+    "recoveredMutations": 0,
+    "averageImpactRadius": 0,
+    "mutationsByType": {
+      "safe": 0,
+      "regulated": 0,
+      "forbidden": 0
+    }
+  },
+  "history": []
+}
