@@ -431,7 +431,241 @@ async function analyzeQIIncidents(): Promise<ArchitecturalInsights> {
 
 ---
 
-## QIC-7 — Auto-Propagation Across All Apps
+## QIC-7 — Interface Integrity Requirements
+
+### Architecture Rule
+
+**Interfaces and type definitions must be complete, consistent, and validated before deployment.**
+
+**Added**: 2025-12-12 (Issue #546 - Philosophy Re-Alignment)  
+**Reason**: Prevent interface alignment failures that block 100% GREEN builds
+
+### Background
+
+During Wave 1 execution, three consecutive TypeScript compilation failures occurred due to interface alignment issues:
+1. Missing legacy model names in union types
+2. Incomplete Record<UnionType, T> definitions
+3. Non-existent function imports
+
+These failures violated the 100% GREEN build mandate and revealed a governance/QA gap.
+
+### Requirements
+
+1. **Pre-Build Type Validation** - TypeScript compilation must pass before deployment
+   - Run `npx tsc --noEmit` as mandatory CI gate
+   - Type errors block PR merge
+   - No compilation errors reach deployment
+
+2. **Type Completeness Validation** - Record<UnionType, T> must have all union values as keys
+   - Automated tests validate completeness
+   - Runtime validation as backup
+   - Missing keys block build
+
+3. **Export/Import Consistency** - All imports must reference exported members
+   - Validate imported names exist in source modules
+   - Detect missing exports before deployment
+   - Function signature changes validated
+
+4. **Breaking Change Detection** - Interface changes require validation of all usages
+   - Flag changes to exported types
+   - Require CS2 approval for breaking changes
+   - Validate all dependent code is updated
+
+### Implementation Requirements
+
+```typescript
+// Pre-build validation
+async function validateInterfaceIntegrity(): Promise<QualityCheckResult> {
+  const errors: InterfaceError[] = [];
+
+  // 1. TypeScript compilation
+  const tsResult = await runTypeScriptCompilation();
+  if (!tsResult.success) {
+    errors.push({
+      type: 'compilation_error',
+      message: 'TypeScript compilation failed',
+      details: tsResult.errors,
+    });
+  }
+
+  // 2. Type completeness
+  const completenessResult = await validateTypeCompleteness();
+  if (!completenessResult.success) {
+    errors.push({
+      type: 'type_completeness',
+      message: 'Incomplete Record<UnionType, T> detected',
+      details: completenessResult.incomplete,
+    });
+  }
+
+  // 3. Import/export consistency
+  const importResult = await validateImportExportConsistency();
+  if (!importResult.success) {
+    errors.push({
+      type: 'import_error',
+      message: 'Import references non-existent export',
+      details: importResult.missing,
+    });
+  }
+
+  // 4. Breaking change detection
+  const breakingResult = await detectBreakingChanges();
+  if (breakingResult.hasBreakingChanges && !breakingResult.approved) {
+    errors.push({
+      type: 'breaking_change',
+      message: 'Breaking interface change without CS2 approval',
+      details: breakingResult.changes,
+    });
+  }
+
+  if (errors.length > 0) {
+    return {
+      check: 'interface_integrity',
+      status: 'failed',
+      message: 'Interface integrity violations detected',
+      errors,
+    };
+  }
+
+  return {
+    check: 'interface_integrity',
+    status: 'passed',
+    message: 'All interface integrity checks passed',
+  };
+}
+```
+
+### CI Integration
+
+```yaml
+# .github/workflows/qic.yml
+- name: QIC-7 Interface Integrity Validation
+  run: |
+    echo "Running TypeScript compilation check..."
+    npx tsc --noEmit
+    
+    echo "Running type completeness tests..."
+    npm run test:type-completeness
+    
+    echo "Running import/export consistency check..."
+    npm run test:import-export-consistency
+    
+    echo "✅ Interface integrity validated"
+```
+
+### Pre-Build Script
+
+```bash
+#!/bin/bash
+# scripts/pre-build-validation.sh
+# Runs before every build to catch interface issues
+
+set -e
+
+echo "🔍 QIC-7: Interface Integrity Validation"
+
+# TypeScript compilation
+echo "  → TypeScript compilation..."
+npx tsc --noEmit || { echo "❌ TypeScript compilation failed"; exit 1; }
+
+# Type completeness
+echo "  → Type completeness..."
+npx tsx tests/qa/type-completeness.test.ts || { echo "❌ Type completeness failed"; exit 1; }
+
+# Import/export consistency
+echo "  → Import/export consistency..."
+npx tsx tests/qa/import-export-consistency.test.ts || { echo "❌ Import consistency failed"; exit 1; }
+
+echo "✅ QIC-7 validation passed"
+```
+
+### Type Completeness Test Template
+
+```typescript
+// tests/qa/type-completeness.test.ts
+import { describe, it, expect } from '@jest/globals';
+import type { ModelTier } from '@/types/model-escalation';
+
+describe('QIC-7: Type Completeness Validation', () => {
+  const allModelTiers: ModelTier[] = [
+    'gpt-4',
+    'gpt-4-turbo',
+    'gpt-4o-mini',
+    'gpt-4o',
+    'gpt-4.1',
+    'gpt-5.1',
+    'local-builder',
+  ];
+
+  it('validates Record<ModelTier, T> objects have all ModelTier values', () => {
+    // Dynamically import all Record<ModelTier, T> objects
+    // Validate each has all union values as keys
+    // Fail if any are incomplete
+  });
+
+  it('validates all imports reference exported members', () => {
+    // Scan codebase for import statements
+    // Check each imported name exists in source module
+    // Fail if any imports are invalid
+  });
+
+  it('detects breaking changes to exported interfaces', () => {
+    // Compare current exports with baseline
+    // Flag any removed or changed exports
+    // Require CS2 approval for breaking changes
+  });
+});
+```
+
+### Builder Integration
+
+Updated in `/foreman/builder-specs/build-to-green-rule.md`:
+
+**Before marking build as GREEN, builders MUST:**
+
+1. ✅ Run `npx tsc --noEmit` to validate TypeScript compilation
+2. ✅ Verify all Record<UnionType, T> objects are complete
+3. ✅ Verify all imports reference exported members
+4. ✅ Fix any interface alignment issues before reporting GREEN
+
+### Governance Integration
+
+**QI Incident Recording**:
+
+When QIC-7 violations are detected, record as:
+- `incidentType: 'interface_integrity_violation'`
+- `severity: 'high'` (blocks 100% GREEN)
+- Details include: compilation errors, incomplete types, missing exports
+
+**CS2 Trigger**:
+
+Breaking interface changes automatically trigger CS2 (Architecture Approval):
+- Changes to exported types
+- Removal of exports
+- Function signature changes
+- Type definition modifications
+
+### Failure Prevention
+
+QIC-7 prevents:
+1. ❌ Type errors reaching deployment
+2. ❌ Incomplete Record<UnionType, T> definitions
+3. ❌ Imports referencing non-existent exports
+4. ❌ Breaking changes without approval
+5. ❌ Interface alignment failures blocking 100% GREEN
+
+### Success Metrics
+
+QIC-7 is working when:
+- ✅ Zero TypeScript compilation errors in deployment
+- ✅ Zero incomplete type definitions
+- ✅ Zero import errors
+- ✅ All interface changes validated before merge
+- ✅ 100% GREEN builds achieved on first deploy
+
+---
+
+## QIC-8 — Auto-Propagation Across All Apps
 
 ### Architecture Rule
 
@@ -511,7 +745,8 @@ Every QA Builder must validate:
 - [ ] QIC-4: Preview and Production builds simulate successfully
 - [ ] QIC-5: Silent failures detected and blocked
 - [ ] QIC-6: QI Incidents recorded in Governance Memory
-- [ ] QIC-7: QIC rules loaded and enforced globally
+- [ ] QIC-7: Interface integrity validated (TypeScript compilation, type completeness, import/export consistency)
+- [ ] QIC-8: QIC rules loaded and enforced globally
 
 **If any QIC requirement fails → QA FAIL → PR blocked.**
 

@@ -4,11 +4,58 @@
 
 **Core Principle**: Every build must be a **one-time, fully functional build**. No iterations, no fixes after merge, no regression. The build works perfectly the first time, or it doesn't happen.
 
-This is achieved through a **QA-First, Architecture-Driven** approach where:
-- Architecture defines what "correct" means
-- QA tests verify architecture compliance BEFORE building
-- Builders ONLY build to make red QA turn green
-- No red QA = No build instruction = No building
+**Supreme Mandate**: **A build is not complete unless it is 100% GREEN.**
+
+This is the **primary obligation**, and all rules, QA checks, and governance mechanisms exist to serve this philosophy—not to weaken it.
+
+### 100% GREEN Philosophy
+
+**What 100% GREEN Means**:
+- ✅ Zero compilation errors
+- ✅ Zero type errors
+- ✅ Zero lint errors
+- ✅ Zero test failures
+- ✅ Zero runtime errors
+- ✅ Zero deployment failures
+- ✅ Zero warnings (unless explicitly whitelisted)
+- ✅ All QA checks passing
+- ✅ All governance gates passing
+- ✅ Full functionality verified
+
+**NOT 100% GREEN**:
+- ❌ 99% passing (301/303 tests = TOTAL FAILURE)
+- ❌ "Mostly working" (missing features = NOT GREEN)
+- ❌ "Works for me" (untested edge cases = NOT GREEN)
+- ❌ "Will fix later" (incomplete = NOT GREEN)
+
+**Rule**: If the build is not 100% GREEN, it is not complete. Period.
+
+### Governance Gaps Are Environmental Defects
+
+**If, during execution, a class of build failure is discovered that:**
+1. Prevents reaching 100% GREEN, AND
+2. Is not explicitly covered or prevented by existing QA or governance rules
+
+**Then that is a defect in the job environment**, not an acceptable refinement phase.
+
+**Foreman's responsibilities in such cases:**
+1. ✅ **Continue execution autonomously until fully GREEN**
+2. ✅ **Identify and document the uncovered failure class** as a governance/QA gap
+3. ✅ **Propose and implement the necessary rule, QA, or enforcement enhancement** to prevent recurrence
+4. ✅ **Propagate the learning to builders** so the same gap is not reintroduced
+
+### Temporary Override Authority
+
+**Foreman is authorized to temporarily override local constraints or heuristics if required to uphold the 100% GREEN build philosophy**, provided:
+
+- ✅ CS1–CS6 constitutional safeguards are not violated
+- ✅ Governance Supremacy Rule (GSR) remains intact
+- ✅ All overrides are documented and justified
+- ✅ The override serves to strengthen (not weaken) governance
+
+**Foreman does NOT need permission to improve the job environment.**
+
+**Foreman ONLY needs to escalate if a constitutional boundary must change.**
 
 ---
 

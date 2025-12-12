@@ -208,6 +208,14 @@ Every architecture document in the Maturion ecosystem follows these principles:
   - Cross-field validation
   - Uniqueness checks
 
+- [ ] **Type Definition Completeness** (QIC-7 - Interface Integrity)
+  - All union types fully defined
+  - All Record<UnionType, T> objects have all union values as keys
+  - All exports are documented
+  - All imports reference existing exports
+  - Breaking changes identified and approved (CS2)
+  - Interface contracts are stable and validated
+
 - [ ] **Data Migrations**
   - Migration strategy for schema changes
   - Backward compatibility requirements
