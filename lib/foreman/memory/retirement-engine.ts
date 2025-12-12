@@ -35,6 +35,19 @@ import { getAllMemory, flattenMemory } from './storage'
 import { DriftReport } from '@/types/drift'
 
 /**
+ * CS6 Boundary Enforcement: Protected memory tags
+ */
+const PROTECTED_MEMORY_TAGS = [
+  'constitutional',
+  'governance',
+  'active_architecture',
+  'runtime_active',
+  'builder_config',
+  'cs2_approved',
+  'cs6_boundary'
+]
+
+/**
  * Default retirement configuration
  */
 const DEFAULT_CONFIG: RetirementConfig = {
@@ -56,6 +69,94 @@ const DEFAULT_CONFIG: RetirementConfig = {
   retireWhenConsolidated: true,
   minConsolidationConfidence: 0.8,
   resolveConflictsOnRetirement: true
+}
+
+/**
+ * CS6 Boundary Check: Determine if memory is protected
+ */
+function isProtectedMemory(entry: MemoryEntry): boolean {
+  if (!entry.tags) return false
+  
+  return entry.tags.some(tag => PROTECTED_MEMORY_TAGS.includes(tag))
+}
+
+/**
+ * Runtime State Check: Determine if memory is in active runtime context
+ * TODO: Integrate with autonomy runtime for real-time state checking
+ */
+function isRuntimeActive(entry: MemoryEntry): boolean {
+  // Check for runtime-active tags
+  if (entry.tags?.includes('runtime') && entry.tags?.includes('active')) {
+    return true
+  }
+  
+  // Check for active task tags
+  if (entry.tags?.includes('task') && entry.tags?.includes('active')) {
+    return true
+  }
+  
+  // TODO: Query autonomy runtime for active memory IDs
+  // const runtime = getAutonomyRuntime()
+  // return runtime.activeMemoryIds.includes(entry.id)
+  
+  return false
+}
+
+/**
+ * Manual Review Queue Management
+ */
+function getManualReviewQueuePath(): string {
+  return path.join(process.cwd(), 'memory', 'retirement', 'manual-review-queue.json')
+}
+
+function addToManualReviewQueue(candidate: RetirementCandidate): void {
+  const queuePath = getManualReviewQueuePath()
+  
+  // Load existing queue
+  let queue: RetirementCandidate[] = []
+  if (fs.existsSync(queuePath)) {
+    try {
+      const content = fs.readFileSync(queuePath, 'utf-8')
+      if (content.trim()) {
+        queue = JSON.parse(content)
+      }
+    } catch (error) {
+      console.error('[Retirement] Error loading manual review queue:', error)
+    }
+  }
+  
+  // Add candidate
+  queue.push(candidate)
+  
+  // Save queue
+  const queueDir = path.dirname(queuePath)
+  if (!fs.existsSync(queueDir)) {
+    fs.mkdirSync(queueDir, { recursive: true })
+  }
+  
+  fs.writeFileSync(queuePath, JSON.stringify(queue, null, 2), 'utf-8')
+  
+  console.log(`[Retirement] Added to manual review queue: ${candidate.entry.id}`)
+}
+
+export function getManualReviewQueue(): RetirementCandidate[] {
+  const queuePath = getManualReviewQueuePath()
+  
+  if (!fs.existsSync(queuePath)) {
+    return []
+  }
+  
+  try {
+    const content = fs.readFileSync(queuePath, 'utf-8')
+    if (!content.trim()) {
+      return []
+    }
+    
+    return JSON.parse(content)
+  } catch (error) {
+    console.error('[Retirement] Error loading manual review queue:', error)
+    return []
+  }
 }
 
 /**
@@ -471,6 +572,39 @@ export function executeRetirement(
   const flaggedForReview: RetirementCandidate[] = []
   
   for (const candidate of candidates) {
+    // CS6 Boundary Check: Block protected memory retirement
+    if (isProtectedMemory(candidate.entry)) {
+      console.log(`[Retirement] CS6 BLOCKED: Cannot retire protected memory: ${candidate.entry.id}`)
+      
+      // Log CS6 boundary violation
+      logRetirementEvent({
+        type: 'retirement',
+        entryId: candidate.entry.id,
+        scope: candidate.entry.scope,
+        reason: candidate.reason,
+        lifecycle: 'active', // Stays active
+        timestamp: new Date().toISOString(),
+        actor: 'retirement-engine',
+        metadata: {
+          previousState: 'active',
+          newState: 'active',
+          reviewRequired: false,
+          cs6Violation: true,
+          blockedReason: 'Protected memory (CS6 boundary)'
+        }
+      })
+      
+      continue // Skip this candidate
+    }
+    
+    // Runtime State Check: Block retirement of active runtime memory
+    if (isRuntimeActive(candidate.entry)) {
+      console.log(`[Retirement] DEFERRED: Memory in active runtime: ${candidate.entry.id}`)
+      
+      // TODO: Add to deferred queue for retry after runtime completion
+      continue // Skip this candidate
+    }
+    
     // Check if manual review is required
     const requiresReview = 
       (candidate.severity === 'high' && config.requireManualReviewForHigh) ||
@@ -479,6 +613,7 @@ export function executeRetirement(
     
     if (requiresReview) {
       flaggedForReview.push(candidate)
+      addToManualReviewQueue(candidate)
       console.log(`[Retirement] Flagged for review: ${candidate.entry.id} (${candidate.reason}, ${candidate.severity})`)
       continue
     }
@@ -640,6 +775,94 @@ export async function runRetirement(
   const report = executeRetirement(candidates, config)
   
   return report
+}
+
+/**
+ * Preview Mode: Non-destructive retirement simulation
+ */
+export interface RetirementPreview {
+  totalCandidates: number
+  candidatesByReason: Record<RetirementReason, number>
+  candidatesBySeverity: Record<RetirementSeverity, number>
+  estimatedStorageReduction: number // bytes
+}
+
+export async function previewRetirement(
+  config: RetirementConfig = DEFAULT_CONFIG,
+  driftReport?: DriftReport
+): Promise<RetirementPreview> {
+  console.log('[Retirement] Running preview mode (non-destructive)...')
+  
+  // Load all memory (same as runRetirement)
+  const allMemory = await getAllMemory()
+  const allEntries = flattenMemory(allMemory)
+  const activeEntries = allEntries.filter(e => !e.value._retired?.retired)
+  
+  console.log(`[Retirement] Preview: Loaded ${activeEntries.length} active entries`)
+  
+  // Load consolidated knowledge
+  const consolidatedKnowledge = loadConsolidatedKnowledge()
+  console.log(`[Retirement] Preview: Loaded ${consolidatedKnowledge.length} consolidated knowledge blocks`)
+  
+  // Detect candidates (same as runRetirement, but don't execute)
+  const candidates: RetirementCandidate[] = []
+  
+  if (config.autoRetireStale) {
+    candidates.push(...detectStalenessRetirement(activeEntries, config))
+  }
+  
+  if (config.autoRetireSuperseded) {
+    candidates.push(...detectSupersessionRetirement(activeEntries, consolidatedKnowledge, config))
+  }
+  
+  if (config.autoRetireObsolete) {
+    candidates.push(...detectObsolescenceRetirement(activeEntries))
+  }
+  
+  if (driftReport) {
+    candidates.push(...detectContradictionRetirement(activeEntries, driftReport))
+  }
+  
+  console.log(`[Retirement] Preview: Identified ${candidates.length} candidates`)
+  
+  // Group by reason
+  const byReason: Record<RetirementReason, number> = {
+    staleness: 0,
+    supersession: 0,
+    obsolescence: 0,
+    contradiction: 0,
+    consolidation: 0,
+    manual_review: 0
+  }
+  
+  candidates.forEach(c => {
+    byReason[c.reason] = (byReason[c.reason] || 0) + 1
+  })
+  
+  // Group by severity
+  const bySeverity: Record<RetirementSeverity, number> = {
+    low: 0,
+    medium: 0,
+    high: 0,
+    critical: 0
+  }
+  
+  candidates.forEach(c => {
+    bySeverity[c.severity] = (bySeverity[c.severity] || 0) + 1
+  })
+  
+  // Estimate storage reduction (rough calculation)
+  const candidateEntries = candidates.map(c => c.entry)
+  const estimatedStorageReduction = JSON.stringify(candidateEntries).length
+  
+  console.log('[Retirement] Preview complete (no changes made)')
+  
+  return {
+    totalCandidates: candidates.length,
+    candidatesByReason: byReason,
+    candidatesBySeverity: bySeverity,
+    estimatedStorageReduction
+  }
 }
 
 /**
