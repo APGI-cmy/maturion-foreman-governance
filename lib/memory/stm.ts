@@ -48,6 +48,7 @@ export interface STMWriteContext {
   }
   metadata?: {
     priority?: 'high' | 'medium' | 'low'
+    expiresAt?: Date | string
   }
 }
 
@@ -57,10 +58,12 @@ export interface STMWriteContext {
 export interface STMQueryContext {
   sessionId: string
   category?: string
+  categories?: string[]
   actor?: string
   since?: string
   tags?: string[]
   limit?: number
+  includeExpired?: boolean
 }
 
 /**
@@ -68,10 +71,12 @@ export interface STMQueryContext {
  */
 export interface STMFilters {
   category?: string
+  categories?: string[]
   actor?: string
   since?: string
   tags?: string[]
   limit?: number
+  includeExpired?: boolean
 }
 
 /**
@@ -160,7 +165,11 @@ export async function storeSTM(context: STMWriteContext): Promise<STMEntry> {
     content: context.content,
     metadata: {
       createdAt: new Date().toISOString(),
-      expiresAt: calculateExpiryTime(),
+      expiresAt: context.metadata?.expiresAt 
+        ? (typeof context.metadata.expiresAt === 'string' 
+            ? context.metadata.expiresAt 
+            : context.metadata.expiresAt.toISOString())
+        : calculateExpiryTime(),
       priority: context.metadata?.priority || 'medium',
       volatile: true
     }
@@ -201,10 +210,15 @@ export async function storeSTM(context: STMWriteContext): Promise<STMEntry> {
   if (duration > 10) {
     await writeGovernanceMemory({
       category: 'qa_event',
-      severity: 'medium',
-      source: 'stm',
-      description: `STM store operation exceeded performance target: ${duration}ms > 10ms`,
-      data: { sessionId: context.sessionId, duration },
+      actor: 'stm',
+      content: {
+        type: 'performance_violation',
+        description: `STM store operation exceeded performance target: ${duration}ms > 10ms`,
+        sessionId: context.sessionId,
+        duration,
+        severity: 'medium',
+        timestamp: new Date().toISOString()
+      },
       tags: ['performance', 'cs5']
     })
   }
@@ -249,13 +263,18 @@ export async function recallSTM(
   // Get session entries
   const sessionEntries = stmStore.get(sessionId) || []
 
-  // Filter out expired entries automatically
+  // Filter out expired entries by default
   const now = new Date()
-  let results = sessionEntries.filter(e => new Date(e.metadata.expiresAt) > now)
+  let results = queryFilters.includeExpired 
+    ? sessionEntries
+    : sessionEntries.filter(e => new Date(e.metadata.expiresAt) > now)
 
   // Apply filters
   if (queryFilters.category) {
     results = results.filter(e => e.category === queryFilters.category)
+  }
+  if (queryFilters.categories && queryFilters.categories.length > 0) {
+    results = results.filter(e => queryFilters.categories!.includes(e.category))
   }
   if (queryFilters.actor) {
     results = results.filter(e => e.actor === queryFilters.actor)
@@ -280,10 +299,16 @@ export async function recallSTM(
   if (duration > 50) {
     await writeGovernanceMemory({
       category: 'qa_event',
-      severity: 'low',
-      source: 'stm',
-      description: `STM recall operation exceeded performance target: ${duration}ms > 50ms`,
-      data: { sessionId, resultCount: results.length, duration },
+      actor: 'stm',
+      content: {
+        type: 'performance_violation',
+        description: `STM recall operation exceeded performance target: ${duration}ms > 50ms`,
+        sessionId,
+        resultCount: results.length,
+        duration,
+        severity: 'low',
+        timestamp: new Date().toISOString()
+      },
       tags: ['performance', 'cs5']
     })
   }
@@ -292,15 +317,26 @@ export async function recallSTM(
 }
 
 /**
+ * Prune Options
+ */
+export interface PruneOptions {
+  limit?: number
+  strategy?: PruneStrategy
+}
+
+/**
  * Prune STM Entries
  * 
  * Removes entries based on strategy to free memory
  * 
  * @param sessionId - Session ID
- * @param strategy - Pruning strategy ('oldest', 'lowest_priority', 'all')
+ * @param optionsOrStrategy - Prune options or legacy strategy string
  * @returns Number of entries pruned
  */
-export async function pruneSTM(sessionId: string, strategy: PruneStrategy): Promise<number> {
+export async function pruneSTM(
+  sessionId: string,
+  optionsOrStrategy?: PruneOptions | PruneStrategy
+): Promise<number> {
   if (!stmStore.has(sessionId)) {
     return 0
   }
@@ -308,6 +344,39 @@ export async function pruneSTM(sessionId: string, strategy: PruneStrategy): Prom
   const sessionEntries = stmStore.get(sessionId)!
   const originalCount = sessionEntries.length
 
+  // Parse options
+  let strategy: PruneStrategy = 'lowest_priority'
+  let limit: number | undefined
+
+  if (typeof optionsOrStrategy === 'string') {
+    // Legacy: string strategy
+    strategy = optionsOrStrategy
+  } else if (optionsOrStrategy && typeof optionsOrStrategy === 'object') {
+    // New: options object
+    strategy = optionsOrStrategy.strategy || 'lowest_priority'
+    limit = optionsOrStrategy.limit
+  }
+
+  // If limit is specified, prune to that limit using priority
+  if (limit !== undefined && limit > 0) {
+    if (sessionEntries.length <= limit) {
+      return 0 // Already within limit
+    }
+
+    // Sort by priority (high > medium > low), then by timestamp (newest first)
+    const priorityOrder = { high: 3, medium: 2, low: 1 }
+    const sorted = [...sessionEntries].sort((a, b) => {
+      const priorityDiff = priorityOrder[b.metadata.priority || 'medium'] - priorityOrder[a.metadata.priority || 'medium']
+      if (priorityDiff !== 0) return priorityDiff
+      return new Date(b.metadata.createdAt).getTime() - new Date(a.metadata.createdAt).getTime()
+    })
+
+    const remaining = sorted.slice(0, limit)
+    stmStore.set(sessionId, remaining)
+    return originalCount - remaining.length
+  }
+
+  // Legacy strategies
   if (strategy === 'all') {
     stmStore.set(sessionId, [])
     return originalCount

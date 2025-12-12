@@ -13,11 +13,16 @@
  * Governance Event Input
  */
 export interface GovernanceEventInput {
-  category: 'qa_event' | 'cs_violation' | 'arc_decision' | 'drift_event' | 'security_event' | 'audit_event' | 'ltm_event'
-  severity: 'critical' | 'high' | 'medium' | 'low'
-  source: string
-  description: string
-  data: any
+  category: 'qa_event' | 'cs_violation' | 'arc_decision' | 'drift_event' | 'security_event' | 'audit_event' | 'ltm_event' | 'constitutional_event' | 'incident'
+  actor: string
+  content: {
+    type: string
+    description: string
+    [key: string]: any
+  }
+  metadata?: {
+    [key: string]: any
+  }
   tags?: string[]
 }
 
@@ -26,19 +31,23 @@ export interface GovernanceEventInput {
  */
 export interface GovernanceEvent {
   id: string
+  tier: string
   timestamp: string
-  category: 'qa_event' | 'cs_violation' | 'arc_decision' | 'drift_event' | 'security_event' | 'audit_event' | 'ltm_event'
-  severity: 'critical' | 'high' | 'medium' | 'low'
-  source: string
-  description: string
-  data: any
+  category: 'qa_event' | 'cs_violation' | 'arc_decision' | 'drift_event' | 'security_event' | 'audit_event' | 'ltm_event' | 'constitutional_event' | 'incident'
+  actor: string
+  content: {
+    type: string
+    description: string
+    [key: string]: any
+  }
   resolution?: string
   resolvedAt?: string
   tags: string[]
   metadata: {
+    immutable: boolean
     embodiment: string
-    actor: string
     version: number
+    [key: string]: any
   }
 }
 
@@ -80,25 +89,26 @@ function generateEventId(): string {
 export async function writeGovernanceMemory(event: GovernanceEventInput): Promise<GovernanceEvent> {
   const governanceEvent: GovernanceEvent = {
     id: generateEventId(),
+    tier: 'Governance Memory',
     timestamp: new Date().toISOString(),
     category: event.category,
-    severity: event.severity,
-    source: event.source,
-    description: event.description,
-    data: event.data,
+    actor: event.actor,
+    content: event.content,
     tags: event.tags || [],
     metadata: {
+      immutable: true,
       embodiment: 'foreman',
-      actor: 'foreman',
-      version: 1
+      version: 1,
+      ...(event.metadata || {})
     }
   }
 
   governanceStore.push(governanceEvent)
 
   // Log to console for visibility
-  if (event.severity === 'critical' || event.severity === 'high') {
-    console.log(`[GOVERNANCE ${event.severity.toUpperCase()}] ${event.category}: ${event.description}`)
+  const severity = event.content.severity || 'medium'
+  if (severity === 'critical' || severity === 'high') {
+    console.log(`[GOVERNANCE ${severity.toUpperCase()}] ${event.category}: ${event.content.description}`)
   }
 
   return governanceEvent
@@ -107,25 +117,31 @@ export async function writeGovernanceMemory(event: GovernanceEventInput): Promis
 /**
  * Update Governance Memory
  * 
- * Only updates resolution status. Event itself is immutable.
+ * Governance Memory is IMMUTABLE. This function throws an error.
+ * Only resolution can be updated via separate function.
  * 
- * @param eventId - Event ID
- * @param updates - Partial updates (resolution only)
- * @returns Updated governance event
+ * @param params - Update parameters
+ * @throws Error - Governance Memory is immutable
  */
-export async function updateGovernanceMemory(
-  eventId: string,
-  updates: Partial<GovernanceEvent>
-): Promise<GovernanceEvent> {
-  const event = governanceStore.find(e => e.id === eventId)
+export async function updateGovernanceMemory(params: {
+  entryId: string
+  newContent?: any
+  resolution?: string
+}): Promise<GovernanceEvent> {
+  // Governance Memory is immutable - block all updates except resolution
+  if (params.newContent) {
+    throw new Error('Governance Memory is immutable. Cannot update content.')
+  }
+
+  const event = governanceStore.find(e => e.id === params.entryId)
   
   if (!event) {
-    throw new Error(`Governance event not found: ${eventId}`)
+    throw new Error(`Governance event not found: ${params.entryId}`)
   }
 
   // Only allow resolution updates
-  if (updates.resolution) {
-    event.resolution = updates.resolution
+  if (params.resolution) {
+    event.resolution = params.resolution
     event.resolvedAt = new Date().toISOString()
     event.metadata.version += 1
   }
@@ -136,28 +152,14 @@ export async function updateGovernanceMemory(
 /**
  * Delete Governance Memory
  * 
- * Requires ARC approval (CS2). Should be extremely rare.
+ * Governance Memory is IMMUTABLE. Deletions are blocked.
+ * Only ARC-approved redaction is allowed.
  * 
- * @param eventId - Event ID
+ * @param params - Delete parameters
+ * @throws Error - Governance Memory is immutable
  */
-export async function deleteGovernanceMemory(eventId: string): Promise<void> {
-  const index = governanceStore.findIndex(e => e.id === eventId)
-  
-  if (index < 0) {
-    throw new Error(`Governance event not found: ${eventId}`)
-  }
-
-  // Log deletion (this itself is an audit event)
-  await writeGovernanceMemory({
-    category: 'audit_event',
-    severity: 'high',
-    source: 'governance_memory',
-    description: `Governance event deleted: ${eventId}`,
-    data: { deletedEventId: eventId, deletedAt: new Date().toISOString() },
-    tags: ['deletion', 'arc_approved']
-  })
-
-  governanceStore.splice(index, 1)
+export async function deleteGovernanceMemory(params: { entryId: string }): Promise<void> {
+  throw new Error('Governance Memory is immutable. Use attemptRedaction with ARC approval for compliance requirements.')
 }
 
 /**
@@ -173,12 +175,8 @@ export async function queryGovernanceMemory(filters: GovernanceFilters): Promise
     results = results.filter(e => e.category === filters.category)
   }
 
-  if (filters.severity) {
-    results = results.filter(e => e.severity === filters.severity)
-  }
-
   if (filters.source) {
-    results = results.filter(e => e.source === filters.source)
+    results = results.filter(e => e.actor === filters.source)
   }
 
   if (filters.since) {
@@ -197,9 +195,9 @@ export async function queryGovernanceMemory(filters: GovernanceFilters): Promise
     )
   }
 
-  // Support 'type' filter (alias for category)
+  // Support 'type' filter (content.type matching)
   if (filters.type) {
-    results = results.filter(e => e.category === filters.type || e.tags.includes(filters.type!))
+    results = results.filter(e => e.content.type === filters.type)
   }
 
   // Sort by timestamp descending (newest first)
@@ -218,7 +216,7 @@ export async function getQAFailureHistory(module?: string): Promise<GovernanceEv
   let results = governanceStore.filter(e => e.category === 'qa_event')
 
   if (module) {
-    results = results.filter(e => e.source === module || e.data?.module === module)
+    results = results.filter(e => e.actor === module || e.content?.module === module)
   }
 
   return results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
@@ -235,13 +233,86 @@ export async function getConstitutionalViolations(cs?: string): Promise<Governan
 
   if (cs) {
     results = results.filter(e => 
-      e.source === cs || 
-      e.data?.cs === cs || 
+      e.actor === cs || 
+      e.content?.cs === cs || 
       e.tags.includes(cs.toLowerCase())
     )
   }
 
   return results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+}
+
+/**
+ * Redaction Result
+ */
+export interface RedactionResult {
+  targetEntryId: string
+  arcApproved: boolean
+  redactedAt: string
+  reason: string
+  approver?: string
+  redactionEventId: string
+}
+
+/**
+ * Attempt Redaction
+ * 
+ * Only allowed with ARC approval for compliance requirements (GDPR, etc.)
+ * Original entry is marked as redacted but not deleted.
+ * 
+ * @param params - Redaction parameters
+ * @returns Redaction result
+ * @throws Error if ARC approval not granted
+ */
+export async function attemptRedaction(params: {
+  entryId: string
+  reason: string
+  arcApproved: boolean
+  approver?: string
+}): Promise<RedactionResult> {
+  if (!params.arcApproved) {
+    throw new Error('Redaction requires ARC approval. Cannot proceed without arcApproved=true.')
+  }
+
+  const event = governanceStore.find(e => e.id === params.entryId)
+  
+  if (!event) {
+    throw new Error(`Governance event not found: ${params.entryId}`)
+  }
+
+  // Mark as redacted (metadata update allowed for compliance)
+  event.metadata.redacted = true
+  event.metadata.redactedAt = new Date().toISOString()
+  event.metadata.redactionReason = params.reason
+  event.metadata.redactionApprover = params.approver
+
+  // Log redaction event
+  const redactionEvent = await writeGovernanceMemory({
+    category: 'audit_event',
+    actor: params.approver || 'arc',
+    content: {
+      type: 'governance_redaction',
+      description: `Governance event redacted: ${params.entryId}`,
+      reason: params.reason,
+      targetEntryId: params.entryId,
+      approver: params.approver,
+      timestamp: new Date().toISOString()
+    },
+    metadata: {
+      arcApproved: true,
+      auditRequired: true
+    },
+    tags: ['redaction', 'arc_approved', 'compliance']
+  })
+
+  return {
+    targetEntryId: params.entryId,
+    arcApproved: params.arcApproved,
+    redactedAt: event.metadata.redactedAt as string,
+    reason: params.reason,
+    approver: params.approver,
+    redactionEventId: redactionEvent.id
+  }
 }
 
 /**
