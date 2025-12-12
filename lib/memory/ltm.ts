@@ -182,10 +182,16 @@ export async function storeLTM(context: LTMWriteContext): Promise<LTMEntry> {
   // Log to governance memory
   await writeGovernanceMemory({
     category: 'ltm_event',
-    severity: 'low',
-    source: 'ltm',
-    description: `LTM entry created for tenant ${context.tenantId}`,
-    data: { tenantId: context.tenantId, entryId: entry.id, category: context.category },
+    actor: 'ltm',
+    content: {
+      type: 'ltm_write',
+      description: `LTM entry created for tenant ${context.tenantId}`,
+      tenantId: context.tenantId,
+      entryId: entry.id,
+      category: context.category,
+      severity: 'low',
+      timestamp: new Date().toISOString()
+    },
     tags: ['ltm', 'write']
   })
 
@@ -194,10 +200,15 @@ export async function storeLTM(context: LTMWriteContext): Promise<LTMEntry> {
   if (duration > 100) {
     await writeGovernanceMemory({
       category: 'qa_event',
-      severity: 'medium',
-      source: 'ltm',
-      description: `LTM store operation exceeded performance target: ${duration}ms > 100ms`,
-      data: { tenantId: context.tenantId, duration },
+      actor: 'ltm',
+      content: {
+        type: 'performance_violation',
+        description: `LTM store operation exceeded performance target: ${duration}ms > 100ms`,
+        tenantId: context.tenantId,
+        duration,
+        severity: 'medium',
+        timestamp: new Date().toISOString()
+      },
       tags: ['performance', 'cs5']
     })
   }
@@ -222,13 +233,15 @@ export async function recallLTM(context: LTMQueryContext): Promise<LTMEntry[]> {
     // Log security violation
     await writeGovernanceMemory({
       category: 'security_event',
-      severity: 'critical',
-      source: 'ltm',
-      description: 'Tenant isolation violation attempt detected',
-      data: {
+      actor: 'ltm',
+      content: {
+        type: 'tenant_isolation_violation',
+        description: 'Tenant isolation violation attempt detected',
         requestedTenantId: context.tenantId,
         authenticatedTenantId: context.authenticatedTenantId,
-        embodiment: context.embodiment
+        embodiment: context.embodiment,
+        severity: 'critical',
+        timestamp: new Date().toISOString()
       },
       tags: ['security', 'tenant_isolation_violation_attempt']
     }).catch(() => {}) // Don't fail if governance write fails
@@ -291,10 +304,16 @@ export async function recallLTM(context: LTMQueryContext): Promise<LTMEntry[]> {
   if (duration > 200) {
     await writeGovernanceMemory({
       category: 'qa_event',
-      severity: 'low',
-      source: 'ltm',
-      description: `LTM recall operation exceeded performance target: ${duration}ms > 200ms`,
-      data: { tenantId: context.tenantId, resultCount: results.length, duration },
+      actor: 'ltm',
+      content: {
+        type: 'performance_violation',
+        description: `LTM recall operation exceeded performance target: ${duration}ms > 200ms`,
+        tenantId: context.tenantId,
+        resultCount: results.length,
+        duration,
+        severity: 'low',
+        timestamp: new Date().toISOString()
+      },
       tags: ['performance', 'cs5']
     })
   }

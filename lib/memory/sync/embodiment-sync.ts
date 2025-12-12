@@ -156,10 +156,14 @@ export async function syncMemoryAcrossEmbodiments(scope: MemoryScope): Promise<S
         // Log conflict to governance memory
         await writeGovernanceMemory({
           category: 'drift_event',
-          severity: 'medium',
-          source: 'embodiment_sync',
-          description: `Memory conflict detected between ${conflict.embodimentA} and ${conflict.embodimentB}`,
-          data: { conflict },
+          actor: 'embodiment_sync',
+          content: {
+            type: 'memory_conflict',
+            description: `Memory conflict detected between ${conflict.embodimentA} and ${conflict.embodimentB}`,
+            conflict,
+            severity: 'medium',
+            timestamp: new Date().toISOString()
+          },
           tags: ['conflict', 'sync']
         })
       }
@@ -201,14 +205,16 @@ export async function syncMemoryAcrossEmbodiments(scope: MemoryScope): Promise<S
   // Log sync to governance memory
   await writeGovernanceMemory({
     category: 'audit_event',
-    severity: 'low',
-    source: 'embodiment_sync',
-    description: `Memory sync completed for scope ${scope}`,
-    data: {
+    actor: 'embodiment_sync',
+    content: {
+      type: 'memory_sync',
+      description: `Memory sync completed for scope ${scope}`,
       scope,
       embodiments,
       entriesSynced: allEntries.size,
-      conflictsDetected: conflicts.length
+      conflictsDetected: conflicts.length,
+      severity: 'low',
+      timestamp: new Date().toISOString()
     },
     tags: ['sync', 'embodiment']
   })
@@ -325,13 +331,15 @@ export async function resolveConflict(conflict: Conflict, strategy: ResolutionSt
     // Log resolution
     await writeGovernanceMemory({
       category: 'audit_event',
-      severity: 'low',
-      source: 'embodiment_sync',
-      description: `Conflict resolved: ${conflict.id} using ${strategy}`,
-      data: {
+      actor: 'embodiment_sync',
+      content: {
+        type: 'conflict_resolution',
+        description: `Conflict resolved: ${conflict.id} using ${strategy}`,
         conflictId: conflict.id,
         strategy,
-        winner: winnerEmbodiment
+        winner: winnerEmbodiment,
+        severity: 'low',
+        timestamp: new Date().toISOString()
       },
       tags: ['conflict_resolution', 'sync']
     })
@@ -339,10 +347,14 @@ export async function resolveConflict(conflict: Conflict, strategy: ResolutionSt
     // Manual resolution - log and wait for human intervention
     await writeGovernanceMemory({
       category: 'drift_event',
-      severity: 'high',
-      source: 'embodiment_sync',
-      description: `Manual conflict resolution required: ${conflict.id}`,
-      data: { conflict },
+      actor: 'embodiment_sync',
+      content: {
+        type: 'manual_resolution_required',
+        description: `Manual conflict resolution required: ${conflict.id}`,
+        conflict,
+        severity: 'high',
+        timestamp: new Date().toISOString()
+      },
       tags: ['manual_resolution_required', 'conflict']
     })
   }
