@@ -158,13 +158,15 @@ export async function enforceKnowledgeBoundaries(
   if (violations.length > 0) {
     const governanceEvent = await writeGovernanceMemory({
       category: 'security_event',
-      severity,
-      source: 'boundaries',
-      description: 'Knowledge boundary violation detected',
-      data: {
+      actor: 'boundaries',
+      content: {
+        type: 'boundary_violation',
+        description: 'Knowledge boundary violation detected',
         operation,
         violations,
-        context
+        context,
+        severity,
+        timestamp: new Date().toISOString()
       },
       tags: ['boundary_violation', 'security']
     })
@@ -212,12 +214,14 @@ export async function verifyTenantIsolation(tenantId: string, data: any): Promis
   if (otherTenantIds.length > 0) {
     await writeGovernanceMemory({
       category: 'security_event',
-      severity: 'critical',
-      source: 'boundaries',
-      description: 'Cross-tenant data detected',
-      data: {
+      actor: 'boundaries',
+      content: {
+        type: 'tenant_isolation_violation',
+        description: 'Cross-tenant data detected',
         expectedTenantId: tenantId,
-        foundTenantIds: otherTenantIds
+        foundTenantIds: otherTenantIds,
+        severity: 'critical',
+        timestamp: new Date().toISOString()
       },
       tags: ['tenant_isolation_violation', 'critical']
     })
@@ -305,10 +309,15 @@ export async function validateMemoryWrite(entry: any): Promise<ValidationResult>
   if (errors.length > 0) {
     await writeGovernanceMemory({
       category: 'qa_event',
-      severity: 'high',
-      source: 'boundaries',
-      description: 'Memory write validation failed',
-      data: { entryId: entry.id, errors },
+      actor: 'boundaries',
+      content: {
+        type: 'validation_error',
+        description: 'Memory write validation failed',
+        entryId: entry.id,
+        errors,
+        severity: 'high',
+        timestamp: new Date().toISOString()
+      },
       tags: ['validation_error']
     })
 
@@ -333,14 +342,16 @@ export async function validateMemoryWrite(entry: any): Promise<ValidationResult>
 export async function auditMemoryAccess(operation: MemoryOperation): Promise<void> {
   await writeGovernanceMemory({
     category: 'audit_event',
-    severity: 'low',
-    source: 'boundaries',
-    description: `Memory ${operation.type} operation on ${operation.tier}`,
-    data: {
+    actor: 'boundaries',
+    content: {
+      type: 'memory_access',
+      description: `Memory ${operation.type} operation on ${operation.tier}`,
       embodiment: operation.embodiment,
       tier: operation.tier,
       operation: operation.type,
-      tenantId: operation.tenantId
+      tenantId: operation.tenantId,
+      severity: 'low',
+      timestamp: new Date().toISOString()
     },
     tags: ['audit', 'memory_access']
   })
