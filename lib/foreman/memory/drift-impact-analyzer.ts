@@ -201,20 +201,34 @@ function calculateDesyncRisk(
   for (const candidate of candidates) {
     const entry = candidate.entry
     
-    // Global scope entries have higher desync risk
-    let risk = entry.scope === 'global' ? 30 : 10
-    
-    // Entries with embodiment tags increase risk
-    const embodimentTags = ['foreman', 'builder', 'isms', 'shared']
-    const hasEmbodimentTag = entry.tags?.some(tag => embodimentTags.includes(tag))
-    if (hasEmbodimentTag) {
-      risk += 20
+    // Project scope OR project-tagged entries have lowest desync risk (tenant-isolated)
+    // Foreman scope has medium risk
+    // Global scope has highest risk
+    let risk = 0
+    if (entry.scope === 'project' || entry.tags?.includes('project')) {
+      risk = 5 // project - low risk (tenant-isolated)
+    } else if (entry.scope === 'foreman') {
+      risk = 15
+    } else if (entry.scope === 'global') {
+      risk = 30
+    } else {
+      risk = 10 // default
     }
     
-    // Multiple embodiment tags = higher risk
-    const embodimentCount = entry.tags?.filter(tag => embodimentTags.includes(tag)).length || 0
-    if (embodimentCount > 1) {
-      risk += embodimentCount * 10
+    // Entries with embodiment tags increase risk (but only if not project-scoped)
+    const isProjectScoped = entry.scope === 'project' || entry.tags?.includes('project')
+    if (!isProjectScoped) {
+      const embodimentTags = ['foreman', 'builder', 'isms', 'shared']
+      const hasEmbodimentTag = entry.tags?.some(tag => embodimentTags.includes(tag))
+      if (hasEmbodimentTag) {
+        risk += 20
+      }
+      
+      // Multiple embodiment tags = higher risk
+      const embodimentCount = entry.tags?.filter(tag => embodimentTags.includes(tag)).length || 0
+      if (embodimentCount > 1) {
+        risk += embodimentCount * 10
+      }
     }
     
     totalRisk += risk
@@ -420,6 +434,6 @@ export function scoreContradictionResolution(
     }
   }
   
-  // Average score, capped at 100
-  return Math.min(100, contradictions.length > 0 ? totalScore / contradictions.length : 0)
+  // Return total score (not average), capped at 100
+  return Math.min(100, totalScore)
 }
