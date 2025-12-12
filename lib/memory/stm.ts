@@ -120,11 +120,11 @@ function generateEntryId(): string {
 }
 
 /**
- * Calculate expiry time (24 hours from now)
+ * Calculate expiry time (just under 24 hours from now to avoid boundary issues)
  */
 function calculateExpiryTime(): string {
   const expiry = new Date()
-  expiry.setHours(expiry.getHours() + 24)
+  expiry.setTime(expiry.getTime() + (24 * 60 * 60 * 1000) - 1) // 24 hours minus 1ms
   return expiry.toISOString()
 }
 
@@ -249,9 +249,11 @@ export async function recallSTM(
   // Get session entries
   const sessionEntries = stmStore.get(sessionId) || []
 
-  // Apply filters
-  let results = [...sessionEntries]
+  // Filter out expired entries automatically
+  const now = new Date()
+  let results = sessionEntries.filter(e => new Date(e.metadata.expiresAt) > now)
 
+  // Apply filters
   if (queryFilters.category) {
     results = results.filter(e => e.category === queryFilters.category)
   }
@@ -313,25 +315,38 @@ export async function pruneSTM(sessionId: string, strategy: PruneStrategy): Prom
 
   if (strategy === 'oldest') {
     // Sort by age and remove oldest 20%
-    sessionEntries.sort((a, b) => 
+    const sorted = [...sessionEntries].sort((a, b) => 
       new Date(a.metadata.createdAt).getTime() - new Date(b.metadata.createdAt).getTime()
     )
     const pruneCount = Math.ceil(sessionEntries.length * 0.2)
-    stmStore.set(sessionId, sessionEntries.slice(pruneCount))
+    stmStore.set(sessionId, sorted.slice(pruneCount))
     return pruneCount
   }
 
   if (strategy === 'lowest_priority') {
-    // Keep high priority, remove low priority first
+    // Keep high priority, remove 50% of low and 20% of medium
     const highPriority = sessionEntries.filter(e => e.metadata.priority === 'high')
     const mediumPriority = sessionEntries.filter(e => e.metadata.priority === 'medium')
     const lowPriority = sessionEntries.filter(e => e.metadata.priority === 'low')
 
-    // Remove 50% of low priority, 20% of medium priority, keep all high priority
-    const prunedLow = lowPriority.slice(Math.ceil(lowPriority.length * 0.5))
-    const prunedMedium = mediumPriority.slice(Math.ceil(mediumPriority.length * 0.2))
+    // Keep most recent entries within each priority
+    const keepMediumCount = Math.ceil(mediumPriority.length * 0.8) // Keep 80%
+    const keepLowCount = Math.ceil(lowPriority.length * 0.5) // Keep 50%
+    
+    // Sort by timestamp to keep most recent
+    const sortedMedium = mediumPriority.sort((a, b) => 
+      new Date(b.metadata.createdAt).getTime() - new Date(a.metadata.createdAt).getTime()
+    )
+    const sortedLow = lowPriority.sort((a, b) => 
+      new Date(b.metadata.createdAt).getTime() - new Date(a.metadata.createdAt).getTime()
+    )
 
-    const remaining = [...highPriority, ...prunedMedium, ...prunedLow]
+    const remaining = [
+      ...highPriority,
+      ...sortedMedium.slice(0, keepMediumCount),
+      ...sortedLow.slice(0, keepLowCount)
+    ]
+    
     stmStore.set(sessionId, remaining)
     return originalCount - remaining.length
   }
