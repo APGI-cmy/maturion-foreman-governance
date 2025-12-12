@@ -7,6 +7,17 @@
  * - Only CS2 triggers WAITING_FOR_APPROVAL state
  */
 
+import {
+  checkIfShouldPauseForApproval,
+  determineNextState,
+  checkAssumeContinue,
+  shouldSendNotification,
+  builderChecksPause,
+  executeBuilderInstruction,
+  handleBuilderFailure,
+  detectOPOJDViolation
+} from '../../../lib/foreman/opojd-core';
+
 describe('OPOJD - Agent Behavioral Compliance', () => {
   describe('Foreman Behavior', () => {
     it('should not pause mid-run for non-constitutional reasons', () => {
@@ -217,37 +228,3 @@ describe('OPOJD - Agent Behavioral Compliance', () => {
   });
 });
 
-// Mock functions that need to be implemented
-// These will be implemented in the Build to Green phase
-
-function checkIfShouldPauseForApproval(execution: any): boolean {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function determineNextState(execution: any): string {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function checkAssumeContinue(execution: any): boolean {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function shouldSendNotification(event: any): boolean {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function builderChecksPause(task: any): boolean {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function executeBuilderInstruction(instruction: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function handleBuilderFailure(failure: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function detectOPOJDViolation(event: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}

@@ -8,6 +8,19 @@
  * - State transitions respect governance boundaries
  */
 
+import {
+  getStateTransitionPath,
+  getNextState,
+  checkCS2Trigger,
+  checkGovernanceBoundaries,
+  makeTransitionDecision,
+  getTransitionCheckpoint,
+  getExecutionFlag,
+  transitionState,
+  StateTransitionRecorder,
+  handleError
+} from '../../../lib/foreman/opojd-core';
+
 describe('OPOJD - State Machine Compliance', () => {
   describe('Default State Transitions', () => {
     it('should skip WAITING_FOR_APPROVAL in normal execution flow', () => {
@@ -305,54 +318,3 @@ describe('OPOJD - State Machine Compliance', () => {
   });
 });
 
-// Mock functions that need to be implemented
-
-function getStateTransitionPath(initialState: string, execution: any): string[] {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function getNextState(state: string, context: any): string {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function checkCS2Trigger(context: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function checkGovernanceBoundaries(context: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function makeTransitionDecision(state: string, context: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function getTransitionCheckpoint(from: string, to: string): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function getExecutionFlag(execution: any): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-function transitionState(execution: any, newState: string): any {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
-
-class StateTransitionRecorder {
-  constructor(execution: any) {
-    throw new Error('NOT IMPLEMENTED - Red QA');
-  }
-  
-  transition(from: string, to: string, reason: string): void {
-    throw new Error('NOT IMPLEMENTED - Red QA');
-  }
-  
-  getHistory(): any[] {
-    throw new Error('NOT IMPLEMENTED - Red QA');
-  }
-}
-
-function handleError(state: string, context: any): string {
-  throw new Error('NOT IMPLEMENTED - Red QA');
-}
