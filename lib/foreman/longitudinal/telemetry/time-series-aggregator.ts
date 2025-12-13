@@ -103,7 +103,12 @@ export async function getTimeSeriesTelemetry(params: {
     const telemetry: TimeSeriesTelemetry = {
       window: {
         type: params.window.type,
-        value: params.window.value,
+        value: typeof params.window.value === 'object' 
+          ? { 
+              start: params.window.value.start.toISOString(), 
+              end: params.window.value.end.toISOString() 
+            }
+          : params.window.value,
         signatureCount: signatures.length,
         observationCount: observations.length,
       },
@@ -139,7 +144,12 @@ export async function getTimeSeriesTelemetry(params: {
     return {
       window: {
         type: params.window.type,
-        value: params.window.value,
+        value: typeof params.window.value === 'object' 
+          ? { 
+              start: params.window.value.start.toISOString(), 
+              end: params.window.value.end.toISOString() 
+            }
+          : params.window.value,
         signatureCount: 0,
         observationCount: 0,
       },
@@ -294,14 +304,14 @@ export async function getSubsystemAttribution(params: {
       // Collect all subsystems mentioned in structural changes
       const subsystems = new Set<string>();
       
-      for (const module of obs.computation.structuralChanges.modulesAdded) {
-        subsystems.add(extractSubsystem(module));
+      for (const moduleName of obs.computation.structuralChanges.modulesAdded) {
+        subsystems.add(extractSubsystem(moduleName));
       }
-      for (const module of obs.computation.structuralChanges.modulesRemoved) {
-        subsystems.add(extractSubsystem(module));
+      for (const moduleName of obs.computation.structuralChanges.modulesRemoved) {
+        subsystems.add(extractSubsystem(moduleName));
       }
-      for (const module of obs.computation.structuralChanges.modulesModified) {
-        subsystems.add(extractSubsystem(module));
+      for (const moduleName of obs.computation.structuralChanges.modulesModified) {
+        subsystems.add(extractSubsystem(moduleName));
       }
       
       // If no subsystems found, use a default
