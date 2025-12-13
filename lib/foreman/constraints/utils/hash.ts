@@ -4,7 +4,7 @@
  * Provides deterministic hashing for architecture signatures.
  */
 
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 /**
  * Generate SHA-256 hash of a string
