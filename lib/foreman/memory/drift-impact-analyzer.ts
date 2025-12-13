@@ -414,13 +414,13 @@ export function scoreContradictionResolution(
         case 'critical':
           score += 30
           break
-        case 'high':
+        case 'error':
           score += 20
           break
-        case 'medium':
+        case 'warning':
           score += 10
           break
-        case 'low':
+        case 'info':
           score += 5
           break
       }
