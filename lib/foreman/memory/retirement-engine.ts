@@ -605,9 +605,7 @@ export function executeRetirement(
         metadata: {
           previousState: 'active',
           newState: 'active',
-          reviewRequired: false,
-          cs6Violation: true,
-          blockedReason: 'Protected memory (CS6 boundary)'
+          reviewRequired: false
         }
       })
       
