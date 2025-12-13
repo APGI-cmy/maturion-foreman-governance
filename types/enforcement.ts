@@ -10,9 +10,12 @@
  */
 
 import {
-  ConstraintScope,
   ClassifiedViolation,
 } from './violations';
+
+import {
+  ConstraintScope,
+} from './constraints';
 
 /**
  * Enforcement Hook Names
