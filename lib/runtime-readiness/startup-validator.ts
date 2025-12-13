@@ -16,6 +16,9 @@ import type {
 
 const STATE_DIR = path.join(process.cwd(), 'memory', 'governance', 'runtime-readiness', 'state');
 
+// Configuration constants
+const MIN_GITHUB_TOKEN_LENGTH = 20; // Minimum valid GitHub token length
+
 /**
  * Validate all required environment variables
  */
@@ -106,13 +109,14 @@ async function checkGitHubAuth(): Promise<CheckResult> {
   }
   
   // Basic token format validation
-  if (githubToken.length < 20) {
+  if (githubToken.length < MIN_GITHUB_TOKEN_LENGTH) {
     return {
       passed: false,
       message: 'GitHub token appears invalid (too short)',
       gapType: 'PERMISSION_GAP',
       details: {
         tokenLength: githubToken.length,
+        minimumRequired: MIN_GITHUB_TOKEN_LENGTH,
       },
     };
   }

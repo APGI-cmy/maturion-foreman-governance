@@ -137,7 +137,8 @@ async function checkRecovery(sessionId: string): Promise<CheckResult> {
     const content = await fs.readFile(stateFile, 'utf-8');
     const state: RuntimeState = JSON.parse(content);
     
-    // Add small delay to ensure measurable recovery time
+    // Add small delay to ensure measurable recovery time for testing purposes
+    // This guarantees the recovery time is > 0ms for test assertions
     await new Promise(resolve => setTimeout(resolve, 1));
     
     const recoveryTime = Date.now() - recoveryStart;

@@ -186,6 +186,8 @@ let checkStateRecovery: (sessionId: string) => Promise<StateRecoveryResult>;
 let checkTelemetry: (sessionId: string) => Promise<TelemetryResult>;
 
 try {
+  // Note: Using require here for synchronous module loading in Jest context
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const runtimeReadiness = require('../../lib/runtime-readiness');
   executeRuntimeReadinessCheck = runtimeReadiness.executeRuntimeReadinessCheck;
   validateStartup = runtimeReadiness.validateStartup;

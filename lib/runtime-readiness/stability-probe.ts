@@ -12,6 +12,10 @@ import type {
   CheckStatus,
 } from '../../types/runtime-readiness';
 
+// Configuration constants
+const PHASE_INTERVAL_MS = 5000; // 5 seconds between phases
+const MEMORY_LEAK_THRESHOLD_PERCENT = 10; // Maximum acceptable memory growth
+
 /**
  * Run stability probe for specified duration
  */
@@ -37,10 +41,10 @@ export async function runStabilityProbe(options: {
   });
   
   // Run probe for specified duration
-  const phases = Math.floor(options.duration / 5000); // Phase every 5 seconds
+  const phases = Math.floor(options.duration / PHASE_INTERVAL_MS);
   
   for (let i = 0; i < phases; i++) {
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, PHASE_INTERVAL_MS));
     
     // Monitor memory
     const currentMemory = process.memoryUsage().heapUsed;
@@ -66,8 +70,8 @@ export async function runStabilityProbe(options: {
   const memoryGrowth = endMemory - startMemory;
   const memoryGrowthPercent = (memoryGrowth / startMemory) * 100;
   
-  // Detect memory leak (> 10% growth)
-  const leakDetected = memoryGrowthPercent > 10;
+  // Detect memory leak (> MEMORY_LEAK_THRESHOLD_PERCENT growth)
+  const leakDetected = memoryGrowthPercent > MEMORY_LEAK_THRESHOLD_PERCENT;
   
   if (leakDetected) {
     events.push({
