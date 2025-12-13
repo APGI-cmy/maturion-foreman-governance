@@ -99,6 +99,7 @@ The Maturion Governance Constitution consists of:
    - Zero errors, zero warnings
    - No "close enough"
    - No partial passes
+   - **ZERO TEST DEBT** (no failing, skipped, incomplete tests or test infrastructure)
 
 2. **Build Integrity**
    - Parse logs for hidden failures
@@ -119,6 +120,15 @@ The Maturion Governance Constitution consists of:
    - Preview deployment succeeds
    - Production deployment succeeds
    - No deployment failures tolerated
+
+6. **Test Debt Elimination**
+   - Zero failing tests
+   - Zero skipped tests
+   - Zero incomplete tests
+   - Zero test infrastructure gaps
+   - Test debt triggers immediate STOP → FIX → RE-RUN cycle
+
+**See**: `/foreman/governance/zero-test-debt-constitutional-rule.md` for complete Zero Test Debt enforcement
 
 ### Architecture Primacy
 
@@ -493,6 +503,17 @@ READY → EXECUTING_TASK → [CS2] → WAITING_FOR_APPROVAL → [Approved] → E
 - Zero warnings required
 - No partial passes accepted
 - No bypasses allowed
+- **ZERO TEST DEBT required** (no exceptions)
+
+**Test Debt = Execution Blocker:**
+- Any failing test → STOP
+- Any skipped test → STOP
+- Any incomplete test → STOP
+- Any incomplete test infrastructure → STOP
+- Resolution REQUIRED before continuing
+- Re-validation REQUIRED after resolution
+
+**NO exceptions. NO "will fix later." NO "acceptable" test debt.**
 
 ### QA Independence
 

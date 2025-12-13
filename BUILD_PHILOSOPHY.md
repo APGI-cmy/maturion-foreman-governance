@@ -22,6 +22,7 @@ This is the **primary obligation**, and all rules, QA checks, and governance mec
 - ✅ All governance gates passing
 - ✅ Full functionality verified
 - ✅ **All test infrastructure complete** (helpers, fixtures, mocks)
+- ✅ **ZERO TEST DEBT** (no skips, stubs, incomplete tests, or test infrastructure gaps)
 
 **NOT 100% GREEN**:
 - ❌ 99% passing (301/303 tests = TOTAL FAILURE)
@@ -29,6 +30,24 @@ This is the **primary obligation**, and all rules, QA checks, and governance mec
 - ❌ "Works for me" (untested edge cases = NOT GREEN)
 - ❌ "Will fix later" (incomplete = NOT GREEN)
 - ❌ **Incomplete test helpers** (stub implementations = NOT GREEN)
+- ❌ **Any test debt** (skipped tests, test stubs, incomplete test infrastructure = NOT GREEN)
+- ❌ **Partial test passes** (ANY failing test = TOTAL FAILURE, not acceptable)
+
+**Zero Test Debt Philosophy**:
+
+Test debt is **NEVER** permitted. This includes:
+- Failing tests (FAIL, ERROR, TIMEOUT)
+- Skipped tests (.skip(), .todo(), commented out)
+- Incomplete tests (stubs, no assertions, TODO comments)
+- Incomplete test infrastructure (stub helpers, incomplete fixtures, broken mocks)
+- Test configuration issues (missing dependencies, broken setup, isolation failures)
+- Hidden test debt (tests passing with warnings, excluded tests, suppressed errors)
+
+See: `/foreman/governance/zero-test-debt-constitutional-rule.md`
+
+**If ANY test debt exists → Execution MUST STOP → Debt MUST be resolved IMMEDIATELY → QA MUST re-run → Only then may execution continue.**
+
+**There are NO exceptions. There is NO "will fix later." There is NO "acceptable" test debt.**
 
 **Rule**: If the build is not 100% GREEN, it is not complete. Period.
 
@@ -48,6 +67,42 @@ See: `/foreman/governance/test-helper-functions-governance.md`
 - ✅ Test helpers must handle edge cases
 - ✅ Test helpers must be validated before Red QA completion
 - ❌ "// TODO: implement later" in test helpers = GOVERNANCE VIOLATION
+
+### Zero Test Debt Enforcement
+
+**Constitutional Requirement** (2025-12-13):
+
+**ZERO TEST DEBT is ABSOLUTE and NON-NEGOTIABLE.**
+
+Any test debt discovered during execution triggers immediate action:
+
+```
+TEST DEBT DETECTED → STOP EXECUTION → FIX ALL DEBT → RE-RUN QA → VERIFY ZERO DEBT → CONTINUE
+```
+
+**What constitutes test debt:**
+- Failing tests (any test not passing)
+- Skipped tests (.skip(), .todo(), commented out)
+- Incomplete tests (stubs, no assertions, TODO comments)
+- Incomplete test infrastructure (stub helpers, incomplete fixtures, broken mocks)
+- Test configuration issues (missing dependencies, broken isolation)
+- Hidden test debt (tests with warnings, excluded tests, suppressed errors)
+
+**Foreman MUST:**
+- ✅ Detect ALL forms of test debt before proceeding
+- ✅ Block execution immediately when test debt found
+- ✅ Resolve ALL test debt before continuing
+- ✅ Verify ZERO test debt after resolution
+- ✅ Document test debt and resolution in evidence trail
+
+**Foreman MUST NEVER:**
+- ❌ Proceed with ANY test debt ("will fix later" = VIOLATION)
+- ❌ Accept partial test passes (301/303 = TOTAL FAILURE)
+- ❌ Skip test debt resolution
+- ❌ Create PRs with test debt
+- ❌ Merge builds with test debt
+
+See: `/foreman/governance/zero-test-debt-constitutional-rule.md`
 
 ### Governance Gaps Are Environmental Defects
 
