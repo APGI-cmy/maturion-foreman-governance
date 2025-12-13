@@ -6,7 +6,6 @@
  * MUST be deterministic and reproducible.
  */
 
-import { randomUUID } from 'crypto';
 import {
   TimeWindow,
   DriftObservation,
@@ -103,10 +102,14 @@ export async function getTimeSeriesTelemetry(params: {
     const telemetry: TimeSeriesTelemetry = {
       window: {
         type: params.window.type,
-        value: typeof params.window.value === 'object' 
+        value: typeof params.window.value === 'object' && 'start' in params.window.value
           ? { 
-              start: params.window.value.start.toISOString(), 
-              end: params.window.value.end.toISOString() 
+              start: params.window.value.start instanceof Date 
+                ? params.window.value.start.toISOString()
+                : params.window.value.start, 
+              end: params.window.value.end instanceof Date
+                ? params.window.value.end.toISOString()
+                : params.window.value.end
             }
           : params.window.value,
         signatureCount: signatures.length,
@@ -144,10 +147,14 @@ export async function getTimeSeriesTelemetry(params: {
     return {
       window: {
         type: params.window.type,
-        value: typeof params.window.value === 'object' 
+        value: typeof params.window.value === 'object' && 'start' in params.window.value
           ? { 
-              start: params.window.value.start.toISOString(), 
-              end: params.window.value.end.toISOString() 
+              start: params.window.value.start instanceof Date
+                ? params.window.value.start.toISOString()
+                : params.window.value.start, 
+              end: params.window.value.end instanceof Date
+                ? params.window.value.end.toISOString()
+                : params.window.value.end
             }
           : params.window.value,
         signatureCount: 0,

@@ -140,8 +140,8 @@ describe('Wave 4A.2 - Drift Telemetry & Time-Series Reporting', () => {
         const window: TimeWindow = {
           type: 'custom',
           value: {
-            start: new Date('2020-01-01'),
-            end: new Date('2020-01-02'),
+            start: '2020-01-01T00:00:00.000Z',
+            end: '2020-01-02T00:00:00.000Z',
           },
         };
 

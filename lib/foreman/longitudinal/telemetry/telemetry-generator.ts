@@ -6,7 +6,7 @@
  * MUST be deterministic and reproducible.
  */
 
-import { randomUUID } from 'crypto';
+import { createHash } from 'crypto';
 import {
   TimeWindow,
 } from '@/types/longitudinal';
@@ -53,9 +53,17 @@ export async function generateTelemetryReport(params: {
     // Generate recommendations
     const recommendations = generateRecommendations(timeSeries, subsystems, constraints, driftDirection);
 
+    // Generate deterministic report ID based on content
+    const reportId = generateDeterministicId({
+      window: params.window,
+      signatureCount: timeSeries.window.signatureCount,
+      observationCount: timeSeries.window.observationCount,
+      overallHealth,
+    });
+
     // Create report structure
     const report: TelemetryReport = {
-      id: randomUUID(),
+      id: reportId,
       generatedAt: new Date().toISOString(),
       reproducible: true,
       
@@ -571,4 +579,14 @@ function formatWindowDescription(window: any): string {
   } else {
     return `${window.value.start} to ${window.value.end}`;
   }
+}
+
+/**
+ * Generate deterministic ID based on content
+ * This ensures reproducibility - same inputs always produce same ID
+ */
+function generateDeterministicId(data: any): string {
+  const hash = createHash('sha256');
+  hash.update(JSON.stringify(data, Object.keys(data).sort()));
+  return hash.digest('hex').substring(0, 32); // Use first 32 chars (128 bits)
 }
