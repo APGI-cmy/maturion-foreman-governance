@@ -76,3 +76,8 @@ preflight-validation-report.md
 # QIEL regression tests (auto-generated, committed by workflow only)
 /tests/qic/regression/qi-*.test.ts
 qiel-*.md
+
+# Runtime readiness check artifacts (temporary runtime data)
+/memory/governance/runtime-readiness/state/
+/memory/governance/runtime-readiness/telemetry/
+/memory/governance/runtime-readiness/evidence/
