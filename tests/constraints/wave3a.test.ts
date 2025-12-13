@@ -416,15 +416,35 @@ describe('Wave 3A: Architecture Signatures', () => {
         hash: '',
       };
 
-      const newSignature: ArchitectureSignature = {
-        ...oldSignature,
-        structure: {
-          ...oldSignature.structure,
-          modules: [module2],
-        },
-      };
-
+      // Set hashes before creating new signature
       oldSignature.hash = hashSignature(oldSignature);
+      
+      const newSignature: ArchitectureSignature = {
+        version: '1.0.0',
+        timestamp: '2025-12-13T00:00:00Z',
+        repository: {
+          url: 'https://github.com/test/repo',
+          commit: 'a'.repeat(40),
+          branch: 'main',
+        },
+        structure: {
+          modules: [module2],
+          dependencies: { nodes: [], edges: [] },
+          layers: [],
+        },
+        contracts: {
+          apis: [],
+          types: [],
+          events: [],
+        },
+        governance: {
+          protectedPaths: [],
+          constraints: [],
+          version: '1.0.0',
+        },
+        hash: '',
+      };
+      
       newSignature.hash = hashSignature(newSignature);
 
       const result = compareSignatures(oldSignature, newSignature);
