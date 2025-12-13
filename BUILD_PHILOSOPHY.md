@@ -335,8 +335,36 @@ Action Required: Foreman must design architecture and create failing QA first.
 
 ### ❌ No "Close Enough"
 - 99% QA pass rate = TOTAL FAILURE
+- 301/303 tests passing = TOTAL FAILURE
 - One failing test = entire build blocked
+- Any test debt = entire build blocked
 - Quality is absolute, not contextual
+- There is NO "acceptable threshold" for failures
+- There is NO "close enough" for quality
+
+### ❌ No "Will Fix Later" (Zero Test Debt)
+- Test debt is NEVER acceptable
+- "Will fix later" = GOVERNANCE VIOLATION
+- Any form of test debt triggers immediate STOP
+- Resolution REQUIRED before ANY forward motion
+- No exceptions, no deferrals, no bypasses
+- See: `/foreman/governance/zero-test-debt-constitutional-rule.md`
+
+### ❌ No Carry-Over Debt
+- Each build starts with ZERO DEBT
+- Each build ends with ZERO DEBT
+- No debt carries forward to next build
+- No "known issues" list tolerated
+- No "technical debt" accumulation
+- Every build is COMPLETE or BLOCKED
+
+### ❌ No "Temporary" Exceptions
+- No "temporary" test skips
+- No "temporary" test failures
+- No "temporary" build warnings
+- No "temporary" lint errors
+- "Temporary" = permanent debt = VIOLATION
+- Fix immediately or don't proceed
 
 ### ❌ No "Build First, Architecture Later"
 - Architecture ALWAYS comes first
@@ -359,6 +387,11 @@ Action Required: Foreman must design architecture and create failing QA first.
 3. **Always validates architecture completeness against checklist**
 4. **Always creates comprehensive failing QA before building**
 5. **Always verifies QA is green before merge**
+6. **Always enforces Zero Test Debt** (stops immediately when debt detected)
+7. **Never proceeds with partial QA passes** (301/303 = TOTAL FAILURE, not acceptable)
+8. **Never creates PRs with ANY form of test debt** (failing, skipped, incomplete)
+9. **Never accepts "will fix later"** (all debt resolved immediately)
+10. **Always maintains evidence trail** (of zero debt verification)
 
 ### Builder Responsibilities
 
@@ -367,6 +400,11 @@ Action Required: Foreman must design architecture and create failing QA first.
 3. **Build only to make tests pass, nothing more**
 4. **Report green QA as build completion signal**
 5. **Never add features not in QA**
+6. **Never proceed with incomplete test infrastructure** (reject build if test helpers are stubs)
+7. **Never create test debt** (complete all tests fully)
+8. **Always verify zero test debt before reporting completion**
+9. **Always resolve test failures immediately** (no deferrals)
+10. **Always maintain 100% GREEN + zero test debt**
 
 ### PR Merge Validator Responsibilities (Independent Assurance)
 
@@ -597,8 +635,9 @@ Next Step: Foreman will design architecture first.
 
 This build philosophy aligns with and extends:
 
-- **Governance Supremacy Rule (GSR)**: 100% QA passing is absolute
-- **Quality Integrity Contract (QIC)**: QA must be comprehensive and accurate
+- **Governance Supremacy Rule (GSR)**: 100% QA passing is absolute; Zero Test Debt is mandatory
+- **Quality Integrity Contract (QIC)**: QA must be comprehensive and accurate; test debt triggers immediate action
+- **Zero Test Debt Constitutional Rule**: Any test debt = STOP → FIX → RE-RUN → VERIFY
 - **True North Principles**: Architecture defines correctness
 - **Foreman's Role**: Orchestrator and architect, not code generator
 - **Builder's Role**: Implement to specifications, not invent solutions
@@ -686,7 +725,12 @@ Architecture → Red QA → Build to Green → Validation → Merge
 
 *This is the Maturion Build Philosophy. All agents, builders, and processes must align with this philosophy. This document is the canonical source of truth for how we build software.*
 
-**Version**: 1.1 (FL/CI Integration)  
+**Version**: 1.2 (Zero Test Debt Hardening)  
 **Authority**: Johan (Maturion Leadership)  
 **Status**: Active and Enforced  
 **Last Updated**: 2025-12-13
+
+**Changelog**:
+- **1.2 (2025-12-13)**: Zero Test Debt codified as constitutional requirement; explicit enforcement of NO carry-over debt, NO temporary exceptions, NO partial passes
+- **1.1 (2025-12-13)**: FL/CI Integration; Test Infrastructure as Production Code
+- **1.0 (Initial)**: QA-First Architecture-Driven Development foundation
