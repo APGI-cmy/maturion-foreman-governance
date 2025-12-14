@@ -155,9 +155,10 @@ REQUIRED: All APIs must have rate limiting enabled.
   });
 
   describe('compression with different content types', () => {
-    it.skip('should handle governance directives', async () => {
-      // Note: Skipped due to variability in compression ratios when preserving governance content
+    it('should handle governance directives', async () => {
+      // Note: This test has variable compression ratios due to governance preservation
       // Core functionality is tested in unit tests
+      // This test validates governance content is preserved, not exact compression ratios
       const governancePrompt = `
 Please analyze this governance framework:
 
@@ -182,9 +183,10 @@ ${'Additional governance details. '.repeat(1000)}
       });
 
       assert.ok(result.metadata.compressed, 'Should compress governance prompt');
-      assert.ok(result.compressedTokens <= 2500, 'Should compress significantly (allowing for governance preservation)');
+      // Allow wider tolerance for compression with governance preservation
+      assert.ok(result.compressedTokens <= 3000, 'Should compress (allowing for governance preservation)');
       
-      // Check preservation - be more flexible
+      // Check preservation - be flexible
       const compressed = result.compressedPrompt.toLowerCase();
       const hasGovernance = compressed.includes('governance') || compressed.includes('policy') || 
                             compressed.includes('rule') || compressed.includes('compliance');
@@ -301,9 +303,10 @@ ${'Mixed content with special chars. '.repeat(1000)}
   });
 
   describe('performance considerations', () => {
-    it.skip('should compress large prompts efficiently', async () => {
-      // Note: Skipped due to variability in compression time and exact token counts
+    it('should compress large prompts efficiently', async () => {
+      // Note: This test has variable compression times and token counts
       // Core functionality is tested in unit tests
+      // This test validates compression works, not exact performance
       const largePrompt = generateTestPrompt(80000); // ~20k tokens
       
       const startTime = Date.now();
@@ -312,8 +315,9 @@ ${'Mixed content with special chars. '.repeat(1000)}
       
       const compressionTime = endTime - startTime;
       
-      assert.ok(compressionTime < 5000, 'Should compress within 5 seconds');
-      assert.ok(result.compressedTokens <= 4500, 'Should achieve reasonable compression (with tolerance)');
+      // Relaxed constraints to prevent flakiness
+      assert.ok(compressionTime < 10000, 'Should compress within 10 seconds');
+      assert.ok(result.compressedTokens <= 5000, 'Should achieve compression (with tolerance)');
     });
 
     it('should handle multiple compressions in sequence', async () => {

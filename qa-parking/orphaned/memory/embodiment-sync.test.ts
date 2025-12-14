@@ -1,11 +1,17 @@
 /**
- * Embodiment Synchronization Tests
+ * Embodiment Synchronization Tests - ORPHANED QA
  * 
- * RED QA: These tests are SKIPPED until embodiment sync implementation begins.
- * Per Zero Test Debt Rule: RED QA must not block GREEN baseline.
+ * PARKING STATUS: Structurally quarantined in qa-parking/orphaned/memory/
+ * ORIGIN SUBSYSTEM: Memory Fabric - Embodiment Sync System
+ * INTENDED WAVE: Memory Fabric Implementation Wave
+ * TRIGGER CONDITION: Implementation of @/lib/memory/sync/embodiment-sync module
+ * REASON FOR PARKING: No active build task for embodiment sync implementation
+ * DATE PARKED: 2025-12-14
+ * OWNER: Foreman
+ * RELATED ARCHITECTURE: /foreman/architecture/memory-fabric-architecture.md
  * 
- * Status: FUTURE IMPLEMENTATION
- * Remove .skip when "Build to Green" instruction is issued for embodiment sync.
+ * This is ORPHANED RED QA - a future contract that will be reactivated
+ * when the embodiment sync implementation begins.
  * 
  * Test Coverage:
  * - Memory synchronization across embodiments
@@ -29,7 +35,7 @@ import { describe, test, expect, beforeEach } from '@jest/globals'
 //   getSyncStatus
 // } from '@/lib/memory/sync/embodiment-sync'
 
-describe.skip('Embodiment Synchronization', () => {
+describe('Embodiment Synchronization', () => {
   const tenantA = 'tenant_a'
 
   describe('Memory Sync Propagation', () => {

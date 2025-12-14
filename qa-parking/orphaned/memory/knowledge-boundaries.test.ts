@@ -1,11 +1,17 @@
 /**
- * Knowledge Boundaries Tests
+ * Knowledge Boundaries Tests - ORPHANED QA
  * 
- * RED QA: These tests are SKIPPED until boundary enforcement implementation begins.
- * Per Zero Test Debt Rule: RED QA must not block GREEN baseline.
+ * PARKING STATUS: Structurally quarantined in qa-parking/orphaned/memory/
+ * ORIGIN SUBSYSTEM: Memory Fabric - Knowledge Boundaries System
+ * INTENDED WAVE: Memory Fabric Implementation Wave
+ * TRIGGER CONDITION: Implementation of @/lib/memory/boundaries module
+ * REASON FOR PARKING: No active build task for knowledge boundaries implementation
+ * DATE PARKED: 2025-12-14
+ * OWNER: Foreman
+ * RELATED ARCHITECTURE: /foreman/architecture/memory-fabric-architecture.md
  * 
- * Status: FUTURE IMPLEMENTATION
- * Remove .skip when "Build to Green" instruction is issued for knowledge boundaries.
+ * This is ORPHANED RED QA - a future contract that will be reactivated
+ * when the knowledge boundaries implementation begins.
  * 
  * Test Coverage:
  * - Tenant isolation boundary enforcement (CRITICAL)
@@ -32,7 +38,7 @@ import { describe, test, expect } from '@jest/globals'
 //   enforceSizeLimits
 // } from '@/lib/memory/boundaries'
 
-describe.skip('Knowledge Boundaries', () => {
+describe('Knowledge Boundaries', () => {
   describe('Tenant Isolation Boundary (CRITICAL)', () => {
     test('should ALLOW same-tenant access', async () => {
       const result = await verifyTenantIsolation('tenant_a', 'tenant_a')

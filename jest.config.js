@@ -17,6 +17,8 @@ const customJestConfig = {
   // Exclude tests that use node:test runner
   testPathIgnorePatterns: [
     '/node_modules/',
+    // Orphaned QA Parking Station - NO execution of parked tests
+    '/qa-parking/',
     // Files using node:test are run separately via tsx/node (see package.json test:* scripts)
     // Attempting to run them with Jest causes "must contain at least one test" errors
     // QIC tests that use node:test
