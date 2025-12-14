@@ -47,7 +47,10 @@ export async function registerTestDodgingIncident(
   analysis?: TestDodgingAnalysis
 ): Promise<TestDodgingIncident> {
   const now = new Date().toISOString();
-  const id = `test-dodging-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+  // Generate ID with timestamp + random suffix for uniqueness
+  // Note: For production, consider UUID v4 for guaranteed uniqueness
+  const randomSuffix = Math.random().toString(36).substring(2, 11);
+  const id = `test-dodging-${Date.now()}-${randomSuffix}`;
 
   // Determine severity from signal confidence and type
   const severity = determineSeverity(signal);
