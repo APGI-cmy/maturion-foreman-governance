@@ -14,10 +14,11 @@ This report documents the systematic analysis and proposed cleanup of the Maturi
 
 **UPDATED Key Findings (as of 2025-12-14):**
 - **190 open issues** total in backlog (confirmed from ISSUES_REPORT.md)
-- **~92 Quality Integrity Incidents** identified for closure (updated count)
+- **~92 Quality Integrity Incidents** identified for closure (updated count from ~50-60 based on comprehensive ISSUES_REPORT.md analysis dated 2025-12-08)
+- **QII Count Update Rationale**: The original report estimated ~50-60 QII issues based on initial pattern matching. The ISSUES_REPORT.md provided a comprehensive automated count of all QII issues matching the standard pattern (created by github-actions bot, labeled with quality-integrity/qiel/automated), revealing the actual count is ~92 issues. This is a recount of existing issues, not new issues.
 - **6 semantic duplicate issues** identified  
-- **~92 substantive issues** to be normalized and sequenced (updated from ~124)
-- **18 new Builder Constitutional Systems** added (Issues #240-#253)
+- **~92 substantive issues** to be normalized and sequenced (updated from ~124 due to higher QII count)
+- **18 new Builder Constitutional Systems** added (Issues #240-#253) - these ARE new issues created after the original report
 - **Additional governance and safety systems** identified (#235, #236)
 - **Clear dependency chains** established for autonomous execution
 
@@ -81,6 +82,13 @@ Body Pattern: Contains workflow run URLs and QIEL enforcement messages
 **Additional QII Issues** (pattern identified): #202, #203, #206, #207, #218-#224, #227, #230-#231, #234, #237, #239, and approximately 70+ more following the same pattern.
 
 **Note**: The updated ISSUES_REPORT.md (dated 2025-12-08) confirms approximately 92 Quality Integrity Incidents are open and require systematic closure.
+
+**QII Count Clarification**: The increase from ~50-60 (original estimate) to ~92 (verified count) is NOT due to new issues being created. Rather, it reflects:
+1. The original report used manual sampling and pattern matching to estimate QII count
+2. The ISSUES_REPORT.md performed comprehensive automated analysis of ALL open issues
+3. This revealed additional existing QII issues that matched the pattern but were not captured in the initial estimate
+4. All 92 QII issues were created BEFORE the original BACKLOG_CLEANUP_REPORT.md date (2025-12-12)
+5. This is a more accurate count of existing issues, not an increase in scope
 
 ### Phase 3: Duplicate Detection
 

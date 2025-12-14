@@ -309,6 +309,8 @@ These issues share common characteristics:
 
 **Note**: Updated count based on ISSUES_REPORT.md dated 2025-12-08.
 
+**QII Count Update Explanation**: The increase from ~50-60 (original estimate in 2025-12-12 report) to ~92 (verified count) represents a more accurate recount of EXISTING QII issues, not new issues. The original estimate was based on manual sampling, while the ISSUES_REPORT.md used comprehensive automated pattern matching to identify all QII issues created by the github-actions bot. All 92 QII issues existed before the original backlog cleanup report date.
+
 ---
 
 ## Semantic Duplicates Identified
