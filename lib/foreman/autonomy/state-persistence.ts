@@ -182,7 +182,7 @@ export async function saveReauthorizationRequest(request: PersistedReauthorizati
     
     const serializable = {
       ...request,
-      timestamp: request.timestamp.toISOString ? request.timestamp.toISOString() : new Date().toISOString(),
+      timestamp: request.timestamp instanceof Date ? request.timestamp.toISOString() : new Date().toISOString(),
     };
     
     const requestFile = path.join(getRequestsDir(), `${request.id}.json`);

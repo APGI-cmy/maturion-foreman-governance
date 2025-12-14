@@ -73,7 +73,7 @@ export async function requestReauthorization(programId: string): Promise<Reautho
     }
 
     // Create reauthorization request
-    const requestId = `reauth_${Date.now()}_${randomUUID().replace(/-/g, '').substr(0, 9)}`;
+    const requestId = `reauth_${Date.now()}_${randomUUID().replace(/-/g, '').substring(0, 9)}`;
     
     const systemState: SystemStateSnapshot = {
       timestamp: new Date(),

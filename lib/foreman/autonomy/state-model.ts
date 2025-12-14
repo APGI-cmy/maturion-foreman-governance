@@ -78,7 +78,7 @@ export function getCurrentState(): AutonomyState {
  */
 export function transitionToCorrectionMode(reason: string, programId?: string): void {
   const transition: StateTransition = {
-    id: `transition_${Date.now()}_${randomUUID().replace(/-/g, '').substr(0, 9)}`,
+    id: `transition_${Date.now()}_${randomUUID().replace(/-/g, '').substring(0, 9)}`,
     timestamp: new Date(),
     fromMode: currentState.executionMode,
     toMode: 'CORRECTION_MODE',
@@ -194,7 +194,7 @@ export function transitionToForwardExecution(): void {
   }
 
   const transition: StateTransition = {
-    id: `transition_${Date.now()}_${randomUUID().replace(/-/g, '').substr(0, 9)}`,
+    id: `transition_${Date.now()}_${randomUUID().replace(/-/g, '').substring(0, 9)}`,
     timestamp: new Date(),
     fromMode: currentState.executionMode,
     toMode: 'FORWARD_EXECUTION',
