@@ -440,7 +440,7 @@ describe('GitHubAppClient', () => {
       expect(result).toBeDefined()
       expect(result.success).toBe(true)
       expect(result.octokit).toBe(true)
-    }, 10000)  // Increase timeout to 10s
+    })
   })
 
   describe('Error Handling', () => {

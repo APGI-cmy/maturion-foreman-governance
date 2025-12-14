@@ -224,11 +224,6 @@ describe('MCP GitHub App Integration', () => {
         mergeMethod: 'squash'
       })
       
-      // Log result for debugging if it failed
-      if (!result.success) {
-        console.log('PR merge failed:', result.error, result.reason)
-      }
-      
       expect(result.success).toBe(true)
       expect(result.audit.githubApp).toBeDefined()
       expect(result.audit.githubApp.appId).toBe('123456')

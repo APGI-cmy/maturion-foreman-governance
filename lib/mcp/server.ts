@@ -112,7 +112,7 @@ export async function initializeMCPServer(config: MCPConfig): Promise<MCPServerS
     console.warn('[MCP Server] Using legacy token auth (deprecated)')
     console.warn('[MCP Server] Please migrate to GitHub App authentication')
   } else {
-    throw new Error('No GitHub authentication configured')
+    throw new Error('Either GitHub App or GitHub token is required')
   }
 
   serverState = {

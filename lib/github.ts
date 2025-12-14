@@ -209,8 +209,8 @@ export class GitHubAppClient {
     try {
       return await operation(octokit)
     } catch (error: any) {
-      // If token expired, refresh and retry once
-      if (error.status === 401 || error.message.includes('Bad credentials')) {
+      // If token expired (401 Unauthorized), refresh and retry once
+      if (error.status === 401) {
         console.log('[GitHubAppClient] Token expired, refreshing...')
         const freshOctokit = await this.getOctokit()
         return await operation(freshOctokit)
