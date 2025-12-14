@@ -10,6 +10,16 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import type { AutonomyState, StateTransition } from './state-model';
 
+// Interfaces for persisted data
+export interface PersistedReauthorizationRequest {
+  id: string;
+  programId: string;
+  timestamp: Date;
+  status: 'PENDING' | 'APPROVED' | 'DENIED' | 'CANCELLED';
+  systemState?: any;
+  validationResult?: any;
+}
+
 // Allow override for testing
 let baseDir = path.join(process.cwd(), 'memory', 'governance', 'autonomy');
 
@@ -142,11 +152,16 @@ export async function loadTransitionHistory(): Promise<StateTransition[]> {
       if (!file.endsWith('.json')) continue;
       
       const content = await fs.readFile(path.join(getTransitionsDir(), file), 'utf-8');
-      const parsed = JSON.parse(content);
+      const parsed: { id: string; timestamp: string; fromMode: string; toMode: string; reason: string; triggeredBy: string; programId?: string } = JSON.parse(content);
       
       transitions.push({
-        ...parsed,
+        id: parsed.id,
         timestamp: new Date(parsed.timestamp),
+        fromMode: parsed.fromMode as 'FORWARD_EXECUTION' | 'CORRECTION_MODE',
+        toMode: parsed.toMode as 'FORWARD_EXECUTION' | 'CORRECTION_MODE',
+        reason: parsed.reason,
+        triggeredBy: parsed.triggeredBy as 'SYSTEM' | 'OWNER' | 'PROGRAM',
+        programId: parsed.programId,
       });
     }
     
@@ -161,13 +176,13 @@ export async function loadTransitionHistory(): Promise<StateTransition[]> {
 /**
  * Save a reauthorization request
  */
-export async function saveReauthorizationRequest(request: any): Promise<void> {
+export async function saveReauthorizationRequest(request: PersistedReauthorizationRequest): Promise<void> {
   try {
     await ensureDirectories();
     
     const serializable = {
       ...request,
-      timestamp: request.timestamp ? request.timestamp.toISOString() : new Date().toISOString(),
+      timestamp: request.timestamp.toISOString ? request.timestamp.toISOString() : new Date().toISOString(),
     };
     
     const requestFile = path.join(getRequestsDir(), `${request.id}.json`);
@@ -181,22 +196,26 @@ export async function saveReauthorizationRequest(request: any): Promise<void> {
 /**
  * Load all reauthorization requests
  */
-export async function loadReauthorizationRequests(): Promise<any[]> {
+export async function loadReauthorizationRequests(): Promise<PersistedReauthorizationRequest[]> {
   try {
     await ensureDirectories();
     
     const files = await fs.readdir(getRequestsDir());
-    const requests: any[] = [];
+    const requests: PersistedReauthorizationRequest[] = [];
     
     for (const file of files) {
       if (!file.endsWith('.json')) continue;
       
       const content = await fs.readFile(path.join(getRequestsDir(), file), 'utf-8');
-      const parsed = JSON.parse(content);
+      const parsed: { id: string; programId: string; timestamp: string; status: string; systemState?: any; validationResult?: any } = JSON.parse(content);
       
       requests.push({
-        ...parsed,
+        id: parsed.id,
+        programId: parsed.programId,
         timestamp: new Date(parsed.timestamp),
+        status: parsed.status as 'PENDING' | 'APPROVED' | 'DENIED' | 'CANCELLED',
+        systemState: parsed.systemState,
+        validationResult: parsed.validationResult,
       });
     }
     

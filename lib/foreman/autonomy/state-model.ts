@@ -8,6 +8,7 @@
  */
 
 import { statePersistence } from './state-persistence';
+import { randomUUID } from 'crypto';
 
 export type ExecutionMode = 
   | 'FORWARD_EXECUTION'    // Normal autonomous operation
@@ -77,7 +78,7 @@ export function getCurrentState(): AutonomyState {
  */
 export function transitionToCorrectionMode(reason: string, programId?: string): void {
   const transition: StateTransition = {
-    id: `transition_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `transition_${Date.now()}_${randomUUID().replace(/-/g, '').substr(0, 9)}`,
     timestamp: new Date(),
     fromMode: currentState.executionMode,
     toMode: 'CORRECTION_MODE',
@@ -193,7 +194,7 @@ export function transitionToForwardExecution(): void {
   }
 
   const transition: StateTransition = {
-    id: `transition_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `transition_${Date.now()}_${randomUUID().replace(/-/g, '').substr(0, 9)}`,
     timestamp: new Date(),
     fromMode: currentState.executionMode,
     toMode: 'FORWARD_EXECUTION',

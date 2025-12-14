@@ -9,6 +9,7 @@
 import { stateModel } from './state-model';
 import { systemValidator } from './system-validator';
 import { statePersistence } from './state-persistence';
+import { randomUUID } from 'crypto';
 import type { SystemStateSnapshot } from './state-model';
 import type { SystemValidationResult } from './system-validator';
 
@@ -72,7 +73,7 @@ export async function requestReauthorization(programId: string): Promise<Reautho
     }
 
     // Create reauthorization request
-    const requestId = `reauth_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const requestId = `reauth_${Date.now()}_${randomUUID().replace(/-/g, '').substr(0, 9)}`;
     
     const systemState: SystemStateSnapshot = {
       timestamp: new Date(),

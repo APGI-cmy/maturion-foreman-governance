@@ -337,26 +337,32 @@ export async function checkProgramCompletion(programId: string): Promise<Validat
 }
 
 /**
- * Helper: Get all test files recursively
+ * Helper: Get all test files (iterative with depth limit)
  */
-async function getAllTestFiles(dir: string): Promise<string[]> {
+async function getAllTestFiles(dir: string, maxDepth: number = 10): Promise<string[]> {
   const files: string[] = [];
+  const queue: { path: string; depth: number }[] = [{ path: dir, depth: 0 }];
   
-  try {
-    const entries = await fs.readdir(dir, { withFileTypes: true });
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current || current.depth > maxDepth) continue;
     
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
+    try {
+      const entries = await fs.readdir(current.path, { withFileTypes: true });
       
-      if (entry.isDirectory()) {
-        const subFiles = await getAllTestFiles(fullPath);
-        files.push(...subFiles);
-      } else if (entry.isFile() && (entry.name.endsWith('.test.ts') || entry.name.endsWith('.test.tsx'))) {
-        files.push(fullPath);
+      for (const entry of entries) {
+        const fullPath = path.join(current.path, entry.name);
+        
+        if (entry.isDirectory()) {
+          queue.push({ path: fullPath, depth: current.depth + 1 });
+        } else if (entry.isFile() && (entry.name.endsWith('.test.ts') || entry.name.endsWith('.test.tsx'))) {
+          files.push(fullPath);
+        }
       }
+    } catch (error) {
+      // Ignore errors for individual directories
+      continue;
     }
-  } catch (error) {
-    // Ignore errors
   }
   
   return files;
