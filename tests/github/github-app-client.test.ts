@@ -213,7 +213,9 @@ describe('GitHubAppClient', () => {
       })
       
       const requestSpy = jest.fn()
-      mockGitHubTokenExchange({ token: 'ghs_test', expires_at: '2025-12-14T13:00:00Z' }, requestSpy)
+      // Use a far-future expiration to ensure caching works
+      const farFutureExpiry = new Date(Date.now() + 3600000).toISOString()
+      mockGitHubTokenExchange({ token: 'ghs_test', expires_at: farFutureExpiry }, requestSpy)
       
       // First call - should fetch
       const token1 = await client.getInstallationToken()

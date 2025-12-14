@@ -229,7 +229,8 @@ async function executeMergePR(params: {
       repo: params.repo,
       prNumber: params.prNumber,
       config: serverState.config.safetyChecks,
-      githubToken: serverState.config.githubToken
+      githubToken: serverState.config.githubToken,
+      githubAppClient: serverState.githubAppClient
     })
 
     if (!safetyResult.passed) {
