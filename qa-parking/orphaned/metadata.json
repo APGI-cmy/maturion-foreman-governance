@@ -1,0 +1,63 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-14T08:15:00.000Z",
+  "totalParked": 4,
+  "parkedQA": [
+    {
+      "id": "orphaned-qa-001",
+      "name": "Governance Memory Tests",
+      "filePath": "qa-parking/orphaned/memory/governance-memory.test.ts",
+      "originSubsystem": "Memory Fabric - Governance Memory Tier",
+      "intendedWave": "Memory Fabric Implementation Wave",
+      "triggerCondition": "Implementation of @/lib/memory/governance-memory module with functions: writeGovernanceMemory, updateGovernanceMemory, deleteGovernanceMemory, queryGovernanceMemory, attemptRedaction",
+      "reasonForParking": "No active build task for Governance Memory implementation. Tests define immutability requirements, constitutional event logging, ARC decisions, QA events, security events, incident management, and learning events.",
+      "dateParked": "2025-12-14T08:15:00.000Z",
+      "owner": "Foreman",
+      "relatedArchitecture": "/foreman/architecture/memory-fabric-architecture.md",
+      "testCount": 20,
+      "coverage": "Governance Memory immutability (CRITICAL), Constitutional event logging, ARC decision tracking, QA event recording, Security event logging, Incident management, Learning event tracking"
+    },
+    {
+      "id": "orphaned-qa-002",
+      "name": "Long-Term Tenant Memory (LTM) Tests",
+      "filePath": "qa-parking/orphaned/memory/long-term-memory.test.ts",
+      "originSubsystem": "Memory Fabric - Long-Term Memory (LTM) Tier",
+      "intendedWave": "Memory Fabric Implementation Wave",
+      "triggerCondition": "Implementation of @/lib/memory/ltm module with functions: storeLTM, recallLTM, updateLTM, deleteLTM, getLTMVersion, getLTMAccessLog",
+      "reasonForParking": "No active build task for LTM implementation. Tests define tenant isolation requirements, embodiment privilege enforcement, encryption at rest, versioning, and access logging.",
+      "dateParked": "2025-12-14T08:15:00.000Z",
+      "owner": "Foreman",
+      "relatedArchitecture": "/foreman/architecture/memory-fabric-architecture.md",
+      "testCount": 18,
+      "coverage": "LTM creation with tenant isolation, LTM retrieval with tenant verification, LTM tenant isolation enforcement (CRITICAL), LTM embodiment privilege enforcement, LTM encryption at rest, LTM versioning, LTM access logging"
+    },
+    {
+      "id": "orphaned-qa-003",
+      "name": "Embodiment Synchronization Tests",
+      "filePath": "qa-parking/orphaned/memory/embodiment-sync.test.ts",
+      "originSubsystem": "Memory Fabric - Embodiment Sync System",
+      "intendedWave": "Memory Fabric Implementation Wave",
+      "triggerCondition": "Implementation of @/lib/memory/sync/embodiment-sync module with functions: syncMemoryAcrossEmbodiments, detectConflict, resolveConflict, checkSyncHealth, reconcileEmbodiment, getSyncStatus",
+      "reasonForParking": "No active build task for embodiment sync implementation. Tests define synchronization requirements across embodiments, conflict detection and resolution, and tenant isolation during sync.",
+      "dateParked": "2025-12-14T08:15:00.000Z",
+      "owner": "Foreman",
+      "relatedArchitecture": "/foreman/architecture/memory-fabric-architecture.md",
+      "testCount": 15,
+      "coverage": "Memory synchronization across embodiments, Conflict detection and resolution, Out-of-sync reconciliation, Tenant isolation during sync, Embodiment privilege enforcement during sync, Sync performance"
+    },
+    {
+      "id": "orphaned-qa-004",
+      "name": "Knowledge Boundaries Tests",
+      "filePath": "qa-parking/orphaned/memory/knowledge-boundaries.test.ts",
+      "originSubsystem": "Memory Fabric - Knowledge Boundaries System",
+      "intendedWave": "Memory Fabric Implementation Wave",
+      "triggerCondition": "Implementation of @/lib/memory/boundaries module with functions: enforceKnowledgeBoundaries, verifyTenantIsolation, hasEmbodimentPrivilege, isGuardrailCompliant, validateSafetyBoundary, scanForSecrets, enforceEncryption, enforceSizeLimits",
+      "reasonForParking": "No active build task for knowledge boundaries implementation. Tests define boundary enforcement requirements including tenant isolation, embodiment privileges, guardrails, safety, and encryption.",
+      "dateParked": "2025-12-14T08:15:00.000Z",
+      "owner": "Foreman",
+      "relatedArchitecture": "/foreman/architecture/memory-fabric-architecture.md",
+      "testCount": 16,
+      "coverage": "Tenant isolation boundary enforcement (CRITICAL), Embodiment privilege boundary enforcement, Guardrail boundary enforcement, Safety boundary enforcement, Secrets detection, Encryption enforcement, Size limits"
+    }
+  ]
+}

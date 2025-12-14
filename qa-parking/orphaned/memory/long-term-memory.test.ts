@@ -1,11 +1,17 @@
 /**
- * Long-Term Tenant Memory (LTM) Tests
+ * Long-Term Tenant Memory (LTM) Tests - ORPHANED QA
  * 
- * RED QA: These tests are SKIPPED until LTM implementation begins.
- * Per Zero Test Debt Rule: RED QA must not block GREEN baseline.
+ * PARKING STATUS: Structurally quarantined in qa-parking/orphaned/memory/
+ * ORIGIN SUBSYSTEM: Memory Fabric - Long-Term Memory (LTM) Tier
+ * INTENDED WAVE: Memory Fabric Implementation Wave
+ * TRIGGER CONDITION: Implementation of @/lib/memory/ltm module
+ * REASON FOR PARKING: No active build task for LTM implementation
+ * DATE PARKED: 2025-12-14
+ * OWNER: Foreman
+ * RELATED ARCHITECTURE: /foreman/architecture/memory-fabric-architecture.md
  * 
- * Status: FUTURE IMPLEMENTATION
- * Remove .skip when "Build to Green" instruction is issued for LTM.
+ * This is ORPHANED RED QA - a future contract that will be reactivated
+ * when the LTM implementation begins.
  * 
  * Test Coverage:
  * - LTM creation with tenant isolation
@@ -30,7 +36,7 @@ import { describe, test, expect, beforeEach, afterEach } from '@jest/globals'
 //   getLTMAccessLog
 // } from '@/lib/memory/ltm'
 
-describe.skip('Long-Term Tenant Memory (LTM)', () => {
+describe('Long-Term Tenant Memory (LTM)', () => {
   const tenantA = 'tenant_a'
   const tenantB = 'tenant_b'
   const ismsRuntime = 'isms_runtime'

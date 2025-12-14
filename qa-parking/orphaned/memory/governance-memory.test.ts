@@ -1,11 +1,17 @@
 /**
- * Governance Memory Tests
+ * Governance Memory Tests - ORPHANED QA
  * 
- * RED QA: These tests are SKIPPED until Governance Memory implementation is complete.
- * Per Zero Test Debt Rule: RED QA must not block GREEN baseline.
+ * PARKING STATUS: Structurally quarantined in qa-parking/orphaned/memory/
+ * ORIGIN SUBSYSTEM: Memory Fabric - Governance Memory Tier
+ * INTENDED WAVE: Memory Fabric Implementation Wave
+ * TRIGGER CONDITION: Implementation of @/lib/memory/governance-memory module
+ * REASON FOR PARKING: No active build task for Governance Memory implementation
+ * DATE PARKED: 2025-12-14
+ * OWNER: Foreman
+ * RELATED ARCHITECTURE: /foreman/architecture/memory-fabric-architecture.md
  * 
- * Status: FUTURE IMPLEMENTATION  
- * Remove .skip when "Build to Green" instruction is issued for Governance Memory.
+ * This is ORPHANED RED QA - a future contract that will be reactivated
+ * when the Governance Memory implementation begins.
  * 
  * Test Coverage:
  * - Governance Memory immutability (CRITICAL)
@@ -29,7 +35,7 @@ import { describe, test, expect, beforeEach } from '@jest/globals'
 //   attemptRedaction
 // } from '@/lib/memory/governance-memory'
 
-describe.skip('Governance Memory', () => {
+describe('Governance Memory', () => {
   describe('Immutability (CRITICAL)', () => {
     test('should allow writing to Governance Memory', async () => {
       const entry = await writeGovernanceMemory({
