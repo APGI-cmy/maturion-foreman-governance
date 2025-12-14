@@ -15,6 +15,27 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals'
 
 describe('MCP GitHub App Integration', () => {
+  // Setup global fetch mock before all tests
+  beforeEach(() => {
+    // Reset all mocks
+    jest.clearAllMocks()
+    
+    // Setup default fetch mock
+    global.fetch = jest.fn(async (url: string) => {
+      if (url.includes('/app/installations/')) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            token: 'ghs_test_token',
+            expires_at: new Date(Date.now() + 3600000).toISOString()
+          })
+        }
+      }
+      return mockGitHubAPIResponse(url)
+    }) as any
+  })
+
   describe('MCP Server Initialization', () => {
     it('should initialize with GitHub App configuration', async () => {
       const { initializeMCPServer } = await import('@/lib/mcp/server')
@@ -111,7 +132,7 @@ describe('MCP GitHub App Integration', () => {
       }
       
       await expect(initializeMCPServer(config)).rejects.toThrow(
-        'No GitHub authentication configured'
+        'Either GitHub App or GitHub token is required'
       )
     })
 
@@ -551,7 +572,31 @@ describe('MCP GitHub App Integration', () => {
 
 function generateTestPrivateKey(): string {
   return `-----BEGIN RSA PRIVATE KEY-----
-MIIEpAIBAAKCAQEAw7Zdfmece8iaB0kiTY8pCtiBtzbptB6jRYj+A2zD7XxA...
+MIIEowIBAAKCAQEAqEUABaZ/37hTzY2F3PoOxKKGKLcu2WCHOJJXuriGlV5p9nM8
+o9CcHxd3GXC+jtGpS89M8pSmmChcFwx0k0QtHbCnRxVikB4+rAqjBFJoVg7PSCBO
+YIE66FFYu56ixpwNZ0XYGDFG0wAp32dt//Qv0m/HeJk1W4GsX11RQ4OJ+8x38/Mm
+HyZeumUC6PC3N+KFp1IJVGXRJgp1WV0hl4EakTcgAasm2iW6fjyYtkfjB9v4GBEp
+O59D9P8daeDzBS5Sh9xMVytuUdpwA1QNf4k36jAYAC7za1fLeC3oLSpsa9HgCPEK
+JsV99UfwPRJ8wEOuweETOQwmmkEOvgXhuql+mwIDAQABAoIBAAh/v7IJXbEWQClZ
+ihbbYc6TFOqj4fpkcpVWvZahRlmaCgkYJfUc5B3P6MSWBLygS12YYV8T8gbXwbBV
+AThaUQW3C/k+U8WgDsilcDls03dGn+KZOyGLCsd8KwVYTF7IDVyXfa7ZzPrQVHfD
+uMhySXi8C5uu8AUosLpPs3s7qXGt0P8FHe0RwIdDG1vT5/chv1vFtuT42vJI3brB
+1odoEhYbZrJY/4PWdkvurKWNm7a6ffeR5HlrdyWdRofs11jvw5SBONsxPPFi31Kb
+NUO8Ei3uUagBVO6RQAYqmP9LjRhdU8Y/E3mkDxFNSAm+tcOmk4L3WuiOEmmNbZso
+ODPwRO0CgYEA3LWpyUR5N+QYKy8mLlBkjzUFe/kaDM+KPY9nsTcYhJvvoDY4lB6O
+WkFZYoLZ4lF8LLCtRhBItBi9+9aMdXhPn+14LGqFKE2AQMePCuom/O0yjQN9ghzC
+t2Z00UmcDN6yX5PPgp4oyk/p2SQX2mVMrjyga1KU58fD5NvHnn2b55cCgYEAwyzM
+r5qTWiL0+lorK8zEs5LkIjeFXSiqxzo/YJSxoa/RfAZMmSOCRzblaOQTGQJNvzSd
+uDJx6JK8/SJPqVp2iSEg2hHKPOT6/d428C5/ty3hdnEZkcvoFIoqr384Ss44sK9G
+SUk0pBK/UNqPtuLl2KmjJFfer9QWMHoExeaeIZ0CgYBBjW89SSobsJKBGQLlFJmZ
+cy0K0kSrc2TivdoVZ4DPuiTk19XcIGs1YV10BdtC/eK8v0jnm2SMoSCkUOfs5+v2
+WyirQIQGIWarVtokasFjs+ukuFmpsHMg17xwgMVpiSc/ff5PFDyXQj75cF/pTNcG
+lRksZx207b9AFQroBvSsRwKBgB7e8Sk9a90v9ku7A2UUKHC25Tq8SW3oxspoXinq
+mwYWBy502JzITwzwk+y5VoP4J0/9BI1j/TxqKVZonO0Oj/00rjuP4Mss9L4+7bWj
+xTO2IBlZ3k9/TyAgkovbtY2vfKwFrTpeR+NDy9sAFwc4cF6KxnEzLNfm1fOo+SRM
+S+rJAoGBANfbHeGCR2AHjSweiydI4p0mi+SgSF5qk06PPo3q5J8cTc4AS1PhBzv6
+oWEwEYsgdBb2S2sqDq3gOH/mr3RhxU4jIJ/oghnHGMI+Zspu6ZPN0ysm3XWSnOkj
+40xzKLXyQQhsyLXvRbXPOymdPbcUhvIGkqTrFdRtNRHb5Oqewbvb
 -----END RSA PRIVATE KEY-----`
 }
 
