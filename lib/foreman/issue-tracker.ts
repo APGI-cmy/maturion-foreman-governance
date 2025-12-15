@@ -41,14 +41,14 @@ class IssueTracker {
     
     this.issues.set(issueNumber, status)
     
-    recordGovernanceEvent({
-      type: 'issue_started',
-      timestamp: new Date().toISOString(),
-      details: {
+    recordGovernanceEvent(
+      'issue_started',
+      {
         issue_number: issueNumber,
-        title
+        title,
+        timestamp: new Date().toISOString()
       }
-    })
+    )
     
     console.log(`📍 Issue #${issueNumber} started: ${title}`)
   }
@@ -79,16 +79,16 @@ class IssueTracker {
 
     this.issues.set(issueNumber, issue)
 
-    recordGovernanceEvent({
-      type: 'issue_completed',
-      timestamp: new Date().toISOString(),
-      details: {
+    recordGovernanceEvent(
+      'issue_completed',
+      {
         issue_number: issueNumber,
         title: issue.title,
         commits: evidence.commits.length,
-        files: evidence.implementationFiles.length
+        files: evidence.implementationFiles.length,
+        timestamp: new Date().toISOString()
       }
-    })
+    )
 
     console.log(`✅ Issue #${issueNumber} completed: ${issue.title}`)
     console.log(`   Commits: ${evidence.commits.join(', ')}`)
@@ -141,15 +141,15 @@ class IssueTracker {
       issue.closed_at = new Date().toISOString()
       this.issues.set(issueNumber, issue)
 
-      recordGovernanceEvent({
-        type: 'issue_closed',
-        timestamp: new Date().toISOString(),
-        details: {
+      recordGovernanceEvent(
+        'issue_closed',
+        {
           issue_number: issueNumber,
           title: issue.title,
-          via_mcp: true
+          via_mcp: true,
+          timestamp: new Date().toISOString()
         }
-      })
+      )
 
       console.log(`🔒 Issue #${issueNumber} closed via MCP: ${issue.title}`)
       return true
