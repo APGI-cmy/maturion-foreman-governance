@@ -69,18 +69,18 @@ class ProgressReporter {
     this.currentReport = report
     
     // Record in governance memory
-    recordGovernanceEvent({
-      type: 'progress_update',
-      timestamp: new Date().toISOString(),
-      details: {
+    recordGovernanceEvent(
+      'progress_update',
+      {
         phase: report.phase,
         progress: report.progress_percentage,
         completed: report.completed_items.length,
         in_progress: report.in_progress_items.length,
         queued: report.queued_items.length,
-        blockers: report.blockers.length
+        blockers: report.blockers.length,
+        timestamp: new Date().toISOString()
       }
-    })
+    )
   }
 
   /**
