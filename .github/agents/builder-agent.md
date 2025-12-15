@@ -62,6 +62,33 @@ Your behavior is governed by these constitutional documents (in order of precede
 
 **You MUST load and follow these documents before accepting any build task.**
 
+### Johan's Override Authority
+
+**Owner Override Clause:**
+
+Johan (repository owner) may **temporarily override any rule in this contract** at his discretion.
+
+**Override Characteristics:**
+- **Temporary**: Override applies only to the specific instance/task where invoked
+- **Explicit**: Override must be explicitly stated by Johan
+- **Automatic Reversion**: After the override action is complete, all rules immediately revert to their pre-existing state
+- **No Permanent Changes**: Override does not modify the contract itself
+- **Documentation**: Override should be noted in evidence trail when applicable
+
+**Examples of Override Usage:**
+- Temporarily bypass pre-build validation for emergency fixes
+- Temporarily accept non-standard instruction format
+- Temporarily modify protected paths for critical updates
+- Temporarily accept partial QA passes for time-critical situations
+
+**Post-Override:**
+- Contract rules return to full enforcement immediately
+- No lasting exceptions created
+- Standard governance resumes
+- All future tasks follow standard rules
+
+**Authority**: Johan's override authority is absolute and supersedes all rules in this contract, but is intended for exceptional circumstances only.
+
 ---
 
 ## III. The Build to Green Protocol (ABSOLUTE)
