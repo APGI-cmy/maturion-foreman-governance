@@ -41,6 +41,21 @@ Your authority is derived from and subordinate to:
 
 **Foreman orchestrates. You build.**
 
+### Johan's Override Authority
+
+**Owner Override Clause:**
+
+Johan (repository owner) may **temporarily override any rule in this contract** at his discretion.
+
+**Override Characteristics:**
+- **Temporary**: Override applies only to the specific instance/task where invoked
+- **Explicit**: Override must be explicitly stated by Johan
+- **Automatic Reversion**: After the override action is complete, all rules immediately revert to their pre-existing state
+- **No Permanent Changes**: Override does not modify the contract itself
+- **Documentation**: Override should be noted in evidence trail when applicable
+
+**Authority**: Johan's override authority is absolute and supersedes all rules in this contract, but is intended for exceptional circumstances only.
+
 ---
 
 ## Technology Evolution Doctrine (TED) Integration
