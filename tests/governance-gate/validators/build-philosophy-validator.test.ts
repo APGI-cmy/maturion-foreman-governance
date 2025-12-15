@@ -345,13 +345,14 @@ describe('Build Philosophy Validator', () => {
         build: expect.any(String),
       });
       
-      // Architecture before Red QA
-      expect(new Date(result.timeline.architecture).getTime())
-        .toBeLessThan(new Date(result.timeline.redQA).getTime());
+      // Verify correct timeline order
+      const archTime = new Date(result.timeline.architecture).getTime();
+      const qaTime = new Date(result.timeline.redQA).getTime();
+      const buildTime = new Date(result.timeline.build).getTime();
       
-      // Red QA before Build
-      expect(new Date(result.timeline.redQA).getTime())
-        .toBeLessThan(new Date(result.timeline.build).getTime());
+      // Architecture → Red QA → Build
+      expect(archTime).toBeLessThan(qaTime);
+      expect(qaTime).toBeLessThan(buildTime);
     });
 
     it('should fail when steps out of order', async () => {

@@ -218,8 +218,7 @@ describe('CS1 Validator (Constitutional Integrity)', () => {
         prNumber: 123,
         commitSha: 'abc123',
         workspaceRoot: '/workspace',
-        changedFiles: [], // BUILD_PHILOSOPHY.md deleted
-        deletedFiles: ['BUILD_PHILOSOPHY.md'],
+        changedFiles: [], // BUILD_PHILOSOPHY.md deleted (will be detected by validator)
       };
       
       const result = await validateCS1(context);

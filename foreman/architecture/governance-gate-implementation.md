@@ -575,8 +575,13 @@ async function handleGateFailure(result: GateExecutionResult): Promise<void> {
 
 ### Optimization Strategies
 1. **Parallel Validation** (where independent):
-   - CS1, CS4, CS5, CS6 can run parallel
-   - QIEL, CS2, CS3, GSR, Build Philosophy sequential
+   - CS1, CS4, CS5, CS6 can run parallel (no dependencies)
+   - QIEL, CS2, CS3, GSR, Build Philosophy must run sequentially
+
+   **Sequential Execution Requirements**:
+   - QIEL runs first: Establishes quality foundation before governance checks
+   - CS1 before CS2: Constitutional integrity verified before architecture approval
+   - Build Philosophy runs last: Validates complete process timeline including all previous controls
 
 2. **Evidence Pre-Collection**:
    - Evidence gathered during build
