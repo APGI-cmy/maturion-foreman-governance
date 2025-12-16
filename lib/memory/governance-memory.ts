@@ -129,21 +129,6 @@ export async function logGovernanceEvent(event: {
     metadata: event.metadata,
   })
 }
-      version: 1,
-      ...(event.metadata || {})
-    }
-  }
-
-  governanceStore.push(governanceEvent)
-
-  // Log to console for visibility
-  const severity = event.content.severity || 'medium'
-  if (severity === 'critical' || severity === 'high') {
-    console.log(`[GOVERNANCE ${severity.toUpperCase()}] ${event.category}: ${event.content.description}`)
-  }
-
-  return governanceEvent
-}
 
 /**
  * Update Governance Memory
