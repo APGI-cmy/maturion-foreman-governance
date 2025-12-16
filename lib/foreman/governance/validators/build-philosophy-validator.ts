@@ -313,6 +313,21 @@ export async function validateBuildPhilosophy(context: ValidationContext): Promi
         evidence: testDebtCheck.debtFiles
       });
       checks.greenQAAchieved = false;
+      checks.zeroTestDebt = false;
+    }
+    
+    // Check for test infrastructure completeness
+    const testInfraCheck = await checkTestInfrastructure(workspaceRoot);
+    if (!testInfraCheck.passed) {
+      violations.push({
+        code: 'BUILD_PHILOSOPHY_TEST_HELPERS_INCOMPLETE',
+        message: testInfraCheck.message,
+        severity: 'HIGH',
+        evidence: testInfraCheck.incompleteFiles,
+        type: 'TEST_INFRASTRUCTURE_INCOMPLETE',
+        description: 'Test helpers incomplete'
+      } as any);
+      checks.testInfrastructureComplete = false;
     }
   }
   
@@ -354,11 +369,157 @@ async function checkTestDebt(workspaceRoot: string): Promise<{
   message: string;
   debtFiles: EvidenceReference[];
 }> {
-  // For dry run: assume no test debt
-  // In real implementation, would scan test files for .skip(), .todo(), etc.
-  return {
-    passed: true,
-    message: 'No test debt detected',
-    debtFiles: []
-  };
+  // Scan test files for test debt indicators
+  try {
+    const testsDir = path.join(workspaceRoot, 'tests');
+    await fs.access(testsDir);
+    
+    const debtFiles: EvidenceReference[] = [];
+    
+    // Recursively scan test files
+    const files = await findTestFiles(testsDir);
+    
+    for (const file of files) {
+      try {
+        const content = await fs.readFile(file, 'utf-8');
+        
+        // Check for test debt indicators
+        const hasSkips = content.includes('.skip(') || content.includes('it.skip') || content.includes('test.skip') || content.includes('describe.skip');
+        const hasTodos = content.includes('.todo(') || content.includes('it.todo') || content.includes('test.todo');
+        const hasOnlys = content.includes('.only(') || content.includes('it.only') || content.includes('test.only') || content.includes('describe.only');
+        
+        if (hasSkips || hasTodos || hasOnlys) {
+          debtFiles.push({
+            type: 'result',
+            path: file
+          });
+        }
+      } catch (error) {
+        // Skip files that can't be read
+        continue;
+      }
+    }
+    
+    if (debtFiles.length > 0) {
+      return {
+        passed: false,
+        message: `Test debt detected in ${debtFiles.length} file(s): skipped tests, todos, or focused tests (only)`,
+        debtFiles
+      };
+    }
+    
+    return {
+      passed: true,
+      message: 'No test debt detected',
+      debtFiles: []
+    };
+  } catch (error) {
+    // If tests directory doesn't exist, assume no test debt
+    return {
+      passed: true,
+      message: 'No test debt detected',
+      debtFiles: []
+    };
+  }
+}
+
+async function findTestFiles(dir: string): Promise<string[]> {
+  const files: string[] = [];
+  
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      
+      if (entry.isDirectory()) {
+        // Recursively scan subdirectories
+        const subFiles = await findTestFiles(fullPath);
+        files.push(...subFiles);
+      } else if (entry.isFile() && (entry.name.endsWith('.test.ts') || entry.name.endsWith('.test.tsx') || entry.name.endsWith('.spec.ts'))) {
+        files.push(fullPath);
+      }
+    }
+  } catch (error) {
+    // Skip directories that can't be read
+  }
+  
+  return files;
+}
+
+async function checkTestInfrastructure(workspaceRoot: string): Promise<{
+  passed: boolean;
+  message: string;
+  incompleteFiles: EvidenceReference[];
+}> {
+  // Check for test infrastructure completeness
+  try {
+    const testsDir = path.join(workspaceRoot, 'tests');
+    await fs.access(testsDir);
+    
+    const incompleteFiles: EvidenceReference[] = [];
+    
+    // Check for required test infrastructure files
+    const requiredFiles = [
+      'tests/fixtures',
+      'tests/helpers',
+      'tests/setup.ts'
+    ];
+    
+    for (const requiredPath of requiredFiles) {
+      const fullPath = path.join(workspaceRoot, requiredPath);
+      try {
+        await fs.access(fullPath);
+      } catch (error) {
+        // File/directory doesn't exist - this might be incomplete infrastructure
+        // But don't fail if tests directory itself doesn't have standard structure
+        // Only fail if there are clear indicators of incomplete test setup
+      }
+    }
+    
+    // Check test files for incomplete patterns
+    const files = await findTestFiles(testsDir);
+    
+    for (const file of files) {
+      try {
+        const content = await fs.readFile(file, 'utf-8');
+        
+        // Check for incomplete test patterns
+        const hasEmptyTests = /it\(['"].*['"],\s*async\s*\(\)\s*=>\s*{\s*}\s*\)/.test(content);
+        const hasTodoComments = content.includes('// TODO:') && content.includes('test');
+        const hasStubComments = content.includes('// stub') || content.includes('// STUB');
+        
+        if (hasEmptyTests || (hasTodoComments && content.split('\n').length < 50) || hasStubComments) {
+          incompleteFiles.push({
+            type: 'result',
+            path: file
+          });
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+    
+    if (incompleteFiles.length > 0) {
+      return {
+        passed: false,
+        message: `Test infrastructure incomplete: ${incompleteFiles.length} file(s) with empty tests, TODOs, or stubs`,
+        incompleteFiles
+      };
+    }
+    
+    return {
+      passed: true,
+      message: 'Test infrastructure complete',
+      incompleteFiles: []
+    };
+  } catch (error) {
+    // If tests directory doesn't exist, assume incomplete infrastructure
+    // FAIL CLOSED: If we can't verify, we fail
+    return {
+      passed: false,
+      message: 'Test infrastructure incomplete: tests directory not found or inaccessible',
+      incompleteFiles: []
+    };
+  }
 }
