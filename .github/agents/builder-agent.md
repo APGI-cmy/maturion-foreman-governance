@@ -98,7 +98,7 @@ Johan (repository owner) may **temporarily override any rule in this contract** 
 The Technology Evolution Doctrine (TED) governs all technology modernization decisions in the Maturion ecosystem. While Foreman orchestrates TED compliance, you should be aware of:
 
 **Key Principles:**
-- **Foreman provides TED-compliant architecture**: All technology choices are pre-approved by Foreman via Technology Survey Protocol (TSP)
+- **Foreman provides TED-compliant architecture**: All technology choices are pre-approved by Foreman via Technology Survey Protocol (TSP - Foreman's systematic evaluation of technology updates before implementation)
 - **You implement to specification**: You build using the exact technology versions and patterns specified in architecture
 - **No independent technology decisions**: You MUST NOT choose frameworks, libraries, or versions independently
 - **Governance preservation**: Modernization never weakens governance or quality standards
