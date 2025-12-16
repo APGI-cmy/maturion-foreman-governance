@@ -37,6 +37,8 @@ export interface EvidenceSnapshot {
       totalSize: number;
       controlsIncluded: number;
     };
+    branch?: string;
+    baseBranch?: string;
   };
 }
 
@@ -44,6 +46,7 @@ export interface SnapshotContext {
   prNumber: number;
   commitSha: string;
   branch: string;
+  baseBranch?: string;
   evidenceDir: string;
 }
 
@@ -124,7 +127,9 @@ export async function createEvidenceSnapshot(context: SnapshotContext): Promise<
         totalFiles: 0,
         totalSize: 0,
         controlsIncluded: controls.length
-      }
+      },
+      branch: context.branch,
+      baseBranch: context.baseBranch
     }
   };
   
