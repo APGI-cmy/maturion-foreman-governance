@@ -1,0 +1,129 @@
+# Governance Gate Workflow
+# 
+# Constitutional requirement per GOVERNANCE_GATE_CANON.md
+# Executes at PR merge time to enforce all governance controls
+# 
+# Authority: Supreme - Cannot be bypassed
+# Status: Active
+
+name: Governance Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  governance-gate:
+    name: Governance Gate Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for evidence collection
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Create evidence directory
+        run: |
+          mkdir -p evidence
+          mkdir -p logs
+      
+      - name: Collect evidence
+        run: |
+          # Collect git metadata
+          echo "PR: ${{ github.event.pull_request.number }}" > evidence/pr-metadata.txt
+          echo "Commit: ${{ github.event.pull_request.head.sha }}" >> evidence/pr-metadata.txt
+          echo "Branch: ${{ github.event.pull_request.head.ref }}" >> evidence/pr-metadata.txt
+          echo "Base: ${{ github.event.pull_request.base.ref }}" >> evidence/pr-metadata.txt
+          echo "Author: ${{ github.event.pull_request.user.login }}" >> evidence/pr-metadata.txt
+          echo "Created: ${{ github.event.pull_request.created_at }}" >> evidence/pr-metadata.txt
+          
+          # List changed files
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > evidence/changed-files.txt || true
+      
+      - name: Run QA Suite
+        id: qa
+        continue-on-error: true
+        run: |
+          npm run lint 2>&1 | tee logs/lint.log || true
+          npm run build 2>&1 | tee logs/build.log || true
+          npm test 2>&1 | tee logs/test.log || true
+      
+      - name: Execute Governance Gate
+        id: gate
+        run: |
+          npx tsx scripts/run-governance-gate.ts \
+            ${{ github.event.pull_request.number }} \
+            ${{ github.event.pull_request.head.sha }} \
+            ${{ github.event.pull_request.head.ref }} \
+            ${{ github.event.pull_request.base.ref }}
+      
+      - name: Post Gate Report to PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const logFiles = ['logs/lint.log', 'logs/build.log', 'logs/test.log'];
+            
+            let comment = '## Governance Gate Execution\n\n';
+            comment += `**Triggered by**: PR #${{ github.event.pull_request.number }}\n`;
+            comment += `**Commit**: ${{ github.event.pull_request.head.sha }}\n`;
+            comment += `**Status**: ${{ steps.gate.outcome }}\n\n`;
+            
+            comment += '---\n\n';
+            comment += '### Evidence Collected\n\n';
+            comment += '- PR metadata\n';
+            comment += '- Changed files list\n';
+            comment += '- QA execution logs\n';
+            comment += '- Build logs\n';
+            comment += '- Lint logs\n\n';
+            
+            comment += '---\n\n';
+            comment += '*This is an automated governance gate validation.*\n';
+            comment += '*Per GOVERNANCE_GATE_CANON.md: Merge blocked if any control fails.*\n';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+      
+      - name: Set merge status
+        if: always()
+        run: |
+          if [ "${{ steps.gate.outcome }}" = "success" ]; then
+            echo "✅ Governance Gate PASSED - Merge allowed"
+            exit 0
+          else
+            echo "❌ Governance Gate FAILED - Merge blocked"
+            exit 1
+          fi
+      
+      - name: Upload evidence artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: governance-gate-evidence-${{ github.event.pull_request.number }}
+          path: |
+            evidence/
+            logs/
+          retention-days: 90
