@@ -31,6 +31,13 @@ export interface EvidenceSnapshot {
   };
   immutable: boolean;
   hash: string;
+  metadata: {
+    statistics: {
+      totalFiles: number;
+      totalSize: number;
+      controlsIncluded: number;
+    };
+  };
 }
 
 export interface SnapshotContext {
@@ -111,8 +118,24 @@ export async function createEvidenceSnapshot(context: SnapshotContext): Promise<
     commitSha: context.commitSha,
     evidence,
     immutable: true,
-    hash: '' // Will be computed
+    hash: '', // Will be computed
+    metadata: {
+      statistics: {
+        totalFiles: 0,
+        totalSize: 0,
+        controlsIncluded: controls.length
+      }
+    }
   };
+  
+  // Compute statistics
+  for (const control of controls) {
+    const controlEvidence = evidence[control];
+    snapshot.metadata.statistics.totalFiles += controlEvidence.files.length;
+    for (const file of controlEvidence.files) {
+      snapshot.metadata.statistics.totalSize += file.size;
+    }
+  }
   
   // Compute hash of entire snapshot (excluding hash field itself)
   snapshot.hash = computeSnapshotHash(snapshot);
