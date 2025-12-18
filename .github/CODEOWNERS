@@ -1,59 +1,41 @@
-# CODEOWNERS - Governance Guardrail
+# CODEOWNERS - Governance Protection
 # 
-# This file defines ownership rules for critical governance and infrastructure files.
-# These paths require explicit human (Johan) approval before merging.
+# This file defines ownership rules for critical governance files.
+# These paths require explicit human approval before merging.
 #
-# Purpose: Prevent Foreman from modifying core governance, CI/CD, or architectural
-# safeguards without human oversight.
+# Purpose: Protect governance policies, rules, and enforcement mechanisms
+# from unauthorized modifications.
 #
 # More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # =============================================================================
-# CRITICAL GOVERNANCE FILES - REQUIRE JOHAN'S APPROVAL
+# CRITICAL GOVERNANCE FILES - REQUIRE ADMIN APPROVAL
 # =============================================================================
 
-# GitHub Actions Workflows - CI/CD Infrastructure
-# Protects QIEL, QIC, deploy checks, and all automation
+# GitHub Actions Workflows - Governance CI/CD
+# Protects governance validation workflows
 .github/workflows/** @MaturionISMS/admins
 
 # CODEOWNERS itself must be protected
 .github/CODEOWNERS @MaturionISMS/admins
 
-# Governance Documentation and Rules
-# Protects all governance policies, rules, and contracts
-docs/governance/** @MaturionISMS/admins
-
-# Foreman Governance Rules
-# Protects autonomy rules, deployment governance, QA contracts
-foreman/governance/** @MaturionISMS/admins
-
-# Foreman Constitutional Files
-# Protects core architectural and operational rules
-foreman/autonomy-rules.md @MaturionISMS/admins
-foreman/true-north-architecture.md @MaturionISMS/admins
+# All Governance Content
+# Protects all governance policies, rules, doctrines, and templates
+governance/** @MaturionISMS/admins
 
 # =============================================================================
-# NOTES FOR JOHAN
+# GOVERNANCE REPOSITORY
 # =============================================================================
 #
-# These paths are now protected. Foreman can:
-# - Open PRs that modify these files
-# - Request reviews for these changes
+# This is a PURE GOVERNANCE REPOSITORY containing only:
+# - Governance policies and doctrines
+# - Constitutional rules
+# - Escalation procedures
+# - Runbooks and templates
+# - Governance validation CI
 #
-# Foreman CANNOT:
-# - Merge PRs affecting these paths without your approval
-# - Bypass CODEOWNERS protection
-# - Modify branch protection rules
-#
-# When Foreman opens a PR touching these paths:
-# 1. GitHub will automatically request your review
-# 2. PR cannot be merged until you approve
-# 3. This applies even if all CI checks pass
-#
-# To grant approval:
-# 1. Review the PR changes carefully
-# 2. Click "Review changes" > "Approve" in GitHub UI
-# 3. PR becomes mergeable after your approval
+# All application code has been removed (Wave 2.5 cleanup).
+# This repository serves as the highest-order authority for Maturion systems.
 #
 # =============================================================================
 

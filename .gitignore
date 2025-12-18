@@ -1,83 +1,26 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Governance Repository .gitignore
+# This repository contains only governance content
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+# OS files
 .DS_Store
-*.pem
+Thumbs.db
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# local env files
-.env*.local
+# Temporary files
+*.tmp
+*.bak
+.~*
+
+# Logs
+*.log
+
+# Environment files (if any governance docs need them)
 .env
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# QIEL auto-generated files
-qiel-env-report.md
-preflight-validation-report.md
-/tmp/*.log
-
-# memory governance data (preflight validations)
-/memory/foreman/preflight-validations.json
-
-# build reports (test artifacts)
-/reports/*.md
-/reports/*.txt
-!/reports/.gitkeep
-
-# project data (local storage)
-/data/projects/*.json
-!/data/projects/.gitkeep
-
-# memory data (unified memory fabric)
-# Track directory structure and README files, but ignore memory.json files
-# This allows the memory system to work locally while keeping the repo clean
-/memory/**/*.json
-!/memory/projects/foreman_app_sandbox.json
-!/memory/schemas/*.json
-
-# memory consolidated data (auto-generated)
-# Ignore consolidated memory patterns and architecture principles
-/memory/global/consolidated/*.json
-/memory/global/consolidated/**/*.json
-
-# memory archive (retirement system)
-# Ignore archived memory entries and governance events from tests
-/memory/archive/
-/memory/governance-events.json
-
-# memory consolidation
-# Ignore consolidated memory files generated during tests
-/memory/global/consolidated/
-
-# QIEL regression tests (auto-generated, committed by workflow only)
-/tests/qic/regression/qi-*.test.ts
-qiel-*.md
-
-# Runtime readiness check artifacts (temporary runtime data)
-/memory/governance/runtime-readiness/state/
-/memory/governance/runtime-readiness/telemetry/
-/memory/governance/runtime-readiness/evidence/
+.env.local
+.env.*.local

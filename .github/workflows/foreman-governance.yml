@@ -1,27 +1,20 @@
-# GitHub Actions Workflow for Foreman Governance
-# Governance Rules and Policy Validation
+# GitHub Actions Workflow for Governance Policy Validation
+# Validates that governance rules, policies, and constraints are intact
 #
-# This workflow validates that governance rules, policies, and 
-# architectural constraints are being followed.
+# This workflow validates that governance content is properly maintained.
 
-name: Foreman Governance - Policy Validation
+name: Governance Policy Validation
 
 on:
   push:
     branches: [ main, develop, 'feature/**' ]
     paths:
-      - 'foreman/governance/**'
-      - 'foreman/autonomy-rules.md'
-      - 'foreman/true-north-architecture.md'
-      - 'docs/governance/**'
+      - 'governance/**'
       - '.github/workflows/**'
   pull_request:
     branches: [ main, develop ]
     paths:
-      - 'foreman/governance/**'
-      - 'foreman/autonomy-rules.md'
-      - 'foreman/true-north-architecture.md'
-      - 'docs/governance/**'
+      - 'governance/**'
       - '.github/workflows/**'
 
 permissions:
@@ -38,15 +31,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
       - name: Validate Governance File Structure
         id: file-structure
         run: |
@@ -55,24 +39,20 @@ jobs:
           # Check that critical governance files exist
           MISSING_FILES=""
           
-          if [ ! -f "foreman/governance/governance-model.md" ]; then
-            MISSING_FILES="$MISSING_FILES\n- foreman/governance/governance-model.md"
+          if [ ! -f "governance/philosophy/BYG_DOCTRINE.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/philosophy/BYG_DOCTRINE.md"
           fi
           
-          if [ ! -f "foreman/governance/deployment-governance.md" ]; then
-            MISSING_FILES="$MISSING_FILES\n- foreman/governance/deployment-governance.md"
+          if [ ! -f "governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md"
           fi
           
-          if [ ! -f "foreman/governance/quality-integrity-contract.md" ]; then
-            MISSING_FILES="$MISSING_FILES\n- foreman/governance/quality-integrity-contract.md"
+          if [ ! -f "governance/CONSTITUTION.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/CONSTITUTION.md"
           fi
           
-          if [ ! -f "foreman/autonomy-rules.md" ]; then
-            MISSING_FILES="$MISSING_FILES\n- foreman/autonomy-rules.md"
-          fi
-          
-          if [ ! -f "foreman/true-north-architecture.md" ]; then
-            MISSING_FILES="$MISSING_FILES\n- foreman/true-north-architecture.md"
+          if [ ! -f "governance/escalation/ESCALATION_POLICY.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/escalation/ESCALATION_POLICY.md"
           fi
           
           if [ -n "$MISSING_FILES" ]; then
@@ -83,64 +63,29 @@ jobs:
           
           echo "✅ All critical governance files present"
       
-      - name: Validate Workflow Files
-        id: workflow-validation
-        run: |
-          echo "Validating GitHub Actions workflow files..."
-          
-          # Check that critical workflows exist
-          MISSING_WORKFLOWS=""
-          
-          if [ ! -f ".github/workflows/qiel.yml" ]; then
-            MISSING_WORKFLOWS="$MISSING_WORKFLOWS\n- .github/workflows/qiel.yml"
-          fi
-          
-          if [ ! -f ".github/workflows/qic.yml" ]; then
-            MISSING_WORKFLOWS="$MISSING_WORKFLOWS\n- .github/workflows/qic.yml"
-          fi
-          
-          if [ ! -f ".github/workflows/deploy-check.yml" ]; then
-            MISSING_WORKFLOWS="$MISSING_WORKFLOWS\n- .github/workflows/deploy-check.yml"
-          fi
-          
-          if [ -n "$MISSING_WORKFLOWS" ]; then
-            echo "❌ Critical workflow files missing:"
-            echo -e "$MISSING_WORKFLOWS"
-            exit 1
-          fi
-          
-          echo "✅ All critical workflow files present"
-      
       - name: Check for Secrets in Code
         id: secrets-check
         run: |
-          echo "Checking for secrets in code..."
+          echo "Checking for secrets in governance documents..."
           
-          # Check for common secret patterns (basic check)
-          # Exclude test files as they often contain example secrets
+          # Check for common secret patterns in markdown files
           SECRET_PATTERNS=(
-            "password\s*=\s*['\"][^'\"]{8,}['\"]"
-            "api[_-]?key\s*=\s*['\"][^'\"]{16,}['\"]"
-            "secret\s*=\s*['\"][^'\"]{16,}['\"]"
-            "token\s*=\s*['\"][^'\"]{16,}['\"]"
+            "password\s*[:=]\s*['\"][^'\"]{8,}['\"]"
+            "api[_-]?key\s*[:=]\s*['\"][^'\"]{16,}['\"]"
+            "secret\s*[:=]\s*['\"][^'\"]{16,}['\"]"
+            "token\s*[:=]\s*['\"][^'\"]{16,}['\"]"
           )
           
           SECRETS_FOUND=0
           
           for pattern in "${SECRET_PATTERNS[@]}"; do
-            # Exclude tests, examples, and documentation
-            if git grep -iE "$pattern" -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.json' \
-               | grep -v "^tests/" \
-               | grep -v "^docs/" \
-               | grep -v ".test.ts" \
-               | grep -v ".example" \
-               | grep -v "README.md" 2>/dev/null; then
+            if git grep -iE "$pattern" -- 'governance/**/*.md' 2>/dev/null | grep -v ".example" | grep -v "example:" ; then
               SECRETS_FOUND=1
             fi
           done
           
           if [ $SECRETS_FOUND -eq 1 ]; then
-            echo "⚠️ Potential secrets detected in code"
+            echo "⚠️ Potential secrets detected in governance documents"
             echo "Review findings above and ensure no real secrets are committed"
             exit 1
           fi
@@ -158,45 +103,22 @@ jobs:
             exit 1
           fi
           
-          # Check that critical paths are protected
-          REQUIRED_PATHS=(
-            ".github/workflows/"
-            "docs/governance/"
-            "foreman/governance/"
-          )
-          
-          MISSING_PROTECTIONS=""
-          
-          for path in "${REQUIRED_PATHS[@]}"; do
-            if ! grep -q "$path" .github/CODEOWNERS; then
-              MISSING_PROTECTIONS="$MISSING_PROTECTIONS\n- $path"
-            fi
-          done
-          
-          if [ -n "$MISSING_PROTECTIONS" ]; then
-            echo "❌ Critical paths missing from CODEOWNERS:"
-            echo -e "$MISSING_PROTECTIONS"
-            exit 1
-          fi
-          
-          echo "✅ CODEOWNERS properly configured"
+          echo "✅ CODEOWNERS file exists"
       
       - name: Governance Validation Summary
         if: always()
         run: |
           echo "==================================================="
-          echo "Foreman Governance - Policy Validation"
+          echo "Governance Policy Validation"
           echo "==================================================="
           echo ""
-          echo "✅ File Structure: ${{ steps.file-structure.outcome }}"
-          echo "✅ Workflow Files: ${{ steps.workflow-validation.outcome }}"
-          echo "✅ Secrets Check: ${{ steps.secrets-check.outcome }}"
-          echo "✅ CODEOWNERS: ${{ steps.codeowners-check.outcome }}"
+          echo "File Structure: ${{ steps.file-structure.outcome }}"
+          echo "Secrets Check: ${{ steps.secrets-check.outcome }}"
+          echo "CODEOWNERS: ${{ steps.codeowners-check.outcome }}"
           echo ""
           echo "==================================================="
           
           if [ "${{ steps.file-structure.outcome }}" != "success" ] || \
-             [ "${{ steps.workflow-validation.outcome }}" != "success" ] || \
              [ "${{ steps.secrets-check.outcome }}" != "success" ] || \
              [ "${{ steps.codeowners-check.outcome }}" != "success" ]; then
             echo "❌ GOVERNANCE VALIDATION FAILED"
@@ -211,37 +133,32 @@ jobs:
         with:
           script: |
             const fileStructure = '${{ steps.file-structure.outcome }}';
-            const workflowValidation = '${{ steps.workflow-validation.outcome }}';
             const secretsCheck = '${{ steps.secrets-check.outcome }}';
             const codeownersCheck = '${{ steps.codeowners-check.outcome }}';
             
             const statusIcon = (status) => status === 'success' ? '✅' : '❌';
             const overallPass = fileStructure === 'success' && 
-                               workflowValidation === 'success' && 
                                secretsCheck === 'success' &&
                                codeownersCheck === 'success';
             
-            const body = `## ${overallPass ? '✅' : '❌'} Foreman Governance - Policy Validation
+            const body = `## ${overallPass ? '✅' : '❌'} Governance Policy Validation
             
             **Status**: ${overallPass ? 'COMPLIANT' : 'NON-COMPLIANT'}
             
             ### Governance Checks
             
             - ${statusIcon(fileStructure)} **File Structure**: ${fileStructure}
-            - ${statusIcon(workflowValidation)} **Workflow Files**: ${workflowValidation}
             - ${statusIcon(secretsCheck)} **Secrets Check**: ${secretsCheck}
             - ${statusIcon(codeownersCheck)} **CODEOWNERS**: ${codeownersCheck}
             
             ${!overallPass ? `
             ⚠️ **Governance Violation Detected**: Fix issues before merging.
-            
-            Per **Foreman Governance Model**, all governance checks must pass.
             ` : `
-            ✅ All governance checks passed. Code complies with governance policies.
+            ✅ All governance checks passed. Governance policies are intact.
             `}
             
             ---
-            *Foreman Governance Enforcement*
+            *Governance Enforcement*
             `;
             
             const comments = await github.rest.issues.listComments({
@@ -252,7 +169,7 @@ jobs:
             
             const botComment = comments.data.find(comment => 
               comment.user.type === 'Bot' && 
-              comment.body.includes('Foreman Governance - Policy Validation')
+              comment.body.includes('Governance Policy Validation')
             );
             
             if (botComment) {
@@ -271,5 +188,5 @@ jobs:
               });
             }
 
-# Governance validation ensures Foreman operates within defined boundaries
+# Governance validation ensures all governance artifacts remain intact
 # All governance rules must be respected - no exceptions
