@@ -1,7 +1,7 @@
 # Governance Gate Workflow
 # 
-# Constitutional requirement per GOVERNANCE_GATE_CANON.md
-# Executes at PR merge time to enforce all governance controls
+# Validates governance file integrity and structure
+# Ensures no unauthorized changes to governance policies
 # 
 # Authority: Supreme - Cannot be bypassed
 # Status: Active
@@ -31,74 +31,121 @@ jobs:
         with:
           fetch-depth: 0  # Full history for evidence collection
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Create evidence directory
+      - name: Validate Governance Structure
+        id: structure
         run: |
-          mkdir -p evidence
-          mkdir -p logs
-      
-      - name: Collect evidence
-        run: |
-          # Collect git metadata
-          echo "PR: ${{ github.event.pull_request.number }}" > evidence/pr-metadata.txt
-          echo "Commit: ${{ github.event.pull_request.head.sha }}" >> evidence/pr-metadata.txt
-          echo "Branch: ${{ github.event.pull_request.head.ref }}" >> evidence/pr-metadata.txt
-          echo "Base: ${{ github.event.pull_request.base.ref }}" >> evidence/pr-metadata.txt
-          echo "Author: ${{ github.event.pull_request.user.login }}" >> evidence/pr-metadata.txt
-          echo "Created: ${{ github.event.pull_request.created_at }}" >> evidence/pr-metadata.txt
+          echo "Validating governance directory structure..."
           
-          # List changed files
-          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > evidence/changed-files.txt || true
+          # Check that critical governance directories exist
+          MISSING_DIRS=""
+          
+          if [ ! -d "governance" ]; then
+            MISSING_DIRS="$MISSING_DIRS\n- governance/"
+          fi
+          
+          if [ ! -d "governance/philosophy" ]; then
+            MISSING_DIRS="$MISSING_DIRS\n- governance/philosophy/"
+          fi
+          
+          if [ ! -d "governance/runbooks" ]; then
+            MISSING_DIRS="$MISSING_DIRS\n- governance/runbooks/"
+          fi
+          
+          if [ ! -d "governance/templates" ]; then
+            MISSING_DIRS="$MISSING_DIRS\n- governance/templates/"
+          fi
+          
+          if [ -n "$MISSING_DIRS" ]; then
+            echo "❌ Critical governance directories missing:"
+            echo -e "$MISSING_DIRS"
+            exit 1
+          fi
+          
+          echo "✅ All critical governance directories present"
       
-      - name: Run QA Suite
-        id: qa
-        continue-on-error: true
+      - name: Validate Governance Files
+        id: files
         run: |
-          npm run lint 2>&1 | tee logs/lint.log || true
-          npm run build 2>&1 | tee logs/build.log || true
-          npm test 2>&1 | tee logs/test.log || true
+          echo "Validating critical governance files..."
+          
+          MISSING_FILES=""
+          
+          if [ ! -f "governance/philosophy/BYG_DOCTRINE.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/philosophy/BYG_DOCTRINE.md"
+          fi
+          
+          if [ ! -f "governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md"
+          fi
+          
+          if [ ! -f "governance/CONSTITUTION.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/CONSTITUTION.md"
+          fi
+          
+          if [ ! -f "governance/escalation/ESCALATION_POLICY.md" ]; then
+            MISSING_FILES="$MISSING_FILES\n- governance/escalation/ESCALATION_POLICY.md"
+          fi
+          
+          if [ -n "$MISSING_FILES" ]; then
+            echo "❌ Critical governance files missing:"
+            echo -e "$MISSING_FILES"
+            exit 1
+          fi
+          
+          echo "✅ All critical governance files present"
       
-      - name: Execute Governance Gate
-        id: gate
+      - name: Check for Application Code
+        id: app_check
         run: |
-          npx tsx scripts/run-governance-gate.ts \
-            ${{ github.event.pull_request.number }} \
-            ${{ github.event.pull_request.head.sha }} \
-            ${{ github.event.pull_request.head.ref }} \
-            ${{ github.event.pull_request.base.ref }}
+          echo "Checking for application code artifacts..."
+          
+          # Check that application directories don't exist
+          APP_DIRS=""
+          
+          for dir in app components lib types tests scripts foreman swarm; do
+            if [ -d "$dir" ]; then
+              APP_DIRS="$APP_DIRS\n- $dir/"
+            fi
+          done
+          
+          if [ -n "$APP_DIRS" ]; then
+            echo "⚠️ Application directories found (should not exist in governance repo):"
+            echo -e "$APP_DIRS"
+            exit 1
+          fi
+          
+          echo "✅ No application code directories found"
       
       - name: Post Gate Report to PR
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
-            const fs = require('fs');
-            const logFiles = ['logs/lint.log', 'logs/build.log', 'logs/test.log'];
+            const structureStatus = '${{ steps.structure.outcome }}';
+            const filesStatus = '${{ steps.files.outcome }}';
+            const appCheckStatus = '${{ steps.app_check.outcome }}';
             
-            let comment = '## Governance Gate Execution\n\n';
-            comment += `**Triggered by**: PR #${{ github.event.pull_request.number }}\n`;
+            const statusIcon = (status) => status === 'success' ? '✅' : '❌';
+            const overallPass = structureStatus === 'success' && 
+                               filesStatus === 'success' && 
+                               appCheckStatus === 'success';
+            
+            let comment = '## Governance Gate Validation\n\n';
+            comment += `**PR**: #${{ github.event.pull_request.number }}\n`;
             comment += `**Commit**: ${{ github.event.pull_request.head.sha }}\n`;
-            comment += `**Status**: ${{ steps.gate.outcome }}\n\n`;
+            comment += `**Status**: ${overallPass ? '✅ PASSED' : '❌ FAILED'}\n\n`;
             
-            comment += '---\n\n';
-            comment += '### Evidence Collected\n\n';
-            comment += '- PR metadata\n';
-            comment += '- Changed files list\n';
-            comment += '- QA execution logs\n';
-            comment += '- Build logs\n';
-            comment += '- Lint logs\n\n';
+            comment += '### Validation Results\n\n';
+            comment += `- ${statusIcon(structureStatus)} **Governance Structure**: ${structureStatus}\n`;
+            comment += `- ${statusIcon(filesStatus)} **Governance Files**: ${filesStatus}\n`;
+            comment += `- ${statusIcon(appCheckStatus)} **No Application Code**: ${appCheckStatus}\n\n`;
+            
+            if (!overallPass) {
+              comment += '⚠️ **Governance validation failed**: Fix issues before merging.\n\n';
+            }
             
             comment += '---\n\n';
             comment += '*This is an automated governance gate validation.*\n';
-            comment += '*Per GOVERNANCE_GATE_CANON.md: Merge blocked if any control fails.*\n';
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -110,20 +157,12 @@ jobs:
       - name: Set merge status
         if: always()
         run: |
-          if [ "${{ steps.gate.outcome }}" = "success" ]; then
+          if [ "${{ steps.structure.outcome }}" = "success" ] && \
+             [ "${{ steps.files.outcome }}" = "success" ] && \
+             [ "${{ steps.app_check.outcome }}" = "success" ]; then
             echo "✅ Governance Gate PASSED - Merge allowed"
             exit 0
           else
             echo "❌ Governance Gate FAILED - Merge blocked"
             exit 1
           fi
-      
-      - name: Upload evidence artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: governance-gate-evidence-${{ github.event.pull_request.number }}
-          path: |
-            evidence/
-            logs/
-          retention-days: 90
