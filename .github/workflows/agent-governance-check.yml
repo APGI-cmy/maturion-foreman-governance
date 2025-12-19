@@ -1,0 +1,115 @@
+name: Agent Governance Validation
+
+on:
+  pull_request:
+    paths:
+      - ".agent"
+      - ".github/workflows/**"
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-agent:
+    name: Validate .agent Contract
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure .agent exists
+        run: |
+          if [ ! -f ".agent" ]; then
+            echo "❌ .agent file is missing"
+            exit 1
+          fi
+          echo "✅ .agent file found"
+
+      - name: Validate canonical governance binding
+        run: |
+          REQUIRED_KEYS=(
+            "governance:"
+            "canon:"
+            "repository:"
+            "path: /governance/canon"
+            "reference:"
+          )
+
+          for KEY in "${REQUIRED_KEYS[@]}"; do
+            if ! grep -q "$KEY" .agent; then
+              echo "❌ Missing required governance binding: $KEY"
+              exit 1
+            fi
+          done
+
+          echo "✅ Canonical governance binding present"
+
+      - name: Enforce Agent Contract Minimalism
+        run: |
+          FORBIDDEN_PATTERNS=(
+            "BUILD_PHILOSOPHY"
+            "OPOJD"
+            "TED"
+            "ONE_TIME_BUILD"
+            "doctrine:"
+            "constitutional_references"
+          )
+
+          for PATTERN in "${FORBIDDEN_PATTERNS[@]}"; do
+            if grep -qi "$PATTERN" .agent; then
+              echo "❌ Forbidden governance duplication detected: $PATTERN"
+              exit 1
+            fi
+          done
+
+          echo "✅ No forbidden doctrine duplication found"
+
+      - name: Validate required top-level sections
+        run: |
+          REQUIRED_SECTIONS=(
+            "^agent:"
+            "^governance:"
+            "^scope:"
+            "^capabilities:"
+            "^constraints:"
+            "^enforcement:"
+          )
+
+          for SECTION in "${REQUIRED_SECTIONS[@]}"; do
+            if ! grep -Eq "$SECTION" .agent; then
+              echo "❌ Missing required top-level section: $SECTION"
+              exit 1
+            fi
+          done
+
+          echo "✅ Required sections present"
+
+      - name: Enforce restricted paths
+        run: |
+          REQUIRED_RESTRICTIONS=(
+            ".agent"
+            "governance/**"
+          )
+
+          for PATH in "${REQUIRED_RESTRICTIONS[@]}"; do
+            if ! grep -q "$PATH" .agent; then
+              echo "❌ Required restricted path missing: $PATH"
+              exit 1
+            fi
+          done
+
+          echo "✅ Restricted paths enforced"
+
+      - name: Validate escalation for CI paths
+        run: |
+          if ! grep -q ".github/**" .agent; then
+            echo "❌ .github/** must be restricted or escalation-required"
+            exit 1
+          fi
+
+          echo "✅ CI paths properly gated"
+
+      - name: Governance Validation Passed
+        run: |
+          echo "✅ .agent contract is valid under canonical governance"
