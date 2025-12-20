@@ -1,0 +1,95 @@
+name: FM Effectiveness Validation Gate
+
+on:
+  pull_request:
+    paths:
+      - "architecture/**"
+      - ".github/workflows/**"
+  push:
+    branches:
+      - main
+
+jobs:
+  fm-effectiveness-validation:
+    name: Validate effectiveness.md matches failure records
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Resolve active build
+        run: |
+          BUILD_ID="$(cat architecture/BUILD_ACTIVE | tr -d '\r' | tr -d '\n')"
+          BUILD_DIR="architecture/builds/${BUILD_ID}"
+          echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
+
+      - name: Validate effectiveness report consistency
+        run: |
+          EFFECT="${BUILD_DIR}/effectiveness.md"
+          FAIL_DIR="${BUILD_DIR}/failures"
+
+          if [ ! -f "$EFFECT" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: effectiveness.md missing."
+            exit 1
+          fi
+
+          if [ ! -d "$FAIL_DIR" ]; then
+            echo "✅ No failures directory; effectiveness may still exist."
+            exit 0
+          fi
+
+          # Count failures
+          FAIL_COUNT=$(ls -1 "$FAIL_DIR"/failure-*.md 2>/dev/null | wc -l | tr -d ' ')
+          RECORDED_TOTAL=$(grep "TOTAL_FAILURES:" "$EFFECT" | awk '{print $2}')
+
+          if [ -z "$RECORDED_TOTAL" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: TOTAL_FAILURES missing."
+            exit 1
+          fi
+
+          if [ "$FAIL_COUNT" != "$RECORDED_TOTAL" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: TOTAL_FAILURES does not match failure files."
+            echo "Expected: $FAIL_COUNT, Found: $RECORDED_TOTAL"
+            exit 1
+          fi
+
+          # Sum penalties
+          SUM=0
+          for f in "$FAIL_DIR"/failure-*.md; do
+            p=$(grep "PENALTY_POINTS:" "$f" | awk '{print $2}')
+            if [ -z "$p" ]; then
+              echo "❌ EFFECTIVENESS BLOCK: Missing PENALTY_POINTS in $f"
+              exit 1
+            fi
+            SUM=$((SUM + p))
+          done
+
+          RECORDED_PENALTY=$(grep "TOTAL_PENALTY_POINTS:" "$EFFECT" | awk '{print $2}')
+          if [ -z "$RECORDED_PENALTY" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: TOTAL_PENALTY_POINTS missing."
+            exit 1
+          fi
+
+          if [ "$SUM" != "$RECORDED_PENALTY" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: Penalty sum mismatch."
+            echo "Expected: $SUM, Found: $RECORDED_PENALTY"
+            exit 1
+          fi
+
+          CURRENT=$(grep "CURRENT_EFFECTIVENESS:" "$EFFECT" | awk '{print $2}')
+          if [ -z "$CURRENT" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: CURRENT_EFFECTIVENESS missing."
+            exit 1
+          fi
+
+          EXPECTED=$((100 - SUM))
+          if [ "$EXPECTED" -lt 0 ]; then EXPECTED=0; fi
+
+          if [ "$CURRENT" != "$EXPECTED" ]; then
+            echo "❌ EFFECTIVENESS BLOCK: CURRENT_EFFECTIVENESS incorrect."
+            echo "Expected: $EXPECTED, Found: $CURRENT"
+            exit 1
+          fi
+
+          echo "✅ Effectiveness report matches failure records"
