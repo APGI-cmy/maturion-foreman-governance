@@ -1,12 +1,29 @@
-# Governance Gate Workflow
-# 
-# Validates governance file integrity and structure
-# Ensures no unauthorized changes to governance policies
-# 
-# Authority: Supreme - Cannot be bypassed
-# Status: Active
+# ============================================================================
+# GOVERNANCE GATE WORKFLOW - DEPRECATED
+# ============================================================================
+#
+# **STATUS**: DEPRECATED as of 2025-12-21
+# **REASON**: Superseded by GOVERNANCE_COMPLETENESS_MODEL.md
+# **AUTHORITY**: governance/canon/GOVERNANCE_ENFORCEMENT_TRANSITION.md
+#
+# This workflow was designed for an earlier governance model and no longer
+# reflects current canonical intent. Enforcement authority has been
+# transitioned to GOVERNANCE_COMPLETENESS_MODEL.md which provides:
+# - Component completeness validation
+# - Dependency closure verification
+# - Orphan artifact detection
+# - Compliance structural readiness checks
+#
+# This workflow is disabled for governance repository PRs.
+# It remains in codebase as historical record only.
+#
+# For current enforcement model, see:
+# - governance/canon/GOVERNANCE_COMPLETENESS_MODEL.md (authoritative)
+# - governance/canon/GOVERNANCE_ENFORCEMENT_TRANSITION.md (transition record)
+#
+# ============================================================================
 
-name: Governance Gate
+name: Governance Gate (DEPRECATED)
 
 on:
   pull_request:
@@ -14,6 +31,8 @@ on:
     branches:
       - main
       - develop
+  # DEPRECATED: This workflow is disabled as of 2025-12-21
+  # See: governance/canon/GOVERNANCE_ENFORCEMENT_TRANSITION.md
 
 permissions:
   contents: read
@@ -22,8 +41,12 @@ permissions:
 
 jobs:
   governance-gate:
-    name: Governance Gate Validation
+    name: Governance Gate Validation (DEPRECATED - DISABLED)
     runs-on: ubuntu-latest
+    # DISABLED: This gate is deprecated as of 2025-12-21
+    # Enforcement authority transitioned to GOVERNANCE_COMPLETENESS_MODEL.md
+    # See: governance/canon/GOVERNANCE_ENFORCEMENT_TRANSITION.md
+    if: false  # Workflow permanently disabled
     
     steps:
       - name: Checkout code
