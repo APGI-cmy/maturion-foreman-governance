@@ -213,4 +213,15 @@ This registry has canonical precedence over:
 - REPLACES: NONE
 - REPLACED_BY: NONE
 
+**Ownership**
+- DOMAIN_OWNER: Governance / Architecture
+- REVIEW_AUTHORITY: Foreman
+- ACCOUNTABILITY_SCOPE: <short description>
+
+**Effectiveness**
+- DOMAIN_EFFECTIVENESS: 100
+- TOTAL_FAILURES: 0
+- DISTINCT_FAILURE_SIGNATURES: 0
+- LAST_REVIEWED: YYYY-MM-DD
+
 End of RESPONSIBILITY DOMAIN REGISTRY
