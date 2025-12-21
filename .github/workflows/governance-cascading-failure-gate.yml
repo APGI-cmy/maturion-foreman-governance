@@ -8,6 +8,11 @@ jobs:
   cascading-failure:
     name: Enforce Cascading Failure Circuit Breaker
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      actions: read
 
     steps:
       - name: Checkout
