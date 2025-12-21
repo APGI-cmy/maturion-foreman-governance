@@ -184,8 +184,17 @@ Test harnesses, fixtures, and test-only utilities.
 
 ### DOMAIN: Evidence Folder Structure Reconciliation
 
+**⚠️ LEGACY COMPATIBILITY DOMAIN — TEMPORARY — PENDING REMOVAL**
+
 **Description**  
 Governance evidence folder organization, classification, and structural maintenance.
+
+**IMPORTANT NOTICE:**  
+This domain exists **solely to satisfy legacy string-based enforcement logic** and is **NOT** a true long-term responsibility domain. It will be **removed** once legacy enforcement traps are retired.
+
+This entry was added under **one-time governance override** authorized by Johan Ras (2025-12-21) to unblock governance consolidation while preserving canonical integrity.
+
+**Removal tracked in:** Governance issue for retirement of legacy string-based domain validation (to be created)
 
 **Allowed Paths**
 - `evidence/**`
