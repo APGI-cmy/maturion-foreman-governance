@@ -182,6 +182,40 @@ Test harnesses, fixtures, and test-only utilities.
 
 ---
 
+### DOMAIN: Evidence Folder Structure Reconciliation
+
+**Description**  
+Governance evidence folder organization, classification, and structural maintenance.
+
+**Allowed Paths**
+- `evidence/**`
+- `evidence-new/**`
+- `evidence_app_execution_archive/**`
+- `governance/scope-declaration.md`
+
+**Forbidden Paths**
+- `src/**`
+- `app/**`
+- `prisma/**`
+- `email/**`
+- `logging/**`
+- `tests/**`
+- `.github/workflows/**` (unless CI is the domain)
+- `memory/**` (unless explicitly scoped to memory/evidence in canonical governance)
+
+**Typical Failure Signatures**
+- Evidence folder structure mismatch
+- Governance signal dilution
+- Institutional memory loss risk
+- Mixed governance and operational artifacts
+
+**Valid PR Names**
+- "Evidence Folder Cleanup: Separate Governance from App Execution"
+- "Evidence Structure Reconciliation"
+- "Governance Evidence Classification"
+
+---
+
 ## 5. Adding a New Responsibility Domain
 
 New domains may only be added via governance change management.
