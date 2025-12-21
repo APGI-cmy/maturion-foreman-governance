@@ -190,8 +190,23 @@ not the reverse.
 
 - `governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md` - Highest governance authority
 - `governance/canon/COMPLIANCE_AND_STANDARDS_GOVERNANCE.md` - Compliance baseline
-- `governance/canon/GOVERNANCE_COMPLETENESS_MODEL.md` - New enforcement authority
+- `governance/canon/GOVERNANCE_COMPLETENESS_MODEL.md` - New enforcement authority (for governance repo)
 - `.github/workflows/governance-gate.yml` - Legacy gate (DEPRECATED)
+- `GOVERNANCE_GATE_CANON.md` - Application repository gate definition (NOT applicable to governance repo)
+
+### Note on Scope
+
+`GOVERNANCE_GATE_CANON.md` defines the gate for APPLICATION repositories
+(maturion-foreman-app, maturion-ai-foreman, etc.) and validates application-level
+concerns (Build-to-Green, QA, CS1-CS6, QIEL, Build Philosophy, etc.).
+
+`GOVERNANCE_COMPLETENESS_MODEL.md` defines the gate for the GOVERNANCE repository
+(maturion-foreman-governance) and validates governance-level concerns
+(component completeness, dependency closure, orphan detection, compliance structural readiness).
+
+These are complementary authorities operating at different levels:
+- Application level: GOVERNANCE_GATE_CANON.md
+- Governance level: GOVERNANCE_COMPLETENESS_MODEL.md
 
 ---
 
