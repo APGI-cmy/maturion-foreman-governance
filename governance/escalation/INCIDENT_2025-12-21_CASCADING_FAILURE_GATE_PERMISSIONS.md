@@ -157,7 +157,7 @@ If >2 similar permission incidents occur, this indicates a systemic defect requi
 
 **Resolution Date:** 2025-12-21T14:38:00Z  
 **Resolution Method:** Temporary governance override (Johan authorization)  
-**Commit Reference:** [To be added upon commit]  
+**Commit Reference:** ad830a9  
 **Verification:** Gate re-run on PR #680
 
 **Incident Status:** RESOLVED  
