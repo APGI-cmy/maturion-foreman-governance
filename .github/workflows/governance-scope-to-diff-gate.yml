@@ -1,69 +1,40 @@
-name: Governance Scope-to-Diff Gate
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-jobs:
-  scope-to-diff:
-    name: Enforce Scope-to-Diff Alignment
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Fetch PR diff
+  - name: Enforce scope-to-diff via registry
         run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-
-      - name: Load declared responsibility
-        run: |
-          if [ ! -f "governance/scope-declaration.md" ]; then
-            echo "❌ GOVERNANCE BLOCK: Missing scope declaration."
-            exit 1
-          fi
-
           DOMAIN=$(grep "RESPONSIBILITY_DOMAIN:" governance/scope-declaration.md | cut -d':' -f2 | xargs)
-          if [ -z "$DOMAIN" ]; then
-            echo "❌ GOVERNANCE BLOCK: Responsibility domain not declared."
+
+          REGISTRY="governance/canon/RESPONSIBILITY_DOMAIN_REGISTRY.md"
+          if ! grep -q "### DOMAIN: $DOMAIN" "$REGISTRY"; then
+            echo "❌ GOVERNANCE BLOCK: Responsibility domain '$DOMAIN' is not registered."
             exit 1
           fi
 
-          echo "RESP_DOMAIN=$DOMAIN" >> $GITHUB_ENV
+          echo "Using responsibility domain: $DOMAIN"
 
-      - name: Enforce file alignment
-        run: |
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }})
+          ALLOWED=$(awk "/### DOMAIN: $DOMAIN/{flag=1} /Allowed Paths/{getline; while (\$0 ~ /^-/) {print \$2; getline}} flag && /Forbidden Paths/{exit}" "$REGISTRY")
+          FORBIDDEN=$(awk "/### DOMAIN: $DOMAIN/{flag=1} /Forbidden Paths/{getline; while (\$0 ~ /^-/) {print \$2; getline}} flag && /Typical Failure/{exit}" "$REGISTRY")
 
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
+          git fetch origin ${{ github.base_ref }} --depth=1
+          FILES=$(git diff --name-only origin/${{ github.base_ref }})
 
-          for FILE in $CHANGED_FILES; do
-            case "$RESP_DOMAIN" in
-              "Database lifecycle")
-                [[ "$FILE" =~ ^(prisma|migrations|db|schema)/ ]] || {
-                  echo "❌ SCOPE VIOLATION: $FILE outside Database lifecycle"
-                  exit 1
-                }
-                ;;
-              "Email delivery")
-                [[ "$FILE" =~ ^(email|mail|templates)/ ]] || {
-                  echo "❌ SCOPE VIOLATION: $FILE outside Email delivery"
-                  exit 1
-                }
-                ;;
-              "CI infrastructure")
-                [[ "$FILE" =~ ^\.github/workflows/ ]] || {
-                  echo "❌ SCOPE VIOLATION: $FILE outside CI infrastructure"
-                  exit 1
-                }
-                ;;
-              *)
-                echo "❌ GOVERNANCE BLOCK: Unknown responsibility domain '$RESP_DOMAIN'"
+          for FILE in $FILES; do
+            for BAD in $FORBIDDEN; do
+              if [[ "$FILE" == $BAD* ]]; then
+                echo "❌ SCOPE VIOLATION: $FILE forbidden for domain $DOMAIN"
                 exit 1
-                ;;
-            esac
+              fi
+            done
+
+            MATCHED=false
+            for OK in $ALLOWED; do
+              if [[ "$FILE" == $OK* ]]; then
+                MATCHED=true
+              fi
+            done
+
+            if [ "$MATCHED" = false ]; then
+              echo "❌ SCOPE VIOLATION: $FILE not allowed for domain $DOMAIN"
+              exit 1
+            fi
           done
 
-          echo "✅ Scope-to-diff alignment enforced"
+          echo "✅ Scope-to-diff enforcement passed via registry"
