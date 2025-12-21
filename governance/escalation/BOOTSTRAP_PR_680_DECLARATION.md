@@ -170,7 +170,7 @@ initialization of the FM operational layer according to governance canon.
 **Override ID:** BOOTSTRAP-PR-680  
 **Incident Type:** Governance Bootstrap (not a failure)  
 **Authorization Reference:** Comment #3678860836  
-**Commit Reference:** [To be added]  
+**Commit Reference:** 7dd4bbf  
 **Merge Date:** [Pending]
 
 ---
