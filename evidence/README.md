@@ -35,14 +35,14 @@ This separation ensures:
 - **governance-gate-dry-run-execution.md** - Governance gate enforcement evidence
 - **red-qa-report-e2e-autonomous-mcp-validation.md** - Quality governance report
 
-### `/evidence-new/wave-execution/`
+### `/evidence/wave-execution/`
 Contains architectural delivery milestones and wave completion evidence:
 - Wave execution summaries (WAVE_*.md)
 - Phase execution records (PHASE_*.md)
 - Architectural milestone completions
 - Multi-wave coordination evidence
 
-### `/evidence-new/surveys/`
+### `/evidence/surveys/`
 Contains governance surveys and policy assessments:
 - PR merge gate failure surveys
 - Policy compliance surveys
@@ -83,7 +83,7 @@ Governance evidence files:
 
 When new evidence is created:
 1. Determine if it's **governance/assurance** or **app execution**
-2. Place governance evidence in `/evidence-new/`
+2. Place governance evidence in `/evidence/`
 3. Place app execution evidence in `/evidence_app_execution_archive/`
 4. Use descriptive naming: `CATEGORY_DESCRIPTION_TYPE.md`
 5. Include timestamp/version if applicable
@@ -109,22 +109,22 @@ Evidence files are:
 
 **Finding governance-related evidence:**
 ```bash
-grep -r "governance" evidence-new/ --include="*.md"
+grep -r "governance" evidence/ --include="*.md"
 ```
 
 **Finding wave execution evidence:**
 ```bash
-ls evidence-new/wave-execution/WAVE_*.md
+ls evidence/wave-execution/WAVE_*.md
 ```
 
 **Finding constitutional evidence:**
 ```bash
-grep -r "constitutional" evidence-new/ --include="*.md"
+grep -r "constitutional" evidence/ --include="*.md"
 ```
 
 **Finding compliance reports:**
 ```bash
-ls evidence-new/*COMPLIANCE*.md
+ls evidence/*COMPLIANCE*.md
 ```
 
 ## Related Documents
@@ -139,6 +139,6 @@ ls evidence-new/*COMPLIANCE*.md
 
 **Status**: Active Governance Evidence Archive  
 **Established**: 2025-12-13  
-**Cleanup Executed**: 2025-12-19 (Issue: Evidence Folder Cleanup - Governance vs App Execution)  
+**Cleanup Executed**: 2025-12-19, Corrected: 2025-12-21 (Issue: Evidence Folder Cleanup - Governance vs App Execution)  
 **Authority**: Governance Centre (Maturion Mind) - Long-Term Memory & Assurance  
 **Maintenance**: Governance evidence only - app execution artifacts archived separately

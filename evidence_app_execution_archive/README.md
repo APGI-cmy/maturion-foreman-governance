@@ -17,7 +17,7 @@ This archive preserves historical records of:
 
 ✅ **This directory contains app lifecycle and delivery-specific artifacts.**
 
-❌ **Governance and assurance evidence remains in:** `/evidence-new/`
+❌ **Governance and assurance evidence remains in:** `/evidence/`
 
 This separation ensures:
 - Governance signal is not diluted by operational exhaust
@@ -83,7 +83,7 @@ These files:
 - App lifecycle and delivery-specific artifacts
 - Operational test debt elimination records
 
-**Files NOT in this archive (in `/evidence-new/`):**
+**Files NOT in this archive (in `/evidence/`):**
 - Governance decisions and constitutional changes
 - Architectural compliance evidence
 - Lessons learned at governance level
@@ -92,14 +92,14 @@ These files:
 
 ## Related Documents
 
-- `/evidence-new/` - Governance and assurance evidence (primary governance memory)
-- `/evidence-new/README.md` - Governance evidence archive documentation
+- `/evidence/` - Governance and assurance evidence (primary governance memory)
+- `/evidence/README.md` - Governance evidence archive documentation
 - `/BUILD_PHILOSOPHY.md` - Build philosophy standards
 
 ---
 
 **Status**: Operational Evidence Archive  
-**Created**: 2025-12-19  
+**Created**: 2025-12-19, Corrected: 2025-12-21  
 **Authority**: Evidence Folder Cleanup Initiative (Issue: Governance vs App Execution)  
 **Purpose**: Separate app execution artifacts from governance memory  
 **Maintenance**: Archived - preserved for historical reference
