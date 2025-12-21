@@ -1,5 +1,34 @@
 # Cross-Repository Governance Propagation Attempt - PR #683
 
+## Incident Metadata (FM Office Visibility)
+
+```yaml
+incident_type: cross_repository_governance_action
+fm_visibility_status: PENDING
+timestamp_utc: 2025-12-21T16:15:00Z
+agent_id: governance-administrator
+action_type: governance_propagation
+target_repositories:
+  - repository: MaturionISMS/maturion-foreman
+    files_affected: [".github/agents/foreman.md"]
+    action: escalated
+  - repository: builder_repos_TBD
+    files_affected: ["agent contracts"]
+    action: escalated
+authorization_reference: CROSS_REPOSITORY_GOVERNANCE_ALIGNMENT_POLICY.md
+context: "Initial cross-repo propagation attempt - PR gate failure handling governance"
+outcome: blocked
+johan_notification_method: github_comment
+dashboard_integration_ready: false
+```
+
+**FM Office Visibility Requirement:**
+Per CROSS_REPOSITORY_GOVERNANCE_ALIGNMENT_POLICY.md Section 11, this cross-repository
+governance action MUST trigger FM Office visibility. Until FM Office dashboard is implemented,
+this incident record serves as the required visibility mechanism.
+
+---
+
 ## Incident Type
 Training Scenario: Cross-Repository Access Attempt
 

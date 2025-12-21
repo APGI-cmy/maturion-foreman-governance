@@ -293,26 +293,162 @@ This policy supports:
 
 ---
 
-## 11. Enforcement
+## 11. Mandatory Visibility Requirement (FM Office)
 
-### 11.1 Governance Administrator
-- MUST attempt propagation when governance changes
-- MUST escalate when blocked
-- MUST document attempts and outcomes
+**REQUIRED GOVERNANCE OUTCOME**
 
-### 11.2 Foreman (Future)
-- MUST propagate FM governance to builder repos
-- MUST escalate when blocked
-- MUST maintain coherence
+All cross-repository governance or policy adjustments initiated by any agent
+MUST trigger visibility to Johan via the Foreman Office.
 
-### 11.3 Builders
-- MUST comply with propagated governance
-- MUST escalate conflicts or ambiguities
-- MUST NOT operate under outdated governance
+### 11.1 Scope of Visibility Requirement
+
+This requirement applies to:
+- Any cross-repository governance propagation attempt
+- Any cross-repository policy write action
+- Any authorized override enabling cross-repository action
+- Any governance alignment PR opened in non-governance repositories
+
+### 11.2 Required Visibility Outcomes
+
+When ANY of the above actions occur, the following outcomes are REQUIRED:
+
+1. **Dashboard Notification**
+   - Event MUST appear in Johan's FM Office dashboard
+   - Notification MUST be persistent (not dismissible until reviewed)
+   - Notification MUST include: agent, target repository, action type, timestamp
+
+2. **Audible Alert**
+   - FM Office MUST emit audible notification
+   - Alert distinguishes cross-repo actions from routine events
+   - Alert persists until acknowledged
+
+3. **Persistent Event Record**
+   - Event MUST be recorded in FM event log
+   - Record MUST be immutable and auditable
+   - Record MUST include: full context, authorization reference, outcome
+
+### 11.3 Implementation Status Declaration
+
+**This capability is REQUIRED but may be non-functional initially.**
+
+- Requirement exists immediately upon policy adoption
+- Lack of FM Office dashboard implementation does NOT waive the requirement
+- Agents MUST comply with interim obligations (Section 11.4)
+- Implementation timeline is separate from requirement establishment
+
+**Governance supremacy:** This requirement is binding even when infrastructure does not yet support it.
+
+### 11.4 Agent Obligations (Interim and Ongoing)
+
+Until FM Office dashboard visibility is fully implemented, agents MUST:
+
+1. **Record Cross-Repo Events as Governance Incidents**
+   - Create incident record in `governance/incidents/` directory
+   - Include all details required for future dashboard integration
+   - Use standardized incident format for cross-repo actions
+
+2. **Mark Events as "FM_VISIBILITY_PENDING"**
+   - Add explicit marker: `FM_VISIBILITY_STATUS: PENDING`
+   - Include timestamp when FM visibility was attempted
+   - Update marker when FM Office integration is live
+
+3. **Escalate to Johan Directly**
+   - In absence of dashboard, escalate via GitHub comment/notification
+   - Provide same information that would appear on dashboard
+   - Do NOT proceed silently even if FM Office is unavailable
+
+4. **Do NOT Assume Visibility**
+   - Never assume "Johan will see it eventually"
+   - Explicit notification required for every cross-repo action
+   - Silent execution is prohibited regardless of infrastructure state
+
+### 11.5 Prohibited Silent Actions
+
+**No agent may perform cross-repository governance actions silently.**
+
+Even with proper authorization, an agent MUST NOT:
+- Execute cross-repo propagation without triggering FM Office visibility
+- Skip incident recording because "it's just governance alignment"
+- Assume dashboard notification will happen automatically
+- Proceed when FM visibility cannot be confirmed
+
+**Violation constitutes governance breach.**
+
+### 11.6 Future-Proofing for Automated Enforcement
+
+When FM Office dashboard is implemented, it MUST:
+
+1. **Automatically Consume Incident Records**
+   - Scan `governance/incidents/` for `FM_VISIBILITY_PENDING` events
+   - Import historical events into dashboard
+   - Update visibility status markers
+
+2. **Enforce Pre-Execution Visibility**
+   - Block cross-repo actions until FM notification confirmed
+   - Require dashboard acknowledgment before proceeding
+   - Prevent silent execution via technical controls
+
+3. **Provide Audit Trail**
+   - Complete history of cross-repo governance actions
+   - Filterable by agent, repository, time period
+   - Exportable for compliance review
+
+### 11.7 Incident Record Template
+
+Required fields for cross-repo governance incidents:
+
+```yaml
+incident_type: cross_repository_governance_action
+fm_visibility_status: PENDING  # or CONFIRMED when dashboard live
+timestamp_utc: YYYY-MM-DDTHH:MM:SSZ
+agent_id: governance-administrator
+action_type: governance_propagation | policy_write | override_authorization
+target_repositories:
+  - repository: org/repo-name
+    files_affected: [list]
+    action: PR_opened | change_proposed | escalated
+authorization_reference: comment_id or document path
+context: Brief description of what governance is being aligned
+outcome: success | blocked | escalated
+johan_notification_method: github_comment | dashboard | email | none
+dashboard_integration_ready: false  # true when FM Office live
+```
+
+### 11.8 Escalation When FM Office Unavailable
+
+If FM Office visibility cannot be achieved:
+
+1. Create incident record with `FM_VISIBILITY_STATUS: PENDING`
+2. Escalate directly to Johan via GitHub comment
+3. Include all information that would appear on dashboard
+4. Do NOT proceed until visibility confirmed by owner response
 
 ---
 
-## 12. Metrics
+## 12. Enforcement
+
+### 12.1 Governance Administrator
+- MUST attempt propagation when governance changes
+- MUST escalate when blocked
+- MUST document attempts and outcomes
+- **MUST trigger FM Office visibility for all cross-repo actions**
+- **MUST create incident records with FM_VISIBILITY_PENDING marker**
+
+### 12.2 Foreman (Future)
+- MUST propagate FM governance to builder repos
+- MUST escalate when blocked
+- MUST maintain coherence
+- **MUST ensure FM Office dashboard displays cross-repo actions**
+
+### 12.3 Builders
+- MUST comply with propagated governance
+- MUST escalate conflicts or ambiguities
+- MUST NOT operate under outdated governance
+- **MUST NOT perform cross-repo actions silently**
+
+---
+
+## 13. Metrics
 
 **Cross-Repository Propagation Metrics:**
 - Propagation attempts: [count]
@@ -321,8 +457,117 @@ This policy supports:
 - Average escalation resolution time: [duration]
 - Repositories aligned: [count]
 - Repositories with governance drift: [count]
+- **FM visibility events triggered: [count]**
+- **FM visibility events pending: [count]**
 
 These metrics inform governance automation maturity.
+
+---
+
+## 14. Infrastructure Prerequisites
+
+**Learning from PR #683 Training Exercise**
+
+Cross-repository operations require infrastructure support beyond policy authorization.
+
+### 13.1 Required Infrastructure
+
+For an agent to execute cross-repository governance propagation, the following infrastructure must be in place:
+
+1. **GitHub Repository Access**
+   - Personal Access Token (PAT), OAuth token, or SSH keys
+   - Read access to target repositories minimum
+   - PR creation permissions for target repositories
+
+2. **Network Access**
+   - Ability to reach GitHub.com or GitHub Enterprise instances
+   - No firewall blocks on git protocols
+
+3. **Execution Environment Support**
+   - Credentials securely available in agent execution context
+   - Git client installed and configured
+
+### 13.2 Authorization vs. Capability
+
+**Critical Distinction:**
+
+- **Authorization (Governance Layer):** Policy-level permission from owner to perform cross-repo operations
+- **Capability (Infrastructure Layer):** Technical ability to access and modify target repositories
+
+**Both are required.** Authorization without capability results in incomplete implementation.
+
+**Example from PR #683:**
+- Authorization: GRANTED by Johan (Comment 3679084028)
+- Capability: MISSING (no GitHub credentials in execution environment)
+- Outcome: Training completed via simulation, infrastructure gap documented
+
+### 13.3 Infrastructure Provisioning
+
+Before authorizing cross-repository operations, ensure:
+
+1. **Credential Provisioning**
+   - Create GitHub PAT with appropriate scopes
+   - Configure token with repository-level restrictions
+   - Set token expiration for time-bound operations
+   - Provide token to agent execution environment securely
+
+2. **Scope Limitation**
+   - Grant minimum required permissions (read + PR creation)
+   - Restrict to specific target repositories only
+   - No merge/admin permissions unless explicitly authorized
+   - Use repository-specific tokens when possible
+
+3. **Security Controls**
+   - Token should expire after operation completes
+   - Token should be revoked immediately if misused
+   - Audit all operations performed with token
+   - Token should not be logged or persisted
+
+### 13.4 Escalation When Infrastructure Missing
+
+If an agent is authorized but infrastructurally blocked:
+
+1. **Document the infrastructure gap** with specifics:
+   - What infrastructure is missing
+   - What was attempted
+   - What error occurred
+
+2. **Propose infrastructure solutions** (multiple options):
+   - Token provisioning with scope definition
+   - Manual content provision by owner
+   - Simulation-based completion
+
+3. **Complete objectives via simulation** when appropriate:
+   - Document proposed changes
+   - Record learning outcomes
+   - Update governance with prerequisites
+
+4. **Do NOT:**
+   - Wait silently
+   - Assume infrastructure will appear
+   - Attempt unauthorized credential acquisition
+   - Skip documentation
+
+**Training mode:** Infrastructure gaps during training should be documented as learning, not failures.
+
+### 13.5 Future Infrastructure Automation
+
+When cross-repository governance propagation becomes routine, consider:
+
+1. **Standardized Token Provisioning**
+   - Pre-configured tokens for common propagation scenarios
+   - Automated token lifecycle management
+   - Token scope templates by operation type
+
+2. **Infrastructure Readiness Checks**
+   - Pre-flight checks before attempting propagation
+   - Clear error messages when infrastructure missing
+   - Guided setup instructions
+
+3. **Multi-Repository Orchestration**
+   - Batch propagation support
+   - Dependency-aware propagation order
+   - Rollback capabilities
 
 ---
 
