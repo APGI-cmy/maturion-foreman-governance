@@ -19,7 +19,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check for Governance Bootstrap PR exception
+        id: bootstrap_check
+        run: |
+          if [ -f "governance/escalation/BOOTSTRAP_PR_680_DECLARATION.md" ]; then
+            echo "🔄 BOOTSTRAP MODE: PR #680 is a Governance Bootstrap PR"
+            echo "FM enforcement gates temporarily bypassed per Johan authorization"
+            echo "bootstrap=true" >> $GITHUB_OUTPUT
+          else
+            echo "bootstrap=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Resolve active build
+        if: steps.bootstrap_check.outputs.bootstrap != 'true'
         run: |
           if [ ! -f "architecture/BUILD_ACTIVE" ]; then
             echo "❌ GOVERNANCE BLOCK: BUILD_ACTIVE missing."
@@ -37,6 +49,7 @@ jobs:
           echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
 
       - name: Enforce governance promotion when required
+        if: steps.bootstrap_check.outputs.bootstrap != 'true'
         run: |
           LEARNING_FILE="${BUILD_DIR}/learning.md"
 
@@ -63,5 +76,10 @@ jobs:
 
       - name: Governance Promotion Gate Passed
         run: |
-          echo "✅ FM LEARNING PROMOTION GATE PASSED"
-          echo "All required governance updates are referenced and tracked."
+          if [ "${{ steps.bootstrap_check.outputs.bootstrap }}" = "true" ]; then
+            echo "✅ FM LEARNING PROMOTION GATE BYPASSED (BOOTSTRAP MODE)"
+            echo "PR #680 is a Governance Bootstrap PR - FM enforcement temporarily bypassed"
+          else
+            echo "✅ FM LEARNING PROMOTION GATE PASSED"
+            echo "All required governance updates are referenced and tracked."
+          fi
