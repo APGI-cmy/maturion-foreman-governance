@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize]
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: read
   issues: read
 
@@ -17,13 +17,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Count failure signatures
+        id: check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR=${{ github.event.pull_request.number }}
           REPO=${{ github.repository }}
+          COMMIT=${{ github.event.pull_request.head.sha }}
 
           FAILURES=$(gh api repos/$REPO/issues/$PR/comments \
             --jq '.[] | select(.body | contains("❌")) | .body')
@@ -31,12 +36,161 @@ jobs:
           SIGNATURES=$(echo "$FAILURES" | grep "FAILURE_SIGNATURE:" | sort | uniq | wc -l)
 
           echo "Detected distinct failure signatures: $SIGNATURES"
+          echo "SIGNATURE_COUNT=$SIGNATURES" >> $GITHUB_OUTPUT
+          echo "RESULT=PASS" >> $GITHUB_OUTPUT
+          echo "EXIT_CODE=0" >> $GITHUB_OUTPUT
 
           if [ "$SIGNATURES" -gt 3 ]; then
             echo "❌ GOVERNANCE BLOCK: Cascading failure detected."
             echo "More than 3 distinct failure causes."
             echo "PR must be closed and restarted."
-            exit 1
+            echo "RESULT=FAIL" >> $GITHUB_OUTPUT
+            echo "EXIT_CODE=1" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Cascading failure threshold not exceeded"
           fi
 
-          echo "✅ Cascading failure threshold not exceeded"
+      - name: Emit Gate Debug Report
+        if: always()
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          COMMIT=${{ github.event.pull_request.head.sha }}
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          RESULT="${{ steps.check.outputs.RESULT }}"
+          EXIT_CODE="${{ steps.check.outputs.EXIT_CODE }}"
+          SIGNATURE_COUNT="${{ steps.check.outputs.SIGNATURE_COUNT }}"
+          
+          REPORT_DIR=".github/gate-reports"
+          REPORT_FILE="$REPORT_DIR/cascading-failure-$PR.md"
+          
+          mkdir -p "$REPORT_DIR"
+          
+          cat > "$REPORT_FILE" << 'EOF'
+# Gate Debug Report: Cascading Failure Gate
+
+**PR Number:** ${{ github.event.pull_request.number }}
+**Commit SHA:** ${{ github.event.pull_request.head.sha }}
+**Execution Time:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+**Gate Result:** ${RESULT}
+**Exit Code:** ${EXIT_CODE}
+
+---
+
+## Gate Configuration
+
+- **Workflow File:** `.github/workflows/governance-cascading-failure-gate.yml`
+- **Trigger:** pull_request (opened, synchronize)
+- **Runner:** ubuntu-latest
+
+---
+
+## Execution Summary
+
+This gate prevents cascading failures by counting distinct `FAILURE_SIGNATURE:` markers in PR comments.
+
+**Threshold:** Maximum 3 distinct failure signatures allowed  
+**Current Count:** ${SIGNATURE_COUNT}
+
+---
+
+## Check Results
+
+### Check 1: Failure Signature Count
+- **Status:** $([ "$RESULT" = "PASS" ] && echo "✅ PASS" || echo "❌ FAIL")
+- **Details:** Detected ${SIGNATURE_COUNT} distinct failure signature(s) in PR comments
+- **Evidence:** GitHub API call to `repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments`
+
+---
+
+## Failure Analysis (if FAIL)
+
+$(if [ "$RESULT" = "FAIL" ]; then
+cat << 'ANALYSIS'
+**Root Cause:**
+More than 3 distinct failure causes detected in PR comments. This indicates a cascading failure pattern where multiple independent issues are compounding.
+
+**Required Actions:**
+1. Close this PR
+2. Review all failure signatures in PR comments
+3. Create consolidated fix addressing root causes
+4. Open new PR with fixes applied
+
+**Circuit Breaker:**
+Per governance policy, PRs with >3 distinct failure signatures must be closed and restarted to prevent technical debt accumulation.
+ANALYSIS
+else
+cat << 'PASS'
+**Status:** PASSED - No cascading failure detected.
+PASS
+fi)
+
+---
+
+## Artifacts
+
+**Files Inspected:**
+- None (gate inspects PR comments via API)
+
+**Commands Executed:**
+```bash
+gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \\
+  --jq '.[] | select(.body | contains("❌")) | .body'
+echo "\$FAILURES" | grep "FAILURE_SIGNATURE:" | sort | uniq | wc -l
+```
+
+**Output:**
+```
+Detected distinct failure signatures: ${SIGNATURE_COUNT}
+```
+
+---
+
+## Machine-Readable Summary
+
+```json
+{
+  "gate": "cascading-failure",
+  "pr": ${{ github.event.pull_request.number }},
+  "commit": "${{ github.event.pull_request.head.sha }}",
+  "result": "${RESULT}",
+  "exit_code": ${EXIT_CODE},
+  "timestamp": "${TIMESTAMP}",
+  "checks": [
+    {
+      "name": "failure-signature-count",
+      "status": "${RESULT}",
+      "evidence": ["PR comments via GitHub API"],
+      "signature_count": ${SIGNATURE_COUNT},
+      "threshold": 3
+    }
+  ],
+  "required_actions": $([ "$RESULT" = "FAIL" ] && echo '["Close PR", "Consolidate fixes", "Restart with new PR"]' || echo '[]')
+}
+```
+
+---
+
+**Signature:**  
+Gate: `cascading-failure`  
+Authority: Governance System  
+Generated: ${TIMESTAMP}
+EOF
+
+          echo "✅ Gate debug report emitted to $REPORT_FILE"
+
+      - name: Commit and Push Report
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/gate-reports/
+          git commit -m "Add cascading failure gate debug report for PR #${{ github.event.pull_request.number }}" || echo "No changes to commit"
+          git push || echo "Nothing to push"
+
+      - name: Enforce Gate Result
+        run: |
+          if [ "${{ steps.check.outputs.EXIT_CODE }}" != "0" ]; then
+            echo "❌ Gate FAILED - see debug report at .github/gate-reports/cascading-failure-${{ github.event.pull_request.number }}.md"
+            exit 1
+          fi
+          echo "✅ Gate PASSED"
