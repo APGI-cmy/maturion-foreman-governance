@@ -1,72 +1,138 @@
-# QIEL Workflow - Governance Enforcement
+# Governance Workflows
 
-This directory contains the GitHub Actions workflow for QIEL (Quality Integrity Enforcement Layer).
+This directory contains GitHub Actions workflows for governance enforcement in the Maturion ecosystem.
+
+## Builder-First PR Merge Model
+
+**Status**: Active as of 2025-12-22  
+**Authority**: Constitutional - Mandatory
+
+The governance repository enforces the **Builder-First PR Merge Model** where:
+- **Builder QA artifacts** (`.qa/builder/*`) are the canonical source of truth
+- **CI/PR gates** enforce presence and validity of artifacts only
+- **No CI diagnosis, debugging, or inference** of build state
+
+See: `governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md` for complete documentation.
 
 ## Governance Supremacy Rule (GSR)
 
-**CRITICAL**: Per Maturion governance doctrine, **Foreman MUST run QIEL on itself**.
+**CRITICAL**: Per Maturion governance doctrine, **all systems MUST follow governance rules**, including governance systems themselves.
 
-### Why Foreman Validates Itself
+### Core Principles
 
 1. **GSR (Governance Supremacy Rule)**: No system is exempt from rules it imposes
-2. **One Build**: Foreman follows the same rules as all projects
+2. **One Build**: All projects follow the same rules
 3. **True North**: Quality enforcement applies universally
 4. **Zero Legacy**: No grandfather clauses or exceptions
-5. **QA Must Be 100% Green**: Foreman demonstrates this by example
+5. **QA Must Be 100% Green**: Systems demonstrate this by example
 
 **This is NOT a circular dependency** - it is governance enforcement applied recursively and correctly.
 
-## Active Workflow
+## Active Workflows
 
-The file `qiel.yml` is the **active workflow** that runs QIEL on every PR to this repository.
+### Builder QA Enforcement Gate (`builder-qa-enforcement-gate.yml`)
 
-### Required Permissions
+**Purpose**: Enforce Builder-First PR Merge Model
 
-The workflow requires these GitHub permissions:
+**Status**: Active - Mandatory for all PRs
 
+**Enforces**:
+- ✅ Required `.qa/builder/*` artifacts exist
+- ✅ Artifacts are valid JSON/Markdown
+- ✅ `BUILD_QA_REPORT.json` shows `build_status: "PASS"`
+- ✅ `BUILD_QA_REPORT.json` shows `merge_readiness.ready: true`
+- ✅ `GOVERNANCE_COMPLIANCE_REPORT.json` shows `compliance_status: "COMPLIANT"`
+
+**Does NOT**:
+- ❌ Read PR comments
+- ❌ Read GitHub Issues  
+- ❌ Use `gh api` to infer state
+- ❌ Diagnose or debug failures
+- ❌ Interpret logs or CI output
+
+**Required Permissions**:
 ```yaml
 permissions:
   contents: read
-  issues: write      # Required for creating QI Incident issues
-  pull-requests: write  # Required for PR comments
+  pull-requests: write
 ```
 
-## Workflow Triggers
+**Triggers**: All PRs to `main` or `develop`
 
-QIEL runs on:
-- All pull requests to `main` or `develop` branches
-- All pushes to `main`, `develop`, or `feature/**` branches
+**Schemas**:
+- `governance/schemas/BUILD_QA_REPORT.schema.json`
+- `governance/schemas/GOVERNANCE_COMPLIANCE_REPORT.schema.json`
+- `governance/schemas/BUILDER_QA_SUMMARY.structure.md`
 
-## What QIEL Validates
+---
 
-1. **Build Logs** (`typecheck`) - Zero TypeScript errors
-2. **Lint Logs** (`lint`) - Zero ESLint errors/warnings
-3. **Test Logs** (`test:all`) - All tests passing
-4. **Schema Cohesion** - All engine schemas match
-5. **Engine Loading** - All cognitive engines initialize
-6. **Deployment Simulation** - Production builds succeed
+### Governance Gate (`governance-gate.yml`)
 
-## Exit Criteria
+**Purpose**: Validate governance repository structure integrity
+
+**Validates**:
+1. Critical governance directories exist
+2. Constitutional documents present
+3. No application code in governance repo
+
+**Triggers**: All PRs to `main` or `develop`
+
+---
+
+## PR Merge Criteria
 
 A PR can only merge when:
-- ✅ QIEL runs successfully
-- ✅ All checks pass
-- ✅ Zero errors or warnings
-- ✅ QIC (Quality Integrity Contract) satisfied
-- ✅ GSR enforced
+- ✅ **Builder QA Enforcement Gate passes** (artifacts present, valid, show PASS/COMPLIANT/READY)
+- ✅ **Governance Gate passes** (structure integrity maintained)
+- ✅ All other applicable workflow checks pass
+- ✅ Human review approval (if required)
 
-## Integration with QIW
+**Critical**: PR merge outcome is **deterministic** based on Builder QA artifacts. No surprise failures.
 
-- **QIW (Quality Integrity Watchdog)** - Monitors logs in real-time
-- **QIEL** - Comprehensive enforcement layer with incident tracking
-- Both systems work together to ensure quality integrity
+---
 
-## For Downstream Projects
+## Decommissioned Legacy Gates
 
-Projects that use Foreman should copy `qiel-template.yml.example` to their own `.github/workflows/qiel.yml` and customize as needed.
+The following gates were **permanently removed** as of 2025-12-22:
+
+### ❌ governance-cascading-failure-gate.yml
+- **Why Removed**: Used `gh api` to read PR comments and infer failure causality
+- **Violation**: CI inferring truth from metadata instead of artifacts
+- **Replaced By**: Builder QA artifacts declare failure state directly in reports
+
+### ❌ governance-scope-declaration-gate.yml
+- **Why Removed**: Enforced legacy scope declaration file format
+- **Violation**: Conflicted with Builder QA report-based compliance model
+- **Replaced By**: Scope compliance included in `GOVERNANCE_COMPLIANCE_REPORT.json`
+
+**Reason for Removal**: These gates violated the Builder-First PR Merge Model by allowing CI to act as a source of truth rather than enforcing Builder's artifacts.
+
+---
+
+## For Application Repositories
+
+Application repositories using Builder agents should:
+
+1. **Generate Builder QA Artifacts**: Create `.qa/builder/*` files after build-to-green
+2. **Use Builder QA Enforcement Gate**: Copy `builder-qa-enforcement-gate.yml` to your workflows
+3. **Follow Builder-First Model**: Let Builder QA artifacts be canonical truth
+4. **Remove Legacy Gates**: Remove any gates that use `gh api` for PR comments or infer state
+
+---
 
 ## Governance Documentation
 
-- See `foreman/governance/quality-integrity-contract.md` for QIC details
-- See `docs/QIEL_README.md` for full QIEL documentation
-- See `lib/foreman/watchdog/README.md` for QIW documentation
+### Constitutional Documents
+- `governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md` - PR merge model (MANDATORY)
+- `governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md` - Highest governance authority
+- `governance/canon/COMPLIANCE_AND_STANDARDS_GOVERNANCE.md` - ISO/NIST alignment
+- `governance/policy/QA_POLICY_MASTER.md` - QA and verification doctrine
+- `BUILD_PHILOSOPHY.md` - One-Time Build Law, Zero Test Debt
+
+### Schemas
+- `governance/schemas/BUILD_QA_REPORT.schema.json` - Build QA report structure
+- `governance/schemas/GOVERNANCE_COMPLIANCE_REPORT.schema.json` - Compliance report structure
+- `governance/schemas/BUILDER_QA_SUMMARY.structure.md` - Human-readable summary format
+
+### Templates
+- `qiel-template.yml.example` - QIEL workflow template for downstream projects
