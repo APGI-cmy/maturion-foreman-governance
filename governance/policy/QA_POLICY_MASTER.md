@@ -567,7 +567,41 @@ This section enumerates the complete taxonomy of QA domains that MUST be covered
 
 ---
 
-### 2.10 Evidence Integrity & Auditability
+### 2.10 Configuration and Deployment Validation (PartPulse-Derived)
+
+**Purpose**: Verify deployment configuration, environment setup, and platform-specific requirements are correct.
+
+**Test Categories**:
+- Deployment configuration file presence and validity (e.g., `vercel.json`, `Dockerfile`)
+- Environment variable presence and format validation
+- Platform-specific configuration correctness
+- File system structure and entrypoint location
+- Build output correctness
+- Configuration file placement (correct directories)
+- Provider-specific constraints (e.g., serverless timeout limits, memory limits)
+- Database migration execution and validation
+- Secrets and sensitive configuration handling
+
+**Coverage Requirement**: Every deployment-critical configuration element must have validation tests where possible.
+
+**PartPulse Learning**:
+- Configuration failures that only manifest at runtime MUST be documented as non-testable boundaries
+- Tests MUST validate both configuration presence AND configuration effects where testable
+- Migration execution strategy MUST be tested (or explicitly marked as runtime-only verification)
+- Environment-provider mismatches MUST be caught by tests where environment can be simulated
+
+**Repeatable Failure Prevention**:
+- Every configuration-related failure MUST result in permanent regression test if testable
+- Non-testable configuration MUST result in mandatory manual verification checklist
+- Incomplete fixes (e.g., fixing only symptom, not root cause) MUST be classified as distinct failure requiring complete remediation
+
+**Failure Impact**: Configuration failure = Catastrophic Failure (deployment cannot succeed or behaves incorrectly).
+
+**Note**: This domain acknowledges that some configuration (e.g., production environment variables, DNS settings) cannot be tested in CI and requires runtime verification per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md Section 3.5.
+
+---
+
+### 2.11 Evidence Integrity & Auditability
 
 **Purpose**: Verify governance evidence is complete, accurate, and tamper-proof.
 
@@ -586,7 +620,7 @@ This section enumerates the complete taxonomy of QA domains that MUST be covered
 
 ---
 
-### 2.11 Coverage Matrix
+### 2.12 Coverage Matrix
 
 All domains must be testable and traceable.
 
@@ -601,6 +635,7 @@ All domains must be testable and traceable.
 | Security & Compliance | ✅ Mandatory | **CRITICAL+** | **CRITICAL Catastrophic** |
 | Regression Prevention | ✅ Mandatory | Critical | Double-Catastrophic |
 | Performance & Resilience | ✅ Mandatory | High | Catastrophic |
+| Configuration & Deployment | ✅ Mandatory | Critical | Catastrophic |
 | Evidence Integrity | ✅ Mandatory | **CRITICAL+** | **CRITICAL Catastrophic** |
 
 **No domain may be omitted. All domains are mandatory.**

@@ -87,24 +87,162 @@ Once promoted:
 - Is auditable
 - Prevents recurrence
 
-Failure to promote qualifying learning is a governance defect.
+**Failure to promote qualifying learning is a governance defect.**
+
+### 6.1 Learning Promotion Enforcement
+
+**Non-Negotiable Rules**:
+
+1. **Failure to Promote is a Defect**: If learning qualifies for promotion (per Section 4) but is NOT promoted, this is itself a governance violation requiring escalation.
+
+2. **Repeated Failures are Governance Violations**: If the same failure class occurs after learning has been promoted and structural changes made, this indicates:
+   - Learning promotion was incomplete
+   - Structural changes were inadequate
+   - Enforcement mechanism failed
+   This triggers **Double-Catastrophic Failure protocol** per QA_POLICY_MASTER.md Section 1.5.
+
+3. **Learning Must Result in Structural Change**: Promotion without enforceable structural change is invalid. Documentation-only updates are insufficient unless the documentation defines new enforceable rules or schemas.
+
+**Structural Change Examples (Valid)**:
+- ✅ New canonical governance rule added
+- ✅ Schema updated with new required fields
+- ✅ PR gate updated to check new condition
+- ✅ Architecture completeness requirements expanded
+- ✅ QA domain added with mandatory tests
+- ✅ Agent contract updated with new constraints
+
+**Documentation-Only Examples (Invalid)**:
+- ❌ "Lessons learned" document without rule changes
+- ❌ "Best practices" guide without enforcement
+- ❌ "Recommendations" without mandatory requirements
+- ❌ Architecture update without corresponding QA update
+
+### 6.2 Promotion Completeness Validation
+
+After learning promotion, the following MUST be verifiable:
+
+**Validation Questions**:
+1. Can the same failure class be **structurally prevented** from recurring? (Yes = valid, No = incomplete)
+2. Is the prevention mechanism **automatically enforced**? (Yes = valid, No = incomplete)
+3. Will future builds **automatically incorporate** this learning? (Yes = valid, No = incomplete)
+4. Can compliance be **audited**? (Yes = valid, No = incomplete)
+
+If answer to ANY question is NO, promotion is **incomplete** and must be strengthened.
 
 ---
 
-## 7. PartPulse Classification (Example)
+## 7. PartPulse Classification and Promotion (Completed Example)
 
-The PartPulse experience is classified as:
-- Root Cause: Missing PR gate precondition invariant
-- Domain: Governance + Builder Handover
-- Promotion Target:
-  - Builder agent contracts
-  - PR Gate Precondition Rule
-  - Governance completeness enforcement
+The PartPulse application produced **validated FL/CI lessons** through real production, CI, and deployment failures. These lessons have been **promoted into canonical governance** per this model.
 
-This promotion is mandatory and irreversible.
+### 7.1 PartPulse Root Cause Analysis
+
+**Primary Root Cause**: Architecture incompleteness — deployment, environment, and configuration requirements were not explicit in architecture.
+
+**Secondary Root Causes**:
+- Missing governance rule requiring explicit deployment target declaration
+- Missing governance rule requiring environment variable documentation
+- Missing governance rule requiring migration execution strategy
+- Insufficient QA coverage for configuration and deployment validation
+- No explicit acknowledgment of non-testable configuration boundaries
+
+### 7.2 PartPulse Failure Classes Identified
+
+| Failure Class | Description | Recurrence Potential |
+|--------------|-------------|---------------------|
+| Deployment Configuration Missing | Required deployment files (e.g., `vercel.json`) not present or misconfigured | HIGH |
+| Environment/Provider Mismatch | Environment variable expectations differ between local and production | HIGH |
+| Database Migration Ambiguity | Unclear who executes migrations and when | MEDIUM |
+| Incomplete Fix | Symptom addressed but root cause remains | HIGH |
+| Non-Testable Configuration | Production config not testable in CI, no manual verification checklist | MEDIUM |
+
+### 7.3 PartPulse Promotion Targets and Actions
+
+**Promotion Actions Completed**:
+
+1. **Canonical Governance Update**:
+   - ✅ Created `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` (new canonical document)
+   - ✅ Added Section 3.1: Deployment Target Declaration (mandatory)
+   - ✅ Added Section 3.2: Runtime Entrypoint and Filesystem Expectations (mandatory)
+   - ✅ Added Section 3.3: Environment Variable Requirements and Provider Constraints (mandatory)
+   - ✅ Added Section 3.4: Database and Data Migration Strategy (mandatory)
+   - ✅ Added Section 3.5: Non-Testable Configuration Failure Boundaries (mandatory)
+
+2. **QA Policy Update**:
+   - ✅ Updated `QA_POLICY_MASTER.md` Section 2.10: Configuration and Deployment Validation (new QA domain)
+   - ✅ Added configuration and deployment as valid and mandatory QA targets
+   - ✅ Added requirement: repeatable failure classes MUST result in permanent QA assertions
+   - ✅ Added requirement: incomplete fixes are distinct failure class requiring complete remediation
+   - ✅ Added requirement: tests must validate both configuration AND effects
+
+3. **Learning Promotion Enforcement**:
+   - ✅ Updated this document (LEARNING_INTAKE_AND_PROMOTION_MODEL.md) Section 6.1: Learning Promotion Enforcement
+   - ✅ Clarified: failure to promote qualifying learning is governance defect
+   - ✅ Clarified: repeated failures after learning exists are governance violations (Double-Catastrophic)
+   - ✅ Clarified: learning promotion must result in structural change, not documentation alone
+
+### 7.4 PartPulse Learning Effect
+
+**Structural Prevention Achieved**:
+- Architecture missing deployment, environment, or migration strategy is now **constitutionally incomplete**
+- Pre-implementation gates MUST validate architecture completeness per new requirements
+- QA MUST include configuration and deployment validation where testable
+- Non-testable configuration MUST have documented manual verification procedures
+
+**Enforcement Mechanisms**:
+- Foreman validates architecture completeness before creating Red QA
+- Builder receives rejection if architecture incomplete
+- Governance Gate blocks PR if architecture completeness not demonstrated
+- Build Effectiveness Score penalized for post-deployment architecture incompleteness discovery
+
+**Propagation**:
+- All future builds (including FM app) MUST satisfy new architecture completeness requirements
+- All active projects MUST review architecture for PartPulse-derived gaps
+- Architecture templates updated to include deployment, environment, and migration sections
+
+### 7.5 PartPulse Promotion Completeness Validation
+
+**Validation Questions Applied**:
+
+1. ✅ **Can same failure class be structurally prevented?**  
+   YES — Architecture completeness requirements now mandate explicit deployment, environment, and migration documentation.
+
+2. ✅ **Is prevention mechanism automatically enforced?**  
+   YES — Foreman validates completeness pre-implementation, Governance Gate validates completeness pre-merge.
+
+3. ✅ **Will future builds automatically incorporate learning?**  
+   YES — Canonical governance applies to all builds; architecture incomplete without PartPulse-derived sections.
+
+4. ✅ **Can compliance be audited?**  
+   YES — Architecture artifacts either contain required sections or are flagged as incomplete; evidence is traceable.
+
+**Result**: PartPulse promotion is **COMPLETE and VALID**.
+
+---
+
+## 8. Promotion Obligations Discharge
+
+This document, combined with created/updated artifacts, **fully discharges** the learning promotion obligations from PartPulse FL/CI experience.
+
+**Key Artifacts Updated**:
+1. `governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` (NEW)
+2. `governance/policy/QA_POLICY_MASTER.md` (UPDATED — Section 2.10, 2.12)
+3. `governance/canon/LEARNING_INTAKE_AND_PROMOTION_MODEL.md` (UPDATED — Section 6, 7)
+
+**Evidence of Promotion**:
+- Issue #1 (this issue) triggered promotion
+- Canonical governance strengthened with PartPulse-derived invariants
+- Structural changes implemented and enforceable
+- All future builds inherit protection against PartPulse failure classes
+
+**One-Time Build Law Compliance**:
+- PartPulse failures cannot recur if governance is followed
+- FM app and future apps are structurally protected
+- Learning promotion obligation satisfied
 
 ---
 
 End of LEARNING INTAKE AND PROMOTION MODEL
 🔒 Effect:
 This ensures PartPulse pain can never repeat.
+Architecture incompleteness is now constitutionally detectable and preventable.
