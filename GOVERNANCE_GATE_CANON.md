@@ -3,9 +3,10 @@
 ## Status
 **Type**: Constitutional  
 **Authority**: Supreme - Applies to ALL repositories  
-**Version**: 1.0  
-**Date**: 2025-12-15  
+**Version**: 1.1  
+**Date**: 2025-12-22  
 **Owner**: Maturion Engineering Leadership (Johan)
+**Changelog**: v1.1 (2025-12-22) - Added agent-role-based gate applicability clarification
 
 ---
 
@@ -42,7 +43,19 @@ The Governance Gate is the **ultimate decision maker**.
 - Gate decision is **final and binding**
 - No human override permitted (except emergency bypass with full audit)
 
-### 3. Evidence-Based Validation
+### 3. Agent-Role-Based Applicability
+The Governance Gate is **agent-role aware**.
+
+- Gate requirements vary by agent role (Builder, Governance Administrator, FM)
+- Agent role is authoritative for determining gate applicability
+- Builder agents: Full enforcement (Build-to-Green, architecture, 100% GREEN QA, all controls)
+- Governance Administrator agents: Governance-scoped enforcement only (schemas, policies, canonical integrity)
+- FM agents: FM-scoped enforcement (learning promotion, failure promotion, effectiveness)
+- **See**: `governance/canon/AGENT_ROLE_GATE_APPLICABILITY.md` for complete definitions
+
+**Invariant**: Applying builder-specific gates to non-builder agents is a **governance error**, not a compliance failure.
+
+### 4. Evidence-Based Validation
 The gate validates **process compliance**, not code quality.
 
 - Code quality validated during Build-to-Green
@@ -50,7 +63,7 @@ The gate validates **process compliance**, not code quality.
 - Gate verifies evidence trail is complete
 - Gate ensures no shortcuts were taken
 
-### 4. Zero-Tolerance Enforcement
+### 5. Zero-Tolerance Enforcement
 The gate enforces **absolute compliance**.
 
 - No soft passes
@@ -887,6 +900,7 @@ The Canonical Governance Gate is:
 ## Related Documents
 
 - `/BUILD_PHILOSOPHY.md` - Supreme authority for build processes
+- `governance/canon/AGENT_ROLE_GATE_APPLICABILITY.md` - Agent-role-based gate applicability (NEW)
 - `.github/foreman/agent-contract.md` - Foreman's constitutional contract
 - `/foreman/constitution/CS1-CS6.md` - Constitutional safeguard definitions
 - `/foreman/governance/governance-supremacy-rule.md` - GSR principles
