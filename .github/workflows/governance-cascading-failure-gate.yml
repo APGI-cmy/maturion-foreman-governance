@@ -65,48 +65,14 @@ jobs:
           
           mkdir -p "$REPORT_DIR"
           
-          cat > "$REPORT_FILE" << 'EOF'
-# Gate Debug Report: Cascading Failure Gate
-
-**PR Number:** ${{ github.event.pull_request.number }}
-**Commit SHA:** ${{ github.event.pull_request.head.sha }}
-**Execution Time:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
-**Gate Result:** ${RESULT}
-**Exit Code:** ${EXIT_CODE}
-
----
-
-## Gate Configuration
-
-- **Workflow File:** `.github/workflows/governance-cascading-failure-gate.yml`
-- **Trigger:** pull_request (opened, synchronize)
-- **Runner:** ubuntu-latest
-
----
-
-## Execution Summary
-
-This gate prevents cascading failures by counting distinct `FAILURE_SIGNATURE:` markers in PR comments.
-
-**Threshold:** Maximum 3 distinct failure signatures allowed  
-**Current Count:** ${SIGNATURE_COUNT}
-
----
-
-## Check Results
-
-### Check 1: Failure Signature Count
-- **Status:** $([ "$RESULT" = "PASS" ] && echo "✅ PASS" || echo "❌ FAIL")
-- **Details:** Detected ${SIGNATURE_COUNT} distinct failure signature(s) in PR comments
-- **Evidence:** GitHub API call to `repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments`
-
----
-
-## Failure Analysis (if FAIL)
-
-$(if [ "$RESULT" = "FAIL" ]; then
-cat << 'ANALYSIS'
-**Root Cause:**
+          # Prepare status emoji
+          if [ "$RESULT" = "PASS" ]; then
+            STATUS_EMOJI="✅"
+            FAILURE_ANALYSIS="**Status:** PASSED - No cascading failure detected."
+            REQUIRED_ACTIONS_JSON="[]"
+          else
+            STATUS_EMOJI="❌"
+            FAILURE_ANALYSIS="**Root Cause:**
 More than 3 distinct failure causes detected in PR comments. This indicates a cascading failure pattern where multiple independent issues are compounding.
 
 **Required Actions:**
@@ -116,13 +82,50 @@ More than 3 distinct failure causes detected in PR comments. This indicates a ca
 4. Open new PR with fixes applied
 
 **Circuit Breaker:**
-Per governance policy, PRs with >3 distinct failure signatures must be closed and restarted to prevent technical debt accumulation.
-ANALYSIS
-else
-cat << 'PASS'
-**Status:** PASSED - No cascading failure detected.
-PASS
-fi)
+Per governance policy, PRs with >3 distinct failure signatures must be closed and restarted to prevent technical debt accumulation."
+            REQUIRED_ACTIONS_JSON='["Close PR", "Review failure signatures", "Consolidate fixes", "Restart with new PR"]'
+          fi
+          
+          cat > "$REPORT_FILE" << EOF
+# Gate Debug Report: Cascading Failure Gate
+
+**PR Number:** $PR
+**Commit SHA:** $COMMIT
+**Execution Time:** $TIMESTAMP
+**Gate Result:** $RESULT
+**Exit Code:** $EXIT_CODE
+
+---
+
+## Gate Configuration
+
+- **Workflow File:** \`.github/workflows/governance-cascading-failure-gate.yml\`
+- **Trigger:** pull_request (opened, synchronize)
+- **Runner:** ubuntu-latest
+
+---
+
+## Execution Summary
+
+This gate prevents cascading failures by counting distinct \`FAILURE_SIGNATURE:\` markers in PR comments.
+
+**Threshold:** Maximum 3 distinct failure signatures allowed  
+**Current Count:** $SIGNATURE_COUNT
+
+---
+
+## Check Results
+
+### Check 1: Failure Signature Count
+- **Status:** $STATUS_EMOJI $RESULT
+- **Details:** Detected $SIGNATURE_COUNT distinct failure signature(s) in PR comments
+- **Evidence:** GitHub API call to \`repos/${{ github.repository }}/issues/$PR/comments\`
+
+---
+
+## Failure Analysis
+
+$FAILURE_ANALYSIS
 
 ---
 
@@ -132,48 +135,57 @@ fi)
 - None (gate inspects PR comments via API)
 
 **Commands Executed:**
-```bash
-gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \\
+\`\`\`bash
+gh api repos/${{ github.repository }}/issues/$PR/comments \\\\
   --jq '.[] | select(.body | contains("❌")) | .body'
-echo "\$FAILURES" | grep "FAILURE_SIGNATURE:" | sort | uniq | wc -l
-```
+echo "\\\$FAILURES" | grep "FAILURE_SIGNATURE:" | sort | uniq | wc -l
+\`\`\`
 
 **Output:**
-```
-Detected distinct failure signatures: ${SIGNATURE_COUNT}
-```
+\`\`\`
+Detected distinct failure signatures: $SIGNATURE_COUNT
+\`\`\`
 
 ---
 
 ## Machine-Readable Summary
 
-```json
+\`\`\`json
 {
-  "gate": "cascading-failure",
-  "pr": ${{ github.event.pull_request.number }},
-  "commit": "${{ github.event.pull_request.head.sha }}",
-  "result": "${RESULT}",
-  "exit_code": ${EXIT_CODE},
-  "timestamp": "${TIMESTAMP}",
+  "gate_name": "Cascading Failure Gate",
+  "gate_id": "cascading-failure",
+  "pr_number": $PR,
+  "status": "$RESULT",
+  "failure_signatures": [],
+  "failure_count": $SIGNATURE_COUNT,
+  "summary": "Detected $SIGNATURE_COUNT distinct failure signatures in PR comments. Threshold is 3.",
+  "required_action": $REQUIRED_ACTIONS_JSON,
+  "timestamp_utc": "$TIMESTAMP",
+  "source_commit": "$COMMIT",
+  "exit_code": $EXIT_CODE,
   "checks": [
     {
       "name": "failure-signature-count",
-      "status": "${RESULT}",
+      "status": "$RESULT",
       "evidence": ["PR comments via GitHub API"],
-      "signature_count": ${SIGNATURE_COUNT},
-      "threshold": 3
+      "details": {
+        "signature_count": $SIGNATURE_COUNT,
+        "threshold": 3
+      }
     }
   ],
-  "required_actions": $([ "$RESULT" = "FAIL" ] && echo '["Close PR", "Consolidate fixes", "Restart with new PR"]' || echo '[]')
+  "workflow_file": ".github/workflows/governance-cascading-failure-gate.yml",
+  "runner": "ubuntu-latest"
 }
-```
+\`\`\`
 
 ---
 
 **Signature:**  
-Gate: `cascading-failure`  
+Gate: \`cascading-failure\`  
 Authority: Governance System  
-Generated: ${TIMESTAMP}
+Generated: $TIMESTAMP  
+Schema: \`governance/schema/GATE_DEBUG_REPORT_SCHEMA.json\`
 EOF
 
           echo "✅ Gate debug report emitted to $REPORT_FILE"
