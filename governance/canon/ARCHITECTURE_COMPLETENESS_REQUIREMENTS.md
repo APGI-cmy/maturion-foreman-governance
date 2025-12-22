@@ -2,7 +2,7 @@
 
 ## Status
 Canonical Governance Standard  
-Version: v1  
+Version: v1.1  
 Authority: Johan Ras  
 Applies To: All Applications, All Builds, Foreman, Builders, Governance Administrator
 
@@ -247,13 +247,179 @@ All architecture documents MUST explicitly address the following domains. Absenc
 
 ---
 
+### 3.11 Wiring & Interconnectivity Architecture (MANDATORY)
+
+**Requirement**: Architecture MUST explicitly define how all components are connected and interact at runtime.
+
+**Context**: Systems that are fully specified in isolation, but non-functional when assembled, represent a catastrophic failure mode. Components without explicit wiring are incomplete by definition.
+
+**Required Declarations**:
+
+The architecture MUST include:
+
+- **System Wiring Diagram**: A complete logical (not cosmetic) diagram showing all component connections
+- **Explicit Connection Definitions**:
+  - Component-to-component connections
+  - Direction of data/control flow
+  - Sync vs async interactions
+  - Error and timeout propagation paths
+- **Connection Ownership**: Clear ownership of each connection (producer / consumer)
+- **Startup Order**: Definition of startup order and dependency resolution
+- **Shutdown and Failure Cascades**: Definition of shutdown sequences and failure cascades
+
+**Wiring Invariants**:
+
+- No component may exist without at least one defined connection
+- No interface may be declared without an implemented wiring path
+- No "implicit" or "assumed" connections are allowed
+
+**Testability Requirement**:
+
+Each wiring path MUST be mappable to:
+- An integration test
+- Or an end-to-end test
+- Or a contract test
+
+If a connection cannot be tested, it is not considered real.
+
+**Completeness Test**:
+- [ ] Is there a complete system wiring diagram?
+- [ ] Are all component-to-component connections explicit?
+- [ ] Is data/control flow direction documented?
+- [ ] Is startup order and dependency resolution defined?
+- [ ] Can each wiring path be mapped to a test?
+
+**Violation**: If architecture defines components without explicit wiring, it is **incomplete**.
+
+---
+
+### 3.12 End-to-End Functional Paths (MANDATORY)
+
+**Requirement**: Architecture MUST define complete end-to-end paths for all primary, secondary, and failure scenarios.
+
+**Context**: A system is not complete until it can demonstrate complete functional paths from user action to observable outcome. Partial paths indicate incomplete architecture.
+
+**Required Path Definitions**:
+
+Architecture MUST define complete end-to-end paths for:
+
+- **Primary User Workflows**: Main user-facing functionality
+- **Secondary/Administrative Workflows**: Management, configuration, administrative actions
+- **Error and Failure Scenarios**: How failures propagate and are handled
+- **Degraded / Partial Availability Scenarios**: Behavior when dependencies are unavailable
+
+**Path Tracing Requirement**:
+
+Each path MUST trace through all layers:
+
+> UI → API → Domain Logic → Data → External Dependencies → Response → Observability
+
+If any segment is missing, the architecture is incomplete.
+
+**Completeness Test**:
+- [ ] Are all primary user workflows defined end-to-end?
+- [ ] Are secondary/administrative workflows defined?
+- [ ] Are error and failure paths documented?
+- [ ] Are degraded mode scenarios addressed?
+- [ ] Can each path be traced through all system layers?
+
+**Violation**: If architecture does not trace complete paths from input to output through all system layers, it is **incomplete**.
+
+---
+
+### 3.13 Wave-Based One-Time Build Model (MANDATORY)
+
+**Requirement**: Large systems MAY be delivered in waves, provided each wave satisfies One-Time Build correctness and regression-safety requirements.
+
+**Context**: Wave-based delivery is permitted but must not compromise completeness, correctness, or regression-safety. Each wave must be 100% complete within its scope.
+
+#### 3.13.1 Wave Definition
+
+A **wave** is a bounded, coherent subset of the system that:
+
+- Has a clear functional purpose
+- Is fully wired end-to-end within its scope
+- Can be tested independently and in combination with prior waves
+
+#### 3.13.2 One-Time Build Law (Wave-Scoped)
+
+Each wave MUST satisfy **100% One-Time Build correctness**:
+
+- All architecture requirements for the wave are met
+- All wiring within the wave is complete
+- All QA for the wave passes 100% GREEN
+- No TODOs, stubs, or deferred wiring allowed
+
+A wave that is not 100% complete MUST NOT be handed over.
+
+#### 3.13.3 Regression-Safe Wave Accumulation Rule (NON-NEGOTIABLE)
+
+When wave N is submitted:
+
+1. QA for **wave N alone** MUST pass 100% GREEN
+2. QA for **all prior waves combined (1…N)** MUST pass 100% GREEN
+
+This guarantees:
+- No regressions
+- No partial breakage
+- No hidden coupling failures
+
+Regression is treated as a build failure, not a future concern.
+
+#### 3.13.4 Required Architecture Artifacts for Waves
+
+Architectures using wave-based delivery MUST include:
+
+- **Wave Plan**: Complete list of waves (e.g., Wave 1, Wave 2, … Wave N)
+- **For Each Wave**:
+  - Scope definition (what is included)
+  - Included components (explicit list)
+  - Included wiring (connections within and across waves)
+  - Excluded components (explicit list of what is NOT in this wave)
+- **Cumulative Wiring Map**: Diagram showing wiring growth per wave
+- **QA Strategy**:
+  - Wave-isolated tests (tests for wave N only)
+  - Cumulative regression tests (tests for waves 1…N combined)
+
+#### 3.13.5 QA Implications (Design-Level Only)
+
+The architecture MUST be written so that:
+
+- Wiring completeness can be validated
+- End-to-end paths can be tested
+- Regression guarantees can be expressed as QA evidence
+
+This requirement does not introduce new enforcement mechanisms—it ensures architecture enables enforcement.
+
+#### 3.13.6 Explicit Prohibitions
+
+Architectures MUST NOT:
+
+- Declare components without wiring
+- Declare "future wiring"
+- Treat integration as an implementation concern
+- Defer regression guarantees
+- Hand over partially wired systems
+
+**Completeness Test**:
+- [ ] If waves are used, is there a complete wave plan?
+- [ ] Is each wave's scope explicitly defined?
+- [ ] Are included and excluded components listed for each wave?
+- [ ] Is cumulative wiring documented per wave?
+- [ ] Is wave-isolated and cumulative regression QA defined?
+- [ ] Does each wave satisfy One-Time Build Law?
+
+**Violation**: If architecture uses wave-based delivery without explicit wave plans, scope definitions, cumulative wiring, or regression QA, it is **incomplete**.
+
+---
+
 ## 4. Architecture Completeness Validation (Pre-Implementation Gate)
 
 Before implementation begins, architecture MUST pass completeness validation:
 
 ### 4.1 Completeness Checklist
 
-All items in Section 3 (3.1 through 3.10) MUST be explicitly addressed.
+All items in Section 3 (3.1 through 3.13) MUST be explicitly addressed.
 
 **Validation Method**: 
 - Governance Administrator or Foreman performs completeness scan
@@ -377,6 +543,32 @@ If any architecture artifact, builder behavior, or Foreman process conflicts wit
 
 ## 10. Changelog
 
+### Version 1.1 (2025-12-22)
+
+**Status**: Canonical Completeness Expansion  
+**Authority**: Johan Ras  
+**Trigger**: Issue - Extend Architecture Checklist to Enforce Wiring, Interconnectivity, and Wave-Based One-Time Builds
+
+**Summary**: Extended architecture completeness requirements to enforce explicit wiring, end-to-end paths, and wave-based delivery governance.
+
+**Key Requirements Added**:
+- Wiring & Interconnectivity Architecture (3.11) — Systems must define how all components are connected at runtime
+- End-to-End Functional Paths (3.12) — Complete paths from UI through all layers must be traced
+- Wave-Based One-Time Build Model (3.13) — Large systems may use waves, but each wave must be 100% complete and regression-safe
+
+**Failure Mode Addressed**: Systems that are fully specified in isolation but non-functional when assembled (the "perfect TV with no wiring" problem).
+
+**Key Invariants Added**:
+- No component may exist without defined connections
+- No interface may be declared without implemented wiring
+- Each wiring path must be testable
+- Wave N must not regress waves 1…(N-1)
+- No partial or deferred wiring allowed
+
+**Effect**: Architectures without explicit wiring, end-to-end paths, or wave plans (where applicable) are now **constitutionally incomplete** and block implementation.
+
+---
+
 ### Version 1.0 (2025-12-22)
 
 **Status**: Initial Release  
@@ -407,7 +599,7 @@ If any architecture artifact, builder behavior, or Foreman process conflicts wit
 ---
 
 **Document Metadata**:
-- Document ID: ARCHITECTURE_COMPLETENESS_REQUIREMENTS_V1
+- Document ID: ARCHITECTURE_COMPLETENESS_REQUIREMENTS_V1.1
 - Authority: Canonical Governance Standard
 - Required By: GOVERNANCE_PURPOSE_AND_SCOPE.md Section 5.2 (Architecture Compilation)
 - Enforcement: Governance Gate + Foreman + Governance Administrator
