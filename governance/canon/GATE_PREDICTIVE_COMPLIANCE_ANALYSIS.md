@@ -72,10 +72,20 @@ GPCA **must never**:
 
 > **Any PR gate failure NOT predicted by GPCA is a governance defect, not a builder failure.**
 
+**Scope**: This invariant applies **only when GPCA was actually executed and made a prediction** for the specific PR submission.
+
+**Clarification**:
+- If Builder runs GPCA and it predicts PASS, but gate FAILS → Governance defect
+- If Builder runs GPCA and it predicts FAIL, but gate PASSES → Governance defect  
+- If Builder does NOT run GPCA → This invariant does not apply
+- If GPCA was not available → This invariant does not apply
+
+**Rationale**: Since GPCA is optional, builders cannot be held accountable for unpredicted failures if they chose not to run GPCA. However, when GPCA IS run, it must be accurate to maintain trust in governance transparency.
+
 This invariant ensures:
 - Gates are transparent and predictable
 - No hidden gate requirements
-- No surprise failures
+- No surprise failures (when GPCA is used)
 - Complete governance documentation
 - Continuous governance improvement
 

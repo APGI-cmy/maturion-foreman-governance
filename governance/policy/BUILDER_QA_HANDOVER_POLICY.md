@@ -236,6 +236,12 @@ Builder MUST provide these artifacts:
 - If gate FAILS: Builder reviews gate failure, remediates governance issues, re-submits
 - If gate FAILS but GPCA predicted PASS: **Governance defect** (GPCA misprediction) - escalate to Governance Administrator
 
+**GPCA Tracking Guidance**:
+- If Builder runs GPCA before submission, Builder SHOULD note the prediction (e.g., in PR description or handover comment)
+- If gate outcome differs from GPCA prediction, Builder SHOULD report misprediction to Governance Administrator
+- Governance Administrator maintains misprediction log in `governance/incidents/gpca-mispredictions.log`
+- Systematic tracking enables continuous governance improvement via **GOVERNANCE_RIPPLE_MODEL.md**
+
 ---
 
 ## 7. Handover Decision Semantics

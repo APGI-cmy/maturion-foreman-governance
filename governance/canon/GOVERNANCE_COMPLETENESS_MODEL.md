@@ -162,6 +162,7 @@ These exist because the canonical build model requires requirement specification
 |---|---|---|---|
 | GOVERNANCE_RIPPLE_MODEL | `governance/canon/GOVERNANCE_RIPPLE_MODEL.md` | Defines bidirectional governance evolution framework | CANON_PURPOSE_SCOPE, LEARNING_SCHEMA, FAILURE_SCHEMA |
 | GOVERNANCE_CHANGE_PROPOSAL_SCHEMA | `governance/schemas/GOVERNANCE_CHANGE_PROPOSAL.schema.md` | Normative structure for governance change proposals | GOVERNANCE_RIPPLE_MODEL |
+| GOVERNANCE_CHANGELOG | `governance/CHANGELOG.md` | Auditable record of all governance changes | GOVERNANCE_RIPPLE_MODEL |
 
 ### 5.9 Compliance Structural Readiness (Governance Repo Level)
 The compliance canon requires traceability and evidence readiness (architecture → QA → evidence), and mandates core artifacts per governed application. This model enforces the governance-repo side: schemas, mapping model, and evidence catalog structure exist, even if empty initially.

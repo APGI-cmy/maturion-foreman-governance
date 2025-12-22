@@ -298,6 +298,28 @@ A valid GPCA Prediction Report MUST contain these sections:
 
 **Note**: GPCA validates **declared compliance**, not actual correctness
 
+**Examples of Declared vs Actual**:
+
+1. **Declared Compliance** (GPCA validates):
+   - Builder QA report declares "All tests passing: 100%"
+   - GPCA checks: ✅ Declaration present
+   - GPCA validates: Schema conformance, declaration exists
+   
+2. **Actual Correctness** (GPCA does NOT validate):
+   - Whether those 100 tests are actually sufficient
+   - Whether the tests actually test the right things
+   - Whether the implementation actually works correctly
+   - Builder QA is responsible for this
+
+3. **Example Scenario**:
+   - Builder declares: "Build-to-Green: ACHIEVED"
+   - GPCA checks: ✅ Declaration present in required format
+   - GPCA does NOT check: Whether build actually achieved green
+   - Gate checks: ✅ Declaration present (same as GPCA)
+   - Gate does NOT check: Whether build actually achieved green (Builder QA responsibility)
+
+**This separation preserves Builder QA as source of truth for correctness.**
+
 ---
 
 ### 5.6 Prediction Outcome Section
