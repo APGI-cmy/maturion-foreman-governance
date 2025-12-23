@@ -662,6 +662,17 @@ All content in `/implementation/` represents operational implementation evidence
 
 ### Phase 2: Canonization into Governance (Future Work)
 
+**MANDATORY CANONIZATION METHOD**: Phase 2 work MUST follow the canonization method and source handling protocol defined by Johan Ras in PR comment #3685180442. This includes:
+- Authoritative input sources (Categories A and B from this Phase 1 report)
+- Source review protocol (read in full, extract intent, discard noise)
+- Synthesis rules (rewrite, don't copy; timeless language)
+- Archived material handling (intent survives, mechanisms don't)
+- Fidelity and traceability (record source basis for each canonical file)
+- Conflict resolution (escalate unresolvable conflicts)
+- Completion check (every canonical file lists source basis)
+
+**Canonization Output**: All canonical files created in Phase 2 MUST be documented in `governance/reports/PHASE_2_CANONIZATION_SUMMARY.md` with full source traceability.
+
 **Priority 1 - Core Vision Documents** (Must canonize first):
 1. Maturion True North
 2. Maturion Identity
