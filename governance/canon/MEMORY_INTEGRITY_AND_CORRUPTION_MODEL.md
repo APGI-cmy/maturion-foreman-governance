@@ -165,7 +165,7 @@ This policy derives authority from and implements:
    - No self-governance (agents modifying own authority)
    - Johan Ras authority MUST NOT be delegated without explicit authorization
 
-**Validation Frequency**: Every PR merge + Daily automated check
+**Validation Frequency**: Every PR merge + Daily detection (minimum)
 
 ---
 
@@ -199,7 +199,7 @@ This policy derives authority from and implements:
    - Evidence references valid
    - Cross-repository dependencies documented
 
-**Validation Frequency**: Every PR merge + Weekly automated check
+**Validation Frequency**: Every PR merge + Weekly detection
 
 ---
 
@@ -267,7 +267,7 @@ This policy derives authority from and implements:
    - Evidence → QA result linkage complete
    - No broken evidence chains
 
-**Validation Frequency**: Every compliance-relevant PR + Quarterly review
+**Validation Frequency**: Every compliance-relevant PR + Quarterly detection
 
 ---
 
