@@ -127,7 +127,7 @@ This is the **prohibited work zone** — only initialization activities are auth
 
 1. **Create Mandatory Directory Structure**
    - `.github/workflows/` — CI/CD workflow definitions
-   - `.github/agents/` — Agent recruitment definitions (custom agents)
+   - `.github/agents/` — Agent recruitment definitions (custom agent definitions)
    - `.architecture/` — Architecture artifacts (empty initially)
    - `.qa/` — QA evidence artifacts (empty initially)
    - `governance/` — Governance references and policies
@@ -224,11 +224,11 @@ This is the **prohibited work zone** — only initialization activities are auth
 
 All application repositories MUST contain the following directory structure after initialization:
 
-```
+```text
 <repository-root>/
 ├── .github/
 │   ├── workflows/          # CI/CD workflow definitions
-│   └── agents/             # Agent recruitment definitions (custom agents)
+│   └── agents/             # Agent recruitment definitions (custom agent definitions)
 ├── .architecture/          # Architecture artifacts (empty until architecture phase)
 │   └── REPOSITORY_INITIALIZATION_EVIDENCE.md
 ├── .qa/                    # QA evidence artifacts (empty until build phase)
