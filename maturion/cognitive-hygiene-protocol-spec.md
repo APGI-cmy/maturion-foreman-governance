@@ -124,14 +124,14 @@ CHP hygiene operations MUST NOT:
 - ❌ Create indirect writes to persistent memory  
 - ❌ Trigger side-effects that modify canonical artifacts  
 - ❌ Invoke APIs or systems that write to long-term memory  
-- ❌ Generate proposals for memory writes (CHP does not propose learning)  
-- ❌ Recommend changes to governance canon or policies  
 - ❌ Modify schemas, contracts, or enforcement rules  
 - ❌ Delete or modify audit evidence  
 - ❌ Affect builder accountability records  
 - ❌ Weaken governance through cognitive operations  
 
 **Hygiene operations are maintenance ONLY, never mutation of canonical state.**
+
+**Note on Proposals**: CHP MAY generate proposals for governance review (see Section 4: Proposal-Only Learning Path). Proposals are NOT memory writes; they are requests for governance review that do NOT bypass write prohibition.
 
 ### 3.4 No Indirect Mutation
 
@@ -153,8 +153,11 @@ This prohibition aligns with and enforces the principles defined in:
 - `memory/AUTHORITY/MEMORY_WRITE_POLICY.md`
 - `governance/canon/COGNITIVE_HYGIENE_AUTHORITY_MODEL.md`
 - `governance/canon/MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md`
+- `governance/canon/COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md`
 
-**Core Principle**: Memory writes are proposals requiring governance approval. CHP does not propose, does not write, does not learn.
+**Core Principle**: Memory writes require governance approval. CHP does not write to canonical memory.
+
+**Proposal Path**: CHP MAY generate proposals for governance review (see Section 4). Proposals are submitted to governance for decision, not executed directly by CHP.
 
 ### 3.6 Prohibited Interpretation: CHP is NOT a Learning System
 
@@ -191,7 +194,211 @@ This prohibition aligns with and enforces the principles defined in:
 **Invariant**: CHP hygiene operations leave zero persistent memory traces. CHP cleans; CHP does not write.
 
 --------------------------------------------------------------------------------
-# 4. COGNITIVE HYGIENE CYCLE (CHC)
+# 4. PROPOSAL-ONLY LEARNING PATH
+
+**Purpose**: Allow CHP to generate insights from hygiene operations without creating learning drift or automatic memory mutations.
+
+### 4.1 Core Principle: Insight ≠ Memory
+
+**Critical Distinction**:
+- **Insight**: A pattern, finding, or recommendation that CHP observes during hygiene operations
+- **Memory**: Canonical, governance-approved knowledge stored in persistent memory
+- **Proposal**: A documented insight submitted for governance review (optional path)
+
+**Separation Guarantee**:
+- ✅ CHP MAY generate insights from hygiene operations
+- ✅ CHP MAY document insights as proposals for governance review
+- ❌ CHP insights do NOT automatically become memory
+- ❌ CHP proposals do NOT bypass governance approval
+- ❌ CHP findings do NOT create learning drift
+
+**Rationale**:
+- CHP observes cognitive patterns that may be valuable for governance improvement
+- Capturing these insights as proposals allows learning without compromising write prohibition
+- Proposal workflow ensures governance review and approval before any memory write
+- Insight generation does NOT violate write prohibition (proposals are not memory)
+
+---
+
+### 4.2 Optional Proposal Path
+
+**CHP MAY (but is not required to) generate proposals when**:
+- Recurring cognitive drift pattern reveals governance gap
+- Hygiene operation effectiveness finding suggests process improvement
+- Memory contamination source identification requires architectural change
+- Reasoning instability pattern suggests QA enhancement
+
+**CHP is NOT required to generate proposals for**:
+- Routine hygiene operations (normal maintenance)
+- Ephemeral memory cleanup (no canonical impact)
+- Session-specific anomalies (not systemic patterns)
+- Already-covered governance rules (no duplicates)
+
+**Proposal Generation is Discretionary**:
+- CHP decides whether a finding warrants a proposal
+- Not every insight requires a proposal
+- Proposals are for governance improvement, not routine findings
+- Threshold for proposal generation: identity-level, actionable, recurring patterns
+
+---
+
+### 4.3 Proposal Lifecycle (Governance Review Only)
+
+**Step 1: CHP Generates Proposal**
+- CHP documents finding with evidence, context, and recommendation
+- Proposal written to `memory/PROPOSALS/chp-proposals/{proposal-id}.md`
+- Proposal includes: ID, timestamp, category, content, justification, evidence
+- This write is to proposals directory ONLY (not canonical memory)
+
+**Step 2: Governance Review**
+- Governance Administrator or Foreman reviews proposal
+- Decision: Approve, Reject, Modify, Escalate to Human
+- Review criteria: identity-level relevance, actionability, evidence quality
+- Timeline: Routine (1 hour), Important (4 hours), Critical (1 hour + escalate)
+
+**Step 3: Memory Write (If Approved)**
+- If approved: Governance Administrator writes memory per MEMORY_WRITE_POLICY.md
+- Write logged in audit trail (`memory/AUDIT/memory-write-log.md`)
+- CHP notified of outcome (informational only)
+
+**Step 4: Proposal Archive**
+- If rejected: Proposal archived with rationale
+- CHP may re-propose if new evidence emerges (not automatic)
+
+**Critical Guarantee**: Proposals do NOT become memory until governance explicitly approves and writes.
+
+---
+
+### 4.4 No Auto-Promotion
+
+**Explicit Prohibition**: CHP findings do NOT automatically promote to canonical memory.
+
+**Requirements**:
+- ❌ CHP proposals remain proposals until governance approval
+- ❌ Repeated CHP findings do NOT create implicit approval
+- ❌ Emergency hygiene findings do NOT bypass governance review
+- ❌ CHP escalations do NOT authorize memory writes
+
+**Rationale**:
+- Learning promotion requires governance decision (per LEARNING_INTAKE_AND_PROMOTION_MODEL.md)
+- CHP findings are advisory, not authoritative
+- Memory write authority is centralized with Governance Administrator
+- Auto-promotion creates accountability gaps and learning drift
+
+**Enforcement**:
+- CHP cannot write canonical memory (infrastructure-level block)
+- Proposals require explicit governance approval
+- Watchdog monitors for auto-promotion patterns
+- Audit trail captures all proposals and decisions
+
+---
+
+### 4.5 Proposal Content Requirements
+
+**Every CHP proposal MUST include**:
+
+#### Proposal Metadata
+- Proposal ID (unique identifier, e.g., `CHP-PROP-2025-001`)
+- Proposal Date (timestamp)
+- Proposing Agent (CHP)
+- Category (Governance, Architecture, QA, Learning, Pattern)
+- Priority (Routine, Important, Critical)
+
+#### Proposal Content
+- Learning Description (clear statement of what should be remembered)
+- Evidence (observations, metrics, examples)
+- Justification (why this is identity-level, not embodiment-specific)
+- Impact (what problem this prevents or solves)
+- Proposed Memory Location (where to store if approved)
+
+#### Proposal Context
+- Trigger (what caused CHP to detect this opportunity)
+- Recurrence (how often pattern observed)
+- Scope (which embodiments/builds/operations affected)
+- Related Learnings (references to similar governance rules)
+
+#### Proposal Recommendation
+- Recommended Action (what should be done)
+- Alternative Options (other approaches considered)
+- Implementation Guidance (how to implement if approved)
+
+**Completeness Validation**: CHP validates proposal completeness before submission.
+
+---
+
+### 4.6 Integration with Memory Write Policy
+
+**Alignment**: This proposal path implements the principles defined in:
+- `governance/canon/COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md` (Section 6: Memory Proposal Workflow)
+- `governance/memory/AUTHORITY/MEMORY_WRITE_POLICY.md` (Memory write approval requirements)
+- `governance/canon/LEARNING_INTAKE_AND_PROMOTION_MODEL.md` (Learning promotion workflow)
+
+**Key Integration Points**:
+- CHP proposals follow memory write approval workflow
+- Governance Administrator reviews per MEMORY_WRITE_POLICY.md criteria
+- Approved proposals written to canonical memory by Governance Administrator
+- Audit trail captures full proposal-to-memory lifecycle
+- No bypasses or shortcuts exist
+
+**Governance Supremacy**: Memory write authority remains centralized. CHP proposes; Governance decides and writes.
+
+---
+
+### 4.7 Proposal vs. Hygiene Operation Boundary
+
+**Clear Separation**:
+
+**Hygiene Operations** (CHP executes autonomously):
+- Ephemeral memory cleanup
+- Session cache purging
+- Reasoning pattern normalization
+- Embodiment cache reset
+- Drift suppression
+- **No governance review required** (pre-authorized maintenance)
+
+**Proposals** (CHP submits for review):
+- Governance gap identification
+- Architectural improvement opportunities
+- QA enhancement suggestions
+- Pattern-based learning opportunities
+- **Governance review required** (not pre-authorized)
+
+**Boundary Principle**: Maintenance operations do not require proposals. Proposals are for governance improvement, not routine maintenance.
+
+---
+
+### 4.8 Acceptance Criteria
+
+**This section is complete when**:
+1. ✅ Clear separation established: insight ≠ memory
+2. ✅ Proposal lifecycle referenced and defined
+3. ✅ No auto-promotion explicitly prohibited
+4. ✅ Proposal path is optional, not mandatory
+5. ✅ Integration with memory write policy documented
+6. ✅ Governance review requirements clear
+7. ✅ Audit trail requirements specified
+
+**Success Metrics**:
+- CHP proposals generated when valuable (> 0 per quarter)
+- Proposal approval rate > 70% (indicates quality proposals)
+- Zero auto-promotion violations
+- 100% proposals follow defined lifecycle
+- All proposals auditable and traceable
+
+---
+
+### 4.9 Implementation Note
+
+**Correction to Section 3.3**: Line 127 of this document previously stated "❌ Generate proposals for memory writes (CHP does not propose learning)". This section supersedes that statement with the clarification that:
+- CHP MAY generate proposals (optional path)
+- Proposals are NOT memory writes (they are requests for governance review)
+- Proposal generation does NOT violate write prohibition
+- This aligns with COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md Section 6
+
+**Governance Completeness**: This section resolves the ambiguity identified in issue G-COG-A2.3 by explicitly defining the proposal-only learning path while maintaining write prohibition integrity.
+
+--------------------------------------------------------------------------------
+# 5. COGNITIVE HYGIENE CYCLE (CHC)
 
 CHP defines a repeating daily cycle:
 
@@ -220,7 +427,7 @@ Each step runs individually AND as a batch pipeline.
 
 ---
 
-# 5. MEMORY SANITATION PROTOCOL
+# 6. MEMORY SANITATION PROTOCOL
 
 ### 5.1 Remove session-carryover residues  
 - ephemeral memory flushed  
@@ -252,7 +459,7 @@ Compact to preserve signal, remove noise.
 
 ---
 
-# 6. REASONING STABILITY MAINTENANCE
+# 7. REASONING STABILITY MAINTENANCE
 
 ### 6.1 Contradiction Detection  
 CHP scans reasoning samples for:
@@ -277,7 +484,7 @@ Ensures:
 
 ---
 
-# 7. DRIFT NORMALIZATION
+# 8. DRIFT NORMALIZATION
 
 This is CHP’s integration with **Sentinel**.
 
@@ -298,7 +505,7 @@ This is CHP’s integration with **Sentinel**.
 
 ---
 
-# 8. TENANT HYGIENE & ISOLATION SANITATION
+# 9. TENANT HYGIENE & ISOLATION SANITATION
 
 ### 8.1 Remove tenant residue from caches  
 When switching tenants or after finishing a tenant session:
@@ -320,7 +527,7 @@ All tenant hints and local reasoning must expire after session.
 
 ---
 
-# 9. EMBODIMENT DECOUPLING
+# 10. EMBODIMENT DECOUPLING
 
 Each embodiment receives a hygiene pass:
 
@@ -352,7 +559,7 @@ Ensure embodiments do NOT:
 
 ---
 
-# 10. WORLD-MODEL CONSISTENCY CHECK
+# 11. WORLD-MODEL CONSISTENCY CHECK
 
 CHP performs:
 
@@ -379,7 +586,7 @@ Confirms:
 
 ---
 
-# 11. PREDICTIVE CALIBRATION SYNC
+# 12. PREDICTIVE CALIBRATION SYNC
 
 CHP syncs Predictive Health Engine:
 
@@ -398,7 +605,7 @@ This ensures prediction remains:
 
 ---
 
-# 12. GOVERNANCE SYNC
+# 13. GOVERNANCE SYNC
 
 CHP ensures:
 
@@ -410,7 +617,7 @@ CHP ensures:
 
 ---
 
-# 13. BACKEND IMPLEMENTATION REQUIREMENTS
+# 14. BACKEND IMPLEMENTATION REQUIREMENTS
 
 ### 13.1 Scheduled Hygiene Engine
 
@@ -471,7 +678,7 @@ Copy code
 
 ---
 
-# 14. TREE VISUALISATION
+# 15. TREE VISUALISATION
 
 ### Node Hygiene Icon  
 🌀 spiral symbol
@@ -495,7 +702,7 @@ Displays:
 
 ---
 
-# 15. TESTING REQUIREMENTS
+# 16. TESTING REQUIREMENTS
 
 ### 15.1 Unit Tests  
 - memory purge  
@@ -522,7 +729,7 @@ CHP must neutralise them.
 
 ---
 
-# 16. ACCEPTANCE CRITERIA
+# 17. ACCEPTANCE CRITERIA
 
 Cognitive Hygiene Protocol is complete when:
 
