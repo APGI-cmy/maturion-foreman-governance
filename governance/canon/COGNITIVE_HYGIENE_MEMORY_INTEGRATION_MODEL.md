@@ -235,6 +235,9 @@ This policy derives authority from and implements:
 - ✅ `memory/GLOBAL/experience/patterns/**` - Successful patterns
 - ✅ `memory/GLOBAL/experience/anti-patterns/**` - Patterns to avoid
 
+**Scope Clarification**:
+CHP read access is intentionally limited to `memory/GLOBAL/experience/**`. Read access to governance history (`memory/GLOBAL/governance/**`, which includes escalation-history and enforcement-decisions) is explicitly excluded and would require a separate governance decision.
+
 **Access Level**: Read-only, observational
 
 **Purpose**:
