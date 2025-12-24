@@ -427,19 +427,12 @@ Hard stops MUST NOT:
 
 #### 5.0.9 No Prompt Access or Chain-of-Thought Inspection
 
-**Explicit Prohibition**: The Watchdog MUST NOT access or inspect:
-- ❌ CHP prompt content (system prompts, user prompts, prompt templates)
-- ❌ CHP chain-of-thought outputs (reasoning steps, thought processes)
-- ❌ CHP internal reasoning traces (decision pathways, option evaluations)
-- ❌ CHP cognitive model internals (weights, scores, thresholds)
-- ❌ CHP prompt engineering or prompt management systems
+**Explicit Prohibition**: The Watchdog MUST NOT access or inspect CHP reasoning internals (see Section 5.0.2 for complete list).
 
-**Rationale**:
-- Prompt access creates coupling between Watchdog and CHP implementation
-- Chain-of-thought inspection is introspective, not observational
-- Reasoning internals are implementation details, not governance surface
-- Watchdog independence requires observation-only interface
-- Observable outcomes are sufficient for governance compliance
+**Critical Emphasis**:
+- ❌ **NO** access to CHP prompt content or prompt management systems
+- ❌ **NO** access to CHP chain-of-thought outputs or reasoning traces
+- ❌ **NO** access to CHP cognitive model internals or decision-making logic
 
 **Boundary Enforcement**:
 - Watchdog does NOT have access to CHP prompt APIs (if any)
@@ -449,11 +442,13 @@ Hard stops MUST NOT:
 
 **Invariant**: Watchdog observes **what CHP does**, NOT **how CHP thinks**.
 
+**Rationale**: See Section 5.0.2 for full rationale on why reasoning introspection is prohibited.
+
 ---
 
 #### 5.0.10 Observation Surface Summary
 
-**Observable Categories**:
+**Observable Categories** (External Behavior and Outcomes):
 1. ✅ Invocation events (who, when, what, authorization, outcomes)
 2. ✅ Escalation events (frequency, distribution, outcomes, patterns)
 3. ✅ Drift detection signals (type, severity, scope, trends, resolution)
@@ -463,12 +458,8 @@ Hard stops MUST NOT:
 7. ✅ Audit trail completeness (logging compliance, integrity, accessibility)
 
 **Excluded Categories** (Reasoning Internals):
-1. ❌ Prompt content (raw prompts, prompt templates, prompt engineering)
-2. ❌ Chain-of-thought reasoning (internal reasoning steps, thought processes)
-3. ❌ Decision-making logic (how CHP arrives at conclusions)
-4. ❌ Cognitive models (internal representations, reasoning patterns)
-5. ❌ Analysis algorithms (how CHP analyzes drift, contamination, instability)
-6. ❌ Scoring or weighting logic (internal thresholds, scoring functions)
+- See Section 5.0.2 for complete list of prohibited introspection
+- Key exclusions: Prompts, chain-of-thought, decision logic, cognitive models, analysis algorithms, scoring functions
 
 **Governance Guarantee**: Watchdog oversight of CHP is complete and sufficient without reasoning introspection.
 
