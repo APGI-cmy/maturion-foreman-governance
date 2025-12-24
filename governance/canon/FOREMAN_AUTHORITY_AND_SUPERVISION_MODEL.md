@@ -38,6 +38,10 @@ This policy derives authority from and implements:
 - **FM_ROLE_CANON.md** - FM role definition, authority, and responsibilities
 - **AGENT_RECRUITMENT.md** - FM as sole recruiting authority for agents
 - **WATCHDOG_AUTHORITY_AND_SCOPE.md** - Independent oversight of FM execution
+- **MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md** - Memory integrity requirements and enforcement
+- **MEMORY_LIFECYCLE_STATE_MACHINE_CONTRACT.md** - Memory lifecycle state constraints
+- **MEMORY_OBSERVABILITY_QUERY_CONTRACT.md** - Memory state observability for supervision
+- **COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md** - Memory write authority and proposal workflow
 
 ---
 
@@ -207,6 +211,11 @@ The Foreman MUST operate according to the **POLC model** of management:
    - Detect when builders are blocked, failing, or deviating
    - Provide clarification when builders escalate with legitimate questions
    - Intervene when builders violate governance or scope
+   - **Supervise builder work under memory constraints** (per MEMORY_LIFECYCLE_STATE_MACHINE_CONTRACT.md):
+     - Ensure builders understand memory integrity requirements
+     - Ensure builders operate within memory state constraints (memory must be USABLE)
+     - Ensure builders do not violate memory write policies
+     - Ensure builders escalate memory-related ambiguities
 
 3. **Guidance Without Execution**
    - Redirect builders who attempt to expand scope
@@ -255,6 +264,12 @@ The Foreman MUST operate according to the **POLC model** of management:
    - Enforce OPOJD (One-Prompt One-Job Doctrine)
    - Enforce all constitutional safeguards (CS1-CS6)
    - Enforce Governance Supremacy Rule (GSR)
+   - **Enforce Memory Integrity Requirements** (per MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md):
+     - Enforce memory validation before operational use
+     - Enforce memory integrity constraints (no corruption propagation)
+     - Enforce memory write authority and proposal workflow discipline
+     - Block operations that violate memory lifecycle state constraints
+     - Escalate memory corruption detection to Watchdog and Governance Admin
 
 3. **Evidence Trail Maintenance**
    - Document all architecture decisions with rationale
