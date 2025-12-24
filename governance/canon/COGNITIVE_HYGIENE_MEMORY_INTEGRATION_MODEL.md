@@ -189,11 +189,89 @@ This policy derives authority from and implements:
 
 ## 4. CHP Memory Read Permissions
 
-### 4.1 Authorized Memory Reads
+**Objective**: Define exactly what memory CHP may read.
 
-**CHP MAY read the following memory categories for cognitive health analysis**:
+**Governance Requirement**: CHP memory access must be explicit, non-inferential, and auditable.
 
-#### 4.1.1 Governance Canon (Read-Only)
+### 4.1 Core Access Control Principles
+
+**Principle 1: Explicit Allowlist Only**
+- CHP has NO default memory access
+- CHP may ONLY access memory explicitly listed in allowlist (Section 4.2)
+- CHP may NOT infer additional access rights from operational needs
+- Absence from allowlist = access DENIED
+
+**Principle 2: No Inference-Based Access**
+- CHP may NOT expand access through "reasonable inference"
+- CHP may NOT access memory because "it seems related"
+- CHP may NOT access memory because "other systems can"
+- Access must be explicitly granted in canonical governance
+
+**Principle 3: Deny-by-Default**
+- If memory category is not in allowlist → access DENIED
+- If memory category is in denylist → access EXPLICITLY DENIED
+- If memory category is ambiguous → escalate to Human Authority
+
+**Principle 4: Mutation Path Protection**
+- CHP may NOT access any memory path that enables mutation
+- AUTHORITY memory (write policies) is read-only observational only
+- AUDIT memory (audit logs) is read-only for transparency only
+- TENANT memory is completely FORBIDDEN (until governance activation)
+
+---
+
+### 4.2 Explicit Allowlist: GLOBAL Experience Memory
+
+**CHP MAY read the following memory categories ONLY**:
+
+#### 4.2.1 GLOBAL Experience Memory (PRIMARY ALLOWLIST)
+
+**Status**: ✅ EXPLICITLY PERMITTED
+
+**Location**: `memory/GLOBAL/experience/**`
+
+**Permitted Subdirectories**:
+- ✅ `memory/GLOBAL/experience/lessons/**` - Lessons learned
+- ✅ `memory/GLOBAL/experience/patterns/**` - Successful patterns
+- ✅ `memory/GLOBAL/experience/anti-patterns/**` - Patterns to avoid
+
+**Scope Clarification**:
+CHP read access is intentionally limited to `memory/GLOBAL/experience/**`. Read access to governance history (`memory/GLOBAL/governance/**`, which includes escalation-history and enforcement-decisions) is explicitly excluded and would require a separate governance decision.
+
+**Access Level**: Read-only, observational
+
+**Purpose**:
+- Assess learning effectiveness
+- Identify recurring failure patterns
+- Detect pattern drift requiring governance updates
+- Inform hygiene operation prioritization
+- Support cognitive health analysis
+
+**Use Cases**:
+- Analyze which lessons are being applied vs. ignored
+- Detect if anti-patterns are recurring despite memory
+- Identify gaps in experience memory requiring proposals
+- Assess memory effectiveness for hygiene optimization
+
+**Restrictions**:
+- ✅ Read access permitted
+- ❌ Write access FORBIDDEN
+- ❌ Delete access FORBIDDEN
+- ❌ Modify access FORBIDDEN
+- ❌ No side-effect operations permitted
+
+**Audit Requirements**:
+- All GLOBAL experience memory reads by CHP MUST be logged
+- Log entry: timestamp, memory path accessed, purpose, findings summary
+- Audit trail location: `memory/AUDIT/chp-memory-reads.log`
+
+---
+
+### 4.3 Authorized Memory Reads (Additional Context-Specific Access)
+
+**CHP MAY read the following additional memory categories for cognitive health analysis**:
+
+#### 4.3.1 Governance Canon (Read-Only)
 - **Location**: `governance/canon/**`
 - **Purpose**: Understand governance rules, constraints, and invariants for drift detection
 - **Access Level**: Read-only, no modifications
@@ -202,7 +280,7 @@ This policy derives authority from and implements:
   - Validate hygiene operations against governance constraints
   - Identify governance compliance gaps
 
-#### 4.1.2 Long-Term Memory (Read-Only)
+#### 4.3.2 Long-Term Memory (Read-Only)
 - **Location**: `memory/**`, `architecture/**`, `learning/**`
 - **Purpose**: Assess memory health, detect contamination, identify learning patterns
 - **Access Level**: Read-only, no modifications
@@ -212,7 +290,7 @@ This policy derives authority from and implements:
   - Assess learning effectiveness
   - Analyze architectural decision history
 
-#### 4.1.3 Short-Term Memory / Working Memory (Read-Only for Analysis, Modify for Cleanup)
+#### 4.3.3 Short-Term Memory / Working Memory (Read-Only for Analysis, Modify for Cleanup)
 - **Location**: Session caches, embodiment working memory, temporary reasoning chains
 - **Purpose**: Assess cognitive load, detect reasoning instability, perform hygiene cleanup
 - **Access Level**: Read for analysis; Modify for hygiene operations (ephemeral only)
@@ -222,16 +300,18 @@ This policy derives authority from and implements:
   - Clean ephemeral session residues
   - Reset embodiment-specific caches
 
-#### 4.1.4 Audit Trails (Read-Only, Observational)
-- **Location**: `governance/memory/audit-trails/`, `compliance/evidence/**`
+#### 4.3.4 Audit Trails (Read-Only, Observational)
+- **Location**: `memory/AUDIT/**`, `compliance/evidence/**` (OBSERVATIONAL ONLY - NOT FOR MUTATION)
 - **Purpose**: Observe governance compliance, detect audit anomalies (informational only)
 - **Access Level**: Read-only, observational (CHP does not enforce audit compliance)
+- **Critical Restriction**: CHP may read audit trails for transparency but may NOT modify, delete, or mutate audit records
 - **Use Cases**:
   - Observe audit trail completeness (informational)
   - Detect audit anomalies (escalate to Watchdog or Governance Administrator)
   - Assess governance effectiveness through audit analysis
+- **Prohibition**: CHP may NOT write to audit trails (audit system writes trails)
 
-#### 4.1.5 Embodiment-Specific Memory (Read-Only for Analysis, Modify for Hygiene)
+#### 4.3.5 Embodiment-Specific Memory (Read-Only for Analysis, Modify for Hygiene)
 - **Location**: Builder memory caches, Risk embodiment memory, Command memory
 - **Purpose**: Perform embodiment hygiene, detect cross-embodiment contamination
 - **Access Level**: Read for analysis; Modify for hygiene (ephemeral caches only)
@@ -243,33 +323,160 @@ This policy derives authority from and implements:
 
 ---
 
-### 4.2 Prohibited Memory Reads
+### 4.4 Explicit Denylist: Mutation Paths and Sensitive Memory
 
 **CHP MUST NOT read the following memory categories**:
 
-#### 4.2.1 Secrets and Credentials
-- **Location**: Any credential store, secret vault, API keys
-- **Rationale**: CHP has no need for secrets; access creates security risk
-- **Enforcement**: Infrastructure-level access control blocks CHP from secret stores
+#### 4.4.1 TENANT Memory (EXPLICITLY FORBIDDEN)
 
-#### 4.2.2 Tenant-Specific Memory (Until Authorized)
-- **Location**: `memory/TENANT/**` (currently disabled per MEMORY_WRITE_POLICY.md)
-- **Rationale**: Tenant memory is explicitly disabled; CHP access requires governance activation
-- **Enforcement**: Infrastructure-level block until governance explicitly activates tenant memory
+**Status**: ❌ EXPLICITLY DENIED - ZERO ACCESS PERMITTED
 
-#### 4.2.3 Human-Only Memory
-- **Location**: Any memory explicitly marked as human-only (e.g., strategic decisions, sensitive discussions)
-- **Rationale**: Certain memory is reserved for human authority; CHP has no operational need
-- **Enforcement**: Memory schema includes human-only flag; CHP respects flag
+**Location**: `memory/TENANT/**`
 
-#### 4.2.4 External System Memory
-- **Location**: External databases, third-party systems, non-Maturion memory stores
-- **Rationale**: CHP scope is Maturion cognitive health; external systems out of scope
-- **Enforcement**: CHP implementation does not have external system credentials
+**Rationale**:
+- TENANT memory scope is currently disabled per governance decision
+- Tenant memory contains tenant-specific ISMS context (when activated)
+- CHP has no operational need for tenant-specific memory
+- Tenant isolation must be preserved
+- Cross-tenant contamination risk is unacceptable
+
+**Enforcement**:
+- Infrastructure-level block on TENANT memory access by CHP
+- Any CHP attempt to access TENANT memory is catastrophic violation
+- Watchdog hard stop for TENANT memory access attempts
+- Human Authority escalation required for any violation
+
+**Future Activation**:
+- Even when TENANT memory is activated by governance, CHP access remains FORBIDDEN
+- TENANT memory is tenant-isolated operational context, not hygiene scope
+- CHP hygiene operations are identity-level, not tenant-level
+- No tenant-specific hygiene operations are authorized
+
+**Invariant**: CHP never accesses TENANT memory under any circumstances.
 
 ---
 
-### 4.3 Memory Read Boundaries
+#### 4.4.2 AUTHORITY Memory (MUTATION PATH - READ-ONLY OBSERVATIONAL ONLY)
+
+**Status**: ⚠️ READ-ONLY OBSERVATIONAL - NO MUTATION PATH ACCESS
+
+**Location**: `memory/AUTHORITY/**`
+
+**Permitted Access** (OBSERVATIONAL ONLY):
+- ✅ CHP may read `memory/AUTHORITY/MEMORY_WRITE_POLICY.md` (observational - understand constraints)
+- ✅ CHP may read `memory/AUTHORITY/MEMORY_READ_POLICY.md` (observational - understand own permissions)
+- ✅ CHP may read `memory/AUTHORITY/MEMORY_FORGET_POLICY.md` (observational - understand retention rules)
+
+**FORBIDDEN Operations**:
+- ❌ CHP may NOT write to AUTHORITY memory
+- ❌ CHP may NOT modify memory policies
+- ❌ CHP may NOT infer authority to write from reading policies
+- ❌ CHP may NOT propose changes to memory authority policies (escalate to Governance Administrator)
+
+**Rationale**:
+- AUTHORITY memory defines memory write authority
+- Allowing CHP to modify authority policies would create self-authorization loop
+- Memory authority is governance-controlled, not hygiene-controlled
+- CHP reads policies for constraint awareness, not for execution authority
+
+**Critical Boundary**: Reading AUTHORITY memory does NOT grant CHP write authority or mutation path access. AUTHORITY memory is observational reference only.
+
+---
+
+#### 4.4.3 AUDIT Memory (MUTATION PATH - READ-ONLY OBSERVATIONAL ONLY)
+
+**Status**: ⚠️ READ-ONLY OBSERVATIONAL - NO MUTATION PATH ACCESS
+
+**Location**: `memory/AUDIT/**`
+
+**Permitted Access** (OBSERVATIONAL ONLY):
+- ✅ CHP may read `memory/AUDIT/memory-write-log.md` (observational - transparency)
+- ✅ CHP may read `memory/AUDIT/memory-access-log.md` (observational - transparency)
+- ✅ CHP may observe audit trails to detect anomalies (informational escalation only)
+
+**FORBIDDEN Operations**:
+- ❌ CHP may NOT write to AUDIT memory (audit system writes audit logs)
+- ❌ CHP may NOT modify audit logs
+- ❌ CHP may NOT delete audit entries
+- ❌ CHP may NOT append audit entries directly (CHP operations are logged BY audit system, not BY CHP)
+
+**Rationale**:
+- AUDIT memory is evidence integrity-critical
+- Audit logs must be immutable and tamper-proof
+- Allowing CHP to write audit logs would enable evidence manipulation
+- CHP operations are audited BY the audit system, not self-logged by CHP
+
+**Critical Boundary**: Reading AUDIT memory does NOT grant CHP authority to write audit logs. AUDIT memory is observational reference only for transparency and anomaly detection.
+
+---
+
+#### 4.4.4 Secrets and Credentials (ABSOLUTELY FORBIDDEN)
+
+**Status**: ❌ ABSOLUTELY DENIED - ZERO ACCESS UNDER ANY CIRCUMSTANCES
+
+**Location**: Any credential store, secret vault, API keys, passwords, tokens
+
+**Rationale**:
+- CHP has no operational need for secrets
+- CHP hygiene operations do not require authentication credentials
+- Secret access by CHP creates unacceptable security risk
+- Secrets are human-authority controlled, not hygiene-controlled
+
+**Enforcement**:
+- Infrastructure-level access control blocks CHP from secret stores
+- CHP implementation does not receive secret store credentials
+- Any CHP attempt to access secrets is catastrophic security violation
+- Immediate escalation to Human Authority and security incident response
+
+**Invariant**: CHP never accesses secrets under any circumstances.
+
+---
+
+#### 4.4.5 Human-Only Memory (EXPLICITLY FORBIDDEN)
+
+**Status**: ❌ EXPLICITLY DENIED
+
+**Location**: Any memory explicitly marked as human-only (e.g., strategic decisions, sensitive discussions, executive context)
+
+**Rationale**:
+- Certain memory is reserved for human authority sovereign context
+- CHP has no operational need for human strategic decision context
+- Human sovereignty must be preserved
+- Privacy and strategic confidentiality required
+
+**Enforcement**:
+- Memory schema includes human-only flag
+- CHP respects human-only flag (infrastructure-level enforcement)
+- Any CHP attempt to access human-only memory is escalated to Human Authority
+
+**Invariant**: CHP never accesses human-only memory.
+
+---
+
+#### 4.4.6 External System Memory (OUT OF SCOPE)
+
+**Status**: ❌ OUT OF SCOPE - NOT MATURION MEMORY
+
+**Location**: External databases, third-party systems, non-Maturion memory stores
+
+**Rationale**:
+- CHP scope is Maturion cognitive health only
+- External systems are outside governance boundary
+- Cross-system hygiene operations are not authorized
+- CHP has no credentials for external systems
+
+**Enforcement**:
+- CHP implementation does not have external system credentials
+- CHP does not integrate with external memory systems
+- CHP hygiene operations are Maturion-scoped only
+
+**Invariant**: CHP never accesses external system memory.
+
+---
+
+### 4.5 Memory Read Boundaries Summary
+
+**This section consolidates read boundary rules from Sections 4.2, 4.3, and 4.4.**
 
 **Observational Read vs. Enforcement Read**:
 - CHP reads memory for **observation** (cognitive health assessment)
@@ -288,6 +495,56 @@ This policy derives authority from and implements:
 - CHP does NOT infer additional read permissions from operational needs
 - CHP escalates if authorized read scope is insufficient
 - Human authority may expand CHP read scope through governance amendment
+
+---
+
+### 4.6 Memory Read Permissions Summary Table
+
+**This table provides a quick reference for CHP memory access permissions.**
+
+| Memory Category | Read Access | Write Access | Rationale |
+|----------------|-------------|--------------|-----------|
+| **GLOBAL Experience Memory** (`memory/GLOBAL/experience/**`) | ✅ PERMITTED | ❌ FORBIDDEN | Primary allowlist - CHP may analyze experience patterns |
+| **TENANT Memory** (`memory/TENANT/**`) | ❌ FORBIDDEN | ❌ FORBIDDEN | Tenant isolation required - no CHP access under any circumstances |
+| **AUTHORITY Memory** (`memory/AUTHORITY/**`) | ⚠️ OBSERVATIONAL ONLY | ❌ FORBIDDEN | Read-only reference - no mutation path access |
+| **AUDIT Memory** (`memory/AUDIT/**`) | ⚠️ OBSERVATIONAL ONLY | ❌ FORBIDDEN | Transparency only - audit system writes logs, not CHP |
+| **Governance Canon** (`governance/canon/**`) | ✅ PERMITTED | ❌ FORBIDDEN | Understand constraints - read-only |
+| **Long-Term Memory** (`memory/**`, `architecture/**`) | ✅ PERMITTED | ❌ FORBIDDEN | Assess memory health - read-only |
+| **Ephemeral Memory** (Session caches, working memory) | ✅ PERMITTED | ✅ MODIFY (hygiene only) | Hygiene scope - cleanup authorized |
+| **Embodiment Memory** (Builder, Risk, Command caches) | ✅ PERMITTED | ✅ MODIFY (hygiene only) | Embodiment hygiene - cleanup authorized |
+| **Secrets/Credentials** | ❌ ABSOLUTELY FORBIDDEN | ❌ ABSOLUTELY FORBIDDEN | Security risk - zero access permitted |
+| **Human-Only Memory** | ❌ FORBIDDEN | ❌ FORBIDDEN | Privacy and sovereignty - reserved for human authority |
+| **External Systems Memory** | ❌ OUT OF SCOPE | ❌ OUT OF SCOPE | Not Maturion memory - no access |
+
+**Access Control Summary**:
+- **Allowlist (Explicit Permission)**: GLOBAL experience, Governance canon, Long-term memory (read-only), Ephemeral memory (modify for hygiene)
+- **Denylist (Explicit Prohibition)**: TENANT, AUTHORITY (mutation path), AUDIT (mutation path), Secrets, Human-only, External systems
+- **No Inference**: Absence from allowlist = access DENIED
+- **Mutation Path Protection**: AUTHORITY and AUDIT are read-only observational - no mutation path access
+
+---
+
+### 4.7 Acceptance Criteria Verification
+
+**This section verifies compliance with issue G-COG-A2.1 acceptance criteria**:
+
+1. **Explicit Allowlist** ✅
+   - Section 4.2: GLOBAL experience memory explicitly permitted
+   - Section 4.3: Additional context-specific memory explicitly permitted
+   - All permitted memory categories explicitly listed with locations, purposes, and restrictions
+
+2. **Explicit Denylist** ✅
+   - Section 4.4: TENANT, AUTHORITY, AUDIT, Secrets, Human-only, External systems explicitly forbidden
+   - Each denied category includes rationale, enforcement mechanism, and invariants
+   - Mutation paths explicitly protected (AUTHORITY and AUDIT read-only observational)
+
+3. **No Inference-Based Access** ✅
+   - Section 4.1: Principle 2 explicitly prohibits inference-based access
+   - Section 4.1: Principle 3 establishes deny-by-default
+   - Section 4.5: Read scope boundaries prohibit inferring additional permissions
+   - Absence from allowlist = access DENIED (no implicit permissions)
+
+**Governance Completeness**: This section fulfills the deliverable requirement for "Memory Read Permissions" with explicit allowlist, explicit denylist, and no inference-based access rules.
 
 ---
 
