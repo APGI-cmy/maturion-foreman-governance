@@ -350,7 +350,97 @@ These rules are **absolute and non-negotiable**:
 
 **Enforcement**: All authority relationships are unidirectional except peer relationships. Watchdog detects circular authority attempts.
 
-### 4.4 Implicit Escalation Prevention
+---
+
+### 4.4 Authority Hierarchy vs. Operational Flow (Critical Distinction)
+
+**Purpose**: This section clarifies the distinction between **constitutional authority hierarchy** and **operational information flow** to prevent misinterpretation of diagrams and descriptions.
+
+#### 4.4.1 Constitutional Authority Hierarchy (Power and Decision Rights)
+
+The **constitutional authority hierarchy** defines who has power, decision rights, and override authority:
+
+1. **Human Authority** (Supreme)
+2. **Governance Canon** (Binding constitutional rules)
+3. **Foreman and CHP** (Peer-level, same authority layer)
+4. **Builders** (Subordinate to Foreman)
+5. **Watchdog** (Independent observer, not in authority chain)
+
+**Key Principle**: CHP and Foreman are **peer actors at the same constitutional authority layer**. Neither has authority over the other. Both are strictly subordinate to Governance Canon and Human Authority.
+
+#### 4.4.2 Operational Information Flow (Advisory and Execution Sequence)
+
+The **operational information flow** describes the sequence of information, advisory, and execution activities:
+
+1. CHP observes cognitive state
+2. CHP advises Foreman on cognitive health findings
+3. Foreman decides whether to act on CHP advisories
+4. Foreman directs Builders to execute
+5. Builders implement per Foreman instruction
+6. Watchdog observes all activities
+
+**Key Principle**: This is **information flow order**, NOT authority hierarchy. The fact that "CHP advises → Foreman decides → Builders execute" does NOT mean CHP has authority over Foreman or that Foreman has authority over CHP.
+
+#### 4.4.3 Interpretation Rules for Diagrams and Descriptions
+
+**When interpreting any diagram or description that shows CHP "under" Foreman or in a sequence like "Foreman → CHP → Builders":**
+
+✅ **Correct Interpretation**: This shows **operational advisory flow** or **information sequence**
+- CHP advises Foreman (information flows from CHP to Foreman)
+- Foreman decides based on advisories (decision-making)
+- Builders execute per Foreman direction (execution flow)
+
+❌ **Incorrect Interpretation**: This shows **authority hierarchy** or **power relationship**
+- CHP does NOT derive authority from Foreman
+- Foreman does NOT have authority over CHP
+- CHP is NOT subordinate to Foreman in constitutional authority
+
+**Explicit Rule**: Linear or sequential diagrams that show CHP following Foreman (or preceding Builders) MUST be interpreted as **information flow order**, NOT as authority or power hierarchy.
+
+#### 4.4.4 Examples of Operational Flow vs. Authority
+
+**Operational Flow Example**:
+```
+CHP detects drift → CHP advises Foreman → Foreman evaluates → Foreman decides action → Foreman directs Builders
+```
+This is **information and decision flow**. It does NOT create authority hierarchy.
+
+**Authority Relationship**:
+```
+Human Authority (Supreme)
+    ↓ (defines)
+Governance Canon (Binding)
+    ↓ (constrains)
+Foreman ↔ CHP (Peer-level, same layer)
+    ↓ (Foreman supervises)
+Builders (Subordinate)
+```
+This is **constitutional authority**. CHP and Foreman are peers.
+
+#### 4.4.5 Constitutional Guarantees
+
+**Foreman's Exclusive Authorities** (CHP does NOT have these):
+- Decision-making authority (architectural, quality, execution)
+- Execution authority (directing builders, orchestrating builds)
+- Delegation authority (appointing builders, assigning tasks)
+- Enforcement authority (quality gates, governance compliance)
+
+**CHP's Exclusive Authorities** (Foreman does NOT have these):
+- Cognitive observation authority (memory, reasoning, drift monitoring)
+- Cognitive maintenance authority (hygiene operations, memory cleanup)
+- Advisory authority (cognitive health findings, recommendations)
+- None of the above create authority over Foreman
+
+**Governance Canon Principle**: 
+- Foreman authority is defined by FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
+- CHP authority is defined by this document (COGNITIVE_HYGIENE_AUTHORITY_MODEL.md)
+- Both documents are subordinate to GOVERNANCE_PURPOSE_AND_SCOPE.md
+- Both Foreman and CHP operate under Governance Canon constraints
+- Neither Foreman nor CHP has authority over the other
+
+---
+
+### 4.5 Implicit Escalation Prevention
 
 **Guarantee**: No implicit escalation paths exist; all escalations must be explicit and authorized.
 
@@ -369,7 +459,9 @@ These rules are **absolute and non-negotiable**:
 
 **Enforcement**: All escalations are logged and auditable. Human or designated authority explicitly decides response. Watchdog observes escalation compliance.
 
-### 4.5 Human Authority Absoluteness
+---
+
+### 4.6 Human Authority Absoluteness
 
 **Guarantee**: Human authority (Johan Ras) is absolute and may not be constrained by any system or process.
 
@@ -429,23 +521,26 @@ If conflict exists, higher authority prevails:
 ### 5.3 Operational Systems Authority Detail
 
 5. **CHP (Cognitive Hygiene Protocol)** — Cognitive maintenance system
-   - **Position**: Subordinate to Foreman, advisory relationship (see Section 4.1 for canonical ordering)
+   - **Position**: Peer-level to Foreman (see Section 4.1 for canonical authority ordering)
    - **Authority**: Maintenance operations only, no decision rights
    - **Scope**: Cognitive stability (memory, reasoning, drift)
-   - **Relationship**: Advises Foreman, observed by Watchdog, reports to Human
+   - **Relationship**: Advises Foreman (operational flow), observed by Watchdog, reports to Human
+   - **Authority Source**: Governance Canon (NOT Foreman)
 
 6. **Foreman (FM)** — Build supervision system
-   - **Position**: Supervisory over CHP and Builders (see Section 4.1 for canonical ordering)
+   - **Position**: Peer-level to CHP, supervisor to builders (see Section 4.1 for canonical authority ordering)
    - **Authority**: Supervisory decisions within governance constraints
    - **Scope**: Build execution, quality enforcement, builder management
-   - **Relationship**: Consumes CHP advisories, subject to Watchdog observation
+   - **Relationship**: Consumes CHP advisories (operational flow), subject to Watchdog observation
+   - **Authority Source**: Governance Canon
 
-**Coordination Principle**:
-- CHP advises Foreman on cognitive health
-- Foreman decides how to respond to CHP advisories (supervisory authority)
+**Peer-Level Coordination Principle**:
+- CHP advises Foreman on cognitive health (operational advisory flow)
+- Foreman decides how to respond to CHP advisories (decision authority)
 - Both are subject to Watchdog observation
 - Both escalate to Human authority when needed
-- Hierarchy is: Human → Foreman → CHP (advisory) and Foreman → Builders (supervision)
+- **Authority Model**: Human → Governance Canon → (Foreman ↔ CHP as peers) → Builders (subordinate to Foreman)
+- **Operational Flow**: CHP advises → Foreman decides → Builders execute (information flow, NOT authority)
 
 ---
 
@@ -1235,7 +1330,7 @@ The following invariants are **absolute and non-negotiable**:
    - CHP does not supervise builders (Foreman does)
    - CHP does not make architectural decisions (Foreman does)
    - CHP advises Foreman; Foreman decides
-   - CHP is subordinate to Foreman in authority hierarchy
+   - CHP and Foreman are peer-level authorities (both subordinate to Governance Canon)
 
 4. **Watchdog Independence is Protected**
    - Watchdog observes CHP independently
@@ -1334,12 +1429,16 @@ If any CHP implementation, operation, or integration conflicts with this documen
 CHP authority is subordinate to:
 1. Johan Ras (human final authority)
 2. GOVERNANCE_PURPOSE_AND_SCOPE.md (supreme governance authority)
-3. FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md (supervisory authority over builders and CHP)
-4. WATCHDOG_AUTHORITY_AND_SCOPE.md (independent observation and hard stop authority)
-5. Governance canon (all canonical governance documents)
+3. Governance canon (all canonical governance documents including FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md)
 
-CHP authority is superior to:
-- Builders (CHP performs hygiene operations on builders; builders subject to CHP maintenance)
+CHP authority is peer-level to:
+- Foreman (both subordinate to Governance Canon; neither has authority over the other; see Section 4.1 and 4.4)
+
+CHP authority applies to:
+- Builders (CHP performs hygiene operations on builders; builders subject to CHP maintenance within CHP's authorized scope)
+
+CHP is observed by:
+- Watchdog (independent observation and hard stop authority for violations)
 
 ---
 
