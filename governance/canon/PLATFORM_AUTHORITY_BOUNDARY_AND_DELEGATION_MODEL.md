@@ -381,7 +381,7 @@ Every platform action performed by Maturion MUST be recorded with:
 **Audit Trail Location**: Platform action audit trails MUST be stored in:
 - Maturion central audit log (permanent record)
 - Repository evidence trail (where action affects specific repository)
-- FM App visibility dashboard (real-time awareness)
+- FM App (real-time awareness and situational awareness centre per GOVERNANCE_PURPOSE_AND_SCOPE.md)
 
 ---
 
@@ -695,12 +695,12 @@ This document MUST NOT evolve to:
 ### 13.2 What This Document Does NOT Define
 
 - ❌ Maturion implementation architecture (how Maturion is built)
-- ❌ GitHub API technical integration details
-- ❌ Token management and credential storage
-- ❌ Maturion deployment topology
-- ❌ FM-to-Maturion communication protocol (transport layer)
+- ❌ GitHub API technical integration details (see `/architecture/github-app-auth-architecture.md` for implementation)
+- ❌ Token management and credential storage (implementation concern)
+- ❌ Maturion deployment topology (implementation concern)
+- ❌ FM-to-Maturion communication protocol (transport layer - implementation concern)
 
-**Separation**: This is governance definition, not implementation specification.
+**Separation**: This is governance definition, not implementation specification. Implementation details are addressed in architecture documents where applicable.
 
 ---
 
