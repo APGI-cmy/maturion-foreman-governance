@@ -364,12 +364,12 @@ Audit records MUST be:
 ### 8.1 Maturion Failure Response
 
 When execution fails, Maturion MUST:
-1. ❌ **HALT execution** - Do not retry autonomously
-2. 📝 **Document failure** - Complete failure evidence in audit record
-3. 📊 **Assess impact** - Evaluate severity and state consistency
-4. 🔧 **Attempt remediation** - Rollback if necessary and possible
-5. 📢 **Notify FM** - Detailed failure information with guidance
-6. ⏸️ **Wait for FM decision** - Do not modify instruction or retry without FM authorization
+1. **HALT execution** - Do not retry autonomously
+2. **Document failure** - Complete failure evidence in audit record
+3. **Assess impact** - Evaluate severity and state consistency
+4. **Attempt remediation** - Rollback if necessary and possible
+5. **Notify FM** - Detailed failure information with guidance
+6. **Wait for FM decision** - Do not modify instruction or retry without FM authorization
 
 **Prohibited Behaviors**:
 - ❌ Autonomous retry without FM instruction
@@ -381,10 +381,10 @@ When execution fails, Maturion MUST:
 ### 8.2 FM Failure Response
 
 When delegation fails, FM MUST:
-1. 📋 **Review failure evidence** - Examine audit record and error details
-2. 🔍 **Classify failure** - Determine failure type and cause
-3. 📊 **Assess recoverability** - Can failure be corrected and retried?
-4. 🔧 **Determine remediation** - What action is required?
+1. **Review failure evidence** - Examine audit record and error details
+2. **Classify failure** - Determine failure type and cause
+3. **Assess recoverability** - Can failure be corrected and retried?
+4. **Determine remediation** - What action is required?
 
 **FM Options**:
 - **Retry with Corrections**: Generate new instruction with corrected parameters
@@ -400,8 +400,10 @@ When delegation fails, FM MUST:
 
 ### 8.3 Escalation Requirements
 
+**Escalation Threshold**: Defined as three (3) or more failures for the same action type within a single workflow execution context.
+
 FM MUST escalate to human authority (Johan) when:
-- Repeated delegation failures (3+ for same action)
+- Repeated delegation failures exceed escalation threshold (3+ for same action)
 - Critical platform action blocked
 - Authorization evidence ambiguous or conflicting
 - Governance rule conflict detected

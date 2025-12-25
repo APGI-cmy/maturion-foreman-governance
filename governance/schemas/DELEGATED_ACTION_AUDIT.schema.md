@@ -80,7 +80,10 @@ Where:
 
 Example: `.governance/delegated-actions/audit-records/DAR-2025-0001.md`
 
-**Naming Convention**: Audit record ID matches instruction ID numbering (DAI-2025-0001 → DAR-2025-0001)
+**Naming Convention**: Audit record ID matches instruction ID numbering exactly.
+- DAI-2025-0001 → DAR-2025-0001
+- DAI-2025-0042 → DAR-2025-0042
+- The NNNN portion MUST match exactly between instruction and audit record IDs for traceability
 
 #### 4.1.2 Markdown Template
 
@@ -508,7 +511,7 @@ Example: `.governance/delegated-actions/audit-records/DAR-2025-0001.md`
           "properties": {
             "resource_type": {
               "type": "string",
-              "enum": ["Issue", "PR", "Branch", "Tag", "Workflow Run"]
+              "enum": ["Issue", "Pull Request", "Branch", "Tag", "Workflow Run"]
             },
             "resource_id": {"type": "string"},
             "resource_url": {"type": "string", "format": "uri"},

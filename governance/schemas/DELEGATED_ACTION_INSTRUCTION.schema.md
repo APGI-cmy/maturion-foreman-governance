@@ -144,7 +144,7 @@ Example: `.governance/delegated-actions/instructions/DAI-2025-0001.md`
 
 **Architecture Evidence**:
 - Architecture Document: [Path or reference]
-- Architecture Compliance: [VERIFIED | NOT_VERIFIED]
+- Architecture Compliance: [VERIFIED | NOT_VERIFIED | N/A]
 
 **QA Evidence**:
 - Builder QA Report: [Path]
@@ -327,7 +327,7 @@ delete_branch_after_merge: [true | false]  # Optional
 - Human approval MUST be present (unless emergency)
 - All governance gates MUST be passed
 - QA MUST be 100% GREEN
-- No merge conflicts present
+- No merge conflicts present (VERIFIED)
 
 #### 5.2.4 CLOSE_PR
 **Purpose**: Close a pull request without merging
