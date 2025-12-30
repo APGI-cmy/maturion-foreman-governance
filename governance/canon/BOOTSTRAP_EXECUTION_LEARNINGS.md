@@ -125,3 +125,62 @@ execution, delegation, or progress monitoring, and MUST define:
 
 Reference Specification:
 MATURION_RUNTIME_EXECUTION_MONITOR_SPEC.md
+
+### BL-0006 — Builder Execution Requires Explicit Simulation During Bootstrap
+
+**Context**
+
+During Wave 0.2 (Controlled Task Assignment Dry Run), tasks were formally assigned by FM
+to conceptual builder roles (e.g. `ui-builder`) using governed task assignment documents.
+
+Despite correct planning, validation, tracking, and heartbeat protocols, no task execution
+occurred. Tasks remained in `ASSIGNED` state indefinitely.
+
+**Observation**
+
+In the absence of a runtime execution layer:
+
+- Builder roles are declarative, not active
+- No mechanism exists to start, run, or complete work
+- FM can plan and validate, but cannot trigger execution
+- GitHub provides no native long-running agent execution
+
+**Learning**
+
+During bootstrap phases (Wave 0 / Wave 0.x), **builder execution must be explicitly
+simulated or proxied**, with clear authorization and auditability.
+
+“Assignment” alone is insufficient — execution must be declared.
+
+**Governance Position**
+
+Simulated execution is **not a governance breach** when:
+
+- Explicitly authorized by CS2
+- Clearly annotated as SIMULATED
+- Limited to documentation-only or non-production artifacts
+- Fully auditable via DAI and execution tracker
+
+**Resolution Pattern (Bootstrap Only)**
+
+1. FM assigns task as normal
+2. If no runtime execution occurs within bounded time:
+   - CS2 authorizes simulated execution
+3. FM produces deliverable content via proxy
+4. FM validates acceptance criteria
+5. FM generates DAI
+6. CS2 performs GitHub platform actions as execution proxy
+7. Tracker marks task as COMPLETED (SIMULATED)
+
+**Future Resolution (Post-Bootstrap)**
+
+This learning directly motivates creation of:
+
+- `MATURION_RUNTIME_EXECUTION_MONITOR`
+- Active task state transitions (ASSIGNED → IN_PROGRESS → COMPLETED)
+- Builder wake/sleep signaling
+- UI-level execution visibility
+
+**Status:** Recorded  
+**Applicability:** Wave 0 / Bootstrap phases only
+
