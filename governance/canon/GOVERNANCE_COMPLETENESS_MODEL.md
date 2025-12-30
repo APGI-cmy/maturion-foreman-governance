@@ -194,6 +194,15 @@ These components define platform authority boundaries and delegation protocol be
 | DELEGATION_RESPONSE_SCHEMA | `governance/schemas/DELEGATION_RESPONSE.schema.md` | Normative structure for delegation responses | DELEGATION_INSTRUCTION_MODEL |
 | PLATFORM_ACTION_AUDIT_SCHEMA | `governance/schemas/PLATFORM_ACTION_AUDIT_ENTRY.schema.md` | Normative structure for platform action audit entries | DELEGATION_INSTRUCTION_MODEL, AUDIT_ARTIFACT_MODEL |
 
+### 5.12 Platform Readiness for Governed Build Execution (G-PLAT-READY-01)
+These components define what it means for the platform to be ready to execute a governed build.
+
+| Component ID | Required Artifacts | Notes / Purpose | Dependencies |
+|---|---|---|---|
+| PLATFORM_READINESS_CANON | `governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md` (G-PLAT-READY-01) | Defines platform readiness for build execution | CANON_PURPOSE_SCOPE, INITIALIZATION_GATE, AGENT_ROLE_APPLICABILITY, ARCHITECTURE_COMPLETENESS, GOVERNANCE_GATE_DEFINITION |
+| PLATFORM_READINESS_CHECKLIST | `governance/templates/PLATFORM_READINESS_CHECKLIST.template.md` | Template for readiness validation | PLATFORM_READINESS_CANON |
+| PLATFORM_READINESS_EVIDENCE_SCHEMA | `governance/schemas/PLATFORM_READINESS_EVIDENCE.schema.md` | Normative structure for readiness evidence | PLATFORM_READINESS_CANON |
+
 ---
 
 ## 6. Validation Rules (How the Gate Must Evaluate)
