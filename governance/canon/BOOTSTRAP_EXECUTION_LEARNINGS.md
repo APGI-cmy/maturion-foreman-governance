@@ -184,3 +184,35 @@ This learning directly motivates creation of:
 **Status:** Recorded  
 **Applicability:** Wave 0 / Bootstrap phases only
 
+### BL-0007 — Irresponsible Appointment of Officials Will Collapse the Model (Critical)
+
+**Context**
+During transition from bootstrap (Wave 0.x) to production planning (Wave 1.0), the build process drifted toward coder-native execution patterns (implementation-first) and away from the Maturion governed pipeline (True North → QA-to-Red → Builders Build-to-Green).
+
+**Observation**
+This drift occurs when appointed officials (FM / Governance Liaison / Builders) do not internalize the Maturion-first constitution:
+- CS2 verifies only UI outcomes
+- True North architecture is mandatory
+- QA-to-Red defines build tasks
+- Builders build to green only
+- Governance is constitutional, not advisory
+
+**Root Cause**
+Appointment was not treated as a controlled, gated act with explicit constitutional onboarding.
+Agent contracts lacked a shared, repo-level “Agent Constitution” applying uniformly to all officials.
+
+**Learning**
+Appointment discipline is a security control.
+Incorrect appointment (or incorrect agent mindset) is a platform risk that can negate the entire governance model.
+
+**Requirement**
+All officials MUST be appointed using a governed protocol that:
+- binds them to BUILD_PHILOSOPHY and canonical governance
+- explicitly encodes CS2’s UI-only verification constraint
+- enforces sequencing: True North → QA-to-Red → Build-to-Green only
+- defines escalation triggers and STOP conditions
+- prevents coder-first defaults from reappearing under pressure
+
+**Status:** Recorded (Critical)  
+**Applies To:** FM, Governance Liaison, Builders, Watchdog roles
+
