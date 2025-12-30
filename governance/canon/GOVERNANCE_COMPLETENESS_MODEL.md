@@ -199,9 +199,11 @@ These components define what it means for the platform to be ready to execute a 
 
 | Component ID | Required Artifacts | Notes / Purpose | Dependencies |
 |---|---|---|---|
-| PLATFORM_READINESS_CANON | `governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md` (G-PLAT-READY-01) | Defines platform readiness for build execution | CANON_PURPOSE_SCOPE, INITIALIZATION_GATE, AGENT_ROLE_APPLICABILITY, ARCHITECTURE_COMPLETENESS, GOVERNANCE_GATE_DEFINITION |
+| PLATFORM_READINESS_CANON | `governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md` (G-PLAT-READY-01) | Defines platform readiness for build execution | CANON_PURPOSE_SCOPE, INITIALIZATION_GATE, AGENT_ROLE_APPLICABILITY, ARCHITECTURE_COMPLETENESS, GOVERNANCE_GATE_DEFINITION, BRANCH_PROTECTION_ENFORCEMENT |
 | PLATFORM_READINESS_CHECKLIST | `governance/templates/PLATFORM_READINESS_CHECKLIST.template.md` | Template for readiness validation | PLATFORM_READINESS_CANON |
 | PLATFORM_READINESS_EVIDENCE_SCHEMA | `governance/schemas/PLATFORM_READINESS_EVIDENCE.schema.md` | Normative structure for readiness evidence | PLATFORM_READINESS_CANON |
+| BRANCH_PROTECTION_ENFORCEMENT | `governance/canon/BRANCH_PROTECTION_ENFORCEMENT.md` (G-BRANCH-PROTECT-01) | Defines branch protection as constitutional requirement with clear responsibility boundaries | PLATFORM_READINESS_CANON, PLATFORM_AUTHORITY_BOUNDARY, FM_MATURION_DELEGATED_ACTION_POLICY |
+| BRANCH_PROTECTION_EVIDENCE_SCHEMA | `governance/schemas/BRANCH_PROTECTION_EVIDENCE.schema.md` | Normative structure for branch protection verification evidence | BRANCH_PROTECTION_ENFORCEMENT |
 
 ---
 

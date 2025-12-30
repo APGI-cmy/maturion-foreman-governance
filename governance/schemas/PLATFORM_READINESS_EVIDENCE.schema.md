@@ -86,19 +86,30 @@ For each of the 6 canonical readiness conditions, document:
 **Validation Result**: {TRUE | FALSE}  
 **Evidence Sources**:
 - {Workflow files validated}
-- {Branch protection settings}
+- {Branch protection verification evidence}
 - {Gate definitions}
 
 **Validation Details**:
 - Required workflows exist: {PASS | FAIL}
 - PR gate semantics active: {PASS | FAIL}
-- Branch protection configured: {PASS | FAIL}
+- Branch protection verified programmatically: {PASS | FAIL}
+- Branch protection evidence valid: {PASS | FAIL}
+- Branch protection enforcement status ACTIVE: {PASS | FAIL}
+- Branch protection verification current (< 7 days): {PASS | FAIL}
 - Merge authority explicit: {PASS | FAIL}
+
+**Branch Protection Evidence Reference**:
+- Evidence Artifact: {Path to BRANCH_PROTECTION_EVIDENCE artifact}
+- Evidence ID: {BPEV-YYYY-NNNN}
+- Verification Timestamp: {ISO-8601 timestamp}
+- Enforcement Status: {ACTIVE | DEGRADED | INACTIVE}
+- Verification Method: {Method used}
 
 **Validator**: {Name}  
 **Validation Date**: {ISO-8601 timestamp}
 
 **Canonical Reference**: governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md Section 4.2
+**Branch Protection Reference**: governance/canon/BRANCH_PROTECTION_ENFORCEMENT.md
 
 ---
 

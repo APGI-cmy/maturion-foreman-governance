@@ -243,16 +243,62 @@ For each application to be built, architecture MUST address:
 
 ---
 
-## 7. Branch Protection (Hard Boundary)
+## 7. Branch Protection (Constitutional Requirement)
 
-**Canonical Source**: GitHub repository settings, `GOVERNANCE_GATE_CANON.md`
+**Canonical Source**: `governance/canon/BRANCH_PROTECTION_ENFORCEMENT.md` (G-BRANCH-PROTECT-01)
 
-- [ ] Branch protection configured for `main` branch
-- [ ] Protection verified by repository administrator
-- [ ] Direct push to `main` prohibited
-- [ ] Required checks enforced (PR gates)
-- [ ] Human approval required (no auto-merge)
-- [ ] Protection cannot be bypassed by agents
+### 7.1 Branch Protection Verification (MANDATORY)
+
+- [ ] Branch protection verified programmatically (GitHub API check)
+- [ ] Verification evidence artifact exists and valid
+- [ ] Evidence conforms to `BRANCH_PROTECTION_EVIDENCE.schema.md`
+- [ ] Enforcement status is ACTIVE (not INACTIVE or DEGRADED)
+- [ ] Verification timestamp within 7 days
+- [ ] Evidence included in Platform Readiness Evidence
+
+**Evidence Sources**:
+- [ ] Branch protection evidence artifact: `governance/evidence/branch-protection/BRANCH_PROTECTION_EVIDENCE_*.md`
+- [ ] Evidence ID: _______________
+- [ ] Verification timestamp: _______________
+- [ ] Enforcement status: _______________
+
+### 7.2 Protection Rules (MANDATORY)
+
+- [ ] Pull request required before merge
+- [ ] Required approvals configured (minimum 1)
+- [ ] Code owner review required (if CODEOWNERS file exists)
+- [ ] Stale approvals dismissed on new commits
+- [ ] Status checks required before merge
+- [ ] Branches must be up-to-date before merge
+- [ ] Required status checks configured (list: _______________)
+- [ ] Non-bypass enforcement enabled (`allow_bypass = false`)
+- [ ] Force push prohibited
+- [ ] Branch deletion prohibited
+
+**Emergency Bypass Authorization** (if `allow_bypass = true`):
+- [ ] Emergency bypass documented and authorized
+- [ ] Authorization by human authority (Johan)
+- [ ] Remediation timeline established
+- [ ] Audit trail complete
+
+### 7.3 Responsibility Validation
+
+- [ ] FM responsibility documented: ensure and evidence enforcement
+- [ ] CS2 responsibility documented: review and authorization only
+- [ ] Maturion responsibility documented: execute platform configuration
+- [ ] No manual CS2 operational dependency (or bootstrap exception authorized)
+- [ ] Delegation model operational (FM → Maturion)
+
+### 7.4 One-Time Build Alignment
+
+- [ ] Declarative configuration model documented (phase 1/2/3)
+- [ ] Verification mechanism programmatic (not manual)
+- [ ] Evidence generation automated
+- [ ] Escalation path defined (when automation impossible)
+
+**Validation Method**: _______________  
+**Validator**: _______________  
+**Date**: _______________
 
 **Evidence Sources**:
 - [ ] Repository settings screenshot or audit

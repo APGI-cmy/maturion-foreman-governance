@@ -100,21 +100,34 @@ THEN governance_canon_locked = TRUE
 - Required `.github/workflows` exist and are enforced
 - PR gate semantics are active and role-scoped (per `AGENT_ROLE_GATE_APPLICABILITY.md`)
 - Governance Gate is operational (per `GOVERNANCE_GATE_CANON.md`)
-- Branch protection is configured and verified
+- Branch protection is configured and verified (per `BRANCH_PROTECTION_ENFORCEMENT.md`)
 - Merge authority is explicitly defined and enforced
 - No bypass paths exist
+
+**Branch Protection Verification Requirements** (per `BRANCH_PROTECTION_ENFORCEMENT.md`):
+- Branch protection verified programmatically (GitHub API check)
+- Verification evidence artifact exists and valid (conforms to `BRANCH_PROTECTION_EVIDENCE.schema.md`)
+- Enforcement status is ACTIVE (not INACTIVE or DEGRADED)
+- Verification timestamp within acceptable recency (7 days maximum)
+- Non-bypass enforcement enabled (or emergency bypass authorized and documented)
+- Evidence included in Platform Readiness Evidence
 
 **Validation Sources**:
 - `governance/canon/GOVERNANCE_LAYERDOWN_CONTRACT.md`
 - `GOVERNANCE_GATE_CANON.md`
 - `governance/canon/PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md`
 - `governance/canon/AGENT_ROLE_GATE_APPLICABILITY.md`
+- `governance/canon/BRANCH_PROTECTION_ENFORCEMENT.md` (NEW)
+- `governance/schemas/BRANCH_PROTECTION_EVIDENCE.schema.md` (NEW)
 
-**Readiness Test**:
+**Readiness Test** (updated):
 ```
 IF governance_gate_operational()
 AND pr_gate_semantics_active()
-AND branch_protection_configured()
+AND branch_protection_verified_programmatically()      # Updated per BRANCH_PROTECTION_ENFORCEMENT.md
+AND branch_protection_evidence_valid()                 # NEW - Evidence artifact conformance
+AND branch_protection_enforcement_status_active()      # NEW - Not INACTIVE or DEGRADED
+AND branch_protection_verification_current()           # NEW - Timestamp < 7 days
 AND merge_authority_explicit()
 THEN governance_layerdown_complete = TRUE
 ```
