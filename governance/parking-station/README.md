@@ -100,6 +100,7 @@ Parking stations are governed by:
 | Document | Created | Status | Activation Conditions |
 |----------|---------|--------|---------------------|
 | [GPCA & Governance Ripple Model](GPCA_AND_GOVERNANCE_RIPPLE_MODEL.md) | 2025-12-22 | PARKED | Governance GREEN, PR gates stable, explicit authorization |
+| [Agent Autonomy After Gate Fixes](AGENT_AUTONOMY_AFTER_GATE_FIXES.md) | 2025-12-31 | PARKED | System stability, explicit authorization, governance increment process, sequencing discipline |
 
 ## Change Control
 
