@@ -898,10 +898,144 @@ This protocol is successful when:
 - ✅ Stuck PRs are **handled systematically** (halt and escalate, not retry indefinitely)
 - ✅ Complete audit trail is **generated for every gate evaluation**
 - ✅ FM app implementation is **validated and aligned** with this protocol
+- ✅ Agents **proceed autonomously** after gate fixes are completed and merged (no unnecessary human gating)
+- ✅ Gate PASS status is **authoritative** and enables immediate handover (not advisory)
 
 ---
 
-## 16. Version History
+## 16. Agent Autonomy After Gate Fixes
+
+### 16.1 Purpose
+
+This section clarifies agent responsibilities and autonomy once PR gate semantics are explicitly defined, fixed, and available to agents after gate defects are resolved.
+
+**Context**: During governance maturation, gate defects (misapplied gates, contradictory logic, infrastructure failures) may require human intervention to fix. Once such fixes are completed and merged, this section defines agent behavior.
+
+### 16.2 Core Principle
+
+**Once PR gate semantics are:**
+- Explicitly defined in canonical governance
+- Fixed where defective (contradictions resolved, logic corrected, infrastructure restored)
+- Available to the agent (gates are executable and accessible)
+
+**Agents are responsible for:**
+- Running gates autonomously
+- Interpreting gate outcomes deterministically per this protocol
+- Proceeding with handover autonomously when all applicable gates pass
+- Escalating only when gate evaluation produces ERROR status (governance defect)
+
+**Humans are responsible for:**
+- Defining gate rules and semantics in canonical governance
+- Fixing gate systems when defects are escalated
+- Approving governance changes that affect gate semantics
+- **NOT** acting as runtime decision-makers for gate pass/fail interpretation
+
+### 16.3 Prohibited Behaviors
+
+After gate fixes are completed and merged, agents MUST NOT:
+
+- ❌ Wait for human interpretation of gate pass/fail status
+- ❌ Pause execution to ask "Should I proceed with handover now that gates pass?"
+- ❌ Treat passing gates as advisory rather than authoritative
+- ❌ Request permission to proceed when all applicable gates are GREEN
+- ❌ Revert to human-gated CI mental model after gate defects are resolved
+
+### 16.4 Authorized Agent Actions
+
+After gate fixes are completed and merged, agents MUST:
+
+- ✅ Execute gate evaluation per Section 6
+- ✅ Interpret gate results deterministically:
+  - **PASS** → Proceed with handover (no human approval needed)
+  - **FAIL** → Fix defects in PR, re-evaluate gates, retry
+  - **ERROR** → Halt and escalate (governance defect suspected)
+- ✅ Proceed autonomously with PR handover when gate status = PASS
+- ✅ Follow escalation procedures (Section 10) only when governance defects detected
+
+### 16.5 Human Notification vs. Human Gating
+
+**Human notification** (allowed):
+- Agent may notify human that handover is proceeding
+- Informational status updates
+- Post-handover evidence submission
+- Escalation of governance defects (ERROR status)
+
+**Human gating** (prohibited):
+- Agent awaiting human approval to proceed after gates pass
+- Human becoming runtime decision-maker for gate interpretation
+- Introducing implicit human checkpoints not defined in canonical governance
+
+### 16.6 Rationale
+
+This clarification preserves:
+
+1. **Agent Autonomy Inside Sandbox**: Per EXECUTION_INVARIANTS.md INV-12, execution proceeds autonomously unless explicitly blocked by governance
+2. **Separation of Duties**: Humans define rules, agents execute within rules
+3. **Non-Coder Execution Model**: Agents must be capable of autonomous execution within governance boundaries
+4. **Elimination of Human Bottlenecks**: Gate semantics, once defined, enable deterministic agent behavior
+5. **OPOJD Compliance**: Per OPOJD_ARCHITECTURE.md, agents complete work end-to-end without unnecessary approval pauses
+
+### 16.7 Gate Fix Completion Criteria
+
+A gate fix is considered "completed and available" when:
+
+1. **Fix is merged** to main/default branch
+2. **Gate logic is accessible** to agents (workflow files updated, scripts deployed, etc.)
+3. **Gate semantics are documented** in canonical governance (this protocol, AGENT_ROLE_GATE_APPLICABILITY.md, etc.)
+4. **Agent can execute gate** without infrastructure failures
+
+Once these criteria are met, agents MUST resume autonomous execution per Section 16.4.
+
+### 16.8 Failure Mode Prevention
+
+**Failure Mode**: Agent pauses after gate fix, awaiting human clarification, creating unnecessary human dependency
+
+**Prevention**:
+- This section explicitly authorizes agents to proceed autonomously
+- Gate PASS status is authoritative, not advisory
+- Human role is fixing systems, not interpreting gate results
+
+**Detection**: If agent pauses after gates pass, classify as agent behavioral defect (not governance defect)
+
+### 16.9 Canonical Authority
+
+This section is subordinate to and consistent with:
+
+- **GOVERNANCE_PURPOSE_AND_SCOPE.md** (Section 2: Governance as Canonical Memory)
+- **EXECUTION_INVARIANTS.md** (INV-12: Autonomous Execution Within Boundaries)
+- **OPOJD_ARCHITECTURE.md** (Section 2: No Mid-Build Interruptions; Section 3: Assume-Continue Principle)
+- **CI_CONFIRMATORY_NOT_DIAGNOSTIC.md** (Section 3: Preflight Evaluation; Section 5: Agent Responsibilities)
+- **PR_GATE_PRECONDITION_RULE.md** (Section 2: No green gate, no handover)
+
+This clarification operationalizes existing governance principles in the context of post-gate-fix agent behavior.
+
+### 16.10 Escalation Path (If Ambiguity Remains)
+
+If agent encounters ambiguity about whether to proceed after gates pass:
+
+1. **Default assumption**: Proceed autonomously (per INV-12, OPOJD)
+2. **Only escalate if**:
+   - Gate status is ERROR (governance defect)
+   - Gate requirements are contradictory (Section 8.1)
+   - Gate requirements are ambiguous (Section 8.2)
+   - Canonical governance explicitly forbids proceeding
+
+**NOT** escalation triggers:
+- Gates are GREEN and agent is uncertain whether to proceed
+- Agent wants confirmation before handover when gates pass
+- Agent is being "extra cautious" after gate fixes
+
+---
+
+## 17. Version History
+
+### v1.1.0 (2025-12-31)
+- Added Section 16: Agent Autonomy After Gate Fixes
+- Clarifies agent responsibility to proceed autonomously once gate semantics are defined and gate defects are resolved
+- Prohibits agents from waiting for human interpretation of gate pass/fail status
+- Distinguishes human notification (allowed) from human gating (prohibited)
+- Preserves agent autonomy, separation of duties, and OPOJD compliance
+- Prevents failure mode of unnecessary human bottlenecks after gate fixes
 
 ### v1.0.0 (2025-12-23)
 - Initial protocol definition
@@ -919,7 +1053,7 @@ This protocol is successful when:
 
 ---
 
-## 17. Authority Statement
+## 18. Authority Statement
 
 **This protocol is constitutional and binding.**
 
@@ -939,8 +1073,8 @@ All PR gates MUST follow this operational protocol. No repository, agent, or wor
 **Status**: Active and Enforced  
 **Owner**: Governance Administrator  
 **Approval Authority**: Johan Ras  
-**Last Updated**: 2025-12-23
+**Last Updated**: 2025-12-31
 
 ---
 
-*End of PR Gate Evaluation and Role Protocol v1.0.0*
+*End of PR Gate Evaluation and Role Protocol v1.1.0*
