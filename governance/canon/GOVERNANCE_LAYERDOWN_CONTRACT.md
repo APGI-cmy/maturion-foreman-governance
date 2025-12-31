@@ -369,6 +369,12 @@ Required canonical references:
 - Source: `BUILDER_FIRST_PR_MERGE_MODEL.md`, `BUILD_PHILOSOPHY.md`
 - Created: During build phase (per Builder handover)
 
+#### Parking Station (Initialization)
+- `.architecture/parking-station/README.md`
+- Source: `governance/templates/APPLICATION_PARKING_STATION_README.template.md`
+- Created: During repository initialization
+- Purpose: Enhancement and improvement capture per `MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md`
+
 ---
 
 ## 5. PR Gate & Merge Control Requirements
