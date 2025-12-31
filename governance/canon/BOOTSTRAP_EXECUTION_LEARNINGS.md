@@ -250,6 +250,8 @@ Before FM appoints builders:
 **Status:** Recorded  
 **Applies To:** All application repositories (FM app, SlotMaster, future apps)
 
+---
+
 ## BL-009 — Platform Readiness Was Declared Without a Canonical Definition
 
 ### Classification
@@ -338,5 +340,358 @@ This learning is accepted **once**.
 Future platform builds **must not** be initiated without meeting an explicit, canonically defined platform readiness standard.
 
 This condition is now permanently elevated.
+
+---
+
+## BL-010 — Platform Readiness Requires Deterministic Validation
+
+### Classification
+- **Type:** Governance Learning
+- **Phase:** Platform Readiness Reset & Build Initiation Plan (Phase 1.2)
+- **Severity:** Critical
+- **Status:** Recorded
+- **Impacts:** All future platform readiness declarations
+
+---
+
+### Context
+
+Phase 1.2 Platform Readiness Gap Analysis identified that platform readiness canon (G-PLAT-READY-01) defines 6 readiness conditions but lacks deterministic, executable validation methods.
+
+---
+
+### Observed Issue
+
+Platform readiness conditions use terms like `governance_completeness_state()` implying automation, but no such functions exist. Validation depends on human judgment, reintroducing subjectivity the canon was designed to eliminate.
+
+---
+
+### Root Cause
+
+Readiness conditions were defined constitutionally (what must be true) without operational specifications (how to verify truth). Gap between canonical definition and validation implementation.
+
+---
+
+### Learning
+
+Platform readiness conditions **MUST** be accompanied by deterministic validation methods with explicit evidence requirements. Readiness cannot be verified subjectively.
+
+**Validation Requirements**:
+- Each readiness condition MUST include a validation method specification
+- Validation methods MUST be executable or have explicit manual procedures
+- Evidence schemas MUST exist for all conditions
+- "Operational" vs "defined" distinction MUST be explicit with test criteria
+- Evidence MUST demonstrate enforcement occurred, not just that enforcement could occur
+
+---
+
+### Why This Gap Allowed Failure
+
+Without deterministic validation, readiness declarations depend on evaluator interpretation. Different evaluators may reach different conclusions using identical artifacts. This permits premature readiness declaration based on incomplete validation — the exact failure mode BL-009 documented.
+
+---
+
+### Governance Action Required
+
+This learning mandates updates to Platform Readiness Canon (G-PLAT-READY-01) to:
+- Define deterministic validation methods for all 6 readiness conditions
+- Distinguish "defined" from "operational" with evidence requirements
+- Require enforcement evidence, not just existence evidence
+- Establish evidence schemas for all conditions
+- Specify validation procedures (automated or manual with explicit steps)
+
+---
+
+### Status
+
+**Recorded** — Non-Retroactive  
+**Applies To:** All future platform readiness declarations  
+**Effective:** 2025-12-31
+
+---
+
+## BL-011 — Platform Readiness Must Distinguish Repository Scope
+
+### Classification
+- **Type:** Governance Learning
+- **Phase:** Platform Readiness Reset & Build Initiation Plan (Phase 1.2)
+- **Severity:** Critical
+- **Status:** Recorded
+- **Impacts:** All future platform readiness declarations
+
+---
+
+### Context
+
+Phase 1.2 Platform Readiness Gap Analysis identified that platform readiness canon (G-PLAT-READY-01) evaluates "the platform" without distinguishing governance repository readiness from application repository readiness.
+
+---
+
+### Observed Issue
+
+Platform readiness can be declared for governance repository while application repositories remain uninitialized, ungated, or without enforced contracts. No specification of which repositories must be ready for "platform readiness" to be true.
+
+---
+
+### Root Cause
+
+Platform readiness was conceived as singular state but platform is multi-repository ecosystem. Canon does not specify whether readiness applies per-repository or ecosystem-wide.
+
+---
+
+### Learning
+
+Platform readiness **MUST** specify scope: governance repository only, specific application repository, or ecosystem-wide. Different scopes have different readiness criteria.
+
+**Scope Requirements**:
+- Readiness declarations MUST include explicit scope (which repository/repositories)
+- Per-repository readiness criteria MUST be explicit
+- Ecosystem-wide readiness MUST aggregate per-repository states
+- Layer-down completeness MUST be validated per-repository
+- Governance repository readiness ≠ application repository readiness
+- Build execution authority tied to build target repository readiness, not governance repository readiness
+
+---
+
+### Why This Gap Allowed Failure
+
+Governance repository can be "ready" while build target repositories are not. Declaring "platform ready" based solely on governance repo state permits build initiation in unprepared repositories — the failure mode BL-009 identified.
+
+---
+
+### Governance Action Required
+
+This learning mandates updates to Platform Readiness Canon (G-PLAT-READY-01) to:
+- Define readiness scope categories (governance-layer, per-repository, ecosystem-wide)
+- Specify which scope applies to each readiness condition
+- Distinguish governance repository readiness from application repository readiness
+- Require layer-down validation per target repository before build authorization
+- Clarify that governance repository readiness is prerequisite, not sufficient condition
+
+---
+
+### Status
+
+**Recorded** — Non-Retroactive  
+**Applies To:** All future platform readiness declarations  
+**Effective:** 2025-12-31
+
+---
+
+## BL-012 — AMBER Readiness Requires Explicit Exception Criteria
+
+### Classification
+- **Type:** Governance Learning
+- **Phase:** Platform Readiness Reset & Build Initiation Plan (Phase 1.2)
+- **Severity:** Critical
+- **Status:** Recorded
+- **Impacts:** All future AMBER readiness declarations
+
+---
+
+### Context
+
+Phase 1.2 Platform Readiness Gap Analysis identified that platform readiness canon (G-PLAT-READY-01) defines AMBER state as "core conditions satisfied but optional elements incomplete" without defining which conditions are core vs optional.
+
+---
+
+### Observed Issue
+
+All 6 readiness conditions are presented as equally mandatory, but AMBER state introduces "optional elements" without specification. AMBER can be used to bypass required conditions by reinterpreting them as optional.
+
+---
+
+### Root Cause
+
+Canon treats all conditions as required but permits AMBER declaration without explicit criteria for when degradation is acceptable. No enumeration of which elements may be incomplete under AMBER.
+
+---
+
+### Learning
+
+AMBER readiness state **MUST** include explicit, non-subjective criteria for which conditions may be incomplete and under what circumstances. "Optional elements" must be enumerated constitutionally, not determined per-declaration.
+
+**AMBER Requirements**:
+- Readiness canon MUST classify conditions as REQUIRED vs DEGRADABLE
+- AMBER authorization criteria MUST be explicit (not "human judgment" alone)
+- Risk thresholds for AMBER MUST be defined (acceptable vs unacceptable degradation)
+- AMBER remediation requirements MUST be time-bound and enforceable
+- AMBER MUST NOT permit critical enforcement gaps (gates, contracts, STOP mechanics)
+- AMBER justification MUST cite specific enumerated exception case
+
+---
+
+### Why This Gap Allowed Failure
+
+Without explicit AMBER criteria, any condition can be retroactively classified as "optional" to permit AMBER declaration. This is functionally equivalent to not having the condition at all — the exact failure mode BL-009 warned against.
+
+---
+
+### Governance Action Required
+
+This learning mandates updates to Platform Readiness Canon (G-PLAT-READY-01) to:
+- Classify each condition as REQUIRED (must be TRUE for any readiness) or DEGRADABLE (may be incomplete under AMBER with justification)
+- Define explicit AMBER exception cases (e.g., "continuous monitoring deferred but manual audit scheduled")
+- Prohibit AMBER for core enforcement mechanisms (gates, contracts, STOP authority)
+- Require time-bound remediation plans for AMBER declarations
+- Establish AMBER review cadence (must transition to GREEN or escalate)
+
+---
+
+### Status
+
+**Recorded** — Non-Retroactive  
+**Applies To:** All future AMBER readiness declarations  
+**Effective:** 2025-12-31
+
+---
+
+## BL-013 — Platform Readiness Must Model Progressive Activation
+
+### Classification
+- **Type:** Governance Learning
+- **Phase:** Platform Readiness Reset & Build Initiation Plan (Phase 1.2)
+- **Severity:** Critical
+- **Status:** Recorded
+- **Impacts:** All future platform readiness models and declarations
+
+---
+
+### Context
+
+Phase 1.2 Platform Readiness Gap Analysis identified that platform readiness canon (G-PLAT-READY-01) treats readiness as binary (GREEN/RED/AMBER) but bootstrap learnings demonstrate platform capabilities activate progressively.
+
+---
+
+### Observed Issue
+
+Current canon defines only one readiness state: "Platform ready for governed build execution." No distinction between readiness for manual execution, delegated execution, supervised execution, and autonomous execution.
+
+---
+
+### Root Cause
+
+Platform readiness was defined monolithically but platform capabilities mature through phases (governance ready → FM ready → builder ready → autonomous execution ready). Binary readiness model cannot represent partial capability readiness.
+
+---
+
+### Learning
+
+Platform readiness **MUST** be modeled as progressive activation with explicit capability-based readiness stages. Different execution modes have different readiness prerequisites.
+
+**Progressive Activation Requirements**:
+- Readiness canon MUST define activation stages with explicit prerequisites
+- Each stage MUST have explicit capability boundaries
+- Readiness declarations MUST specify which activation stage is ready
+- Higher activation stages MUST require all lower stage prerequisites
+- Stage transitions MUST be explicit and auditable
+
+**Activation Stages** (minimum model):
+1. **Governance-Layer Ready**: Governance canon locked, completeness GREEN, layer-down complete in governance repository
+2. **Repository Ready**: Application repository initialized, governance seeded, enforcement infrastructure present
+3. **Manual Execution Ready**: Architecture frozen, QA-to-red complete, human proxy can execute builds
+4. **Delegated Execution Ready**: FM operational, builders recruited, FM-instructs-human-executes viable
+5. **Supervised Execution Ready**: Automated execution possible, human oversight active, halt authority proven
+6. **Autonomous Execution Ready**: Full automation operational, continuous monitoring active, no human intervention required
+
+---
+
+### Why This Gap Allowed Failure
+
+Binary readiness forces declaring "ready" when platform is only ready for manual execution, or declaring "not ready" when manual execution is viable. BL-009 occurred because platform was "ready enough" for some activities but not others — binary model cannot represent this nuance.
+
+---
+
+### Governance Action Required
+
+This learning mandates updates to Platform Readiness Canon (G-PLAT-READY-01) to:
+- Define progressive activation stage model
+- Map each readiness condition to relevant activation stages
+- Specify which stage declarations are valid (not all stages may be declarable immediately)
+- Clarify that "Platform Ready for Governed Build Execution" implies a specific activation stage
+- Integrate progressive activation with existing System Commissioning and Progressive Activation Protocol
+
+---
+
+### Status
+
+**Recorded** — Non-Retroactive  
+**Applies To:** All future platform readiness models  
+**Effective:** 2025-12-31
+
+---
+
+## BL-014 — "Operational" Requires Evidence of Enforcement, Not Just Existence
+
+### Classification
+- **Type:** Governance Learning
+- **Phase:** Platform Readiness Reset & Build Initiation Plan (Phase 1.2)
+- **Severity:** Critical
+- **Status:** Recorded
+- **Impacts:** All future operational readiness validations
+
+---
+
+### Context
+
+Phase 1.2 Platform Readiness Gap Analysis identified that platform readiness canon (G-PLAT-READY-01) requires governance to be "operational" but does not distinguish between "governance defined" and "governance enforced."
+
+---
+
+### Observed Issue
+
+Multiple conditions use "operational," "active," "enforceable" without specifying evidence threshold. Governance existence (files present) conflated with governance enforcement (rules prevent violations). No test for "has governance actually blocked a violation?" vs "would governance theoretically block a violation?"
+
+---
+
+### Root Cause
+
+Canon requires governance to be "operational" without defining what evidence proves operational status vs merely defined status. Permits declaring readiness when governance exists but has never enforced.
+
+---
+
+### Learning
+
+"Operational" governance **MUST** be proven through enforcement evidence, not existence evidence. Readiness requires proof governance has enforced (past tense), not proof governance could enforce (conditional).
+
+**Operational Evidence Requirements**:
+- "Operational" MUST be defined as "has successfully enforced at least once" OR "enforcement mechanism tested and proven"
+- Readiness MUST require enforcement test results, not just policy documents
+- PR gates MUST have blocked at least one non-compliant PR (or test PR) as evidence they are operational
+- STOP mechanics MUST have halted execution (or test halt succeeded) as evidence they are enforceable
+- Branch protection MUST be verified programmatically (API check), not visually
+- "Active" MUST mean "currently enforcing," not "configured but untested"
+
+**Enforcement Test Requirements**:
+- Before declaring operational, governance enforcement MUST be tested
+- Tests MAY be synthetic (deliberate violation to prove blocking) if no natural violations occurred
+- Test evidence MUST be documented and auditable
+- Untested enforcement MUST be classified as "defined but not operational"
+
+---
+
+### Why This Gap Allowed Failure
+
+BL-009 stated: "Execution safety depended on human intervention rather than constitutional enforcement." Governance existed but was not proven to enforce. Declaring readiness based on governance existence without enforcement evidence permits the exact failure mode: "A readiness certificate could be issued without guaranteeing governed execution."
+
+---
+
+### Governance Action Required
+
+This learning mandates updates to Platform Readiness Canon (G-PLAT-READY-01) to:
+- Define "operational" as "enforcement proven through evidence"
+- Require enforcement test evidence for all operational claims
+- Distinguish "defined" (exists) from "operational" (enforces) from "enforced" (has enforced)
+- Specify test procedures for proving enforcement (synthetic violations acceptable)
+- Require programmatic verification where possible (API checks vs manual inspection)
+- Update evidence schemas to capture enforcement test results
+
+---
+
+### Status
+
+**Recorded** — Non-Retroactive  
+**Applies To:** All future operational readiness validations  
+**Effective:** 2025-12-31
 
 
