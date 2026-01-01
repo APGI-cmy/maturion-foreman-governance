@@ -634,7 +634,7 @@ FM MUST enforce One-Time Build Law at runtime:
 
 ## 7. FM Continuous Situational Awareness
 
-### 6.1 Governance Awareness Requirements (Binding)
+### 7.1 Governance Awareness Requirements (Binding)
 
 FM MUST maintain continuous awareness of:
 
@@ -677,7 +677,7 @@ FM MUST maintain internal state model representing governance awareness. This mo
 
 ---
 
-### 6.2 Governance Drift Detection (Automatic)
+### 7.2 Governance Drift Detection (Automatic)
 
 FM MUST detect the following drift conditions:
 
@@ -721,7 +721,7 @@ FM MUST detect the following drift conditions:
 
 ---
 
-### 6.3 Governance Learning and Feedback (Continuous)
+### 7.3 Governance Learning and Feedback (Continuous)
 
 FM MUST maintain continuous learning about governance:
 
@@ -754,7 +754,7 @@ Learning improves governance; never weakens it. FM MUST NOT:
 
 ---
 
-### 6.4 Platform Constraint Awareness (GitHub Limitations)
+### 7.4 Platform Constraint Awareness (GitHub Limitations)
 
 FM MUST maintain awareness of platform constraints:
 
@@ -783,7 +783,7 @@ FM MUST NOT interpret platform constraints as governance constraints. GitHub lim
 
 ## 8. Escalation Semantics
 
-### 7.1 Escalation Triggers (Automatic)
+### 8.1 Escalation Triggers (Automatic)
 
 The following conditions MUST trigger automatic escalation:
 
@@ -813,7 +813,7 @@ The following conditions MUST trigger automatic escalation:
 
 ---
 
-### 7.2 Escalation Paths (Canonical)
+### 8.2 Escalation Paths (Canonical)
 
 Per ESCALATION_POLICY.md:
 
@@ -844,7 +844,7 @@ All escalations MUST include:
 
 ---
 
-### 7.3 Escalation Response Protocol
+### 8.3 Escalation Response Protocol
 
 **Escalation Initiated**:
 1. **HALT** — Stop operation if hard stop triggered
@@ -871,7 +871,7 @@ If escalation response not received within reasonable time:
 
 ---
 
-### 7.4 Escalation to Maturion (Post-Automation)
+### 8.4 Escalation to Maturion (Post-Automation)
 
 **Current Escalation Destination**: CS2 (Codex) / Human Authority (Johan)
 
@@ -890,7 +890,7 @@ Escalation paths evolve with platform capability, but escalation triggers and se
 
 ## 9. Enforcement vs Awareness vs Monitoring Boundaries
 
-### 8.1 Mechanically Enforced (MUST)
+### 9.1 Mechanically Enforced (MUST)
 
 The following MUST be mechanically enforced (cannot be bypassed):
 
@@ -926,7 +926,7 @@ The following MUST be mechanically enforced (cannot be bypassed):
 
 ---
 
-### 8.2 Monitored and Escalated (SHOULD)
+### 9.2 Monitored and Escalated (SHOULD)
 
 The following SHOULD be monitored, with violations escalated but not necessarily blocked:
 
@@ -968,7 +968,7 @@ The following SHOULD be monitored, with violations escalated but not necessarily
 
 ---
 
-### 8.3 Informational Only (MAY)
+### 9.3 Informational Only (MAY)
 
 The following MAY be tracked for informational purposes but do not trigger enforcement or escalation:
 
@@ -1006,7 +1006,7 @@ The following MAY be tracked for informational purposes but do not trigger enfor
 
 ## 10. Platform Readiness Assumptions
 
-### 9.1 Current State Assumptions
+### 10.1 Current State Assumptions
 
 This model assumes the following platform capabilities exist:
 
@@ -1036,7 +1036,7 @@ This model assumes the following platform capabilities exist:
 
 ---
 
-### 9.2 Missing Capabilities (Platform Readiness Deltas)
+### 10.2 Missing Capabilities (Platform Readiness Deltas)
 
 This model identifies the following missing capabilities:
 
@@ -1072,7 +1072,7 @@ This model identifies the following missing capabilities:
 
 ---
 
-### 9.3 Readiness Assessment
+### 10.3 Readiness Assessment
 
 **Current Readiness Level**: PARTIAL
 
@@ -1390,15 +1390,6 @@ Governance Administrator MUST audit FM for compliance with this model:
 - Verify FM escalates per defined triggers (Section 8.1)
 - Verify FM follows escalation paths (Section 8.2)
 - Verify FM executes escalation protocol (Section 8.3)
-
-**Audit Frequency**: Quarterly or on governance incident.
-- Verify FM captures learnings continuously (Section 6.3)
-- Verify FM aware of platform constraints (Section 6.4)
-
-**Escalation Audit**:
-- Verify FM escalates per defined triggers (Section 7.1)
-- Verify FM follows escalation paths (Section 7.2)
-- Verify FM executes escalation protocol (Section 7.3)
 
 **Audit Frequency**: Quarterly or on governance incident.
 
