@@ -581,3 +581,4 @@ _[Describe migration considerations, or write "No migration required" if not app
 5. Ensure all required sections are present even if marked "N/A" or "NONE"
 6. Store completed report in `.qa/ripple/RIPPLE_SCAN_REPORT.md` or timestamped variant
 7. Reference this report in PR description for governance-class changes
+8. **Version Compatibility**: This template conforms to schema v1.0. When schema evolves, check `governance/schemas/RIPPLE_SCAN_REPORT.schema.md` for migration guidance and version-specific requirements

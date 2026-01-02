@@ -190,8 +190,8 @@ Ripple reports DO NOT:
 - Constitutional canon changes
 - Authority hierarchy redefinitions
 - Enforcement mechanism weakening
-- Ecosystem-wide ripples (in future cross-repo waves)
-- Changes affecting >3 repositories (in future cross-repo waves)
+- _(Wave 2.2+ only)_ Ecosystem-wide ripples when cross-repo analysis available
+- _(Wave 2.2+ only)_ Changes affecting >3 repositories when cross-repo tracking available
 
 ---
 
