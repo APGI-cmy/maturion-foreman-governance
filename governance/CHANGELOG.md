@@ -64,6 +64,68 @@ Each entry follows this structure:
 
 ## Change History
 
+### [RIPPLE-WAVE-2.1] - 2026-01-02 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: Governance Administrator (Copilot Agent)
+**Approved By**: Pending (Johan approval for PR merge)
+**Effective Date**: 2026-01-02 (upon PR merge)
+
+**Summary**: Introduced Assisted Local Repository Ripple Scan capability (Wave 2.1) - reporting only, providing AI-assisted identification of ripple impact within single repository boundaries
+
+**Affected Artifacts**:
+- `governance/canon/ASSISTED_RIPPLE_SCAN_SCOPE.md` (NEW)
+- `governance/canon/ASSISTED_RIPPLE_SCAN_HUMAN_REVIEW_SEMANTICS.md` (NEW)
+- `governance/schemas/RIPPLE_SCAN_REPORT.schema.md` (NEW)
+- `governance/templates/RIPPLE_SCAN_REPORT.template.md` (NEW)
+- `governance/parking-station/ENHANCEMENT_RIPPLE_WAVE_2_1_LEARNINGS.md` (NEW)
+- `governance/CHANGELOG.md` (UPDATED - this entry)
+
+**Migration Required**: NO
+
+**Migration Guidance**: Not applicable - all changes are additive. This wave introduces observational capability without enforcement, automation, or mandatory requirements.
+
+**Rationale**: 
+This change addresses the need to:
+1. Define canonical scope for assisted ripple scanning (what to analyze, how to analyze)
+2. Establish five analysis layers: changed files, referencing files, referenced files, structural dependencies, governance connections
+3. Provide normative schema for ripple scan reports (comprehensive structure with confidence/uncertainty assessment)
+4. Provide practical template for generating ripple scan reports
+5. Define human-in-the-loop review semantics (informational, non-blocking, conscious acceptance valid)
+6. Establish repository-local constraint for Wave 2.1 (cross-repo deferred to future waves)
+7. Prevent ripple awareness from becoming ripple bureaucracy through explicit anti-patterns
+
+**Impact**: 
+- Governance Administrator: New canonical artifacts defining assisted ripple scan methodology
+- Governance Administrator: Can now generate structured ripple scan reports for governance changes
+- FM: Reviews ripple reports for changes affecting supervised builders
+- Johan: Reviews ripple reports for high-criticality/constitutional changes
+- All agents: Shared understanding of ripple scan scope, report format, review process
+- Wave 2.2+: Foundation established for future cross-repo ripple intelligence
+
+**Key Principles**:
+- **Informational, Not Enforcement**: Ripple reports provide awareness, not blocking
+- **Repository-Local Only**: Wave 2.1 scans single repository (cross-repo deferred)
+- **Governance-Class Focused**: Primary focus on governance canon, schemas, policies, templates, agent contracts
+- **Confidence and Uncertainty**: Explicit confidence levels (HIGH/MEDIUM/LOW) and uncertainty documentation required
+- **Conscious Acceptance Valid**: Identifying ripples does not mandate remediation; conscious acceptance with documentation is valid
+- **Human Review Required**: Reports reviewed by appropriate authority (Governance Admin, FM, Johan based on criticality)
+- **No Automation/Enforcement**: Wave 2.1 is observation only - no automation, no CI/CD changes, no enforcement mechanisms
+
+**Constraints (Non-Negotiable)**:
+- ❌ No automation
+- ❌ No enforcement
+- ❌ No CI/CD changes
+- ❌ No runtime changes
+- ❌ No agent contract edits
+
+**References**: 
+- Issue: Ripple-Wave 2.1 — Assisted Local Repository Ripple Scan (Reporting Only)
+- Complements: RIPPLE_INTELLIGENCE_LAYER.md (Plane 1), AGENT_RIPPLE_AWARENESS_OBLIGATION.md, GOVERNANCE_RIPPLE_MODEL.md
+- Part of: Ripple Intelligence Layer (RIL) progressive implementation plan
+- Enhancement Proposals: See `governance/parking-station/ENHANCEMENT_RIPPLE_WAVE_2_1_LEARNINGS.md`
+
+---
+
 ### [RIPPLE-WAVE-1.1] - 2026-01-02 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: Governance Administrator (Copilot Agent)
