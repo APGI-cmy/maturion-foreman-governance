@@ -318,6 +318,8 @@ This document is a **security summary** for a "GitHub Builder Model Scaling Engi
 
 **Interpretation**: "Wave 1.0.7" is likely a **conceptual reference** to a specific high-complexity execution event that stressed FM capabilities but was not formally documented as a numbered wave.
 
+**Clarification Required**: This report treats Wave 1.0.7 as a **reference to an undocumented execution event** described in the issue statement. The issue author (human authority) used this term to describe a specific high-complexity execution scenario that revealed the escalation gap. The exact nature of Wave 1.0.7, its timing, and specific characteristics would need to be clarified by the issue author if more detailed analysis of that specific event is required. However, the governance gap identified is valid regardless of the specific execution event that revealed it.
+
 ---
 
 ### 4.2 RCA Question 1: Did Escalation Occur During Wave 1.0.7?
@@ -504,7 +506,21 @@ FM behaved **correctly per governance**. Governance does not define **proactive 
 - Cross-repository governance dependencies must be **explicit**, not implicit
 - Cannot enforce capability-aware scaling without capability definitions
 
-**Ratchet Statement**: Future governance MUST define **cross-repository dependencies** and layer down external requirements into canonical governance.
+**Discovery Gap Identified**: This survey cannot validate the existence, location, or contents of the ISMS repository as it is:
+- Referenced in issue statement but not in governance canon
+- Not linked or documented in this repository
+- No discovery protocol defined for external governance dependencies
+
+**Recommendation for Completion**: To fully implement capability-aware scaling, the following MUST be clarified:
+1. **ISMS Repository Location**: Provide explicit repository URL or path
+2. **Capability Spectrum Document**: Identify specific document(s) defining capability classes and limits
+3. **Authority Alignment**: Confirm ISMS repository authority relationship to this governance repository
+4. **Layer-Down Protocol**: Define how ISMS requirements are canonized in maturion-foreman-governance
+5. **Cross-Repository Versioning**: Define how ISMS changes propagate to this repository
+
+Without this clarification, recommendations involving "capability spectrum" remain **conceptual** and **non-implementable**.
+
+**Ratchet Statement**: Future governance MUST define **cross-repository dependencies** explicitly, including discovery protocols, authority relationships, and layer-down processes.
 
 ---
 
