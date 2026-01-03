@@ -833,6 +833,290 @@ Each item includes:
 
 ---
 
+## SECTION D: FM APPOINTMENT COMPLETENESS VALIDATION (FM-Facing Requirements)
+
+**Purpose**: This section validates FM builder appointment process completeness with respect to OPOJD and One-Time Build Law enforcement.
+
+**Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md`, `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (BL-0007)
+
+**Critical Principle**: Builder contract completeness (Sections A-C) is necessary but insufficient. FM appointment process must also be complete to prevent governance failures.
+
+**Validation Scope**: This section validates FM appointment artifacts and process, NOT builder contract content.
+
+---
+
+### D.1 OPOJD Enforcement During Appointment
+
+#### D.1.1 OPOJD Continuous Execution Communication
+
+- **Element**: FM appointment instruction explicitly communicates OPOJD continuous execution requirement
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment instruction document exists (typically using `governance/templates/FM_BUILDER_APPOINTMENT_INSTRUCTION.template.md`)
+  - Document includes explicit OPOJD section with continuous execution mandate
+  - Document prohibits mid-execution pauses / approval requests / progress reporting
+  - Document references OPOJD_DOCTRINE.md
+  - Builder explicitly acknowledges OPOJD requirement before authorization
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 3.2, `governance/canon/OPOJD_DOCTRINE.md`
+- **Severity if Missing**: BLOCKER — Builder may default to iterative execution patterns (BL-0007 failure mode)
+- **Evidence Required**:
+  - Appointment instruction document
+  - Builder acknowledgment timestamp and content
+  - FM authorization grant timestamp
+
+#### D.1.2 Terminal-State Execution Model Communication
+
+- **Element**: FM appointment instruction explicitly defines acceptable execution states (BLOCKED / COMPLETE only)
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment instruction document includes execution states section
+  - Document lists acceptable states: BLOCKED (escalate blocker to FM), COMPLETE (100% GREEN QA achieved)
+  - Document lists prohibited states: IN_PROGRESS, AWAITING_APPROVAL, PARTIAL_COMPLETION, progress percentages
+  - Document references CS6_EXECUTION_MANDATE.md
+  - Builder explicitly acknowledges terminal-state execution requirement
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 3.3, `governance/opojd/CS6_EXECUTION_MANDATE.md`
+- **Severity if Missing**: CRITICAL — Builder may report progress instead of completion/escalation (OPOJD violation)
+- **Evidence Required**:
+  - Appointment instruction document with terminal-state section
+  - Builder acknowledgment of terminal-state execution
+
+#### D.1.3 One-Time Build Law Communication
+
+- **Element**: FM appointment instruction explicitly communicates One-Time Build Law requirement
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment instruction document includes One-Time Build Law section
+  - Document states 100% QA GREEN on first delivery (no partial work, no iteration, no "MVP")
+  - Document prohibits test debt (301/303 tests passing = TOTAL FAILURE)
+  - Document prohibits deferred work ("will finish later", "future improvements")
+  - Document references BUILD_PHILOSOPHY.md
+  - Builder explicitly acknowledges One-Time Build Law commitment
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 3.4, `BUILD_PHILOSOPHY.md`
+- **Severity if Missing**: CRITICAL — Builder may deliver partial work or accept test debt (One-Time Build Law violation)
+- **Evidence Required**:
+  - Appointment instruction document with One-Time Build Law section
+  - Builder acknowledgment of One-Time Build Law
+
+#### D.1.4 BL-0007 Reference in Appointment
+
+- **Element**: FM appointment instruction explicitly references BL-0007 learnings
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment instruction document cites BL-0007 (Bootstrap Execution Learning)
+  - Document explains why appointment discipline is critical security control
+  - Document contextualizes "coder-first defaults" as governance violations
+  - Document prevents "coder-first defaults from reappearing under pressure" (BL-0007 requirement)
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 3.5, `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (BL-0007)
+- **Severity if Missing**: HIGH — Mindset drift may recur (BL-0007 failure mode repeats)
+- **Evidence Required**:
+  - Appointment instruction document with BL-0007 reference section
+
+#### D.1.5 BL-016 Reference in Appointment
+
+- **Element**: FM appointment instruction explicitly references BL-016 learnings
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment instruction document cites BL-016 (Bootstrap Execution Learning)
+  - Document explains builder must self-recognize execution complexity limits
+  - Document requires escalation when task complexity exceeds practical capability
+  - Document prohibits "pushing through" beyond cognitive/platform limits
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 3.5, `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (BL-016)
+- **Severity if Missing**: MEDIUM — Builder may attempt execution beyond capability
+- **Evidence Required**:
+  - Appointment instruction document with BL-016 reference section
+
+#### D.1.6 Escalation Triggers Enumeration
+
+- **Element**: FM appointment instruction explicitly enumerates escalation triggers and STOP conditions
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment instruction document includes escalation triggers section
+  - Document lists specific triggers: Architecture Missing/Incomplete, Governance Ambiguity, Constitutional Safeguard, Unrecoverable Failure, Scope Boundary, Execution Complexity
+  - Document defines when builder MUST STOP and escalate (BLOCKED state)
+  - Document prohibits "pushing through" blockers without escalation
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 3.6
+- **Severity if Missing**: HIGH — Builder may not escalate appropriately (delay detection of blockers)
+- **Evidence Required**:
+  - Appointment instruction document with escalation triggers section
+
+---
+
+### D.2 Builder Mindset Verification
+
+#### D.2.1 Builder Acknowledgment Requirement
+
+- **Element**: FM requires builder to explicitly acknowledge execution model constraints before authorization
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - FM appointment process includes builder acknowledgment step (after instruction issuance, before authorization)
+  - Builder explicitly acknowledges: OPOJD continuous execution, terminal-state execution, One-Time Build Law, escalation discipline
+  - Builder acknowledgment is documented in appointment evidence
+  - FM only authorizes execution after receiving valid builder acknowledgment
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 4.1
+- **Severity if Missing**: BLOCKER — No confirmation builder internalized execution model (implicit assumption prohibited by BL-0007)
+- **Evidence Required**:
+  - Builder acknowledgment content (verbatim or equivalent)
+  - Builder acknowledgment timestamp
+  - FM authorization timestamp (must be after acknowledgment)
+
+#### D.2.2 Builder Understanding Verification (Optional but Recommended)
+
+- **Element**: FM optionally verifies builder understanding through clarifying questions
+- **Requirement**: OPTIONAL (but recommended for high-risk or complex tasks)
+- **Validation**: 
+  - If used: FM asks verification questions (e.g., "What do you do if 4 of 5 components complete and 5th is blocked?")
+  - Builder responses documented
+  - Incorrect responses trigger repeat constitutional onboarding
+  - FM only authorizes after builder demonstrates correct understanding
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 4.2
+- **Severity if Missing**: LOW — Recommended but not mandatory
+- **Evidence Required** (if used):
+  - Verification questions asked
+  - Builder responses
+  - FM assessment of responses
+
+#### D.2.3 Appointment Evidence Documentation
+
+- **Element**: FM documents complete appointment evidence in audit trail
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Appointment evidence file exists (e.g., `.evidence/fm/builder-appointments/[builder-id]-[timestamp].md`)
+  - Evidence includes: Appointment timestamp, builder identity, scope definition, architecture reference, Red QA reference, appointment instruction, builder acknowledgment, authorization grant
+  - Evidence is structured and auditable
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 5.2
+- **Severity if Missing**: HIGH — Appointment completeness cannot be audited (governance validation impossible)
+- **Evidence Required**:
+  - Appointment evidence file with all mandatory elements
+
+---
+
+### D.3 Pre-Appointment Readiness Validation
+
+#### D.3.1 PR Gates Layered Down Verification (BL-0008 Requirement)
+
+- **Element**: FM verifies PR gate rules are layered down in target repository before builder appointment
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - PR gate workflow exists in target repository (e.g., `.github/workflows/pr-gate.yml`)
+  - Gate enforcement includes builder-specific checks (Build-to-Green, Architecture Completeness, Builder QA Artifact, Zero Test Debt, Scope Compliance)
+  - Gate applicability logic is role-aware (distinguishes builder PRs from FM PRs)
+  - FM documents gate verification in appointment evidence
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 1.1, `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (BL-0008)
+- **Severity if Missing**: BLOCKER — Builder appointment prohibited without enforceable PR gates (BL-0008 requirement)
+- **Evidence Required**:
+  - PR gate configuration files reviewed
+  - Gate applicability validation results
+
+#### D.3.2 Architecture Complete and Frozen Verification
+
+- **Element**: FM verifies architecture is complete, frozen, and wiring-complete before builder appointment
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Architecture document exists and is complete per Architecture Completeness Requirements
+  - Architecture is frozen (no further changes without CS2 approval)
+  - Architecture is wiring-complete (BL-015): All components have explicit operational definitions
+  - FM documents architecture verification in appointment evidence
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 1.2
+- **Severity if Missing**: BLOCKER — Builder cannot build without complete architecture (Architecture-as-Law)
+- **Evidence Required**:
+  - Architecture completion validation report
+
+#### D.3.3 Red QA Complete and Failing Verification
+
+- **Element**: FM verifies Red QA suite exists and is failing (RED state) before builder appointment
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Red QA suite exists and is derived from architecture
+  - Red QA suite is failing (RED state) because implementation does not exist yet
+  - Red QA suite is comprehensive (covers all architectural components)
+  - FM documents Red QA verification in appointment evidence
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Step 1.3
+- **Severity if Missing**: BLOCKER — Builder cannot build without Red QA (defines success criteria)
+- **Evidence Required**:
+  - Red QA execution report showing RED state
+
+---
+
+### D.4 Post-Appointment Supervision Completeness
+
+#### D.4.1 OPOJD Violation Detection Mechanism
+
+- **Element**: FM establishes mechanism to detect when builder exhibits progress-oriented behavior (OPOJD violation)
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - FM supervision process includes OPOJD violation detection
+  - Progress-oriented behavior indicators defined (incremental progress reports, mid-execution approval requests, partial delivery)
+  - FM response to OPOJD violations defined (HALT, corrective instruction, re-verify understanding, escalate if repeated)
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Section 5.2
+- **Severity if Missing**: HIGH — OPOJD violations may go undetected (enforcement incomplete)
+- **Evidence Required**:
+  - FM supervision protocol documentation
+
+#### D.4.2 Terminal-State Validation Mechanism
+
+- **Element**: FM validates that builder operates in terminal states only (BLOCKED or COMPLETE)
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - FM supervision process includes terminal-state validation
+  - Invalid states defined (IN_PROGRESS, AWAITING_APPROVAL, PARTIAL_COMPLETION)
+  - FM response to invalid states defined (immediate intervention, corrective instruction)
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Section 5.3
+- **Severity if Missing**: HIGH — Non-terminal states may go unchallenged (terminal-state enforcement incomplete)
+- **Evidence Required**:
+  - FM supervision protocol documentation
+
+---
+
+## D.5 Appointment Failure and Recovery Completeness
+
+#### D.5.1 Appointment Incompleteness Classification
+
+- **Element**: FM classifies builder behavioral issues as "appointment incompleteness" (FM-side failure) vs. "builder misconduct" (builder-side failure)
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - FM classification process exists for builder failures
+  - Default classification is "appointment incompleteness" unless builder misconduct is evident
+  - Appointment incompleteness triggers corrective action (repeat constitutional onboarding, re-verify understanding)
+  - Builder misconduct triggers revocation (after repeated violations)
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Section 6.1-6.2
+- **Severity if Missing**: MEDIUM — Misattribution of failure responsibility (builder blamed for FM appointment incompleteness)
+- **Evidence Required**:
+  - FM failure classification protocol documentation
+
+#### D.5.2 Corrective Action for Incomplete Appointment
+
+- **Element**: FM corrective action process for appointment incompleteness
+- **Requirement**: MANDATORY
+- **Validation**: 
+  - Corrective action protocol exists (HALT execution, repeat constitutional onboarding, re-verify understanding, re-authorize)
+  - Escalation trigger defined (builder cannot demonstrate understanding after 2 corrective attempts)
+  - Corrective action documentation in evidence trail
+- **Canonical Reference**: `governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md` Section 6.2
+- **Severity if Missing**: MEDIUM — No recovery path for appointment incompleteness (systemic failure)
+- **Evidence Required**:
+  - FM corrective action protocol documentation
+
+---
+
+## SECTION D SUMMARY
+
+**Section D Purpose**: Validate FM builder appointment process completeness (not just builder contract completeness).
+
+**Section D Coverage**:
+- D.1: OPOJD enforcement during appointment (6 items)
+- D.2: Builder mindset verification (3 items)
+- D.3: Pre-appointment readiness validation (3 items)
+- D.4: Post-appointment supervision completeness (2 items)
+- D.5: Appointment failure and recovery completeness (2 items)
+
+**Total Section D Items**: 16 items (13 MANDATORY, 1 OPTIONAL, 2 RECOMMENDED)
+
+**Critical Principle**: Builder contract may be complete (Sections A-C all pass) but appointment incomplete (Section D fails). BOTH must be satisfied for constitutionally bound builder.
+
+**BL-0007 Implementation**: Section D implements BL-0007 requirement: "All officials MUST be appointed using a governed protocol that binds them to BUILD_PHILOSOPHY and canonical governance."
+
+---
+
 ## VALIDATION RULES
 
 ### Machine Validation Requirements
