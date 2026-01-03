@@ -350,6 +350,12 @@ When appointing a builder, the Foreman MUST:
    - Include complete architecture documentation
    - Include Red QA suite that defines success
    - Include acceptance criteria
+   - **Explicitly communicate OPOJD continuous execution requirement** (using template from `governance/templates/FM_BUILDER_APPOINTMENT_INSTRUCTION.template.md`)
+   - **Explicitly communicate terminal-state execution model** (BLOCKED / COMPLETE only states)
+   - **Explicitly prohibit progress-oriented behavior** (no mid-execution status updates, no iterative implementation)
+   - **Explicitly reference BL-0007 learnings** (prevent coder-first defaults from reappearing under pressure)
+   - **Explicitly reference BL-016 learnings** (builder must self-recognize execution complexity limits and escalate when exceeded)
+   - **Verify builder acknowledges and commits to execution model constraints** (require explicit acknowledgment before authorization)
 
 5. **Record Appointment**
    - Document builder assignment in evidence trail
