@@ -943,3 +943,130 @@ This expectation is now explicitly recorded.
 ---
 
 
+---
+
+## BL-016 — AI Escalation and Capability Orchestration Must Be Operationally Active, Not Theoretical
+
+### Classification
+- **Type:** Governance Activation (Bootstrap-to-Canon Ratchet)
+- **Phase:** Wave 1.0.7 Stress Analysis
+- **Severity:** Critical (Silent Governance Gap)
+- **Status:** Recorded — Activation Complete
+- **Impacts:** All future FM execution, escalation decisions, and capability orchestration
+
+---
+
+### Context
+
+During high-complexity execution (Wave 1.0.7), AI escalation and cognitive capability orchestration mechanisms existed in governance canon but **were not operationally activated**.
+
+Governance defined:
+- ESCALATION_POLICY.md (hierarchical authority levels L1-L4)
+- COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md (capability classes: reasoning, coding, analysis, etc.)
+- FM escalation responsibilities (reactive, failure-triggered)
+
+However:
+- Escalation was **reactive only** (after failures), not **proactive** (before cognitive limits exceeded)
+- Capability orchestration was **planning-only**, not **execution-relevant**
+- FM had **no explicit halt semantics** for cognitive limit awareness
+- Complexity-aware capability scaling was **not defined as binding FM behavior**
+
+---
+
+### Observed Issue
+
+Wave 1.0.7 execution stress revealed:
+- High-complexity task did not trigger proactive escalation
+- Cognitive capability orchestration existed but was not integrated with escalation triggers
+- FM proceeded per governance (escalate only after failures)
+- Expectation: FM would escalate proactively based on complexity
+- Reality: Proactive escalation was **not defined in governance**
+
+**Root Cause**: Governance mechanisms existed but were **non-operational**. Humans implicitly relied upon escalation and capability scaling during Wave 1.0.7, but governance did not define these behaviors as **binding and active**.
+
+This created a **silent governance gap** where escalation and capability orchestration were **expected in practice but non-binding in governance**.
+
+---
+
+### Learning
+
+**Governance mechanisms that exist on paper but are not operationally activated are forbidden in a One-Time Build system.**
+
+If governance defines escalation and capability orchestration:
+- These mechanisms **MUST** be explicitly activated as **operational, binding behavior**
+- FM **MUST** be expected to invoke, assess, and decide based on these mechanisms
+- Escalation **MUST** include proactive triggers (complexity-aware), not just reactive triggers (failure-based)
+- Capability orchestration **MUST** be execution-relevant, not just planning-relevant
+- FM **MUST** have explicit halt semantics when cognitive limits are reached
+
+**Theoretical governance creates false security**. If a mechanism is defined but not activated, humans assume it will engage when needed, but agents correctly follow only what is **explicit and binding**.
+
+---
+
+### Corrective Action (2026-01-03 Activation)
+
+This learning mandates **immediate activation** of AI escalation and cognitive capability orchestration:
+
+1. **ESCALATION_POLICY.md** amended to:
+   - Activate proactive, complexity-aware escalation (not just reactive, failure-based)
+   - Define explicit triggers: task complexity exceeds capability, cognitive saturation detected, no suitable capability class
+   - Integrate with cognitive capability orchestration model
+   - Redefine "escalation as failure signal" to include **proactive escalation as expected behavior**
+
+2. **COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md** amended to:
+   - Activate as **operational governance** (not planning-only)
+   - Add Section 5.5: Complexity-Aware Capability Scaling (ACTIVE)
+   - Add Section 5.5.1: Explicit FM Halt Semantics for Cognitive Limits (ACTIVE)
+   - Define mandatory FM responsibilities: assess complexity, select capability, switch when needed, halt when limits exceeded
+   - Define audit requirements for all complexity assessments and capability selections
+
+3. **FM_ROLE_CANON.md** amended to:
+   - Add Section 9: Cognitive Capability Orchestration (ACTIVE)
+   - Add Section 10: Explicit Halt Semantics for Cognitive Limits (ACTIVE)
+   - Update Section 8: Escalation to include proactive, complexity-aware triggers
+   - Define halt as **proactive, non-punitive, expected behavior** (not failure)
+
+4. **BOOTSTRAP_EXECUTION_LEARNINGS.md** updated to:
+   - Record this activation as BL-016 (bootstrap-to-canon ratchet)
+   - Classify as critical governance gap revealed by execution stress
+   - Document that activation makes mechanisms **operationally binding**, not theoretical
+
+---
+
+### Ratchet Statement
+
+**This activation is permanent and non-retroactive.**
+
+Going forward:
+- AI escalation **MUST** be operational, not theoretical
+- Cognitive capability orchestration **MUST** be execution-relevant, not planning-only
+- FM **MUST** proactively assess complexity and escalate/halt when limits are reached
+- Governance mechanisms that exist **MUST** be explicitly activated as binding behavior
+
+**Theoretical governance that is not activated is governance debt.**
+
+We do not accept governance mechanisms that exist on paper but are not operationally binding.
+
+This condition is now permanently elevated.
+
+---
+
+### Status
+
+**Recorded** — Non-Retroactive  
+**Applies To:** All future FM execution, escalation decisions, and capability orchestration  
+**Effective:** 2026-01-03
+
+---
+
+### Cross-References
+
+- Issue: 🔴 ACTIVATE AI Escalation & Capability-Aware Scaling (Governance Activation)
+- Survey: AI_ESCALATION_CAPABILITY_SCALING_SURVEY_AND_RCA.md
+- Amended Artifacts:
+  - governance/escalation/ESCALATION_POLICY.md (v2.0 — ACTIVE)
+  - governance/canon/COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md (v1.1.0 — ACTIVE)
+  - governance/maturion/FM_ROLE_CANON.md (updated 2026-01-03)
+
+---
+
