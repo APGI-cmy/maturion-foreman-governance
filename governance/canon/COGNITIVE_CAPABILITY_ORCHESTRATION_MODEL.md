@@ -3,11 +3,12 @@
 ## Status
 **Type**: Canonical Governance Definition  
 **Authority**: Supreme - Canonical  
-**Version**: 1.0.0  
-**Effective Date**: 2025-12-24  
+**Version**: 1.1.0 — ACTIVE OPERATIONAL GOVERNANCE  
+**Effective Date**: 2026-01-03 (Activation), 2025-12-24 (Original)  
 **Owner**: Maturion Engineering Leadership (Johan Ras)  
 **Precedence**: Subordinate to GOVERNANCE_PURPOSE_AND_SCOPE.md  
-**Applies To**: All Foreman Instances, All Cognitive Capability Invocations, All Repositories
+**Applies To**: All Foreman Instances, All Cognitive Capability Invocations, All Repositories  
+**Integration**: ESCALATION_POLICY.md (active escalation semantics), FM_ROLE_CANON.md (FM responsibilities)
 
 ---
 
@@ -17,10 +18,14 @@ This document formally defines the **Cognitive Capability Orchestration Model** 
 
 The Maturion platform requires a governed mechanism for invoking diverse AI cognitive capabilities (reasoning, coding, visual generation, analysis, pedagogy, security reasoning, etc.) without fragmenting identity, memory, or authority.
 
+**ACTIVATION STATEMENT (2026-01-03)**:  
+Cognitive Capability Orchestration is **ACTIVE OPERATIONAL GOVERNANCE**, not theoretical planning. FM is **expected to invoke, select, and switch capabilities** based on task requirements and complexity assessment. Capability-aware scaling is **execution-relevant**, not planning-only.
+
 This document establishes:
 - Single Identity Principle across all capability invocations
 - Abstract cognitive capability classes (vendor-agnostic)
-- Rules for when and how capabilities may be invoked
+- **ACTIVE rules** for when and how capabilities may be invoked (operational, not aspirational)
+- **ACTIVE complexity-aware capability selection** (FM responsibility, binding behavior)
 - Governance and memory constraints for capability usage
 - Audit and traceability requirements
 - Explicit boundaries and non-goals
@@ -30,6 +35,7 @@ This document establishes:
 - Uncontrolled multi-agent usage risks governance erosion, memory fragmentation, and audit failure
 - Capability orchestration must be explicit, bounded, and auditable
 - Model churn must not affect governance
+- **Silent capability limits must not degrade quality** (BL-016: Wave 1.0.7 activation trigger)
 
 ---
 
@@ -338,7 +344,7 @@ Cognitive capabilities are defined as **abstract classes** by their functional p
 
 ---
 
-### 5.4 Capability Selection Criteria
+### 5.4 Capability Selection Criteria (ACTIVE)
 
 **How Foreman Selects Capabilities**:
 
@@ -346,6 +352,7 @@ Cognitive capabilities are defined as **abstract classes** by their functional p
 2. **Governance Alignment**: Which capability operates within governance constraints?
 3. **Scope Appropriateness**: Which capability scope matches the task?
 4. **Audit Traceability**: Which capability invocation is most auditable?
+5. **Complexity Assessment (ACTIVE)**: Does task complexity exceed current capability limits?
 
 **Prohibited Selection Approaches**:
 - ❌ Capability self-selection (capabilities choosing themselves)
@@ -362,6 +369,89 @@ Cognitive capabilities are defined as **abstract classes** by their functional p
 - ❌ Foreman always uses same capability regardless of task
 
 ---
+
+### 5.5 Complexity-Aware Capability Scaling (ACTIVE — NEW)
+
+**Status**: ACTIVE OPERATIONAL GOVERNANCE (Effective 2026-01-03)
+
+**Principle**: FM SHALL assess task complexity and select appropriate capability class **before execution**, switching capabilities when complexity exceeds current capability limits.
+
+**FM Responsibilities (ACTIVE)**:
+
+1. **Complexity Assessment (Mandatory)**:
+   - FM SHALL assess task complexity during planning phase
+   - Complexity factors include: requirement count, integration depth, architectural ambiguity, cross-domain dependencies
+   - FM SHALL compare assessed complexity against available capability limits
+
+2. **Capability Selection Decision (Mandatory)**:
+   - IF task complexity fits within current capability → proceed with current capability
+   - IF task requires different capability class → switch to appropriate capability
+   - IF task complexity exceeds all available capabilities → halt and escalate (see Section 5.5.1)
+
+3. **Capability Switching (Active)**:
+   - FM MAY switch capability class when:
+     - Task phase changes (architecture → QA → validation)
+     - Complexity analysis reveals capability mismatch
+     - Initial capability selection proves insufficient
+   - All capability switches MUST be explicit, logged, and auditable
+   - Capability switches are **FM decisions**, not automatic substitutions
+
+4. **Integration with Escalation (Active)**:
+   - Complexity-aware scaling integrates with ESCALATION_POLICY.md
+   - FM SHALL distinguish:
+     - **Capability switch** (lateral: coding → reasoning within same authority tier)
+     - **Authority escalation** (vertical: L2 → L3 model tier)
+     - **Halt** (task exceeds all capabilities)
+   - See ESCALATION_POLICY.md for proactive escalation triggers
+
+**Prohibited Behaviors**:
+- ❌ Silent capability degradation (using insufficient capability without assessment)
+- ❌ Automatic capability chaining (capability invoking another capability)
+- ❌ Bypassing complexity assessment to "try anyway"
+- ❌ Continuing execution when cognitive saturation is detected
+
+**Audit Requirements**:
+- Every complexity assessment MUST be logged with:
+  - Task description
+  - Complexity factors assessed
+  - Capability selected and rationale
+  - Alternative capabilities considered
+  - Decision: proceed / switch / halt / escalate
+
+---
+
+### 5.5.1 Explicit FM Halt Semantics for Cognitive Limits (ACTIVE — NEW)
+
+**Status**: ACTIVE OPERATIONAL GOVERNANCE (Effective 2026-01-03)
+
+**Principle**: FM SHALL halt execution when task complexity exceeds available cognitive capability. Halt is **proactive** (not failure), **non-punitive** (not builder blame), and **expected governance behavior**.
+
+**FM SHALL halt when**:
+1. **Task complexity exceeds all available capability classes** (no suitable capability exists)
+2. **Cognitive saturation detected** (FM recognizes inability to reason effectively about task)
+3. **No escalation path available** (all authority tiers and capability classes assessed)
+4. **Continued execution risks silent quality degradation** (uncertainty about correctness)
+
+**Halt is NOT**:
+- ❌ A failure condition (proactive awareness, not reactive error)
+- ❌ Builder blame (builders did not cause complexity)
+- ❌ Governance violation (halting is governance compliance)
+- ❌ Punitive (cognitive limit awareness is expected behavior)
+
+**Halt Process (Mandatory)**:
+1. FM halts execution planning (does NOT proceed to architecture/QA/building)
+2. FM generates **complexity assessment report** including:
+   - Task requirements and complexity factors
+   - Available capabilities and their assessed limits
+   - Reason for halt (which limit was exceeded)
+   - Recommended escalation path (authority tier, capability class, or human decision)
+3. FM escalates to Johan with complexity assessment
+4. FM awaits explicit authorization to proceed, escalate authority, or redefine task
+
+**Integration**:
+- Halt semantics integrate with ESCALATION_POLICY.md (proactive escalation triggers)
+- Halt semantics integrate with FM_ROLE_CANON.md (FM responsibilities Section 8)
+- Halt is distinct from failure-based escalation (proactive vs reactive)
 
 ## 6. Governance and Memory Constraints
 
