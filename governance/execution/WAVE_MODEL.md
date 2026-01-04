@@ -181,8 +181,30 @@ All issues in wave follow OPOJD lifecycle.
 - Zero test debt
 - Evidence complete
 - Governance gates passed
+- Canonical progress recorded (NEW 2026-01-04)
+- Wave closure certified (NEW 2026-01-04)
 
-**Action**: Mark wave complete, proceed to next wave (if dependencies met).
+**Action**: Mark wave complete, wave gate PASS.
+
+### Phase 5: In-Between Wave Reconciliation (IBWR) (NEW 2026-01-04)
+
+**Occurs**: After wave gate PASS, before next-wave authorization
+
+**Purpose**: Reconcile execution, correct governance gaps, propagate learnings
+
+**Process**:
+1. FM generates Wave Reconciliation Report
+2. FM identifies governance gaps and learnings
+3. Governance Administrator reviews and drafts updates
+4. Governance changes implemented (canon, policy, bootstrap learnings)
+5. Ripple layer-down to FM and builder contracts
+6. Next-wave safeguards documented
+7. Human authority verifies IBWR completion (bootstrap mode)
+8. Next wave authorized
+
+**Blocking Rule**: No wave may begin unless the previous wave's IBWR is complete and rippled.
+
+**Reference**: See IN_BETWEEN_WAVE_RECONCILIATION.md for full IBWR requirements.
 
 ---
 
@@ -224,12 +246,19 @@ A wave is complete when:
 3. **Zero Test Debt**: No failing, skipped, incomplete tests or test infrastructure
 4. **Governance Compliance**: All gates passed, all rules followed
 5. **Evidence Complete**: Audit trail for all work in wave
+6. **Canonical Progress Recorded**: Wave progress artifact complete and current (NEW 2026-01-04)
+7. **Wave Closure Certified**: FM has certified wave completion based on evidence review (NEW 2026-01-04)
 
 **NOT complete when**:
 - 99% of issues done (must be 100%)
 - Cumulative QA has 1 failure (must be 0 failures)
 - "Minor" test debt exists (must be zero test debt)
 - Evidence incomplete (must be complete)
+- Progress artifact missing or incomplete (NEW 2026-01-04)
+- Wave closure not certified (NEW 2026-01-04)
+
+**Note on Progress Recording and Certification** (NEW 2026-01-04):
+Wave completion now requires systematic progress recording throughout wave execution and explicit evidence-based certification before wave gate merge. See MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md for full requirements.
 
 ---
 
@@ -239,7 +268,18 @@ A wave is complete when:
 
 **Rule**: Waves execute in order (0 → 1 → 2 → 3 → ...).
 
-**Rationale**: Later waves depend on earlier waves. Skipping = broken dependencies.
+**Updated Rule (2026-01-04)**: Each wave must complete In-Between Wave Reconciliation (IBWR) before the next wave begins.
+
+**Wave-to-Wave Sequence**:
+```
+Wave N Execution → Wave N Validation → Wave N Completion → Wave N Gate PASS
+    ↓
+In-Between Wave Reconciliation (IBWR) for Wave N
+    ↓
+Wave N+1 Authorization → Wave N+1 Execution
+```
+
+**Rationale**: Later waves depend on earlier waves. Skipping = broken dependencies. IBWR ensures governance gaps from Wave N don't propagate to Wave N+1.
 
 ### No Skipping
 

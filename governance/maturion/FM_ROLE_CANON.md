@@ -130,7 +130,110 @@ At each phase transition:
 - Document all validation results
 - Maintain execution timeline with timestamps
 - Maintain state transition log with reasons
+- **Maintain canonical progress artifact per wave** (see §6.1 below)
+- **Certify wave closure based on evidence** (see §6.2 below)
 - Provide evidence for audit and governance validation
+
+#### 6.1 Canonical Progress Recording (ACTIVE — New 2026-01-04)
+
+**FM Authority and Responsibility (ACTIVE)**:
+- **Create canonical progress artifact** at wave start (e.g., `WAVE_<n>_IMPLEMENTATION_PROGRESS.md`)
+- **Update progress artifact systematically**: at phase transitions, artifact creation, issue completion, correction events, wave closure
+- **Maintain artifact index**: explicit tracking of all instructed artifacts (name → path → status)
+- **Document execution timeline**: chronological record of all wave events with dates
+- **Record corrections and RCAs**: when progress recording gaps occur or execution context degrades
+- **Progress artifact is authoritative** over memory, PR history, and chat context
+
+**Update Frequency (Mandatory)**:
+- At phase transitions (architecture → QA → build → validation → merge) — **within 4 hours** of phase change
+- At artifact creation (when any artifact instructed or delivered) — **within 4 hours** of creation
+- At issue completion (when any issue fully merged) — **within 4 hours** of merge
+- At correction events (when progress gaps discovered) — **immediately** (within 1 hour)
+- At wave closure (final update with certification) — **before gate merge request**
+
+**Timing Expectations**:
+- "Within 4 hours" means update must occur during same work session or by end of work day, whichever is sooner
+- "Immediately" (for corrections) means update must occur as soon as gap is discovered, without delay
+- Updates should reflect current state; retroactive updates at wave end are prohibited
+
+**Prohibited**:
+- Retroactive-only updates (updating only at wave end)
+- Delegating progress recording to builders or other agents
+- Relying on memory or PR history as authoritative
+- Skipping progress updates to save time
+
+**Integration**:
+- See MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md for full requirements
+- See governance/templates/WAVE_IMPLEMENTATION_PROGRESS.template.md for artifact structure
+- See governance/schemas/WAVE_IMPLEMENTATION_PROGRESS.schema.md for validation requirements
+
+#### 6.2 Wave Closure Certification (ACTIVE — New 2026-01-04)
+
+**FM Certification Responsibility (ACTIVE)**:
+- **Review canonical progress artifact** before wave gate merge
+- **Verify artifact index completeness**: all instructed artifacts indexed and status `COMPLETE`
+- **Verify phase completeness**: all issues show `COMPLETE` for all phases
+- **Verify QA compliance**: cumulative QA 100% GREEN, zero test debt
+- **Verify governance gates**: all gates passed
+- **Produce evidence-based verdict**: `COMPLETE` | `IN_PROGRESS` | `BLOCKED`
+- **Certify wave closure explicitly**: statement with timestamp and supporting evidence
+
+**Certification Blocking Authority**:
+- FM MUST block wave gate merge if certification fails
+- FM MUST NOT certify wave closure without evidence review
+- FM MUST NOT proceed with incomplete artifact index
+- FM MUST NOT certify with failing QA or test debt
+
+**Reconstruction Obligation**:
+- When execution context degrades (multiple PRs, time gaps, unstable execution)
+- FM MUST reconstruct canonical progress from all available sources (PRs, issues, commits, discussions)
+- FM MUST document reconstruction in progress artifact (Section 6: Corrections and RCA)
+- FM MUST complete reconstruction before wave closure certification
+
+**Integration**:
+- See MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md §5 for certification protocol
+- See WAVE_MODEL.md for wave completion criteria (extended by this requirement)
+
+### 11. In-Between Wave Reconciliation (IBWR) (ACTIVE — NEW 2026-01-04)
+
+**FM IBWR Responsibility (ACTIVE)**:
+- **Initiate IBWR immediately** after wave gate PASS
+- **Generate Wave Reconciliation Report** documenting:
+  - What went wrong (failures, root causes, resolutions)
+  - What almost went wrong (near-misses, stress points)
+  - What worked by luck vs. by design
+  - Governance gaps identified
+- **Classify learnings**: Tier-0 (constitutional), Tier-1 (policy), Bootstrap Learning (BL-XXX)
+- **Propose corrective governance actions** based on gap analysis
+- **Execute ripple layer-down**:
+  - Update FM agent contracts
+  - Update builder instruction templates
+  - Verify ripple propagation completeness
+- **Document next-wave safeguards**:
+  - What must be different in Wave N+1
+  - What is now prohibited
+  - What is now mandatory
+- **Integrate safeguards** into Wave N+1 planning
+
+**IBWR Blocking Authority**:
+- FM MUST block Wave N+1 authorization until IBWR complete
+- IBWR is NOT complete until:
+  - Wave Reconciliation Report generated
+  - Governance changes implemented (canon/policy/BL)
+  - Ripple propagation verified (FM contracts, builder contracts)
+  - Next-wave safeguards integrated
+  - Human authority verifies IBWR completion (bootstrap mode)
+
+**Prohibited**:
+- Skipping IBWR to accelerate next wave
+- Classifying governance changes incorrectly to avoid canon updates
+- Skipping ripple propagation to save time
+- Proceeding to Wave N+1 planning before IBWR complete
+- Self-certifying IBWR completion without human authority (bootstrap mode)
+
+**Integration**:
+- See IN_BETWEEN_WAVE_RECONCILIATION.md for full IBWR requirements
+- See governance/templates/WAVE_RECONCILIATION_REPORT.template.md for report structure
 
 ### 7. Failure Recovery
 - Detect failures automatically
