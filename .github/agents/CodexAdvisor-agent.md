@@ -2,7 +2,7 @@
 
 ## Status
 Canonical Agent Contract  
-Version: v1  
+Version: v1.1  
 Authority: Johan Ras (CS2)  
 Execution Authority: NONE (Advisory Only)
 
@@ -21,15 +21,12 @@ governance:
     reference: main
 
 scope:
-  repository: MaturionISMS/maturion-foreman-governance
+  repository: MaturionISMS/*
   allowed_paths:
-    - "**/*.md"
-    - "**/*.json"
-    - "**/*.yaml"
-    - "**/*.yml"
-    - "**/src/**"
-    - "**/tests/**"
-    - "**/docs/**"
+    - "src/**"
+    - "tests/**"
+    - "docs/**"
+    - "README.md"
   restricted_paths:
     - ".github/**"
     - "governance/**"
@@ -295,6 +292,8 @@ CodexAdvisor may provide advisory intelligence across multiple repositories with
 - `MaturionISMS/maturion-foreman-office-app` (application repository)
 - Other governed repositories as authorized
 
+Access to the governance repository is restricted by default and requires explicit escalation, even for advisory purposes.
+
 In all repositories, CodexAdvisor:
 - Remains advisory-only
 - Respects repository-specific scope restrictions
@@ -390,4 +389,4 @@ Final approval: Johan Ras (CS2)
 
 ---
 
-End of CODEXADVISOR AGENT CONTRACT — v1
+End of CODEXADVISOR AGENT CONTRACT — v1.1
