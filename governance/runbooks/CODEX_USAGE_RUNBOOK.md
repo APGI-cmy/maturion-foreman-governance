@@ -1,10 +1,10 @@
 # Codex Usage Runbook
 
-**Status:** ACTIVE — Operational Governance  
-**Authority:** Canonical  
+**Status:** DRAFT — Awaiting Ratification  
+**Authority:** Canonical (upon ratification)  
 **Version:** 1.0  
-**Effective Date:** 2026-01-07  
-**Ratified By:** Johan Ras (CS2)  
+**Effective Date:** Upon Ratification  
+**Ratified By:** Pending — Johan Ras (CS2)  
 **Applies To:** All Humans, Foreman, Governance Agent, Future AI Agents  
 **Scope:** All Governed Repositories (MaturionISMS/*)  
 **Related Artifacts:**
@@ -506,18 +506,22 @@ This runbook is considered COMPLETE when:
 - ✅ Fully aligned with CodexAdvisor agent contract
 - ✅ Fully aligned with Foreman authority model
 - ✅ Fully aligned with escalation policy
-- ✅ Johan (CS2) formally ratifies the runbook
+- ⏳ Johan (CS2) formally ratifies the runbook — **PENDING**
 
 ---
 
 ## Ratification
 
-**Proposed By:** Johan Ras (CS2) via Issue #[TBD]  
-**Drafted By:** Governance Agent  
-**Reviewed By:** [Pending]  
-**Ratified By:** Johan Ras (CS2) — [Pending]  
-**Effective Date:** [Upon Ratification]
+**Proposed By:** Johan Ras (CS2) via Issue (Draft and Ratify Codex Usage Runbook for Daily Operations)  
+**Drafted By:** Governance Agent (2026-01-07)  
+**Status:** Draft Complete — Awaiting Johan Ras (CS2) Formal Ratification  
+
+**Upon Ratification:**
+- Set Status to "ACTIVE — Operational Governance"
+- Set Authority to "Canonical"
+- Set Effective Date to ratification date
+- Update "Ratified By" field with Johan Ras (CS2) and date
 
 ---
 
-**End of Codex Usage Runbook v1.0**
+**End of Codex Usage Runbook v1.0 (DRAFT)**
