@@ -804,6 +804,11 @@ This policy enforces the 100% GREEN mandate by preventing test dodging - the pra
 **Status**: Active and Enforced  
 **Last Updated**: 2026-01-08
 
+**Version History**:
+- **v1.4** (2026-01-08): Added POLICY-NO-ONLY-LANGUAGE reference, banned language examples in "NOT 100% GREEN" section, and Related Governance Policies section
+- **v1.3** (2026-01-05): Second-Time Failure Prohibition
+- **Earlier versions**: Initial build philosophy and zero test debt doctrine
+
 **Changelog**:
 - **1.3 (2026-01-05)**: Second-Time Failure Prohibition canonized; BL forward-scan obligation established; "never repeat" discipline elevated to constitutional anti-pattern (BL-018/BL-019 derived)
 - **1.2 (2025-12-13)**: Zero Test Debt codified as constitutional requirement; explicit enforcement of NO carry-over debt, NO temporary exceptions, NO partial passes
