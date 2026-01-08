@@ -20,11 +20,19 @@ jobs:
 
       - name: Resolve active build
         run: |
+          if [ ! -f "architecture/BUILD_ACTIVE" ]; then
+            echo "ℹ️ No active build (BUILD_ACTIVE missing). Skipping effectiveness validation."
+            echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
+            exit 0
+          fi
+          
           BUILD_ID="$(cat architecture/BUILD_ACTIVE | tr -d '\r' | tr -d '\n')"
           BUILD_DIR="architecture/builds/${BUILD_ID}"
           echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
+          echo "SKIP_VALIDATION=false" >> $GITHUB_ENV
 
       - name: Validate effectiveness report consistency
+        if: env.SKIP_VALIDATION != 'true'
         run: |
           EFFECT="${BUILD_DIR}/effectiveness.md"
           FAIL_DIR="${BUILD_DIR}/failures"

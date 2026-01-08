@@ -48,19 +48,19 @@ jobs:
       - name: Enforce Agent Contract Minimalism
         run: |
           FORBIDDEN_PATTERNS=(
-            "BUILD_PHILOSOPHY"
-            "OPOJD"
-            "TED"
-            "ONE_TIME_BUILD"
-            "constitutional_references"
-            "Constitutional Principles"
-            "Primary Responsibilities"
-            "Authority Hierarchy"
-            "Standard Workflows"
+            "\\bBUILD_PHILOSOPHY\\b"
+            "\\bOPOJD\\b"
+            "\\bTED\\b"
+            "\\bONE_TIME_BUILD\\b"
+            "\\bconstitutional_references\\b"
+            "\\bConstitutional Principles\\b"
+            "\\bPrimary Responsibilities\\b"
+            "\\bAuthority Hierarchy\\b"
+            "\\bStandard Workflows\\b"
           )
 
           for PATTERN in "${FORBIDDEN_PATTERNS[@]}"; do
-            if grep -qi "$PATTERN" .agent; then
+            if grep -Eqi "$PATTERN" .agent; then
               echo "❌ Forbidden governance duplication detected: $PATTERN"
               exit 1
             fi

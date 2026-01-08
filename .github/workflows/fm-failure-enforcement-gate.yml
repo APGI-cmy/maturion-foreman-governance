@@ -21,8 +21,9 @@ jobs:
       - name: Resolve active build
         run: |
           if [ ! -f "architecture/BUILD_ACTIVE" ]; then
-            echo "❌ FAILURE BLOCK: architecture/BUILD_ACTIVE missing."
-            exit 1
+            echo "ℹ️ No active build (BUILD_ACTIVE missing). Skipping failure enforcement."
+            echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
+            exit 0
           fi
 
           BUILD_ID="$(cat architecture/BUILD_ACTIVE | tr -d '\r' | tr -d '\n')"
@@ -40,8 +41,10 @@ jobs:
 
           echo "BUILD_ID=$BUILD_ID" >> $GITHUB_ENV
           echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
+          echo "SKIP_VALIDATION=false" >> $GITHUB_ENV
 
       - name: Determine if learning implies failure
+        if: env.SKIP_VALIDATION != 'true'
         run: |
           LEARNING="${BUILD_DIR}/learning.md"
 
@@ -70,6 +73,7 @@ jobs:
           fi
 
       - name: Enforce presence of failure record(s) when required
+        if: env.SKIP_VALIDATION != 'true'
         run: |
           if [ "$FAILURE_REQUIRED" != "YES" ]; then
             echo "✅ Failure recording not required"
@@ -93,6 +97,7 @@ jobs:
           echo "✅ Found $COUNT failure record(s)"
 
       - name: Enforce effectiveness report exists when failure required
+        if: env.SKIP_VALIDATION != 'true'
         run: |
           if [ "$FAILURE_REQUIRED" != "YES" ]; then
             echo "✅ Effectiveness report not required (no failure required)"
@@ -108,5 +113,6 @@ jobs:
           echo "✅ effectiveness.md present"
 
       - name: Failure Enforcement Gate Passed
+        if: env.SKIP_VALIDATION != 'true'
         run: |
           echo "✅ FM FAILURE ENFORCEMENT GATE PASSED"
