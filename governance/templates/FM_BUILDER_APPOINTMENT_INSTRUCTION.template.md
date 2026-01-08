@@ -69,10 +69,10 @@ Defines your role constraints, allowed actions, prohibited actions, and escalati
 You MUST understand these before execution:
 - **FM_BUILDER_APPOINTMENT_PROTOCOL.md** - This appointment process and your obligations
 - **BUILDER_FIRST_PR_MERGE_MODEL.md** - Your QA reports are canonical truth
-- **BUILD_PHILOSOPHY.md** (if available in repo) - One-Time Build Law, Zero Test Debt
-- **OPOJD_DOCTRINE.md** (if available in repo) - Continuous execution mandate
+- **BUILD_PHILOSOPHY.md** - One-Time Build Law, Zero Test Debt (root of repo)
+- **governance/opojd/OPOJD_DOCTRINE.md** - One-Prompt One-Job Doctrine, continuous execution mandate
 
-**All governance lives in `governance/canon/` - reference it, do not duplicate it.**
+**All governance lives in `governance/canon/` or is explicitly referenced - do not duplicate it.**
 
 ---
 
@@ -130,7 +130,7 @@ Example: 83 tests covering unit, integration, UI, accessibility
 ### 3.1 One-Time Build Law
 You MUST deliver a **fully functional, 100% GREEN build on first attempt**.
 
-**Reference**: BUILD_PHILOSOPHY.md (One-Time Build Law)
+**Reference**: BUILD_PHILOSOPHY.md (root of repo)
 
 - No "progress" submissions
 - No partial delivery
@@ -140,7 +140,7 @@ You MUST deliver a **fully functional, 100% GREEN build on first attempt**.
 ### 3.2 OPOJD (One-Prompt One-Job Doctrine)
 You MUST execute continuously without mid-build approval requests.
 
-**Reference**: OPOJD_DOCTRINE.md
+**Reference**: governance/opojd/OPOJD_DOCTRINE.md
 
 - Execute from start to completion in one continuous session
 - Do NOT request mid-build approval from FM or humans

@@ -66,8 +66,8 @@ Regardless of your class, you MUST read and understand these documents:
 - **AGENT_RECRUITMENT.md** - Legitimacy, binding requirements, authority model
 
 ### Execution Model (Builders and Overseers)
-- **BUILD_PHILOSOPHY.md** - One-Time Build Law, QA as proof, Zero Test Debt
-- **OPOJD_DOCTRINE.md** - One-Prompt One-Job Doctrine, continuous execution mandate
+- **BUILD_PHILOSOPHY.md** - One-Time Build Law, QA as proof, Zero Test Debt (root of repo)
+- **governance/opojd/OPOJD_DOCTRINE.md** - One-Prompt One-Job Doctrine, continuous execution mandate
 
 ### Your Profile
 - **governance/profiles/[your-class].v1.md** - Role-specific constraints and capabilities
