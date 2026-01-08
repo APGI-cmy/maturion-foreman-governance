@@ -83,9 +83,10 @@ The governance agent (or human reviewer) approved PR #895 without:
    - Establishes repository-level governance identity
 
 2. **Fixed forbidden pattern detection** in `agent-governance-check.yml`
-   - Changed from `grep -qi "$PATTERN"` to `grep -Eqi "\\b$PATTERN\\b"`
-   - Uses word boundaries (`\b`) to prevent false positives
+   - Changed from `grep -qi "$PATTERN"` to `grep -Eqi "$PATTERN"` with word boundaries
+   - Patterns now use `\\bWORD\\b` format (double backslash in YAML string, becomes `\b` for grep)
    - "TED" now matches only whole word "TED", not "restricted", "listed", "Updated"
+   - Example: `"\\bTED\\b"` prevents false matches in common words
 
 3. **Fixed FM effectiveness validation gate** to handle missing BUILD_ACTIVE
    - Added check: if BUILD_ACTIVE doesn't exist, skip validation gracefully
