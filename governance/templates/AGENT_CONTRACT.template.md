@@ -129,7 +129,7 @@ Example:
 - Generate required reports (QA, compliance, etc.)
 - **Capture enhancements and improvements** (per MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0):
   - Feature Enhancement Review (mandatory)
-  - Process Improvement Reflection (mandatory — answer all 5 questions)
+  - Process Improvement Reflection (mandatory - answer all 5 questions)
 
 ---
 

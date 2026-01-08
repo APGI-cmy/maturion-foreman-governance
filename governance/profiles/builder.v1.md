@@ -219,4 +219,7 @@ End of BUILDER GOVERNANCE PROFILE — v1.1
 
 **Version History**:
 - **v1.0** (2025-12-31): Initial release
-- **v1.1** (2026-01-08): Added mandatory process improvement reflection (Section 10.2) with required questions, prohibitions updated, canonical reference updated to MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0
+- **v1.1** (2026-01-08): Added mandatory process improvement reflection
+  - Section 10.2: Process improvement reflection with 5 required questions
+  - Updated prohibitions to include process reflection violations
+  - Canonical reference updated to MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0

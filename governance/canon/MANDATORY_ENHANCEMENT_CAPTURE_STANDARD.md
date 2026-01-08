@@ -482,7 +482,7 @@ When this standard is updated:
 
 This standard is successful when:
 
-- ✅ 100% of work units include both feature AND process evaluation
+- ✅ 100% of work units include both feature AND process reflection
 - ✅ 100% of process reflections include answers to all mandatory questions
 - ✅ Parking station contains growing inventory of both feature and process insights
 - ✅ Zero scope creep due to proactive enhancement execution

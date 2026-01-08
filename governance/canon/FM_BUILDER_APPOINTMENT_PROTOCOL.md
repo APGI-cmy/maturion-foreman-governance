@@ -481,8 +481,8 @@ FM MUST continuously supervise builders and MAY NOT delegate these responsibilit
 - Builder reports **COMPLETE** (100% GREEN QA, full delivery, BOTH feature AND process reflections) → FM validates:
   - QA results (100% GREEN)
   - Architecture conformance
-  - **Feature enhancement review completed** (proposal submitted OR "none identified" declared)
-  - **Process improvement reflection completed** (all 5 mandatory questions answered AND proposal submitted OR "none identified" declared after answering questions)
+  - **Feature enhancement review completed**: Proposal submitted OR "none identified" declared
+  - **Process improvement reflection completed**: All 5 mandatory questions answered AND proposal submitted OR "none identified" declared after answering questions
 
 **Invalid States** (require FM intervention):
 - Builder reports IN_PROGRESS → OPOJD violation (redirect to terminal-state execution)
