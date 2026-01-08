@@ -18,16 +18,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Ensure .agent exists
+      - name: Validate .agent Contract
+        shell: bash
         run: |
+          set -e
+          export PATH="/usr/bin:/bin:/usr/local/bin:$PATH"
+          
+          echo "=== Ensure .agent exists ==="
           if [ ! -f ".agent" ]; then
             echo "❌ .agent file is missing"
             exit 1
           fi
           echo "✅ .agent file found"
 
-      - name: Validate canonical governance binding
-        run: |
+          echo ""
+          echo "=== Validate canonical governance binding ==="
           REQUIRED_KEYS=(
             "governance:"
             "canon:"
@@ -37,16 +42,15 @@ jobs:
           )
 
           for KEY in "${REQUIRED_KEYS[@]}"; do
-            if ! grep -q "$KEY" .agent; then
+            if ! /usr/bin/grep -q "$KEY" .agent; then
               echo "❌ Missing required governance binding: $KEY"
               exit 1
             fi
           done
-
           echo "✅ Canonical governance binding present"
 
-      - name: Enforce Agent Contract Minimalism
-        run: |
+          echo ""
+          echo "=== Enforce Agent Contract Minimalism ==="
           FORBIDDEN_PATTERNS=(
             "\\bBUILD_PHILOSOPHY\\b"
             "\\bOPOJD\\b"
@@ -60,17 +64,16 @@ jobs:
           )
 
           for PATTERN in "${FORBIDDEN_PATTERNS[@]}"; do
-            if grep -Eqi "$PATTERN" .agent; then
+            if /usr/bin/grep -Eqi "$PATTERN" .agent; then
               echo "❌ Forbidden governance duplication detected: $PATTERN"
               exit 1
             fi
           done
-
           echo "✅ No forbidden doctrine duplication found"
 
-      - name: Enforce Size Limits
-        run: |
-          LINE_COUNT=$(wc -l < .agent)
+          echo ""
+          echo "=== Enforce Size Limits ==="
+          LINE_COUNT=$(/usr/bin/wc -l < .agent)
           MAX_LINES=300
 
           if [ "$LINE_COUNT" -gt "$MAX_LINES" ]; then
@@ -79,25 +82,23 @@ jobs:
             echo "   Move detailed doctrine to governance/canon/ and reference it."
             exit 1
           fi
-
           echo "✅ Agent contract size acceptable: $LINE_COUNT lines"
 
-      - name: Validate Governance Bindings
-        run: |
-          if ! grep -q "governance:" .agent; then
+          echo ""
+          echo "=== Validate Governance Bindings ==="
+          if ! /usr/bin/grep -q "governance:" .agent; then
             echo "❌ Missing governance section"
             exit 1
           fi
 
-          if ! grep -q "bindings:" .agent; then
+          if ! /usr/bin/grep -q "bindings:" .agent; then
             echo "⚠️  Warning: No governance.bindings section found"
             echo "   Consider adding bindings to canonical documents"
           fi
-
           echo "✅ Governance bindings section validated"
 
-      - name: Validate required top-level sections
-        run: |
+          echo ""
+          echo "=== Validate required top-level sections ==="
           REQUIRED_SECTIONS=(
             "^agent:"
             "^governance:"
@@ -108,39 +109,35 @@ jobs:
           )
 
           for SECTION in "${REQUIRED_SECTIONS[@]}"; do
-            if ! grep -Eq "$SECTION" .agent; then
+            if ! /usr/bin/grep -Eq "$SECTION" .agent; then
               echo "❌ Missing required top-level section: $SECTION"
               exit 1
             fi
           done
-
           echo "✅ Required sections present"
 
-      - name: Enforce restricted paths
-        run: |
+          echo ""
+          echo "=== Enforce restricted paths ==="
           REQUIRED_RESTRICTIONS=(
             ".agent"
             "governance/**"
           )
 
-          for PATH in "${REQUIRED_RESTRICTIONS[@]}"; do
-            if ! grep -q "$PATH" .agent; then
-              echo "❌ Required restricted path missing: $PATH"
+          for PATH_PATTERN in "${REQUIRED_RESTRICTIONS[@]}"; do
+            if ! /usr/bin/grep -q "$PATH_PATTERN" .agent; then
+              echo "❌ Required restricted path missing: $PATH_PATTERN"
               exit 1
             fi
           done
-
           echo "✅ Restricted paths enforced"
 
-      - name: Validate escalation for CI paths
-        run: |
-          if ! grep -q ".github/" .agent; then
+          echo ""
+          echo "=== Validate escalation for CI paths ==="
+          if ! /usr/bin/grep -q ".github/" .agent; then
             echo "❌ .github/ paths must be restricted or escalation-required"
             exit 1
           fi
-
           echo "✅ CI paths properly gated"
 
-      - name: Governance Validation Passed
-        run: |
+          echo ""
           echo "✅ .agent contract is valid under canonical governance"
