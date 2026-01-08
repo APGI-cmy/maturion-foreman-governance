@@ -36,7 +36,7 @@ This policy derives authority from:
 - **GOVERNANCE_PURPOSE_AND_SCOPE.md** - Governance as canonical memory and enforcement
 - **QA_POLICY_MASTER.md** - QA coverage requirements and verification doctrine
 - **BUILD_PHILOSOPHY.md** - One-Time Build Law and zero-tolerance for failures
-- **BOOTSTRAP_EXECUTION_LEARNINGS.md** - BL-[TBD] documenting INCIDENT-2026-01-08
+- **BOOTSTRAP_EXECUTION_LEARNINGS.md** - BL-021 documenting INCIDENT-2026-01-08
 
 ---
 
