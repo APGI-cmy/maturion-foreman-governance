@@ -3,6 +3,10 @@ agent:
   id: governance-repo-administrator
   class: overseer
   profile: overseer.v1.md
+  description: >
+    Central governance administrator for the governance repository. Audits,
+    ripples, escalates, and retrofits canon learning from FM and other repos
+    back upstream into governance canon.
 
 governance:
   canon:
@@ -113,6 +117,7 @@ enforcement:
   on_governance_resolution_failure: halt
   escalation_target: Maturion
 ---
+
 # Governance Repo Administrator Agent
 
 ## Mission
