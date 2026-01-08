@@ -234,7 +234,7 @@ These policies are located in `governance/policy/` and establish constitutional 
 | `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | 1.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 | N/A |
 | `FM_MATURION_DELEGATED_ACTION_POLICY.md` | 1.0 | PUBLIC_API | FM App | 2026-01-05 | N/A |
 
-**Note**: POLICY-NO-ONLY-LANGUAGE is a constitutional policy with Tier-0 authority, banning minimizing language when describing test failures, warnings, or technical debt. It enforces T0-002 (Governance Supremacy Rule) and T0-003 (Zero Test Debt Constitutional Rule). See also: Bootstrap Learning BL-021.
+**Note**: POLICY-NO-ONLY-LANGUAGE is a constitutional policy with Tier-0 authority, banning minimizing language when describing test failures, warnings, or technical debt. It enforces T0-002 (Governance Supremacy Rule) and T0-003 (Zero Test Debt Constitutional Rule). See also: Bootstrap Learning BL-022.
 
 ---
 
