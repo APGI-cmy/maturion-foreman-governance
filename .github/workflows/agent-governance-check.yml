@@ -52,8 +52,11 @@ jobs:
             "OPOJD"
             "TED"
             "ONE_TIME_BUILD"
-            "doctrine:"
             "constitutional_references"
+            "Constitutional Principles"
+            "Primary Responsibilities"
+            "Authority Hierarchy"
+            "Standard Workflows"
           )
 
           for PATTERN in "${FORBIDDEN_PATTERNS[@]}"; do
@@ -64,6 +67,34 @@ jobs:
           done
 
           echo "✅ No forbidden doctrine duplication found"
+
+      - name: Enforce Size Limits
+        run: |
+          LINE_COUNT=$(wc -l < .agent)
+          MAX_LINES=300
+
+          if [ "$LINE_COUNT" -gt "$MAX_LINES" ]; then
+            echo "❌ Agent contract exceeds maximum size: $LINE_COUNT lines (max: $MAX_LINES)"
+            echo "   Agent contracts should be thin binding shells."
+            echo "   Move detailed doctrine to governance/canon/ and reference it."
+            exit 1
+          fi
+
+          echo "✅ Agent contract size acceptable: $LINE_COUNT lines"
+
+      - name: Validate Governance Bindings
+        run: |
+          if ! grep -q "governance:" .agent; then
+            echo "❌ Missing governance section"
+            exit 1
+          fi
+
+          if ! grep -q "bindings:" .agent; then
+            echo "⚠️  Warning: No governance.bindings section found"
+            echo "   Consider adding bindings to canonical documents"
+          fi
+
+          echo "✅ Governance bindings section validated"
 
       - name: Validate required top-level sections
         run: |
