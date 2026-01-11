@@ -388,18 +388,17 @@ echo '**Commands Executed**:'
 echo '```'
 
 # Validate YAML files
-if ls .github/workflows/*.yml >/dev/null 2>&1; then
-  for file in .github/workflows/*.yml; do
-    echo "$ yamllint $file"
-    yamllint "$file"
-    EXIT_CODE=$?
-    echo "Exit code: $EXIT_CODE"
-    if [ $EXIT_CODE -ne 0 ]; then
-      echo "⚠️ Validation failed for $file"
-    fi
-    echo ""
-  done
-fi
+for file in .github/workflows/*.yml; do
+  [[ -f "$file" ]] || continue
+  echo "$ yamllint $file"
+  yamllint "$file"
+  EXIT_CODE=$?
+  echo "Exit code: $EXIT_CODE"
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "⚠️ Validation failed for $file"
+  fi
+  echo ""
+done
 
 echo '```'
 echo ""
@@ -429,9 +428,9 @@ echo "**Validation Performed**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
 echo "**Environment**: [Operating system, bash version - sanitize if needed]"
 echo "**Validator**: [FILL IN]"
 echo ""
-echo "# Note: Avoid exposing sensitive system details in production environments."
-echo "# Consider using generic descriptions like 'Ubuntu 22.04, bash 5.x' instead of"
-echo "# specific kernel versions or detailed system information."
+echo "<!-- Note: Avoid exposing sensitive system details in production environments. -->"
+echo "<!-- Consider using generic descriptions like 'Ubuntu 22.04, bash 5.x' instead of -->"
+echo "<!-- specific kernel versions or detailed system information. -->"
 echo ""
 echo "---"
 echo ""

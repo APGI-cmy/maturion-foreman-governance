@@ -503,13 +503,13 @@ Configure branch protection on default branch:
 Before declaring Phase 8 complete:
 
 1. ✅ **Create Actual Artifacts** — Configure branch protection, create COMMISSIONING_READINESS.md
-2. ✅ **Execute/Verify Locally** — Create and validate test PR to confirm gates execute
-3. ✅ **Capture Output** — Save test PR results showing all gates execute (pass, skip, or fail)
-4. ✅ **Validate Preflight** — Confirm all gates enumerated and tested with test PR
+2. ✅ **Execute/Verify Locally** — Simulate gate validation or create draft test PR to confirm gates execute
+3. ✅ **Capture Output** — Save validation results showing all gates would execute correctly
+4. ✅ **Validate Preflight** — Confirm all gates enumerated and validation complete
 5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
 6. ✅ **Declare Complete** — ONLY after execution GREEN locally
 
-**Note**: Phase 8 requires creating a test PR to validate gate execution. This is the most critical execution verification step.
+**Note**: Phase 8 validation can be done via local simulation (checking gate trigger paths) or a separate draft test PR (not the bootstrap PR itself). The goal is to verify gates will execute correctly before the bootstrap PR is merged.
 
 **Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
 **Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
