@@ -85,6 +85,20 @@ mkdir -p governance/memory
 
 **Verification**: All directories exist and are empty (except as populated in subsequent phases).
 
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 1 complete:
+
+1. ✅ **Create Actual Artifacts** — Execute mkdir commands, do not just document intent
+2. ✅ **Execute/Verify Locally** — Run `ls -la` or `tree` to verify all directories exist
+3. ✅ **Capture Output** — Save terminal output showing directory creation success
+4. ✅ **Validate Preflight** — Check all gates triggered by directory structure changes
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
+
 ---
 
 ### Phase 2: Core Governance Files
@@ -180,6 +194,20 @@ mkdir -p governance/memory
 
 **Action**: Create file and begin checking off items as you complete them.
 
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 2 complete:
+
+1. ✅ **Create Actual Artifacts** — Create GOVERNANCE_ALIGNMENT.md and INITIALIZATION_EVIDENCE.md files
+2. ✅ **Execute/Verify Locally** — Run `cat` or `ls -la` to verify files exist and contain required content
+3. ✅ **Capture Output** — Save terminal output showing file creation and content validation
+4. ✅ **Validate Preflight** — Check all gates triggered by governance file creation
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
+
 ---
 
 ### Phase 3: PR Gate Workflows
@@ -210,6 +238,20 @@ Copy from `maturion-foreman-governance/.github/workflows/`:
 - Configure branch protection to require gates before merge
 
 **Action**: Copy applicable workflows, customize repository references, validate syntax.
+
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 3 complete:
+
+1. ✅ **Create Actual Artifacts** — Copy workflow files to `.github/workflows/`, do not just plan to copy
+2. ✅ **Execute/Verify Locally** — Run `yamllint` on all workflow files to validate syntax
+3. ✅ **Capture Output** — Save yamllint output showing all workflows are syntactically valid
+4. ✅ **Validate Preflight** — Check all gates triggered by workflow file changes
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
 
 ---
 
@@ -245,6 +287,20 @@ Based on repository type, seed agent contracts in `.github/agents/`:
 
 **Action**: Create `.agent` file with repository-specific bindings.
 
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 4 complete:
+
+1. ✅ **Create Actual Artifacts** — Create agent contract files and `.agent` file in repository root
+2. ✅ **Execute/Verify Locally** — Validate agent contracts against schema, check for contradictions
+3. ✅ **Capture Output** — Save validation output showing contracts are schema-compliant
+4. ✅ **Validate Preflight** — Check all gates triggered by agent contract changes
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
+
 ---
 
 ### Phase 5: Governance Policies & Schemas
@@ -265,6 +321,20 @@ Based on repository type, seed agent contracts in `.github/agents/`:
 Create `governance/policies/` as needed for repository-specific policies that do NOT conflict with canonical governance.
 
 **Action**: Create CANONICAL_SCHEMAS.md with references to governance repository schemas.
+
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 5 complete:
+
+1. ✅ **Create Actual Artifacts** — Create CANONICAL_SCHEMAS.md and any repository-specific policy files
+2. ✅ **Execute/Verify Locally** — Verify schema references are accurate and accessible
+3. ✅ **Capture Output** — Save verification showing schema documents exist at referenced locations
+4. ✅ **Validate Preflight** — Check all gates triggered by governance policy/schema changes
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
 
 ---
 
@@ -310,6 +380,20 @@ In `INITIALIZATION_EVIDENCE.md`, add section:
 
 **Action**: Review learnings, apply to configuration, document in initialization evidence.
 
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 6 complete:
+
+1. ✅ **Create Actual Artifacts** — Update INITIALIZATION_EVIDENCE.md with learnings section
+2. ✅ **Execute/Verify Locally** — Review BOOTSTRAP_EXECUTION_LEARNINGS.md and recent incidents
+3. ✅ **Capture Output** — Document which learnings were reviewed and how applied
+4. ✅ **Validate Preflight** — Check all gates triggered by initialization evidence updates
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
+
 ---
 
 ### Phase 7: Repository-Specific Mapping
@@ -337,6 +421,20 @@ Create `docs/architecture/` with repository-specific architecture documents as n
 **Note**: Architecture docs are repo-specific, not canonical governance.
 
 **Action**: Create governance gate mapping if applicable, stub architecture docs.
+
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 7 complete:
+
+1. ✅ **Create Actual Artifacts** — Create GOVERNANCE_GATE_MAPPING.md and/or architecture stubs
+2. ✅ **Execute/Verify Locally** — Verify mapping document references valid workflow and module paths
+3. ✅ **Capture Output** — Save verification showing referenced files exist
+4. ✅ **Validate Preflight** — Check all gates triggered by mapping/documentation changes
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
 
 ---
 
@@ -399,6 +497,22 @@ Configure branch protection on default branch:
 ```
 
 **Action**: Create commissioning readiness document, begin Phase 1 validation.
+
+#### Execution Bootstrap Protocol (MANDATORY)
+
+Before declaring Phase 8 complete:
+
+1. ✅ **Create Actual Artifacts** — Configure branch protection, create COMMISSIONING_READINESS.md
+2. ✅ **Execute/Verify Locally** — Simulate gate validation or create draft test PR to confirm gates execute
+3. ✅ **Capture Output** — Save validation results showing all gates would execute correctly
+4. ✅ **Validate Preflight** — Confirm all gates enumerated and validation complete
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+
+**Note**: Phase 8 validation can be done via local simulation (checking gate trigger paths) or a separate draft test PR (not the bootstrap PR itself). The goal is to verify gates will execute correctly before the bootstrap PR is merged.
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
 
 ---
 

@@ -58,6 +58,9 @@ governance:
     - id: mandatory-process-improvement-reflection
       path: governance/canon/MANDATORY_PROCESS_IMPROVEMENT_REFLECTION_PROTOCOL.md
       role: process-improvement-reflection-protocol
+    - id: execution-bootstrap-protocol
+      path: governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md
+      role: execution-verification-before-handover
     # NOTE: AGENT_HANDOVER_VERIFICATION_PROTOCOL.md is planned from the incident;
     # when created, add as a binding here.
 
