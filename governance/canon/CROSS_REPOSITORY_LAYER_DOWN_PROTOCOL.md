@@ -218,11 +218,17 @@ Layer-down is initiated when:
 4. Update agent contracts with new canonical version references
 5. Validate PR gates align with new canonical requirements
 6. Test governance changes in isolated branch
-7. Document layer-down completion evidence
-8. Update `GOVERNANCE_ALIGNMENT.md` with new version
+7. **Execute Prehandover Verification** (MANDATORY - see EXECUTION_BOOTSTRAP_PROTOCOL.md)
+   - Follow 7-step Execution Bootstrap Protocol
+   - Validate all changes locally before PR creation
+   - Enumerate all gates triggered by layer-down changes
+   - Capture execution evidence with exit codes
+   - Attach PREHANDOVER_PROOF to layer-down PR
+8. Document layer-down completion evidence
+9. Update `GOVERNANCE_ALIGNMENT.md` with new version
 
 **Step 3: Validation & Closure**
-1. Governance liaison submits layer-down completion evidence
+1. Governance liaison submits layer-down completion evidence with PREHANDOVER_PROOF
 2. FM validates evidence (if applicable)
 3. Governance repo closes layer-down issue
 4. Downstream repo documents completion in audit trail
@@ -238,6 +244,16 @@ Each layer-down completion MUST include:
 4. **PR gate validation**: Evidence gates align with new canon
 5. **Test results**: Validation that governance changes don't break execution
 6. **Deviation documentation**: Any intentional deviations from canon (rare)
+7. **PREHANDOVER_PROOF** (MANDATORY - when layer-down includes executable artifacts):
+   - Artifacts created/updated section
+   - Execution validation section with commands and outputs
+   - Preflight gate status section (all gates enumerated)
+   - Exit codes (all must be 0)
+   - Execution timestamp
+   - Handover guarantee
+
+**Template**: See `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`  
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`
 
 ---
 
@@ -261,6 +277,12 @@ The governance liaison agent in each downstream repository is responsible for:
    - Execute layer-down steps per protocol
    - Test governance changes before merge
    - Document completion evidence
+   - **Execute Prehandover Verification** (MANDATORY)
+     - Follow 7-step Execution Bootstrap Protocol for all layer-down phases
+     - Attach PREHANDOVER_PROOF to layer-down PRs
+     - Validate all gates in preflight before handover
+     - Capture execution evidence with exit codes
+     - ONLY declare layer-down complete after local execution GREEN
 
 4. **Governance Audit Support**
    - Provide governance alignment status on request
@@ -271,6 +293,7 @@ The governance liaison agent in each downstream repository is responsible for:
    - Plan and execute migrations for breaking changes
    - Coordinate with FM if execution impact
    - Document migration completion
+   - **Execute Prehandover Verification for migrations** (MANDATORY)
 
 ### 7.2 Governance Liaison Authority
 
@@ -280,12 +303,20 @@ The governance liaison agent has authority to:
 - ✅ Validate PR gates against canonical requirements
 - ✅ Request FM pause if governance violation detected
 - ✅ Escalate to human CS2 if governance conflict unresolvable
+- ✅ Execute prehandover verification for layer-down activities
+- ✅ Attach PREHANDOVER_PROOF to layer-down PRs
 
 The governance liaison agent does NOT have authority to:
 - ❌ Override FM execution decisions
 - ❌ Modify governance canon (governance-repo only)
 - ❌ Bypass PR gates or enforcement mechanisms
 - ❌ Approve own layer-down PRs (requires FM or CS2 approval)
+- ❌ Hand over layer-down PRs without PREHANDOVER_PROOF when required
+- ❌ Bypass execution verification for "simple" changes
+- ❌ Rely on CI to discover execution failures in layer-down work
+
+**Execution Verification Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
+**Training Authority**: `governance/canon/GOVERNANCE_LIAISON_TRAINING_PROTOCOL.md`
 
 ---
 
@@ -467,11 +498,52 @@ This protocol is reviewed:
 
 ---
 
+## 16. Version History
+
+### v1.1.0 (2026-01-11)
+
+**Status:** Execution Bootstrap Protocol Integration  
+**Authority:** Johan Ras (Human Authority)  
+**Trigger:** Issue — Update Governance Liaison Training Materials for Execution Bootstrap Protocol
+
+**Summary:** Integrated Execution Bootstrap Protocol requirements into cross-repository layer-down activities.
+
+**Key Updates:**
+- Updated Section 6.2 Step 2(7): Added mandatory prehandover verification to layer-down steps
+- Updated Section 6.3: Added PREHANDOVER_PROOF to layer-down evidence requirements
+- Updated Section 7.1(3): Added prehandover verification to layer-down execution responsibilities
+- Updated Section 7.1(5): Added prehandover verification for breaking change migrations
+- Updated Section 7.2: Added prehandover verification authority and prohibitions
+- Added references to EXECUTION_BOOTSTRAP_PROTOCOL.md and GOVERNANCE_LIAISON_TRAINING_PROTOCOL.md
+
+**Effect:** All cross-repository layer-down activities by governance liaison agents now require execution verification with PREHANDOVER_PROOF. CI-confirmatory approach enforced for layer-down work.
+
+### v1.0.0 (2026-01-05)
+
+**Status:** Initial Release  
+**Authority:** Johan Ras (Human Authority)  
+**Trigger:** PR #869 — Concern about elevated governance view without explicit protocol
+
+**Summary:** Established explicit, controlled protocol for governance propagation across repositories.
+
+**Key Requirements:**
+- Governance Public API vs Internal boundaries
+- Explicit version synchronization
+- Governance liaison gatekeeper role
+- Layer-down protocol with evidence requirements
+- Breaking change communication protocol
+- Cross-repo reading boundaries
+
+**Effect:** Governance drift prevention mechanism active. Implicit cross-repo coupling prohibited.
+
+---
+
 **End of Protocol**
 
 **Protocol Metadata**:
-- Protocol ID: CROSS_REPO_LAYER_DOWN_PROTOCOL_v1_0_0
+- Protocol ID: CROSS_REPO_LAYER_DOWN_PROTOCOL_v1_1_0
 - Authority: Governance Administrator Agent
-- Effective: 2026-01-05
-- Next Review: 2026-02-05 (monthly)
-- Supersedes: None (initial version)
+- Effective: 2026-01-11
+- Next Review: 2026-02-11 (monthly)
+- Version: 1.1.0
+- Supersedes: v1.0.0
