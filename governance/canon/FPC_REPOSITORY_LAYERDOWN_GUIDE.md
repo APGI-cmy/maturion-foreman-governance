@@ -39,6 +39,10 @@ This FPC integrates and orchestrates requirements from:
 | **SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md** | Defines commissioning phases and evidence requirements |
 | **AGENT_RECRUITMENT.md** | Defines agent appointment process |
 | **BOOTSTRAP_EXECUTION_LEARNINGS.md** | Contains latest learnings to be incorporated |
+| **AGENT_FILE_SCHEMA.md** | Defines repository `.agent` file structure and requirements |
+| **AGENT_FILE_BINDING_REQUIREMENTS.md** | Defines mandatory and optional bindings for `.agent` files |
+| **AGENT_FILE_VALIDATION.md** | Defines validation process for `.agent` files |
+| **AGENT_FILE_MAINTENANCE.md** | Defines maintenance protocol for `.agent` files |
 
 **This document does NOT create new requirements.** It orchestrates existing canonical requirements into a single, executable protocol.
 
@@ -277,29 +281,121 @@ Based on repository type, seed agent contracts in `.github/agents/`:
 
 **Purpose**: Define repository-level bindings and constraints.
 
+**Schema**: See `governance/schemas/AGENT_FILE_SCHEMA.md` in canonical governance for complete specification.
+
+**Binding Requirements**: See `governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md` for mandatory bindings based on repository type.
+
 **Template**: See `maturion-foreman-governance/.agent` as reference.
 
-**Must Include**:
-- Repository purpose and scope
-- Agent roster (which agents operate in this repo)
-- Governance version binding
-- Key constitutional references
+**Must Include** (per AGENT_FILE_SCHEMA.md):
+- `id`: Repository identifier
+- `description`: Repository purpose
+- `governance`: Canonical governance binding with all mandatory bindings for repository type
+- `agents` or `agent`: Agent roster declaration
+- `scope`: Repository boundaries (allowed/restricted/escalation-required paths)
+- `capabilities`: What capabilities exist in repository
+- `constraints`: Mandatory constraints (governance_interpretation: forbidden, etc.)
+- `enforcement`: Enforcement model (halt_and_escalate)
 
-**Action**: Create `.agent` file with repository-specific bindings.
+**Mandatory Bindings** (consult AGENT_FILE_BINDING_REQUIREMENTS.md):
+
+**Tier-0 (ALL repositories)**:
+- `governance-purpose-scope`: GOVERNANCE_PURPOSE_AND_SCOPE.md
+- `agent-recruitment`: AGENT_RECRUITMENT.md
+- `governance-ripple-model`: GOVERNANCE_RIPPLE_MODEL.md
+
+**Application repositories** (additional):
+- `fm-authority-model`: FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
+- `builder-bindings`: BUILDER_CONTRACT_BINDING_CHECKLIST.md
+- `execution-bootstrap-protocol`: EXECUTION_BOOTSTRAP_PROTOCOL.md
+
+**Governance repositories** (additional):
+- `cross-repo-layer-down`: CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md
+- `mandatory-progress-recording`: MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md
+- `bootstrap-learnings`: BOOTSTRAP_EXECUTION_LEARNINGS.md
+
+**Action**: Create `.agent` file with repository-specific configuration and all mandatory bindings per repository type.
+
+#### 4.3 Validate .agent File (MANDATORY)
+
+**Validation Authority**: `governance/runbooks/AGENT_FILE_VALIDATION.md`
+
+Before proceeding, validate the `.agent` file:
+
+**Level 1: Syntax Validation**
+```bash
+# Verify file exists and YAML is parseable
+ls -la .agent
+yq eval '.id' .agent
+```
+
+**Level 2: Schema Compliance**
+```bash
+# Verify all required fields present
+yq eval '.id' .agent
+yq eval '.description' .agent
+yq eval '.governance.canon.repository' .agent
+yq eval '.scope.repository' .agent
+yq eval '.capabilities' .agent
+yq eval '.constraints' .agent
+yq eval '.enforcement' .agent
+
+# Verify exactly one of agent/agents present
+yq eval 'has("agent") or has("agents")' .agent  # Must be true
+
+# Verify mandatory constraints
+yq eval '.constraints.governance_interpretation' .agent  # Must be "forbidden"
+yq eval '.constraints.scope_expansion' .agent  # Must be "forbidden"
+yq eval '.constraints.build_to_green_only' .agent  # Must be true
+```
+
+**Level 3: Semantic Validation**
+```bash
+# Verify canonical reference accessible
+CANON_REPO=$(yq eval '.governance.canon.repository' .agent)
+CANON_REF=$(yq eval '.governance.canon.reference' .agent)
+git ls-remote "https://github.com/$CANON_REPO" "$CANON_REF"
+
+# Verify all binding paths exist (manual check recommended)
+yq eval '.governance.bindings[].path' .agent
+
+# Verify all mandatory bindings present for repository type
+# Consult AGENT_FILE_BINDING_REQUIREMENTS.md Section 2-4
+yq eval '.governance.bindings[].id' .agent
+```
+
+**Level 4: Governance Alignment** (Manual)
+- Review `.agent` file for content duplication
+- Verify bindings are relevant to repository
+- Check consistency with agent contracts
+
+**Validation Outcome**: MUST be PASS before proceeding to next phase.
+
+**Documentation**: Record validation results in `INITIALIZATION_EVIDENCE.md`:
+```markdown
+## .agent File Validation
+
+**Validation Date**: [DATE]  
+**Validation Levels**: 1-4 ALL PASS  
+**Schema Version**: 1.0.0  
+**Mandatory Bindings**: All present per AGENT_FILE_BINDING_REQUIREMENTS.md  
+**Validator**: [NAME]
+```
 
 #### Execution Bootstrap Protocol (MANDATORY)
 
 Before declaring Phase 4 complete:
 
 1. ✅ **Create Actual Artifacts** — Create agent contract files and `.agent` file in repository root
-2. ✅ **Execute/Verify Locally** — Validate agent contracts against schema, check for contradictions
-3. ✅ **Capture Output** — Save validation output showing contracts are schema-compliant
+2. ✅ **Execute/Verify Locally** — Validate `.agent` file per AGENT_FILE_VALIDATION.md (Levels 1-4 PASS)
+3. ✅ **Capture Output** — Save validation output showing all levels pass
 4. ✅ **Validate Preflight** — Check all gates triggered by agent contract changes
-5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description (see template)
-6. ✅ **Declare Complete** — ONLY after execution GREEN locally
+5. ✅ **Attach PREHANDOVER_PROOF** — Include in PR description with validation evidence
+6. ✅ **Declare Complete** — ONLY after execution GREEN locally AND validation PASS
 
 **Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
-**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`  
+**Validation**: `governance/runbooks/AGENT_FILE_VALIDATION.md`
 
 ---
 
@@ -540,9 +636,13 @@ Before declaring layer-down complete, verify:
 
 ### 5.4 Agent Contracts
 
-- [ ] `.agent` contract present and complete
-- [ ] Agent contracts seeded for applicable roles
-- [ ] No contradictions between repository .agent and agent contracts
+- [ ] `.agent` contract present at repository root
+- [ ] `.agent` file validated per AGENT_FILE_VALIDATION.md (Levels 1-4 PASS)
+- [ ] All mandatory bindings present per AGENT_FILE_BINDING_REQUIREMENTS.md
+- [ ] `.agent` file conforms to AGENT_FILE_SCHEMA.md
+- [ ] Agent contracts seeded for applicable roles in `.github/agents/`
+- [ ] No contradictions between repository `.agent` and agent contracts
+- [ ] Validation results documented in INITIALIZATION_EVIDENCE.md
 
 ### 5.5 Evidence Trail
 
@@ -611,6 +711,29 @@ After layer-down, a **Governance Liaison** agent (or FM in bootstrap mode) is re
 3. Contracts reference doctrine, do not restate it
 4. See AGENT_CONTRACT_MIGRATION_GUIDE.md in canonical governance
 
+### Issue: .agent file validation fails
+
+**Cause**: Missing required fields, incorrect bindings, or schema violations
+
+**Solution**:
+1. Review AGENT_FILE_SCHEMA.md for complete schema specification
+2. Run validation per AGENT_FILE_VALIDATION.md (Levels 1-4)
+3. Check AGENT_FILE_BINDING_REQUIREMENTS.md for mandatory bindings
+4. Fix validation errors per error messages
+5. Re-run validation until all levels pass
+6. Document validation results in INITIALIZATION_EVIDENCE.md
+
+### Issue: Unclear which bindings are mandatory
+
+**Cause**: Repository type or agent roster unclear
+
+**Solution**:
+1. Consult AGENT_FILE_BINDING_REQUIREMENTS.md Section 2 for Tier-0 (ALL repos)
+2. Check Section 3 for repository type-specific bindings
+3. Check Section 4 for agent role-specific bindings
+4. Use decision tree in Section 7 of AGENT_FILE_BINDING_REQUIREMENTS.md
+5. When in doubt, include binding (over-specification better than under)
+
 ---
 
 ## 9. Examples
@@ -626,14 +749,15 @@ After layer-down, a **Governance Liaison** agent (or FM in bootstrap mode) is re
 2. Create GOVERNANCE_ALIGNMENT.md pointing to governance v2.3.0 (Phase 2.1)
 3. Create INITIALIZATION_EVIDENCE.md (Phase 2.2)
 4. Install `governance-gate.yml` workflow (Phase 3)
-5. Seed FM and builder contracts from templates (Phase 4)
-6. Create `.agent` contract for repository (Phase 4.2)
-7. Create CANONICAL_SCHEMAS.md referencing governance schemas (Phase 5.1)
-8. Review BOOTSTRAP_EXECUTION_LEARNINGS.md and apply (Phase 6)
-9. Create GOVERNANCE_GATE_MAPPING.md (Phase 7.1)
-10. Configure branch protection (Phase 8.1)
-11. Create COMMISSIONING_READINESS.md (Phase 8.2)
-12. Validate with test PR (Phase 8.2)
+5. Seed FM and builder contracts from templates (Phase 4.1)
+6. Create `.agent` contract for repository with application-specific bindings (Phase 4.2)
+7. Validate `.agent` file per AGENT_FILE_VALIDATION.md (Phase 4.3)
+8. Create CANONICAL_SCHEMAS.md referencing governance schemas (Phase 5.1)
+9. Review BOOTSTRAP_EXECUTION_LEARNINGS.md and apply (Phase 6)
+10. Create GOVERNANCE_GATE_MAPPING.md (Phase 7.1)
+11. Configure branch protection (Phase 8.1)
+12. Create COMMISSIONING_READINESS.md (Phase 8.2)
+13. Validate with test PR (Phase 8.2)
 
 ### Example 2: New Governance Repository
 
@@ -646,14 +770,15 @@ After layer-down, a **Governance Liaison** agent (or FM in bootstrap mode) is re
 2. Create GOVERNANCE_ALIGNMENT.md (Phase 2.1)
 3. Create INITIALIZATION_EVIDENCE.md (Phase 2.2)
 4. Install `governance-gate.yml` and `governance-scope-to-diff-gate.yml` (Phase 3)
-5. Seed governance-repo-administrator.agent.md (Phase 4)
-6. Create `.agent` contract (Phase 4.2)
-7. Reference schemas from canonical governance (Phase 5.1)
-8. Review learnings (Phase 6)
-9. Skip governance gate mapping (not applicable) (Phase 7)
-10. Configure branch protection (Phase 8.1)
-11. Create COMMISSIONING_READINESS.md (Phase 8.2)
-12. Validate with test governance PR (Phase 8.2)
+5. Seed governance-repo-administrator.agent.md (Phase 4.1)
+6. Create `.agent` contract with governance-specific bindings (Phase 4.2)
+7. Validate `.agent` file per AGENT_FILE_VALIDATION.md (Phase 4.3)
+8. Reference schemas from canonical governance (Phase 5.1)
+9. Review learnings (Phase 6)
+10. Skip governance gate mapping (not applicable) (Phase 7)
+11. Configure branch protection (Phase 8.1)
+12. Create COMMISSIONING_READINESS.md (Phase 8.2)
+13. Validate with test governance PR (Phase 8.2)
 
 ---
 
@@ -662,6 +787,7 @@ After layer-down, a **Governance Liaison** agent (or FM in bootstrap mode) is re
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | 2026-01-11 | Initial FPC guide created as part of governance repository restructuring |
+| 1.1.0 | 2026-01-12 | Added .agent file governance artifacts: schema, binding requirements, validation, maintenance protocol |
 
 ---
 
@@ -673,6 +799,10 @@ After layer-down, a **Governance Liaison** agent (or FM in bootstrap mode) is re
 - `governance/canon/GOVERNANCE_CANON_MANIFEST.md` - Canonical file index
 - `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` - Latest learnings
 - `governance/canon/AGENT_RECRUITMENT.md` - Agent appointment process
+- `governance/schemas/AGENT_FILE_SCHEMA.md` - Repository `.agent` file specification
+- `governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md` - Mandatory and optional bindings for `.agent` files
+- `governance/runbooks/AGENT_FILE_VALIDATION.md` - Validation process for `.agent` files
+- `governance/runbooks/AGENT_FILE_MAINTENANCE.md` - Maintenance protocol for `.agent` files
 - `apps/foreman-office-app/mappings/GOVERNANCE_GATE_MAPPING.md` - Example mapping document
 
 ---
