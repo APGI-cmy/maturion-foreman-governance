@@ -219,6 +219,25 @@ governance:
       tier: 0
       status: constitutional
       summary: Agent recruitment and contract authority framework
+    
+    - id: mandatory-enhancement-capture
+      path: governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md
+      role: enhancement-capture-standard
+      tier: 0
+      status: constitutional
+      summary: Mandatory improvement capture for all work units (v2.0.0)
+    
+    - id: combined-testing-pattern
+      path: governance/canon/COMBINED_TESTING_PATTERN.md
+      role: cst-validation-requirements
+      status: canonical
+      summary: Combined Subwave Testing validation and decision framework
+    
+    - id: prehandover-proof-template
+      path: governance/templates/PREHANDOVER_PROOF_TEMPLATE.md
+      role: handover-verification-template
+      version: 2.0.0
+      summary: PREHANDOVER_PROOF template with governance artifacts and CST requirements
 ```
 
 ---
@@ -291,8 +310,73 @@ governance:
 
 **NO Option 3**
 
+### PREHANDOVER_PROOF v2.0.0 Requirements (MANDATORY)
+
+**Template Authority**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md` v2.0.0  
+**Canonical Reference**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` v2.0.0+
+
+When completing `.agent` file modifications or governance contract work, this agent MUST produce PREHANDOVER_PROOF documentation with the following sections:
+
+#### Section 0: Embedded Governance Artifacts (MANDATORY)
+
+All work units MUST include **all four (4) governance artifacts**:
+
+1. **Governance Scan** - Pre-work governance discovery and gap analysis (MANDATORY precondition)
+2. **Risk Assessment** - Risk categories, likelihood, impact, and mitigation (MANDATORY precondition)
+3. **Change Record** - Detailed documentation of all changes applied
+4. **Completion Summary** - Requirements checklist and validation summary
+
+**Options**: Artifacts may be embedded in PREHANDOVER_PROOF or created as separate files in `.agent-admin/` with cross-references.
+
+**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` v2.0.0, Section 0
+
+#### Section 9: CST Validation Attestation (MANDATORY)
+
+All work units MUST include **CST applicability determination**:
+
+- Complete CST Decision Framework checklist (5 criteria)
+- **If CST Required**: Provide validation attestation with integration scenarios tested, results, and evidence
+- **If CST Not Required**: Provide justification with decision framework criteria
+
+**Decision Framework Criteria**:
+1. Multiple subwaves converge and must integrate
+2. Cross-module dependencies reach integration readiness
+3. Architectural boundaries crossed
+4. Significant feature complexity requires mid-wave validation
+5. Integration failure cost is high
+
+**Authority**: `governance/canon/COMBINED_TESTING_PATTERN.md` v1.0.0, Section 4
+
+#### Section 11: FAQ Reference (RESOURCE)
+
+When questions arise about PREHANDOVER_PROOF requirements, consult Section 11 (FAQ) of the template, which includes 22 questions covering common scenarios.
+
+**Authority**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md` v2.0.0, Section 11
+
+#### Completion Checklist Enforcement
+
+Before handover, verify:
+- [ ] All 4 governance artifacts present (embedded or cross-referenced)
+- [ ] CST applicability determination completed with checklist
+- [ ] CST validation attestation OR justification documented
+- [ ] All changes validated against acceptance criteria
+- [ ] Improvement proposals documented (see Continuous Improvement section)
+- [ ] Self-contract review completed (see Self-Awareness section)
+
+**No partial handovers permitted.** If blockers prevent completion, HALT and escalate to CS2.
+
 ### Continuous Improvement (MANDATORY)
-After every job:  provide improvement suggestions + self-contract review
+
+**Authority**: `governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` v2.0.0
+
+After every job, this agent MUST provide **BOTH**:
+
+1. **Improvement suggestions** - Process, governance, tooling, or workflow improvements observed
+2. **Self-contract review** - Gaps, ambiguities, or missing bindings in own contract (see Self-Awareness and Continuous Improvement section)
+
+**Routing**: Improvement proposals to `governance/agent-contract-instructions/pending/` or `governance/parking-station/`
+
+**Constitutional Principle**: Continuous improvement is mandatory (Principle #5). Every work unit yields learnings.
 
 ---
 
@@ -319,9 +403,24 @@ After every job:  provide improvement suggestions + self-contract review
 
 ## Version Control
 
-- **Schema Version**: 2.0.0
+- **Schema Version**: 2.1.0
 - **Last Updated**: 2026-01-13
-- **Updated By**: CS2 (Johan Ras)
-- **Governance Sync**:  APGI-cmy/maturion-foreman-governance@PR#938
-- **Changes in v1.1.0**:  Added repository awareness, self-awareness mandate, enhanced governance scan
-- **Changes in v1.2.0**: Added Constitutional Prohibition section with scope clarification, converted bindings to YAML format, fixed filename reference, added Constitutional Principle #11, added Prohibition #8, enhanced governance repo context
+- **Updated By**: Agent Contract Administrator (under CS2 authorization for v2.0.0 alignment work)
+- **Governance Sync**: APGI-cmy/maturion-foreman-governance issue (Agent file alignment with v2.0.0 template)
+
+**Changelog**:
+
+- **Changes in v2.1.0** (2026-01-13):
+  - Added PREHANDOVER_PROOF v2.0.0 requirements with Section 0 (4 governance artifacts), Section 9 (CST validation attestation), and Section 11 (FAQ) references
+  - Enhanced Handover Requirements section with comprehensive PREHANDOVER_PROOF v2.0.0 compliance checklist
+  - Strengthened Continuous Improvement section with explicit dual requirement (improvement suggestions + self-contract review) per MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0
+  - Added governance bindings for MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0, COMBINED_TESTING_PATTERN.md, and PREHANDOVER_PROOF_TEMPLATE.md v2.0.0
+  - Added completion checklist enforcement for v2.0.0 compliance
+  - **Self-Modification Note**: This update performed under explicit CS2 authorization per issue requirements to align ALL agent files with v2.0.0 template (see risk_003_20260113.md for authorization justification)
+  - Authority: APGI-cmy/maturion-foreman-governance issue (Agent file alignment with v2.0.0 template)
+
+- **Changes in v1.2.0** (2026-01-13): 
+  - Added Constitutional Prohibition section with scope clarification, converted bindings to YAML format, fixed filename reference, added Constitutional Principle #11, added Prohibition #8, enhanced governance repo context
+
+- **Changes in v1.1.0** (Previous): 
+  - Added repository awareness, self-awareness mandate, enhanced governance scan
