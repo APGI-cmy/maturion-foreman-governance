@@ -1,11 +1,11 @@
-# BUILDER GOVERNANCE PROFILE — v1.2
+# BUILDER GOVERNANCE PROFILE — v1.3
 
 ## Status
 Governance Profile (Derived)  
-Version: v1.2  
+Version: v1.3  
 Authority: Foreman (FM)  
 Derived From: /governance/canon/AGENT_RECRUITMENT.md  
-Last Updated: 2026-01-11
+Last Updated: 2026-01-14
 
 ---
 
@@ -156,7 +156,82 @@ Builders MUST NOT:
 
 ---
 
-## 9. Temporary Authorization
+## 9. Pre-Implementation Behavior Review Protocol
+
+**Authority**: `governance/canon/PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md` v1.0.0
+
+Before writing tests for any enhancement work, Builders MUST complete the mandatory four-step Pre-Implementation Behavior Review process:
+
+### 9.1 Mandatory Four-Step Process
+
+1. **Review Current Implementation in Detail**
+   - Read complete implementation code for component being enhanced
+   - Identify all code paths, edge cases, and boundary conditions
+   - Review existing tests to understand currently validated behaviors
+   - Document implementation complexity and architectural patterns
+
+2. **Document Actual Current Behavior**
+   - Execute current implementation locally and observe behavior
+   - Document actual inputs, outputs, side effects, and error handling
+   - Capture behavior for happy path, edge cases, and error conditions
+   - Use GIVEN/WHEN/THEN behavior specification format
+
+3. **Identify Enhancement Delta**
+   - Explicitly list behaviors that MUST be preserved (backward compatibility)
+   - Explicitly list behaviors that WILL change (enhancements)
+   - Explicitly list NEW behaviors being added
+   - Assess risk for each behavior change
+
+4. **Design Tests Validating Both Preserved and New Behaviors**
+   - Write tests for preserved behaviors (regression prevention)
+   - Write tests for changed behaviors (enhancement validation)
+   - Write tests for new behaviors (net-new capability validation)
+   - Run tests against current implementation BEFORE making changes
+
+### 9.2 Documentation Requirements
+
+Builders MUST create a **Pre-Implementation Behavior Review Report** documenting completion of all four steps with required evidence for each step.
+
+**Template**: `governance/templates/PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_REPORT.template.md`
+
+### 9.3 Applicability
+
+This protocol is MANDATORY for:
+- Feature enhancements to existing functionality
+- Performance optimizations
+- Behavior modifications
+- API changes
+- Database schema enhancements
+- UI/UX improvements to existing components
+- Refactoring that may affect observable behavior
+
+This protocol is NOT REQUIRED for:
+- Net-new features with no existing implementation
+- Bug fixes where current behavior is explicitly incorrect
+- Mechanical refactoring with no behavior changes
+
+**When uncertain, apply the protocol.**
+
+### 9.4 Enforcement
+
+Absence of Pre-Implementation Behavior Review for applicable enhancement work is a governance compliance violation:
+- **MINOR**: Incomplete evidence (remediation required before merge)
+- **MODERATE**: Missing entire step (complete remediation and re-review)
+- **MAJOR**: No review performed (PR rejected, must restart)
+
+### 9.5 Exemption Process
+
+If Pre-Implementation Behavior Review is not applicable or practical, Builder MUST:
+1. Document why protocol is not applicable (with specific justification)
+2. Escalate to FM for approval
+3. Obtain explicit exemption in writing
+4. Document exemption rationale in PR description
+
+**Exemptions are rare and require strong justification.**
+
+---
+
+## 10. Temporary Authorization
 
 Builders may receive temporary, task-scoped authorization to operate on
 otherwise restricted paths.
@@ -170,7 +245,7 @@ Temporary authorization does not modify this profile.
 
 ---
 
-## 10. Enforcement and Invalidity
+## 11. Enforcement and Invalidity
 
 Builder actions are valid only if:
 
@@ -185,7 +260,7 @@ Foreman enforcement supersedes outcomes.
 
 ---
 
-## 11. Mandatory Enhancement & Improvement Capture
+## 12. Mandatory Enhancement & Improvement Capture
 
 At the conclusion of any completed work unit (issue, PR, build task), this Builder agent MUST perform BOTH:
 
@@ -240,7 +315,7 @@ Failure to comply with both feature enhancement review AND process improvement r
 
 ---
 
-## 12. Revocation
+## 13. Revocation
 
 The Foreman may revoke a Builder agent by:
 
@@ -254,7 +329,7 @@ All actions taken after revocation are invalid.
 
 ---
 
-## 13. Profile Precedence
+## 14. Profile Precedence
 
 If this profile conflicts with any non-canonical artifact, this profile
 prevails.
@@ -264,12 +339,12 @@ prevails.
 
 ---
 
-End of BUILDER GOVERNANCE PROFILE — v1.2
+End of BUILDER GOVERNANCE PROFILE — v1.3
 
 **Version History**:
 - **v1.0** (2025-12-31): Initial release
 - **v1.1** (2026-01-08): Added mandatory process improvement reflection
-  - Section 10.2: Process improvement reflection with 5 required questions
+  - Section 12.2: Process improvement reflection with 5 required questions
   - Updated prohibitions to include process reflection violations
   - Canonical reference updated to MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0
 - **v1.2** (2026-01-11): Added Execution Bootstrap Protocol compliance
@@ -278,3 +353,9 @@ End of BUILDER GOVERNANCE PROFILE — v1.2
   - PREHANDOVER_PROOF requirement for all executable artifacts
   - Updated section numbering (8→9, 9→10, 10→11, 11→12, 12→13)
   - Authority: governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md
+- **v1.3** (2026-01-14): Added Pre-Implementation Behavior Review Protocol
+  - Section 9: Pre-Implementation Behavior Review Protocol
+  - Mandatory 4-step behavior review before enhancement testing
+  - Documentation and enforcement requirements
+  - Updated section numbering (9→10, 10→11, 11→12, 12→13, 13→14)
+  - Authority: governance/canon/PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md v1.0.0
