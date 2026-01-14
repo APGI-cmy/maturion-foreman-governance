@@ -93,7 +93,9 @@ It serves to:
 | `BUILD_TREE_EXECUTION_MODEL.md` | 1.0.0 | PUBLIC_API | FM App | 2026-01-05 |
 | `BUILDER_CONTRACT_BINDING_CHECKLIST.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
 | `BUILDER_FIRST_PR_MERGE_MODEL.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
+| `COMBINED_TESTING_PATTERN.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-09 |
 | `DEFECT_RESOLUTION_MAINTENANCE_CANON.md` | 1.0.0 | PUBLIC_API | PartPulse, FM App, SlotMaster | 2026-01-09 |
+| `PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-01-14 |
 
 ### 3.3 Delegation & Execution Models (PUBLIC_API)
 
@@ -245,12 +247,12 @@ These policies are located in `governance/policy/` and establish constitutional 
 
 ## 4. Governance Public API Summary
 
-**Total Canon Files**: 86  
+**Total Canon Files**: 88  
 **Total Policy Files**: 9  
-**Combined Total**: 95  
-**PUBLIC_API**: 65 files (68%)  
-**OPTIONAL**: 16 files (17%)  
-**INTERNAL**: 14 files (15%)  
+**Combined Total**: 97  
+**PUBLIC_API**: 67 files (69%)  
+**OPTIONAL**: 16 files (16%)  
+**INTERNAL**: 14 files (14%)  
 **DEPRECATED**: 0 files (0%)
 
 ### 4.1 Critical Path Canon (Must-Have for Downstream Repos)
@@ -321,6 +323,7 @@ When a breaking change is required:
 | 2026-01-05 | Initial manifest created | Governance Administrator Agent |
 | 2026-01-08 | Added Section 3.14 (Governance Policies) including POLICY-NO-ONLY-LANGUAGE | Governance Administrator Agent |
 | 2026-01-11 | Added AUTOMATED_DEPRECATION_DETECTION_GATE policy to Section 3.14, updated totals | Governance Administrator Agent |
+| 2026-01-14 | Added COMBINED_TESTING_PATTERN.md and PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md to Section 3.2, updated totals | Governance Administrator Agent |
 
 ### 7.2 Layer-Down Completion Tracking
 
