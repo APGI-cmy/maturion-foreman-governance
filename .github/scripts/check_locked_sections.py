@@ -219,7 +219,8 @@ class LockedSectionValidator:
         registry_required = any(
             model in {'reference-based', 'hybrid'} for model in self.contract_models.values()
         )
-        success = self.validate_protection_models()
+        success = True
+        success = self.validate_protection_models() and success
 
         if not registry_path.exists():
             if registry_required:

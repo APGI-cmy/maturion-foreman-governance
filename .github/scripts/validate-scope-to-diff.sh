@@ -12,7 +12,7 @@ if [ ! -f "$SCOPE_FILE" ]; then
   {
     echo "# Scope Declaration"
     echo ""
-    echo "_Auto-generated on $(date -u +"%Y-%m-%dT%H:%M:%SZ") from git diff --name-status $BASE_REF_"
+    echo "_Auto-generated on $(date -u +"%Y-%m-%dT%H:%M:%SZ") from git diff --name-status $BASE_REF"
     echo ""
     echo "## Changed Files"
     echo ""
