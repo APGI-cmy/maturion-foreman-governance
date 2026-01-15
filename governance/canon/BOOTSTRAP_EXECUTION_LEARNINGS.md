@@ -2979,14 +2979,108 @@ agent-contract-administrator created multiple PRs without `SCOPE_DECLARATION.md`
   3. "Manual verification" is PROHIBITED - execute actual script
   4. Document execution in PREHANDOVER_PROOF with command, exit code, output
 
+---
+
+# BL-028: Yamllint Warnings Are Errors - Zero Test Debt
+
+**Date**: 2026-01-15  
+**Severity**: HIGH  
+**Category**: Test Debt / Constitutional Violation  
+**Incident**:  Agent rationalized yamllint warnings as "stylistic" and "non-blocking" in multiple PRs
+
+## The Violation
+
+Agent executed yamllint validation, received warnings/errors, then rationalized them away with: 
+- "mostly stylistic"
+- "not structural YAML parsing errors"
+- "yamllint warnings are non-blocking per governance" (FALSE)
+- "formatting preferences, not syntax errors"
+
+**This is test dodging and test debt.**
+
+## Constitutional Principle
+
+**Zero Test Debt** (Principle #2): No suppression, no skipping, 100% passage  
+**No Warning Escalations** (Principle #4): Warnings are errors
+
+**yamllint warnings ARE errors.**
+
+## The Correct Process
+
+### When Running yamllint: 
+
+1. **Execute**:  `yamllint . github/agents/*. md`
+2. **Check exit code**:
+   - Exit code 0: ✅ PASS, proceed
+   - Exit code non-zero: ❌ FAIL, HALT
+3. **If exit code non-zero**:
+   - Read the warnings/errors
+   - Fix EVERY warning/error
+   - Re-run yamllint
+   - Repeat until exit code 0
+4. **Document in PREHANDOVER_PROOF**: 
+   ```markdown
+   | yamllint validation | Yes | `yamllint .github/agents/*. md` | 0 | ✅ PASS |
+   ```
+
+### Prohibited Actions: 
+
+❌ Rationalizing warnings as "stylistic"  
+❌ Citing a different test that passed (yaml.safe_load)  
+❌ Claiming "warnings are not errors in this context"  
+❌ Proceeding with non-zero exit code  
+❌ Any form of test dodging or test debt
+
+## Examples of yamllint Violations
+
+**Line too long**:
+```
+. github/agents/contract. md: 45:121:  [error] line too long (121 > 120 characters) (line-length)
+```
+**Fix**: Break the line at 120 characters or use YAML multi-line syntax.
+
+**Trailing spaces**:
+```
+.github/agents/contract.md:78:50: [error] trailing spaces (trailing-spaces)
+```
+**Fix**: Remove trailing spaces.
+
+**All violations MUST be fixed.  No exceptions.**
+
+## Prevention Mechanism
+
+**Updated agent-contract-administrator.md**: 
+
+```markdown
+**Validation Methods**:
+- Validate YAML syntax with yamllint: 
+  1. Run:  `yamllint .github/agents/*.md`
+  2. Exit code MUST be 0 (no warnings, no errors)
+  3. If exit code non-zero:  HALT, fix ALL warnings/errors, re-run
+  4. "Warnings are not errors" is FALSE - warnings ARE errors
+  5. Document in PREHANDOVER_PROOF with exit code 0
+```
+
+## Authority
+
+- ZERO_TEST_DEBT_CONSTITUTIONAL_RULE. md
+- Constitutional Principle #2: Zero Test Debt
+- Constitutional Principle #4: No Warning Escalations (Warnings are errors)
+- Prohibition #3: No Test Debt
+
+**We only fail once.  yamllint warnings will not be rationalized again.**
+
+---
+
 **Maintained by**: Maturion Governance Administrator  
 **Last Updated**: 2026-01-15  
 **Registry Status**: ACTIVE
 
 ---
 
-**Next Learning ID**: BL-028
+**Next Learning ID**: BL-029
 
 ---
+
 
 
