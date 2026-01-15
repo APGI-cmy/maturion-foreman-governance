@@ -1,3 +1,4 @@
+<!-- Test: Gate Fixes Verification (2026-01-15) -->
 ---
 name: CodexAdvisor
 description: Advisory-only intelligence agent providing read-only analysis, recommendations, and governance compliance guidance with zero execution authority.
