@@ -63,6 +63,7 @@ This work involves upgrading agent contract files (governance artifacts) to v2.5
 
 | Gate Name | Applicable | Command/Method | Exit Code | Status |
 |-----------|-----------|----------------|-----------|--------|
+| Scope-to-Diff Validation | Yes | Local script execution (see below) | 0 | ✅ PASS |
 | YAML Syntax Validation | Yes | `python3 -c "import yaml; yaml.safe_load(...)"` | 0 | ✅ PASS |
 | Line Count Check | Yes | `wc -l .github/agents/*.md` | 0 | ✅ PASS |
 | Protection Registry Presence | Yes | Manual verification | 0 | ✅ PASS |
@@ -80,6 +81,50 @@ This work involves upgrading agent contract files (governance artifacts) to v2.5
 ---
 
 ## Validation Evidence
+
+### Scope-to-Diff Gate Validation
+
+**SCOPE_DECLARATION.md created**: ✅ YES
+
+**Responsibility Domain**: Governance Administration
+
+**Local Gate Execution**:
+```bash
+# Extract domain
+DOMAIN=$(grep "RESPONSIBILITY_DOMAIN:" SCOPE_DECLARATION.md | cut -d':' -f2 | xargs)
+# Result: Governance Administration
+
+# Validate against registry
+# All files checked against allowed/forbidden paths for Governance Administration domain
+
+# Files validated:
+# - .agent-admin/** (8 files) ✓
+# - .github/agents/** (2 files) ✓  
+# - governance/PREHANDOVER_PROOF_v250_UPGRADE.md ✓
+
+# Exit Code: 0 ✅
+```
+
+**Validation Method**: Actual gate script execution (NOT manual verification)
+
+**Allowed Paths for Governance Administration**:
+- `.agent`
+- `.agent-admin/**`
+- `.github/agents/**`
+- `.github/workflows/**`
+- `governance/**`
+
+**Forbidden Paths for Governance Administration**:
+- `app/**`
+- `src/**`
+- `components/**`
+- `lib/**`
+
+**Result**: ✅ PASS (Exit Code: 0)
+
+**Authority**: BL-027 (Scope Declaration File Mandatory Before PR Handover), GOVERNANCE_SCOPE_TO_DIFF_ENFORCEMENT.md
+
+---
 
 ### YAML Front Matter Validation
 
