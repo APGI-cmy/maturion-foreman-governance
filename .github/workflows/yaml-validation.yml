@@ -35,7 +35,8 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          targets=(.github/workflows/*.yml .github/agents/*.md)
+          targets=(.github/workflows/*.yml .github/workflows/*.yaml)
+          targets+=(.github/agents/*.md)
           if [ -f .agent ]; then
             targets+=(.agent)
           fi
@@ -55,11 +56,10 @@ jobs:
 
           agents_glob=".github/agents/*.md"
           agents_targets=($agents_glob)
-          if [ "${#agents_targets[@]}" -gt 0 ]; then
-            fix_command_agents=$(build_fix_command "${agents_targets[@]}")
-          else
-            fix_command_agents="yamllint --fix $agents_glob"
+          if [ "${#agents_targets[@]}" -eq 0 ]; then
+            agents_targets=("$agents_glob")
           fi
+          fix_command_agents=$(build_fix_command "${agents_targets[@]}")
 
           fix_command_all=$(build_fix_command "${targets[@]}")
           output=$(yamllint -f parsable "${targets[@]}" || true)

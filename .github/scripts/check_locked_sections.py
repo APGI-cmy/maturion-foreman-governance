@@ -75,9 +75,16 @@ class LockedSectionValidator:
         
         for i, line in enumerate(lines, start=1):
             protection_match = self.PROTECTION_MODEL_PATTERN.search(line)
-            if protection_match and str(file_path) not in self.contract_models:
+            if protection_match:
                 model = protection_match.group(1).strip().strip('"').strip("'").lower()
-                self.contract_models[str(file_path)] = model
+                existing_model = self.contract_models.get(str(file_path))
+                if existing_model and existing_model != model:
+                    self.errors.append(
+                        f"{file_path}:{i} - Conflicting protection_model values "
+                        f"('{existing_model}' vs '{model}')"
+                    )
+                else:
+                    self.contract_models[str(file_path)] = model
 
             if self.LOCKED_START_PATTERN.search(line):
                 if in_locked_section:
@@ -220,13 +227,13 @@ class LockedSectionValidator:
         registry_required = any(
             model in self.REGISTRY_REQUIRED_MODELS for model in self.contract_models.values()
         )
-        success = self.validate_protection_models()
+        models_valid = self.validate_protection_models()
 
         if not registry_path.exists():
             if registry_required:
                 self.errors.append(f"Protection registry not found: {registry_file}")
                 return False
-            return success
+            return models_valid
         
         try:
             with open(registry_path, 'r', encoding='utf-8') as f:
@@ -235,15 +242,16 @@ class LockedSectionValidator:
             self.errors.append(f"Error reading registry: {e}")
             return False
         
+        registry_valid = True
         # Check that all locked sections are registered
         for section in self.locked_sections:
             if section.lock_id not in registry_content:
                 self.errors.append(
                     f"Lock ID '{section.lock_id}' in {section.file_path} not found in protection registry"
                 )
-                success = False
+                registry_valid = False
         
-        return success
+        return models_valid and registry_valid
     
     def print_summary(self):
         """Print validation summary"""
