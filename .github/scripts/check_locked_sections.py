@@ -38,6 +38,7 @@ class LockedSectionValidator:
     LOCK_ID_PATTERN = re.compile(r'<!--\s*Lock\s+ID:\s*(\S+)\s*-->', re.IGNORECASE)
     METADATA_END_PATTERN = re.compile(r'<!--\s*END\s+METADATA\s*-->', re.IGNORECASE)
     PROTECTION_MODEL_PATTERN = re.compile(r'^\s*protection_model\s*:\s*([^\s#]+)', re.IGNORECASE)
+    REGISTRY_REQUIRED_MODELS = {'reference-based', 'hybrid'}
     
     def __init__(self, contracts_dir: str):
         self.contracts_dir = Path(contracts_dir)
@@ -217,7 +218,7 @@ class LockedSectionValidator:
         registry_path = Path(registry_file)
 
         registry_required = any(
-            model in {'reference-based', 'hybrid'} for model in self.contract_models.values()
+            model in self.REGISTRY_REQUIRED_MODELS for model in self.contract_models.values()
         )
         success = self.validate_protection_models()
 

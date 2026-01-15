@@ -29,6 +29,8 @@ jobs:
             exit 0
           fi
 
+          # Governance-only paths.
+          # Keep in sync with .github/workflows/README.md.
           pattern='^(\\.github/agents/|governance/|docs/)'
           non_governance=$(echo "$changed_files" | grep -vE "$pattern" || true)
 
