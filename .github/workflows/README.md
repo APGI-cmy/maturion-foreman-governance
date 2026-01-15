@@ -43,6 +43,27 @@ See: `governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md` for complete documentati
 
 ---
 
+### Pre-Implementation Review (`pre-implementation-review.yml`)
+
+**Purpose**: Enforce implementation review for non-governance changes.
+
+**Exemption Logic**:
+- ✅ **EXEMPT: Governance-only PR** when changes are limited to `.github/agents/`, `governance/`, or `docs/`
+- Otherwise: **Running pre-implementation review**
+
+---
+
+### YAML Validation (`yaml-validation.yml`)
+
+**Purpose**: Validate YAML syntax without blocking on style warnings.
+
+**Behavior**:
+- ✅ **Syntax errors** (yamllint `(syntax)` findings) fail the gate
+- ⚠️ **Style warnings** (line length, trailing spaces, etc.) emit warnings only
+- Fix command: `yamllint --fix .github/agents/*.md`
+
+---
+
 ## PR Merge Criteria
 
 A PR can only merge when:

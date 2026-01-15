@@ -1,0 +1,44 @@
+name: Pre-Implementation Review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pre-implementation-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine governance-only scope
+        id: scope
+        run: |
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          changed_files=$(git diff --name-only "origin/${{ github.base_ref }}")
+
+          if [ -z "$changed_files" ]; then
+            echo "exempt=true" >> "$GITHUB_OUTPUT"
+            echo "✅ EXEMPT: Governance-only PR"
+            exit 0
+          fi
+
+          pattern='^(\\.github/agents/|governance/|docs/)'
+          non_governance=$(echo "$changed_files" | grep -vE "$pattern" || true)
+
+          if [ -n "$non_governance" ]; then
+            echo "exempt=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "exempt=true" >> "$GITHUB_OUTPUT"
+            echo "✅ EXEMPT: Governance-only PR"
+          fi
+
+      - name: Run pre-implementation review
+        if: steps.scope.outputs.exempt != 'true'
+        run: |
+          echo "Running pre-implementation review"
