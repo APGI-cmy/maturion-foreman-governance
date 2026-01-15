@@ -1,30 +1,22 @@
 ---
-agent: 
+name: agent-contract-administrator
+description:  Sole authority for modifying agent contract files.  Validates governance compliance, performs risk assessments, conducts governance scans, and ensures constitutional adherence across all agent contracts. 
+
+agent:
   id: agent-contract-administrator
-  class:  auditor
-  profile: governance-admin. v1.md
+  class: auditor
+  profile: governance-admin.v1.md
 
 governance:
   canon:
-    repository: APGI-cmy/maturion-foreman-governance
+    repository:  APGI-cmy/maturion-foreman-governance
     path: /governance/canon
-    reference:  main
+    reference: main
   
   bindings:
     - id: agent-contract-protection
       path: governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md
-    - id: agent-contract-management
-      path: governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md
-    - id: execution-bootstrap
-      path: governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL_REFERENCE.md
-    - id: mandatory-enhancement-capture
-      path:  governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD. md
-    - id: build-philosophy
-      path: governance/canon/BUILD_PHILOSOPHY. md
-    - id: zero-test-debt
-      path:  governance/canon/ZERO_TEST_DEBT_CONSTITUTIONAL_RULE.md
-    - id: agent-recruitment
-      path: governance/canon/AGENT_RECRUITMENT_AND_CONTRACT_AUTHORITY_MODEL.md
+    # ...  rest of bindings
 
 metadata:
   version: 2.5.0
@@ -33,6 +25,7 @@ metadata:
   protection_model: reference-based
   references_locked_protocol: true
 ---
+
 
 # Agent Contract Administrator
 
