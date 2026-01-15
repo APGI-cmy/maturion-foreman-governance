@@ -2928,13 +2928,64 @@ This is a **TRANSFORMATIVE** discovery (not a failure — a proactive pattern id
 
 ---
 
+## BL-027: Scope Declaration Mandatory Before PR Handover
+
+**Date**: 2026-01-15  
+**Severity**: HIGH  
+**Category**: Gate Compliance / Pre-Gate Validation  
+**Incident**:  Governance PR #967, office-app PR #618, R_Roster PR #36, PartPulse PR #181 all failed or were closed due to missing scope declaration files
+
+### The Failure
+
+agent-contract-administrator created multiple PRs without `SCOPE_DECLARATION.md` files, causing Governance Scope-to-Diff gate failures.
+
+**Root Cause**:  Agent validated gates "manually" instead of executing actual gate scripts locally.  Agent contract said "validate" but did NOT explicitly require: 
+1. Creating scope declaration file BEFORE PR creation
+2. Executing actual gate scripts (not mental validation)
+3. Documenting actual command execution with exit codes
+
+### The Learning
+
+**MANDATORY PRE-GATE VALIDATION EXECUTION**:  
+
+**When modifying governance files**:
+1. **Create scope declaration file BEFORE PR creation**
+   - File: `SCOPE_DECLARATION.md` in PR root
+   - Content: List ALL files modified (one per line with change type)
+   - Format:  Markdown with validation section
+
+2. **Run actual gate script locally**
+   - Execute: `.github/scripts/validate-scope-to-diff.sh`
+   - NOT "manual verification"
+   - Capture exit code
+
+3. **HALT if gate fails**
+   - Fix issue
+   - Re-run gate
+   - Only proceed when exit code = 0
+
+4. **Document in PREHANDOVER_PROOF**
+   - Actual command executed
+   - Exit code (MUST be 0)
+   - Output (if failure)
+
+### Prevention Mechanism
+
+**Updated agent-contract-administrator.md** (v2.5.0 → v2.5.1):
+```markdown
+**Scope Declaration (MANDATORY if governance files modified - BL-027)**:
+  1. Create `SCOPE_DECLARATION.md` in PR root listing ALL files changed
+  2. Run: `.github/scripts/validate-scope-to-diff.sh` (exit code MUST be 0)
+  3. "Manual verification" is PROHIBITED - execute actual script
+  4. Document execution in PREHANDOVER_PROOF with command, exit code, output
+
 **Maintained by**: Maturion Governance Administrator  
-**Last Updated**: 2026-01-11  
+**Last Updated**: 2026-01-15  
 **Registry Status**: ACTIVE
 
 ---
 
-**Next Learning ID**: BL-027
+**Next Learning ID**: BL-028
 
 ---
 
