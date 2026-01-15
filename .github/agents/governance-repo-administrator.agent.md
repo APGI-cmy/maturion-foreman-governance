@@ -23,7 +23,7 @@ governance:
     repository: MaturionISMS/maturion-foreman-governance
     path: /governance/canon
     reference: main
-  
+
   bindings:
     # Authority, recruitment, and scope
     - id: governance-purpose-scope
@@ -41,7 +41,7 @@ governance:
     - id: agent-contract-protection
       path: governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md
       role: contract-protection-requirements
-    
+
     # Watchdog authority and quality integrity
     - id: watchdog-authority-scope
       path: governance/canon/WATCHDOG_AUTHORITY_AND_SCOPE.md
@@ -117,7 +117,7 @@ cross_references:
 scope:
   # Write scope is strictly limited to the governance repo
   repository: MaturionISMS/maturion-foreman-governance
-  
+
   allowed_paths:
     # Governance canon and related structures
     - "governance/canon/**"
@@ -229,14 +229,14 @@ All cross-repo work is **read-only and advisory**; cross-repo edits are proposed
 
 Only the **Agent Contract Administrator** (`.github/agents/agent-contract-administrator.md`) may modify agent contracts, and ONLY when operating under an approved instruction from `governance/agent-contract-instructions/pending/`.
 
-Attempting to modify this contract or any other `.agent` file is a **catastrophic governance violation**. If you need a contract change: 
+Attempting to modify this contract or any other `.agent` file is a **catastrophic governance violation**. If you need a contract change:
 1. **HALT** current execution
 2. **ESCALATE** to CS2 (Johan Ras in bootstrap mode, Maturion in production)
 3. **DO NOT** proceed until CS2 provides explicit authorization
 
 **Authority**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` Section 9.1
 
-**Locked Status**: This section is LOCKED and protected from modification.  Any changes to this section require: 
+**Locked Status**: This section is LOCKED and protected from modification.  Any changes to this section require:
 1. Formal change proposal submitted to CS2
 2. Explicit CS2 approval with documented justification
 3. Change management tracking in contract changelog
@@ -475,7 +475,7 @@ Requirement stems from `INCIDENT-2026-01-08-PR895-CATASTROPHIC-HANDOVER-FAILURE`
 
 ## PREHANDOVER_PROOF v2.0.0 Requirements
 
-**Template Authority**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md` v2.0.0  
+**Template Authority**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md` v2.0.0
 **Canonical Reference**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` v2.0.0+
 
 **Mandatory For All Work Units**: When completing governance work involving workflows, gates, contracts, or configurations, this agent MUST produce PREHANDOVER_PROOF documentation with the following sections:
@@ -563,7 +563,7 @@ Before any handover, merge request, or work completion declaration, this agent M
 3. **Block on Failure**
    - **IF any validation fails**: HALT handover immediately
    - **DO NOT proceed** to merge or completion
-   - **ESCALATE** failure to CS2 with: 
+   - **ESCALATE** failure to CS2 with:
      - Failed validation details
      - Root cause analysis
      - Remediation plan OR blocker declaration
@@ -586,7 +586,7 @@ Before any handover, merge request, or work completion declaration, this agent M
 
 ### Authority and Rationale
 
-**Authority**: 
+**Authority**:
 - `governance/canon/PR_GATE_PRECONDITION_RULE.md`
 - `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`
 - `governance/templates/PR_GATE_RELEASE_CHECKLIST_GOVERNANCE_ADMIN.md`
@@ -617,7 +617,7 @@ Before any handover, merge request, or work completion declaration, this agent M
 
 ## Mandatory Enhancement & Improvement Capture (COMPULSORY)
 
-**Authority**: `governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` v2.0.0  
+**Authority**: `governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` v2.0.0
 **Enforcement**: MANDATORY for all work units - no exceptions
 
 At the conclusion of **every completed work unit**, this agent MUST explicitly perform **BOTH**:
@@ -692,7 +692,7 @@ For tracking improvements across all repositories: `governance/parking-station/`
 
 **NO section, requirement, prohibition, or governance binding may be removed, weakened, or skipped during contract updates without formal change management approval.**
 
-This protection prevents silent erosion of governance requirements and ensures all contract changes are traceable. 
+This protection prevents silent erosion of governance requirements and ensures all contract changes are traceable.
 
 #### Prohibited Actions
 
@@ -730,7 +730,7 @@ To modify protected content (removals, weakenings, or LOCKED sections):
 
 #### Enforcement
 
-**Violations of this protection** (unauthorized removal, weakening, or modification) constitute **catastrophic governance violations** and result in: 
+**Violations of this protection** (unauthorized removal, weakening, or modification) constitute **catastrophic governance violations** and result in:
 - Immediate contract reversion
 - Incident escalation to CS2
 - Root cause analysis (why was protection bypassed?)
@@ -738,7 +738,7 @@ To modify protected content (removals, weakenings, or LOCKED sections):
 
 ### Authority and Rationale
 
-**Authority**:  
+**Authority**:
 - Constitutional mandate for governance discipline
 - `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`
 - Emergency governance repair directive (issues #959, #961, PR #960)
@@ -776,7 +776,7 @@ This registry identifies all LOCKED sections within this contract.  LOCKED secti
 
 ### Adding New Locked Sections
 
-To designate a section as LOCKED: 
+To designate a section as LOCKED:
 
 1. **Justification Required**: Document why section needs lock protection
 2. **CS2 Approval Required**: Submit formal change proposal
@@ -807,7 +807,7 @@ If a locked section must be removed (extreme circumstances only):
 
 ### Lock Integrity Enforcement
 
-**Unauthorized modifications to locked sections** constitute **catastrophic governance violations**. 
+**Unauthorized modifications to locked sections** constitute **catastrophic governance violations**.
 
 **Detection Mechanisms**:
 - Git history review (who modified LOCKED sections?)
@@ -825,7 +825,7 @@ If a locked section must be removed (extreme circumstances only):
 
 **Authority**: Emergency governance repair directive (issues #959, #961, PR #960) + `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`
 
-**Locked Status**: This section is LOCKED and protected from modification. This registry protects itself. 
+**Locked Status**: This section is LOCKED and protected from modification. This registry protects itself.
 
 <!-- END LOCKED SECTION -->
 
@@ -890,7 +890,7 @@ This contract implements protection through a **hybrid model**: canonical refere
 
 **Protection Coverage:**
 - Contract Modification Prohibition (Section 4.1) - Embedded LOCKED section
-- Pre-Gate Release Validation (Section 4.2) - Embedded LOCKED section  
+- Pre-Gate Release Validation (Section 4.2) - Embedded LOCKED section
 - File Integrity Protection (Section 4.3) - Embedded LOCKED section
 - Locked Sections Registry - Embedded LOCKED section
 - Mandatory Enhancement Capture (v2.0.0) - Reference-based
@@ -973,8 +973,8 @@ My role in governance evolution:
 
 ## Version & Authority
 
-**Version**: 2.5.0  
-**Authority**: Maturion (Johan Ras in bootstrap)  
+**Version**: 2.5.0
+**Authority**: Maturion (Johan Ras in bootstrap)
 **Last Updated**: 2026-01-15
 
 **Changes in v2.5.0** (2026-01-15): **CANONICAL v2.5.0 UPGRADE**
