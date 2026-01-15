@@ -19,8 +19,9 @@ jobs:
       - name: Determine governance-only scope
         id: scope
         run: |
-          git fetch origin "${{ github.base_ref }}" --depth=1
-          changed_files=$(git diff --name-only "origin/${{ github.base_ref }}")
+          base_ref="${{ github.event.pull_request.base.ref }}"
+          git fetch origin "$base_ref" --depth=1
+          changed_files=$(git diff --name-only "origin/$base_ref")
 
           if [ -z "$changed_files" ]; then
             echo "exempt=true" >> "$GITHUB_OUTPUT"

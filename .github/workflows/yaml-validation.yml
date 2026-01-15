@@ -34,17 +34,24 @@ jobs:
       - name: Validate YAML syntax (warnings allowed)
         run: |
           set -euo pipefail
+          shopt -s nullglob
           targets=(.github/workflows/*.yml .github/agents/*.md)
           if [ -f .agent ]; then
             targets+=(.agent)
           fi
-
-          fix_command_agents="yamllint --fix .github/agents/*.md"
-          fix_command_all="yamllint --fix .github/workflows/*.yml"
-          fix_command_all+=" .github/agents/*.md"
-          if [ -f .agent ]; then
-            fix_command_all+=" .agent"
+          if [ "${#targets[@]}" -eq 0 ]; then
+            echo "✅ No YAML targets found."
+            exit 0
           fi
+
+          agents_targets=(.github/agents/*.md)
+          if [ "${#agents_targets[@]}" -gt 0 ]; then
+            fix_command_agents="yamllint --fix ${agents_targets[*]}"
+          else
+            fix_command_agents="yamllint --fix .github/agents/*.md"
+          fi
+
+          fix_command_all="yamllint --fix ${targets[*]}"
           output=$(yamllint -f parsable "${targets[@]}" || true)
 
           if [ -n "$output" ]; then
