@@ -3072,13 +3072,126 @@ Agent executed yamllint validation, received warnings/errors, then rationalized 
 
 ---
 
+## BL-029: Documented Pre-Gate Validation Protocol Violation - Fail Once Doctrine Applied
+
+**Date**: 2026-01-19  
+**Severity**: CRITICAL  
+**Category**: Pre-Gate Validation / Protocol Compliance  
+**Incident**: PR APGI-cmy/maturion-foreman-governance#975  
+**Agent**: agent-contract-administrator (via Copilot coding agent)
+
+### What Happened
+
+agent-contract-administrator created PR #975 to make BOOTSTRAP_EXECUTION_LEARNINGS.md PUBLIC_API, fixing the root cause of a 2-day ecosystem failure where agents across all repos lacked BL-027/028 awareness.
+
+**Technical outcome**: ✅ Changes correct, gates passed when CI ran  
+**Protocol compliance**: ❌ Pre-gate validation protocol NOT followed
+
+### The Violations
+
+1. ❌ **No SCOPE_DECLARATION.md created before PR** (BL-027 requirement)
+2. ❌ **No local gate execution before PR**:
+   - `validate-scope-to-diff.sh` not run locally (BL-027)
+   - `yamllint` not run locally (BL-028)
+   - `check_locked_sections.py` not run locally
+3. ❌ **No PREHANDOVER_PROOF documentation** of gate validation
+4. ❌ **Relied on CI for validation** instead of local pre-confirmation
+
+### Agent Contract Had Clear Requirements
+
+agent-contract-administrator.md v3.0.0 Section "Pre-Gate Release Validation (MANDATORY - Life or Death)" explicitly requires:
+
+> BEFORE creating any PR, MUST execute:
+> 1. Create SCOPE_DECLARATION.md (if modifying governance files)
+> 2. Run ALL applicable gates locally
+> 3. HALT if ANY gate fails
+> 4. Document in PREHANDOVER_PROOF
+> 
+> **"This is GUARANTEED SUCCESS, not hope."**
+> **"This is LIFE-OR-DEATH, not nice-to-have."**
+> **"This is where 2 days were lost - never again."**
+
+**The requirements were clear. The agent did not follow them.**
+
+### CS2 Decision: Fail Once Doctrine Applied
+
+**PR #975 was merged with CS2 override** because:
+- Changes were technically correct and critically needed
+- Gates DID pass when CI ran them
+- The PR was fixing the very file (BOOTSTRAP_EXECUTION_LEARNINGS.md) that makes BL-027 visible to other agents
+- Emergency remediation context justified override
+
+**However:**
+- ✅ This violation is now **on permanent record**
+- ✅ This establishes **precedent for future enforcement**
+- ✅ This is the **"once" in Fail Once Doctrine**
+- ❌ **Next pre-gate validation violation = HARD BLOCK (no CS2 override)**
+
+### Root Cause Analysis
+
+**Why did this happen?**
+
+Possible contributing factors:
+1. **Environmental limitation**: Copilot coding agent may not execute local scripts before PR creation
+2. **Emergency context**: Agent may have prioritized speed over protocol in remediation scenario
+3. **Awareness gap**: Despite clear contract requirements, protocol execution may have been bypassed
+4. **PREHANDOVER_PROOF enforcement**: May not be systematically enforced in coding agent workflow
+
+**Investigation question**: Can Copilot coding agent execute local bash/python scripts before PR creation? If not, what compensating controls are needed?
+
+### The Learning
+
+**Pre-gate validation protocol is non-negotiable:**
+
+1. **ALL agents** (including those via Copilot) MUST execute local gates before PR creation
+2. **NO exceptions** for emergency context, critical fixes, or time pressure
+3. **Environmental limitations** do not excuse protocol violations - compensating controls required
+4. **PREHANDOVER_PROOF** documentation is mandatory evidence of compliance
+
+**Fail Once Doctrine means:**
+- First violation: Documented, merged with override if technically sound
+- Second violation: **HARD BLOCK - PR rejected regardless of technical correctness**
+
+### Prevention Mechanism
+
+**Enforcement strengthened:**
+
+1. **This learning** now part of governance canon record
+2. **All agents** made aware via BOOTSTRAP_EXECUTION_LEARNINGS.md (now PUBLIC_API)
+3. **Pattern recognition** established for future detection
+4. **Zero tolerance** for repeat violations
+
+**Future violations will reference:**
+- BL-029 as documented precedent
+- Fail Once Doctrine as enforcement authority
+- This incident as the "once" that was allowed
+
+### Authority
+
+- BL-027: Scope Declaration Mandatory Before PR Handover
+- BL-028: Yamllint Warnings Are Errors
+- AGENT_CONTRACT_PROTECTION_PROTOCOL.md Section 4.2
+- BUILD_PHILOSOPHY.md: Fail Once Doctrine
+- agent-contract-administrator.md v3.0.0: Pre-Gate Release Validation
+
+### References
+
+- PR: APGI-cmy/maturion-foreman-governance#975
+- Issue: APGI-cmy/maturion-foreman-governance#974
+- Contract: .github/agents/agent-contract-administrator.md
+
+**Status**: DOCUMENTED - First and Only Warning Issued  
+**Next Occurrence**: HARD BLOCK with zero exceptions
+
+---
+
 **Maintained by**: Maturion Governance Administrator  
-**Last Updated**: 2026-01-15  
+**Last Updated**: 2026-01-19  
 **Registry Status**: ACTIVE
 
 ---
 
-**Next Learning ID**: BL-029
+**Next Learning ID**: BL-030
 
 ---
 

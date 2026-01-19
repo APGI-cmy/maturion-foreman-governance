@@ -1,67 +1,51 @@
 ---
-RESPONSIBILITY_DOMAIN:  Governance Administration
+RESPONSIBILITY_DOMAIN: Governance Administration
 ---
 
-# Governance Scope Declaration - Agent Contract v2.5.0 Upgrade + BL-027/028
+# Governance Scope Declaration - Document BL-029 Pre-Gate Validation Protocol Violation
 
-**PR**:  #969  
-**Date**: 2026-01-15  
-**Agent**: agent-contract-administrator  
-**Repository**:  APGI-cmy/maturion-foreman-governance
+**Date**: 2026-01-19  
+**Agent**: governance-repo-administrator (via Copilot coding agent)  
+**Repository**: APGI-cmy/maturion-foreman-governance
 
 ## Changed Files
 
-### Modified Files (3 total)
-- `.github/agents/CodexAdvisor-agent.md` — Upgraded v2.0.0 → v2.5.0 (856 → 407 lines, reference-based)
-- `.github/agents/governance-repo-administrator. agent.md` — Upgraded to v2.5.0 (hybrid model)
-- `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` — **Added BL-027 and BL-028 entries (lines 1641-1775)**
+### Modified Files (1 total)
+- `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` — Added BL-029 learning entry (lines 3075-3184)
 
-### New Files - Governance Artifacts (6+ total)
-- `.agent-admin/scans/scan_20260115_142350.md` — Governance scan
-- `.agent-admin/risk-assessments/risk_001_20260115.md` — Risk assessment
-- `.agent-admin/change-records/change_001_20260115.md` — Change record
-- `PREHANDOVER_PROOF_v250_UPGRADE. md` — Handover proof (if exists)
-- Additional completion reports (if exist)
-
-**Total Files**:  9-10 (verify in PR)
+**Total Files**: 1
 
 ## Scope Rationale
 
-This PR upgrades all agent contracts in canonical governance to v2.5.0 reference-based protection model **AND adds BL-027/028 Bootstrap Learning entries**.
+This PR documents a pre-gate validation protocol violation that occurred in PR #975 as BL-029 in BOOTSTRAP_EXECUTION_LEARNINGS.md, applying the Fail Once Doctrine.
 
-### Agent Contract Upgrades (v2.5.0)
-- CodexAdvisor: 856→407 lines (52% reduction, reference-based)
-- governance-repo-administrator:  Hybrid model (documented)
-- Protection Registry sections added
-- Bidirectional governance evolution framework
-- Cross-repository benchmarking requirements
-
-### Bootstrap Learnings Added (NEW)
-- **BL-027: Scope Declaration Mandatory Before PR Handover**
-  - Prevents Scope-to-Diff gate failures
-  - Requires actual gate script execution
-  - Lines 1641-1697 in BOOTSTRAP_EXECUTION_LEARNINGS.md
-  
-- **BL-028: Yamllint Warnings Are Errors**
-  - Prevents test dodging via rationalization
-  - Requires yamllint exit code 0
-  - Lines 1699-1775 in BOOTSTRAP_EXECUTION_LEARNINGS.md
+### Bootstrap Learning Added
+- **BL-029: Documented Pre-Gate Validation Protocol Violation - Fail Once Doctrine Applied**
+  - Documents PR #975 violation by agent-contract-administrator
+  - Violations: No SCOPE_DECLARATION.md, no local gate execution, no PREHANDOVER_PROOF
+  - CS2 decision: Merged with override (emergency context, technically correct)
+  - Fail Once Doctrine: First violation documented, next occurrence = hard block
+  - Root cause analysis: Possible Copilot environmental limitations
+  - Prevention: Zero tolerance for repeat violations
+  - Lines 3075-3184 in BOOTSTRAP_EXECUTION_LEARNINGS.md
 
 ### Authority
-- AGENT_CONTRACT_PROTECTION_PROTOCOL.md
-- GOVERNANCE_RIPPLE_MODEL.md
-- MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0
-- BOOTSTRAP_EXECUTION_LEARNINGS.md (BL-027, BL-028)
+- Issue describing PR #975 violation
+- BL-027: Scope Declaration Mandatory Before PR Handover
+- BL-028: Yamllint Warnings Are Errors
+- AGENT_CONTRACT_PROTECTION_PROTOCOL.md Section 4.2
+- BUILD_PHILOSOPHY.md: Fail Once Doctrine
+- agent-contract-administrator.md v3.0.0
 
 ### Impact
-- Establishes canonical v2.5.0 + BL-027/028 for ecosystem
-- Consumer repos layer down complete package
-- All future PRs comply with BL-027/028 automatically
+- Establishes permanent record of PR #975 protocol violation
+- Creates precedent for future enforcement (zero tolerance for repeat violations)
+- Documents environmental investigation question for Copilot coding agent capabilities
+- Strengthens pre-gate validation enforcement through documented precedent
+- All repos receive this learning via BOOTSTRAP_EXECUTION_LEARNINGS.md (PUBLIC_API)
 
 ### Validation
-- ✅ Scope declaration exists (this file - BL-027)
-- ✅ yamllint executed on all . md files (BL-028)
-- ✅ All files listed
+- ✅ Scope declaration exists (this file - BL-027 compliance)
+- ✅ Only governance canon file modified (within Governance Administration domain)
+- ✅ All files listed (1 modified file)
 - ✅ No unrelated changes
-
-**Ready for CS2 review after yamllint fixes complete.**
