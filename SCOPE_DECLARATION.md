@@ -11,15 +11,16 @@ RESPONSIBILITY_DOMAIN: Governance Infrastructure
 
 ## Changed Files
 
-### Modified Files (1 total)
+### Modified Files (2 total)
 M .gitignore
+M SCOPE_DECLARATION.md
 
 ### Added Files (3 total)
 A governance/runbooks/GOVERNANCE_INVENTORY_MAINTENANCE.md
 A governance/templates/GOVERNANCE_ALIGNMENT_INVENTORY_TEMPLATE.json
 A scripts/sync_repo_inventory.py
 
-**Total Files**: 4
+**Total Files**: 5
 
 ## Scope Rationale
 
