@@ -1,0 +1,1138 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-01-19",
+  "total_canons": 113,
+  "generation_timestamp": "2026-01-19T17:02:23.129424",
+  "canons": [
+    {
+      "filename": ".agent.schema.md",
+      "version": "1",
+      "file_hash": "63fafcf14242",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the normative schema for `.agent` contracts.",
+      "type": "canon",
+      "path": "governance/canon/.agent.schema.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "ACTIVATION_STATE_MODEL.md",
+      "version": "1.0",
+      "file_hash": "1748046bfe97",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical activation state model for all Maturion systems, subsystems, and capabilities.",
+      "type": "canon",
+      "path": "governance/canon/ACTIVATION_STATE_MODEL.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "974023b3a5a9",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical protocol by which agents maintain currency with canonical governance context through governed, auditable, and deterministic synchronisation.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "03b738e23f7a",
+      "effective_date": "2026-01-05",
+      "description": "This protocol establishes a single-writer pattern for all `.agent` contract files across the Maturion ecosystem. It creates a dedicated Agent Contract Administrator agent with exclusive write autho...",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_CONTRACT_MIGRATION_GUIDE.md",
+      "version": "1.0.0",
+      "file_hash": "1b4ce9377c65",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: AGENT_CONTRACT_MIGRATION_GUIDE",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CONTRACT_MIGRATION_GUIDE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_CONTRACT_PROTECTION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "553ad77327d6",
+      "effective_date": "2026-01-05",
+      "description": "This protocol establishes protection mechanisms for critical agent contract requirements through locked sections that prevent unauthorized modification, removal, or weakening of governance-critical...",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_FILE_BINDING_REQUIREMENTS.md",
+      "version": "1.0.0",
+      "file_hash": "39d60099cec3",
+      "effective_date": "2026-01-05",
+      "description": "This document defines which canonical governance documents repository `.agent` files MUST or SHOULD bind to, establishing the minimum governance foundation for all repositories.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_ONBOARDING_QUICKSTART.md",
+      "version": "1.0.0",
+      "file_hash": "13ca6859de74",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: AGENT_ONBOARDING_QUICKSTART",
+      "type": "canon",
+      "path": "governance/canon/AGENT_ONBOARDING_QUICKSTART.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_RECRUITMENT.md",
+      "version": "1",
+      "file_hash": "963eed45e027",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the only legitimate process by which software agents may be introduced (“recruited”) into the governance system administered by the Foreman.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_RECRUITMENT.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_RECRUITMENT_AND_CONTRACT_AUTHORITY_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "22a2151ac836",
+      "effective_date": "2026-01-05",
+      "description": "This document provides explicit, unambiguous clarification of:\n- Who may recruit which agents in the Maturion ecosystem\n- Who may update which `.agent` contract files\n- How ripple-triggered respons...",
+      "type": "canon",
+      "path": "governance/canon/AGENT_RECRUITMENT_AND_CONTRACT_AUTHORITY_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_RIPPLE_AWARENESS_OBLIGATION.md",
+      "version": "1.0.0",
+      "file_hash": "af119046b2fc",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical obligation for all agents to recognize, surface, and communicate ripple effects of their changes.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_RIPPLE_AWARENESS_OBLIGATION.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_ROLE_GATE_APPLICABILITY.md",
+      "version": "1.0.0",
+      "file_hash": "61a672972df0",
+      "effective_date": "2026-01-05",
+      "description": "This document provides explicit, canonical clarification defining which governance gates apply to which agent roles.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_ROLE_GATE_APPLICABILITY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "APP_STARTUP_REQUIREMENTS_DECLARATION.md",
+      "version": "1.0",
+      "file_hash": "758eb2210a3f",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the mandatory contract for how each application declares its unique commissioning and startup requirements in a structured, auditable, and machine-interpretable way.",
+      "type": "canon",
+      "path": "governance/canon/APP_STARTUP_REQUIREMENTS_DECLARATION.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md",
+      "version": "1.3",
+      "file_hash": "1db9160d2ee2",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the mandatory completeness requirements for all architecture artifacts in the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "ASSISTED_RIPPLE_SCAN_HUMAN_REVIEW_SEMANTICS.md",
+      "version": "1.0.0",
+      "file_hash": "1c72a4529464",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical semantics for human-in-the-loop review of assisted ripple scan reports.",
+      "type": "canon",
+      "path": "governance/canon/ASSISTED_RIPPLE_SCAN_HUMAN_REVIEW_SEMANTICS.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "ASSISTED_RIPPLE_SCAN_SCOPE.md",
+      "version": "1.0.0",
+      "file_hash": "35b45dd2053f",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical scope of assisted ripple scanning within a single repository.",
+      "type": "canon",
+      "path": "governance/canon/ASSISTED_RIPPLE_SCAN_SCOPE.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "AUDIT_READINESS_MODEL.md",
+      "version": "1.0",
+      "file_hash": "d627ef3ee892",
+      "effective_date": "2026-01-05",
+      "description": "This document defines what it means for a repository to be audit-ready from a governance and compliance perspective.",
+      "type": "canon",
+      "path": "governance/canon/AUDIT_READINESS_MODEL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "BOOTSTRAP_EXECUTION_LEARNINGS.md",
+      "version": "1.0.0",
+      "file_hash": "91a9eba677e1",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: BOOTSTRAP_EXECUTION_LEARNINGS",
+      "type": "canon",
+      "path": "governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BRANCH_PROTECTION_ENFORCEMENT.md",
+      "version": "1.0.0",
+      "file_hash": "c34600f193a8",
+      "effective_date": "2026-01-05",
+      "description": "This canon formally defines branch protection enforcement as a mandatory, governed requirement for all repositories executing governed builds under the One-Time Build philosophy.",
+      "type": "canon",
+      "path": "governance/canon/BRANCH_PROTECTION_ENFORCEMENT.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILDER_CONTRACT_BINDING_CHECKLIST.md",
+      "version": "1.0.0",
+      "file_hash": "1294da29d84f",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: BUILDER_CONTRACT_BINDING_CHECKLIST",
+      "type": "canon",
+      "path": "governance/canon/BUILDER_CONTRACT_BINDING_CHECKLIST.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILDER_FIRST_PR_MERGE_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "ca9d2c96be68",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: BUILDER_FIRST_PR_MERGE_MODEL",
+      "type": "canon",
+      "path": "governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILD_EFFECTIVENESS_STANDARD.md",
+      "version": "1",
+      "file_hash": "36351307c8d6",
+      "effective_date": "2026-01-05",
+      "description": "This standard defines how Build Effectiveness is computed and reported.",
+      "type": "canon",
+      "path": "governance/canon/BUILD_EFFECTIVENESS_STANDARD.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILD_INTERVENTION_AND_ALERT_MODEL.md",
+      "version": "1.0",
+      "file_hash": "b74ffd7421f3",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical model for build interventions, alerts, and attention routing within the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/BUILD_INTERVENTION_AND_ALERT_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILD_NODE_INSPECTION_MODEL.md",
+      "version": "1.0",
+      "file_hash": "9e20439593c5",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical inspection and drill-down model for all build nodes within the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/BUILD_NODE_INSPECTION_MODEL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "BUILD_TREE_EXECUTION_MODEL.md",
+      "version": "1.0",
+      "file_hash": "01a65186bf0b",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical hierarchical structure of builds within the Maturion ecosystem, establishing how work is organized, executed, monitored, and controlled across multiple levels of...",
+      "type": "canon",
+      "path": "governance/canon/BUILD_TREE_EXECUTION_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "CASCADING_FAILURE_CIRCUIT_BREAKER.md",
+      "version": "1",
+      "file_hash": "e4f666fef38b",
+      "effective_date": "2026-01-05",
+      "description": "This rule prevents PRs from accumulating non-local failures\nthat destroy diagnostic clarity.",
+      "type": "canon",
+      "path": "governance/canon/CASCADING_FAILURE_CIRCUIT_BREAKER.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "CI_CONFIRMATORY_NOT_DIAGNOSTIC.md",
+      "version": "1.0.0",
+      "file_hash": "a47213fb2b9e",
+      "effective_date": "2026-01-05",
+      "description": "This canon establishes that CI execution is confirmatory, not diagnostic across all governed repositories.",
+      "type": "canon",
+      "path": "governance/canon/CI_CONFIRMATORY_NOT_DIAGNOSTIC.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "d9d45cb972b7",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the Cognitive Capability Orchestration Model for the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "COGNITIVE_HYGIENE_AUTHORITY_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "de4e651fab21",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the authority hierarchy and decision rights for the Cognitive Hygiene Protocol (CHP) within the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/COGNITIVE_HYGIENE_AUTHORITY_MODEL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "0e5bb3e877a7",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines how the Cognitive Hygiene Protocol (CHP) interacts with memory systems to ensure memory integrity, proposal-only writes, and zero risk of silent memory mutation.",
+      "type": "canon",
+      "path": "governance/canon/COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "COMBINED_TESTING_PATTERN.md",
+      "version": "1.0.0",
+      "file_hash": "65b47fef2b6a",
+      "effective_date": "2026-01-05",
+      "description": "This document establishes Combined Subwave Testing (CST) and Combined Wave Testing (CWT) as the canonical patterns for strategic integration assurance in multi-wave, one-time builds.",
+      "type": "canon",
+      "path": "governance/canon/COMBINED_TESTING_PATTERN.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "COMMISSIONING_EVIDENCE_MODEL.md",
+      "version": "1.0",
+      "file_hash": "0b0d89ba3faa",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical evidence model for commissioning and activation of Maturion applications.",
+      "type": "canon",
+      "path": "governance/canon/COMMISSIONING_EVIDENCE_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "COMPLIANCE_AND_STANDARDS_GOVERNANCE.md",
+      "version": "1",
+      "file_hash": "8f0b0af26577",
+      "effective_date": "2026-01-05",
+      "description": "This policy defines how Maturion achieves continuous audit readiness and\ninternational standards compliance across the entire build-and-maintain factory.",
+      "type": "canon",
+      "path": "governance/canon/COMPLIANCE_AND_STANDARDS_GOVERNANCE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "CONSTITUTIONAL_SANDBOX_PATTERN.md",
+      "version": "1.0.0",
+      "file_hash": "25e88a801581",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the Constitutional Sandbox Pattern: the authoritative model for agent judgment, execution flexibility, and process optimization within governance boundaries.",
+      "type": "canon",
+      "path": "governance/canon/CONSTITUTIONAL_SANDBOX_PATTERN.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "CONSTITUTIONAL_SANDBOX_ROLLOUT_GUIDANCE.md",
+      "version": "1.0.0",
+      "file_hash": "4004262d4a0e",
+      "effective_date": "2026-01-05",
+      "description": "This document provides operational guidance for applying the Constitutional Sandbox Pattern (BL-024) in wave planning, builder appointment, and execution oversight.",
+      "type": "canon",
+      "path": "governance/canon/CONSTITUTIONAL_SANDBOX_ROLLOUT_GUIDANCE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "953b3a49327f",
+      "effective_date": "2026-01-05",
+      "description": "This protocol defines the explicit, controlled mechanism for propagating governance changes from the governance repository (`maturion-foreman-governance`) to downstream application repositories (FM...",
+      "type": "canon",
+      "path": "governance/canon/CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "CROSS_REPOSITORY_RIPPLE_AWARENESS_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "43105c47f70c",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical model for cross-repository ripple awareness within the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/CROSS_REPOSITORY_RIPPLE_AWARENESS_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "DEFECT_RESOLUTION_MAINTENANCE_CANON.md",
+      "version": "1.0.0",
+      "file_hash": "9fd7dc83092e",
+      "effective_date": "2026-01-05",
+      "description": "This canon establishes the mandatory governance framework for resolving defects, performing maintenance, and managing patches for already published builds and production systems.",
+      "type": "canon",
+      "path": "governance/canon/DEFECT_RESOLUTION_MAINTENANCE_CANON.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "DELEGATION_INSTRUCTION_AND_AUDIT_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "ff6adb194e1f",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the delegation instruction protocol and audit model for platform action execution between Foreman (FM) and Maturion.",
+      "type": "canon",
+      "path": "governance/canon/DELEGATION_INSTRUCTION_AND_AUDIT_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "DOMAIN_EVOLUTION_RULES.md",
+      "version": "1",
+      "file_hash": "0d2e3cfde5b2",
+      "effective_date": "2026-01-05",
+      "description": "These rules govern how responsibility domains evolve over time.",
+      "type": "canon",
+      "path": "governance/canon/DOMAIN_EVOLUTION_RULES.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "DOMAIN_OWNERSHIP_ACCOUNTABILITY.md",
+      "version": "1",
+      "file_hash": "2fa1b2a8dbc0",
+      "effective_date": "2026-01-05",
+      "description": "This document defines how responsibility domains are held accountable\nfor architectural completeness and build correctness over time.",
+      "type": "canon",
+      "path": "governance/canon/DOMAIN_OWNERSHIP_ACCOUNTABILITY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "DOMAIN_STATE_ENFORCEMENT_RULE.md",
+      "version": "1",
+      "file_hash": "19d9d8436892",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: DOMAIN_STATE_ENFORCEMENT_RULE",
+      "type": "canon",
+      "path": "governance/canon/DOMAIN_STATE_ENFORCEMENT_RULE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "DRAFT_AGENT_RIPPLE_AWARENESS_LANGUAGE.md",
+      "version": "1.0.0",
+      "file_hash": "99ac8dcabc37",
+      "effective_date": "2026-01-05",
+      "description": "This document contains draft language for insertion into agent contract files (`.agent` or `.agent.md`) in future waves.",
+      "type": "canon",
+      "path": "governance/canon/DRAFT_AGENT_RIPPLE_AWARENESS_LANGUAGE.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "ENFORCEMENT_DESIGN_NOTE.md",
+      "version": "1.0.0",
+      "file_hash": "0edcd8f08eb2",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: ENFORCEMENT_DESIGN_NOTE",
+      "type": "canon",
+      "path": "governance/canon/ENFORCEMENT_DESIGN_NOTE.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "ENVIRONMENT_PROVISIONING_PROCESS.md",
+      "version": "1.0",
+      "file_hash": "7c6c9f60b9fe",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the mandatory process for environment variable provisioning in the Maturion build model.",
+      "type": "canon",
+      "path": "governance/canon/ENVIRONMENT_PROVISIONING_PROCESS.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "EXECUTION_BOOTSTRAP_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "1755593a86a9",
+      "effective_date": "2026-01-05",
+      "description": "This protocol establishes mandatory execution verification at every phase of FPC (First Point of Contact) repository layer-down and all governance-enforced work.",
+      "type": "canon",
+      "path": "governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "EXECUTION_BOOTSTRAP_PROTOCOL_MONITORING_AND_ENFORCEMENT.md",
+      "version": "1.0.0",
+      "file_hash": "f16bd300b7a3",
+      "effective_date": "2026-01-05",
+      "description": "This protocol establishes the continuous monitoring and enforcement framework for the Execution Bootstrap Protocol across all governed repositories throughout each governance cycle.",
+      "type": "canon",
+      "path": "governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL_MONITORING_AND_ENFORCEMENT.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FAILURE_PROMOTION_RULE.md",
+      "version": "1",
+      "file_hash": "14c86a0ef318",
+      "effective_date": "2026-01-05",
+      "description": "This rule ensures that failures that expose governance gaps are formally promoted\ninto governance change management rather than remaining local knowledge.",
+      "type": "canon",
+      "path": "governance/canon/FAILURE_PROMOTION_RULE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FM_BUILDER_APPOINTMENT_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "7506d757bef3",
+      "effective_date": "2026-01-05",
+      "description": "This protocol defines the mandatory, gated process the Foreman (FM) MUST follow when appointing builders, ensuring constitutional compliance with:\n- OPOJD (One-Prompt One-Job Doctrine): Continuous ...",
+      "type": "canon",
+      "path": "governance/canon/FM_BUILDER_APPOINTMENT_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FM_GOVERNANCE_LOADING_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "bf8cd5ce9f94",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical protocol by which the FM (Foreman) App and any execution system loads, caches, invalidates, and interprets governance canon from the `maturion-foreman-governance...",
+      "type": "canon",
+      "path": "governance/canon/FM_GOVERNANCE_LOADING_PROTOCOL.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "FM_PREAUTH_CHECKLIST_CANON.md",
+      "version": "1.0.0",
+      "file_hash": "6f48a4935482",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the FM Pre-Authorization Checklist that acts as a mandatory pre-authorization checkpoint for all wave and subwave planning before FM authorizes execution.",
+      "type": "canon",
+      "path": "governance/canon/FM_PREAUTH_CHECKLIST_CANON.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FM_RUNTIME_ENFORCEMENT_AND_AWARENESS_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "7da25ae4e573",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the runtime enforcement and continuous situational awareness mechanisms that ensure FM (Foreman) operates within governance constraints and cannot drift from canonical intent.",
+      "type": "canon",
+      "path": "governance/canon/FM_RUNTIME_ENFORCEMENT_AND_AWARENESS_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "dacc9285c58c",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the Foreman (FM) as a managerial authority within the Maturion ecosystem, establishing its supervisory responsibilities over builders and the execution process.",
+      "type": "canon",
+      "path": "governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FPC_REPOSITORY_LAYERDOWN_GUIDE.md",
+      "version": "1.0.0",
+      "file_hash": "a3456a96bc19",
+      "effective_date": "2026-01-05",
+      "description": "This is the First Point of Contact (FPC) document for governance layer-down.",
+      "type": "canon",
+      "path": "governance/canon/FPC_REPOSITORY_LAYERDOWN_GUIDE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md",
+      "version": "1.0",
+      "file_hash": "2938e2f1d5a5",
+      "effective_date": "2025-12-22",
+      "description": "This document defines the Gate-Predictive Compliance Analysis (GPCA) model - a pre-handover, read-only compliance prediction mechanism that enables agents to predict PR gate outcomes before submiss...",
+      "type": "canon",
+      "path": "governance/canon/GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "GOVERNANCE_BUILDER_SUBMISSION_SURVEY.md",
+      "version": "1.0.0",
+      "file_hash": "f9af7fb30515",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: GOVERNANCE_BUILDER_SUBMISSION_SURVEY",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_BUILDER_SUBMISSION_SURVEY.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",
+      "version": "1",
+      "file_hash": "b852bf91b569",
+      "effective_date": "2026-01-05",
+      "description": "This document defines what it means for the Governance Repository to be:\n- Complete\n- Internally consistent\n- Dependency-closed\n- Audit-structure-ready",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_COMPLETENESS_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_ENFORCEMENT_TRANSITION.md",
+      "version": "1.0.0",
+      "file_hash": "2559385fed7c",
+      "effective_date": "2026-01-05",
+      "description": "This document formally transitions governance enforcement from legacy PR gate semantics to the modern governance enforcement model. It establishes governance policy and audit requirements for enfor...",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_ENFORCEMENT_TRANSITION.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "GOVERNANCE_LAYERDOWN_CONTRACT.md",
+      "version": "1.0.0",
+      "file_hash": "a92728f20ee5",
+      "effective_date": "2026-01-05",
+      "description": "This contract defines the single, authoritative specification for what governance artifacts MUST be layered down from the governance repository (`maturion-foreman-governance`) into any application ...",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_LAYERDOWN_CONTRACT.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_LIAISON_MINIMUM_APPOINTMENT_REQUIREMENTS.md",
+      "version": "1.0",
+      "file_hash": "a6a64b872b62",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the minimum requirements that MUST be satisfied before a Governance Liaison Agent may be validly appointed and authorized to act.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_LIAISON_MINIMUM_APPOINTMENT_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_LIAISON_MINIMUM_REQUIREMENTS_VALIDATION.md",
+      "version": "1.0.0",
+      "file_hash": "33aea7096c49",
+      "effective_date": "2026-01-01",
+      "description": "Canonical governance document: GOVERNANCE_LIAISON_MINIMUM_REQUIREMENTS_VALIDATION",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_LIAISON_MINIMUM_REQUIREMENTS_VALIDATION.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "GOVERNANCE_LIAISON_ROLE_SURVEY.md",
+      "version": "1.0",
+      "file_hash": "ffa32629b999",
+      "effective_date": "2026-01-01",
+      "description": "Canonical governance document: GOVERNANCE_LIAISON_ROLE_SURVEY",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_LIAISON_ROLE_SURVEY.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "GOVERNANCE_LIAISON_TRAINING_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "e326764bb1cf",
+      "effective_date": "2026-01-05",
+      "description": "This protocol provides comprehensive training for Governance Liaison agents, covering:\n- Core responsibilities and authority boundaries\n- Execution Bootstrap Protocol integration\n- Prehandover veri...",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_LIAISON_TRAINING_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_PURPOSE_AND_SCOPE.md",
+      "version": "1",
+      "file_hash": "40de7b9de5ec",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: GOVERNANCE_PURPOSE_AND_SCOPE",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_RIPPLE_MODEL.md",
+      "version": "1.0",
+      "file_hash": "8d48e7345d98",
+      "effective_date": "2025-12-22",
+      "description": "This document defines the Governance Ripple Model - a bidirectional governance evolution framework that enables governance to adapt and improve while maintaining authority, consistency, and auditab...",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_RIPPLE_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_VERSIONING_AND_SYNC_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "8bcec0b38741",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical protocol for governance version identification, synchronization detection, and version compatibility expectations across the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_VERSIONING_AND_SYNC_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "INITIALIZATION_COMPLETENESS_GATE.md",
+      "version": "1.0",
+      "file_hash": "23d86014f109",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the Initialization Completeness Gate — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities may...",
+      "type": "canon",
+      "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "IN_BETWEEN_WAVE_RECONCILIATION.md",
+      "version": "1.0.0",
+      "file_hash": "e19cc6889611",
+      "effective_date": "2026-01-05",
+      "description": "This document formally establishes In-Between Wave Reconciliation (IBWR) as a mandatory execution step that occurs after a wave gate PASS and before authorization of the next wave.",
+      "type": "canon",
+      "path": "governance/canon/IN_BETWEEN_WAVE_RECONCILIATION.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "LEARNING_INTAKE_AND_PROMOTION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "9d4392181dce",
+      "effective_date": "2026-01-05",
+      "description": "This model defines how raw lessons learned from builds,\nPR gate failures, QA mismatches, and operational friction\nare captured, evaluated, and promoted into governance.",
+      "type": "canon",
+      "path": "governance/canon/LEARNING_INTAKE_AND_PROMOTION_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "LEARNING_PROMOTION_RULE.md",
+      "version": "1",
+      "file_hash": "005db7541d66",
+      "effective_date": "2026-01-05",
+      "description": "This rule governs how learnings that indicate systemic gaps\nare promoted into governance, architecture law, and agent behavior.",
+      "type": "canon",
+      "path": "governance/canon/LEARNING_PROMOTION_RULE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md",
+      "version": "1.0.0",
+      "file_hash": "59e84814c60c",
+      "effective_date": "2026-01-05",
+      "description": "This document formally establishes the constitutional requirement for systematic, canonical progress recording during wave execution and evidence-based wave closure certification within the Maturio...",
+      "type": "canon",
+      "path": "governance/canon/MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md",
+      "version": "1.0.0",
+      "file_hash": "1b466115f513",
+      "effective_date": "2026-01-05",
+      "description": "To institutionalize continuous improvement across all applications, agents, and builders without disrupting execution or introducing scope creep.",
+      "type": "canon",
+      "path": "governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MANDATORY_PROCESS_IMPROVEMENT_REFLECTION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "bafe809f31ec",
+      "effective_date": "2026-01-05",
+      "description": "This protocol establishes a mandatory structured reflection process for all governance repository work units. It ensures that every governance action—whether canon update, incident response, ripple...",
+      "type": "canon",
+      "path": "governance/canon/MANDATORY_PROCESS_IMPROVEMENT_REFLECTION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MATURION_CONCEPTUAL_DOCTRINE.md",
+      "version": "1",
+      "file_hash": "d0f6d78a97f8",
+      "effective_date": "2026-01-05",
+      "description": "This document formally classifies and defines Maturion-isms as Foundational Conceptual Doctrine within the Maturion governance ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/MATURION_CONCEPTUAL_DOCTRINE.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "MATURION_RUNTIME_EXECUTION_MONITOR_SPEC.md",
+      "version": "1.0.0",
+      "file_hash": "e1f82b55131e",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical specification for the Maturion Runtime\nExecution Monitor.",
+      "type": "canon",
+      "path": "governance/canon/MATURION_RUNTIME_EXECUTION_MONITOR_SPEC.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "22825528fe90",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines Memory Integrity and Corruption Detection requirements for the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "MEMORY_LIFECYCLE_STATE_MACHINE_CONTRACT.md",
+      "version": "1.0.0",
+      "file_hash": "fce229b63c14",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the Memory Lifecycle State Machine required by Foreman (FM) runtime and cognitive hygiene integration.",
+      "type": "canon",
+      "path": "governance/canon/MEMORY_LIFECYCLE_STATE_MACHINE_CONTRACT.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "MEMORY_OBSERVABILITY_QUERY_CONTRACT.md",
+      "version": "1.0.0",
+      "file_hash": "62550d0ef0d3",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines what Memory State Observability means for Foreman (FM) and Watchdog.",
+      "type": "canon",
+      "path": "governance/canon/MEMORY_OBSERVABILITY_QUERY_CONTRACT.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "1faef6d0741c",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the authority boundary between:\n- Foreman (FM) — execution authority within repositories\n- Maturion — control-plane authority for platform actions (GitHub)",
+      "type": "canon",
+      "path": "governance/canon/PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md",
+      "version": "1.0.0",
+      "file_hash": "1be0d0e1e328",
+      "effective_date": "2026-01-05",
+      "description": "This canon defines, constitutionally and unambiguously, what it means for the platform to be ready to execute a governed build.",
+      "type": "canon",
+      "path": "governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "ea3b2086b494",
+      "effective_date": "2026-01-05",
+      "description": "This protocol establishes Pre-Implementation Behavior Review as a mandatory step in all enhancement testing workflows to prevent repeated test rework cycles caused by assumptions about expected beh...",
+      "type": "canon",
+      "path": "governance/canon/PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "416e0bd5bbc4",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the canonical operational protocol for evaluating PR gates based on agent role applicability. It serves as the authoritative reference for gate evaluation semantics, ensuring ...",
+      "type": "canon",
+      "path": "governance/canon/PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PR_GATE_PRECONDITION_RULE.md",
+      "version": "1.0.0",
+      "file_hash": "9ca7bbbcb65f",
+      "effective_date": "2026-01-05",
+      "description": "This rule enforces the One-Time Build Law by preventing\nhandover of builds that do not already satisfy all required PR gates.",
+      "type": "canon",
+      "path": "governance/canon/PR_GATE_PRECONDITION_RULE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PR_SCOPE_CONTROL_POLICY.md",
+      "version": "1",
+      "file_hash": "05bb5cdcbbd0",
+      "effective_date": "2026-01-05",
+      "description": "This policy prevents cascading failures caused by excessive initial scope.",
+      "type": "canon",
+      "path": "governance/canon/PR_SCOPE_CONTROL_POLICY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "QA_CATALOG_ALIGNMENT_GATE_CANON.md",
+      "version": "1.0.0",
+      "file_hash": "b28b6bb6f588",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the QA-Catalog-Alignment Gate that acts as a mandatory pre-authorization checkpoint for all wave and subwave planning in systems using QA-driven development.",
+      "type": "canon",
+      "path": "governance/canon/QA_CATALOG_ALIGNMENT_GATE_CANON.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "REPOSITORY_INITIALIZATION_AND_GOVERNANCE_SEEDING_PROTOCOL.md",
+      "version": "1.0",
+      "file_hash": "afa5e6e306cc",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the mandatory initialization phase for all new application repositories before architecture design or build activities may begin.",
+      "type": "canon",
+      "path": "governance/canon/REPOSITORY_INITIALIZATION_AND_GOVERNANCE_SEEDING_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "REPOSITORY_SEEDING_AND_ENFORCEMENT_ROLE_SEPARATION.md",
+      "version": "1.0",
+      "file_hash": "1b04d2525318",
+      "effective_date": "2026-01-05",
+      "description": "This document provides explicit, canonical separation between:\n1. Repository Seeding Authority — agents authorized to create canonical repository structure\n2. Governance Enforcement Authority — age...",
+      "type": "canon",
+      "path": "governance/canon/REPOSITORY_SEEDING_AND_ENFORCEMENT_ROLE_SEPARATION.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "REQUIREMENT_SPECIFICATION_GOVERNANCE.md",
+      "version": "1.0",
+      "file_hash": "d5db263e4f4e",
+      "effective_date": "2026-01-05",
+      "description": "This document defines governance rules for requirement specifications across all repositories requiring structured requirements management.",
+      "type": "canon",
+      "path": "governance/canon/REQUIREMENT_SPECIFICATION_GOVERNANCE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "RESPONSIBILITY_DOMAIN_ENTRY.template.md",
+      "version": "1.0.0",
+      "file_hash": "1f6666a1fff4",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: RESPONSIBILITY_DOMAIN_ENTRY.template",
+      "type": "canon",
+      "path": "governance/canon/RESPONSIBILITY_DOMAIN_ENTRY.template.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "RESPONSIBILITY_DOMAIN_REGISTRY.md",
+      "version": "1",
+      "file_hash": "4f511ec3d99a",
+      "effective_date": "2026-01-05",
+      "description": "This registry defines the only valid responsibility domains\nthat may be declared in a Scope Declaration.",
+      "type": "canon",
+      "path": "governance/canon/RESPONSIBILITY_DOMAIN_REGISTRY.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "RIPPLE_INTELLIGENCE_LAYER.md",
+      "version": "1.0.0",
+      "file_hash": "899f43533bf1",
+      "effective_date": "2026-01-05",
+      "description": "This document defines Ripple Intelligence Layer (RIL) as a first-class governance concept within the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/RIPPLE_INTELLIGENCE_LAYER.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "RIPPLE_RUNTIME_INTEGRATION_SURVEY.md",
+      "version": "1.0.0",
+      "file_hash": "91be57a89268",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: RIPPLE_RUNTIME_INTEGRATION_SURVEY",
+      "type": "canon",
+      "path": "governance/canon/RIPPLE_RUNTIME_INTEGRATION_SURVEY.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "SCOPE_DECLARATION_SCHEMA.md",
+      "version": "1",
+      "file_hash": "96c0374ac4ee",
+      "effective_date": "2026-01-05",
+      "description": "This schema defines the mandatory structure for a Scope Declaration.",
+      "type": "canon",
+      "path": "governance/canon/SCOPE_DECLARATION_SCHEMA.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "SCOPE_TO_DIFF_RULE.md",
+      "version": "1",
+      "file_hash": "d2c96ce6d14c",
+      "effective_date": "2026-01-05",
+      "description": "This rule enforces alignment between a PR’s declared scope\nand the files actually modified in the PR.",
+      "type": "canon",
+      "path": "governance/canon/SCOPE_TO_DIFF_RULE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md",
+      "version": "1.0",
+      "file_hash": "a8e4c94e1674",
+      "effective_date": "2026-01-05",
+      "description": "This document defines the mandatory protocol for commissioning and progressive activation of any Maturion application.",
+      "type": "canon",
+      "path": "governance/canon/SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "VERSIONING_AND_EVOLUTION_GOVERNANCE.md",
+      "version": "1.0",
+      "file_hash": "0c6e46055562",
+      "effective_date": "2026-01-05",
+      "description": "This document defines governance rules for versioning and evolution of all governance artifacts, application code, and system components.",
+      "type": "canon",
+      "path": "governance/canon/VERSIONING_AND_EVOLUTION_GOVERNANCE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "VISION_ALIGNMENT_AND_DRIFT_MODEL.md",
+      "version": "1.0",
+      "file_hash": "8703e5977766",
+      "effective_date": "2025-12-23",
+      "description": "This document defines vision drift detection requirements for the Independent Watchdog.",
+      "type": "canon",
+      "path": "governance/canon/VISION_ALIGNMENT_AND_DRIFT_MODEL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "WARNING_DISCOVERY_BLOCKER_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "3eaf0b304fc9",
+      "effective_date": "2026-01-05",
+      "description": "This protocol defines the mandatory blocker process when any agent discovers warnings or test debt from prior work (previous jobs, waves, or subwaves).",
+      "type": "canon",
+      "path": "governance/canon/WARNING_DISCOVERY_BLOCKER_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "WATCHDOG_AUTHORITY_AND_SCOPE.md",
+      "version": "1.0.0",
+      "file_hash": "36b66652da76",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the Independent Watchdog as a governance observation and escalation system within the Maturion ecosystem.",
+      "type": "canon",
+      "path": "governance/canon/WATCHDOG_AUTHORITY_AND_SCOPE.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "WATCHDOG_COGNITIVE_OBSERVATION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "d42c6b9103c8",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines how the Independent Watchdog observes the Cognitive Hygiene Protocol (CHP) to ensure governance compliance and cognitive stability without compromising Watchdog indep...",
+      "type": "canon",
+      "path": "governance/canon/WATCHDOG_COGNITIVE_OBSERVATION_PROTOCOL.md",
+      "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "WATCHDOG_QUALITY_INTEGRITY_CHANNEL.md",
+      "version": "1.0.0",
+      "file_hash": "fc8516f968a7",
+      "effective_date": "2026-01-05",
+      "description": "This document formally defines the Quality Integrity Watchdog (QIW) as an observational channel within the Independent Watchdog system for monitoring build, lint, test, deployment, and runtime log ...",
+      "type": "canon",
+      "path": "governance/canon/WATCHDOG_QUALITY_INTEGRITY_CHANNEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "effectiveness.template.md",
+      "version": "1.0.0",
+      "file_hash": "ff1b2f86f2c7",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: effectiveness.template",
+      "type": "canon",
+      "path": "governance/canon/effectiveness.template.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "failure.template.md",
+      "version": "1.0.0",
+      "file_hash": "21ef14966907",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: failure.template",
+      "type": "canon",
+      "path": "governance/canon/failure.template.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "scope-declaration.template.md",
+      "version": "1.0.0",
+      "file_hash": "06e4173ff848",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: scope-declaration.template",
+      "type": "canon",
+      "path": "governance/canon/scope-declaration.template.md",
+      "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
+      "version": "1.0",
+      "file_hash": "8aa9b82cd110",
+      "effective_date": "2026-01-05",
+      "description": "This policy establishes App Descriptions as mandatory upstream authority artifacts for all applications in the Maturion ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
+      "version": "1.0",
+      "file_hash": "428f63b31733",
+      "effective_date": "2026-01-08",
+      "description": "This policy defines the CORRECT vs INCORRECT methodology for tracing tests to architectural requirements.",
+      "type": "policy",
+      "path": "governance/policy/ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AUTOMATED_DEPRECATION_DETECTION_GATE.md",
+      "version": "1.0",
+      "file_hash": "eab436d8df86",
+      "effective_date": "2026-01-11",
+      "description": "This policy establishes a mandatory automated deprecation detection gate for technical debt prevention across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/AUTOMATED_DEPRECATION_DETECTION_GATE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
+      "version": "1.0",
+      "file_hash": "dffdaddb554d",
+      "effective_date": "2025-12-22",
+      "description": "This policy defines the Builder QA Handover Contract - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
+      "type": "policy",
+      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "FM_MATURION_DELEGATED_ACTION_POLICY.md",
+      "version": "1.0",
+      "file_hash": "5668a48a689f",
+      "effective_date": "2025-12-25",
+      "description": "This policy establishes the complete governance framework for FM-to-Maturion delegated platform actions, defining:\n- When and how FM delegates platform actions to Maturion\n- What instructions FM mu...",
+      "type": "policy",
+      "path": "governance/policy/FM_MATURION_DELEGATED_ACTION_POLICY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "POLICY-NO-ONLY-LANGUAGE.md",
+      "version": "1.0.0",
+      "file_hash": "c5142eb28ea9",
+      "effective_date": "2026-01-05",
+      "description": "This policy establishes a zero-tolerance ban on minimizing language when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
+      "type": "policy",
+      "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
+      "version": "1.0",
+      "file_hash": "2fc7c5faf729",
+      "effective_date": "2025-12-22",
+      "description": "This protocol defines the canonical procedure for handling PR Gate failures across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "QA_POLICY_MASTER.md",
+      "version": "1.0.0",
+      "file_hash": "506f2db83ea2",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: QA_POLICY_MASTER",
+      "type": "policy",
+      "path": "governance/policy/QA_POLICY_MASTER.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "TEST_REMOVAL_GOVERNANCE_GATE.md",
+      "version": "1.0",
+      "file_hash": "1bd997b07837",
+      "effective_date": "2026-01-08",
+      "description": "This policy establishes a zero-tolerance governance gate for test removal across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/TEST_REMOVAL_GOVERNANCE_GATE.md",
+      "layer_down_status": "PUBLIC_API"
+    }
+  ]
+}
