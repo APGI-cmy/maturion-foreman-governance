@@ -2946,13 +2946,19 @@ agent-contract-administrator created multiple PRs without `SCOPE_DECLARATION.md`
 
 ### The Learning
 
-**MANDATORY PRE-GATE VALIDATION EXECUTION**:  
+**MANDATORY PRE-GATE VALIDATION**:  
 
-**When modifying governance files**:
+Agents MUST validate scope-to-diff compliance before PR creation using **ONE of TWO equally compliant paths**:
+
+#### Path 1: Script Execution (Preferred)
+
+**When to use**: Local development environment with bash/python available, when scripts can execute successfully.
+
+**Process**:
 1. **Create scope declaration file BEFORE PR creation**
-   - File: `SCOPE_DECLARATION.md` in PR root
-   - Content: List ALL files modified (one per line with change type)
-   - Format:  Markdown with validation section
+   - File: `governance/scope-declaration.md`
+   - Content: List ALL files modified (one per line with change type: M/A/D)
+   - Format: Per `SCOPE_DECLARATION_SCHEMA.md`
 
 2. **Run actual gate script locally**
    - Execute: `.github/scripts/validate-scope-to-diff.sh`
@@ -2967,19 +2973,114 @@ agent-contract-administrator created multiple PRs without `SCOPE_DECLARATION.md`
 4. **Document in PREHANDOVER_PROOF**
    - Actual command executed
    - Exit code (MUST be 0)
-   - Output (if failure)
+   - Output (if failure occurred and was fixed)
+
+#### Path 2: Evidence-Based Validation (Agent Environments)
+
+**When to use**: Agent environments where bash/python cannot execute before PR (e.g., GitHub Copilot), sandboxed environments, pre-PR tooling limitations.
+
+**Process**:
+1. **Create scope declaration file BEFORE PR creation**
+   - File: `governance/scope-declaration.md`
+   - Content: List ALL files modified (one per line with change type: M/A/D)
+   - Format: Per `SCOPE_DECLARATION_SCHEMA.md`
+
+2. **Manually compare scope declaration against git diff**
+   - Run: `git diff --name-only <base-ref>` (or equivalent)
+   - Compare output with declared files in scope declaration
+   - Verify: All changed files are declared
+   - Verify: All declared files are changed
+
+3. **Document evidence in PREHANDOVER_PROOF**
+   - Create section titled "Scope-to-Diff Validation (BL-027)" or similar
+   - Include:
+     - Method: "Evidence-Based (script execution not available in agent environment)"
+     - Scope declaration file location and confirmation of creation
+     - Git diff command and output (list of changed files)
+     - Declared files from scope declaration
+     - Comparison result: "✅ MATCH" with explanation
+     - Attestation statement confirming all files match
+     - Signature: Agent name and timestamp (UTC)
+
+4. **Attestation requirements**
+   - Must explicitly state: "I manually verified that the scope declaration accurately reflects the git diff"
+   - Must confirm: "All changed files are declared, and no extra files are declared"
+   - Must assert: "This validation is equivalent to running `.github/scripts/validate-scope-to-diff.sh` with exit code 0"
+
+**Example Evidence-Based Validation**:
+```markdown
+#### Scope-to-Diff Validation (BL-027)
+**Method**: Evidence-Based (script execution not available in agent environment)
+
+**Scope Declaration Created**: ✅ `governance/scope-declaration.md`
+
+**Git Diff Files**:
+```
+$ git diff --name-only main
+.github/workflows/governance-gate.yml
+governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md
+.github/scripts/validate-scope-to-diff.sh
+```
+
+**Declared Files in scope-declaration.md**:
+- M .github/workflows/governance-gate.yml
+- M governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md
+- A .github/scripts/validate-scope-to-diff.sh
+
+**Comparison Result**: ✅ MATCH
+All 3 files in git diff are declared in scope declaration.
+All 3 declared files are present in git diff.
+No files missing, no extra files.
+
+**Attestation**: I manually verified that the scope declaration accurately reflects the git diff. All changed files are declared, and no extra files are declared. This validation is equivalent to running `.github/scripts/validate-scope-to-diff.sh` with exit code 0.
+
+**Signature**: governance-repo-administrator - 2026-01-19 15:30:00 UTC
+```
+
+### Both Paths Are Equally Compliant
+
+**This is NOT a loophole or workaround.**
+
+Evidence-based validation is a **governance-approved compliance path** for environments where script execution is not possible before PR creation. It requires:
+- Comprehensive documentation
+- Honest comparison and verification
+- Explicit attestation
+- Traceable signature
+
+Both paths achieve the same governance objective: **ensuring scope declaration matches actual changes before PR handover**.
+
+### CI Gate Enforcement
+
+CI workflows (`.github/workflows/governance-scope-to-diff-gate.yml`) validate compliance by checking for **EITHER**:
+1. Script execution with exit code 0 (Path 1)
+2. Evidence-based validation with attestation in PREHANDOVER_PROOF (Path 2)
+
+If **neither** path is provided, the CI gate will fail with clear error messages explaining both options.
 
 ### Prevention Mechanism
 
 **Updated agent-contract-administrator.md** (v2.5.0 → v2.5.1):
 ```markdown
 **Scope Declaration (MANDATORY if governance files modified - BL-027)**:
-  1. Create `SCOPE_DECLARATION.md` in PR root listing ALL files changed
-  2. Run: `.github/scripts/validate-scope-to-diff.sh` (exit code MUST be 0)
-  3. "Manual verification" is PROHIBITED - execute actual script
-  4. Document execution in PREHANDOVER_PROOF with command, exit code, output
+  Choose ONE validation path:
+  
+  Path 1 (Script): 
+    1. Create `governance/scope-declaration.md` listing ALL files changed
+    2. Run: `.github/scripts/validate-scope-to-diff.sh` (exit code MUST be 0)
+    3. Document execution in PREHANDOVER_PROOF with command, exit code, output
+  
+  Path 2 (Evidence-Based - Agent Environments):
+    1. Create `governance/scope-declaration.md` listing ALL files changed
+    2. Manually compare against git diff output
+    3. Document comprehensive evidence in PREHANDOVER_PROOF
+    4. Include attestation statement and signature
+    5. See .github/scripts/README.md for detailed example
+```
 
 ---
+
+**Updated**: 2026-01-19 (Added evidence-based validation path)  
+**Authority**: CS2 override precedent (environmental limitation exception), Issue #980
 
 # BL-028: Yamllint Warnings Are Errors - Zero Test Debt
 
@@ -3007,9 +3108,14 @@ Agent executed yamllint validation, received warnings/errors, then rationalized 
 
 ## The Correct Process
 
-### When Running yamllint: 
+Agents MUST validate YAML frontmatter using **ONE of TWO equally compliant paths**:
 
-1. **Execute**:  `yamllint . github/agents/*. md`
+### Path 1: Script Execution (Preferred)
+
+**When to use**: Local development environment with yamllint installed, when scripts can execute successfully.
+
+**Process**:
+1. **Execute**:  `yamllint .github/agents/*.md` or `.github/scripts/validate-yaml-frontmatter.sh .github/agents/*.md`
 2. **Check exit code**:
    - Exit code 0: ✅ PASS, proceed
    - Exit code non-zero: ❌ FAIL, HALT
@@ -3020,10 +3126,82 @@ Agent executed yamllint validation, received warnings/errors, then rationalized 
    - Repeat until exit code 0
 4. **Document in PREHANDOVER_PROOF**: 
    ```markdown
-   | yamllint validation | Yes | `yamllint .github/agents/*. md` | 0 | ✅ PASS |
+   | yamllint validation | Yes | `yamllint .github/agents/*.md` | 0 | ✅ PASS |
    ```
 
-### Prohibited Actions: 
+### Path 2: Evidence-Based Validation (Agent Environments)
+
+**When to use**: Agent environments where yamllint cannot execute before PR (e.g., GitHub Copilot), sandboxed environments, pre-PR tooling limitations.
+
+**Process**:
+1. **Extract YAML frontmatter manually**
+   - Use: `awk '/^---$/{if(++n==2) exit} n>=1' <file.md>` (or equivalent)
+   - Capture YAML content between first two `---` markers
+
+2. **Validate YAML frontmatter**
+   - Validate extracted YAML with yamllint or equivalent tool
+   - Identify ALL warnings/errors
+   - Fix EVERY warning/error (no rationalization)
+   - Re-validate until clean
+
+3. **Document evidence in PREHANDOVER_PROOF**
+   - Create section titled "YAML Frontmatter Validation (BL-028)" or similar
+   - Include:
+     - Method: "Evidence-Based (yamllint execution not available in agent environment)"
+     - YAML extraction command and process
+     - Initial validation result (if errors/warnings found)
+     - List of ALL errors/warnings found
+     - Fixes applied for each error/warning
+     - Final validation result: "Exit code 0" or "All errors/warnings fixed"
+     - Attestation statement confirming no warnings/errors remain
+     - Signature: Agent name and timestamp (UTC)
+
+4. **Attestation requirements**
+   - Must explicitly state: "I manually extracted YAML frontmatter, validated, and fixed ALL warnings/errors"
+   - Must confirm: "Exit code 0 achieved" or "No warnings/errors remain"
+   - Must assert: "This validation is equivalent to running yamllint with exit code 0"
+   - Must state: "No warnings were rationalized as 'stylistic' or 'non-blocking'"
+
+**Example Evidence-Based Validation**:
+```markdown
+#### YAML Frontmatter Validation (BL-028)
+**Method**: Evidence-Based (yamllint execution not available in agent environment)
+
+**YAML Extraction Command**:
+```bash
+awk '/^---$/{if(++n==2) exit} n>=1' .github/agents/governance-repo-administrator.agent.md | yamllint -
+```
+
+**Initial Result**: Exit code 1 (5 errors found)
+
+**Errors/Warnings Found**:
+1. Line 3: Description line too long (194 > 80 characters) [line-length]
+2. Line 15: Trailing spaces [trailing-spaces]
+3. Line 77: Trailing spaces [trailing-spaces]
+4. Line 99: Comment line too long (82 > 80 characters) [line-length]
+5. Line 101: Comment line too long (82 > 80 characters) [line-length]
+
+**Fixes Applied**:
+1. Line 3: Converted to YAML multi-line `>` syntax to stay within 80 characters
+2. Line 15: Removed trailing spaces
+3. Line 77: Removed trailing spaces
+4. Line 99: Shortened comment text to 80 characters
+5. Line 101: Shortened comment text to 80 characters
+
+**Final Validation**: Exit code 0 ✅
+All 5 errors fixed. Re-validated YAML frontmatter extraction with yamllint: exit code 0.
+
+**BL-028 Compliance**: 
+- NO warnings rationalized as "stylistic" or "non-blocking"
+- ALL errors/warnings fixed until exit code 0
+- Zero test debt maintained
+
+**Attestation**: I manually extracted YAML frontmatter, validated with yamllint, and fixed ALL warnings/errors until exit code 0 was achieved. No warnings were rationalized. This validation is equivalent to running yamllint with exit code 0.
+
+**Signature**: agent-contract-administrator - 2026-01-19 14:48:00 UTC
+```
+
+### Prohibited Actions (Both Paths)
 
 ❌ Rationalizing warnings as "stylistic"  
 ❌ Citing a different test that passed (yaml.safe_load)  
@@ -3031,7 +3209,22 @@ Agent executed yamllint validation, received warnings/errors, then rationalized 
 ❌ Proceeding with non-zero exit code  
 ❌ Any form of test dodging or test debt
 
-## Examples of yamllint Violations
+**These prohibitions apply to BOTH validation paths.**
+
+### Both Paths Are Equally Compliant
+
+**This is NOT a loophole or workaround.**
+
+Evidence-based validation is a **governance-approved compliance path** for environments where yamllint cannot execute before PR creation. It requires:
+- Manual YAML extraction
+- Comprehensive validation
+- Fixing ALL warnings/errors
+- Explicit attestation
+- Traceable signature
+
+Both paths achieve the same governance objective: **Zero Test Debt - 100% passage with no warnings/errors**.
+
+### Examples of yamllint Violations
 
 **Line too long**:
 ```
@@ -3053,13 +3246,29 @@ Agent executed yamllint validation, received warnings/errors, then rationalized 
 
 ```markdown
 **Validation Methods**:
-- Validate YAML syntax with yamllint: 
-  1. Run:  `yamllint .github/agents/*.md`
-  2. Exit code MUST be 0 (no warnings, no errors)
-  3. If exit code non-zero:  HALT, fix ALL warnings/errors, re-run
-  4. "Warnings are not errors" is FALSE - warnings ARE errors
-  5. Document in PREHANDOVER_PROOF with exit code 0
+- Validate YAML syntax with yamllint (choose ONE path):
+  
+  Path 1 (Script - Preferred): 
+    1. Run:  `yamllint .github/agents/*.md` or `.github/scripts/validate-yaml-frontmatter.sh .github/agents/*.md`
+    2. Exit code MUST be 0 (no warnings, no errors)
+    3. If exit code non-zero:  HALT, fix ALL warnings/errors, re-run
+    4. Document in PREHANDOVER_PROOF with exit code 0
+  
+  Path 2 (Evidence-Based - Agent Environments):
+    1. Extract YAML frontmatter manually (awk command or equivalent)
+    2. Validate with yamllint or equivalent tool
+    3. Fix ALL warnings/errors (no rationalization)
+    4. Document comprehensive evidence in PREHANDOVER_PROOF
+    5. Include attestation statement and signature
+    6. See .github/scripts/README.md for detailed example
+  
+  BOTH PATHS: "Warnings are not errors" is FALSE - warnings ARE errors
 ```
+
+---
+
+**Updated**: 2026-01-19 (Added evidence-based validation path)  
+**Authority**: CS2 override precedent (environmental limitation exception), Issue #980
 
 ## Authority
 
