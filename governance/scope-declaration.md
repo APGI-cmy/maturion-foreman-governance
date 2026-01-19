@@ -51,6 +51,8 @@ A .github/scripts/validate-yaml-frontmatter.sh
 M .github/workflows/governance-scope-to-diff-gate.yml
 M .github/workflows/locked-section-protection-gate.yml
 M governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md
+A PREHANDOVER_PROOF.md
+M governance/scope-declaration.md
 
 ---
 
