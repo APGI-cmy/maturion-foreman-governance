@@ -22,6 +22,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# Constants
+SHA256_TRUNCATE_LENGTH = 12  # Consistent with CANON_INVENTORY.json format
+
 
 def calculate_sha256(file_path: Path) -> str:
     """Calculate SHA256 hash of a file."""
@@ -29,7 +32,7 @@ def calculate_sha256(file_path: Path) -> str:
     with open(file_path, "rb") as f:
         for byte_block in iter(lambda: f.read(4096), b""):
             sha256_hash.update(byte_block)
-    return sha256_hash.hexdigest()[:12]  # First 12 chars for consistency with CANON_INVENTORY
+    return sha256_hash.hexdigest()[:SHA256_TRUNCATE_LENGTH]
 
 
 def load_central_inventory(governance_source_path: Path) -> Dict:
@@ -90,6 +93,26 @@ def determine_classification(layer_down_status: str) -> str:
         return "OPTIONAL"
 
 
+def is_mandatory_for_repo(layer_down_status: str, repo_type: str = "application") -> bool:
+    """
+    Determine if a canon is mandatory for a specific repository type.
+    
+    Args:
+        layer_down_status: The layer_down_status from central inventory
+        repo_type: Type of repository ("application", "governance", "infrastructure")
+    
+    Returns:
+        True if mandatory for this repository type
+    """
+    # PUBLIC_API canons are mandatory for all application repositories
+    if layer_down_status == "PUBLIC_API":
+        return True
+    
+    # Repository-specific rules can be added here
+    # For now, only PUBLIC_API is mandatory
+    return False
+
+
 def determine_priority(layer_down_status: str, mandatory: bool) -> str:
     """Determine priority based on layer_down_status and mandatory flag."""
     if layer_down_status == "PUBLIC_API" and mandatory:
@@ -100,6 +123,31 @@ def determine_priority(layer_down_status: str, mandatory: bool) -> str:
         return "HIGH"
     else:
         return "MEDIUM"
+
+
+def detect_repo_name(repo_root: Path) -> Optional[str]:
+    """Attempt to auto-detect repository name from git remote."""
+    try:
+        import subprocess
+        result = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        if result.returncode == 0:
+            url = result.stdout.strip()
+            # Extract owner/repo from GitHub URL
+            if "github.com" in url:
+                parts = url.rstrip("/").split("/")
+                if len(parts) >= 2:
+                    repo = parts[-1].replace(".git", "")
+                    owner = parts[-2].split(":")[-1]  # Handle git@ format
+                    return f"{owner}/{repo}"
+    except Exception:
+        pass
+    return None
 
 
 def generate_inventory(
@@ -117,7 +165,9 @@ def generate_inventory(
     
     # Determine repository name
     if repo_name is None:
-        repo_name = "<owner>/<repo>"
+        repo_name = detect_repo_name(repo_root)
+        if repo_name is None:
+            repo_name = "<owner>/<repo>"
     
     # Initialize inventory structure
     inventory = {
@@ -144,8 +194,8 @@ def generate_inventory(
         layer_down_status = canon.get("layer_down_status", "OPTIONAL")
         
         # Determine if this canon is mandatory for this repository
-        # PUBLIC_API canons are mandatory for application repos
-        mandatory = layer_down_status == "PUBLIC_API"
+        # Uses configurable logic based on repository type
+        mandatory = is_mandatory_for_repo(layer_down_status)
         
         if mandatory:
             inventory["total_canons_required"] += 1
@@ -252,6 +302,11 @@ def main():
         type=Path,
         help="Output path for inventory file (default: <repo-root>/GOVERNANCE_ALIGNMENT_INVENTORY.json)"
     )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Fail with exit code 1 if coverage is below 100% (useful for CI enforcement)"
+    )
     
     args = parser.parse_args()
     
@@ -285,7 +340,11 @@ def main():
     # Exit with appropriate code
     if inventory['coverage_percentage'] < 100:
         print("⚠ WARNING: Governance alignment is incomplete")
-        sys.exit(0)  # Don't fail, just warn
+        if args.strict:
+            print("ERROR: --strict mode enabled, failing due to incomplete coverage")
+            sys.exit(1)
+        else:
+            sys.exit(0)  # Don't fail, just warn
     else:
         print("✓ SUCCESS: Full governance alignment achieved")
         sys.exit(0)
