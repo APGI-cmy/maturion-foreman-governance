@@ -1,54 +1,80 @@
 ---
-RESPONSIBILITY_DOMAIN: Governance Infrastructure
+RESPONSIBILITY_DOMAIN: Governance Canon
 ---
 
-# Governance Scope Declaration - Governance Inventory Template
+# Governance Scope Declaration - CS2 Direct Authority Model
 
-**PR Branch**: copilot/create-governance-inventory-template  
-**Date**: 2026-01-19  
+**PR Branch**: (to be created)  
+**Date**: 2026-01-20  
 **Agent**: governance-repo-administrator  
 **Repository**: APGI-cmy/maturion-foreman-governance
 
 ## Changed Files
 
-### Modified Files (2 total)
-M .gitignore
-M SCOPE_DECLARATION.md
+### Modified Files (1 total)
+M governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md
 
-### Added Files (3 total)
-A governance/runbooks/GOVERNANCE_INVENTORY_MAINTENANCE.md
-A governance/templates/GOVERNANCE_ALIGNMENT_INVENTORY_TEMPLATE.json
-A scripts/sync_repo_inventory.py
-
-**Total Files**: 5
+**Total Files**: 1
 
 ## Scope Rationale
 
-This PR creates governance inventory infrastructure for consumer repositories:
+This change implements the CS2 Direct Authority Model per CS2 strategic decision 2026-01-20:
 
-1. **Template file**: JSON schema for repo-specific governance alignment inventories
-2. **Sync script**: Python utility to generate/update inventories by comparing local canons against central inventory
-3. **Runbook**: Complete maintenance documentation for initialization, sync, validation, and CI integration
-4. **Scripts directory**: New infrastructure directory for governance tooling
+### Change Type: Complete Rewrite
+- **File**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`
+- **Version**: 1.0.0 → 2.0.0
+- **Effective Date**: 2026-01-13 → 2026-01-20
+- **Change Magnitude**: 223 insertions(+), 269 deletions(-)
+
+### Major Changes
+
+1. **Removed Agent Contract Administrator Layer**
+   - Deleted entire Section 5 ("Agent Contract Administrator")
+   - Removed all references to agent-contract-administrator
+   - Eliminated AI intermediary between CS2 and agent contracts
+
+2. **Renamed Instruction System → Recommendation System**
+   - Section 6: "Instruction System" → "Agent Recommendation System"
+   - Changed from YAML instructions to Markdown recommendations
+   - Location: `governance/agent-contract-instructions/` → `governance/proposals/agent-file-recommendations/`
+   - Process: Agents propose, CS2 implements (no agent execution)
+
+3. **Simplified Authority Hierarchy**
+   - Section 4: "Single-Writer Authority Model" → "CS2 Direct Authority Model"
+   - From 3 levels (CS2 → Agent Contract Admin → All Agents) to 2 levels (CS2 → All Agents)
+   - CS2 is ONLY authority for agent file creation/modification
+
+4. **Updated Standing Prohibition Language**
+   - Section 8: Now references CS2 only (not agent-contract-administrator)
+   - Added "Process for Agent File Changes" (5-step process)
+   - Agents MUST create recommendations, MUST NOT implement
+
+5. **Updated Integration Section**
+   - Section 11: Simplified authority model
+   - Superseded previous multi-level authority grants
+
+6. **Added Version History**
+   - Section 14: Documents major changes from v1.0.0
+   - Clear change log for future reference
 
 ### Purpose
-- Enables consumer repositories to track governance alignment
-- Provides automated compliance reporting
-- Identifies missing mandatory canons
-- Detects version drift through SHA256 hashing
-- Supports self-healing governance mandate
+- Eliminate unnecessary AI intermediary layer
+- CS2 creates/modifies ALL agent files directly
+- Faster iteration, perfect fidelity, clear accountability
+- Simplified governance with two-level authority model
 
 ### Authority
-- Issue: [INFRASTRUCTURE] Create Repo-Specific Governance Inventory Template
-- PR APGI-cmy/maturion-foreman-governance#983 gap analysis
-- Self-healing governance mandate
-- Automated compliance requirement
+- CS2 strategic decision 2026-01-20
+- Requested by CS2 (Johan Ras)
+- Implements direct authority model
 
 ### Validation
 - ✅ Scope declaration exists (this file - BL-027)
-- ✅ All infrastructure deliverables complete
-- ✅ Script tested successfully (100% coverage on governance repo)
-- ✅ No canon modifications
-- ✅ No agent contract modifications
+- ✅ No references to "agent-contract-administrator" remain (verified)
+- ✅ All sections updated for coherence
+- ✅ Version incremented to 2.0.0
+- ✅ Effective date updated to 2026-01-20
+- ✅ No agent contract modifications (governance canon only)
+- ⏳ Pre-gate validation pending
 
-**Ready for gate validation.**
+**Ready for pre-gate validation.**

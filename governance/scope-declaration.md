@@ -1,36 +1,38 @@
 # SCOPE DECLARATION
 
 SCOPE_SCHEMA_VERSION: v1
-PR_ID: TBD (copilot/create-governance-inventory-template)
+PR_ID: TBD (CS2 Direct Authority Model Implementation)
 OWNER: governance-repo-administrator
-DATE_UTC: 2026-01-19
+DATE_UTC: 2026-01-20
 
 ---
 
 ## PR Responsibility Domain
 
-RESPONSIBILITY_DOMAIN: Governance Infrastructure
+RESPONSIBILITY_DOMAIN: Governance Canon
 
 ---
 
 ## Explicitly In Scope
 
 IN_SCOPE:
-- Creation of governance alignment inventory template (GOVERNANCE_ALIGNMENT_INVENTORY_TEMPLATE.json)
-- Sync script for generating repo-specific inventories (sync_repo_inventory.py)
-- Maintenance runbook documentation (GOVERNANCE_INVENTORY_MAINTENANCE.md)
-- Scripts directory structure creation
-- Gitignore update to exclude generated test artifacts
+- Complete rewrite of AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md
+- Removal of agent-contract-administrator intermediary layer
+- Implementation of CS2 Direct Authority Model
+- Replacement of instruction system with recommendation system
+- Simplification of authority hierarchy from 3 levels to 2 levels
+- Update of all prohibition language to reference CS2 only
+- Version increment to 2.0.0
 
 ---
 
 ## Explicitly Out of Scope
 
 OUT_OF_SCOPE:
-- Tests (no test infrastructure for JSON templates and Python utility scripts)
-- Modifications to existing canonical documents
-- Agent contract modifications
+- Agent contract modifications (will be done by CS2 separately)
+- Consumer repository updates (layer-down will follow)
 - CI workflow changes
+- Tests (no test infrastructure for governance canon)
 - Migrations
 - Email
 - Logging
@@ -40,19 +42,15 @@ OUT_OF_SCOPE:
 - Database changes
 - API changes
 - UI changes
-- Canon file modifications
-- Layer-down to consumer repositories
+- Agent file modifications (.github/agents/**/*.md)
 
 ---
 
 ## Files Changed
 
-M .gitignore
 M SCOPE_DECLARATION.md
 M governance/scope-declaration.md
-A governance/runbooks/GOVERNANCE_INVENTORY_MAINTENANCE.md
-A governance/templates/GOVERNANCE_ALIGNMENT_INVENTORY_TEMPLATE.json
-A scripts/sync_repo_inventory.py
+M governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md
 
 ---
 
@@ -60,7 +58,7 @@ A scripts/sync_repo_inventory.py
 
 EXPECTED_VERIFICATION:
 - CI: GREEN (governance-scope-to-diff-gate, governance-gate)
-- TESTS: NOT APPLICABLE (no test infrastructure for templates and utility scripts)
+- TESTS: NOT APPLICABLE (no test infrastructure for governance canon)
 - GOVERNANCE_GATES: GREEN (scope-to-diff validation)
 
 ---
@@ -69,7 +67,7 @@ EXPECTED_VERIFICATION:
 
 SCOPE_FROZEN: YES
 
-This scope is frozen. Infrastructure deliverables complete: template, script, runbook.
+This scope is frozen. Canonical governance rewrite complete per CS2 strategic decision 2026-01-20.
 
 ---
 
