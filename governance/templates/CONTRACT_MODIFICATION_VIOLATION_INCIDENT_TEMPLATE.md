@@ -71,9 +71,9 @@
 ### What Rule Was Broken
 
 **Canonical Prohibition**:
-> "ONLY the Agent Contract Administrator (`.github/agents/agent-contract-administrator.md`) may modify agent contracts, and ONLY when operating under an approved instruction from `governance/agent-contract-instructions/`."
+> "ONLY CS2 (Johan Ras in bootstrap mode, Maturion in production) may modify agent contracts directly. No agent may write to any `.agent` file."
 
-**Authority**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` Section 4
+**Authority**: `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md`
 
 ### Why It Happened
 
@@ -217,10 +217,10 @@ If NO:
 ### Instruction System Activation
 
 **If Not Yet Active**:
-- [ ] Accelerate instruction system rollout
-- [ ] Ensure Agent Contract Administrator is operational
-- [ ] Validate CS2 approval workflow
-- [ ] Test end-to-end instruction lifecycle
+- [ ] Validate CS2 direct authority model is understood
+- [ ] Ensure agent recommendation system is operational
+- [ ] Test agent escalation to CS2 workflow
+- [ ] Validate no agents have `.agent` file write authority
 
 **If Already Active**:
 - [ ] Review why instruction system was bypassed

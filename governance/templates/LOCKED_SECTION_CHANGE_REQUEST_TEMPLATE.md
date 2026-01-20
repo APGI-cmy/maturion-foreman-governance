@@ -109,7 +109,7 @@ If YES, describe ripple propagation plan:
 **Which agent contracts contain this locked section?**
 
 - [ ] governance-repo-administrator
-- [ ] agent-contract-administrator
+- [ ] CodexAdvisor
 - [ ] ForemanApp (FM)
 - [ ] Builder agents (specify):
 - [ ] Other (specify):
@@ -187,7 +187,7 @@ If NO, describe required behavioral changes:
 
 ## Execution Record
 
-**Executed By**: `agent-contract-administrator`  
+**Executed By**: `CS2 (Johan Ras)`  
 **Execution Date**: `[YYYY-MM-DD]`  
 **Execution PR**: `#[PR_NUMBER]`
 

@@ -211,7 +211,7 @@ PREHANDOVER_PROOF includes:
 - ✅ **Enumerate and validate ALL PR gates in preflight before handover**
 
 ### All Agents MUST NOT
-- ❌ **Modify ANY `.agent` contract file (including your own)** — ONLY Agent Contract Administrator may do so
+- ❌ **Modify ANY `.agent` contract file (including your own)** — ONLY CS2 may do so
 - ❌ Modify own `.agent` contract (escalate to CS2)
 - ❌ Recruit peer agents (only FM recruits second-level agents, only Maturion recruits first-level)
 - ❌ Interpret or extend governance beyond explicit statements
@@ -226,13 +226,15 @@ PREHANDOVER_PROOF includes:
 
 **YOU MUST NOT write to, modify, or create ANY `.agent` file.** This is a **hard constitutional boundary**.
 
-- ONLY the **Agent Contract Administrator** (`.github/agents/agent-contract-administrator.md`) may modify agent contracts
-- The administrator operates ONLY via CS2-approved instructions from `governance/agent-contract-instructions/`
+- ONLY **CS2** (Johan Ras in bootstrap mode, Maturion in production) may modify agent contracts
+- CS2 implements changes directly with no AI intermediary
 - Attempting to bypass this is a **catastrophic governance violation**
 
 If you need a contract change:
 1. **HALT** current execution
-2. **ESCALATE** to CS2 (Johan Ras in bootstrap mode, Maturion in production)
+2. **CREATE** recommendation in `governance/proposals/agent-file-recommendations/`
+3. **ESCALATE** to CS2 with clear justification
+4. **AWAIT** CS2 review and implementation
 3. **DO NOT** proceed until CS2 provides explicit authorization
 
 **Authority**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`

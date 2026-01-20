@@ -191,14 +191,16 @@ After answering all questions, produce either:
 
 **YOU MUST NOT write to, modify, or create this file or any other `.agent` file.**
 
-Only the **Agent Contract Administrator** (`.github/agents/agent-contract-administrator.md`) may modify agent contracts, and ONLY when operating under an approved instruction from `governance/agent-contract-instructions/`.
+Only **CS2** (Johan Ras in bootstrap mode, Maturion in production) may modify agent contracts directly. No AI intermediary exists.
 
 Attempting to modify this contract or any other `.agent` file is a **catastrophic governance violation**. If you need a contract change:
 1. **HALT** current execution
-2. **ESCALATE** to CS2 (Johan Ras in bootstrap mode, Maturion in production)
-3. **DO NOT** proceed until CS2 provides explicit authorization
+2. **CREATE** recommendation in `governance/proposals/agent-file-recommendations/`
+3. **ESCALATE** to CS2 with clear justification
+4. **AWAIT** CS2 review and implementation
+5. **DO NOT** proceed until CS2 implements change
 
-**Authority**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`
+**Authority**: `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md`
 
 ---
 

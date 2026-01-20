@@ -48,7 +48,7 @@
 **Contracts Analyzed**:
 
 - [ ] governance-repo-administrator.agent.md
-- [ ] agent-contract-administrator.md
+- [ ] CodexAdvisor-agent.md
 - [ ] ForemanApp-agent.md
 - [ ] [Builder contracts] (list):
 - [ ] Other (specify):

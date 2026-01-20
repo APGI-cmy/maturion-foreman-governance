@@ -1,22 +1,55 @@
-# Agent Contract Instructions System
+# Agent Contract Instructions System [DEPRECATED]
 
-## Purpose
+## ⚠️ DEPRECATION NOTICE
 
-This directory contains the **instruction system** for modifying agent contracts (`.agent` files) across the Maturion ecosystem.
-
-**Authority**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`
-
----
-
-## Overview
-
-All modifications to `.agent` files MUST go through this instruction system. Only the **Agent Contract Administrator** (`.github/agents/agent-contract-administrator.md`) may write to `.agent` files, and ONLY when operating under an approved instruction.
-
-**Hard Rule**: No agent, FM, builder, or human (except CS2) may bypass this system.
+**Status**: DEPRECATED as of 2026-01-20  
+**Replaced By**: CS2 Direct Authority Model  
+**New Location**: `governance/proposals/agent-file-recommendations/`  
+**Authority**: `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md`
 
 ---
 
-## Directory Structure
+## Migration to CS2 Direct Authority Model
+
+**What Changed**:
+- ❌ **OLD**: Agent Contract Administrator executes YAML instructions
+- ✅ **NEW**: CS2 implements changes directly from markdown recommendations
+
+**Why Changed**:
+- CS2 strategic decision 2026-01-20
+- Eliminated unnecessary AI intermediary layer
+- Simplified authority model (CS2 → Agents only)
+- Faster iteration, clearer accountability
+
+**New Process**:
+1. Agent creates recommendation in `governance/proposals/agent-file-recommendations/`
+2. Agent escalates to CS2
+3. CS2 reviews recommendation
+4. CS2 implements changes directly (no agent intermediary)
+
+**See**: `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md` for complete process
+
+---
+
+## Historical Purpose (Pre-2026-01-20)
+
+This directory contained the **instruction system** for modifying agent contracts (`.agent` files) across the Maturion ecosystem.
+
+**Previous Authority**: `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` v1.0.0
+
+---
+
+## Previous Overview (OBSOLETE)
+
+All modifications to `.agent` files went through this instruction system. The **Agent Contract Administrator** (`.github/agents/agent-contract-administrator.md`) would write to `.agent` files when operating under an approved instruction.
+
+**Previous Hard Rule**: No agent, FM, builder, or human (except CS2) could bypass this system.
+
+**Current Rule**: No agent may write to `.agent` files. Only CS2 may create/modify agent files directly.
+
+---
+
+## Previous Directory Structure (REFERENCE ONLY)
 
 ```
 governance/agent-contract-instructions/
@@ -317,23 +350,23 @@ Use incident template: `governance/incidents/INCIDENT-<YYYY-MM-DD>-CONTRACT-MODI
 ## Authority and Precedence
 
 **This instruction system is governed by**:
-- `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` (supreme authority)
+- `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` v1.0.0 (DEPRECATED - see v2.0.0)
 - `.agent.schema.md` (schema validation requirements)
 - `AGENT_RECRUITMENT_AND_CONTRACT_AUTHORITY_MODEL.md` (authority hierarchy)
 
-If any conflict arises, the canonical protocol prevails.
+If any conflict arose, the canonical protocol prevailed.
 
 ---
 
-## Contact and Escalation
+## Contact and Escalation (DEPRECATED)
 
-For questions or issues with the instruction system:
-- **Governance questions**: Escalate to governance-repo-administrator
-- **Approval questions**: Escalate to CS2 (Johan Ras / Maturion)
-- **Application issues**: Escalate to agent-contract-administrator (if operational) or CS2
+**For current process**, see: `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md`
+
+**For agent file changes**: Create recommendation in `governance/proposals/agent-file-recommendations/` and escalate to CS2
 
 ---
 
-**Version**: 1.0.0  
+**Version**: 1.0.0 [DEPRECATED]  
 **Authority**: CS2 (Johan Ras in bootstrap mode, Maturion in production)  
-**Last Updated**: 2026-01-13
+**Last Updated**: 2026-01-13  
+**Deprecated**: 2026-01-20 (replaced by CS2 Direct Authority Model)
