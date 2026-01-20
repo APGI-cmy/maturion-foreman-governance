@@ -1,0 +1,27 @@
+{
+  "repository": "<owner>/<repo>",
+  "last_sync": "YYYY-MM-DD",
+  "governance_source": "APGI-cmy/maturion-foreman-governance",
+  "canonical_inventory_version": "1.0.0",
+  "total_canons_required": 0,
+  "canons_present": 0,
+  "coverage_percentage": 0.0,
+  "layered_down": [
+    {
+      "id": "<canon-id>",
+      "path": "<local-path>",
+      "source_version": "<version>",
+      "layered_down_date": "YYYY-MM-DD",
+      "sha256": "<hash>",
+      "status": "UP_TO_DATE|OUTDATED|MODIFIED"
+    }
+  ],
+  "missing": [
+    {
+      "id": "<canon-id>",
+      "classification": "PUBLIC_API|REPO_SPECIFIC|OPTIONAL",
+      "mandatory": true,
+      "priority": "CRITICAL|HIGH|MEDIUM|LOW"
+    }
+  ]
+}
