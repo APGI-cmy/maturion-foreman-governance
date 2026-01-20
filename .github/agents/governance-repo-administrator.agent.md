@@ -111,7 +111,7 @@ constraints:
   secrets_and_env_config:  forbidden
 
 metadata:
-  version: 4.0.0
+  version: 4.0.1
   repository: APGI-cmy/maturion-foreman-governance
   context: canonical-governance-source
   protection_model: reference-based
@@ -433,8 +433,9 @@ This contract implements protection through **canonical reference** to `governan
 - Added CS2 Agent Authority to Constitutional Principles
 - **Rationale**: Eliminated unnecessary AI intermediary layer
 - **Authority**: CS2 strategic decision 2026-01-20
-**v2.5.0** and earlier: See git history
 
+**v3.0.0** (2026-01-19): Added BL-027/028 bindings and expanded pre-gate validation  
+**v2.5.0** and earlier: See git history
 ---
 
 **For complete protocols**:  See referenced governance canon documents
