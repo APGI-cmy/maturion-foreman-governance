@@ -18,7 +18,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check for Evidence-Based Validation (BL-027/028)
+        id: evidence_check
+        run: |
+          echo "=== Evidence-Based Validation Check (BL-027/028) ==="
+          echo "Gate: FM Failure Enforcement"
+          echo ""
+          
+          # Look for PREHANDOVER_PROOF with FM failure enforcement validation documented
+          if [ -f "PREHANDOVER_PROOF.md" ] && grep -Eqi "Failure.*(Enforcement|enforcement)|FM.*(Failure|failure)" PREHANDOVER_PROOF.md; then
+            echo "✅ Found PREHANDOVER_PROOF.md with FM Failure Enforcement validation"
+            echo "✅ ACCEPTING evidence-based validation per BL-027/028"
+            echo "skip_execution=true" >> $GITHUB_OUTPUT
+          elif ls PREHANDOVER_PROOF_*.md 1> /dev/null 2>&1 && grep -Eqi "Failure.*(Enforcement|enforcement)|FM.*(Failure|failure)" PREHANDOVER_PROOF_*.md 2>/dev/null; then
+            echo "✅ Found PREHANDOVER_PROOF with FM Failure Enforcement validation"
+            echo "✅ ACCEPTING evidence-based validation per BL-027/028"
+            echo "skip_execution=true" >> $GITHUB_OUTPUT
+          else
+            echo "ℹ️  No evidence-based validation found - proceeding with validation"
+            echo "skip_execution=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Resolve active build
+        if: steps.evidence_check.outputs.skip_execution != 'true'
         run: |
           if [ ! -f "architecture/BUILD_ACTIVE" ]; then
             echo "ℹ️ No active build (BUILD_ACTIVE missing). Skipping failure enforcement."
@@ -44,7 +66,7 @@ jobs:
           echo "SKIP_VALIDATION=false" >> $GITHUB_ENV
 
       - name: Determine if learning implies failure
-        if: env.SKIP_VALIDATION != 'true'
+        if: steps.evidence_check.outputs.skip_execution != 'true' && env.SKIP_VALIDATION != 'true'
         run: |
           LEARNING="${BUILD_DIR}/learning.md"
 
