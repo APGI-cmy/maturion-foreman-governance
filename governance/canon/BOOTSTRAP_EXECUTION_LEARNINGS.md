@@ -8,6 +8,19 @@ FM application automation, and delegated execution models.
 
 Entries are additive and non-retroactive.
 
+---
+
+## Historical Note: Agent-Contract-Administrator References
+
+**Date**: 2026-01-20  
+**Context**: This document contains historical references to "agent-contract-administrator" which was eliminated per CS2 strategic decision 2026-01-20.
+
+**References Preserved**: Historical learnings (BL-027, BL-028) documenting agent-contract-administrator failures are preserved as-written for audit trail and learning purposes.
+
+**Current Model**: CS2 Direct Authority Model (see `CS2_AGENT_FILE_AUTHORITY_MODEL.md`)
+
+---
+
 ## BL-0001 — Governance Stabilisation Must Precede FM Recruitment
 
 **Context:** Pre-Batch 3 (Governance Hardening & Readiness)
