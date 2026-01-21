@@ -22,7 +22,7 @@ This clarification eliminates ambiguity that previously existed regarding agent 
 
 **Critical Context**: This model has always been **implied** in governance canon. This document makes it **explicit and auditable**.
 
-**IMPORTANT UPDATE (2026-01-13)**: Contract update authority has been superseded by the **Agent Contract Management Protocol** (`AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md`). All `.agent` file modifications now go through the dedicated Agent Contract Administrator with CS2 approval. This document remains authoritative for recruitment authority only.
+**IMPORTANT UPDATE (2026-01-20)**: Contract update authority has been superseded by the **CS2 Direct Authority Model** (`CS2_AGENT_FILE_AUTHORITY_MODEL.md`). All `.agent` file modifications are now performed directly by CS2 with no AI intermediary. This document remains authoritative for recruitment authority only.
 
 **For Agent Onboarding**: New agents should read **AGENT_ONBOARDING_QUICKSTART.md** first for a streamlined introduction to the governance framework, then reference this document for detailed authority clarification.
 
@@ -102,15 +102,16 @@ This document defines **authority and responsibility**, not **implementation or 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ CS2 (Johan Ras / Maturion) — Supreme Authority              │
-│ - ONLY actor who may modify agent-contract-administrator    │
-│ - Approves ALL contract modification instructions           │
+│ - ONLY actor who may modify ANY agent contract              │
+│ - Creates/modifies all agent files directly                 │
+│ - No AI intermediary                                        │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ Agent Contract Administrator — Single Writer                │
-│ - ONLY agent authorized to write to .agent files            │
-│ - Operates via CS2-approved instructions only               │
-│ - Cannot self-modify                                        │
+│ ALL AGENTS — No Contract Authority                          │
+│ - FORBIDDEN from writing to any .agent file                 │
+│ - May create recommendations for CS2                        │
+│ - Must escalate contract needs to CS2                       │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐

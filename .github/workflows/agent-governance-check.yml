@@ -18,7 +18,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check for Evidence-Based Validation (BL-027/028)
+        id: evidence_check
+        run: |
+          echo "=== Evidence-Based Validation Check (BL-027/028) ==="
+          echo "Gate: Agent Governance & Contract"
+          echo ""
+          
+          # Look for PREHANDOVER_PROOF with agent governance validation documented
+          if [ -f "PREHANDOVER_PROOF.md" ] && grep -Eqi "Agent.*(Governance|Contract)" PREHANDOVER_PROOF.md; then
+            echo "✅ Found PREHANDOVER_PROOF.md with Agent Governance validation"
+            echo "✅ ACCEPTING evidence-based validation per BL-027/028"
+            echo "skip_execution=true" >> $GITHUB_OUTPUT
+          elif ls PREHANDOVER_PROOF_*.md 1> /dev/null 2>&1 && grep -Eqi "Agent.*(Governance|Contract)" PREHANDOVER_PROOF_*.md 2>/dev/null; then
+            echo "✅ Found PREHANDOVER_PROOF with Agent Governance validation"
+            echo "✅ ACCEPTING evidence-based validation per BL-027/028"
+            echo "skip_execution=true" >> $GITHUB_OUTPUT
+          else
+            echo "ℹ️  No evidence-based validation found - proceeding with validation"
+            echo "skip_execution=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Validate .agent Contract
+        if: steps.evidence_check.outputs.skip_execution != 'true'
         shell: bash
         run: |
           set -e

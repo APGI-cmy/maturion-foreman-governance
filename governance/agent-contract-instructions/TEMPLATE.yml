@@ -1,21 +1,30 @@
 ---
-# AGENT CONTRACT MODIFICATION INSTRUCTION TEMPLATE
-# Copy this file to pending/<instruction-id>.yml and fill in all fields
-# Authority: governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md
+# AGENT CONTRACT MODIFICATION INSTRUCTION TEMPLATE [DEPRECATED]
+# 
+# ⚠️ DEPRECATED as of 2026-01-20
+# Replaced by CS2 Direct Authority Model
+# 
+# For agent file changes, use markdown recommendations instead:
+# Location: governance/proposals/agent-file-recommendations/
+# Authority: governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md
+# 
+# This template is preserved for historical reference only.
+#
+# Previous Authority: governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md v1.0.0
 
-id: INST-YYYY-MM-DD-NNN          # Format: INST-<YYYY>-<MM>-<DD>-<NNN> (e.g., INST-2026-01-13-001)
-title: <short-description>        # Brief description of what this instruction does
-status: pending                   # draft | pending | approved | applied | rejected
-created_date: YYYY-MM-DD          # Date instruction was created
-created_by: <agent-id-or-cs2>     # Who created this instruction (e.g., "governance-repo-administrator", "Johan Ras")
+id: INST-YYYY-MM-DD-NNN          # [DEPRECATED] Format: INST-<YYYY>-<MM>-<DD>-<NNN>
+title: <short-description>        # [DEPRECATED] Use markdown recommendations instead
+status: deprecated                # All instructions in this system are now deprecated
+created_date: YYYY-MM-DD         
+created_by: <agent-id-or-cs2>    
 
-# Filled in when CS2 approves
-approved_date: null               # Date CS2 approved (YYYY-MM-DD)
-approved_by: null                 # CS2 name ("Johan Ras" or "Maturion")
+# [DEPRECATED] CS2 now implements directly, no approval step
+approved_date: null              
+approved_by: null                
 
-# Filled in when Agent Contract Administrator applies
-applied_date: null                # Date changes were applied (YYYY-MM-DD)
-applied_by: null                  # Should be "agent-contract-administrator"
+# [DEPRECATED] No agent intermediary, CS2 implements directly
+applied_date: null               
+applied_by: null                 # Was "agent-contract-administrator" (now eliminated)
 
 authority:
   source: <governance-canon-reference>  # Which canonical document requires/authorizes this change?
