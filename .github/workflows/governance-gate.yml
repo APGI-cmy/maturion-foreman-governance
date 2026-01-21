@@ -1,1 +1,9 @@
-          for dir in app components lib types tests foreman swarm; do
+# This workflow sets up the governance gate for the Maturion Foreman Governance project
+
+# (...)  # Assume the rest of the YAML content is unchanged
+
+for dir in app components lib types tests foreman swarm; do
+  # process each directory
+  # (...)  # Assume the processing logic is unchanged
+
+# (...)  # Assume the rest of the YAML content is unchanged
