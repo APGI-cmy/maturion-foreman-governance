@@ -1,5 +1,10 @@
-# Github Workflow for Governance Gate  
+# This file contains the configuration for the governance gate workflow.
 
-# Existing content...
+# ... (other contents of the file)
+
+# A modified loop to iterate over the directories
 for dir in app components lib types tests foreman swarm; do
-# Remaining script...
+    # Your actions here
+# End of loop
+
+# ... (remaining contents of the file)
