@@ -1,11 +1,6 @@
-# This YAML file is for governance gate workflows
+# This file defines the governance gate workflow.
 
-# Other contents of the file...
-
-# Updated Loop
+# Define the directories to check
 for dir in app components lib types tests foreman swarm; do
-    # Command to run for each directory
-    echo "Processing $dir"
-    # ...rest of the script follows...
-
-# Other contents of the file...
+  # Your logic here
+done
