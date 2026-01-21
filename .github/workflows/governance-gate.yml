@@ -1,9 +1,6 @@
-# This workflow sets up the governance gate for the Maturion Foreman Governance project
+# Workflow for governance gate
 
-# (...)  # Assume the rest of the YAML content is unchanged
+# ... previous content ...
 
 for dir in app components lib types tests foreman swarm; do
-  # process each directory
-  # (...)  # Assume the processing logic is unchanged
-
-# (...)  # Assume the rest of the YAML content is unchanged
+    # ... remaining script ...
