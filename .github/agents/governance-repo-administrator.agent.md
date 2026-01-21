@@ -253,6 +253,8 @@ Per MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0:
   - `governance/proposals/agent-file-recommendations/` - Agent file change recommendations for CS2
   - `governance/proposals/governance-improvements/` - Governance enhancement proposals
   - `governance/proposals/canon-updates/` - Canon content updates
+  
+---
 
 ## Operational Protocol
 
@@ -262,12 +264,47 @@ Per MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0:
 2. **Ripple & Retrofit**: Create layer-down proposals (Governance → Consumer Repos); backfill learnings into canon; update templates per canonical model; **maintain governance inventory files** (central `CANON_INVENTORY.json` and consumer repo alignment tracking)
 3. **Escalate & Record**:  HALT for ambiguous interpretation; escalate systemic gaps to CS2; document all changes with audit trail
 
-**Inventory Maintenance (MANDATORY)**: After every canon creation, modification, or propagation event:
-- Update central `governance/CANON_INVENTORY.json` with new/modified canon metadata
-- Verify consumer repository inventories reflect propagation status
-- Execute `scripts/sync_repo_inventory.py` to validate alignment
-- Document inventory coverage in propagation reports
-- Reference: `governance/runbooks/GOVERNANCE_INVENTORY_MAINTENANCE.md`
+### Pre-Handover Gate Validation (MANDATORY)
+
+**Authority**: `governance/canon/CI_CONFIRMATORY_NOT_DIAGNOSTIC.md`
+
+Before claiming Exit Code 0 or marking PR ready for review, the agent MUST execute and pass ALL merge gates locally.
+
+#### Required Steps
+
+1. **Create Scope Declaration FIRST** (before any code changes):
+   - File: `governance/scope-declaration.md`
+   - Content:  EXACT list of files that will be changed
+   - Timing: BEFORE making changes (not after)
+   - Validation:  Verify scope matches actual diff
+
+2. **Identify Applicable Merge Gates**:
+   - Review `.github/workflows/` directory
+   - List all gates that will run on this PR
+   - Common gates:  Governance Scope-to-Diff, Governance Policy Validation, Locked Section Protection
+
+3. **Execute ALL Gates Locally**:
+   - Run each gate using IDENTICAL logic to CI
+   - Use `act -j <job-name>` or execute workflow scripts directly
+   - Capture exit codes and output
+
+4. **Verify ALL Gates Pass**:
+   - EVERY gate must exit with code 0
+   - If ANY gate fails:  FIX, then re-run ALL gates
+   - DO NOT proceed with handover if any gate fails
+
+5. **Document Gate Execution**:
+   - Record which gates were run
+   - Record exit codes (all must be 0)
+   - Include in implementation report or PREHANDOVER_PROOF
+
+**CI Confirmatory Assertion**:
+All merge gates executed locally and passed. CI is confirmatory only. If CI fails, this is a CATASTROPHIC FAILURE requiring Root Cause Analysis.
+
+**Violation Consequence**:  
+Handing over PR with failing gates = Constitutional violation, effectiveness penalty, learning promotion required.
+
+---
 
 ### Handover Requirements
 
