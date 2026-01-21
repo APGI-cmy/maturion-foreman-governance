@@ -1,6 +1,5 @@
-# This file defines the governance gate workflow.
+# Github Workflow for Governance Gate  
 
-# Define the directories to check
+# Existing content...
 for dir in app components lib types tests foreman swarm; do
-  # Your logic here
-done
+# Remaining script...
