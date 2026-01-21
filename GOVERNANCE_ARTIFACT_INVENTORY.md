@@ -163,6 +163,7 @@ Template files provide reusable structures for governance artifacts.
 | File | Purpose | Categories |
 |------|---------|------------|
 | `BUILDER_TASK_TEMPLATE.md` | Template for builder task definitions | Readiness |
+| `CANON_CREATION_AND_PROPAGATION_CHECKLIST.md` | Comprehensive workflow checklist for canon creation and propagation with mandatory inventory maintenance | Layer-down, Feedback/learning |
 | `PLATFORM_READINESS_CHECKLIST.template.md` | Template for platform readiness checklists | Readiness |
 | `PR_GATE_RELEASE_CHECKLISTS_README.md` | Documentation for PR gate release checklists | PR-gates |
 | `PR_GATE_RELEASE_CHECKLIST_BUILDER.md` | Builder-specific PR gate release checklist | PR-gates |

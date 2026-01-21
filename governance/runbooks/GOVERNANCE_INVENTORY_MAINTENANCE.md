@@ -1,7 +1,8 @@
 # Governance Inventory Maintenance Runbook
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Effective Date**: 2026-01-19  
+**Updated**: 2026-01-21  
 **Authority**: PR APGI-cmy/maturion-foreman-governance#983
 
 ## Purpose
@@ -366,16 +367,20 @@ The generated `GOVERNANCE_ALIGNMENT_INVENTORY.json` follows this schema:
 
 ## Related Documents
 
+- `governance/canon/GOVERNANCE_RIPPLE_MODEL.md` - Ripple propagation policy (mandates inventory maintenance)
 - `governance/canon/CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md` - Layer-down process
 - `governance/canon/GOVERNANCE_LAYERDOWN_CONTRACT.md` - Layer-down requirements
+- `governance/templates/CANON_CREATION_AND_PROPAGATION_CHECKLIST.md` - Complete workflow with inventory enforcement
 - `governance/CANON_INVENTORY.json` - Central inventory source
 - `governance/templates/GOVERNANCE_ALIGNMENT_INVENTORY_TEMPLATE.json` - Inventory schema
+- `.github/agents/governance-repo-administrator.agent.md` - Agent contract (inventory maintenance responsibilities)
 
 ## Change History
 
 | Version | Date       | Changes                                    |
 |---------|------------|--------------------------------------------|
 | 1.0.0   | 2026-01-19 | Initial release - Complete workflow guide  |
+| 1.1.0   | 2026-01-21 | Added policy integration references (GOVERNANCE_RIPPLE_MODEL, agent contract, workflow checklist) |
 
 ## Support
 
