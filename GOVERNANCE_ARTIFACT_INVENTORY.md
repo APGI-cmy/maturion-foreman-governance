@@ -44,6 +44,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md` | Protocol for keeping agent context synchronized with canon | Layer-down |
 | `AGENT_RECRUITMENT.md` | Defines rules for recruiting and activating agents | Readiness |
 | `AGENT_ROLE_GATE_APPLICABILITY.md` | Maps which PR gates apply to which agent roles | PR-gates |
+| `AGENT_SELF_GOVERNANCE_PROTOCOL.md` | **NEW (2026-01-21)** - Defines universal agent self-governance check before every job, agent-specific alignment rules, and mandatory attestation requirements | Layer-down, Readiness, PR-gates |
 | `APP_STARTUP_REQUIREMENTS_DECLARATION.md` | Defines application commissioning and startup requirements | Readiness, Layer-down |
 | `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` | Defines architecture artifact completeness criteria | Readiness, PR-gates |
 | `AUDIT_READINESS_MODEL.md` | Defines audit trail and evidence requirements | Readiness |
@@ -405,6 +406,23 @@ Technical surveys for governance technology decisions.
 | File | Purpose | Categories |
 |------|---------|------------|
 | `TSP_01_INITIAL_SURVEY.md` | Initial technical survey | (documentation) |
+
+---
+
+## Governance Diagrams (governance/diagrams/)
+
+**NEW (2026-01-21)** - Workflow and process diagrams for governance protocols.
+
+| File | Purpose | Categories |
+|------|---------|------------|
+| `agent-self-governance-check-workflow.md` | **NEW (2026-01-21)** - Visual workflow for universal agent self-governance check (before every job) | Layer-down, Readiness |
+| `inventory-ripple-process-workflow.md` | **NEW (2026-01-21)** - Visual workflow for inventory ripple and reference process when canonical governance changes | Layer-down, Readiness |
+| `error-drift-handling-workflow.md` | **NEW (2026-01-21)** - Visual workflow for error and drift handling when agent alignment checks fail | Layer-down, Readiness |
+| `agent-authority-hierarchy-diagram.md` | **NEW (2026-01-21)** - Visual diagram of agent self-align authority matrix and escalation paths | Layer-down, Readiness |
+
+**Last Updated**: 2026-01-21  
+**Ripple Required**: YES - These diagrams MUST ripple to all consumer repos (office-app, PartPulse, R_Roster)  
+**Authority**: AGENT_SELF_GOVERNANCE_PROTOCOL.md v1.0.0
 
 ---
 
@@ -794,5 +812,5 @@ Implementation completion reports (not canonical governance, but records impleme
 ---
 
 **Completion Status**: CURRENT  
-**Last Updated**: 2026-01-08
+**Last Updated**: 2026-01-21
 **Next Phase**: Gap analysis (Phase 1.2 - requires separate authorization)
