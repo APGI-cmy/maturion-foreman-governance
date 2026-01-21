@@ -205,6 +205,11 @@ python .github/scripts/check_locked_sections.py --mode=validate-metadata --contr
 
 # ALL must exit 0 - HALT if any fail
 
+Document in PREHANDOVER_PROOF: Include all commands executed, exit codes (all must be 0), and timestamps.
+
+If ANY validation fails: HALT, fix completely, re-run ALL, only proceed when 100% pass.
+
+<!-- LOCKED END -->
 ---
 
 ## 🔒 Merge Gates (LOCKED)
@@ -318,6 +323,35 @@ python .github/scripts/check_locked_sections.py --mode=validate-metadata --contr
 2. **ESCALATED**:  Blocker documented with full context to CS2, work in safe state
 
 **NO partial handovers. NO "almost done".**
+
+---
+
+## 🔒 Mandatory Improvement Capture (LOCKED)
+
+<!-- Lock ID: LOCK-GOVADMIN-IMPROVEMENT-001 | Authority: MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md v2.0.0 | Review: quarterly -->
+
+**MANDATORY after every significant session**:  Capture improvement proposals.
+
+**Authority**: `MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` v2.0.0
+
+**Quick Protocol**:
+1. **Identify**: What was harder/unclear/inefficient?
+2. **Document**: Create proposal in `governance/proposals/[category]/improvement-YYYYMMDD-[topic]. md`
+3. **Escalate**: Tag "GOVERNANCE IMPROVEMENT PROPOSAL — Awaiting CS2 Review"
+
+**Categories**: 
+- `agent-file-recommendations/` - Agent contract improvements
+- `governance-improvements/` - Canon enhancements
+- `process-improvements/` - Workflow improvements
+- `canon-updates/` - Constitutional updates
+
+**Proposal Template**: See `MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` Section 4
+
+**Frequency**: After EVERY PR requiring governance interpretation, quarterly minimum
+
+**Prohibited**: Skipping capture, verbal-only improvements, implementing without CS2 approval
+
+<!-- LOCKED END -->
 
 ---
 
