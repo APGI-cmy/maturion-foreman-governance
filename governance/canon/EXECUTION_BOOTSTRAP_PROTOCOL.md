@@ -200,8 +200,13 @@ Before handover, agent MUST verify that local validation aligns with CI gate wor
 2. **Identify Expected Scripts/Checks**:
    - For each gate workflow, extract:
      - Validation script paths (e.g., `.github/scripts/validate-*.sh`)
-     - Check commands or validation logic
-     - Required files or artifacts
+     - Check commands or validation logic (e.g., `yamllint`, `grep`, `diff` commands)
+     - Required files or artifacts (e.g., `SCOPE_DECLARATION.md`, `PREHANDOVER_PROOF.md`)
+   - **Examples of validation logic to extract**:
+     - Script execution: `bash .github/scripts/validate-scope-to-diff.sh`
+     - Inline checks: `test -f governance/scope-declaration.md`
+     - Command validation: `yamllint .github/workflows/*.yml`
+     - Python scripts: `python3 .github/scripts/check_locked_sections.py --mode detect-modifications`
 
 3. **Verify Script Existence and Executability**:
    - Confirm all referenced scripts exist in repository
@@ -216,6 +221,12 @@ Before handover, agent MUST verify that local validation aligns with CI gate wor
 5. **Handle Mismatches**:
    - **If agent's proof incomplete**: Fix before handover, re-run all gates
    - **If gate workflow is wrong** (script missing, logic mismatch): **HALT and escalate to CS2/owner for urgent correction**
+     - **Escalation procedure**: 
+       - Create GitHub issue with title: `[URGENT] Gate/Agent Drift Detected: [gate-name]`
+       - Label: `gate-drift`, `escalation`, `cs2-required`
+       - Include: Workflow file path, missing/incorrect script, evidence of mismatch
+       - Notify CS2 via issue mention: `@APGI-cmy` (or repository owner)
+       - DO NOT proceed with handover until drift resolved
    - **NO handover permitted** with gate drift/misalignment
 
 6. **Document Alignment**:

@@ -96,14 +96,20 @@ Exit code: 0
 
 **Expected Scripts/Checks Validated**:
 1. `.github/scripts/validate-scope-to-diff.sh` — ✅ EXISTS, EXECUTABLE, EXECUTED SUCCESSFULLY
-   - Verified script exists: `ls -la .github/scripts/validate-scope-to-diff.sh`
-   - Verified executable: `-rwxr-xr-x`
+   - Verified script exists and permissions:
+     ```bash
+     $ ls -la .github/scripts/validate-scope-to-diff.sh
+     -rwxr-xr-x 1 runner runner 4376 Jan 21 10:29 .github/scripts/validate-scope-to-diff.sh
+     ```
    - Executed locally: Exit code 0
    - Output: "✅ PASS: Scope declaration matches git diff"
 
 2. `.github/scripts/check_locked_sections.py` — ✅ EXISTS, EXECUTABLE, EXECUTED SUCCESSFULLY
-   - Verified script exists: `ls -la .github/scripts/check_locked_sections.py`
-   - Verified executable: `-rwxr-xr-x`
+   - Verified script exists and permissions:
+     ```bash
+     $ ls -la .github/scripts/check_locked_sections.py
+     -rwxr-xr-x 1 runner runner 11481 Jan 21 10:29 .github/scripts/check_locked_sections.py
+     ```
    - Executed locally: Exit code 0
    - Output: "✅ No locked section modifications detected"
 
