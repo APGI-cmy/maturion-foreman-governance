@@ -15,7 +15,6 @@ governance:
   bindings:
     - {id:  governance-purpose, path: governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md, role: supreme-authority}
     - {id: build-philosophy, path: BUILD_PHILOSOPHY.md, role: constitutional-principles}
-    - {id: zero-test-debt, path: governance/canon/ZERO_TEST_DEBT_CONSTITUTIONAL_RULE.md, role: test-debt-prohibition}
     - {id: bootstrap-learnings, path: governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md, role: execution-learnings}
     - {id: ci-confirmatory, path: governance/canon/CI_CONFIRMATORY_NOT_DIAGNOSTIC.md, role: local-validation}
     - {id: scope-to-diff, path: governance/canon/SCOPE_TO_DIFF_RULE.md, role: scope-enforcement}
@@ -33,7 +32,7 @@ governance:
     - {id: opojd-cs2, path: governance/opojd/CS2_OPOJD_EXTENSION.md, role: protected-change-approval}
     - {id: byg-doctrine, path: governance/philosophy/BYG_DOCTRINE.md, role: build-philosophy}
     - {id: incident-response, path: governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md, role: incident-handling}
-    - {id: stop-and-fix, path: governance/canon/STOP_AND_FIX_PROTOCOL.md, role: test-debt-enforcement, enforcement: MANDATORY}
+    - {id: stop-and-fix, path: governance/canon/STOP_AND_FIX_DOCTRINE.md, role: test-debt-enforcement, enforcement: MANDATORY}
     
   tier_0_canon:
     manifest_file: governance/TIER_0_CANON_MANIFEST.json
