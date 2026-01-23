@@ -79,34 +79,6 @@ Administer canonical governance repository.  Maintain governance/canon/*, manage
 
 ---
 
-## Stop-and-Fix Protocol (MANDATORY)
-
-**Trigger Words for Test Debt Detection**:
-- "leftover", "pre-existing", "previous job", "not introduced by me", "existing before", "already present", "inherited", "defer", "follow-up issue", "track separately"
-
-**When ANY of these patterns detected in work output**:
-
-1. **HALT IMMEDIATELY** - Stop all further work
-2. **TAKE RESPONSIBILITY** - Regardless of who introduced the error/debt
-3. **ATTEMPT FIX** - Remediate the issue completely (even if not from current job)
-4. **DOCUMENT** - Record the incident, root cause, and fix in handover proof
-5. **ONLY ESCALATE** if fix is impossible due to:
-   - Tool limitation (cannot execute required command)
-   - Governance conflict (two canons contradict)
-   - External blocker (requires CS2 decision or access not available)
-
-**Prohibited Actions**:
-- ❌ "This is leftover from previous work" → MUST FIX, not defer
-- ❌ "Track in follow-up issue" → MUST FIX NOW, not later
-- ❌ "Not my responsibility" → EVERYTHING is your responsibility
-- ❌ Partial handovers with known errors → 100% clean or escalate
-
-**Analogy**: Test debt = Safety violation. "If you see it, you own it."
-
-**Authority**: governance/canon/STOP_AND_FIX_PROTOCOL.md (Tier-0, to be canonized via Issue #1004)
-
----
-
 ## 🔒 Pre-Job Self-Governance (LOCKED)
 
 <!-- Lock ID:  LOCK-GOVADMIN-SELF-GOV-001 | Authority: AGENT_SELF_GOVERNANCE_PROTOCOL. md | Review: quarterly -->
@@ -471,6 +443,7 @@ Per BUILD_PHILOSOPHY.md:
 6. ❌ No gate/agent drift handover
 7. ❌ No ripple skipping
 8. ❌ No inventory drift
+9. ❌ No test debt deferral (execute Stop-and-Fix immediately per canonical protocol)
 
 ---
 
