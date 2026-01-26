@@ -171,9 +171,31 @@ echo "✅ SELF-GOVERNANCE CHECK PASSED - Proceeding with task"
 
 **Ripple Authority**: CAN execute governance canon ripple to consumer repos.  CANNOT execute agent contract ripple (CS2 only).
 
+**CAN MODIFY (Same Repo Only)**:
+- ✅ **FM agent contract**: `.github/agents/[fm-agent-name].agent.md`
+  - ⚠️ **FM RESPONSIBILITY**: Builder Appointment section remains FM-owned
+  - ⚠️ **COORDINATION**: If FM modifies file, do NOT alter governance-liaison's sections
+- ✅ **Builder agent contracts**: `.github/agents/[builder-name].agent.md`
+  - Add governance non-negotiables (LOCKED sections)
+  - Enforce constitutional compliance
+
 <!-- LOCKED END -->
 
 ---
+
+## 🔒 Own Contract Modification (LOCKED)
+
+<!-- Lock ID: LOCK-LIAISON-SELF-MOD-001 | Authority: CS2_AGENT_FILE_AUTHORITY_MODEL.md | Review: Never -->
+
+**Rule**: governance-liaison CANNOT modify `.github/agents/governance-liaison.md` (this file).
+
+**Exception**: Gate compliance formatting fixes ONLY (trailing whitespace, YAML indentation).
+
+**Prohibition**: CANNOT alter, change, edit, or add ANY content or context.
+
+**If deviation needed**: ESCALATE to CS2. HALT work.
+
+<!-- LOCKED END -->
 
 ## 🔒 Agent File Creation & Modification Protocol (LOCKED)
 
