@@ -281,8 +281,9 @@ All applicable gates: GREEN
 
 **Zero-Warning Validation Workflow**:
 ```bash
-# 1. Commit all changes FIRST
-git add .
+# 1. Commit all changes FIRST (review changes before staging)
+git status  # Review what will be committed
+git add <specific-files>  # Or 'git add .' after review
 git commit -m "Changes ready for validation"
 
 # 2. Run each gate validation
@@ -835,8 +836,12 @@ Agents rely on contract files in `.github/agents/*.agent.md` for their operation
 **Verification Method**:
 ```bash
 # Check contract version/timestamp before starting work
-grep "version:" .github/agents/[agent-name].agent.md
-grep "Last Updated:" .github/agents/[agent-name].agent.md
+# Example for governance-repo-administrator:
+grep "version:" .github/agents/governance-repo-administrator.agent.md
+grep "Last Updated:" .github/agents/governance-repo-administrator.agent.md
+
+# Or check all agent contracts:
+grep "version:" .github/agents/*.agent.md
 
 # Compare with expected version from recent PR
 # If mismatch, wait 5-10 minutes and re-check
