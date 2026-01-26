@@ -1,21 +1,21 @@
 # SCOPE DECLARATION
 
-**PR**: Agent Authority Model v2.0 - Granular Authority Hierarchy  
-**Date**: 2026-01-21  
-**Authority**: CS2_AGENT_FILE_AUTHORITY_MODEL.md v2.0.0, AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md v3.0.0
+**PR**: Strengthen Governance - Zero-Warning Handover Enforcement (Post-PR #1009 Incident)  
+**Date**: 2026-01-26  
+**Authority**: EXECUTION_BOOTSTRAP_PROTOCOL.md, STOP_AND_FIX_DOCTRINE.md, BUILD_PHILOSOPHY.md, INCIDENT_2026-01-26_PR_1009_INCOMPLETE_HANDOVER.md
 
 ---
 
 ## Files Changed
 
 ### Modified (M)
-M governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md
-M governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md
-M governance/templates/AGENT_CONTRACT.template.md
+M .github/agents/governance-repo-administrator.agent.md
+M governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md
+M governance/canon/AGENT_ONBOARDING_QUICKSTART.md
+M governance/templates/PREHANDOVER_PROOF_TEMPLATE.md
 
 ### Added (A)
-A governance/proposals/agent-file-recommendations/pending/AGENT-governance-repo-fix-contract-alignment-20260121.md
-A governance/reports/AGENT_AUTHORITY_MODEL_V2_LAYER_DOWN_STATUS.md
+(none - incident file already exists)
 
 ### Deleted (D)
 (none)
@@ -27,16 +27,19 @@ A governance/reports/AGENT_AUTHORITY_MODEL_V2_LAYER_DOWN_STATUS.md
 
 ## Change Summary
 
-**Type**: Canonical Governance Update  
-**Breaking Change**: Yes (v1.0.0 → v2.0.0 for CS2_AGENT_FILE_AUTHORITY_MODEL.md)  
-**Impact**: All repositories with agent contracts
+**Type**: Critical Governance Strengthening (Post-Incident)  
+**Breaking Change**: No (additive enforcement rules)  
+**Impact**: All agents in all repositories
 
 **Changes**:
-1. CS2_AGENT_FILE_AUTHORITY_MODEL.md: v1.0.0 → v2.0.0 (granular 5-level authority hierarchy)
-2. AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md: v2.0.0 → v3.0.0 (detailed authority delegation)
-3. AGENT_CONTRACT.template.md: Added authority-level specific language
-4. Created layer-down tracking report
-5. Created CS2 agent file recommendation (fix contract misalignment)
+1. EXECUTION_BOOTSTRAP_PROTOCOL.md: Added Section 5.5 "Zero-Warning Enforcement (MANDATORY)"
+2. governance-repo-administrator.agent.md: Added LOCKED section "Zero-Warning Handover Enforcement" (v4.1.0 → v4.2.0)
+3. AGENT_ONBOARDING_QUICKSTART.md: Added "Critical Quality Rules" section with zero-warning rule
+4. PREHANDOVER_PROOF_TEMPLATE.md: Added "Zero-Warning Verification (MANDATORY)" section
+
+**Root Cause**: PR #1009 handed over with warnings (scope-to-diff skipped, yamllint exit code 1), agent claimed "will validate in CI"
+
+**Prevention**: Explicit zero-warning enforcement, "pre-existing issues" exemption prohibited, "will validate in CI" strictly prohibited
 
 ---
 
@@ -44,21 +47,25 @@ A governance/reports/AGENT_AUTHORITY_MODEL_V2_LAYER_DOWN_STATUS.md
 
 **Ripple Requirement**: YES - Must propagate to all consumer repositories  
 **Layer-Down Required**: YES - Per CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md  
-**Tracking**: governance/reports/AGENT_AUTHORITY_MODEL_V2_LAYER_DOWN_STATUS.md
+**Tracking**: Will be documented in GOVERNANCE_ARTIFACT_INVENTORY.md
 
 **Affected Repositories**:
-- maturion-foreman-governance (governance source) - ✅ Updated
-- maturion-foreman-office-app (consumer) - ⏳ Awaiting propagation
-- PartPulse (consumer) - ⏳ Awaiting propagation
-- R_Roster (consumer) - ⏳ Awaiting propagation
+- maturion-foreman-governance (governance source) - ✅ Updated (this PR)
+- maturion-foreman-office-app (consumer) - ⏳ Requires ripple
+- PartPulse (consumer) - ⏳ Requires ripple
+- R_Roster (consumer) - ⏳ Requires ripple
+
+**Note**: CodexAdvisor-agent.md requires CS2 update (governance-repo-administrator has no authority to modify)
 
 ---
 
 ## Authority
 
-**Change Authority**: CS2 (Johan Ras)  
-**Implementation**: governance-liaison (acting in governance repo context)  
-**Approval Status**: Awaiting CS2 review and approval
+**Change Authority**: governance-repo-administrator (canonical governance updates)  
+**Implementation**: governance-repo-administrator agent  
+**Approval Status**: Implementing per AGENT_CONTRACT_PROTECTION_PROTOCOL.md formal change process
+
+**Escalation Note**: CodexAdvisor-agent.md zero-warning enforcement addition requires CS2 intervention (no authority to modify CS2-controlled agent contracts)
 
 ---
 
