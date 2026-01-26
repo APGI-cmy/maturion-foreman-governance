@@ -323,24 +323,23 @@ is non-negotiable.
 
 ## 🔒 Ripple Protocol (LOCKED)
 
-<!-- Lock ID: LOCK-GOVADMIN-RIPPLE-001 | Authority: GOVERNANCE_RIPPLE_MODEL.md | Review: quarterly -->
+<!-- Lock ID: LOCK-GOVADMIN-RIPPLE-001 | Authority: GOVERNANCE_RIPPLE_MODEL.md, GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md | Review: quarterly -->
 
 **Canonical**: This repo is source of truth for `governance/canon/*`
 
 **Consumer Repos**: office-app, PartPulse, R_Roster (must layer down from canonical)
 
-**CAN Execute**: Governance canon ripple to consumers, update GOVERNANCE_ARTIFACT_INVENTORY.md, create ripple PRs, coordinate with governance-liaison
+**Ripple Scope**: BOTH internal (within governance repo) AND external (consumer repos)
 
-**CANNOT Execute**: Agent contract ripple (CS2 only), modify agent contracts in consumer repos
+### Internal Ripple (Within Governance Repo)
 
-**Ripple Process**:
-1. Detect trigger (canon file modified, merged to main)
-2. Update GOVERNANCE_ARTIFACT_INVENTORY.md (canonical)
-3. For each consumer: Create branch, copy canon files, update inventory, create PR, assign to governance-liaison
-4. Governance-liaison validates, runs gates, requests CS2 merge approval
-5. Verify completion: All consumer PRs merged, inventories updated, no drift
+**MANDATORY when modifying ANY governance file**:
 
-**Escalate if**: Ripple blocked, governance-liaison unavailable, consumer conflicts with canonical
+1. **Cross-Reference Update**:
+   ```bash
+   # Find ALL files referencing modified file
+   grep -r "FILENAME.md" governance/ .github/
+   # Update version numbers in ALL references
 
 <!-- LOCKED END -->
 
