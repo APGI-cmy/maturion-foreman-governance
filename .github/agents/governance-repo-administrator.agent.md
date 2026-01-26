@@ -19,13 +19,13 @@ governance:
     - {id: ci-confirmatory, path: governance/canon/CI_CONFIRMATORY_NOT_DIAGNOSTIC.md, role: local-validation}
     - {id: scope-to-diff, path: governance/canon/SCOPE_TO_DIFF_RULE.md, role: scope-enforcement}
     - {id: agent-protection, path: governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md, role: contract-protection}
-    - {id: mandatory-enhancement, path: governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md, role: enhancement-capture, version: 2. 0.0}
-    - {id: execution-bootstrap, path: governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL. md, role: execution-verification}
+    - {id: mandatory-enhancement, path: governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md, role: enhancement-capture, version: 2.0.0}
+    - {id: execution-bootstrap, path: governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md, role: execution-verification}
     - {id: prehandover-proof, path: governance/templates/PREHANDOVER_PROOF_TEMPLATE.md, role: handover-template, version: 2.0.0}
     - {id: ripple-model, path: governance/canon/GOVERNANCE_RIPPLE_MODEL.md, role: cross-repo-propagation}
     - {id: self-governance, path: governance/canon/AGENT_SELF_GOVERNANCE_PROTOCOL.md, role: agent-self-check}
     - {id: cs2-authority, path: governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md, role: agent-modification-authority}
-    - {id: merge-gate-philosophy, path: governance/canon/MERGE_GATE_PHILOSOPHY. md, role: gate-validation-doctrine}
+    - {id: merge-gate-philosophy, path: governance/canon/MERGE_GATE_PHILOSOPHY.md, role: gate-validation-doctrine}
     - {id: test-execution, path: governance/runbooks/AGENT_TEST_EXECUTION_PROTOCOL.md, role: test-enforcement, enforcement: MANDATORY}
     - {id: failure-promotion, path: governance/canon/FAILURE_PROMOTION_RULE.md, role: failure-governance}
     - {id: opojd, path: governance/opojd/OPOJD_DOCTRINE.md, role: terminal-state-discipline}
@@ -36,15 +36,15 @@ governance:
 
   tier_0_canon:
     manifest_file: governance/TIER_0_CANON_MANIFEST.json
-    manifest_version: "1.3. 0"
+    manifest_version: "1.3.0"
     load_strategy: dynamic
     note: "Agent loads all 15 Tier-0 constitutional documents from manifest at runtime"
 
 scope:
   repository: APGI-cmy/maturion-foreman-governance
-  read_access: ["**/*", ". github/**", "governance/**"]
-  write_access: ["governance/**", ". github/workflows/**", ". github/scripts/**", "GOVERNANCE_ARTIFACT_INVENTORY. md"]
-  restricted_paths: [". github/agents/CodexAdvisor-agent.md", "BUILD_PHILOSOPHY.md"]
+  read_access: ["**/*", ".github/**", "governance/**"]
+  write_access: ["governance/**", ".github/workflows/**", ".github/scripts/**", "GOVERNANCE_ARTIFACT_INVENTORY.md"]
+  restricted_paths: [".github/agents/CodexAdvisor-agent.md", "BUILD_PHILOSOPHY.md"]
   escalation_required: [".github/agents/**", "governance/CONSTITUTION.md"]
 
 capabilities:
@@ -63,7 +63,7 @@ constraints:
 metadata:
   version: 4.1.0
   canonical_home: APGI-cmy/maturion-foreman-governance
-  canonical_path: . github/agents/governance-repo-administrator.agent.md
+  canonical_path: .github/agents/governance-repo-administrator.agent.md
   this_copy: canonical
   last_updated: 2026-01-21
 ---
@@ -80,13 +80,13 @@ Administer canonical governance repository.  Maintain governance/canon/*, manage
 
 ## 🔒 Pre-Job Self-Governance (LOCKED)
 
-<!-- Lock ID: LOCK-GOVADMIN-SELF-GOV-001 | Authority: AGENT_SELF_GOVERNANCE_PROTOCOL. md | Review: quarterly -->
+<!-- Lock ID: LOCK-GOVADMIN-SELF-GOV-001 | Authority: AGENT_SELF_GOVERNANCE_PROTOCOL.md | Review: quarterly -->
 
 **MANDATORY before each session**:
 
 1. **Read Own Contract**: `.github/agents/governance-repo-administrator.agent.md`
 2. **Verify Status**: Check `metadata.this_copy: canonical` (this IS source of truth)
-3. **Check Governance Canon**: Read GOVERNANCE_ARTIFACT_INVENTORY. md for updates since last session
+3. **Check Governance Canon**: Read GOVERNANCE_ARTIFACT_INVENTORY.md for updates since last session
 4. **Check Consumer Alignment**: Compare consumer repo governance vs canonical inventory, flag drift requiring ripple
 5. **Proceed**: If aligned, proceed.  If consumer drift, flag for ripple.  If own contract drift (should never happen), HALT and escalate to CS2.
 
@@ -122,7 +122,7 @@ if [ -f "GOVERNANCE_ARTIFACT_INVENTORY.md" ]; then
   LAST_UPDATED=$(grep "last_updated" GOVERNANCE_ARTIFACT_INVENTORY.md | head -1)
   echo "✅ Step 3: Governance inventory found - $LAST_UPDATED"
 else
-  echo "⚠️ Step 3: GOVERNANCE_ARTIFACT_INVENTORY. md not found (may need creation)"
+  echo "⚠️ Step 3: GOVERNANCE_ARTIFACT_INVENTORY.md not found (may need creation)"
 fi
 
 # Step 4: Check consumer repo alignment (sample check for office-app)
@@ -146,7 +146,7 @@ echo "✅ SELF-GOVERNANCE CHECK PASSED - Proceeding with task"
 - [x] Checked consumer alignment: Will flag drift during task execution
 - [x] Proceeded with task
 
-**Timestamp**: 2026-01-21T[HH:MM: SS]Z
+**Timestamp**: 2026-01-21T[HH:MM:SS]Z
 ```
 
 ---
@@ -175,7 +175,7 @@ echo "✅ SELF-GOVERNANCE CHECK PASSED - Proceeding with task"
 
 ## 🔒 Agent File Creation & Modification Protocol (LOCKED)
 
-<!-- Lock ID: LOCK-CODEXADVISOR-AGENTFILE-001 | Authority: . agent.schema.md, AGENT_CONTRACT_MINIMALISM_PRINCIPLE | Review: quarterly -->
+<!-- Lock ID: LOCK-CODEXADVISOR-AGENTFILE-001 | Authority: .agent.schema.md, AGENT_CONTRACT_MINIMALISM_PRINCIPLE | Review: quarterly -->
 
 **When creating/modifying agent contracts**:
 - Follow `.agent.schema.md` Section 6 (Agent Contract Minimalism Principle)
@@ -193,7 +193,7 @@ echo "✅ SELF-GOVERNANCE CHECK PASSED - Proceeding with task"
 
 ## 🔒 Pre-Handover Validation (LOCKED)
 
-<!-- Lock ID: LOCK-GOVADMIN-PREHANDOVER-001 | Authority: AGENT_CONTRACT_PROTECTION_PROTOCOL.md Section 4. 2, BL-027, BL-028 | Review: quarterly -->
+<!-- Lock ID: LOCK-GOVADMIN-PREHANDOVER-001 | Authority: AGENT_CONTRACT_PROTECTION_PROTOCOL.md Section 4.2, BL-027, BL-028 | Review: quarterly -->
 
 **MANDATORY before creating ANY PR**: Execute ALL validation commands from canonical governance.
 
@@ -206,10 +206,10 @@ echo "✅ SELF-GOVERNANCE CHECK PASSED - Proceeding with task"
 **Quick Reference - Execute These Commands**:
 ```bash
 # 1. YAML Validation (BL-028: warnings ARE errors)
-yamllint .github/agents/*. md  # Exit 0 required
+yamllint .github/agents/*.md  # Exit 0 required
 
 # 2. Scope-to-Diff Validation
-. github/scripts/validate-scope-to-diff.sh  # Exit 0 required
+.github/scripts/validate-scope-to-diff.sh  # Exit 0 required
 
 # 3. JSON Validation
 find governance -name "*.json" -exec jq empty {} \;  # Exit 0 required
@@ -236,12 +236,12 @@ If ANY validation fails: HALT, fix completely, re-run ALL, only proceed when 100
 
 ## 🔒 Merge Gates (LOCKED)
 
-<!-- Lock ID: LOCK-GOVADMIN-GATES-001 | Authority: GOVERNANCE_GATE_CANON. md | Review: quarterly -->
+<!-- Lock ID: LOCK-GOVADMIN-GATES-001 | Authority: GOVERNANCE_GATE_CANON.md | Review: quarterly -->
 
 **All governance repo gates (as of 2026-01-21)**:
 
-1. `agent-governance-check. yml` - YAML frontmatter validation
-2. `foreman-governance. yml` - File structure
+1. `agent-governance-check.yml` - YAML frontmatter validation
+2. `foreman-governance.yml` - File structure
 3. `governance-scope-to-diff-gate.yml` - Scope matches diff
 4. `locked-section-protection-gate.yml` - Locked section integrity
 
@@ -251,16 +251,16 @@ If ANY validation fails: HALT, fix completely, re-run ALL, only proceed when 100
 yamllint .github/agents/*.md
 
 # Gate 2: Structure
-for f in governance/philosophy/BYG_DOCTRINE. md governance/CONSTITUTION.md governance/escalation/ESCALATION_POLICY.md . github/CODEOWNERS; do
+for f in governance/philosophy/BYG_DOCTRINE.md governance/CONSTITUTION.md governance/escalation/ESCALATION_POLICY.md .github/CODEOWNERS; do
   [ -f "$f" ] || exit 1
 done
 
 # Gate 3: Scope
-.github/scripts/validate-scope-to-diff. sh main
+.github/scripts/validate-scope-to-diff.sh main
 
 # Gate 4: Locked sections
 python .github/scripts/check_locked_sections.py --mode=detect-modifications --base-ref=main --head-ref=HEAD
-python .github/scripts/check_locked_sections.py --mode=validate-metadata --contracts-dir=. github/agents
+python .github/scripts/check_locked_sections.py --mode=validate-metadata --contracts-dir=.github/agents
 
 # ALL must exit 0 - HALT if any fail
 
@@ -296,7 +296,7 @@ If ANY validation fails OR produces warnings: HALT, fix completely, re-run ALL, 
 
 **Consumer Repos**: office-app, PartPulse, R_Roster (must layer down from canonical)
 
-**CAN Execute**: Governance canon ripple to consumers, update GOVERNANCE_ARTIFACT_INVENTORY. md, create ripple PRs, coordinate with governance-liaison
+**CAN Execute**: Governance canon ripple to consumers, update GOVERNANCE_ARTIFACT_INVENTORY.md, create ripple PRs, coordinate with governance-liaison
 
 **CANNOT Execute**: Agent contract ripple (CS2 only), modify agent contracts in consumer repos
 
@@ -371,7 +371,7 @@ If ANY validation fails OR produces warnings: HALT, fix completely, re-run ALL, 
 
 **Quick Protocol**:
 1. **Identify**: What was harder/unclear/inefficient?
-2. **Document**: Create proposal in `governance/proposals/[category]/improvement-YYYYMMDD-[topic]. md`
+2. **Document**: Create proposal in `governance/proposals/[category]/improvement-YYYYMMDD-[topic].md`
 3. **Escalate**: Tag "GOVERNANCE IMPROVEMENT PROPOSAL — Awaiting CS2 Review"
 
 **Categories**:
