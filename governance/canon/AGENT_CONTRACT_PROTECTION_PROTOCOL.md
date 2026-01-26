@@ -520,7 +520,9 @@ This protocol applies to:
 
 ### 11.2 Layer-Down Requirements
 
-**⚠️ CRITICAL**: Layer-down is NOT complete until all agent files have canonical LOCKED sections applied per the contained protocol. **Layer-down is one atomic batch** — agent contracts and protocol must be updated together, never in separate steps. Layering down the protocol without applying LOCKED sections to agent files creates a governance violation and leaves contracts unprotected.
+**⚠️ CRITICAL**: Layer-down is NOT complete until all agent files have canonical LOCKED sections applied per the contained protocol.
+
+**Layer-down is one atomic batch** — agent contracts and protocol must be updated together, never in separate steps. Layering down the protocol without applying LOCKED sections to agent files creates a governance violation and leaves contracts unprotected.
 
 Each consumer repository MUST:
 
