@@ -43,6 +43,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `.agent.schema.md` | Schema definition for agent contracts | PR-gates |
 | `ACTIVATION_STATE_MODEL.md` | Defines agent/system activation lifecycle states | Readiness |
 | `AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md` | Protocol for keeping agent context synchronized with canon | Layer-down |
+| `AGENT_ONBOARDING_QUICKSTART.md` | **UPDATED (2026-01-26)** - Single entry point for all agent onboarding. Added Critical Quality Rules section highlighting zero-warning handover enforcement, Stop-and-Fix compliance, and exit code 0 requirement. Makes zero-warning rule highly visible to all new agents | Readiness, Layer-down |
 | `AGENT_CONTRACT_PROTECTION_PROTOCOL.md` | **UPDATED v1.1.0 (2026-01-26)** - Protocol for agent contract protection with locked sections and atomic layer-down requirements | PR-gates, Layer-down, Readiness |
 | `AGENT_RECRUITMENT.md` | Defines rules for recruiting and activating agents | Readiness |
 | `AGENT_ROLE_GATE_APPLICABILITY.md` | Maps which PR gates apply to which agent roles | PR-gates |
@@ -69,6 +70,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `DOMAIN_OWNERSHIP_ACCOUNTABILITY.md` | Defines domain ownership and accountability rules | Readiness |
 | `DOMAIN_STATE_ENFORCEMENT_RULE.md` | Defines enforcement of domain state requirements | Readiness |
 | `ENVIRONMENT_PROVISIONING_PROCESS.md` | Defines environment setup and provisioning | Readiness |
+| `EXECUTION_BOOTSTRAP_PROTOCOL.md` | **UPDATED v1.0.0 → v1.1.0 (2026-01-26)** - Mandatory 7-step execution verification protocol for all execution-related work. Added Section 5.5 Zero-Warning Enforcement mandating exit code 0 on ALL validations, prohibiting "will validate in CI" and "pre-existing issues" exemptions. Requires immediate Stop-and-Fix on ANY warning | PR-gates, Readiness, Layer-down |
 | `FAILURE_PROMOTION_RULE.md` | Defines when failures must be escalated/promoted | Feedback/learning |
 | `FM_GOVERNANCE_LOADING_PROTOCOL.md` | Protocol for loading governance into FM context | Layer-down, Readiness |
 | `FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` | Defines FM authority boundaries and supervision rules | Readiness |
@@ -173,6 +175,7 @@ Template files provide reusable structures for governance artifacts.
 | `PR_GATE_RELEASE_CHECKLIST_BUILDER.md` | Builder-specific PR gate release checklist | PR-gates |
 | `PR_GATE_RELEASE_CHECKLIST_FM.md` | FM-specific PR gate release checklist | PR-gates |
 | `PR_GATE_RELEASE_CHECKLIST_GOVERNANCE_ADMIN.md` | Governance Admin-specific PR gate release checklist | PR-gates |
+| `PREHANDOVER_PROOF_TEMPLATE.md` | **UPDATED v2.0.0 → v2.1.0 (2026-01-26)** - Standard template for documenting execution verification before PR handover. Added Zero-Warning Verification section requiring explicit documentation of exit code 0 with zero warnings, Stop-and-Fix documentation, and zero-warning guarantee | PR-gates, Readiness |
 | `RIPPLE_SCAN_REPORT.template.md` | Template for ripple scan reports (Wave 2.1) | Feedback/learning, Layer-down |
 | `RIPPLE_SIGNAL.template.md` | Template for cross-repository ripple signals (Wave 2.2) | Feedback/learning, Layer-down |
 | `minimum-architecture-template.md` | Template for minimum architecture artifacts | Readiness, Layer-down |
