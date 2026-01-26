@@ -1,7 +1,7 @@
 # PREHANDOVER_PROOF Template
 
 **Purpose**: Standard template for documenting execution verification before PR handover.
-**Version**: 2.0.0
+**Version**: 2.1.0
 **Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`
 **Mandatory For**: All PRs requiring execution verification (workflows, gates, contracts, configurations)
 **Optional For**: Documentation-only changes (recommended but not required)

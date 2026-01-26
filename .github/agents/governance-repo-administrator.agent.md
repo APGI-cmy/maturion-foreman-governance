@@ -63,7 +63,7 @@ constraints:
 metadata:
   version: 4.2.0
   canonical_home: APGI-cmy/maturion-foreman-governance
-  canonical_path: . github/agents/governance-repo-administrator.agent.md
+  canonical_path: .github/agents/governance-repo-administrator.agent.md
   this_copy: canonical
   last_updated: 2026-01-26
 ---
