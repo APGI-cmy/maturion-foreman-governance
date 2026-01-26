@@ -61,11 +61,13 @@ constraints:
   build_to_green_only: true
 
 metadata:
-  version: 4.2.0
+  metadata:
+  version: 4.2.0  # Reflects PR #1015 zero-warning addition
   canonical_home: APGI-cmy/maturion-foreman-governance
   canonical_path: .github/agents/governance-repo-administrator.agent.md
   this_copy: canonical
-  last_updated: 2026-01-26
+  last_updated: 2026-01-26  # Reflects latest PRs
+
 ---
 
 # Governance Repository Administrator
@@ -540,12 +542,12 @@ originates here. All consumer repos MUST layer down governance from this repo.
 
 ## Version History
 
-**v4.2.0** (2026-01-26): Added "🔒 Zero-Warning Handover Enforcement (LOCKED)"
-section in response to PR #1009 incident. Establishes absolute prohibition on
-handing over with ANY validation warnings, non-zero exit codes, or "will validate
-in CI" statements. Enforces STOP_AND_FIX_DOCTRINE.md for all issues encountered
-during validation. Authority: EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0,
-STOP_AND_FIX_DOCTRINE.md, INCIDENT_2026-01-26_PR_1009_INCOMPLETE_HANDOVER.md.
+**v4.2.0** (2026-01-26): Added "Zero-Warning Handover Enforcement" LOCKED section
+(post-PR #1009 incident). Updated Ripple Protocol section to include internal ripple
+(cross-references, dependencies, templates) in addition to external ripple (consumer
+repos). Fixed YAML spacing errors. References GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md
+for complete ripple steps. Authority: EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0,
+GOVERNANCE_RIPPLE_MODEL.md, Issue #1020.
 
 **v4.1.0** (2026-01-21): Added Self-Governance Execution Commands section with
 copy-paste bash commands and attestation format. Agents can now immediately
