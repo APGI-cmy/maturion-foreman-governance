@@ -266,6 +266,10 @@ git diff --check  # Exit 0 required
 python .github/scripts/check_locked_sections.py --mode=detect-modifications --base-ref=main --head-ref=HEAD
 python .github/scripts/check_locked_sections.py --mode=validate-metadata --contracts-dir=.github/agents
 
+# 6. Stop-and-Fix Protocol (if errors detected)
+# Per STOP_AND_FIX_DOCTRINE.md: If ANY errors detected, must HALT and fix ALL errors within authority
+# Cannot proceed with partial fixes or "will fix later" statements
+
 # ALL must exit 0 - HALT if any fail
 
 Document in PREHANDOVER_PROOF: Include all commands executed, exit codes (all must be 0), and timestamps.
@@ -303,8 +307,21 @@ done
 python .github/scripts/check_locked_sections.py --mode=detect-modifications --base-ref=main --head-ref=HEAD
 python .github/scripts/check_locked_sections.py --mode=validate-metadata --contracts-dir=. github/agents
 
-# All must exit 0
-```
+# ALL must exit 0 - HALT if any fail
+
+**CRITICAL - Zero Warning Enforcement**:
+- ❌ **PROHIBITED**: Handing over with ANY warning in validation output
+- ❌ **PROHIBITED**: Handing over with any gate showing "skipped" or "will validate in CI"
+- ❌ **PROHIBITED**: Documenting warnings and proceeding
+- ❌ **PROHIBITED**: Exit codes != 0
+- ✅ **REQUIRED**: ALL validation commands must exit 0 with NO warnings
+- ✅ **REQUIRED**: If ANY warning: HALT, fix, re-run, only proceed when 100% clean
+
+**Authority**: BUILD_PHILOSOPHY.md (zero warning debt), CI_CONFIRMATORY_NOT_DIAGNOSTIC.md (local validation mandatory), STOP_AND_FIX_DOCTRINE.md (no proceeding with errors)
+
+Document in PREHANDOVER_PROOF: Include all commands executed, exit codes (all must be 0), timestamps, and explicit attestation "Zero warnings detected".
+
+If ANY validation fails OR produces warnings: HALT, fix completely, re-run ALL, only proceed when 100% pass with zero warnings.
 
 **Step 2. 5 - Gate Script Alignment** (Authority: Issue #993):
 - Read each gate workflow YAML
@@ -417,6 +434,63 @@ python .github/scripts/check_locked_sections.py --mode=validate-metadata --contr
 <!-- LOCKED END -->
 
 ---
+
+## 🔒 Canon Layer-Down Compliance Protocol (LOCKED)
+
+<!-- Lock ID: LOCK-GOVADMIN-CANON-LAYERDOWN-001 | Authority: AGENT_CONTRACT_PROTECTION_PROTOCOL.md Section 11.2 | Review: quarterly -->
+
+**MANDATORY when creating or updating ANY governance canon**:
+
+### Step 1: Create/Update Canon File
+- Modify canon in `governance/canon/`
+- Update `GOVERNANCE_ARTIFACT_INVENTORY.md`
+
+### Step 2: Check Canon for Layer-Down Requirements
+Read the canon you just created/updated. If it has a "Cross-Repository Layer-Down" or "Layer-Down Requirements" section, **you MUST execute those requirements**.
+
+### Step 3: Execute Canon-Specific Layer-Down Steps
+Examples:
+- **AGENT_CONTRACT_PROTECTION_PROTOCOL.md Section 11.2**:
+  - Must coordinate with consumer repos to ensure agent files updated atomically
+  - Cannot layer down protocol without agent file LOCKED sections
+- **Other canons**: Follow their layer-down sections
+
+### Step 4: Validate Completion
+- All canon layer-down requirements documented
+- Ripple plan includes agent file updates if required by canon
+- PREHANDOVER_PROOF documents ALL steps
+
+**Prohibited**:
+- ❌ Creating/updating canon WITHOUT checking for layer-down requirements
+- ❌ Documenting "will ripple later" when canon requires atomic layer-down
+- ❌ Assuming "layer-down = copy file only"
+
+<!-- LOCKED END -->
+
+## 🔒 Gate Alignment Verification (LOCKED)
+
+<!-- Lock ID: LOCK-GOVADMIN-GATE-ALIGN-001 | Authority: Issue #993, CI_CONFIRMATORY_NOT_DIAGNOSTIC.md | Review: quarterly -->
+
+**MANDATORY before EVERY handover** (Authority: Issue #993):
+
+**Step 2.5 - Gate Script Alignment**:
+1. Read each gate workflow YAML in `.github/workflows/`
+2. Verify validation scripts exist at paths specified in workflows
+3. Compare local validation commands to CI gate logic
+4. **HALT if mismatch**: Document, escalate to CS2, NO handover until fixed
+5. **HALT if local validation skipped**: Cannot proceed if validation shows "will validate in CI" or "skipped"
+
+**Prohibited**:
+- ❌ Handing over without verifying local validation matches CI gates
+- ❌ Handing over with "will validate in CI" statements
+- ❌ Assuming gates will catch issues CI-side
+
+**Required**:
+- ✅ All local validation commands match CI workflow scripts
+- ✅ All local validation executed and passed (exit 0, no warnings)
+- ✅ Document gate alignment verification in PREHANDOVER_PROOF
+
+<!-- LOCKED END -->
 
 ## Constitutional Principles
 
