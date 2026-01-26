@@ -247,11 +247,15 @@ python .github/scripts/check_locked_sections.py --mode=validate-metadata --contr
 - ✅ **REQUIRED**: ALL validation commands must exit 0 with NO warnings
 - ✅ **REQUIRED**: If ANY warning: HALT, fix, re-run, only proceed when 100% clean
 
-**Authority**: BUILD_PHILOSOPHY.md (zero warning debt), CI_CONFIRMATORY_NOT_DIAGNOSTIC.md (local validation mandatory), STOP_AND_FIX_DOCTRINE.md (no proceeding with errors)
+**Authority**: BUILD_PHILOSOPHY.md (zero warning debt),
+CI_CONFIRMATORY_NOT_DIAGNOSTIC.md (local validation mandatory),
+STOP_AND_FIX_DOCTRINE.md (no proceeding with errors)
 
-Document in PREHANDOVER_PROOF: Include all commands executed, exit codes (all must be 0), timestamps, and explicit attestation "Zero warnings detected".
+Document in PREHANDOVER_PROOF: Include all commands executed, exit codes
+(all must be 0), timestamps, and explicit attestation "Zero warnings detected".
 
-If ANY validation fails OR produces warnings: HALT, fix completely, re-run ALL, only proceed when 100% pass with zero warnings.
+If ANY validation fails OR produces warnings: HALT, fix completely, re-run ALL,
+only proceed when 100% pass with zero warnings.
 
 **Step 2. 5 - Gate Script Alignment** (Authority: Issue #993):
 - Read each gate workflow YAML
@@ -265,7 +269,9 @@ If ANY validation fails OR produces warnings: HALT, fix completely, re-run ALL, 
 
 ## 🔒 Zero-Warning Handover Enforcement (LOCKED)
 
-<!-- Lock ID: LOCK-GOVADMIN-ZEROWARNING-001 | Authority: EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0, STOP_AND_FIX_DOCTRINE.md, BUILD_PHILOSOPHY.md, INCIDENT_2026-01-26_PR_1009 | Review: quarterly -->
+<!-- Lock ID: LOCK-GOVADMIN-ZEROWARNING-001 |
+     Authority: EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0, STOP_AND_FIX_DOCTRINE.md,
+     BUILD_PHILOSOPHY.md, INCIDENT_2026-01-26_PR_1009 | Review: quarterly -->
 
 **MANDATORY - Post-PR #1009 Incident Enhancement**
 
@@ -297,7 +303,11 @@ Agent is **ABSOLUTELY PROHIBITED** from handing over any work with validation wa
 5. **CONFIRM** - Verify zero warnings, all exit 0
 6. **PROCEED** - Only then continue to handover
 
-**Rationale**: PR #1009 was handed over with validation warnings ("no files detected" in scope-to-diff, yamllint failures), directly violating BUILD_PHILOSOPHY.md, CI_CONFIRMATORY_NOT_DIAGNOSTIC.md, and STOP_AND_FIX_DOCTRINE.md. This LOCKED section ensures zero-warning discipline is non-negotiable.
+**Rationale**: PR #1009 was handed over with validation warnings ("no files
+detected" in scope-to-diff, yamllint failures), directly violating
+BUILD_PHILOSOPHY.md, CI_CONFIRMATORY_NOT_DIAGNOSTIC.md, and
+STOP_AND_FIX_DOCTRINE.md. This LOCKED section ensures zero-warning discipline
+is non-negotiable.
 
 **Authority**:
 - `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` v1.1.0 Section 5.1
@@ -424,7 +434,9 @@ Agent is **ABSOLUTELY PROHIBITED** from handing over any work with validation wa
 - Update `GOVERNANCE_ARTIFACT_INVENTORY.md`
 
 ### Step 2: Check Canon for Layer-Down Requirements
-Read the canon you just created/updated. If it has a "Cross-Repository Layer-Down" or "Layer-Down Requirements" section, **you MUST execute those requirements**.
+Read the canon you just created/updated. If it has a "Cross-Repository
+Layer-Down" or "Layer-Down Requirements" section, **you MUST execute those
+requirements**.
 
 ### Step 3: Execute Canon-Specific Layer-Down Steps
 Examples:
@@ -527,11 +539,11 @@ originates here. All consumer repos MUST layer down governance from this repo.
 
 ## Version History
 
-**v4.2.0** (2026-01-26): Added "🔒 Zero-Warning Handover Enforcement (LOCKED)" 
-section in response to PR #1009 incident. Establishes absolute prohibition on 
-handing over with ANY validation warnings, non-zero exit codes, or "will validate 
-in CI" statements. Enforces STOP_AND_FIX_DOCTRINE.md for all issues encountered 
-during validation. Authority: EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0, 
+**v4.2.0** (2026-01-26): Added "🔒 Zero-Warning Handover Enforcement (LOCKED)"
+section in response to PR #1009 incident. Establishes absolute prohibition on
+handing over with ANY validation warnings, non-zero exit codes, or "will validate
+in CI" statements. Enforces STOP_AND_FIX_DOCTRINE.md for all issues encountered
+during validation. Authority: EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0,
 STOP_AND_FIX_DOCTRINE.md, INCIDENT_2026-01-26_PR_1009_INCOMPLETE_HANDOVER.md.
 
 **v4.1.0** (2026-01-21): Added Self-Governance Execution Commands section with
