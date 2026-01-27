@@ -3300,9 +3300,73 @@ Both paths achieve the same governance objective: **Zero Test Debt - 100% passag
 
 ---
 
-**Next Learning ID**: BL-029
+**Next Learning ID**: BL-030
 
 ---
 
+## BL-029 — Ban on Excuse-Based Test Dodging: Universal Ownership and Zero Deferral Patterns
 
+**Context**: Post-Wave 0.2 governance hardening (2026-01-27)
+
+**Observed Issue**:  
+Historical patterns of excuse-based language were used to minimize, defer, or deflect
+responsibility for fixing discovered test debt, governance violations, and quality issues.
+Patterns included "nitpicking", "non-blocking", "out of scope", "leftover from previous
+work", "just config changes", "cosmetic only", and similar deflections.
+
+**Root Cause**:  
+STOP_AND_FIX_DOCTRINE.md v1.0.0 established universal responsibility ("if you see it, you
+own it") but did not explicitly enumerate and ban specific excuse patterns that agents
+could use to circumvent this obligation. Lack of explicit prohibition created loopholes for
+subjective minimization of discovered issues.
+
+**Learning**:  
+TRUE 100% STOP-AND-FIX compliance requires explicit prohibition of ALL excuse-based
+deferral patterns. Agents must take action on ANY discovered issue: fix it immediately
+(default) OR escalate to CS2 if outside capability/authority (with full context). Silence is
+NOT compliance—discovering an issue outside your authority obligates escalation, not
+ignoring.
+
+**Governance Impact**:  
+- Enhanced STOP_AND_FIX_DOCTRINE.md v2.0.0 with Section 3.5 "Ban on Excuse-Based Test Dodging"
+- Added 9 categories of prohibited excuse patterns (minimization, scope deflection,
+  responsibility discharge including "ignore unrelated bugs", deferral, dismissal, sufficiency
+  claims, evasion, blocker claims, authority appeals) - 55 total patterns
+- Added Section 3.6 "Escalation Obligation for Cross-Boundary Issues" mandating escalation for
+  issues outside agent authority
+- Enhanced Section 3.2 "Universal Responsibility" with comprehensive banned response patterns
+- Added examples demonstrating excuse-based test dodging violations and correct responses
+- Enhanced Section 3.2 "Universal Responsibility" with comprehensive banned response patterns
+- Added examples demonstrating excuse-based test dodging violations and correct responses
+
+**Enforcement**:  
+- Use of excuse language → Flag as governance violation
+- Repeated excuse patterns → Escalate to CS2 for systemic review
+- Excuse language in PREHANDOVER_PROOF → Reject PR, require remediation
+- ALL reviewer feedback in-scope unless explicitly granted "non-blocking (optional)" exception
+
+**Principle**:  
+Maximum ownership discipline: "If you see it, you own it OR escalate it—silence is NOT compliance. No excuses, no deferrals, no third option."
+
+**Historical Context**:  
+This learning synthesizes patterns observed across multiple historical PRs where agents
+used excuse language to avoid fixing discovered issues. Patterns included dismissing reviewer
+feedback as "nitpicking", claiming issues were "out of scope", deferring fixes as "future
+work", and asserting sufficiency despite failures. These patterns directly violated Zero Test
+Debt and 100% GREEN constitutional requirements but were not explicitly enumerated as
+prohibitions.
+
+**Authority**:  
+- BUILD_PHILOSOPHY.md - Constitutional Principle #2: Zero Test Debt
+- BYG_DOCTRINE.md - One-Time Build Law
+- STOP_AND_FIX_DOCTRINE.md v2.0.0
+- Issue #[TBD] - Governance Enhancement Proposal
+
+**Status**: Recorded, Canonized
+
+**Layer-Down Requirement**: Consumer repositories MUST adopt STOP_AND_FIX_DOCTRINE.md
+v2.0.0 with excuse-ban provisions. Governance liaisons MUST ensure agent contracts reference
+updated doctrine.
+
+---
 
