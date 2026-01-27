@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-01-26
+**Last Updated**: 2026-01-27
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -51,7 +51,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `APP_STARTUP_REQUIREMENTS_DECLARATION.md` | Defines application commissioning and startup requirements | Readiness, Layer-down |
 | `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` | Defines architecture artifact completeness criteria | Readiness, PR-gates |
 | `AUDIT_READINESS_MODEL.md` | Defines audit trail and evidence requirements | Readiness |
-| `BOOTSTRAP_EXECUTION_LEARNINGS.md` | Records structural learnings from bootstrap execution | Feedback/learning |
+| `BOOTSTRAP_EXECUTION_LEARNINGS.md` | **UPDATED (2026-01-27)** - Records structural learnings from bootstrap execution with new BL-029 documenting excuse-based test dodging patterns and ban enforcement | Feedback/learning |
 | `BRANCH_PROTECTION_ENFORCEMENT.md` | Defines branch protection requirements | PR-gates |
 | `BUILDER_FIRST_PR_MERGE_MODEL.md` | Defines rules for first builder PR merge | PR-gates, Readiness |
 | `BUILD_EFFECTIVENESS_STANDARD.md` | Defines build effectiveness measurement criteria | Readiness |
@@ -107,7 +107,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `RESPONSIBILITY_DOMAIN_REGISTRY.md` | Registry of all responsibility domains | Readiness |
 | `SCOPE_DECLARATION_SCHEMA.md` | Schema for scope declarations | PR-gates |
 | `SCOPE_TO_DIFF_RULE.md` | Defines scope-to-diff validation rule | PR-gates |
-| `STOP_AND_FIX_DOCTRINE.md` | **NEW (2026-01-23)** - Tier-0 constitutional doctrine establishing zero tolerance for technical debt, errors, and safety violations. Mandates immediate remediation regardless of origin, universal responsibility for quality, and no partial handovers. Integrates with BUILD_PHILOSOPHY.md, BYG_DOCTRINE.md, DEFECT_RESOLUTION_MAINTENANCE_CANON.md, ESCALATION_POLICY.md | PR-gates, Readiness, Feedback/learning |
+| `STOP_AND_FIX_DOCTRINE.md` | **UPDATED v2.0.0 (2026-01-27)** - Tier-0 constitutional doctrine with enhanced ban on excuse-based test dodging. Adds Section 3.5 enumerating 9 categories of prohibited excuse patterns, Section 3.6 mandating escalation obligation for cross-boundary issues, and Examples 5-6 demonstrating violations. Enforces "if you see it, you own it OR escalate it—silence is NOT compliance" principle. Authority: Issue #[TBD], BL-029 | PR-gates, Readiness, Feedback/learning |
 | `SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md` | Defines system commissioning phases | Readiness |
 | `VERSIONING_AND_EVOLUTION_GOVERNANCE.md` | Defines governance versioning rules | Layer-down |
 | `VISION_ALIGNMENT_AND_DRIFT_MODEL.md` | Defines vision drift detection and correction | Feedback/learning |
