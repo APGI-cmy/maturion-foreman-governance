@@ -3330,9 +3330,12 @@ ignoring.
 **Governance Impact**:  
 - Enhanced STOP_AND_FIX_DOCTRINE.md v2.0.0 with Section 3.5 "Ban on Excuse-Based Test Dodging"
 - Added 9 categories of prohibited excuse patterns (minimization, scope deflection,
-  responsibility discharge, deferral, dismissal, sufficiency claims, evasion, blocker claims,
-  authority appeals)
-- Added Section 3.6 "Escalation Obligation for Cross-Boundary Issues" mandating escalation for issues outside agent authority
+  responsibility discharge including "ignore unrelated bugs", deferral, dismissal, sufficiency
+  claims, evasion, blocker claims, authority appeals) - 55 total patterns
+- Added Section 3.6 "Escalation Obligation for Cross-Boundary Issues" mandating escalation for
+  issues outside agent authority
+- Enhanced Section 3.2 "Universal Responsibility" with comprehensive banned response patterns
+- Added examples demonstrating excuse-based test dodging violations and correct responses
 - Enhanced Section 3.2 "Universal Responsibility" with comprehensive banned response patterns
 - Added examples demonstrating excuse-based test dodging violations and correct responses
 

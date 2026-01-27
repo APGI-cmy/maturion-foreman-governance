@@ -23,7 +23,8 @@
 Implemented comprehensive ban on excuse-based test dodging in STOP_AND_FIX_DOCTRINE.md v2.0.0.
 
 **Changes**:
-- STOP_AND_FIX_DOCTRINE.md v2.0.0: Added Sections 3.5 (9 excuse categories, 54 patterns) and 3.6 (escalation obligation), Examples 5-6
+- STOP_AND_FIX_DOCTRINE.md v2.0.0: Added Sections 3.5 (9 excuse categories, 55 patterns) and
+  3.6 (escalation obligation), Examples 5-6
 - BOOTSTRAP_EXECUTION_LEARNINGS.md: Added BL-029
 - GOVERNANCE_ARTIFACT_INVENTORY.md: Updated entries
 - Fixed ALL yamllint line-length warnings

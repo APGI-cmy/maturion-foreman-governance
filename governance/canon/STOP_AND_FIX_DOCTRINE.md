@@ -99,6 +99,8 @@ immediate action.
 - ❌ "Can't reproduce" or "Flaky" (investigate until reproducible)
 - ❌ "Blocked by dependencies" (escalate the blocker, don't ignore)
 - ❌ "Reviewer said don't bother" (unless explicitly granted exception, see Section 3.5)
+- ❌ "Ignore unrelated bugs or broken tests; it is not your responsibility to fix them"
+  (you ARE responsible—fix or escalate)
 
 **Limited Exception**: If fixing requires domain expertise you lack OR would require
 changing code/architecture outside your authority, you may escalate to CS2 (see Section 5).
@@ -195,6 +197,7 @@ or documentation is itself a governance violation subject to escalation and enfo
    - ❌ "Pre-existing issue"
    - ❌ "Someone else's responsibility"
    - ❌ "Not the author"
+   - ❌ "Ignore unrelated bugs; not my responsibility"
 
 4. **Deferral Language**:
    - ❌ "Can be deferred"
