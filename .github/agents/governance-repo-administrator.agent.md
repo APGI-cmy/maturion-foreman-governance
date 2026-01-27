@@ -252,6 +252,7 @@ python .github/scripts/check_locked_sections.py --mode=detect-modifications --ba
 python .github/scripts/check_locked_sections.py --mode=validate-metadata --contracts-dir=.github/agents
 
 # ALL must exit 0 - HALT if any fail
+```
 
 **CRITICAL - Zero Warning Enforcement**:
 - ❌ **PROHIBITED**: Handing over with ANY warning in validation output
