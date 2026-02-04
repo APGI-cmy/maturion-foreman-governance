@@ -40,7 +40,16 @@ Canon files define constitutional governance rules, models, and protocols.
 
 | File | Purpose | Categories |
 |------|---------|------------|
-| `.agent.schema.md` | **UPDATED (2026-01-26)** - Schema definition for agent contracts with new Section 13 defining LOCKED sections requirements, protection protocol integration, and reference to AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md | PR-gates |
+| `agent-contracts-guidance/` | **NEW (2026-02-04)** - Centralized canonical folder for ALL agent contract policies, schemas, templates, and guidance. Consolidates scattered agent contract documentation into single authoritative source | PR-gates, Layer-down, Readiness |
+| `agent-contracts-guidance/.agent.schema.md` | **MOVED (2026-02-04)** - Schema definition for agent contracts with new Section 13 defining LOCKED sections requirements, protection protocol integration, and reference to AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md | PR-gates |
+| `agent-contracts-guidance/AGENT_FILE_CREATION_POLICY.md` | **MOVED (2026-02-04)** - Policy governing creation of new agent contracts | PR-gates, Readiness |
+| `agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md` | **MOVED (2026-02-04)** - Requirements for governance binding and context loading in agent contracts | PR-gates, Layer-down, Readiness |
+| `agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md` | **MOVED (2026-02-04)** - Guide for migrating agent contracts to current standards | PR-gates, Readiness |
+| `agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md` | **MOVED (2026-02-04)** - Quick start guide for new agent onboarding | Layer-down, Readiness |
+| `agent-contracts-guidance/templates/AGENT_CONTRACT.template.md` | **MOVED (2026-02-04)** - Template for agent contracts with LOCKED sections guidance | PR-gates, Layer-down, Readiness |
+| `agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md` | **MOVED (2026-02-04)** - Canonical template with copy-paste LOCKED sections for agent contracts | PR-gates, Layer-down, Readiness |
+| `agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md` | **MOVED (2026-02-04)** - Validation procedures for agent contracts | PR-gates, Readiness |
+| `agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md` | **MOVED (2026-02-04)** - Maintenance procedures for agent contracts | PR-gates, Readiness |
 | `ACTIVATION_STATE_MODEL.md` | Defines agent/system activation lifecycle states | Readiness |
 | `AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md` | Protocol for keeping agent context synchronized with canon | Layer-down |
 | `AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` | **UPDATED v3.1.0 (2026-01-26)** - Granular authority hierarchy for agent contracts with atomic layer-down compliance requirements for consumer repos | PR-gates, Layer-down, Readiness |
@@ -169,8 +178,6 @@ Template files provide reusable structures for governance artifacts.
 
 | File | Purpose | Categories |
 |------|---------|------------|
-| `AGENT_CONTRACT.template.md` | **UPDATED (2026-01-26)** - Template for agent contracts with LOCKED sections guidance, cross-references to AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md, and complete metadata structure | PR-gates, Layer-down, Readiness |
-| `AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md` | **NEW (2026-01-26)** - Canonical template with copy-paste LOCKED sections for FM, Builder, and Liaison agent contracts with complete metadata and layer-down guidance | PR-gates, Layer-down, Readiness |
 | `BUILDER_TASK_TEMPLATE.md` | Template for builder task definitions | Readiness |
 | `CANON_CREATION_AND_PROPAGATION_CHECKLIST.md` | Comprehensive workflow checklist for canon creation and propagation with mandatory inventory maintenance | Layer-down, Feedback/learning |
 | `PREHANDOVER_PROOF_TEMPLATE.md` | **UPDATED v2.2.0 (2026-01-27)** - Template for execution verification documentation with Zero-Warning Validation section and **NEW** validation evidence requirements per BL-030. Prohibits attestation without verification. Requires command output, exit codes, timestamps for all validations. Adds scope declaration freshness verification checklist | PR-gates, Readiness |
@@ -775,8 +782,16 @@ Implementation completion reports (not canonical governance, but records impleme
 **Files Requiring Layer-Down**:
 - [ ] governance/canon/GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md (copy to each consumer repo)
 - [ ] governance/templates/PREHANDOVER_PROOF_TEMPLATE.md v2.1.0 (layer down to each consumer repo)
-- [ ] governance/templates/AGENT_CONTRACT.template.md (layer down to each consumer repo)
-- [ ] governance/canon/.agent.schema.md (layer down to each consumer repo)
+- [ ] governance/canon/agent-contracts-guidance/ (entire folder - layer down to each consumer repo)
+  - [ ] agent-contracts-guidance/.agent.schema.md
+  - [ ] agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md
+  - [ ] agent-contracts-guidance/AGENT_FILE_CREATION_POLICY.md
+  - [ ] agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md
+  - [ ] agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md
+  - [ ] agent-contracts-guidance/templates/AGENT_CONTRACT.template.md
+  - [ ] agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
+  - [ ] agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md
+  - [ ] agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md
 
 **Tracking Issues**:
 - [ ] Create issue in office-app: "Governance Ripple: Zero-Warning Enforcement + LOCKED Sections"

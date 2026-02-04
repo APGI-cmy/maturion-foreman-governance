@@ -208,7 +208,7 @@ End of Contract
 ### Step 1: Prepare
 1. Read existing contract thoroughly
 2. Read AGENT_ONBOARDING_QUICKSTART.md
-3. Read governance/templates/AGENT_CONTRACT.template.md
+3. Read governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md
 4. Identify governance documents referenced in old contract
 
 ### Step 2: Create YAML Header

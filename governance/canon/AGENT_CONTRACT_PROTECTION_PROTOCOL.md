@@ -545,9 +545,9 @@ Each consumer repository MUST:
    - Create protection registry with all locked sections
    - Update all agent contracts with locked section metadata
    - Reference templates:
-     - **Copy-Paste Sections**: `governance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md` (canonical template with role-specific sections for FM, Builder, Liaison)
+     - **Copy-Paste Sections**: `governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md` (canonical template with role-specific sections for FM, Builder, Liaison)
      - **Metadata Format**: Section 4.2 (Locked Section Metadata Format)
-     - **General Contract**: `governance/templates/AGENT_CONTRACT.template.md`
+     - **General Contract**: `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md`
    - Cross-reference: `governance/templates/LOCKED_SECTION_CHANGE_REQUEST_TEMPLATE.md` for future modifications
 
 5. **Document Completion**
@@ -737,7 +737,7 @@ This protocol is subject to evolution as governance matures:
 - Added explicit note: Layer-down NOT complete until all agent files have LOCKED sections applied
 - Emphasized atomic batch requirement: agent contracts and protocol must be updated together
 - Added cross-references to Section 4.2 (Locked Section Metadata Format)
-- Added cross-references to `governance/templates/AGENT_CONTRACT.template.md`
+- Added cross-references to `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md`
 - Added cross-references to `governance/templates/LOCKED_SECTION_CHANGE_REQUEST_TEMPLATE.md`
 - Enhanced Step 4 (Apply Lockdown) with template references and batch requirement
 - Enhanced Step 5 (Document Completion) with verification requirement

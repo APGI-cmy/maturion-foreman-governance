@@ -635,7 +635,7 @@ governance:
 | **governance/schemas/AGENT_FILE_SCHEMA.md** | `.agent` file structure and format |
 | **governance/canon/GOVERNANCE_CANON_MANIFEST.md** | Index of all canonical documents |
 | **governance/canon/GOVERNANCE_RIPPLE_MODEL.md** | How governance changes propagate |
-| **governance/runbooks/AGENT_FILE_VALIDATION.md** | Validation procedure for `.agent` files |
+| **governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md** | Validation procedure for `.agent` files |
 | **governance/runbooks/AGENT_FILE_MAINTENANCE.md** | Maintenance protocol for `.agent` files |
 
 ---

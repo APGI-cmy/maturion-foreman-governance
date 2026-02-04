@@ -53,7 +53,7 @@ Before validating `.agent` file:
 
 ### 3.2 Required Knowledge
 - **AGENT_FILE_SCHEMA.md** (in `governance/schemas/`)
-- **AGENT_FILE_BINDING_REQUIREMENTS.md** (in `governance/canon/`)
+- **AGENT_FILE_BINDING_REQUIREMENTS.md** (in `governance/canon/agent-contracts-guidance/`)
 - Repository type and agent roster
 
 ### 3.3 Required Access
@@ -786,7 +786,7 @@ When documenting validation results, use this template:
 | Document | Purpose |
 |----------|---------|
 | **governance/schemas/AGENT_FILE_SCHEMA.md** | Schema specification for `.agent` files |
-| **governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md** | Mandatory and optional bindings |
+| **governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md** | Mandatory and optional bindings |
 | **governance/runbooks/AGENT_FILE_MAINTENANCE.md** | Maintenance protocol for `.agent` files |
 | **governance/canon/FPC_REPOSITORY_LAYERDOWN_GUIDE.md** | Layer-down procedure including `.agent` creation |
 
