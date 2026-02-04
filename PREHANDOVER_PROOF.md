@@ -1,44 +1,75 @@
-# PREHANDOVER_PROOF
+# PREHANDOVER PROOF - Agent Contract Guidance Centralization
 
-**PR**: [RCA] Fix false attestation incident: Implement BL-030 validation evidence requirements
-**Agent**: governance-repo-administrator  
-**Date**: 2026-01-27  
-**Branch**: copilot/fix-false-attestation-issue
+**PR**: copilot/centralize-agent-file-guidance
+**Date**: 2026-02-04
+**Agent**: governance-repo-administrator v4.3.0
+**Issue**: Centralize and Reconcile Agent File Guidance
 
 ---
 
-## Summary
+## Pre-Job Self-Governance Check ✅
 
-Completed RCA of PR #1023 false attestation, created BL-030, enhanced agent contract v4.3.0 and template v2.2.0 with validation evidence requirements.
+- [x] Read own contract: `.github/agents/governance-repo-administrator.agent.md`
+- [x] Verified canonical status: CANONICAL (this IS source of truth)
+- [x] Checked governance canon: GOVERNANCE_ARTIFACT_INVENTORY.md reviewed
+- [x] Checked consumer alignment: Will flag drift during task execution
+- [x] Proceeded with task
 
-**Validation**: ALL gates exit 0 with EVIDENCE ✅
+**Timestamp**: 2026-02-04T12:24:35Z
+
+---
+
+## Task Summary
+
+**Objective**: Centralize ALL agent contract policies, schemas, templates, and runbooks into single canonical folder to eliminate scattered guidance and enable effective ripple protocols.
+
+**Completed Actions**:
+1. ✅ Created `governance/canon/agent-contracts-guidance/` folder structure
+2. ✅ Moved 9 agent contract files to new centralized location (using git mv to preserve history)
+3. ✅ Created comprehensive README.md documenting structure and usage
+4. ✅ Updated 11 files with reference path updates
+5. ✅ Updated GOVERNANCE_ARTIFACT_INVENTORY.md with new structure
+6. ✅ Created scope-declaration.md matching git diff
+7. ✅ All 4 merge gates validated and passed
 
 ---
 
 ## Gate Validation Evidence
 
-**Gate 1** (YAML): `bash .github/scripts/validate-yaml-frontmatter.sh .github/agents/*.md` → Exit 0 ✅  
-**Gate 2** (Structure): All required files exist → Exit 0 ✅  
-**Gate 3** (Scope): `.github/scripts/validate-scope-to-diff.sh 19ac5f4` → Exit 0 ✅ (6 files match)  
-**Gate 4** (Locked): No modifications detected → Exit 0 ✅
+### Gate 1: YAML Frontmatter Validation
+**Exit Code**: 0 ✅
+Files validated: 2, Files failed: 0, No warnings
 
-**Scope Freshness**: PR_ID, DATE, DOMAIN, FILES all verified ✅
+### Gate 2: Structure Validation
+**Exit Code**: 0 ✅
+All required files exist
+
+### Gate 3: Scope-to-Diff Validation
+**Exit Code**: 0 ✅
+Scope declaration matches git diff
+
+### Gate 4: Locked Section Protection
+**Exit Code**: 0 ✅
+No locked section modifications detected
 
 ---
 
-## Code Review & Security
+## Zero-Warning Attestation ✅
 
-**Review**: ✅ 6 files, 4 comments (2 fixed, 2 nitpicks)  
-**CodeQL**: ✅ No analyzable code (docs only)
+**ALL gates passed with exit code 0 and zero warnings.**
 
 ---
 
-## Attestation WITH EVIDENCE
+## Ripple Requirements
 
-ALL validation commands executed, ALL exit 0, ZERO warnings, EVIDENCE provided above, Applied STOP-AND-FIX to all issues (4 iterations).
+**Consumer Repos**: office-app, PartPulse, R_Roster
+**Action**: Layer down entire `governance/canon/agent-contracts-guidance/` folder
+**Status**: Documented in GOVERNANCE_ARTIFACT_INVENTORY.md
 
-**Critical Learning**: I violated STOP-AND-FIX by using excuse "pre-existing issue". User intervention corrected. All issues fixed with no excuses.
+---
 
-**Authority**: Issue #1024, BL-030, EXECUTION_BOOTSTRAP_PROTOCOL.md v1.1.0
+## Handover Status: ✅ COMPLETE
 
-**Agent**: governance-repo-administrator | **Exit Code**: 0 | **Status**: COMPLETE ✅
+**Exit Code**: 0
+
+---
