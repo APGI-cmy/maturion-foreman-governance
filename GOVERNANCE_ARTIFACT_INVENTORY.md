@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-01-27
+**Last Updated**: 2026-02-04
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -25,6 +25,7 @@ Artifacts are classified into four categories:
 |------|---------|------------|
 | `BUILD_PHILOSOPHY.md` | Defines Build-to-Green, One-Time Build Law, and core build governance philosophy | Readiness, PR-gates |
 | `GOVERNANCE_GATE_CANON.md` | Canonical definition of PR gate evaluation, enforcement semantics, and gate applicability | PR-gates, Readiness |
+| `GOVERNANCE_INVENTORY.json.template` | **NEW v1.0.0 (2026-02-04)** - Template for GOVERNANCE_INVENTORY.json to be copied and customized for consumer repositories. Defines structure for tracking governance artifacts, agent types, gap summary, validation history, and remediation plans per GOVERNANCE_INVENTORY_SCHEMA.json | Layer-down, Readiness |
 | `IMPLEMENTATION_COMPLETE.md` | Records completion status of governance implementation phases | Readiness |
 | `README.md` | Repository entry point and orientation | (documentation) |
 | `START_HERE.md` | Human orientation guide for repository structure | (documentation) |
@@ -90,6 +91,8 @@ Canon files define constitutional governance rules, models, and protocols.
 | `GOVERNANCE_PURPOSE_AND_SCOPE.md` | Constitutional definition of governance purpose and authority | Readiness |
 | `GOVERNANCE_RIPPLE_MODEL.md` | Defines governance change ripple effects and impact analysis | Layer-down |
 | `GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md` | **NEW v1.0.0 (2026-01-26)** - Mandatory systematic ripple checklist protocol for all governance changes. Defines 10-step execution process ensuring complete propagation across files, references, templates, agents, and consumer repos. Prevents drift, broken references, and incomplete ripple. Implements GOVERNANCE_RIPPLE_MODEL.md, AGENT_CONTRACT_PROTECTION_PROTOCOL.md, and EXECUTION_BOOTSTRAP_PROTOCOL.md zero-warning enforcement | Layer-down, PR-gates, Readiness |
+| `GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md` | **NEW v1.0.0 (2026-02-04) PUBLIC_API** - Canonical matrix defining mandatory/recommended governance artifacts for each agent type (FM, Builder, Governance-Liaison, Governance-Repo-Administrator, CodexAdvisor, Assurance). Single source of truth for agent contract creation, gap detection, ripple validation, and compliance auditing. Includes machine-readable YAML metadata for automated tooling | PR-gates, Layer-down, Readiness |
+| `PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md` | **NEW v1.0.0 (2026-02-04)** - Mandatory pre-work governance self-test and gap detection protocol for ALL agents before starting any job. Defines 9-step checklist including gap analysis, auto-remediation, agent contract binding verification, LOCKED section validation, and attestation requirements. Integrates with governance-gap-analyzer.sh for automated detection. Extends AGENT_SELF_GOVERNANCE_PROTOCOL.md | PR-gates, Layer-down, Readiness |
 | `GOVERNANCE_VERSIONING_AND_SYNC_PROTOCOL.md` | Defines governance versioning and synchronization | Layer-down |
 | `AGENT_RIPPLE_AWARENESS_OBLIGATION.md` | Defines agent obligation to recognize and surface ripple effects (Wave 1.2) | Layer-down, Feedback/learning |
 | `ASSISTED_RIPPLE_SCAN_SCOPE.md` | Defines scope of assisted ripple scanning within single repository (Wave 2.1) | Layer-down, Feedback/learning |
@@ -161,6 +164,7 @@ Schema files define data structures for governance artifacts.
 | `FAILURE_SCHEMA.schema.md` | Schema for failure records | Feedback/learning |
 | `GOVERNANCE_CHANGE_PROPOSAL.schema.md` | Schema for governance change proposals | Feedback/learning |
 | `GOVERNANCE_COMPLIANCE_REPORT.schema.json` | JSON schema for compliance reports | Readiness |
+| `GOVERNANCE_INVENTORY_SCHEMA.json` | **NEW v1.0.0 (2026-02-04) PUBLIC_API** - JSON Schema for per-repository governance inventory tracking. Validates GOVERNANCE_INVENTORY.json structure including repository metadata, agent types, governance artifacts status, gap summary, missing artifacts, agent contract gaps, validation history, and remediation plans. Used by governance-gap-analyzer.sh for inventory generation and validation | Layer-down, Readiness |
 | `GPCA_PREDICTION_REPORT.schema.md` | Schema for Gate Predictive Compliance Analysis reports | PR-gates, Feedback/learning |
 | `LEARNING_SCHEMA.schema.md` | Schema for learning records | Feedback/learning |
 | `PLATFORM_ACTION_AUDIT_ENTRY.schema.md` | Schema for platform action audit entries | Readiness |
@@ -449,6 +453,19 @@ Wave execution governance.
 | File | Purpose | Categories |
 |------|---------|------------|
 | `MODERNIZATION_WAVE_ALPHA.md` | Wave Alpha modernization documentation | Readiness |
+
+---
+
+## GitHub Scripts (.github/scripts/)
+
+Automation scripts for governance enforcement and validation.
+
+| File | Purpose | Categories |
+|------|---------|------------|
+| `check_locked_sections.py` | Python script for validating LOCKED sections in agent contracts | PR-gates |
+| `governance-gap-analyzer.sh` | **NEW v1.0.0 (2026-02-04) PUBLIC_API** - Automated governance gap detection and remediation script. Compares local governance to canonical GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md, detects missing mandatory/recommended artifacts, executes auto-layer-down for governance files, generates reports, and updates GOVERNANCE_INVENTORY.json. Used by PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md for pre-work validation | PR-gates, Layer-down, Readiness |
+| `validate-scope-to-diff.sh` | Bash script for validating scope declaration matches git diff | PR-gates |
+| `validate-yaml-frontmatter.sh` | Bash script for validating YAML frontmatter in agent contracts | PR-gates |
 
 ---
 
@@ -807,7 +824,7 @@ Implementation completion reports (not canonical governance, but records impleme
 
 ## Summary
 
-**Total Governance Artifacts Inventoried**: 281+
+**Total Governance Artifacts Inventoried**: 286+
 
 **Category Distribution**:
 - **Readiness**: Primary category for platform, build, and execution readiness governance
@@ -819,7 +836,12 @@ Implementation completion reports (not canonical governance, but records impleme
 - Some artifacts are uncategorized (marked as documentation, philosophy, templates, or implementation status)
 - Many artifacts serve multiple categories simultaneously
 - No interpretation, correction, or gap analysis has been applied
-- This inventory was last updated 2026-01-08 to include governance/incidents/ directory
+- This inventory was last updated 2026-02-04 to include governance inventory system artifacts (GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md, GOVERNANCE_INVENTORY_SCHEMA.json, PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md, governance-gap-analyzer.sh, GOVERNANCE_INVENTORY.json.template)
+
+**PUBLIC_API Artifacts** (external tooling may depend on these):
+- `GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md` - Agent requirements matrix
+- `GOVERNANCE_INVENTORY_SCHEMA.json` - Inventory validation schema
+- `governance-gap-analyzer.sh` - Gap detection script
 
 ---
 
