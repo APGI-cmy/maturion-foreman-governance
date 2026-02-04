@@ -31,7 +31,7 @@ Use this template when:
 - **Metadata Format**: Protocol Section 4.2
 - **Gap Analysis**: `governance/templates/GAP_ANALYSIS_TEMPLATE.md`
 - **Change Requests**: `governance/templates/LOCKED_SECTION_CHANGE_REQUEST_TEMPLATE.md`
-- **General Contract Template**: `governance/templates/AGENT_CONTRACT.template.md`
+- **General Contract Template**: `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md`
 
 ---
 

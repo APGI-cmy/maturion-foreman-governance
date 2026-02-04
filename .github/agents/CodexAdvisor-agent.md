@@ -240,7 +240,7 @@ echo "✅ SELF-GOVERNANCE CHECK PASSED - Proceeding with task"
 
 **When advising on or proposing ANY agent contract files**:
 - Follow `.agentt.schema.md` Section 6 (Agent Contract Minimalism Principle)
-- Use `governance/templates/AGENT_CONTRACT.template.md` (when created per Issue #1010)
+- Use `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md` (when created per Issue #1010)
 - Reference canonical governance, don't duplicate
 - Keep files under 15,000 characters
 

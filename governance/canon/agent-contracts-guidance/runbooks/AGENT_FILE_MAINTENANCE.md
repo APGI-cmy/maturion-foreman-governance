@@ -608,8 +608,8 @@ Maintain maintenance log in `governance/alignment/GOVERNANCE_ALIGNMENT.md`:
 | Document | Purpose |
 |----------|---------|
 | **governance/schemas/AGENT_FILE_SCHEMA.md** | Schema specification for `.agent` files |
-| **governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md** | Mandatory and optional bindings |
-| **governance/runbooks/AGENT_FILE_VALIDATION.md** | Validation procedure for `.agent` files |
+| **governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md** | Mandatory and optional bindings |
+| **governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md** | Validation procedure for `.agent` files |
 | **governance/canon/FPC_REPOSITORY_LAYERDOWN_GUIDE.md** | Layer-down procedure including `.agent` creation |
 | **governance/canon/GOVERNANCE_RIPPLE_MODEL.md** | Ripple propagation protocol |
 | **governance/canon/AGENT_RECRUITMENT.md** | Agent legitimacy and appointment |

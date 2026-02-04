@@ -71,7 +71,7 @@ The following documents are **BINDING** and must be respected by all systems and
 
 ## Agent Onboarding
 
-**New agents start here**: `governance/canon/AGENT_ONBOARDING_QUICKSTART.md`
+**New agents start here**: `governance/canon/agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md`
 
 This streamlined onboarding guide provides:
 - Your role and authority boundaries
@@ -89,7 +89,7 @@ All agent contracts follow a **minimal, reference-based format**:
 - **Escalation protocol**: When and how to escalate
 - **Onboarding references**: Links to canonical governance
 
-**Contract templates**: `governance/templates/AGENT_CONTRACT.template.md`
+**Contract templates**: `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md`
 
 ### Key Principle: Contract Minimalism
 
@@ -101,7 +101,7 @@ This approach:
 - ✅ Ensures single source of truth
 - ✅ Simplifies updates and maintenance
 
-**Migration guide**: `governance/canon/AGENT_CONTRACT_MIGRATION_GUIDE.md` (for future waves)
+**Migration guide**: `governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md` (for future waves)
 
 ---
 

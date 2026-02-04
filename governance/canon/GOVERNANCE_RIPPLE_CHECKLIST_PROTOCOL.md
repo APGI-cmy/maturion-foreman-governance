@@ -216,8 +216,8 @@ grep -r "version:" governance/templates/
 - [ ] Update migration guides if applicable
 
 **Specific Cross-References to Check**:
-- [ ] governance/canon/.agent.schema.md → AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
-- [ ] governance/templates/AGENT_CONTRACT.template.md → AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
+- [ ] governance/canon/agent-contracts-guidance/.agent.schema.md → AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
+- [ ] governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md → AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
 - [ ] Agent contracts → EXECUTION_BOOTSTRAP_PROTOCOL.md Section 5.1
 - [ ] PREHANDOVER_PROOF_TEMPLATE.md → EXECUTION_BOOTSTRAP_PROTOCOL.md
 - [ ] All binding lists in agent contracts → modified canon files

@@ -283,7 +283,7 @@ Based on repository type, seed agent contracts in `.github/agents/`:
 
 **Schema**: See `governance/schemas/AGENT_FILE_SCHEMA.md` in canonical governance for complete specification.
 
-**Binding Requirements**: See `governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md` for mandatory bindings based on repository type.
+**Binding Requirements**: See `governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md` for mandatory bindings based on repository type.
 
 **Template**: See `maturion-foreman-governance/.agent` as reference.
 
@@ -318,7 +318,7 @@ Based on repository type, seed agent contracts in `.github/agents/`:
 
 #### 4.3 Validate .agent File (MANDATORY)
 
-**Validation Authority**: `governance/runbooks/AGENT_FILE_VALIDATION.md`
+**Validation Authority**: `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md`
 
 Before proceeding, validate the `.agent` file:
 
@@ -404,7 +404,7 @@ Before declaring Phase 4 complete:
 
 **Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md`  
 **Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`  
-**Validation**: `governance/runbooks/AGENT_FILE_VALIDATION.md`
+**Validation**: `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md`
 
 ---
 
@@ -809,9 +809,9 @@ After layer-down, a **Governance Liaison** agent (or FM in bootstrap mode) is re
 - `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` - Latest learnings
 - `governance/canon/AGENT_RECRUITMENT.md` - Agent appointment process
 - `governance/schemas/AGENT_FILE_SCHEMA.md` - Repository `.agent` file specification
-- `governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md` - Mandatory and optional bindings for `.agent` files
-- `governance/runbooks/AGENT_FILE_VALIDATION.md` - Validation process for `.agent` files
-- `governance/runbooks/AGENT_FILE_MAINTENANCE.md` - Maintenance protocol for `.agent` files
+- `governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md` - Mandatory and optional bindings for `.agent` files
+- `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md` - Validation process for `.agent` files
+- `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md` - Maintenance protocol for `.agent` files
 - `apps/foreman-office-app/mappings/GOVERNANCE_GATE_MAPPING.md` - Example mapping document
 
 ---
