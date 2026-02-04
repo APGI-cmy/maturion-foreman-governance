@@ -1,0 +1,70 @@
+{
+  "$comment": "Template GOVERNANCE_INVENTORY.json - Copy to consumer repos and customize",
+  "schema_version": "1.0.0",
+  "repository": {
+    "owner": "APGI-cmy",
+    "name": "TEMPLATE-REPO-NAME",
+    "type": "consumer_app"
+  },
+  "last_updated": "2026-02-04T13:30:00Z",
+  "last_sync": "2026-02-04T13:30:00Z",
+  "canonical_source": {
+    "repository": "APGI-cmy/maturion-foreman-governance",
+    "branch": "main",
+    "commit_sha": "0000000000000000000000000000000000000000",
+    "matrix_version": "1.0.0"
+  },
+  "agent_types": [
+    {
+      "id": "governance-liaison",
+      "class": "administrator",
+      "contract_path": ".github/agents/governance-liaison.agent.md",
+      "status": "active",
+      "version": "1.0.0",
+      "last_validated": "2026-02-04T13:30:00Z"
+    }
+  ],
+  "governance_artifacts": [
+    {
+      "id": "governance-purpose",
+      "canonical_path": "governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md",
+      "local_path": "governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md",
+      "status": "present",
+      "requirement_level": "mandatory",
+      "applicable_agents": ["governance-liaison"],
+      "requires_locked_section": false,
+      "version": "1.0.0",
+      "last_synced": "2026-02-04T13:30:00Z",
+      "drift_detected": false
+    }
+  ],
+  "gap_summary": {
+    "total_gaps": 0,
+    "mandatory_gaps": 0,
+    "recommended_gaps": 0,
+    "outdated_count": 0,
+    "drift_count": 0,
+    "compliance_percentage": 100.0,
+    "last_gap_analysis": "2026-02-04T13:30:00Z"
+  },
+  "missing_artifacts": [],
+  "agent_contract_gaps": [],
+  "validation_history": [
+    {
+      "timestamp": "2026-02-04T13:30:00Z",
+      "validator": "governance-gap-analyzer.sh v1.0.0",
+      "status": "pass",
+      "gaps_found": 0,
+      "report_path": "governance/reports/gap-analysis-20260204.md"
+    }
+  ],
+  "remediation_plan": {
+    "status": "none_required",
+    "priority": "low"
+  },
+  "metadata": {
+    "generated_by": "governance-gap-analyzer.sh v1.0.0",
+    "manual_overrides": [],
+    "notes": "Template inventory - customize for consumer repository"
+  }
+}
