@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-01-27
+**Last Updated**: 2026-02-04
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -72,6 +72,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md` | Defines model tier selection and cognitive load management | Readiness |
 | `COGNITIVE_HYGIENE_AUTHORITY_MODEL.md` | Defines cognitive hygiene boundaries and authority | Readiness |
 | `COGNITIVE_HYGIENE_MEMORY_INTEGRATION_MODEL.md` | Defines memory access and hygiene integration | Readiness |
+| `LIVING_AGENT_SYSTEM.md` | **NEW v1.0.0 (2026-02-04)** - Canonical protocol for Living Agent System. Defines agent lifecycle (wake-up, work, closure), workspace structure, memory management, working contract generation, and zero-direct-write policy for agent contracts | Readiness, PR-gates, Layer-down, Feedback/learning |
 | `COMMISSIONING_EVIDENCE_MODEL.md` | Defines commissioning evidence requirements | Readiness |
 | `COMPLIANCE_AND_STANDARDS_GOVERNANCE.md` | Defines compliance framework (ISO/NIST) alignment | Readiness |
 | `DELEGATION_INSTRUCTION_AND_AUDIT_MODEL.md` | Defines delegation instruction format and audit requirements | Readiness |
@@ -212,7 +213,11 @@ Agent contract files define agent roles, authority, and responsibilities.
 | File | Purpose | Categories |
 |------|---------|------------|
 | `governance/agents/governance-administrator.agent.md` | Governance Administrator agent contract | Readiness |
-| `.github/agents/governance-repo-administrator.agent.md` | **UPDATED v4.2.0 (2026-01-26)** - Repository-scoped Governance Administrator agent contract with zero-warning handover enforcement | Readiness |
+| `.github/agents/governance-repo-administrator.agent.md` | **UPDATED v5.0.0 (2026-02-04)** - Minimal agent identity contract for Living Agent System, references LIVING_AGENT_SYSTEM.md for lifecycle protocol | Readiness, Layer-down |
+| `.github/agents/CodexAdvisor-agent.md` | **UPDATED v5.0.0 (2026-02-04)** - Minimal agent identity contract for Living Agent System with approval-gated execution | Readiness, Layer-down |
+| `.github/agents/legacy/` | **NEW (2026-02-04)** - Archive of pre-LAS agent contracts (v4.x) for historical reference only | (historical) |
+| `.github/scripts/wake-up-protocol.sh` | **NEW (2026-02-04)** - Executable wake-up protocol for Living Agent System. Loads memory, generates working contract, checks environment health | Readiness, Layer-down |
+| `.github/scripts/session-closure.sh` | **NEW (2026-02-04)** - Executable session closure protocol for Living Agent System. Creates session memory, rotates old sessions, verifies safe handover | Readiness, Layer-down |
 
 ---
 
