@@ -22,31 +22,32 @@ Centralize ALL agent contract policies, schemas, templates, and runbooks into a 
 ## FILES_CHANGED
 
 ### New Files Created
-- `governance/canon/agent-contracts-guidance/README.md`
+A governance/canon/agent-contracts-guidance/README.md
 
-### Files Moved
-- `governance/canon/.agent.schema.md` → `governance/canon/agent-contracts-guidance/.agent.schema.md`
-- `governance/canon/AGENT_FILE_CREATION_POLICY.md` → `governance/canon/agent-contracts-guidance/AGENT_FILE_CREATION_POLICY.md`
-- `governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md` → `governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md`
-- `governance/canon/AGENT_CONTRACT_MIGRATION_GUIDE.md` → `governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md`
-- `governance/canon/AGENT_ONBOARDING_QUICKSTART.md` → `governance/canon/agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md`
-- `governance/templates/AGENT_CONTRACT.template.md` → `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md`
-- `governance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md` → `governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md`
-- `governance/runbooks/AGENT_FILE_VALIDATION.md` → `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md`
-- `governance/runbooks/AGENT_FILE_MAINTENANCE.md` → `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md`
+### Files Moved (Renames)
+R governance/canon/.agent.schema.md -> governance/canon/agent-contracts-guidance/.agent.schema.md
+R governance/canon/AGENT_FILE_CREATION_POLICY.md -> governance/canon/agent-contracts-guidance/AGENT_FILE_CREATION_POLICY.md
+R governance/canon/AGENT_FILE_BINDING_REQUIREMENTS.md -> governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md
+R governance/canon/AGENT_CONTRACT_MIGRATION_GUIDE.md -> governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md
+R governance/canon/AGENT_ONBOARDING_QUICKSTART.md -> governance/canon/agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md
+R governance/templates/AGENT_CONTRACT.template.md -> governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md
+R governance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md -> governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
+R governance/runbooks/AGENT_FILE_VALIDATION.md -> governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md
+R governance/runbooks/AGENT_FILE_MAINTENANCE.md -> governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md
 
 ### Files Modified (Reference Updates)
-- `.github/agents/CodexAdvisor-agent.md`
-- `GOVERNANCE_ARTIFACT_INVENTORY.md`
-- `README.md`
-- `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md`
-- `governance/canon/FPC_REPOSITORY_LAYERDOWN_GUIDE.md`
-- `governance/canon/GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md`
-- `governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md`
-- `governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md`
-- `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md`
-- `governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md`
-- `governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md`
+M .github/agents/CodexAdvisor-agent.md
+M GOVERNANCE_ARTIFACT_INVENTORY.md
+M README.md
+M governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md
+M governance/canon/FPC_REPOSITORY_LAYERDOWN_GUIDE.md
+M governance/canon/GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md
+M governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md
+M governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md
+M governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md
+M governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md
+M governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md
+M governance/scope-declaration.md
 
 ---
 
