@@ -115,8 +115,6 @@ else
 fi
 echo ""
 
----
-
 # STEP 7: GENERATE WORKING CONTRACT
 echo "📜 STEP 7: Generating working contract..."
 SESSION_NUM=$(find "$WORKSPACE/memory" -name "session-*.md" 2>/dev/null | wc -l)
@@ -164,6 +162,8 @@ EOFCONTRACT
 
 echo "  ✓ Working contract: $WORKSPACE/working-contract.md"
 echo ""
+
+---
 echo "╔═════════════════════════════════════════════════��═════════╗"
 echo "║  WAKE-UP COMPLETE - READ YOUR WORKING CONTRACT"
 echo "╚═══════════════════════════════════════════════════════════╝"
@@ -224,8 +224,7 @@ if [ $MEMORY_COUNT -gt 5 ]; then
 fi
 
 echo "✅ SESSION CLOSED"
-
----
+```
 Prohibitions
 ❌ No execution without approval
 ❌ No contract modification (escalate to CS2)
