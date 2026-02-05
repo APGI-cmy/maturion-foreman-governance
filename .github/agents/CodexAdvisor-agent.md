@@ -163,7 +163,6 @@ EOFCONTRACT
 echo "  ✓ Working contract: $WORKSPACE/working-contract.md"
 echo ""
 
----
 echo "╔═════════════════════════════════════════════════��═════════╗"
 echo "║  WAKE-UP COMPLETE - READ YOUR WORKING CONTRACT"
 echo "╚═══════════════════════════════════════════════════════════╝"
@@ -225,10 +224,16 @@ fi
 
 echo "✅ SESSION CLOSED"
 ```
-Prohibitions
+
+---
+
+## Prohibitions
+
 ❌ No execution without approval
 ❌ No contract modification (escalate to CS2)
 ❌ No governance interpretation (escalate to CS2)
 ❌ No skipping wake-up/closure protocols
 
-Authority: LIVING_AGENT_SYSTEM.md | Version: 5.0.0 | Last Updated: 2026-02-05
+---
+
+**Authority**: LIVING_AGENT_SYSTEM.md | **Version**: 5.0.0 | **Last Updated**: 2026-02-05
