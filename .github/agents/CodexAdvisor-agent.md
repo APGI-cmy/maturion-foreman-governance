@@ -113,7 +113,7 @@ if [ $ESCALATIONS -gt 0 ]; then
 else
   echo "  ✓ No pending escalations"
 fi
-echo""
+echo ""
 
 ---
 
@@ -169,7 +169,7 @@ echo "║  WAKE-UP COMPLETE - READ YOUR WORKING CONTRACT"
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
 echo "📖 cat $WORKSPACE/working-contract.md"
-echo""
+echo ""
 ```
 ---
 ## After Work Completes - Copy-Paste and Run This Code
