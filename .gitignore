@@ -25,3 +25,6 @@ Thumbs.db
 .env.local
 .env.*.local
 GOVERNANCE_ALIGNMENT_INVENTORY.json
+
+# Agent workspace (dynamic working data, not committed)
+.agent-workspace/
