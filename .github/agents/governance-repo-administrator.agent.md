@@ -172,7 +172,7 @@ echo "╚═══════════════════════�
 echo ""
 echo "📖 cat $WORKSPACE/working-contract.md"
 echo ""
-
+```
 ---
 ## After Work Completes - Copy-Paste and Run This Code
 
@@ -231,11 +231,11 @@ if [ $MEMORY_COUNT -gt 5 ]; then
   done
   echo "  ✓ Rotated old sessions"
 fi
-
 echo "✅ SESSION CLOSED"
 ```
 ---
-Prohibitions
+
+## Prohibitions
 ❌ No canon changes without ripple
 ❌ No contract modification (escalate to CS2)
 ❌ No governance interpretation (escalate to CS2)
