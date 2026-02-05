@@ -117,6 +117,7 @@ else
   echo "  ✓ No pending escalations"
 fi
 echo ""
+---
 
 # STEP 7: GENERATE WORKING CONTRACT
 echo "📜 STEP 7: Generating working contract..."
@@ -173,7 +174,9 @@ echo "📖 cat $WORKSPACE/working-contract.md"
 echo ""
 
 ---
-After Work Completes - Copy-Paste and Run This Code
+## After Work Completes - Copy-Paste and Run This Code
+
+```bash
 #!/bin/bash
 # governance-repo-administrator Session Closure
 AGENT_ID="governance-repo-administrator"
@@ -230,7 +233,7 @@ if [ $MEMORY_COUNT -gt 5 ]; then
 fi
 
 echo "✅ SESSION CLOSED"
-
+```
 ---
 Prohibitions
 ❌ No canon changes without ripple
