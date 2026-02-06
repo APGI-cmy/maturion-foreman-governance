@@ -1,0 +1,33 @@
+# Memory Directory
+
+This directory stores rolling session memories as per LIVING_AGENT_SYSTEM.md canon.
+
+## Structure
+
+- Last 5 session memories kept here as `session-NNN-YYYYMMDD.md`
+- Older sessions archived to `.archive/sessions-YYYY-MM/`
+- Monthly summaries in `.archive/summary-YYYY-MM.md`
+
+## Session Memory Format
+
+Each session memory file should contain:
+- Task description
+- Actions taken
+- Decisions made and rationale
+- Patterns discovered
+- Mistakes avoided
+- Efficiency improvements
+- Blockers encountered
+- Governance gaps identified
+- Outcome status
+
+## Memory Rotation
+
+When more than 5 session files exist:
+1. Move oldest sessions to `.archive/sessions-YYYY-MM/`
+2. Update monthly summary with key learnings
+3. Maintain continuity through summaries
+
+## Governance
+
+This memory structure is **MANDATORY** per LIVING_AGENT_SYSTEM.md and must never be gitignored.

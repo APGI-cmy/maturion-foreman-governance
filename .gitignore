@@ -26,5 +26,7 @@ Thumbs.db
 .env.*.local
 GOVERNANCE_ALIGNMENT_INVENTORY.json
 
-# Agent workspace (dynamic working data, not committed)
-.agent-workspace/
+# Agent workspace - Persist memory, exclude only ephemeral files
+# Per LIVING_AGENT_SYSTEM.md: Memory must persist across sessions
+.agent-workspace/*/working-contract.md
+.agent-workspace/*/environment-health.json
