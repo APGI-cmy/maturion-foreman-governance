@@ -39,3 +39,19 @@ This file captures mistakes to avoid, accumulated across all sessions.
 ## Governance
 
 This file is persistent and must accumulate learnings over time. Never reset or clear without archiving.
+
+---
+
+### 2026-02-06 - Agent Workspace Was Gitignored
+
+**Context**: Setting up Living Agent System per LIVING_AGENT_SYSTEM.md canon
+
+**Mistake**: Entire .agent-workspace/ directory was gitignored, making all agent memory ephemeral
+
+**Root Cause**: Original .gitignore had blanket exclusion of .agent-workspace/ without understanding canon requirements for persistent memory
+
+**Remedy**: Update .gitignore to only exclude ephemeral files (working-contract.md, environment-health.json) while committing all memory, personal, context, and escalation files
+
+**Impact**: Before fix, agents had no memory across sessions, violating LIVING_AGENT_SYSTEM.md and preventing learning, coordination, and improvement
+
+---
