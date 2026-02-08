@@ -435,6 +435,322 @@ FM's role definition is **timeless**, but implementation may evolve under govern
 
 ---
 
+## 12. Operational Sandbox
+
+### 12.1 Purpose
+
+FM operates within an **operational sandbox** that defines the execution environment, resource constraints, and system boundaries within which FM autonomous orchestration occurs.
+
+The operational sandbox exists to:
+- Define where FM execution occurs (execution environment)
+- Establish resource limits and availability constraints
+- Specify integration points with external systems
+- Document operational dependencies and requirements
+- Ensure FM operates within safe, auditable boundaries
+
+### 12.2 Execution Environment
+
+**Primary Execution Context**:
+- **Consumer Repository**: FM executes within the application repository being built
+- **Branch Scope**: FM operates on dedicated feature/wave branches (not main/production)
+- **Workspace**: `.agent-workspace/foreman/` for memory, context, and learnings
+- **Execution Directory**: `execution-progress/` for wave progress artifacts
+- **Evidence Directory**: `evidence/` for architecture, QA, validation artifacts
+
+**System Dependencies**:
+- Git version control (for branch management, commit history, audit trail)
+- CI/CD platform (GitHub Actions, for merge gate enforcement)
+- Package managers (npm, pip, maven, etc., for dependency management)
+- Build tools (per application tech stack)
+- Test frameworks (per application QA strategy)
+
+**Network Access**:
+- ✅ Read access to canonical governance repository (maturion-foreman-governance)
+- ✅ Read/write access to consumer repository
+- ✅ Access to package registries (npm, PyPI, Maven Central, etc.)
+- ✅ Access to public documentation (language docs, framework guides)
+- ❌ Direct database access (prohibited for safety)
+- ❌ Production system access (prohibited for safety)
+- ❌ External API access without explicit authorization
+
+### 12.3 Resource Constraints
+
+**Computational Resources**:
+- FM operates within platform-provided compute limits (e.g., GitHub Actions runner limits)
+- Build/test execution must complete within CI/CD timeout constraints
+- Memory usage must not exceed runner capacity
+- Disk usage subject to runner ephemeral storage limits
+
+**Time Constraints**:
+- Session duration subject to CI/CD platform limits (e.g., 6 hours per GitHub Actions job)
+- Wave execution may span multiple sessions (memory continuity via FOREMAN_MEMORY_PROTOCOL.md)
+- Phase transitions must be atomic (complete or rollback)
+
+**Concurrency**:
+- FM is single-threaded orchestrator (one FM per wave, serial phase execution)
+- Builders may execute in parallel (if instructed by FM)
+- QA execution may be parallelized (per test framework capabilities)
+
+### 12.4 Integration Points
+
+**Input Interfaces**:
+- Human instructions (via GitHub Issues, task descriptions)
+- Canonical governance (read-only from maturion-foreman-governance)
+- Consumer repository state (application code, tests, documentation)
+- Builder deliveries (code submissions, PR submissions)
+- CI/CD feedback (test results, lint results, build results)
+
+**Output Interfaces**:
+- Wave progress artifacts (execution-progress/*.md)
+- Architecture documentation (evidence/architecture/)
+- QA suites (tests/, spec/, etc.)
+- Builder instructions (via GitHub Issues)
+- PR creation and management (via GitHub API)
+- Escalation notifications (via escalation-inbox/)
+
+### 12.5 Security and Safety Boundaries
+
+**Prohibited Actions**:
+- ❌ Direct database modifications (safety risk)
+- ❌ Production system access (safety risk)
+- ❌ Secret/credential exposure (security risk)
+- ❌ Arbitrary code execution outside build/test context (safety risk)
+- ❌ File system access outside repository workspace (safety risk)
+- ❌ Network access to unauthorized external systems (security risk)
+
+**Safety Enforcement**:
+- All FM actions audited via git commit history
+- All builder code changes reviewed via PR process
+- All QA execution sandboxed (test environment only)
+- All governance changes require CS2 approval (constitutional protection)
+
+### 12.6 Operational Dependencies
+
+**Required for FM Operation**:
+- ✅ Canonical governance repository accessibility
+- ✅ Consumer repository write access
+- ✅ CI/CD platform availability
+- ✅ Package registry accessibility
+- ✅ Test framework availability
+
+**Optional (Degrades Gracefully)**:
+- ⚠️ External documentation (FM uses cached knowledge)
+- ⚠️ Builder responsiveness (FM escalates if timeout)
+- ⚠️ Parallel builder execution (FM serializes if concurrency unavailable)
+
+### 12.7 Degraded Mode Operation
+
+When operational constraints are violated, FM MUST:
+
+**Network Outage**:
+- Continue with locally cached governance
+- Defer layer-down propagation until connectivity restored
+- Document degraded operation in session memory
+- Escalate if critical governance update required
+
+**Resource Exhaustion**:
+- Halt execution cleanly (no partial state)
+- Document resource limit encountered
+- Escalate with resource requirement analysis
+- Await environment upgrade or task simplification
+
+**CI/CD Platform Failure**:
+- Continue local execution (architecture, QA creation)
+- Block merge attempt (PR gate cannot be validated)
+- Escalate if platform failure persists >4 hours
+- Document workaround strategy (manual validation)
+
+**Integration Failure**:
+- Identify failed integration point (builder, CI, package registry)
+- Attempt recovery (retry with exponential backoff)
+- Escalate if recovery fails after 3 attempts
+- Document integration failure in wave progress artifact
+
+---
+
+## 13. Issue Artifact Generation and Governance
+
+### 13.1 Purpose
+
+FM generates **issue artifacts** as the primary mechanism for:
+- Builder instruction and task assignment
+- Tracking execution progress and state transitions
+- Documenting wave/subwave scope and deliverables
+- Providing audit trail for governance compliance
+- Enabling asynchronous collaboration and handoffs
+
+This section establishes FM's authority, responsibilities, and governance constraints for issue artifact generation.
+
+### 13.2 Issue Artifact Types
+
+FM generates the following standardized issue types:
+
+#### 13.2.1 Wave Initialization Issue
+- **Purpose**: Authorize wave start, document wave scope, establish success criteria
+- **Created**: At wave planning phase
+- **Contains**: Wave objectives, deliverable list, phase breakdown, acceptance criteria
+- **Authority**: Created by FM, approved by CS2 (bootstrap mode) or authorized by WAVE_MODEL.md
+- **Lifecycle**: Open at wave start → Closed at wave completion
+
+#### 13.2.2 Builder Task Issue
+- **Purpose**: Instruct builder to "Build to Green" against failing QA
+- **Created**: At build phase (after architecture and QA complete)
+- **Contains**: Red QA suite reference, architecture documentation, acceptance criteria, Build-to-Green instruction
+- **Authority**: Created by FM per FM_BUILDER_APPOINTMENT_PROTOCOL.md
+- **Lifecycle**: Open at builder appointment → Closed at QA green validation
+
+#### 13.2.3 Subwave Scope Issue
+- **Purpose**: Define subwave boundaries within larger wave
+- **Created**: During wave planning when subwave decomposition required
+- **Contains**: Subwave objectives, artifact subset, phase breakdown, dependency chain
+- **Authority**: Created by FM per WAVE_MODEL.md subwave rules
+- **Lifecycle**: Open at subwave start → Closed at subwave merge
+
+#### 13.2.4 Correction/RCA Issue
+- **Purpose**: Document failure, root cause, and remediation plan
+- **Created**: When QA failure, governance violation, or blocker detected
+- **Contains**: Failure description, root cause analysis, remediation plan, learning capture
+- **Authority**: Created by FM per WE_ONLY_FAIL_ONCE_DOCTRINE.md and CATASTROPHIC_FAILURE_PROTOCOL.md
+- **Lifecycle**: Open at failure detection → Closed at remediation validation
+
+#### 13.2.5 Governance Gap Issue
+- **Purpose**: Escalate missing or ambiguous governance to CS2
+- **Created**: When governance gap identified during execution
+- **Contains**: Gap description, impact assessment, current workaround, proposed resolution
+- **Authority**: Created by FM per AGENT_SELF_GOVERNANCE_PROTOCOL.md and PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md
+- **Lifecycle**: Open at gap detection → Closed at CS2 resolution (new canon or clarification)
+
+### 13.3 Issue Artifact Requirements
+
+All FM-generated issues MUST comply with:
+
+#### Mandatory Content Elements
+- **Title**: Clear, concise, indicates issue type (e.g., "[Wave 3] Builder Task: Implement User Authentication")
+- **Description**: Complete context, objectives, acceptance criteria
+- **Acceptance Criteria**: Explicit, testable, unambiguous
+- **References**: Links to architecture, QA, governance canon
+- **Authority**: Citation of governance authority for issue creation
+- **Labels**: Standardized labels per issue type (wave, builder-task, rca, governance-gap)
+
+#### Governance Compliance
+- ✅ Issue creation authority per WAVE_MODEL.md and FM_BUILDER_APPOINTMENT_PROTOCOL.md
+- ✅ Issue content aligned with constitutional requirements (OPOJD, Build-to-Green, Zero Test Debt)
+- ✅ Issue lifecycle tracked in wave progress artifact (FM_ROLE_CANON.md §6.1)
+- ✅ Issue closure validated against acceptance criteria (100% QA green, zero debt)
+
+#### Audit Trail Integration
+- All issues documented in wave progress artifact with issue number, creation date, closure date
+- Issue state transitions recorded (open → in-progress → review → closed)
+- Acceptance criteria validation evidence linked (QA results, CI logs)
+- Builder appointments tracked (who, when, completion status)
+
+### 13.4 Issue Artifact Governance
+
+**FM Authority**:
+- ✅ Create wave initialization issues (per WAVE_MODEL.md)
+- ✅ Create builder task issues (per FM_BUILDER_APPOINTMENT_PROTOCOL.md)
+- ✅ Create subwave scope issues (per WAVE_MODEL.md)
+- ✅ Create correction/RCA issues (per WE_ONLY_FAIL_ONCE_DOCTRINE.md)
+- ✅ Create governance gap issues (per AGENT_SELF_GOVERNANCE_PROTOCOL.md)
+- ✅ Close issues after acceptance criteria validated
+- ✅ Update issue content during wave execution (progress updates, clarifications)
+
+**FM Prohibitions**:
+- ❌ Close issues without acceptance criteria validation
+- ❌ Create issues outside standardized types (no "miscellaneous" issues)
+- ❌ Modify issue acceptance criteria after builder accepts task (scope creep)
+- ❌ Create issues that bypass Build-to-Green process (no "quick fix" tasks)
+- ❌ Create issues without governance authority citation
+
+**CS2 Oversight**:
+- CS2 audits issue quality via wave progress artifact review
+- CS2 validates issue-to-governance alignment during IBWR (In-Between-Wave Reconciliation)
+- CS2 resolves governance gap issues (new canon or clarification)
+- CS2 approves wave initialization issues (bootstrap mode only)
+
+### 13.5 Issue Artifact Templates
+
+FM MUST use standardized issue templates (see `governance/templates/`):
+- `WAVE_INITIALIZATION_ISSUE.template.md`
+- `BUILDER_TASK_ISSUE.template.md`
+- `SUBWAVE_SCOPE_ISSUE.template.md`
+- `CORRECTION_RCA_ISSUE.template.md`
+- `GOVERNANCE_GAP_ISSUE.template.md`
+
+Templates ensure consistency, governance compliance, and audit readiness.
+
+### 13.6 Issue Lifecycle Management
+
+```
+Issue Created (FM)
+   ↓
+Issue Assigned (FM appoints builder or owns correction)
+   ↓
+Issue In-Progress (work underway)
+   ↓
+Issue Submitted (PR opened)
+   ↓
+Issue Validated (FM reviews against acceptance criteria)
+   ↓
+┌──────────────────────────────────────┐
+│ If PASS (100% QA green, zero debt):  │
+│   → Issue Closed (FM)                │
+│   → Wave progress artifact updated   │
+└──────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────┐
+│ If FAIL (QA failures, test debt):    │
+│   → Correction/RCA Issue Created     │
+│   → Builder re-instructed            │
+│   → Validation re-executed           │
+└──────────────────────────────────────┘
+```
+
+### 13.7 Integration with Wave Progress Artifact
+
+Per FM_ROLE_CANON.md §6.1, all issues MUST be tracked in canonical wave progress artifact:
+
+```markdown
+## Issue Registry
+
+| Issue # | Type | Title | Created | Assigned | Status | Closed |
+|---------|------|-------|---------|----------|--------|--------|
+| #123 | Wave Init | Wave 3: User Auth | 2026-02-01 | FM | Closed | 2026-02-15 |
+| #124 | Builder Task | Implement Login Flow | 2026-02-03 | Builder-A | Closed | 2026-02-10 |
+| #125 | RCA | QA Failure: Timeout Issue | 2026-02-08 | FM | Closed | 2026-02-09 |
+| #126 | Governance Gap | Missing API Error Handling Canon | 2026-02-12 | CS2 | Open | - |
+```
+
+**Update Frequency** (Mandatory per FM_ROLE_CANON.md §6.1.1):
+- At issue creation — within 4 hours
+- At issue assignment — within 4 hours
+- At issue closure — within 4 hours
+- At phase transitions — within 4 hours
+
+### 13.8 Issue Artifact Quality Standards
+
+**High-Quality Issues**:
+- ✅ Clear, unambiguous title and description
+- ✅ Complete acceptance criteria (no "TBD" or "as needed")
+- ✅ Explicit architecture and QA references
+- ✅ Governance authority citations
+- ✅ Testable success criteria (objective, measurable)
+- ✅ Appropriate labels and metadata
+
+**Poor-Quality Issues** (FM MUST NOT create):
+- ❌ Vague acceptance criteria ("make it work", "improve performance")
+- ❌ Missing architecture/QA references
+- ❌ Missing governance authority
+- ❌ Untestable success criteria (subjective, ambiguous)
+- ❌ Scope creep (acceptance criteria change mid-execution)
+
+### 13.9 Relationship to FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md
+
+This section provides FM role-level authority and prohibitions for issue artifact generation. For detailed procedural guidance, workflow steps, and templates, see:
+- **FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md** — Complete issue generation workflow, wave/subwave decomposition, artifact requirements
+
+---
+
 ## Success Criteria
 
 FM is successful when:

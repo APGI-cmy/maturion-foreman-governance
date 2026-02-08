@@ -3470,3 +3470,260 @@ standard. Governance liaisons MUST audit for attestation-without-verification pa
 
 ---
 
+## Appendix A: Categorization Matrix for Failure, Improvement, and Learning
+
+### Purpose
+
+This appendix provides a **systematic categorization framework** for bootstrap learnings (BL-XXXX), enabling consistent classification, prioritization, and governance promotion decisions.
+
+**Authority**: LEARNING_LOOP_CATEGORIES_AND_LIFECYCLE.md, LEARNING_PROMOTION_RULE.md
+
+---
+
+### A.1 Learning Category Dimensions
+
+Bootstrap learnings are classified across **four dimensions**:
+
+#### Dimension 1: Learning Type
+- **FL (Failure Learning)**: What went wrong and how to prevent recurrence
+- **IL (Improvement Learning)**: What could be done better or more efficiently
+- **PL (Pattern Learning)**: What recurring patterns were observed
+- **GL (Governance Learning)**: What governance gaps were identified
+
+#### Dimension 2: Impact Severity
+- **Critical**: Blocks execution, violates constitutional requirements, creates safety risk
+- **High**: Degrades quality, increases debt, requires escalation
+- **Medium**: Reduces efficiency, creates workarounds, needs improvement
+- **Low**: Minor inconvenience, optimization opportunity, nice-to-have
+
+#### Dimension 3: Promotion Priority
+- **Immediate**: Must be promoted to canon within current wave
+- **High**: Should be promoted within 2 waves or by wave closure
+- **Medium**: Promote when pattern recurs (3+ occurrences)
+- **Low**: Capture for reference, promote if becomes pattern
+
+#### Dimension 4: Governance Target
+- **Canon**: Requires new canonical governance file or update to existing
+- **Policy**: Requires policy clarification or enforcement guidance
+- **Template**: Requires template creation or update
+- **Agent Contract**: Requires agent contract update or prohibition addition
+- **Runbook**: Requires operational runbook or procedure documentation
+
+---
+
+### A.2 Categorization Matrix
+
+| BL ID | Learning Type | Impact | Priority | Target | Status |
+|-------|---------------|--------|----------|--------|--------|
+| BL-0001 | GL | High | Immediate | Canon | Recorded |
+| BL-0002 | GL | High | Immediate | Canon | Recorded |
+| BL-0003 | GL | Medium | High | Canon | Recorded |
+| BL-0004 | GL | High | Immediate | Canon | Recorded |
+| BL-0005 | IL | Medium | Medium | Runbook | Recorded |
+| BL-0006 | FL | High | Immediate | Canon | Recorded |
+| BL-0007 | FL | High | Immediate | Canon | Recorded |
+| BL-0008 | FL | High | Immediate | Canon | Recorded |
+| BL-0009 | FL | High | Immediate | Canon | Recorded |
+| BL-0010 | FL | Critical | Immediate | Canon | Recorded |
+| BL-0011 | FL | High | Immediate | Canon | Recorded |
+| BL-0012 | FL | High | Immediate | Canon | Recorded |
+| BL-0013 | FL | High | Immediate | Canon | Recorded |
+| BL-0014 | FL | High | Immediate | Canon | Recorded |
+| BL-0015 | FL | High | Immediate | Canon | Recorded |
+| BL-0016 | FL | High | Immediate | Canon | Recorded |
+| BL-0017 | FL | High | Immediate | Canon | Recorded |
+| BL-0018 | IL | Medium | Medium | Template | Recorded |
+| BL-0019 | IL | Medium | Medium | Policy | Recorded |
+| BL-0020 | FL | High | Immediate | Canon | Recorded |
+| BL-0021 | FL | High | Immediate | Canon | Recorded |
+| BL-0022 | FL | High | Immediate | Policy | Recorded |
+| BL-0023 | FL | High | Immediate | Canon | Recorded |
+| BL-0024 | FL | Critical | Immediate | Canon | Recorded |
+| BL-0025 | FL | Critical | Immediate | Canon | Recorded |
+| BL-0026 | GL | High | Immediate | Canon | Recorded |
+| BL-0027 | FL | Critical | Immediate | Agent Contract | Recorded |
+| BL-0028 | FL | Critical | Immediate | Agent Contract | Recorded |
+| BL-0029 | FL | Critical | Immediate | Canon + Agent Contract | Recorded |
+| BL-0030 | FL | Critical | Immediate | Canon + Agent Contract | Recorded |
+
+---
+
+### A.3 Classification Rules
+
+#### Rule 1: Failure Learning (FL) Priority
+- **Critical failures** → Immediate promotion
+- **High-impact failures** → Immediate promotion
+- **Medium-impact failures** → Promote within 2 waves
+- **Low-impact failures** → Promote when pattern recurs (3+)
+
+#### Rule 2: Governance Learning (GL) Priority
+- **Missing canon** → Immediate promotion (blocks execution)
+- **Ambiguous canon** → High priority (degrades quality)
+- **Canon conflict** → High priority (creates confusion)
+- **Canon optimization** → Medium priority (efficiency gain)
+
+#### Rule 3: Improvement Learning (IL) Priority
+- **Efficiency improvements** → Medium priority (accumulate patterns)
+- **Automation opportunities** → Medium priority (ROI-based)
+- **Documentation improvements** → Low priority (nice-to-have)
+- **Template improvements** → Low priority (unless pattern)
+
+#### Rule 4: Pattern Learning (PL) Priority
+- **3+ occurrences** → High priority (demonstrates pattern)
+- **Cross-repository pattern** → High priority (systemic)
+- **Cross-agent pattern** → High priority (universal need)
+- **Single occurrence** → Low priority (capture, monitor)
+
+---
+
+### A.4 Governance Promotion Decision Tree
+
+```
+Learning Captured (BL-XXXX)
+   ↓
+Classify: FL / IL / PL / GL
+   ↓
+Assess Impact: Critical / High / Medium / Low
+   ↓
+┌──────────────────────────────────────────────────┐
+│ Is Impact Critical?                              │
+│   → YES: IMMEDIATE promotion (create canon)      │
+│   → NO: Continue assessment                      │
+└──────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────┐
+│ Is Impact High?                                  │
+│   → YES:                                         │
+│      - If FL/GL: IMMEDIATE promotion             │
+│      - If IL/PL: HIGH priority (2 waves)         │
+│   → NO: Continue assessment                      │
+└──────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────┐
+│ Is Impact Medium?                                │
+│   → YES:                                         │
+│      - If FL/GL: HIGH priority (2 waves)         │
+│      - If IL/PL: MEDIUM priority (3+ pattern)    │
+│   → NO: Continue assessment                      │
+└──────────────────────────────────────────────────┘
+   ↓
+┌──────────────────────────────────────────────────┐
+│ Is Impact Low?                                   │
+│   → YES:                                         │
+│      - Capture in lessons-learned.md             │
+│      - Monitor for pattern (3+ → promote)        │
+│      - LOW priority (nice-to-have)               │
+└──────────────────────────────────────────────────┘
+```
+
+---
+
+### A.5 Governance Target Selection
+
+#### Target: Canon
+- **When**: Failure represents constitutional violation or missing constitutional rule
+- **Examples**: Missing protocol, ambiguous authority boundary, undefined process
+- **Files**: governance/canon/*.md
+
+#### Target: Policy
+- **When**: Failure represents policy ambiguity or enforcement gap
+- **Examples**: Unclear escalation path, undefined responsibility, conflicting policies
+- **Files**: governance/policy/*.md
+
+#### Target: Template
+- **When**: Failure represents missing standardization or inconsistent format
+- **Examples**: Missing issue template, inconsistent artifact structure
+- **Files**: governance/templates/*.md
+
+#### Target: Agent Contract
+- **When**: Failure represents agent behavior deviation or missing prohibition
+- **Examples**: Agent skipped mandatory step, agent violated boundary
+- **Files**: .github/agents/*.agent, governance/agents/*.agent
+
+#### Target: Runbook
+- **When**: Failure represents operational procedure gap or unclear workflow
+- **Examples**: Missing deployment steps, unclear troubleshooting procedure
+- **Files**: governance/runbooks/*.md
+
+---
+
+### A.6 Promotion Status Tracking
+
+**Status Values**:
+- **Recorded**: Learning documented in BOOTSTRAP_EXECUTION_LEARNINGS.md
+- **Proposed**: Learning identified for promotion, awaiting CS2 review
+- **Promoted**: Learning elevated to canonical governance (file created/updated)
+- **Deferred**: Promotion deferred pending additional evidence or pattern confirmation
+- **Rejected**: Learning determined not suitable for canonical promotion
+
+**Promotion Workflow**:
+1. **BL-XXXX Recorded** → Learning documented in this file
+2. **Categorization** → Type, Impact, Priority, Target assigned
+3. **CS2 Review** → Governance promotion decision
+4. **Promotion** (if approved) → Canon/policy/template/contract updated
+5. **Ripple** → Governance ripple executed, layer-down propagated
+6. **Status Update** → BL-XXXX status updated to "Promoted"
+
+---
+
+### A.7 Historical Pattern Analysis
+
+**Critical Failures (BL-0010, 0024, 0025, 0027, 0028, 0029, 0030)**:
+- **Pattern**: Agent contract violations, constitutional boundary breaches
+- **Root Cause**: Insufficient agent contract clarity, missing prohibitions
+- **Resolution**: Agent contract updates, prohibition language strengthened
+- **Prevention**: LIVING_AGENT_SYSTEM.md, AGENT_CONTRACT_PROTECTION_PROTOCOL.md
+
+**High-Impact Failures (BL-0006 through BL-0023)**:
+- **Pattern**: Execution process gaps, quality gate bypasses
+- **Root Cause**: Missing governance protocols, ambiguous authority
+- **Resolution**: Canon creation (WAVE_MODEL.md, WE_ONLY_FAIL_ONCE_DOCTRINE.md, etc.)
+- **Prevention**: Systematic gap analysis, pre-work governance validation
+
+**Improvement Opportunities (BL-0018, 0019)**:
+- **Pattern**: Template standardization, policy clarification
+- **Root Cause**: Inconsistent artifact formats, unclear guidance
+- **Resolution**: Template updates, policy documentation
+- **Prevention**: Template library, policy index
+
+---
+
+### A.8 Usage Guidelines
+
+**For FM (Foreman)**:
+- Use this matrix to classify wave execution learnings
+- Prioritize promotion based on Impact and Priority columns
+- Include categorization in wave closure certification
+- Propose promotions during IBWR (In-Between-Wave Reconciliation)
+
+**For Governance-Repo-Administrator**:
+- Use this matrix to track governance gap resolution
+- Validate promotion target selection (Canon vs. Policy vs. Template)
+- Execute governance ripple after promotion
+- Update BL-XXXX status after promotion
+
+**For CS2**:
+- Use this matrix to review promotion proposals
+- Validate impact assessment and priority assignment
+- Approve/defer/reject promotion based on evidence
+- Provide promotion decision rationale
+
+**For Builders**:
+- Use this matrix to understand which learnings apply to your work
+- Reference promoted learnings (status: "Promoted") for current guidance
+- Escalate new learnings for potential BL-XXXX assignment
+
+---
+
+### A.9 Appendix Maintenance
+
+**Update Frequency**: After each new BL-XXXX entry  
+**Owner**: Governance-Repo-Administrator  
+**Authority**: CS2 (Johan Ras)  
+**Integration**: LEARNING_LOOP_CATEGORIES_AND_LIFECYCLE.md, LEARNING_PROMOTION_RULE.md
+
+---
+
+**End of Appendix A**
+
+
