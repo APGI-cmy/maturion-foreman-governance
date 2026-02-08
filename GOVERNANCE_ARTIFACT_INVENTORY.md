@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-04
+**Last Updated**: 2026-02-08
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -53,6 +53,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md` | **MOVED (2026-02-04)** - Maintenance procedures for agent contracts | PR-gates, Readiness |
 | `ACTIVATION_STATE_MODEL.md` | Defines agent/system activation lifecycle states | Readiness |
 | `AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md` | Protocol for keeping agent context synchronized with canon | Layer-down |
+| `AGENT_BASELINE_MANAGEMENT_PROTOCOL.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical protocol for agent baseline management. Defines what baselines are, CS2-only update authority, baseline validation protocol, drift reconciliation, and Living Agent System v5.0.0 integration. Critical foundation for agent self-governance, FM/builder functioning, and governance-liaison baseline enforcement | Readiness, Layer-down, PR-gates |
 | `AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` | **UPDATED v3.1.0 (2026-01-26)** - Granular authority hierarchy for agent contracts with atomic layer-down compliance requirements for consumer repos | PR-gates, Layer-down, Readiness |
 | `AGENT_CONTRACT_PROTECTION_PROTOCOL.md` | **UPDATED v1.1.0 (2026-01-26)** - Protocol for agent contract protection with locked sections and atomic layer-down requirements | PR-gates, Layer-down, Readiness |
 | `AGENT_RECRUITMENT.md` | Defines rules for recruiting and activating agents | Readiness |
@@ -61,7 +62,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `APP_STARTUP_REQUIREMENTS_DECLARATION.md` | Defines application commissioning and startup requirements | Readiness, Layer-down |
 | `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` | Defines architecture artifact completeness criteria | Readiness, PR-gates |
 | `AUDIT_READINESS_MODEL.md` | Defines audit trail and evidence requirements | Readiness |
-| `BOOTSTRAP_EXECUTION_LEARNINGS.md` | **UPDATED (2026-01-27)** - Records structural learnings from bootstrap execution with BL-029 documenting excuse-based test dodging patterns and ban enforcement, and **NEW BL-030** documenting FL/CI Loop false attestation pattern (PR #1023 incident) requiring validation evidence instead of attestation-only | Feedback/learning |
+| `BOOTSTRAP_EXECUTION_LEARNINGS.md` | **UPDATED (2026-02-08)** - Records structural learnings from bootstrap execution with BL-029 documenting excuse-based test dodging patterns and ban enforcement, BL-030 documenting FL/CI Loop false attestation pattern (PR #1023 incident), and **NEW Appendix A** providing categorization matrix for failure/improvement/learning classification, promotion priority, and governance target selection | Feedback/learning |
 | `BRANCH_PROTECTION_ENFORCEMENT.md` | Defines branch protection requirements | PR-gates |
 | `BUILDER_FIRST_PR_MERGE_MODEL.md` | Defines rules for first builder PR merge | PR-gates, Readiness |
 | `BUILD_EFFECTIVENESS_STANDARD.md` | Defines build effectiveness measurement criteria | Readiness |
@@ -85,6 +86,8 @@ Canon files define constitutional governance rules, models, and protocols.
 | `FAILURE_PROMOTION_RULE.md` | Defines when failures must be escalated/promoted | Feedback/learning |
 | `FM_GOVERNANCE_LOADING_PROTOCOL.md` | Protocol for loading governance into FM context | Layer-down, Readiness |
 | `FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` | Defines FM authority boundaries and supervision rules | Readiness |
+| `FOREMAN_MEMORY_PROTOCOL.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical protocol for FM memory management. Defines four-level memory hierarchy (Constitutional, Wave, Session, Learning), memory lifecycle, learning loop integration, and Living Agent System v5.0.0 compliance. Enables autonomous orchestration through continuous learning and context-aware supervision | Readiness, Layer-down, Feedback/learning |
+| `FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical protocol for FM wave planning and issue artifact generation. Defines wave decomposition strategy, subwave identification, issue artifact types (wave init, builder task, correction/RCA, governance gap), wave progress artifact requirements, and POLC framework integration | Readiness, Layer-down, PR-gates |
 | `GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md` | Defines predictive compliance analysis for PR gates | PR-gates, Feedback/learning |
 | `GOVERNANCE_COMPLETENESS_MODEL.md` | Defines what constitutes complete governance | Readiness |
 | `GOVERNANCE_ENFORCEMENT_TRANSITION.md` | Defines transition from advisory to enforcement mode | PR-gates, Readiness |
@@ -120,7 +123,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `RESPONSIBILITY_DOMAIN_REGISTRY.md` | Registry of all responsibility domains | Readiness |
 | `SCOPE_DECLARATION_SCHEMA.md` | Schema for scope declarations | PR-gates |
 | `SCOPE_TO_DIFF_RULE.md` | Defines scope-to-diff validation rule | PR-gates |
-| `STOP_AND_FIX_DOCTRINE.md` | **UPDATED v2.0.0 (2026-01-27)** - Tier-0 constitutional doctrine with enhanced ban on excuse-based test dodging. Adds Section 3.5 enumerating 9 categories of prohibited excuse patterns, Section 3.6 mandating escalation obligation for cross-boundary issues, and Examples 5-6 demonstrating violations. Enforces "if you see it, you own it OR escalate it—silence is NOT compliance" principle. Authority: Issue #[TBD], BL-029 | PR-gates, Readiness, Feedback/learning |
+| `STOP_AND_FIX_DOCTRINE.md` | **UPDATED v2.1.0 (2026-02-08)** - Tier-0 constitutional doctrine with enhanced ban on excuse-based test dodging. **NEW Section 8** defines Learning Loop Integration and Improvement Escalation, establishing Stop-and-Fix learning capture, categorization (AL/QL/BSL/GGL), promotion triggers (frequency/severity thresholds), and governance gap issue creation workflow. Integrates with FOREMAN_MEMORY_PROTOCOL.md and LEARNING_LOOP_CATEGORIES_AND_LIFECYCLE.md for systematic improvement | PR-gates, Readiness, Feedback/learning |
 | `SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md` | Defines system commissioning phases | Readiness |
 | `VERSIONING_AND_EVOLUTION_GOVERNANCE.md` | Defines governance versioning rules | Layer-down |
 | `VISION_ALIGNMENT_AND_DRIFT_MODEL.md` | Defines vision drift detection and correction | Feedback/learning |
@@ -273,7 +276,7 @@ Maturion-specific governance definitions.
 | File | Purpose | Categories |
 |------|---------|------------|
 | `EXECUTION_PHILOSOPHY.md` | Maturion execution philosophy | (philosophy) |
-| `FM_ROLE_CANON.md` | Canonical definition of FM role | Readiness |
+| `FM_ROLE_CANON.md` | **UPDATED (2026-02-08)** - Canonical definition of FM role with **NEW Section 12** (Operational Sandbox: execution environment, resource constraints, security boundaries, degraded mode operation) and **NEW Section 13** (Issue Artifact Generation and Governance: wave initialization, builder task, correction/RCA, governance gap, and subwave scope issues) | Readiness |
 | `HISTORY.md` | Historical context for governance evolution | (documentation) |
 | `PRINCIPLES.md` | Core Maturion principles | (philosophy) |
 | `VISION.md` | Maturion vision statement | (philosophy) |
