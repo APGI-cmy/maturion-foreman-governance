@@ -1,0 +1,25 @@
+# Archive Directory
+
+Older session memories (beyond the rolling 5-session window) are archived here.
+
+## Structure
+
+```
+.archive/
+├── summary-YYYY-MM.md       # Monthly learning summaries
+└── sessions-YYYY-MM/        # Full archived sessions by month
+    ├── session-001-YYYYMMDD.md
+    ├── session-002-YYYYMMDD.md
+    └── ...
+```
+
+## Monthly Summaries
+
+Monthly summaries should extract:
+- Key patterns discovered
+- Critical lessons learned
+- Recurring blockers
+- Major improvements
+- Governance gaps identified
+
+This enables long-term learning without keeping all session details in rolling memory.
