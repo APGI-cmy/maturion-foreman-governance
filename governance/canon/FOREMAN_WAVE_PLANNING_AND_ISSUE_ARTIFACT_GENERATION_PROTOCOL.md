@@ -110,7 +110,7 @@ FM wave planning follows the **POLC (Planning, Organising, Leading, Control)** m
 
 #### 3.2.2 Subwave Decomposition
 
-**Subwave** is a **subdivisionof a large wave** when:
+**Subwave** is a **subdivision of a large wave** when:
 - Wave scope exceeds builder capacity (>40 hours estimated effort)
 - Wave has natural architectural boundaries (layers, modules, services)
 - Wave requires phased rollout (foundational → dependent components)

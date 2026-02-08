@@ -645,7 +645,7 @@ When an agent executes Stop-and-Fix, they MUST document:
 - **Builder Supervision Learning (BSL)**: Issue reveals builder instruction gap
 - **Governance Gap Learning (GGL)**: Issue reveals missing or ambiguous governance
 
-### 9.3 Learning Promotion Triggers
+### 8.3 Learning Promotion Triggers
 
 Per LEARNING_PROMOTION_RULE.md, a Stop-and-Fix learning is promoted when:
 
@@ -664,7 +664,7 @@ Per LEARNING_PROMOTION_RULE.md, a Stop-and-Fix learning is promoted when:
 - Issue indicates **ambiguous governance** (multiple interpretations possible)
 - Issue indicates **outdated governance** (canon contradicts current practice)
 
-### 9.4 Improvement Escalation Workflow
+### 8.4 Improvement Escalation Workflow
 
 ```
 Stop-and-Fix Event
