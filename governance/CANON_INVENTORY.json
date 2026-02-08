@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-01-23",
-  "total_canons": 114,
-  "generation_timestamp": "2026-01-19T17:02:23.129424",
+  "last_updated": "2026-02-08",
+  "total_canons": 121,
+  "generation_timestamp": "2026-02-08T13:10:15.%fZ",
   "canons": [
     {
       "filename": ".agent.schema.md",
@@ -1142,6 +1142,76 @@
       "description": "This policy establishes a zero-tolerance governance gate for test removal across all repositories in the Maturion Engineering Ecosystem.",
       "type": "policy",
       "path": "governance/policy/TEST_REMOVAL_GOVERNANCE_GATE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical gate protocols for each agent class (Overseer, Liaison, Builder, Foreman). Defines merge gate requirements, self-alignment authority, escalation triggers, validation methods, and CI/CD integration per agent class.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_ARTIFACT_TAXONOMY.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical taxonomy of governance artifacts. Defines 7 artifact types, ripple trigger matrix, testing obligation matrix, and file path pattern recognition.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_ARTIFACT_TAXONOMY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical protocol for governance ripple signaling, detection, and response. Defines ripple signaling mechanisms, detection methods, response SLA matrix, status tracking, and audit trail.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_VALIDATION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical validation protocol for governance artifacts. Defines validation success criteria per agent class, explicit validation checklists, validation methods by artifact type, and validation evidence requirements.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_VALIDATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical protocol for dynamic, agent-driven governance discovery and health checking at wake-up. Defines 7-phase wake-up workflow including self-identification, memory scan, governance discovery, environment health, drift detection, auto-remediation, and working contract generation.",
+      "type": "canon",
+      "path": "governance/canon/LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Interim guidance for handling references to canonical governance documents. Clarifies published status of critical canon files and provides workaround guidance for pending canon references.",
+      "type": "canon",
+      "path": "governance/canon/PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "SELF_ALIGNMENT_AUTHORITY_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical self-alignment authority model for all agents. Defines precisely what each agent class may align autonomously vs escalate to CS2, authority boundaries per agent class and artifact type, and escalation decision framework.",
+      "type": "canon",
+      "path": "governance/canon/SELF_ALIGNMENT_AUTHORITY_MODEL.md",
       "layer_down_status": "PUBLIC_API"
     }
   ]
