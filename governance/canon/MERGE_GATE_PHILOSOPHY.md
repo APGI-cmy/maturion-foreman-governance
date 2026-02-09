@@ -372,22 +372,111 @@ All files valid, zero warnings
 
 ---
 
+## Governance Compliance Checklist for Merge Gates
+
+This checklist provides **exhaustive governance compliance checks** that gates MUST satisfy. FM uses this checklist when implementing or fixing gates.
+
+### Gate Implementation Compliance
+
+**All gates MUST**:
+
+- [ ] **Role Awareness**: Detect agent role using authoritative methods (AGENT_ROLE_GATE_APPLICABILITY.md)
+- [ ] **Applicability Logic**: Only execute for applicable agent roles (MERGE_GATE_APPLICABILITY_MATRIX.md)
+- [ ] **Evidence-Based Validation**: Check PREHANDOVER_PROOF before script execution
+- [ ] **Conditional Execution**: Run validation only if evidence not found
+- [ ] **Clear Failure Messages**: Include agent role, requirement, canonical reference, remediation guidance
+- [ ] **Canonical Alignment**: Logic matches governance canon requirements
+- [ ] **No Prohibited Inference**: Do not use file paths, PR metadata, or heuristics as sole role indicators
+- [ ] **Documentation**: Include canonical references in gate documentation
+- [ ] **Testing**: Validated against all agent roles (applicable and non-applicable)
+- [ ] **No Weakening**: Does not reduce enforcement below canonical requirements
+
+### Evidence-Based Validation Compliance
+
+**Gates implementing evidence pattern MUST**:
+
+- [ ] **Evidence Check Step**: First step checks for PREHANDOVER_PROOF.md
+- [ ] **Keyword Search**: Searches for gate-specific keywords
+- [ ] **Output Variable**: Sets `skip_execution` based on evidence presence
+- [ ] **Conditional Validation**: Original validation only runs if `skip_execution != 'true'`
+- [ ] **Fast Path**: Evidence-based validation passes immediately without re-execution
+- [ ] **Fallback Path**: Script execution when evidence not found
+- [ ] **Clear Logging**: Logs whether evidence-based or script-based validation used
+
+### Role Detection Compliance
+
+**Gates detecting agent role MUST**:
+
+- [ ] **Primary Method**: Check explicit PR body declaration (`AGENT_ROLE: builder`)
+- [ ] **Secondary Method**: Check agent contract reference (`.agent` file)
+- [ ] **Tertiary Method**: Repository context (governance repo only, governance-only changes)
+- [ ] **No File Path Inference**: Do not infer role solely from changed files
+- [ ] **No Heuristic Defaults**: Do not default to builder without verification
+- [ ] **Unknown Handling**: Fail gracefully if role cannot be determined
+- [ ] **Output**: Set role as output variable for conditional gate execution
+
+### Failure Message Compliance
+
+**Gate failure messages MUST include**:
+
+- [ ] **Gate Name**: Clear identification of which gate failed
+- [ ] **Detected Role**: Agent role that was detected
+- [ ] **Applicable Roles**: Which roles this gate applies to
+- [ ] **Failed Requirement**: Specific requirement that was not satisfied
+- [ ] **Canonical Reference**: Governance document defining requirement
+- [ ] **Remediation Guidance**: How to fix the failure
+- [ ] **Failure Category**: Classification per PR_GATE_FAILURE_HANDLING_PROTOCOL.md
+
+### FM Gate Management Compliance
+
+**Gates modified by FM MUST**:
+
+- [ ] **Misalignment Classification**: Fix addresses specific misalignment category (FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md Section 4.1)
+- [ ] **Authority Verification**: Fix within FM autonomous authority
+- [ ] **Matrix Alignment**: Fix aligns gate with MERGE_GATE_APPLICABILITY_MATRIX.md
+- [ ] **Canonical Basis**: Fix references canonical source justifying change
+- [ ] **Testing Evidence**: Fix tested against all agent roles
+- [ ] **Documentation**: Fix documented with rationale and canonical references
+- [ ] **No Bypass**: Fix corrects gate, does not bypass enforcement
+- [ ] **Validation**: Post-fix validation confirms issue resolved
+
+### Escalation Compliance
+
+**Gates requiring CS2 escalation MUST**:
+
+- [ ] **Escalation Trigger**: Identified trigger per FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md Section 9.1
+- [ ] **Escalation Document**: Complete escalation report prepared
+- [ ] **Canonical Analysis**: All relevant canonical sources referenced
+- [ ] **Impact Documentation**: Work blocked and urgency documented
+- [ ] **Recommendation**: FM recommendation with options provided
+- [ ] **CS2 Tag**: CS2 (Johan Ras) tagged for review
+- [ ] **Pause Work**: FM paused gate fix until CS2 decision
+- [ ] **Decision Implementation**: CS2 guidance followed precisely
+
+---
+
 ## Transition Plan
 
 ### Phase 1: Pattern Definition (COMPLETE)
 - [x] Document merge gate philosophy
 - [x] Define evidence-based validation pattern
 - [x] Identify keyword mappings per gate
+- [x] Create FM Merge Gate Management Protocol
+- [x] Create Merge Gate Applicability Matrix
+- [x] Add governance compliance checklist
 
 ### Phase 2: Gate Updates (IN PROGRESS)
 - [ ] Apply pattern to all remaining gates
 - [ ] Test pattern with sample PRs
 - [ ] Validate keyword detection works
+- [ ] Implement role-aware gate execution
+- [ ] Add clear failure messages to all gates
 
 ### Phase 3: Documentation (IN PROGRESS)
 - [ ] Create sample PREHANDOVER_PROOF
 - [ ] Update agent contracts with gate requirements
 - [ ] Add to AGENT_ONBOARDING_QUICKSTART.md
+- [ ] Layer-down to consumer repositories
 
 ### Phase 4: Enforcement (FUTURE)
 - [ ] Make PREHANDOVER_PROOF mandatory for all PRs
@@ -402,6 +491,12 @@ All files valid, zero warnings
 - **BOOTSTRAP_EXECUTION_LEARNINGS.md**: BL-027 (Scope Declaration), BL-028 (YAML Warnings)
 - **AGENT_CONTRACT_PROTECTION_PROTOCOL.md**: Section 4.2 (Pre-Gate Release Validation)
 - **EXECUTION_BOOTSTRAP_PROTOCOL.md**: Pre-gate validation requirements
+- **FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md**: FM authority for gate management
+- **MERGE_GATE_APPLICABILITY_MATRIX.md**: Gate-to-role mapping
+- **AGENT_ROLE_GATE_APPLICABILITY.md**: Role-based gate applicability principles
+- **AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md**: Agent-class gate requirements
+- **PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md**: Gate evaluation semantics
+- **PR_GATE_FAILURE_HANDLING_PROTOCOL.md**: Gate failure classification
 
 ### Implementation
 - **.github/workflows/governance-scope-to-diff-gate.yml**: Reference implementation
@@ -410,6 +505,14 @@ All files valid, zero warnings
 ---
 
 ## Version History
+
+**Version 1.1.0** (2026-02-09)  
+- Added comprehensive governance compliance checklist for merge gates
+- Integrated with FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md
+- Integrated with MERGE_GATE_APPLICABILITY_MATRIX.md
+- Enhanced transition plan with role-aware gate execution
+- Added references to new canonical documents
+- Authority: CS2 approval (Johan Ras) 2026-02-09
 
 **Version 1.0.0** (2026-01-20)  
 - Initial version documenting merge gate philosophy
