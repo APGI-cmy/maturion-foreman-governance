@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-08",
-  "total_canons": 122,
-  "generation_timestamp": "2026-02-08T13:10:15.%fZ",
+  "last_updated": "2026-02-09",
+  "total_canons": 124,
+  "generation_timestamp": "2026-02-09T08:43:35Z",
   "canons": [
     {
       "filename": ".agent.schema.md",
@@ -99,7 +99,7 @@
       "version": "1",
       "file_hash": "963eed45e027",
       "effective_date": "2026-01-05",
-      "description": "This document defines the only legitimate process by which software agents may be introduced (\u201crecruited\u201d) into the governance system administered by the Foreman.",
+      "description": "This document defines the only legitimate process by which software agents may be introduced (“recruited”) into the governance system administered by the Foreman.",
       "type": "canon",
       "path": "governance/canon/AGENT_RECRUITMENT.md",
       "layer_down_status": "PUBLIC_API"
@@ -769,7 +769,7 @@
       "version": "1.0",
       "file_hash": "23d86014f109",
       "effective_date": "2026-01-05",
-      "description": "This document defines the Initialization Completeness Gate \u2014 a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities may...",
+      "description": "This document defines the Initialization Completeness Gate — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities may...",
       "type": "canon",
       "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
       "layer_down_status": "PUBLIC_API"
@@ -839,7 +839,7 @@
       "version": "1.0.0",
       "file_hash": "bafe809f31ec",
       "effective_date": "2026-01-05",
-      "description": "This protocol establishes a mandatory structured reflection process for all governance repository work units. It ensures that every governance action\u2014whether canon update, incident response, ripple...",
+      "description": "This protocol establishes a mandatory structured reflection process for all governance repository work units. It ensures that every governance action—whether canon update, incident response, ripple...",
       "type": "canon",
       "path": "governance/canon/MANDATORY_PROCESS_IMPROVEMENT_REFLECTION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API"
@@ -909,7 +909,7 @@
       "version": "1.0.0",
       "file_hash": "1faef6d0741c",
       "effective_date": "2026-01-05",
-      "description": "This document formally defines the authority boundary between:\n- Foreman (FM) \u2014 execution authority within repositories\n- Maturion \u2014 control-plane authority for platform actions (GitHub)",
+      "description": "This document formally defines the authority boundary between:\n- Foreman (FM) — execution authority within repositories\n- Maturion — control-plane authority for platform actions (GitHub)",
       "type": "canon",
       "path": "governance/canon/PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
       "layer_down_status": "PUBLIC_API"
@@ -1019,7 +1019,7 @@
       "version": "1.0",
       "file_hash": "1b04d2525318",
       "effective_date": "2026-01-05",
-      "description": "This document provides explicit, canonical separation between:\n1. Repository Seeding Authority \u2014 agents authorized to create canonical repository structure\n2. Governance Enforcement Authority \u2014 age...",
+      "description": "This document provides explicit, canonical separation between:\n1. Repository Seeding Authority — agents authorized to create canonical repository structure\n2. Governance Enforcement Authority — age...",
       "type": "canon",
       "path": "governance/canon/REPOSITORY_SEEDING_AND_ENFORCEMENT_ROLE_SEPARATION.md",
       "layer_down_status": "INTERNAL"
@@ -1089,7 +1089,7 @@
       "version": "1",
       "file_hash": "d2c96ce6d14c",
       "effective_date": "2026-01-05",
-      "description": "This rule enforces alignment between a PR\u2019s declared scope\nand the files actually modified in the PR.",
+      "description": "This rule enforces alignment between a PR’s declared scope\nand the files actually modified in the PR.",
       "type": "canon",
       "path": "governance/canon/SCOPE_TO_DIFF_RULE.md",
       "layer_down_status": "PUBLIC_API"
@@ -1223,6 +1223,26 @@
       "type": "canon",
       "path": "governance/canon/scope-declaration.template.md",
       "layer_down_status": "INTERNAL"
+    },
+    {
+      "filename": "GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "a94effb59bbf",
+      "effective_date": "2026-02-09",
+      "description": "Systematic monitoring protocol for detecting, tracking, and remediating governance alignment issues across all repositories. Defines multi-layer alignment verification, drift detection mechanisms, escalation workflows, and zero-drift target enforcement.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "LAYER_UP_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "0f5b2d9c1464",
+      "effective_date": "2026-02-09",
+      "description": "Explicit, controlled protocol for propagating learnings, improvements, and governance feedback from application repositories back to canonical governance. Defines layer-up triggers, systematic intake/validation/integration process, mandatory pre-canon-change layer-up scan, drift detection/escalation, and bidirectional ripple tracking.",
+      "type": "canon",
+      "path": "governance/canon/LAYER_UP_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
     }
   ]
 }
