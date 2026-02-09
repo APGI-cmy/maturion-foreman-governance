@@ -592,6 +592,84 @@ Never layer down protocol without agent file LOCKED sections.
 <!-- LOCKED SECTION END -->
 ```
 
+### 6.3 PR Failure Analysis Protocol
+
+**Copy-Paste Section**:
+
+```markdown
+<!-- LOCKED SECTION START -->
+<!-- Lock ID: LOCK-LIAISON-PR-FAILURE-001 -->
+<!-- Lock Reason: Prevents repeated PR failures with same root cause by mandating failure analysis -->
+<!-- Lock Authority: STOP_AND_FIX_DOCTRINE.md, CI_CONFIRMATORY_NOT_DIAGNOSTIC.md -->
+<!-- Lock Date: 2026-02-09 -->
+<!-- Last Reviewed: 2026-02-09 -->
+<!-- Review Frequency: quarterly -->
+<!-- END METADATA -->
+
+## 🔒 PR Failure Analysis Protocol (LOCKED)
+
+**MANDATORY before creating retry PR after any PR failure:**
+
+### Step 1: Read Previous PR Workflow Logs
+```bash
+# Identify failed workflow run
+gh run list --repo <owner>/<repo> --branch <branch> --limit 5
+
+# Download logs for failed run
+gh run view <run-id> --repo <owner>/<repo> --log
+
+# OR use GitHub Actions MCP tools to retrieve logs
+# list_workflow_runs -> get_job_logs with failed_only=true
+```
+
+### Step 2: Analyze Root Cause
+**REQUIRED Analysis**:
+1. **What failed?** (specific gate, test, validation step)
+2. **Why did it fail?** (governance violation, schema mismatch, missing artifact, etc.)
+3. **Is this a repeat failure?** (compare with previous PR failures)
+4. **What needs to change?** (code, governance alignment, schema compliance)
+
+**Document findings** in issue or PR description before creating new PR.
+
+### Step 3: Stop-and-Fix Before Retry
+**PROHIBITED**:
+- ❌ Creating new PR without reading previous PR failure logs
+- ❌ Creating new PR without understanding root cause
+- ❌ Repeating same approach that failed previously
+- ❌ Assuming "try again" will fix the issue
+
+**REQUIRED**:
+- ✅ Read ALL workflow logs from failed PR
+- ✅ Understand EXACT failure reason (not just symptom)
+- ✅ Fix root cause (not just surface issue)
+- ✅ Verify fix addresses failure before creating retry PR
+- ✅ Document analysis and fix in new PR description
+
+### Step 4: Verify Fix Locally
+Before creating retry PR:
+1. **Execute ALL gates locally** (same gates that failed in CI)
+2. **Verify zero warnings** and exit 0 for all gates
+3. **Test specific failure point** that caused previous PR to fail
+4. **Document local validation** in PREHANDOVER_PROOF or PR description
+
+### Escalation for Repeated Failures
+If same PR fails **2+ times with same root cause**:
+1. **HALT** and do NOT create another retry PR
+2. **ESCALATE** to governance-repo-administrator or CS2
+3. **REQUEST** guidance on systemic issue
+4. **DOCUMENT** failure pattern and analysis
+5. **AWAIT** approval before proceeding
+
+**Rationale**: Three consecutive failures indicate systemic misunderstanding of governance requirements, not implementation errors. Escalation to CS2 required for systemic governance interpretation.
+
+**Authority**:
+- `governance/canon/STOP_AND_FIX_DOCTRINE.md` — Immediate fix mandate
+- `governance/canon/CI_CONFIRMATORY_NOT_DIAGNOSTIC.md` — Local validation doctrine
+- `governance/canon/PR_GATE_FAILURE_HANDLING_PROTOCOL.md` — PR gate failure classification
+
+<!-- LOCKED SECTION END -->
+```
+
 ---
 
 ## 7. How to Layer Down This Template
