@@ -427,6 +427,7 @@ Downward propagation must be tracked:
 - Outstanding issues
 - **Inventory file update status** (central and consumer inventories synchronized)
 - **Coverage percentage** post-propagation (target: 100% for production repos)
+- **Ripple log entries** (automatic updates with issue numbers, timestamps, and status per GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md STEP 7)
 
 ### 8.4 Learning Archive
 
@@ -490,6 +491,7 @@ Upward learning must be archived:
 - Document changes
 - **Update central `CANON_INVENTORY.json`** after canon creation/modification
 - **Verify consumer repository inventory alignment** post-propagation
+- **Automatically update ripple log** with issue numbers, timestamps, and status (atomic with issue creation)
 
 **Upward Ripple**:
 - Review promotion proposals
