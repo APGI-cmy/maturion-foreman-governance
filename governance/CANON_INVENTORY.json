@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-02-08",
-  "total_canons": 121,
+  "total_canons": 122,
   "generation_timestamp": "2026-02-08T13:10:15.%fZ",
   "canons": [
     {
@@ -32,6 +32,16 @@
       "description": "This document defines the canonical protocol by which agents maintain currency with canonical governance context through governed, auditable, and deterministic synchronisation.",
       "type": "canon",
       "path": "governance/canon/AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical gate protocols for each agent class (Overseer, Liaison, Builder, Foreman). Defines merge gate requirements, self-alignment authority, escalation triggers, validation methods, and CI/CD integration per agent class.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -89,7 +99,7 @@
       "version": "1",
       "file_hash": "963eed45e027",
       "effective_date": "2026-01-05",
-      "description": "This document defines the only legitimate process by which software agents may be introduced (“recruited”) into the governance system administered by the Foreman.",
+      "description": "This document defines the only legitimate process by which software agents may be introduced (\u201crecruited\u201d) into the governance system administered by the Foreman.",
       "type": "canon",
       "path": "governance/canon/AGENT_RECRUITMENT.md",
       "layer_down_status": "PUBLIC_API"
@@ -125,6 +135,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
+      "version": "1.0",
+      "file_hash": "8aa9b82cd110",
+      "effective_date": "2026-01-05",
+      "description": "This policy establishes App Descriptions as mandatory upstream authority artifacts for all applications in the Maturion ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "APP_STARTUP_REQUIREMENTS_DECLARATION.md",
       "version": "1.0",
       "file_hash": "758eb2210a3f",
@@ -142,6 +162,16 @@
       "description": "This document defines the mandatory completeness requirements for all architecture artifacts in the Maturion ecosystem.",
       "type": "canon",
       "path": "governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
+      "version": "1.0",
+      "file_hash": "428f63b31733",
+      "effective_date": "2026-01-08",
+      "description": "This policy defines the CORRECT vs INCORRECT methodology for tracing tests to architectural requirements.",
+      "type": "policy",
+      "path": "governance/policy/ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -173,6 +203,16 @@
       "type": "canon",
       "path": "governance/canon/AUDIT_READINESS_MODEL.md",
       "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "AUTOMATED_DEPRECATION_DETECTION_GATE.md",
+      "version": "1.0",
+      "file_hash": "eab436d8df86",
+      "effective_date": "2026-01-11",
+      "description": "This policy establishes a mandatory automated deprecation detection gate for technical debt prevention across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/AUTOMATED_DEPRECATION_DETECTION_GATE.md",
+      "layer_down_status": "PUBLIC_API"
     },
     {
       "filename": "BOOTSTRAP_EXECUTION_LEARNINGS.md",
@@ -212,6 +252,16 @@
       "description": "Canonical governance document: BUILDER_FIRST_PR_MERGE_MODEL",
       "type": "canon",
       "path": "governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
+      "version": "1.0",
+      "file_hash": "dffdaddb554d",
+      "effective_date": "2025-12-22",
+      "description": "This policy defines the Builder QA Handover Contract - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
+      "type": "policy",
+      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -505,6 +555,16 @@
       "layer_down_status": "INTERNAL"
     },
     {
+      "filename": "FM_MATURION_DELEGATED_ACTION_POLICY.md",
+      "version": "1.0",
+      "file_hash": "5668a48a689f",
+      "effective_date": "2025-12-25",
+      "description": "This policy establishes the complete governance framework for FM-to-Maturion delegated platform actions, defining:\n- When and how FM delegates platform actions to Maturion\n- What instructions FM mu...",
+      "type": "policy",
+      "path": "governance/policy/FM_MATURION_DELEGATED_ACTION_POLICY.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "FM_PREAUTH_CHECKLIST_CANON.md",
       "version": "1.0.0",
       "file_hash": "6f48a4935482",
@@ -553,6 +613,16 @@
       "type": "canon",
       "path": "governance/canon/GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md",
       "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "GOVERNANCE_ARTIFACT_TAXONOMY.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical taxonomy of governance artifacts. Defines 7 artifact types, ripple trigger matrix, testing obligation matrix, and file path pattern recognition.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_ARTIFACT_TAXONOMY.md",
+      "layer_down_status": "PUBLIC_API"
     },
     {
       "filename": "GOVERNANCE_BUILDER_SUBMISSION_SURVEY.md",
@@ -645,13 +715,43 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md",
+      "version": "1.0.1",
+      "file_hash": "9cef263dcf05",
+      "effective_date": "2026-02-09",
+      "description": "Mandatory systematic ripple checklist protocol for all governance changes. Defines 10-step execution process with automatic ripple log updates (atomic with issue creation/closure). Implements GOVERNANCE_RIPPLE_MODEL.md.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical protocol for governance ripple signaling, detection, and response. Defines ripple signaling mechanisms, detection methods, response SLA matrix, status tracking, and audit trail.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "GOVERNANCE_RIPPLE_MODEL.md",
-      "version": "1.0",
-      "file_hash": "8d48e7345d98",
-      "effective_date": "2025-12-22",
-      "description": "This document defines the Governance Ripple Model - a bidirectional governance evolution framework that enables governance to adapt and improve while maintaining authority, consistency, and auditab...",
+      "version": "1.0.1",
+      "file_hash": "3afb0e3f845e",
+      "effective_date": "2026-02-09",
+      "description": "Defines governance change ripple effects and impact analysis. Bidirectional governance evolution framework. Updated to include mandatory ripple log tracking with automatic updates.",
       "type": "canon",
       "path": "governance/canon/GOVERNANCE_RIPPLE_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "GOVERNANCE_VALIDATION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical validation protocol for governance artifacts. Defines validation success criteria per agent class, explicit validation checklists, validation methods by artifact type, and validation evidence requirements.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_VALIDATION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -669,7 +769,7 @@
       "version": "1.0",
       "file_hash": "23d86014f109",
       "effective_date": "2026-01-05",
-      "description": "This document defines the Initialization Completeness Gate — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities may...",
+      "description": "This document defines the Initialization Completeness Gate \u2014 a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities may...",
       "type": "canon",
       "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
       "layer_down_status": "PUBLIC_API"
@@ -705,6 +805,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical protocol for dynamic, agent-driven governance discovery and health checking at wake-up. Defines 7-phase wake-up workflow including self-identification, memory scan, governance discovery, environment health, drift detection, auto-remediation, and working contract generation.",
+      "type": "canon",
+      "path": "governance/canon/LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md",
       "version": "1.0.0",
       "file_hash": "59e84814c60c",
@@ -729,7 +839,7 @@
       "version": "1.0.0",
       "file_hash": "bafe809f31ec",
       "effective_date": "2026-01-05",
-      "description": "This protocol establishes a mandatory structured reflection process for all governance repository work units. It ensures that every governance action—whether canon update, incident response, ripple...",
+      "description": "This protocol establishes a mandatory structured reflection process for all governance repository work units. It ensures that every governance action\u2014whether canon update, incident response, ripple...",
       "type": "canon",
       "path": "governance/canon/MANDATORY_PROCESS_IMPROVEMENT_REFLECTION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API"
@@ -785,11 +895,21 @@
       "layer_down_status": "OPTIONAL"
     },
     {
+      "filename": "PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Interim guidance for handling references to canonical governance documents. Clarifies published status of critical canon files and provides workaround guidance for pending canon references.",
+      "type": "canon",
+      "path": "governance/canon/PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
       "version": "1.0.0",
       "file_hash": "1faef6d0741c",
       "effective_date": "2026-01-05",
-      "description": "This document formally defines the authority boundary between:\n- Foreman (FM) — execution authority within repositories\n- Maturion — control-plane authority for platform actions (GitHub)",
+      "description": "This document formally defines the authority boundary between:\n- Foreman (FM) \u2014 execution authority within repositories\n- Maturion \u2014 control-plane authority for platform actions (GitHub)",
       "type": "canon",
       "path": "governance/canon/PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
       "layer_down_status": "PUBLIC_API"
@@ -802,6 +922,16 @@
       "description": "This canon defines, constitutionally and unambiguously, what it means for the platform to be ready to execute a governed build.",
       "type": "canon",
       "path": "governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "POLICY-NO-ONLY-LANGUAGE.md",
+      "version": "1.0.0",
+      "file_hash": "c5142eb28ea9",
+      "effective_date": "2026-01-05",
+      "description": "This policy establishes a zero-tolerance ban on minimizing language when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
+      "type": "policy",
+      "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -822,6 +952,16 @@
       "description": "This document defines the canonical operational protocol for evaluating PR gates based on agent role applicability. It serves as the authoritative reference for gate evaluation semantics, ensuring ...",
       "type": "canon",
       "path": "governance/canon/PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
+      "version": "1.0",
+      "file_hash": "2fc7c5faf729",
+      "effective_date": "2025-12-22",
+      "description": "This protocol defines the canonical procedure for handling PR Gate failures across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -855,6 +995,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "QA_POLICY_MASTER.md",
+      "version": "1.0.0",
+      "file_hash": "506f2db83ea2",
+      "effective_date": "2026-01-05",
+      "description": "Canonical governance document: QA_POLICY_MASTER",
+      "type": "policy",
+      "path": "governance/policy/QA_POLICY_MASTER.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "REPOSITORY_INITIALIZATION_AND_GOVERNANCE_SEEDING_PROTOCOL.md",
       "version": "1.0",
       "file_hash": "afa5e6e306cc",
@@ -869,7 +1019,7 @@
       "version": "1.0",
       "file_hash": "1b04d2525318",
       "effective_date": "2026-01-05",
-      "description": "This document provides explicit, canonical separation between:\n1. Repository Seeding Authority — agents authorized to create canonical repository structure\n2. Governance Enforcement Authority — age...",
+      "description": "This document provides explicit, canonical separation between:\n1. Repository Seeding Authority \u2014 agents authorized to create canonical repository structure\n2. Governance Enforcement Authority \u2014 age...",
       "type": "canon",
       "path": "governance/canon/REPOSITORY_SEEDING_AND_ENFORCEMENT_ROLE_SEPARATION.md",
       "layer_down_status": "INTERNAL"
@@ -939,9 +1089,19 @@
       "version": "1",
       "file_hash": "d2c96ce6d14c",
       "effective_date": "2026-01-05",
-      "description": "This rule enforces alignment between a PR’s declared scope\nand the files actually modified in the PR.",
+      "description": "This rule enforces alignment between a PR\u2019s declared scope\nand the files actually modified in the PR.",
       "type": "canon",
       "path": "governance/canon/SCOPE_TO_DIFF_RULE.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "SELF_ALIGNMENT_AUTHORITY_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "placeholder",
+      "effective_date": "2026-02-08",
+      "description": "Canonical self-alignment authority model for all agents. Defines precisely what each agent class may align autonomously vs escalate to CS2, authority boundaries per agent class and artifact type, and escalation decision framework.",
+      "type": "canon",
+      "path": "governance/canon/SELF_ALIGNMENT_AUTHORITY_MODEL.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -962,6 +1122,16 @@
       "description": "This document defines the mandatory protocol for commissioning and progressive activation of any Maturion application.",
       "type": "canon",
       "path": "governance/canon/SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "TEST_REMOVAL_GOVERNANCE_GATE.md",
+      "version": "1.0",
+      "file_hash": "1bd997b07837",
+      "effective_date": "2026-01-08",
+      "description": "This policy establishes a zero-tolerance governance gate for test removal across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/TEST_REMOVAL_GOVERNANCE_GATE.md",
       "layer_down_status": "PUBLIC_API"
     },
     {
@@ -1053,166 +1223,6 @@
       "type": "canon",
       "path": "governance/canon/scope-declaration.template.md",
       "layer_down_status": "INTERNAL"
-    },
-    {
-      "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
-      "version": "1.0",
-      "file_hash": "8aa9b82cd110",
-      "effective_date": "2026-01-05",
-      "description": "This policy establishes App Descriptions as mandatory upstream authority artifacts for all applications in the Maturion ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
-      "version": "1.0",
-      "file_hash": "428f63b31733",
-      "effective_date": "2026-01-08",
-      "description": "This policy defines the CORRECT vs INCORRECT methodology for tracing tests to architectural requirements.",
-      "type": "policy",
-      "path": "governance/policy/ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "AUTOMATED_DEPRECATION_DETECTION_GATE.md",
-      "version": "1.0",
-      "file_hash": "eab436d8df86",
-      "effective_date": "2026-01-11",
-      "description": "This policy establishes a mandatory automated deprecation detection gate for technical debt prevention across all repositories in the Maturion Engineering Ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/AUTOMATED_DEPRECATION_DETECTION_GATE.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
-      "version": "1.0",
-      "file_hash": "dffdaddb554d",
-      "effective_date": "2025-12-22",
-      "description": "This policy defines the Builder QA Handover Contract - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
-      "type": "policy",
-      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "FM_MATURION_DELEGATED_ACTION_POLICY.md",
-      "version": "1.0",
-      "file_hash": "5668a48a689f",
-      "effective_date": "2025-12-25",
-      "description": "This policy establishes the complete governance framework for FM-to-Maturion delegated platform actions, defining:\n- When and how FM delegates platform actions to Maturion\n- What instructions FM mu...",
-      "type": "policy",
-      "path": "governance/policy/FM_MATURION_DELEGATED_ACTION_POLICY.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "POLICY-NO-ONLY-LANGUAGE.md",
-      "version": "1.0.0",
-      "file_hash": "c5142eb28ea9",
-      "effective_date": "2026-01-05",
-      "description": "This policy establishes a zero-tolerance ban on minimizing language when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
-      "type": "policy",
-      "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
-      "version": "1.0",
-      "file_hash": "2fc7c5faf729",
-      "effective_date": "2025-12-22",
-      "description": "This protocol defines the canonical procedure for handling PR Gate failures across all repositories in the Maturion Engineering Ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "QA_POLICY_MASTER.md",
-      "version": "1.0.0",
-      "file_hash": "506f2db83ea2",
-      "effective_date": "2026-01-05",
-      "description": "Canonical governance document: QA_POLICY_MASTER",
-      "type": "policy",
-      "path": "governance/policy/QA_POLICY_MASTER.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "TEST_REMOVAL_GOVERNANCE_GATE.md",
-      "version": "1.0",
-      "file_hash": "1bd997b07837",
-      "effective_date": "2026-01-08",
-      "description": "This policy establishes a zero-tolerance governance gate for test removal across all repositories in the Maturion Engineering Ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/TEST_REMOVAL_GOVERNANCE_GATE.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Canonical gate protocols for each agent class (Overseer, Liaison, Builder, Foreman). Defines merge gate requirements, self-alignment authority, escalation triggers, validation methods, and CI/CD integration per agent class.",
-      "type": "canon",
-      "path": "governance/canon/AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "GOVERNANCE_ARTIFACT_TAXONOMY.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Canonical taxonomy of governance artifacts. Defines 7 artifact types, ripple trigger matrix, testing obligation matrix, and file path pattern recognition.",
-      "type": "canon",
-      "path": "governance/canon/GOVERNANCE_ARTIFACT_TAXONOMY.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Canonical protocol for governance ripple signaling, detection, and response. Defines ripple signaling mechanisms, detection methods, response SLA matrix, status tracking, and audit trail.",
-      "type": "canon",
-      "path": "governance/canon/GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "GOVERNANCE_VALIDATION_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Canonical validation protocol for governance artifacts. Defines validation success criteria per agent class, explicit validation checklists, validation methods by artifact type, and validation evidence requirements.",
-      "type": "canon",
-      "path": "governance/canon/GOVERNANCE_VALIDATION_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Canonical protocol for dynamic, agent-driven governance discovery and health checking at wake-up. Defines 7-phase wake-up workflow including self-identification, memory scan, governance discovery, environment health, drift detection, auto-remediation, and working contract generation.",
-      "type": "canon",
-      "path": "governance/canon/LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Interim guidance for handling references to canonical governance documents. Clarifies published status of critical canon files and provides workaround guidance for pending canon references.",
-      "type": "canon",
-      "path": "governance/canon/PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "SELF_ALIGNMENT_AUTHORITY_MODEL.md",
-      "version": "1.0.0",
-      "file_hash": "placeholder",
-      "effective_date": "2026-02-08",
-      "description": "Canonical self-alignment authority model for all agents. Defines precisely what each agent class may align autonomously vs escalate to CS2, authority boundaries per agent class and artifact type, and escalation decision framework.",
-      "type": "canon",
-      "path": "governance/canon/SELF_ALIGNMENT_AUTHORITY_MODEL.md",
-      "layer_down_status": "PUBLIC_API"
     }
   ]
 }
