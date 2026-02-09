@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-08
+**Last Updated**: 2026-02-09
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -32,6 +32,16 @@ Artifacts are classified into four categories:
 | `WAVE_A_HUMAN_REVIEW_GUIDE.md` | Guide for human review of Wave A execution | Readiness |
 | `WAVE_A_STATUS.md` | Status tracking for Wave A execution | Readiness |
 | `maturion-philosophy-tree.md` | Philosophical foundation and vision alignment | (philosophy) |
+
+---
+
+## Agent Memory Bootstrap (.agent-memory/)
+
+Agent memory bootstrap files for CodexAdvisor and governance-repo-administrator to ensure critical governance processes are not missed.
+
+| File | Purpose | Categories |
+|------|---------|------------|
+| `RIPPLE_LOG_UPDATE_CHECKLIST.md` | **NEW v1.0.0 (2026-02-09)** - Bootstrap backup checklist ensuring CodexAdvisor never misses a ripple log update during governance ripple operations. Defines mandatory checklist for ripple log maintenance including pre-ripple validation, ripple execution, log update requirements, evidence collection, and follow-up tracking. Provides ripple log format reference, failure mode prevention, and authority references. Purpose: Bootstrap backup for human oversight during governance ripple execution | Layer-down, Readiness |
 
 ---
 
@@ -98,6 +108,8 @@ Canon files define constitutional governance rules, models, and protocols.
 | `GOVERNANCE_RIPPLE_MODEL.md` | **UPDATED (2026-02-09)** - Defines governance change ripple effects and impact analysis. Bidirectional governance evolution framework. **NEW: Section 8.3 now includes mandatory ripple log tracking with automatic updates. Section 10.1 clarifies Governance Administrator duty to update ripple log atomically with issue creation.** | Layer-down |
 | `GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md` | **UPDATED v1.0.1 (2026-02-09)** - Mandatory systematic ripple checklist protocol for all governance changes. Defines 10-step execution process ensuring complete propagation across files, references, templates, agents, and consumer repos. **NEW: STEP 7 now mandates automatic ripple log updates (atomic with issue creation/closure) to eliminate manual tracking and ensure complete audit trail.** Prevents drift, broken references, and incomplete ripple. Implements GOVERNANCE_RIPPLE_MODEL.md, AGENT_CONTRACT_PROTECTION_PROTOCOL.md, and EXECUTION_BOOTSTRAP_PROTOCOL.md zero-warning enforcement. Acceptance criteria tag: `governance-ripple-log-autoupdate` | Layer-down, PR-gates, Readiness |
 | `GOVERNANCE_RIPPLE_DETECTION_PROTOCOL.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical protocol for governance ripple signaling, detection, and response. Defines ripple signaling mechanisms (PR label, description, file), detection methods (agent, CI, human), response SLA matrix, status tracking, and audit trail. Addresses GAP-005 from Living Agent System v5.0.0 rollout | Layer-down, PR-gates, Readiness |
+| `LAYER_UP_PROTOCOL.md` | **NEW v1.0.0 (2026-02-09) PUBLIC_API** - Explicit, controlled protocol for propagating learnings, improvements, and governance feedback from application repositories back to canonical governance. Defines layer-up triggers (drift, gaps, failures, enhancements), systematic intake/validation/integration process, governance-repo-administrator responsibilities, mandatory pre-canon-change layer-up scan, drift detection/escalation, and bidirectional ripple tracking. Complements CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md to close the bidirectional governance loop. Implements GOVERNANCE_RIPPLE_MODEL.md Section 3.1 (Upward) | Layer-down, Readiness, Feedback/learning |
+| `GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md` | **NEW v1.0.0 (2026-02-09) PUBLIC_API** - Systematic monitoring protocol for detecting, tracking, and remediating governance alignment issues across all repositories. Defines multi-layer alignment verification (version, SHA256, LOCKED sections, cross-references, ripple status), drift detection mechanisms, escalation workflows, and zero-drift target enforcement. Integrates with agent wake-up protocols and scheduled scans. Implements LAYER_UP_PROTOCOL.md Section 8 for drift detection and GOVERNANCE_RIPPLE_MODEL.md alignment requirements | Layer-down, Readiness, PR-gates |
 | `GOVERNANCE_VALIDATION_PROTOCOL.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical validation protocol for governance artifacts. Defines validation success criteria per agent class (BtG vs non-BtG), explicit validation checklists for liaison/foreman/overseer, validation methods by artifact type, and validation evidence requirements. Addresses GAP-006 from Living Agent System v5.0.0 rollout | PR-gates, Readiness, Layer-down |
 | `GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md` | **NEW v1.0.0 (2026-02-04) PUBLIC_API** - Canonical matrix defining mandatory/recommended governance artifacts for each agent type (FM, Builder, Governance-Liaison, Governance-Repo-Administrator, CodexAdvisor, Assurance). Single source of truth for agent contract creation, gap detection, ripple validation, and compliance auditing. Includes machine-readable YAML metadata for automated tooling | PR-gates, Layer-down, Readiness |
 | `PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md` | **NEW v1.0.0 (2026-02-04)** - Mandatory pre-work governance self-test and gap detection protocol for ALL agents before starting any job. Defines 9-step checklist including gap analysis, auto-remediation, agent contract binding verification, LOCKED section validation, and attestation requirements. Integrates with governance-gap-analyzer.sh for automated detection. Extends AGENT_SELF_GOVERNANCE_PROTOCOL.md | PR-gates, Layer-down, Readiness |
