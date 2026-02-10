@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-02-10",
+  "source": "governance/policy/minimizing_language_examples.json",
+  "allowed_examples": [
+    "Small surface-area change to configuration defaults.",
+    "Easy to reproduce: run `make lint` and observe the error.",
+    "Only supports POST for now (scope statement, not test status)."
+  ],
+  "prohibited_examples": [
+    "Only 3 tests failing; everything else is fine.",
+    "Just documentation warnings remain.",
+    "Mostly complete; non-blocking failures remain."
+  ]
+}

@@ -63,6 +63,26 @@ Specifically prohibited:
 
 ---
 
+### 3.1 Canonical automation list
+
+The machine-readable minimizing-language list is maintained in:
+- `governance/policy/minimizing_language_patterns.json`
+
+Automated validators (merge gate, RCA, prehandover) load that list at runtime so enforcement can be tuned without code changes.
+
+### 3.2 False-positive reductions (examples now allowed)
+
+The automated scan is intentionally scoped to **high-confidence** failure/debt phrasing. Examples that used to be flagged but now pass:
+- "Small surface-area change to configuration defaults."
+- "Easy to reproduce: run `make lint` and observe the error."
+- "Only supports POST for now (scope statement, not test status)."
+
+### 3.3 Fixture examples
+
+See `governance/policy/minimizing_language_examples.json` for allowed/prohibited fixture examples used to validate the curated pattern list.
+
+---
+
 ## 4. Banned Language Examples
 
 ### 4.1 Test Failures

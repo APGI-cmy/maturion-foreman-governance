@@ -166,6 +166,9 @@ Policy files define operational governance requirements and protocols.
 | `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | Defines application description requirements | Readiness, Layer-down |
 | `BUILDER_QA_HANDOVER_POLICY.md` | Defines builder QA requirements before handover | PR-gates, Readiness |
 | `FM_MATURION_DELEGATED_ACTION_POLICY.md` | Defines FM delegated action authority and requirements | Readiness |
+| `minimizing_language_examples.json` | Fixture examples for minimizing-language enforcement | PR-gates, Readiness |
+| `minimizing_language_patterns.json` | Canonical minimizing-language pattern list for automated validation | PR-gates, Readiness |
+| `POLICY-NO-ONLY-LANGUAGE.md` | Zero-tolerance policy banning minimizing language in status reporting | PR-gates, Readiness |
 | `PR_GATE_FAILURE_HANDLING_PROTOCOL.md` | Defines protocol for handling PR gate failures | PR-gates, Feedback/learning |
 | `QA_POLICY_MASTER.md` | Master QA policy document | PR-gates, Readiness |
 
@@ -337,6 +340,7 @@ Operational runbooks for governance processes.
 | File | Purpose | Categories |
 |------|---------|------------|
 | `FOREMAN_GOVERNANCE_RUNBOOK.md` | Operational runbook for FM governance processes | Readiness |
+| `IMPLEMENTATION_ENTRYPOINT.md` | Step-by-step entrypoint for governance rollout order | Readiness, Layer-down |
 
 ---
 

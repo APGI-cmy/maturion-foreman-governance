@@ -2,26 +2,45 @@
 """Validate structured RCA evidence."""
 
 import argparse
+from functools import lru_cache
 import json
 import re
 from pathlib import Path
 
-MINIMIZING_PATTERNS = [
-    r"\bonly\b",
-    r"\bjust\b",
-    r"\bminor\b",
-    r"\bnon[- ]?blocking\b",
-    r"\bnon[- ]?critical\b",
-    r"\bmostly\b",
-    r"good enough",
-    r"\btrivial\b",
-    r"\bsmall\b",
-    r"\beasy\b"
-]
+MINIMIZING_LANGUAGE_PATH = Path(__file__).resolve().parents[3] / "policy" / "minimizing_language_patterns.json"
+
+
+@lru_cache(maxsize=1)
+def load_minimizing_language_patterns() -> list[str]:
+    try:
+        data = json.loads(MINIMIZING_LANGUAGE_PATH.read_text())
+    except FileNotFoundError as exc:
+        raise ValueError(f"Missing minimizing language patterns file: {MINIMIZING_LANGUAGE_PATH}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid minimizing language patterns JSON: {exc}") from exc
+
+    patterns = data.get("patterns")
+    if not isinstance(patterns, list) or not patterns:
+        raise ValueError("Minimizing language patterns list missing or empty.")
+
+    resolved = []
+    for entry in patterns:
+        if isinstance(entry, str):
+            resolved.append(entry)
+            continue
+        if isinstance(entry, dict) and isinstance(entry.get("pattern"), str):
+            resolved.append(entry["pattern"])
+            continue
+        raise ValueError("Invalid minimizing language pattern entry; expected string or object with 'pattern'.")
+    return resolved
 
 
 def detect_minimizing_language(text: str) -> list[str]:
-    return [pattern for pattern in MINIMIZING_PATTERNS if re.search(pattern, text, flags=re.IGNORECASE)]
+    return [
+        pattern
+        for pattern in load_minimizing_language_patterns()
+        if re.search(pattern, text, flags=re.IGNORECASE)
+    ]
 
 
 def require(condition: bool, message: str) -> None:
@@ -91,7 +110,12 @@ def main() -> int:
             " ".join(data.get("preventative_actions", []))
         ]
     )
-    if detect_minimizing_language(text_blob):
+    try:
+        matches = detect_minimizing_language(text_blob)
+    except ValueError as exc:
+        print(f"ERROR: {exc}")
+        return 2
+    if matches:
         print("ERROR: Minimizing language detected in RCA.")
         return 1
 
