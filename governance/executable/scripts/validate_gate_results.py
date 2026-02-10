@@ -2,29 +2,59 @@
 """Validate gate results summary for merge gate enforcement."""
 
 import argparse
+from functools import lru_cache
 import json
+import os
 import re
 from pathlib import Path
 import sys
 
 
-MINIMIZING_PATTERNS = [
-    r"\bonly\b",
-    r"\bjust\b",
-    r"\bminor\b",
-    r"\bnon[- ]?blocking\b",
-    r"\bnon[- ]?critical\b",
-    r"\bmostly\b",
-    r"good enough",
-    r"\btrivial\b",
-    r"\bsmall\b",
-    r"\beasy\b"
-]
+def resolve_minimizing_language_path() -> Path:
+    env_path = os.environ.get("MINIMIZING_LANGUAGE_PATTERNS_PATH")
+    if env_path:
+        return Path(env_path)
+
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "policy" / "minimizing_language_patterns.json"
+        if candidate.exists():
+            return candidate
+
+    raise ValueError(
+        "Missing minimizing language patterns file. "
+        "Set MINIMIZING_LANGUAGE_PATTERNS_PATH to override."
+    )
+
+
+@lru_cache(maxsize=1)
+def load_minimizing_language_patterns() -> list[str]:
+    patterns_path = resolve_minimizing_language_path()
+    try:
+        data = json.loads(patterns_path.read_text())
+    except FileNotFoundError as exc:
+        raise ValueError(f"Missing minimizing language patterns file: {patterns_path}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid minimizing language patterns JSON: {exc}") from exc
+
+    patterns = data.get("patterns")
+    if not isinstance(patterns, list) or not patterns:
+        raise ValueError("Minimizing language patterns list missing or empty.")
+
+    resolved = []
+    for entry in patterns:
+        if isinstance(entry, str):
+            resolved.append(entry)
+            continue
+        if isinstance(entry, dict) and isinstance(entry.get("pattern"), str):
+            resolved.append(entry["pattern"])
+            continue
+        raise ValueError("Invalid minimizing language pattern entry; expected string or object with 'pattern'.")
+    return resolved
 
 
 def detect_minimizing_language(text: str) -> list[str]:
     matches = []
-    for pattern in MINIMIZING_PATTERNS:
+    for pattern in load_minimizing_language_patterns():
         if re.search(pattern, text, flags=re.IGNORECASE):
             matches.append(pattern)
     return matches
@@ -77,7 +107,11 @@ def main() -> int:
 
     combined_text = f"{args.pr_title}\n{args.pr_body}".strip()
     if combined_text:
-        matches = detect_minimizing_language(combined_text)
+        try:
+            matches = detect_minimizing_language(combined_text)
+        except ValueError as exc:
+            print(f"ERROR: {exc}")
+            return 2
         if matches:
             print("ERROR: Minimizing language detected in PR title/body.")
             return 1
