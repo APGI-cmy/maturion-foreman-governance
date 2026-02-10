@@ -36,6 +36,13 @@ jobs:
           token: ${{ secrets.RIPPLE_DISPATCH_TOKEN }}
           path: governance-canon
 
+      - name: Verify executable pack present
+        run: |
+          if [ ! -f governance/executable/scripts/compute_sha256.py ] || [ ! -f governance/executable/scripts/compare_drift.py ]; then
+            echo "ERROR: governance/executable/scripts missing. Layer down the executable pack before enabling alignment."
+            exit 1
+          fi
+
       - name: Check circuit breaker
         id: circuit
         run: |
@@ -111,6 +118,10 @@ jobs:
       - name: Layer down governance artifacts
         if: steps.drift.outputs.status == '1'
         run: |
+          if ! command -v rsync >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y rsync
+          fi
           rsync -a --delete governance-canon/governance/canon/ governance/canon/
           rsync -a --delete governance-canon/governance/executable/ governance/executable/
           cp governance-canon/governance/GATE_REQUIREMENTS_INDEX.json governance/GATE_REQUIREMENTS_INDEX.json
@@ -128,11 +139,37 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          from datetime import datetime, timezone
+          from datetime import datetime, timezone, timedelta
           from pathlib import Path
           import os
 
-          status = "ALIGNED" if os.environ.get("DRIFT_STATUS") == "0" else "DRIFT"
+          drift_status = os.environ.get("DRIFT_STATUS", "2")
+          if drift_status == "0":
+              status = "ALIGNED"
+          elif drift_status == "1":
+              status = "DRIFT"
+          else:
+              status = "ERROR"
+
+          failure_count = 0
+          next_retry_after = None
+          last_error = None
+          sync_path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
+          if sync_path.exists():
+              try:
+                  previous = json.loads(sync_path.read_text())
+                  failure_count = int(previous.get("consecutive_failures", 0))
+              except json.JSONDecodeError:
+                  failure_count = 0
+
+          if status == "ERROR":
+              failure_count += 1
+              backoff_minutes = int(os.environ.get("BACKOFF_MINUTES", "30"))
+              next_retry_after = (datetime.now(timezone.utc) + timedelta(minutes=backoff_minutes)).isoformat(timespec="seconds")
+              last_error = f"drift_status={drift_status}"
+          else:
+              failure_count = 0
+
           data = {
               "schema_version": "1.0.0",
               "repository": os.environ.get("GITHUB_REPOSITORY", "<owner>/<repo>"),
@@ -140,12 +177,14 @@ jobs:
               "canonical_inventory_sha256": os.environ.get("CANONICAL_SHA", ""),
               "local_inventory_sha256": os.environ.get("LOCAL_SHA", ""),
               "alignment_status": status,
-              "last_sync": datetime.now(timezone.utc).isoformat(timespec="seconds")
+              "last_sync": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+              "consecutive_failures": failure_count,
+              "next_retry_after": next_retry_after,
+              "last_error": last_error
           }
 
-          path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
-          path.parent.mkdir(parents=True, exist_ok=True)
-          path.write_text(json.dumps(data, indent=2))
+          sync_path.parent.mkdir(parents=True, exist_ok=True)
+          sync_path.write_text(json.dumps(data, indent=2))
           PY
         env:
           DRIFT_STATUS: ${{ steps.drift.outputs.status }}

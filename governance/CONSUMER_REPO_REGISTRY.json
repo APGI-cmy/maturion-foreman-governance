@@ -5,14 +5,14 @@
   "consumers": [
     {
       "owner": "APGI-cmy",
-      "repo": "office-app",
+      "repo": "maturion-foreman-office-app",
       "enabled": true,
       "tags": ["pilot", "core"],
       "notes": "Primary pilot consumer repo for governance ripple."
     },
     {
       "owner": "APGI-cmy",
-      "repo": "partpulse",
+      "repo": "PartPulse",
       "enabled": false,
       "tags": ["staged"],
       "notes": "Enable after pilot validation."

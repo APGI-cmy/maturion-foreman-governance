@@ -24,8 +24,10 @@ Create these secrets in each consumer repo:
 1. Copy template:
    - `governance/executable/workflows/consumer-alignment.yml.template`
    - to `.github/workflows/consumer-alignment.yml`
-2. Ensure repository dispatch events are allowed.
-3. Confirm the workflow lists `repository_dispatch` with type `governance_ripple`.
+2. Ensure the executable pack is layered down in the consumer repo:
+   - `governance/executable/scripts/` must exist (alignment workflow fails fast if missing)
+3. Ensure repository dispatch events are allowed.
+4. Confirm the workflow lists `repository_dispatch` with type `governance_ripple`.
 
 ---
 
