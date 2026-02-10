@@ -146,20 +146,20 @@ jobs:
           from pathlib import Path
           import os
 
-          DRIFT_ERROR_CODE = os.environ.get("DRIFT_ERROR_STATUS", "2")
+          EXPECTED_DRIFT_ERROR_CODE = os.environ.get("DRIFT_ERROR_STATUS", "2")
           drift_status = os.environ.get("DRIFT_STATUS")
           if drift_status is None:
               status = "ERROR"
-              drift_status_detail = "drift_status_not_set"
+              drift_status_detail = "status_not_set"
           elif drift_status == "0":
               status = "ALIGNED"
               drift_status_detail = "aligned"
           elif drift_status == "1":
               status = "DRIFT"
               drift_status_detail = "drift_detected"
-          elif drift_status == DRIFT_ERROR_CODE:
+          elif drift_status == EXPECTED_DRIFT_ERROR_CODE:
               status = "ERROR"
-              drift_status_detail = f"error_code_{DRIFT_ERROR_CODE}"
+              drift_status_detail = f"error_code_{EXPECTED_DRIFT_ERROR_CODE}"
           else:
               status = "ERROR"
               drift_status_detail = f"unknown_status_{drift_status}"
