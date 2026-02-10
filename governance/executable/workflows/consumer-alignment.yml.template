@@ -140,11 +140,11 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          from datetime import datetime, timezone, timedelta
+          from datetime import datetime, timezone
           from pathlib import Path
           import os
 
-          ERROR_STATUS = "2"
+          ERROR_STATUS = "2"  # compare_drift error (missing file or read failure)
           drift_status = os.environ.get("DRIFT_STATUS", ERROR_STATUS)
           if drift_status == "0":
               status = "ALIGNED"
@@ -165,10 +165,11 @@ jobs:
                   failure_count = 0
 
           if status == "ERROR":
+              from datetime import timedelta
               failure_count += 1
               backoff_minutes = int(os.environ.get("BACKOFF_MINUTES", "30"))
               next_retry_after = (datetime.now(timezone.utc) + timedelta(minutes=backoff_minutes)).isoformat(timespec="seconds")
-              last_error = f"drift_status={drift_status}"
+              last_error = f"Drift detection failed with status {drift_status}"
           else:
               failure_count = 0
 
