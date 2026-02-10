@@ -4,18 +4,34 @@
 import argparse
 from functools import lru_cache
 import json
+import os
 import re
 from pathlib import Path
 
-MINIMIZING_LANGUAGE_PATH = Path(__file__).resolve().parents[3] / "policy" / "minimizing_language_patterns.json"
+
+def resolve_minimizing_language_path() -> Path:
+    env_path = os.environ.get("MINIMIZING_LANGUAGE_PATTERNS_PATH")
+    if env_path:
+        return Path(env_path)
+
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "policy" / "minimizing_language_patterns.json"
+        if candidate.exists():
+            return candidate
+
+    raise ValueError(
+        "Missing minimizing language patterns file. "
+        "Set MINIMIZING_LANGUAGE_PATTERNS_PATH to override."
+    )
 
 
 @lru_cache(maxsize=1)
 def load_minimizing_language_patterns() -> list[str]:
+    patterns_path = resolve_minimizing_language_path()
     try:
-        data = json.loads(MINIMIZING_LANGUAGE_PATH.read_text())
+        data = json.loads(patterns_path.read_text())
     except FileNotFoundError as exc:
-        raise ValueError(f"Missing minimizing language patterns file: {MINIMIZING_LANGUAGE_PATH}") from exc
+        raise ValueError(f"Missing minimizing language patterns file: {patterns_path}") from exc
     except json.JSONDecodeError as exc:
         raise ValueError(f"Invalid minimizing language patterns JSON: {exc}") from exc
 
