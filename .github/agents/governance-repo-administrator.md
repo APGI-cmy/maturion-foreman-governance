@@ -114,7 +114,7 @@ if [ -f "$CANON_MANIFEST" ]; then
     echo "CANON_INVENTORY: EXISTS | VERSION: $CANON_VERSION | COUNT: $CANON_COUNT" >> "$EVIDENCE_LOG"
     
     # Check for placeholder hashes (CRITICAL per CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md)
-    PLACEHOLDER_COUNT=$(jq -r '.canons[] | select(.file_hash_sha256 == "PLACEHOLDER" or .file_hash_sha256 == null or .file_hash_sha256 == "") | .path' "$CANON_MANIFEST" 2>/dev/null | wc -l)
+    PLACEHOLDER_COUNT=$(jq '[.canons[] | select(.file_hash_sha256 == "PLACEHOLDER" or .file_hash_sha256 == null or .file_hash_sha256 == "")] | length' "$CANON_MANIFEST" 2>/dev/null || echo 0)
     if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
       echo "    ❌ CRITICAL: $PLACEHOLDER_COUNT placeholder hashes detected"
       echo "    ⚠️  Canon inventory integrity compromised - see CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md"
@@ -128,11 +128,13 @@ if [ -f "$CANON_MANIFEST" ]; then
     echo "    ❌ Invalid JSON in CANON_INVENTORY.json"
     echo "CANON_INVENTORY: INVALID_JSON" >> "$EVIDENCE_LOG"
     HEALTH_ISSUES=$((HEALTH_ISSUES + 1))
+    PLACEHOLDER_COUNT=0
   fi
 else
   echo "    ❌ CANON_INVENTORY.json missing"
   echo "CANON_INVENTORY: MISSING" >> "$EVIDENCE_LOG"
   HEALTH_ISSUES=$((HEALTH_ISSUES + 1))
+  PLACEHOLDER_COUNT=0
 fi
 
 # Check 4.2: CONSUMER_REPO_REGISTRY.json
@@ -237,7 +239,7 @@ echo ""
 
 # STEP 5: PENDING CANON CHANGES (CS2 AUTHORIZATION CHECK)
 echo "📝 STEP 5: Checking for pending canon changes requiring CS2 authorization..."
-PENDING_CHANGES=$(git diff --name-only main 2>/dev/null | grep "^governance/canon/" || echo "")
+PENDING_CHANGES=$(git diff --name-only main...HEAD 2>/dev/null | grep "^governance/canon/" || echo "")
 PENDING_COUNT=$(echo "$PENDING_CHANGES" | grep -c "governance/canon/" || echo 0)
 
 if [ $PENDING_COUNT -gt 0 ]; then
