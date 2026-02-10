@@ -528,7 +528,8 @@ if [ -n "$MANIFEST_FILE" ]; then
   echo "  🔍 Validating canon files with SHA256..."
   CANON_VALID=0
   CANON_DRIFT=0
-  jq -r '.canons[] | "\(.path)|\(.sha256 // "MISSING")"' "$MANIFEST_FILE" 2>/dev/null | while IFS='|' read canon_path expected_sha; do
+  # Use process substitution to avoid subshell and preserve variable updates
+  while IFS='|' read canon_path expected_sha; do
     if [ -f "$canon_path" ]; then
       ACTUAL_SHA=$(sha256sum "$canon_path" 2>/dev/null | cut -d' ' -f1)
       if [ "$expected_sha" = "MISSING" ] || [ -z "$expected_sha" ]; then
@@ -549,7 +550,7 @@ if [ -n "$MANIFEST_FILE" ]; then
       echo "    ❌ MISSING: $canon_path"
       echo "CANON_FILE: $canon_path | STATUS: MISSING" >> "$EVIDENCE_LOG"
     fi
-  done
+  done < <(jq -r '.canons[] | "\(.path)|\(.sha256 // "MISSING")"' "$MANIFEST_FILE" 2>/dev/null)
   
   if [ "$CANON_DRIFT" -gt 0 ]; then
     echo "  ⚠️  $CANON_DRIFT canon file(s) have drift - governance alignment required"
@@ -704,7 +705,12 @@ echo "  → Checking for failing tests..."
 # Example: npm test 2>&1 | grep -E "(FAIL|ERROR|TIMEOUT)"
 
 # 2. Skipped tests
-echo "  → Checking for skipped tests..."
+# NOTE: This script is optimized for JavaScript/TypeScript test frameworks (Jest, Mocha, Jasmine)
+# For other languages, customize patterns:
+# - Python: @pytest.mark.skip, @unittest.skip
+# - Go: t.Skip(), testing.Short()
+# - Ruby: skip, pending
+echo "  → Checking for skipped tests (JavaScript/TypeScript patterns)..."
 SKIPPED=$(grep -r "\.skip()\|\.todo()\|xdescribe\|xit" --include="*.test.*" --include="*.spec.*" . 2>/dev/null | wc -l)
 if [ "$SKIPPED" -gt 0 ]; then
   echo "    ❌ Found $SKIPPED skipped test(s)"
@@ -966,13 +972,13 @@ fi
 
 # Check evidence artifacts
 EVIDENCE_ARTIFACTS_STATUS="Not checked"
-MISSING_ARTIFACTS=""
+MISSING_ARTIFACTS=()
 if [ -d ".agent-admin" ]; then
   REQUIRED_DIRS=("prehandover" "gates" "rca" "improvements" "governance")
   MISSING_COUNT=0
   for dir in "${REQUIRED_DIRS[@]}"; do
     if [ ! -d ".agent-admin/$dir" ]; then
-      MISSING_ARTIFACTS="$MISSING_ARTIFACTS\n    - .agent-admin/$dir/"
+      MISSING_ARTIFACTS+=("    - .agent-admin/$dir/")
       MISSING_COUNT=$((MISSING_COUNT+1))
     fi
   done
@@ -984,6 +990,15 @@ if [ -d ".agent-admin" ]; then
   fi
 else
   EVIDENCE_ARTIFACTS_STATUS="⚠️ .agent-admin directory missing"
+fi
+
+# Format MISSING_ARTIFACTS array for output
+MISSING_ARTIFACTS_STR=""
+if [ "${#MISSING_ARTIFACTS[@]}" -gt 0 ]; then
+  for artifact in "${MISSING_ARTIFACTS[@]}"; do
+    MISSING_ARTIFACTS_STR="$MISSING_ARTIFACTS_STR
+$artifact"
+  done
 fi
 
 # Get governance status
@@ -1040,7 +1055,7 @@ $MODIFIED_FILES
 
 ### Evidence Artifacts (Per EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md)
 - Status: $EVIDENCE_ARTIFACTS_STATUS
-- Missing artifacts:$MISSING_ARTIFACTS
+- Missing artifacts:$MISSING_ARTIFACTS_STR
 - [FILL IN: Prehandover proof created?]
 - [FILL IN: Gate results JSON created?]
 - [FILL IN: RCA required? If yes, created?]
