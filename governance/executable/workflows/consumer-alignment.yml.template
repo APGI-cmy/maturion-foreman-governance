@@ -30,19 +30,19 @@ jobs:
         with:
           token: ${{ secrets.MATURION_BOT_TOKEN }}
 
-      - name: Checkout governance canonical
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.GOVERNANCE_SOURCE_REPO }}
-          token: ${{ secrets.RIPPLE_DISPATCH_TOKEN }}
-          path: governance-canon
-
       - name: Verify executable pack present
         run: |
           if [ ! -d governance/executable/scripts ]; then
             echo "ERROR: governance/executable/scripts missing. Layer down the executable pack before enabling alignment."
             exit 1
           fi
+
+      - name: Checkout governance canonical
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GOVERNANCE_SOURCE_REPO }}
+          token: ${{ secrets.RIPPLE_DISPATCH_TOKEN }}
+          path: governance-canon
 
       - name: Check circuit breaker
         id: circuit
@@ -144,7 +144,8 @@ jobs:
           from pathlib import Path
           import os
 
-          drift_status = os.environ.get("DRIFT_STATUS", "2")
+          ERROR_STATUS = "2"
+          drift_status = os.environ.get("DRIFT_STATUS", ERROR_STATUS)
           if drift_status == "0":
               status = "ALIGNED"
           elif drift_status == "1":
