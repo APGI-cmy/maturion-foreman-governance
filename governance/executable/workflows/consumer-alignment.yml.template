@@ -147,8 +147,11 @@ jobs:
           import os
 
           ERROR_STATUS = os.environ.get("DRIFT_ERROR_STATUS", "2")
-          drift_status = os.environ.get("DRIFT_STATUS", ERROR_STATUS)
-          if drift_status == "0":
+          drift_status = os.environ.get("DRIFT_STATUS")
+          if drift_status is None:
+              drift_status = "missing"
+              status = "ERROR"
+          elif drift_status == "0":
               status = "ALIGNED"
           elif drift_status == "1":
               status = "DRIFT"
@@ -160,7 +163,8 @@ jobs:
           failure_count = 0
           next_retry_after = None
           last_error = None
-          sync_path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
+          sync_state_env = os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json")
+          sync_path = Path(sync_state_env)
           if sync_path.exists():
               try:
                   previous = json.loads(sync_path.read_text())
