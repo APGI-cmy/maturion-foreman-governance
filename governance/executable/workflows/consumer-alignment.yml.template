@@ -20,6 +20,8 @@ env:
   MAX_CONSECUTIVE_FAILURES: 3
   # Backoff minutes before retrying after alignment errors.
   BACKOFF_MINUTES: 30
+  # compare_drift exit code representing error conditions.
+  DRIFT_ERROR_STATUS: "2"
 
 jobs:
   align-governance:
@@ -144,7 +146,7 @@ jobs:
           from pathlib import Path
           import os
 
-          ERROR_STATUS = "2"  # compare_drift error or unexpected drift status
+          ERROR_STATUS = os.environ.get("DRIFT_ERROR_STATUS", "2")
           drift_status = os.environ.get("DRIFT_STATUS", ERROR_STATUS)
           if drift_status == "0":
               status = "ALIGNED"
@@ -158,7 +160,6 @@ jobs:
           failure_count = 0
           next_retry_after = None
           last_error = None
-          # Path to sync_state.json for alignment tracking.
           sync_path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
           if sync_path.exists():
               try:
