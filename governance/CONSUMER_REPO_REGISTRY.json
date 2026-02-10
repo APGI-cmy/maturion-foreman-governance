@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-10",
+  "source": "governance/CONSUMER_REPO_REGISTRY.json",
+  "consumers": [
+    {
+      "owner": "APGI-cmy",
+      "repo": "office-app",
+      "enabled": true,
+      "tags": ["pilot", "core"],
+      "notes": "Primary pilot consumer repo for governance ripple."
+    },
+    {
+      "owner": "APGI-cmy",
+      "repo": "partpulse",
+      "enabled": false,
+      "tags": ["staged"],
+      "notes": "Enable after pilot validation."
+    }
+  ]
+}

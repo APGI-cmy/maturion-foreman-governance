@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-09",
-  "total_canons": 127,
-  "generation_timestamp": "2026-02-09T11:32:19Z",
+  "last_updated": "2026-02-10",
+  "total_canons": 132,
+  "generation_timestamp": "2026-02-10T12:09:17Z",
   "canons": [
     {
       "filename": ".agent.schema.md",
@@ -305,6 +305,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md",
+      "version": "1.0.0",
+      "file_hash": "1134f4a8e60c",
+      "effective_date": "2026-02-10",
+      "description": "Integrity requirements for canonical inventories (sha256, provenance, degraded mode).",
+      "type": "canon",
+      "path": "governance/canon/CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "CASCADING_FAILURE_CIRCUIT_BREAKER.md",
       "version": "1",
       "file_hash": "e4f666fef38b",
@@ -425,6 +435,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "d3775794a67f",
+      "effective_date": "2026-02-10",
+      "description": "Mandatory push and scheduled fallback transport protocol for cross-repo ripple dispatch.",
+      "type": "canon",
+      "path": "governance/canon/CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "DEFECT_RESOLUTION_MAINTENANCE_CANON.md",
       "version": "1.0.0",
       "file_hash": "9fd7dc83092e",
@@ -505,6 +525,16 @@
       "layer_down_status": "OPTIONAL"
     },
     {
+      "filename": "EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md",
+      "version": "1.0.0",
+      "file_hash": "6902b99f9790",
+      "effective_date": "2026-02-10",
+      "description": "Mandatory evidence artifact bundle and required machine-readable gate summaries.",
+      "type": "canon",
+      "path": "governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "EXECUTION_BOOTSTRAP_PROTOCOL.md",
       "version": "1.0.0",
       "file_hash": "1755593a86a9",
@@ -565,6 +595,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "c04a33f5e452",
+      "effective_date": "2026-02-09",
+      "description": "Canonical protocol for FM authority to manage merge gates. Defines FM autonomous fix authority for gate misalignments, detection and classification of gate issues, fix vs. escalation decision matrix, governance compliance checklist, and operational workflows. Enables FM to correct gates that misapply agent-class requirements without bypassing governance.",
+      "type": "canon",
+      "path": "governance/canon/FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "FM_PREAUTH_CHECKLIST_CANON.md",
       "version": "1.0.0",
       "file_hash": "6f48a4935482",
@@ -613,6 +653,16 @@
       "type": "canon",
       "path": "governance/canon/GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md",
       "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "a94effb59bbf",
+      "effective_date": "2026-02-09",
+      "description": "Systematic monitoring protocol for detecting, tracking, and remediating governance alignment issues across all repositories. Defines multi-layer alignment verification, drift detection mechanisms, escalation workflows, and zero-drift target enforcement.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
     },
     {
       "filename": "GOVERNANCE_ARTIFACT_TAXONOMY.md",
@@ -785,6 +835,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "LAYER_UP_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "0f5b2d9c1464",
+      "effective_date": "2026-02-09",
+      "description": "Explicit, controlled protocol for propagating learnings, improvements, and governance feedback from application repositories back to canonical governance. Defines layer-up triggers, systematic intake/validation/integration process, mandatory pre-canon-change layer-up scan, drift detection/escalation, and bidirectional ripple tracking.",
+      "type": "canon",
+      "path": "governance/canon/LAYER_UP_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "LEARNING_INTAKE_AND_PROMOTION_MODEL.md",
       "version": "1.0.0",
       "file_hash": "9d4392181dce",
@@ -845,6 +905,16 @@
       "layer_down_status": "PUBLIC_API"
     },
     {
+      "filename": "MATURION_BOT_EXECUTION_IDENTITY_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "838f49f1a744",
+      "effective_date": "2026-02-10",
+      "description": "Execution-only identity model for Maturion Bot, including least-privilege and audit rules.",
+      "type": "canon",
+      "path": "governance/canon/MATURION_BOT_EXECUTION_IDENTITY_MODEL.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
       "filename": "MATURION_CONCEPTUAL_DOCTRINE.md",
       "version": "1",
       "file_hash": "d0f6d78a97f8",
@@ -893,6 +963,36 @@
       "type": "canon",
       "path": "governance/canon/MEMORY_OBSERVABILITY_QUERY_CONTRACT.md",
       "layer_down_status": "OPTIONAL"
+    },
+    {
+      "filename": "MERGE_GATE_APPLICABILITY_MATRIX.md",
+      "version": "1.0.0",
+      "file_hash": "85ab24acbbe6",
+      "effective_date": "2026-02-09",
+      "description": "Authoritative matrix mapping agent roles to applicable merge gates. Defines gate applicability by agent class (Builder, Liaison, Foreman, Overseer), role detection patterns, gate implementation patterns, and role-specific gate profiles. Companion to FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md for precise gate enforcement.",
+      "type": "canon",
+      "path": "governance/canon/MERGE_GATE_APPLICABILITY_MATRIX.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MERGE_GATE_INTERFACE_STANDARD.md",
+      "version": "1.0.0",
+      "file_hash": "1f211a80b274",
+      "effective_date": "2026-02-10",
+      "description": "Standardized merge gate workflow interface and required check contexts.",
+      "type": "canon",
+      "path": "governance/canon/MERGE_GATE_INTERFACE_STANDARD.md",
+      "layer_down_status": "PUBLIC_API"
+    },
+    {
+      "filename": "MERGE_GATE_PHILOSOPHY.md",
+      "version": "1.1.0",
+      "file_hash": "f3f1b726a9ce",
+      "effective_date": "2026-01-20",
+      "description": "Defines merge gate philosophy (CI confirmatory not diagnostic), evidence-based validation pattern, two-mode validation (evidence vs. script), and gate types. Includes comprehensive governance compliance checklist for gate implementation, evidence-based validation, role detection, failure messages, FM gate management, and escalation procedures.",
+      "type": "canon",
+      "path": "governance/canon/MERGE_GATE_PHILOSOPHY.md",
+      "layer_down_status": "PUBLIC_API"
     },
     {
       "filename": "PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
@@ -1223,56 +1323,6 @@
       "type": "canon",
       "path": "governance/canon/scope-declaration.template.md",
       "layer_down_status": "INTERNAL"
-    },
-    {
-      "filename": "GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "a94effb59bbf",
-      "effective_date": "2026-02-09",
-      "description": "Systematic monitoring protocol for detecting, tracking, and remediating governance alignment issues across all repositories. Defines multi-layer alignment verification, drift detection mechanisms, escalation workflows, and zero-drift target enforcement.",
-      "type": "canon",
-      "path": "governance/canon/GOVERNANCE_ALIGNMENT_MONITORING_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "LAYER_UP_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "0f5b2d9c1464",
-      "effective_date": "2026-02-09",
-      "description": "Explicit, controlled protocol for propagating learnings, improvements, and governance feedback from application repositories back to canonical governance. Defines layer-up triggers, systematic intake/validation/integration process, mandatory pre-canon-change layer-up scan, drift detection/escalation, and bidirectional ripple tracking.",
-      "type": "canon",
-      "path": "governance/canon/LAYER_UP_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "c04a33f5e452",
-      "effective_date": "2026-02-09",
-      "description": "Canonical protocol for FM authority to manage merge gates. Defines FM autonomous fix authority for gate misalignments, detection and classification of gate issues, fix vs. escalation decision matrix, governance compliance checklist, and operational workflows. Enables FM to correct gates that misapply agent-class requirements without bypassing governance.",
-      "type": "canon",
-      "path": "governance/canon/FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "MERGE_GATE_APPLICABILITY_MATRIX.md",
-      "version": "1.0.0",
-      "file_hash": "85ab24acbbe6",
-      "effective_date": "2026-02-09",
-      "description": "Authoritative matrix mapping agent roles to applicable merge gates. Defines gate applicability by agent class (Builder, Liaison, Foreman, Overseer), role detection patterns, gate implementation patterns, and role-specific gate profiles. Companion to FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md for precise gate enforcement.",
-      "type": "canon",
-      "path": "governance/canon/MERGE_GATE_APPLICABILITY_MATRIX.md",
-      "layer_down_status": "PUBLIC_API"
-    },
-    {
-      "filename": "MERGE_GATE_PHILOSOPHY.md",
-      "version": "1.1.0",
-      "file_hash": "f3f1b726a9ce",
-      "effective_date": "2026-01-20",
-      "description": "Defines merge gate philosophy (CI confirmatory not diagnostic), evidence-based validation pattern, two-mode validation (evidence vs. script), and gate types. Includes comprehensive governance compliance checklist for gate implementation, evidence-based validation, role detection, failure messages, FM gate management, and escalation procedures.",
-      "type": "canon",
-      "path": "governance/canon/MERGE_GATE_PHILOSOPHY.md",
-      "layer_down_status": "PUBLIC_API"
     }
   ]
 }
