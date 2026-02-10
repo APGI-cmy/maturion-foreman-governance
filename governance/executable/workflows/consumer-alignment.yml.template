@@ -142,7 +142,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          from datetime import datetime, timezone
+          from datetime import datetime, timezone, timedelta
           from pathlib import Path
           import os
 
@@ -163,8 +163,8 @@ jobs:
           failure_count = 0
           next_retry_after = None
           last_error = None
-          sync_state_env = os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json")
-          sync_path = Path(sync_state_env)
+          sync_state_path_str = os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json")
+          sync_path = Path(sync_state_path_str)
           if sync_path.exists():
               try:
                   previous = json.loads(sync_path.read_text())
@@ -173,7 +173,6 @@ jobs:
                   failure_count = 0
 
           if status == "ERROR":
-              from datetime import timedelta
               failure_count += 1
               backoff_minutes = int(os.environ.get("BACKOFF_MINUTES", "30"))
               next_retry_after = (datetime.now(timezone.utc) + timedelta(minutes=backoff_minutes)).isoformat(timespec="seconds")
