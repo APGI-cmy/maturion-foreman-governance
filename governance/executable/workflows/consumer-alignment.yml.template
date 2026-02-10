@@ -148,8 +148,8 @@ jobs:
 
           ERROR_STATUS = os.environ.get("DRIFT_ERROR_STATUS", "2")
           drift_status = os.environ.get("DRIFT_STATUS")
+          drift_status_detail = drift_status or "missing"
           if drift_status is None:
-              drift_status = "missing"
               status = "ERROR"
           elif drift_status == "0":
               status = "ALIGNED"
@@ -163,8 +163,7 @@ jobs:
           failure_count = 0
           next_retry_after = None
           last_error = None
-          sync_state_path_str = os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json")
-          sync_path = Path(sync_state_path_str)
+          sync_path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
           if sync_path.exists():
               try:
                   previous = json.loads(sync_path.read_text())
@@ -176,7 +175,7 @@ jobs:
               failure_count += 1
               backoff_minutes = int(os.environ.get("BACKOFF_MINUTES", "30"))
               next_retry_after = (datetime.now(timezone.utc) + timedelta(minutes=backoff_minutes)).isoformat(timespec="seconds")
-              last_error = f"Drift detection failed with status {drift_status}"
+              last_error = f"Drift detection failed with status {drift_status_detail}"
           else:
               failure_count = 0
 
