@@ -1,0 +1,119 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-10",
+  "provenance": {
+    "source": "governance/GATE_REQUIREMENTS_INDEX.json",
+    "canonical_commit": "b0a4af472e38e607b5b96d842774b4a90368340d",
+    "generated_at": "2026-02-10T12:09:17Z"
+  },
+  "classifications": {
+    "docs-only": {
+      "description": "Documentation-only change with no governance artifacts modified.",
+      "required_evidence": [
+        "prehandover_proof",
+        "gate_results",
+        "improvement_entry"
+      ],
+      "optional_evidence": [
+        "rca"
+      ],
+      "required_validations": [
+        "schema:gate_results",
+        "schema:prehandover_proof",
+        "schema:improvement_entry",
+        "policy:no_minimizing_language"
+      ]
+    },
+    "governance-change": {
+      "description": "Changes to governance canon, executable, or registry artifacts.",
+      "required_evidence": [
+        "prehandover_proof",
+        "gate_results",
+        "improvement_entry"
+      ],
+      "required_validations": [
+        "schema:gate_results",
+        "schema:prehandover_proof",
+        "schema:improvement_entry",
+        "policy:no_minimizing_language",
+        "governance:inventory_updated",
+        "governance:ripple_dispatch_required"
+      ]
+    },
+    "code-change": {
+      "description": "Any change outside documentation-only or governance-only scopes.",
+      "required_evidence": [
+        "prehandover_proof",
+        "gate_results",
+        "improvement_entry"
+      ],
+      "required_validations": [
+        "schema:gate_results",
+        "schema:prehandover_proof",
+        "schema:improvement_entry",
+        "policy:no_minimizing_language",
+        "gate:tests_green"
+      ]
+    }
+  },
+  "docs_only_behavior": {
+    "required": [
+      "prehandover_proof",
+      "gate_results",
+      "improvement_entry"
+    ],
+    "optional": [
+      "rca",
+      "deep_architecture_review"
+    ]
+  },
+  "file_pattern_checks": [
+    {
+      "patterns": [
+        "**/*.py"
+      ],
+      "required_checks": [
+        "python:deprecation_scan",
+        "python:lint"
+      ]
+    },
+    {
+      "patterns": [
+        "**/*.js",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "required_checks": [
+        "node:lint"
+      ]
+    },
+    {
+      "patterns": [
+        "docs/**",
+        "**/*.md"
+      ],
+      "required_checks": [
+        "docs:link_check"
+      ],
+      "optional_checks": [
+        "docs:spell_check"
+      ]
+    }
+  ],
+  "governance_artifact_validations": {
+    "canon": [
+      "governance:inventory_updated",
+      "governance:ripple_dispatch_required"
+    ],
+    "schema": [
+      "schema:version_bump",
+      "schema:validated"
+    ],
+    "workflow_template": [
+      "merge_gate_interface:contexts"
+    ],
+    "registry": [
+      "governance:registry_valid"
+    ]
+  }
+}

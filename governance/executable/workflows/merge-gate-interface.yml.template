@@ -1,0 +1,80 @@
+name: Merge Gate Interface
+
+on:
+  pull_request:
+
+env:
+  EVIDENCE_ROOT: .agent-admin
+  GATE_RESULTS_PATH: .agent-admin/gates/gate_results.json
+  PREHANDOVER_PATH: .agent-admin/prehandover/prehandover_proof.json
+  IMPROVEMENT_PATH: .agent-admin/improvements/improvement_entry.json
+  RCA_PATH: .agent-admin/rca/rca.json
+  SYNC_STATE_PATH: .agent-admin/governance/sync_state.json
+  CANONICAL_INVENTORY_PATH: .agent-admin/governance/canonical_inventory.json
+
+jobs:
+  merge-gate/verdict:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate gate results
+        run: |
+          python governance/executable/scripts/validate_gate_results.py \
+            --results "${GATE_RESULTS_PATH}" \
+            --pr-title "${{ github.event.pull_request.title }}" \
+            --pr-body "${{ github.event.pull_request.body }}"
+
+      - name: Validate prehandover proof
+        run: |
+          python governance/executable/scripts/validate_prehandover_proof.py \
+            --proof "${PREHANDOVER_PATH}"
+
+      - name: Validate improvement entry
+        run: |
+          python governance/executable/scripts/validate_improvement_entry.py \
+            --entry "${IMPROVEMENT_PATH}"
+
+      - name: Validate RCA when required
+        run: |
+          python governance/executable/scripts/validate_rca.py \
+            --rca "${RCA_PATH}" \
+            --gate-results "${GATE_RESULTS_PATH}"
+
+  governance/alignment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify canonical inventory snapshot
+        run: |
+          if [ ! -f "${CANONICAL_INVENTORY_PATH}" ]; then
+            echo "ERROR: Missing canonical inventory snapshot at ${CANONICAL_INVENTORY_PATH}."
+            exit 1
+          fi
+
+      - name: Compare inventory drift
+        run: |
+          python governance/executable/scripts/compare_drift.py \
+            --expected-file "${CANONICAL_INVENTORY_PATH}" \
+            --actual-file "governance/CANON_INVENTORY.json" \
+            --truncate 64
+
+      - name: Verify sync state
+        run: |
+          python governance/executable/scripts/validate_sync_state.py \
+            --sync-state "${SYNC_STATE_PATH}"
+
+  stop-and-fix/enforcement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enforce stop-and-fix resolution
+        run: |
+          python governance/executable/scripts/validate_gate_results.py \
+            --results "${GATE_RESULTS_PATH}" \
+            --mode stop-and-fix

@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://maturion.com/schemas/governance/improvement_entry.schema.json",
+  "title": "Continuous Improvement Entry",
+  "description": "Structured improvement capture entry required for every PR.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "captured_at",
+    "category",
+    "description",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["PROCESS", "TOOLING", "GOVERNANCE", "QUALITY", "OTHER"]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+    "action": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["IN_SCOPE", "PARKED"]
+    },
+    "evidence_path": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

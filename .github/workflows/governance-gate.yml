@@ -1,8 +1,52 @@
-#!/bin/bash
+name: Governance Gate
 
-for dir in app components lib types tests foreman swarm; do
-  # Your code here
-  echo "Processing $dir"
-  # More commands can be added here as needed
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
 
-done
+permissions:
+  contents: read
+
+jobs:
+  governance-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate governance structure
+        run: |
+          required_dirs=(
+            "governance"
+            "governance/canon"
+            "governance/policy"
+            "governance/philosophy"
+            "governance/runbooks"
+          )
+
+          for dir in "${required_dirs[@]}"; do
+            if [ ! -d "${dir}" ]; then
+              echo "ERROR: Required governance directory missing: ${dir}"
+              exit 1
+            fi
+          done
+
+          required_files=(
+            "governance/CONSTITUTION.md"
+            "governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ ! -f "${file}" ]; then
+              echo "ERROR: Required governance file missing: ${file}"
+              exit 1
+            fi
+          done
+
+          echo "PASS: Governance structure validated."

@@ -1,0 +1,64 @@
+name: Governance Ripple Dispatcher
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - governance/canon/**
+      - governance/CANON_INVENTORY.json
+      - governance/GATE_REQUIREMENTS_INDEX.json
+      - governance/CONSUMER_REPO_REGISTRY.json
+      - governance/executable/**
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  dispatch-ripple:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Gather change metadata
+        id: changes
+        run: |
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tr '\n' ',' | sed 's/,$//')
+          INVENTORY_VERSION=$(jq -r '.version' governance/CANON_INVENTORY.json)
+          echo "changed_paths=${CHANGED}" >> $GITHUB_OUTPUT
+          echo "inventory_version=${INVENTORY_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Dispatch ripple events
+        id: dispatch
+        env:
+          RIPPLE_DISPATCH_TOKEN: ${{ secrets.RIPPLE_DISPATCH_TOKEN }}
+        run: |
+          set +e
+          python governance/executable/scripts/dispatch_ripple.py \
+            --canonical-commit "${{ github.sha }}" \
+            --inventory-version "${{ steps.changes.outputs.inventory_version }}" \
+            --changed-paths "${{ steps.changes.outputs.changed_paths }}"
+          STATUS=$?
+          echo "status=${STATUS}" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Escalate persistent dispatch failure
+        if: steps.dispatch.outputs.status != '0'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.MATURION_BOT_TOKEN }}
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Governance ripple dispatch failed',
+              body: 'Ripple dispatch failed after retries. Review .agent-admin/governance/ripple-dispatch-log.json for evidence.'
+            })
+
+      - name: Fail workflow on dispatch error
+        if: steps.dispatch.outputs.status != '0'
+        run: |
+          echo "ERROR: Ripple dispatch failed."
+          exit 1

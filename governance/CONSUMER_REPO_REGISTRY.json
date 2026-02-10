@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-10",
+  "source": "governance/CONSUMER_REPO_REGISTRY.json",
+  "consumers": [
+    {
+      "owner": "APGI-cmy",
+      "repo": "maturion-foreman-office-app",
+      "enabled": true,
+      "tags": ["pilot", "core"],
+      "notes": "Primary pilot consumer repo for governance ripple."
+    },
+    {
+      "owner": "APGI-cmy",
+      "repo": "PartPulse",
+      "enabled": false,
+      "tags": ["staged"],
+      "notes": "Enable after pilot validation. Repository name is case-sensitive; verify exact casing."
+    }
+  ]
+}
