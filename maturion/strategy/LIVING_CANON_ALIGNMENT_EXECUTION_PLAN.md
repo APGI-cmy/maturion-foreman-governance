@@ -1,248 +1,222 @@
-# LIVING CANON ALIGNMENT — EXECUTION PLAN (PR + AUTO-MERGE)
-**Plan ID**: LCAP-001  
-**Status**: Strategy (intended for promotion to canon once proven)  
-**Owner Authority**: CS2  
-**Applies To**: All consumer repositories in the APGI-cmy ecosystem  
-**Canonical Source Repo**: APGI-cmy/maturion-foreman-governance  
-**Automation Model**: Distributed execution (each repo aligns itself), central policy (governance repo)
+# LIVING CANON ALIGNMENT — STRATEGY (CANON → EXECUTABLE → LIVING)
+**Strategy ID**: LCAS-001  
+**Status**: Strategy (to be compiled into canon + executable enforcement)  
+**Authority**: CS2 (non-delegable for governance and agent contract changes)  
+**Scope**: Entire APGI-cmy ecosystem (governance repo + all consumer repos)  
+**Operating Philosophy**: Proactive compliance, stop-and-fix, zero test debt, zero test dodging, no “later”, evidence-first
 
 ---
 
-## 0) Objective (Non-Negotiable)
+## 0) Strategic Objective
 
-Establish a fully automated, deterministic, auditable governance alignment system where:
+Build a **fully automated, self-aligning, self-improving governance ecosystem** where:
 
-1. Canonical governance artifacts are defined in a single canonical inventory in the governance repo.
-2. Every consumer repo independently detects governance drift against the canonical inventory.
-3. On drift, the consumer repo automatically layers down required artifacts, opens a PR, runs gates, and auto-merges when green.
-4. If blocked, the consumer repo triggers stop-and-fix behavior, generates evidence and RCA artifacts, and escalates via issues (without changing governance or agent contracts unless CS2 authorizes).
-5. Agents do not require manual updates because alignment is continuous and event-driven.
-
----
-
-## 1) Definitions
-
-### 1.1 Canonical Inventory (Machine Contract)
-**Canonical File**: `governance/CANON_INVENTORY.json` in `APGI-cmy/maturion-foreman-governance`
-
-Purpose:
-- Defines the canonical set of governance artifacts, their paths, type, version, and integrity hash.
-- Acts as the single authoritative drift detection source.
-
-### 1.2 Human Inventory (Audit Ledger)
-**Consumer File**: `GOVERNANCE_ARTIFACT_INVENTORY.md` in each consumer repo
-
-Purpose:
-- Human-readable ledger of what was layered down, when, from what canonical commit, and under which PR.
-- Append-only operational history + escalation record.
-
-### 1.3 Local Sync State (Machine State)
-**Consumer File**: `.agent-admin/governance/sync_state.json`
-
-Purpose:
-- Records last canonical commit SHA used, last successful alignment PR, last check timestamp, and last drift results.
-- This is *not canon*; it is runtime state.
+1. Canonical governance is authored in a single canonical repository.
+2. All consumer repositories automatically detect governance drift and self-align via PRs.
+3. All PR merges are **governance-verified**, not reactive, and never depend on manual log archaeology.
+4. Agents operate proactively: they run prehandover checks, stop-and-fix before handover, and only submit work that will pass merge gates.
+5. Every job produces improvement capture (“how could this have been done better”) without scope drift, via a governed parking mechanism.
+6. Governance evolves through controlled promotion (CS2 authorization), and ripples down deterministically.
 
 ---
 
-## 2) Required Standardization (Ecosystem-Wide)
+## 1) Why This Strategy Exists (Problem Statement)
 
-### 2.1 Canonical Inventory Requirements (Governance Repo)
-The governance repo MUST ensure:
+### 1.1 The ecosystem is currently inconsistent
+- Different repositories expose different numbers and names of PR checks (1, 3, 15, 30+).
+- Some checks run only `on: push`, making them unreliable as PR merge requirements.
+- Branch protection becomes difficult to configure safely; auto-merge can deadlock or allow unintended merges.
 
-1. `governance/CANON_INVENTORY.json` exists and is maintained.
-2. Every canon/policy entry with `layer_down_status: "PUBLIC_API"` MUST have a real, non-placeholder hash.
-3. Hash MUST be deterministic and strong:
-   - Preferred: `sha256` (full length)
-   - Optional additional: `git_blob_sha`
-4. Canon inventory MUST be reproducible:
-   - `generation_timestamp` is informational, but hashes must match content exactly.
-5. Inventory MUST include enough data for consumers to decide what to layer down:
-   - `path`, `type`, `layer_down_status`, `description`, `effective_date`, `version`, `hash`
+### 1.2 Canon drift detection is not yet deterministic enough
+- Canon inventory contains placeholder hashes and/or truncated hashes.
+- Placeholder hashes prevent strict drift validation.
+- Truncated hashes reduce integrity assurance and auditability.
 
-**Stop-and-fix rule**: If any PUBLIC_API item has `file_hash: "placeholder"` the inventory is considered **incomplete** and consumer repos MUST:
-- open a Governance Change Request issue (template below)
-- proceed only with entries that have valid hashes
-- record partial alignment as “DEGRADED” in sync_state
-
-### 2.2 Consumer Repository Minimum Files
-Each consumer repo MUST have:
-
-1. `GOVERNANCE_ARTIFACT_INVENTORY.md` (human ledger)
-2. `.agent-admin/governance/sync_state.json` (machine state)
-3. `governance/` directory (layer-down target root)
-
-Consumer repos MAY keep a local copy of `CANON_INVENTORY.json` for reference, but it is not authoritative and must not be treated as the source of truth (Option 1 model).
+### 1.3 The system must remain proactive and resilient
+- CI failures are costly because agents/humans cannot reliably interpret logs.
+- A resilient system must prevent predictable failures by enforcing prehandover evidence and deterministic merge-gate verification.
 
 ---
 
-## 3) Alignment Loop (Distributed, Fully Automated)
+## 2) The 3-Layer Model (Strategy → Canon → Executable)
 
-### 3.1 Triggers
-Each consumer repo MUST run alignment via GitHub Actions on:
+This strategy MUST be “compiled” into two downstream layers:
 
-1. **Schedule** (pull model): recommended every 1 hour (or 1 day minimum)
-2. **Manual dispatch**: workflow_dispatch
-3. **Dispatch ripple** (push model): repository_dispatch event from governance repo (optional but recommended)
+### Layer A — Strategy (this file)
+Defines intent, principles, target architecture, and rollout approach.
 
-### 3.2 Drift Detection Steps (Consumer)
-On every run:
+### Layer B — Canon (governance/canon/)
+Defines the **normative requirements** (MUST/SHALL) for:
+- canonical inventory integrity
+- consumer alignment behavior
+- evidence artifacts
+- merge gate interface
+- stop-and-fix + RCA + improvement capture obligations
+- ripple propagation expectations
+Canon changes require CS2 authorization.
 
-1. Fetch canonical inventory from governance repo `main` (raw URL).
-2. Resolve canonical `main` → commit SHA (record this SHA).
-3. For each `PUBLIC_API` item in canonical inventory:
-   - fetch canonical content (raw at the resolved commit SHA)
-   - compute sha256
-   - compute local sha256 if local file exists
-   - classify:
-     - MISSING (file not present locally)
-     - DRIFT (hash mismatch)
-     - ALIGNED (hash match)
-4. Record results in:
-   - `.agent-admin/governance/sync_state.json`
-   - append summary into `GOVERNANCE_ARTIFACT_INVENTORY.md` (Alignment section)
-
-### 3.3 Self-Alignment Steps (Consumer)
-If drift detected:
-
-1. Create a new branch: `governance/alignment/<date>-<canonicalShaShort>`
-2. For each MISSING/DRIFT artifact:
-   - download canonical artifact from canonical commit SHA
-   - write to the same `path` in the consumer repo
-3. Update:
-   - `GOVERNANCE_ARTIFACT_INVENTORY.md` (tables + layer-down history)
-   - `.agent-admin/governance/sync_state.json`
-   - `.agent-admin/sessions/governance-liaison/<session-id>.md` (session contract)
-   - `.agent-admin/governance/evidence/<session-id>_evidence.log`
-4. Run validation gates (see §4).
-5. Open PR: “Governance alignment: <canonicalShaShort>”
-6. Enable auto-merge when checks pass (if repository settings permit).
-
-**Stop-and-fix rule**: If validation fails, the workflow MUST:
-- keep PR open
-- attach logs
-- create a local issue “Stop-and-Fix: governance alignment failed” with RCA template
-- do not retry blindly; require root-cause capture first
+### Layer C — Executable Enforcement (workflows/scripts/schemas)
+Implements canon via:
+- GitHub Actions workflows
+- deterministic scripts
+- schemas for evidence artifacts
+- validators
+Executable enforcement is the mechanism that makes governance “alive”.
 
 ---
 
-## 4) Validation Requirements (Consumer)
+## 3) Canonical Inventory as the Machine Source-of-Truth
 
-### 4.1 Minimum validations (always)
-1. JSON validity for any JSON modified/added
-2. No missing files referenced by agent contracts (basic path existence checks)
-3. Hash verification of layered-down artifacts (post-write recompute)
+### 3.1 Canonical Inventory Contract
+Canonical repository MUST publish:
+- `governance/CANON_INVENTORY.json`
 
-### 4.2 Optional validations (if scripts exist)
-If present, run:
-- `scripts/validate_baseline.sh governance-liaison`
-- `python scripts/validate_agent_contracts.py` (or equivalent)
+Consumer repos MUST treat it as the authoritative machine contract.
 
-### 4.3 Failure handling
-If any validation fails:
-- classify failure category
-- record in RCA artifacts
-- do not “retry PR” without executing PR failure analysis protocol (if present)
+### 3.2 Integrity Requirements (Missing Nuances to Fix)
+To be deterministic and auditable:
 
----
+1. **No placeholders** for any artifact classified as `PUBLIC_API` (or otherwise required by consumer repos).
+2. Hashes MUST be strong and unambiguous:
+   - Preferred: full `sha256`
+   - Optional: also store full `git_blob_sha`
+3. Canon inventory must be tied to provenance:
+   - record the canonical commit SHA used when generating the inventory
+4. The inventory must be reproducible:
+   - same content → same hash
+   - generation_timestamp is informational only
 
-## 5) Governance Change Request Loop (CS2-only governance edits)
-
-Consumer repos MUST NOT modify canonical governance.
-
-When a consumer detects a canonical problem (e.g., placeholder hash, missing artifact referenced by inventory, broken canon link), it MUST open an issue in governance repo:
-
-### 5.1 Governance Change Request Issue Template
-Title:
-- `GOVERNANCE CHANGE REQUEST: <short summary>`
-
-Body must include:
-- Canonical commit SHA observed
-- File(s) involved
-- Evidence: hashes, URLs, logs
-- Proposed remediation (proposal only)
-- Impact/ripple analysis
-
-**Authority**:
-- Issue is a request; merge requires CS2 authorization.
+### 3.3 Consumer repos do NOT store canon inventory as truth (Option 1)
+Consumers fetch canonical inventory at runtime.
+Consumers store only local sync state:
+- `.agent-admin/governance/sync_state.json` (machine state; not canon)
 
 ---
 
-## 6) Inventory Consistency Standard (Human Ledger)
+## 4) Alignment Loop (Distributed Execution, Central Policy)
 
-To standardize display across repos while remaining “fit for purpose”, every `GOVERNANCE_ARTIFACT_INVENTORY.md` MUST include these headings verbatim:
+### 4.1 Alignment Triggers
+Each consumer repo runs governance alignment:
+- scheduled (pull model)
+- workflow_dispatch
+- optional repository_dispatch (push ripple)
 
-1. `## Governance Alignment Status`
-2. `## Layered-Down Governance Files`
-3. `## Layer-Down History`
-4. `## Escalations`
-5. `## Pending Canon Files`
+### 4.2 Drift Detection (Deterministic)
+Consumers must:
+- resolve canonical `main` → commit SHA
+- compare local file hashes to canonical hashes
+- classify each artifact: ALIGNED / MISSING / DRIFT
 
-All other sections are optional.
+### 4.3 Self-Alignment (Automated via PR)
+If drift exists:
+- create a branch
+- layer down missing/drift artifacts
+- update inventory + evidence
+- open PR
+- enable auto-merge (subject to required checks passing)
 
----
-
-## 7) Token / Permission Setup (Human Step-by-Step)
-
-### 7.1 Goal
-Enable GitHub Actions in each consumer repo to:
-- create branches
-- commit changes
-- open PRs
-- enable auto-merge
-
-### 7.2 Minimal recommended approach
-Use a dedicated GitHub identity:
-- `maturion-bot` (recommended)
-- add as collaborator with least privileges needed
-
-Create a fine-grained PAT for that identity with:
-- Repository permissions: Contents (Read/Write), Pull requests (Read/Write), Issues (Read/Write)
-- Limit to your repositories/org
-
-Store PAT in each consumer repo as:
-- `MATURION_BOT_TOKEN` (Actions secret)
-
-### 7.3 Optional: dispatch ripple across repos
-If governance repo will send repository_dispatch:
-- the token used by governance repo workflow needs permission to send dispatch events to target repos
-- store as `RIPPLE_DISPATCH_TOKEN` secret in governance repo
-
-**If tokens are not configured**, the system must still function via scheduled pull alignment.
+**Stop-and-fix rule**: if alignment PR fails gates, the workflow must produce RCA artifacts and must not “retry blindly”.
 
 ---
 
-## 8) Implementation Phases (Do in this order)
+## 5) Merge Gate Standardization (The Key to Auto-Merge + Reliability)
 
-### Phase 1 — Canon inventory quality (governance repo)
-- Eliminate placeholder hashes for PUBLIC_API artifacts
-- Upgrade hash format to full SHA-256 (or add `sha256` field)
-- Add canonical provenance rule: inventory generation records commit SHA
+### 5.1 Standardize the Interface, Not the Internals
+Repos may run many internal checks, but every repo MUST expose a stable, standard PR merge interface so branch protection is consistent.
 
-### Phase 2 — Consumer alignment workflow template
-- Create a standard workflow file to run drift detection + PR alignment
-- Add standard artifact outputs (.agent-admin paths)
+### 5.2 Required PR Check Interface (Canonical)
+Every repo MUST produce these PR checks (exact names standardized by canon):
 
-### Phase 3 — Rollout to Foreman app repo first
-- It is the operational center; use it as reference implementation
+1. `merge-gate/verdict`
+2. `governance/alignment`
+3. `stop-and-fix/enforcement`
 
-### Phase 4 — Rollout to all consumer repos
-- PartPulse, R_Roster, others
-- Enforce minimum headings in human ledger
+Branch protection MUST require only these 3 checks (and no repo-specific checks).
 
-### Phase 5 — Add ripple push dispatch (optional but recommended)
-- governance repo triggers alignment runs downstream on canon merge
+### 5.3 Verdict Gate is Evidence-First (Not Reactive)
+The system enforces proactive behavior by requiring committed evidence artifacts, not log archaeology.
+
+The verdict gate MUST validate:
+- required evidence artifacts exist in the PR diff
+- evidence artifacts conform to schema and contain mandatory sections
+- forbidden test-dodging language is absent
+- required governance alignment has been satisfied
+- PR classification rules are satisfied (OPOJD / wave model / IBWR / CST / VWT obligations when applicable)
+
+### 5.4 Dynamic Compliance (Governance “Compilation”)
+Governance changes must automatically update what the verdict gate expects.
+
+Therefore:
+- canon must define a machine-readable requirements index (or metadata) that verdict gate loads at runtime
+- verdict gate computes “what is required for this PR type” deterministically
+
+This avoids constant editing of workflows and avoids branch protection churn.
 
 ---
 
-## 9) Success Criteria (Definition of Done)
-System is considered “living + automated” when:
+## 6) Mandatory Evidence Artifacts (Make Proactivity Enforceable)
 
-1. Governance repo canonical inventory has no placeholder hashes for PUBLIC_API.
-2. Every consumer repo opens and auto-merges a governance alignment PR within SLA after canon changes.
-3. Drift detection produces deterministic results (content hash based).
-4. Failed alignments produce RCAs and do not repeat without analysis.
-5. Human inventory remains consistent and auto-updated.
-6. No manual agent file edits are needed to stay aligned.
+To prevent “clever phrases” and ensure systematic improvement capture, canon must mandate standard artifacts.
+
+At minimum, every PR must include:
+
+1. **Prehandover Proof** (human readable)
+2. **Gate Results Summary** (machine readable)
+3. **Continuous Improvement Capture** (mandatory, parked if not in scope)
+4. **RCA** when stop-and-fix occurred or when gates fail
+
+These artifacts MUST be validated by `merge-gate/verdict`.
+
+(Exact file paths and schemas are defined in canon; executable validators enforce them.)
+
+---
+
+## 7) CS2 Authority Boundaries (Non-Delegable Domains)
+
+This strategy explicitly preserves CS2 boundaries:
+
+- Canonical governance changes: CS2-only authorization.
+- Agent contract changes: CS2-only authorization.
+- Consumer repos may self-align canon artifacts (layer down) automatically.
+- Consumer repos may create governance change requests upstream (issues/PR drafts) but may not merge canon.
+
+---
+
+## 8) Implementation Roadmap (No “Later”)
+
+**Day 0 (2026-02-10)**  
+- Freeze the 3-check standard interface.
+- Create canon drafts for:
+  - inventory integrity requirements (no placeholder hashes, sha256, provenance)
+  - merge gate interface requirement
+  - evidence artifact schemas + mandatory sections
+
+**Day 1 (2026-02-11) — Pilot Repo**  
+- Implement the 3-check interface in `maturion-foreman-office-app`.
+- Switch branch protection to require only those checks.
+- Confirm auto-merge merges a trivial PR successfully.
+
+**Day 2 (2026-02-12) — Governance Repo**  
+- Implement the same 3-check interface in governance repo.
+- Ensure CS2-only governance change workflow remains enforced.
+
+**Day 3 (2026-02-13) — Rollout**  
+- Apply to PartPulse and R_Roster, then all consumer repos.
+
+**Day 4 (2026-02-14) — Stabilization**  
+- Run a controlled failing PR test to prove stop-and-fix + RCA + escalation behavior is automatic and reliable.
+
+---
+
+## 9) Definition of Done (Strategy Success Criteria)
+
+The strategy is successfully executed when:
+
+1. Canon inventory contains no placeholder hashes for required artifacts.
+2. All repos expose the same 3 PR checks.
+3. Branch protection across all repos requires only those 3 checks.
+4. Auto-merge is enabled and works without deadlocks.
+5. PR failures are evidence-first, fast to diagnose, and produce automatic RCA artifacts.
+6. Every merged job includes continuous improvement capture without scope drift.
 
 ---
