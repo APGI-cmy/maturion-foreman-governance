@@ -150,12 +150,15 @@ jobs:
               status = "ALIGNED"
           elif drift_status == "1":
               status = "DRIFT"
+          elif drift_status == ERROR_STATUS:
+              status = "ERROR"
           else:
               status = "ERROR"
 
           failure_count = 0
           next_retry_after = None
           last_error = None
+          # Reuse sync_path for read/write of sync_state.json.
           sync_path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
           if sync_path.exists():
               try:
