@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://maturion.com/schemas/governance/sync_state.schema.json",
+  "title": "Governance Sync State",
+  "description": "Alignment state record for governance synchronization and ripple tracking.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "repository",
+    "canonical_commit",
+    "canonical_inventory_sha256",
+    "local_inventory_sha256",
+    "alignment_status",
+    "last_sync"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "canonical_commit": {
+      "type": "string"
+    },
+    "canonical_inventory_sha256": {
+      "type": "string",
+      "minLength": 12
+    },
+    "local_inventory_sha256": {
+      "type": "string",
+      "minLength": 12
+    },
+    "alignment_status": {
+      "type": "string",
+      "enum": ["ALIGNED", "DRIFT", "ERROR", "DEGRADED", "BLOCKED"]
+    },
+    "last_sync": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_dispatch": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "consecutive_failures": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "next_retry_after": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_error": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,183 @@
+name: Governance Consumer Alignment
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  repository_dispatch:
+    types: [governance_ripple]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  GOVERNANCE_SOURCE_REPO: APGI-cmy/maturion-foreman-governance
+  CANON_INVENTORY_PATH: governance/CANON_INVENTORY.json
+  CANONICAL_SNAPSHOT_PATH: .agent-admin/governance/canonical_inventory.json
+  SYNC_STATE_PATH: .agent-admin/governance/sync_state.json
+  ALIGNMENT_BRANCH_PREFIX: governance-alignment
+  MAX_CONSECUTIVE_FAILURES: 3
+  BACKOFF_MINUTES: 30
+
+jobs:
+  align-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.MATURION_BOT_TOKEN }}
+
+      - name: Checkout governance canonical
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GOVERNANCE_SOURCE_REPO }}
+          token: ${{ secrets.RIPPLE_DISPATCH_TOKEN }}
+          path: governance-canon
+
+      - name: Check circuit breaker
+        id: circuit
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          output_path = Path(os.environ["GITHUB_OUTPUT"])
+          sync_path = Path(os.environ["SYNC_STATE_PATH"])
+          max_failures = int(os.environ.get("MAX_CONSECUTIVE_FAILURES", "3"))
+
+          def write_output(key, value):
+              output_path.write_text(output_path.read_text() + f"{key}={value}\n" if output_path.exists() else f"{key}={value}\n")
+
+          if not sync_path.exists():
+              write_output("skip", "false")
+              return
+
+          data = json.loads(sync_path.read_text())
+          failures = int(data.get("consecutive_failures", 0))
+          if failures >= max_failures:
+              write_output("circuit_open", "true")
+              raise SystemExit("ERROR: Circuit breaker open due to repeated failures.")
+
+          next_retry = data.get("next_retry_after")
+          if next_retry:
+              retry_time = datetime.fromisoformat(next_retry.replace("Z", "+00:00"))
+              if datetime.now(timezone.utc) < retry_time:
+                  write_output("skip", "true")
+                  print("Backoff active - skipping alignment run.")
+                  return
+
+          write_output("skip", "false")
+          PY
+
+      - name: Resolve canonical commit
+        id: canon
+        if: steps.circuit.outputs.skip != 'true'
+        run: |
+          CANONICAL_COMMIT=$(git -C governance-canon rev-parse HEAD)
+          echo "canonical_commit=${CANONICAL_COMMIT}" >> $GITHUB_OUTPUT
+
+      - name: Compute inventory hashes
+        id: hashes
+        if: steps.circuit.outputs.skip != 'true'
+        run: |
+          CANONICAL_SHA=$(python governance/executable/scripts/compute_sha256.py governance-canon/${CANON_INVENTORY_PATH})
+          LOCAL_SHA=$(python governance/executable/scripts/compute_sha256.py ${CANON_INVENTORY_PATH})
+          echo "canonical_sha=${CANONICAL_SHA}" >> $GITHUB_OUTPUT
+          echo "local_sha=${LOCAL_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Compare drift
+        id: drift
+        if: steps.circuit.outputs.skip != 'true'
+        run: |
+          set +e
+          python governance/executable/scripts/compare_drift.py \
+            --expected-file governance-canon/${CANON_INVENTORY_PATH} \
+            --actual-file ${CANON_INVENTORY_PATH}
+          STATUS=$?
+          echo "status=${STATUS}" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Snapshot canonical inventory
+        if: steps.circuit.outputs.skip != 'true'
+        run: |
+          mkdir -p .agent-admin/governance
+          cp governance-canon/${CANON_INVENTORY_PATH} ${CANONICAL_SNAPSHOT_PATH}
+
+      - name: Layer down governance artifacts
+        if: steps.drift.outputs.status == '1'
+        run: |
+          rsync -a --delete governance-canon/governance/canon/ governance/canon/
+          rsync -a --delete governance-canon/governance/executable/ governance/executable/
+          cp governance-canon/governance/GATE_REQUIREMENTS_INDEX.json governance/GATE_REQUIREMENTS_INDEX.json
+          cp governance-canon/governance/CONSUMER_REPO_REGISTRY.json governance/CONSUMER_REPO_REGISTRY.json
+
+      - name: Update human ledger (if present)
+        if: steps.drift.outputs.status == '1'
+        run: |
+          if [ -f GOVERNANCE_ARTIFACT_INVENTORY.md ]; then
+            echo "- $(date -u +%Y-%m-%dT%H:%M:%SZ) Governance alignment applied via workflow" >> GOVERNANCE_ARTIFACT_INVENTORY.md
+          fi
+
+      - name: Write sync state
+        if: steps.circuit.outputs.skip != 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import os
+
+          status = "ALIGNED" if os.environ.get("DRIFT_STATUS") == "0" else "DRIFT"
+          data = {
+              "schema_version": "1.0.0",
+              "repository": os.environ.get("GITHUB_REPOSITORY", "<owner>/<repo>"),
+              "canonical_commit": os.environ.get("CANONICAL_COMMIT", "unknown"),
+              "canonical_inventory_sha256": os.environ.get("CANONICAL_SHA", ""),
+              "local_inventory_sha256": os.environ.get("LOCAL_SHA", ""),
+              "alignment_status": status,
+              "last_sync": datetime.now(timezone.utc).isoformat(timespec="seconds")
+          }
+
+          path = Path(os.environ.get("SYNC_STATE_PATH", ".agent-admin/governance/sync_state.json"))
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps(data, indent=2))
+          PY
+        env:
+          DRIFT_STATUS: ${{ steps.drift.outputs.status }}
+          CANONICAL_COMMIT: ${{ steps.canon.outputs.canonical_commit }}
+          CANONICAL_SHA: ${{ steps.hashes.outputs.canonical_sha }}
+          LOCAL_SHA: ${{ steps.hashes.outputs.local_sha }}
+
+      - name: Record alignment evidence
+        if: steps.circuit.outputs.skip != 'true'
+        run: |
+          mkdir -p .agent-admin/governance
+          echo "Alignment run: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> .agent-admin/governance/alignment.log
+
+      - name: Create alignment PR
+        if: steps.drift.outputs.status == '1'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.MATURION_BOT_TOKEN }}
+          branch: ${{ env.ALIGNMENT_BRANCH_PREFIX }}-${{ github.run_id }}
+          title: "Governance alignment: canonical layer-down"
+          body: "Automated governance alignment triggered by ripple or schedule."
+          commit-message: "Apply canonical governance alignment"
+          labels: "governance"
+
+      - name: Escalate circuit breaker
+        if: failure() && steps.circuit.outputs.circuit_open == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.MATURION_BOT_TOKEN }}
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Governance alignment circuit breaker opened',
+              body: 'Alignment failures exceeded maximum retries. Manual intervention required.'
+            })

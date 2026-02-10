@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://maturion.com/schemas/merge-gate/gate_results.schema.json",
+  "title": "Merge Gate Results Summary",
+  "description": "Machine-readable summary of merge gate outcomes used for evidence-first validation.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "pr",
+    "overall_status",
+    "gates",
+    "stop_and_fix"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pr": {
+      "type": "object",
+      "required": ["number", "title", "head_sha"],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "head_sha": {
+          "type": "string",
+          "minLength": 7
+        }
+      },
+      "additionalProperties": false
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "REQUIRES_FIX"]
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "status", "evidence_paths"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "FAIL", "SKIPPED"]
+          },
+          "evidence_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "stop_and_fix": {
+      "type": "object",
+      "required": ["required", "resolved", "reason"],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "resolved": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "rca_path": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
