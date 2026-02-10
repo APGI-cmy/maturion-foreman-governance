@@ -1,0 +1,43 @@
+{
+  "sync_state_version": "1.0.0",
+  "repository": {
+    "owner": "APGI-cmy",
+    "repo": "maturion-foreman-governance",
+    "type": "canonical_governance",
+    "role": "source"
+  },
+  "governance_version": "1.0.0",
+  "canonical_commit": "6b5016252ae41eab90d75508dbc4ca4757836a5e",
+  "last_sync": "2026-02-10T15:13:13Z",
+  "alignment_status": "CANONICAL_SOURCE",
+  "canon_inventory": {
+    "path": "governance/CANON_INVENTORY.json",
+    "version": "1.0.0",
+    "total_canons": 132,
+    "last_updated": "2026-02-10"
+  },
+  "consumer_registry": {
+    "path": "governance/CONSUMER_REPO_REGISTRY.json",
+    "enabled_consumers": 1,
+    "total_consumers": 3
+  },
+  "self_audit": {
+    "issue": "1069",
+    "date": "2026-02-10",
+    "status": "IN_PROGRESS",
+    "phase": "Phase 4 - Ripple Infrastructure Complete"
+  },
+  "evidence_bundle_compliance": {
+    "standard": "EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md",
+    "prehandover_path": ".agent-admin/prehandover/",
+    "gates_path": ".agent-admin/gates/",
+    "rca_path": ".agent-admin/rca/",
+    "improvements_path": ".agent-admin/improvements/",
+    "governance_path": ".agent-admin/governance/"
+  },
+  "validation": {
+    "schema_version": "1.0.0",
+    "validated_at": "2026-02-10T15:13:13Z",
+    "validated_by": "governance-repo-administrator"
+  }
+}
