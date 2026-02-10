@@ -15,7 +15,7 @@
       "repo": "PartPulse",
       "enabled": false,
       "tags": ["staged"],
-      "notes": "Enable after pilot validation."
+      "notes": "Enable after pilot validation. Repository name is case-sensitive; verify exact casing."
     }
   ]
 }
