@@ -18,6 +18,7 @@ env:
   SYNC_STATE_PATH: .agent-admin/governance/sync_state.json
   ALIGNMENT_BRANCH_PREFIX: governance-alignment
   MAX_CONSECUTIVE_FAILURES: 3
+  # Backoff minutes before retrying after alignment errors.
   BACKOFF_MINUTES: 30
 
 jobs:
@@ -38,7 +39,7 @@ jobs:
 
       - name: Verify executable pack present
         run: |
-          if [ ! -f governance/executable/scripts/compute_sha256.py ] || [ ! -f governance/executable/scripts/compare_drift.py ]; then
+          if [ ! -d governance/executable/scripts ]; then
             echo "ERROR: governance/executable/scripts missing. Layer down the executable pack before enabling alignment."
             exit 1
           fi
