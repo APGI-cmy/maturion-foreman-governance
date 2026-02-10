@@ -3,7 +3,7 @@
   "last_updated": "2026-02-10",
   "provenance": {
     "source": "governance/GATE_REQUIREMENTS_INDEX.json",
-    "canonical_commit": "UNRESOLVED",
+    "canonical_commit": "b0a4af472e38e607b5b96d842774b4a90368340d",
     "generated_at": "2026-02-10T12:09:17Z"
   },
   "classifications": {
@@ -69,23 +69,51 @@
   },
   "file_pattern_checks": [
     {
-      "patterns": ["**/*.py"],
-      "required_checks": ["python:deprecation_scan", "python:lint"]
+      "patterns": [
+        "**/*.py"
+      ],
+      "required_checks": [
+        "python:deprecation_scan",
+        "python:lint"
+      ]
     },
     {
-      "patterns": ["**/*.js", "**/*.ts", "**/*.tsx"],
-      "required_checks": ["node:lint"]
+      "patterns": [
+        "**/*.js",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "required_checks": [
+        "node:lint"
+      ]
     },
     {
-      "patterns": ["docs/**", "**/*.md"],
-      "required_checks": ["docs:link_check"],
-      "optional_checks": ["docs:spell_check"]
+      "patterns": [
+        "docs/**",
+        "**/*.md"
+      ],
+      "required_checks": [
+        "docs:link_check"
+      ],
+      "optional_checks": [
+        "docs:spell_check"
+      ]
     }
   ],
   "governance_artifact_validations": {
-    "canon": ["governance:inventory_updated", "governance:ripple_dispatch_required"],
-    "schema": ["schema:version_bump", "schema:validated"],
-    "workflow_template": ["merge_gate_interface:contexts"],
-    "registry": ["governance:registry_valid"]
+    "canon": [
+      "governance:inventory_updated",
+      "governance:ripple_dispatch_required"
+    ],
+    "schema": [
+      "schema:version_bump",
+      "schema:validated"
+    ],
+    "workflow_template": [
+      "merge_gate_interface:contexts"
+    ],
+    "registry": [
+      "governance:registry_valid"
+    ]
   }
 }

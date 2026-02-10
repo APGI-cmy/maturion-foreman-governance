@@ -50,7 +50,8 @@ jobs:
           max_failures = int(os.environ.get("MAX_CONSECUTIVE_FAILURES", "3"))
 
           def write_output(key, value):
-              output_path.write_text(output_path.read_text() + f"{key}={value}\n" if output_path.exists() else f"{key}={value}\n")
+              with output_path.open("a") as handle:
+                  handle.write(f"{key}={value}\n")
 
           if not sync_path.exists():
               write_output("skip", "false")

@@ -9,6 +9,7 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 from urllib import request
+from urllib.error import HTTPError, URLError
 
 
 def load_registry(path: Path) -> dict:
@@ -85,7 +86,7 @@ def main() -> int:
                     error = None
                     break
                 error = f"HTTP {response_status}"
-            except Exception as exc:  # noqa: BLE001
+            except (HTTPError, URLError, TimeoutError, OSError) as exc:
                 error = str(exc)
             time.sleep(args.backoff_seconds * attempt)
         outcomes.append({
