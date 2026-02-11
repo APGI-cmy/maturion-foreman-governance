@@ -199,16 +199,19 @@ jobs:
           echo "=== Stop-and-Fix Enforcement ===" 
           
            # Check for stop-and-fix markers in active code (exclude docs, canon, workspace, markdown)
-          if grep -r "STOP-AND-FIX:" \
-               --exclude-dir=canon \
-               --exclude-dir=docs \
-               --exclude-dir=.agent-workspace \
-               --exclude-dir=.agent-admin \
-               --exclude-dir=.github \
-               --exclude="*.md" \
-               --exclude="*.txt" \
-               --exclude="*archive*" \
-               . 2>/dev/null; then
+          STOP_MATCHES=$(find . -type f \
+               -not -path "./governance/canon/*" \
+               -not -path "./docs/*" \
+               -not -path "./.agent-workspace/*" \
+               -not -path "./.agent-admin/*" \
+               -not -path "./.github/*" \
+               -not -name "*.md" \
+               -not -name "*.txt" \
+               -not -name "*archive*" \
+               -print0 | xargs -0 -r grep -H "STOP-AND-FIX:" || true)
+
+          if [ -n "$STOP_MATCHES" ]; then
+            echo "$STOP_MATCHES"
             echo "❌ STOP-AND-FIX marker detected in active code"
             echo ""
             echo "Found unresolved STOP-AND-FIX markers in active code."
