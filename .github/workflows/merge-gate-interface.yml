@@ -199,8 +199,8 @@ jobs:
           echo "=== Stop-and-Fix Enforcement ===" 
           
            # Check for stop-and-fix markers in active code (exclude docs, canon, workspace, markdown)
-          if grep -r -n "STOP-AND-FIX:" \
-               --exclude-dir=governance/canon \
+          if grep -r "STOP-AND-FIX:" \
+               --exclude-dir=canon \
                --exclude-dir=docs \
                --exclude-dir=.agent-workspace \
                --exclude-dir=.agent-admin \
