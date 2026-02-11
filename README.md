@@ -91,6 +91,20 @@ All agent contracts follow a **minimal, reference-based format**:
 
 **Contract templates**: `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md`
 
+### Agent Contract Edit Protocol
+
+**Important: CS2-Issue Authorization Required**
+
+All agent contract files (`.agent` files in `.github/agents/`) are protected and may **only** be edited when:
+- Changes are explicitly authorized via a CS2-approved issue
+- The issue number must be traceable in the PR/commit
+- This applies to ALL agents, automation, and humans
+- No exceptions regardless of agent class or authority level
+
+**Rationale**: Updates to agent contracts are highly sensitive and must be centrally controlled for governance integrity, traceability, and auditability.
+
+**Authority**: Defined in `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` and `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md`
+
 ### Key Principle: Contract Minimalism
 
 Agent contracts are **thin binding shells**. All governance doctrine, philosophy, and detailed process lives in `governance/canon/` and is **referenced, not duplicated**.

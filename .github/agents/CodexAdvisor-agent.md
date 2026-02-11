@@ -79,6 +79,7 @@ prohibitions:
   - No pushing to main (use PRs)
   - No secrets in commits/issues/PRs
   - No self-extension of scope/authority
+  - No edits to this agent contract (.agent file) may occur except as specifically instructed by a CS2-approved issue
 
 metadata:
   canonical_home: APGI-cmy/maturion-codex-control
