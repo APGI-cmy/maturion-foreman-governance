@@ -49,3 +49,13 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 **Impact**: Operating without a generated working contract; must document the deviation and proceed cautiously.
 
 ---
+
+### 2026-02-11 - Contract Authoring in Degraded Mode
+
+**Context**: Needed to create a new foreman-v2 contract while wake-up failed (missing CodexAdvisor contract).  
+**Mistake**: None (proceeded intentionally), but risk of divergence without gold-standard scaffolding.  
+**Root Cause**: CS2-approved work required immediate delivery despite degraded start.  
+**Remedy**: Use the governance-repo-administrator-v2 file as the canonical template to ensure all requirement categories, memory, evidence, and escalation sections are included. Document degraded state in memory and evidence.  
+**Impact**: Reduced risk of omissions while operating without a generated working contract.
+
+---
