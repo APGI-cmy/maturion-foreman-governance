@@ -134,6 +134,9 @@ Before handover, agent MUST verify:
    - [ ] Security scan clean (no vulnerabilities)
    - [ ] Performance validation complete
    - [ ] Build successful on all platforms
+   - [ ] **ALL applicable merge gates validated locally** (MERGE_GATE_PHILOSOPHY v2.0 mandate)
+   - [ ] **ALL gate scripts executed with exit code 0** (documented in PREHANDOVER_PROOF)
+   - [ ] **Gate validation evidence complete** (exact commands, outputs, timestamps)
 
 3. **Stop-and-Fix Compliance**
    - [ ] All preexisting failures in working area fixed
@@ -778,13 +781,16 @@ This doctrine operates alongside and reinforces:
 - `governance/coordination/CROSS_AGENT_COORDINATION_PROTOCOL.md` (coordination process)
 - `governance/agent/AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md` (ignorance prohibition)
 - `governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md` (evidence requirements)
+- `governance/canon/MERGE_GATE_PHILOSOPHY.md` v2.0 (pre-handover gate validation mandate)
+- `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md` v3.0 (gate validation evidence requirements)
 - `BUILD_PHILOSOPHY.md` (100% GREEN philosophy)
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md` (CS2 authority)
 
 **Enforcement Integration:**
-- Merge gate validation for complete handover
+- **Merge gate validation MANDATORY for complete handover** (MERGE_GATE_PHILOSOPHY v2.0)
 - Agent contract requirements for pre-handover validation
 - Evidence bundle requirements for improvement documentation
+- PREHANDOVER_PROOF must document ALL gate validations with exit codes
 - Governance incident logging for violations
 
 ---

@@ -1,8 +1,8 @@
 # MERGE GATE PHILOSOPHY
 
-**Version**: 1.0.0  
-**Date**: 2026-01-20  
-**Status**: Active  
+**Version**: 2.0.0  
+**Date**: 2026-02-11  
+**Status**: Active - Constitutional  
 **Type**: Constitutional Governance Rule  
 **Authority**: Supreme - Canonical  
 **Owner**: CS2 (Johan Ras in bootstrap mode, Maturion in production)
@@ -40,6 +40,165 @@ Agents validate locally BEFORE creating PRs. Merge gates confirm what the agent 
 - **Contains timestamps**: When validation occurred
 
 **Agent runs merge gate checks IN THEIR ENVIRONMENT** (not in CI)
+
+---
+
+## Pre-Handover Gate Duplication Mandate (CONSTITUTIONAL)
+
+### Core Requirement
+
+**Every agent MUST duplicate ALL applicable merge gate logic locally and validate in their own environment BEFORE creating a PR.**
+
+This is a **constitutional requirement** under:
+- `OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` v2.0 (complete handover mandate)
+- `AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md` (no ignorance excuse for gate failures)
+- `MERGE_GATE_PHILOSOPHY.md` (this document - confirmatory not diagnostic principle)
+
+### Agent Pre-Handover Gate Validation Protocol
+
+**MANDATORY Steps:**
+
+1. **Identify ALL Applicable Gates**
+   - Agent MUST enumerate all merge gates that apply to changed files
+   - Check `.github/workflows/` for workflow files with triggers matching PR changes
+   - Document enumeration method in PREHANDOVER_PROOF
+   - Cannot claim "didn't know gate applied" (ignorance prohibition)
+
+2. **Locate Gate Scripts**
+   - Agent MUST find the actual validation scripts referenced in workflow files
+   - Typically in `.github/scripts/` or embedded in workflow YAML
+   - If script location unclear, coordinate with FM or escalate
+   - Cannot skip gate validation due to "couldn't find script"
+
+3. **Execute Gate Scripts Locally**
+   - Agent MUST run the EXACT same commands that CI will run
+   - Run scripts in same environment/context as CI (same working directory, same inputs)
+   - Capture full command output and exit codes
+   - Re-run until exit code = 0 for ALL gates
+   - Cannot hand over with any gate showing non-zero exit code
+
+4. **Document in PREHANDOVER_PROOF**
+   - Agent MUST document EACH gate validation in PREHANDOVER_PROOF
+   - Include: Gate name, exact command executed, exit code, output excerpt, timestamp
+   - Format must enable CI evidence-based validation to skip re-execution
+   - Cannot provide vague attestation like "gates should pass"
+
+5. **Apply Stop-and-Fix**
+   - If ANY gate fails, agent MUST fix issue immediately (Stop-and-Fix)
+   - Agent MUST re-run ALL gates after fix to confirm
+   - Agent MUST document fix iterations in PREHANDOVER_PROOF
+   - Cannot hand over with known gate failures
+
+6. **Zero Tolerance for Failures**
+   - Exit code MUST be 0 (success) for every gate
+   - Warnings ARE failures (zero-warning enforcement)
+   - No "probably will pass in CI" acceptable
+   - No "minor failure, won't block merge" acceptable
+
+### Ignorance Prohibition
+
+**Agents CANNOT claim ignorance about:**
+- ❌ "I didn't know this gate existed"
+- ❌ "I didn't know how to run the gate script"
+- ❌ "I didn't know I needed to validate gates locally"
+- ❌ "I thought CI would validate for me"
+- ❌ "The gate script was too complex to run"
+- ❌ "I don't have the tools to run this gate"
+
+**Instead, agents MUST:**
+- ✅ Proactively enumerate all applicable gates
+- ✅ Find and understand gate validation scripts
+- ✅ Install necessary tools or coordinate for tool access
+- ✅ Run scripts and document results completely
+- ✅ Escalate if gate script is broken/cannot be run (see below)
+
+### Escalation Protocol for Gate Validation Failures
+
+**When Agent Cannot Complete Gate Validation:**
+
+If agent encounters gate validation issues that cannot be self-resolved:
+
+1. **Identify Issue Category**:
+   - **Gate Script Broken**: Script has bugs/errors preventing execution
+   - **Gate Script Missing**: Referenced script doesn't exist
+   - **Gate Logic Unclear**: Cannot determine what gate is validating
+   - **Tool/Environment Gap**: Agent lacks tools/env to run gate
+   - **Gate Scope Mismatch**: Gate applies incorrectly to agent's changes
+
+2. **Attempt Self-Resolution**:
+   - Research gate purpose and requirements in governance
+   - Check for alternative validation methods
+   - Attempt to fix minor script issues if within agent capability
+   - Document all attempts in detail
+
+3. **Coordinate with Foreman (If Gate Issue)**:
+   - Use `CROSS_AGENT_COORDINATION_PROTOCOL.md` for coordination
+   - Create coordination request with:
+     - Complete job context
+     - Gate that's broken/unclear
+     - Exact error encountered
+     - Attempts made to resolve
+     - Proposed fix (if any)
+   - FM reviews gate against `FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md`
+   - FM fixes gate if within authority
+   - FM escalates to CS2 if beyond authority
+   - Agent WAITS for fix, then re-validates
+   - Agent completes job AFTER gate validation succeeds
+
+4. **Never Hand Over with Unvalidated Gates**:
+   - Handing over PR with unvalidated gates = OPOJD v2.0 violation
+   - Handing over PR expecting gate to fail = ignorance prohibition violation
+   - Agent MUST complete gate validation before handover
+   - If coordination required, agent maintains job ownership throughout
+
+### Prohibited Behaviors
+
+**The following are STRICTLY PROHIBITED and constitute governance violations:**
+
+- ❌ Creating PR without running gate scripts locally
+- ❌ Providing PREHANDOVER_PROOF without actual command execution
+- ❌ Claiming "CI will validate" instead of local validation
+- ❌ Handing over with known gate failures expecting "CI to catch them"
+- ❌ Skipping gate validation due to "script complexity"
+- ❌ Assuming gate "should pass" without running it
+- ❌ Using mental validation instead of script execution
+- ❌ Delegating gate validation responsibility to CI
+
+### Violation Consequences
+
+**Gate Validation Violations are treated as:**
+- **OPOJD v2.0 Violation**: Incomplete handover
+- **Ignorance Prohibition Violation**: Using ignorance as excuse
+- **Stop-and-Fix Violation**: Not fixing known issues before handover
+
+**Enforcement per governance:**
+- First violation: Incident logged, work returned for completion, re-education
+- Second violation: Critical escalation, oversight for next 3 jobs
+- Third violation: Agent contract review/revision
+
+### Integration with Constitutional Doctrines
+
+This gate validation mandate reinforces:
+
+1. **OPOJD v2.0 (Complete Handover)**:
+   - Complete handover includes validated gates
+   - Cannot hand over without gate validation proof
+   - Pre-handover self-validation checklist includes gates
+
+2. **Agent Ignorance Prohibition**:
+   - No ignorance excuse for gate failures
+   - Agent responsible for knowing gate requirements
+   - Agent must proactively learn and execute
+
+3. **Stop-and-Fix Doctrine**:
+   - Gate failures must be fixed before handover
+   - Cannot defer gate issues to "next PR"
+   - Zero tolerance for known gate failures
+
+4. **Cross-Agent Coordination**:
+   - Gate issues trigger coordination with FM
+   - Agent maintains job ownership during coordination
+   - Agent completes validation after coordination
 
 ---
 
@@ -497,14 +656,32 @@ This checklist provides **exhaustive governance compliance checks** that gates M
 - **AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md**: Agent-class gate requirements
 - **PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md**: Gate evaluation semantics
 - **PR_GATE_FAILURE_HANDLING_PROTOCOL.md**: Gate failure classification
+- **OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md**: Complete handover mandate (v2.0)
+- **AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md**: No ignorance excuse doctrine
+- **CROSS_AGENT_COORDINATION_PROTOCOL.md**: Cross-agent coordination for blockers
+- **STOP_AND_FIX_DOCTRINE.md**: Zero tolerance for defects
 
 ### Implementation
 - **.github/workflows/governance-scope-to-diff-gate.yml**: Reference implementation
 - **governance/examples/PREHANDOVER_PROOF_SAMPLE.md**: Example evidence file (to be created)
+- **governance/templates/PREHANDOVER_PROOF_TEMPLATE.md**: Handover evidence template
 
 ---
 
 ## Version History
+
+**Version 2.0.0** (2026-02-11) - CONSTITUTIONAL UPGRADE
+- **MAJOR**: Added constitutional "Pre-Handover Gate Duplication Mandate" section
+- **MAJOR**: Mandates agents MUST run ALL gate scripts locally before PR creation
+- **MAJOR**: Integrates with OPOJD v2.0 (complete handover), Ignorance Prohibition, Stop-and-Fix
+- Added 6-step Agent Pre-Handover Gate Validation Protocol
+- Added Ignorance Prohibition section (no excuse for gate failures)
+- Added Escalation Protocol for gate validation failures (coordinate with FM)
+- Added Prohibited Behaviors and Violation Consequences sections
+- Added integration with Constitutional Doctrines (OPOJD, Ignorance, Stop-and-Fix, Coordination)
+- Elevated to Constitutional status alongside OPOJD v2.0
+- Authority: Constitutional requirement per Issue #[TBD] (canonicalize gate validation)
+- Cross-references: Added OPOJD v2.0, Ignorance Prohibition, Cross-Agent Coordination, Stop-and-Fix
 
 **Version 1.1.0** (2026-02-09)  
 - Added comprehensive governance compliance checklist for merge gates
