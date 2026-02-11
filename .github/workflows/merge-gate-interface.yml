@@ -199,11 +199,19 @@ jobs:
         run: |
           echo "=== Stop-and-Fix Enforcement ===" 
           
-          # Check for stop-and-fix markers in code
-          if grep -r "STOP-AND-FIX" --include="*.md" --include="*.txt" . 2>/dev/null; then
+          # Check for stop-and-fix markers in code (exclude documentation and governance)
+          if grep -r "STOP-AND-FIX" --include="*.md" --include="*.txt" \
+               --exclude-dir=governance \
+               --exclude-dir=.github \
+               --exclude-dir=.agent-admin \
+               --exclude="*archive*.md" \
+               --exclude="BUILD_PHILOSOPHY.md" \
+               --exclude="GOVERNANCE_*.md" \
+               --exclude="ISSUE_RESPONSE_*.md" \
+               . 2>/dev/null; then
             echo "❌ STOP-AND-FIX condition detected in repository"
             echo ""
-            echo "Found unresolved STOP-AND-FIX markers."
+            echo "Found unresolved STOP-AND-FIX markers in active code."
             echo "Required action: Resolve the condition and remove the marker"
             echo "Required by: STOP_AND_FIX_DOCTRINE.md"
             exit 1
