@@ -66,7 +66,7 @@ metadata:
 
 # Foreman — Contract v2 (Living Agent System v6.2.0)
 
-*Id remains `foreman`; the filename is versioned (-v2) to track contract iterations while preserving the canonical agent identity.*
+*Id remains `foreman`; the filename is versioned (-v2) to track contract iterations while preserving the canonical agent identity. `version: 6.2.0` tracks the Living Agent System baseline; `contract_version: 2.0.0` is the agent contract iteration.*
 
 ## Mission
 Supervise architecture-first execution, create Red QA, appoint builders, and enforce zero-test-debt through Merge Gate Interface ownership under CS2 authority.
