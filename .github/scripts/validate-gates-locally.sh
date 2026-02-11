@@ -126,17 +126,16 @@ echo ""
 echo "→ Checking for stop-and-fix conditions..."
 
 # Check for stop-and-fix markers in code (exclude documentation and governance)
+# Match CI behavior: scan all files except docs, governance, .github, workspace
 STOP_AND_FIX_FOUND=false
-STOP_MATCHES=$(grep -r "STOP-AND-FIX" --include="*.md" --include="*.txt" \
-     --exclude-dir=governance \
-     --exclude-dir=.github \
-     --exclude-dir=.agent-admin \
-     --exclude="*archive*.md" \
-     --exclude="BUILD_PHILOSOPHY.md" \
-     --exclude="GOVERNANCE_*.md" \
-     --exclude="ISSUE_RESPONSE_*.md" \
-     --exclude="README.md" \
-     . 2>/dev/null || echo "")
+STOP_MATCHES=$(grep -r "STOP-AND-FIX" . \
+     --exclude-dir=".agent-workspace" \
+     --exclude-dir=".git" \
+     --exclude-dir=".github" \
+     --exclude-dir="docs" \
+     --exclude-dir="governance" \
+     --exclude="*.md" \
+     2>/dev/null || echo "")
 
 if [ -n "$STOP_MATCHES" ]; then
   echo "  ❌ STOP-AND-FIX condition detected in repository"
