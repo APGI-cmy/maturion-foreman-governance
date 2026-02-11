@@ -19,7 +19,7 @@ NC='\033[0m' # No Color
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 WORKSPACE_ROOT="${REPO_ROOT}/.agent-workspace"
 GOVERNANCE_CANON="${REPO_ROOT}/governance/canon"
-TIER_0_MANIFEST="${REPO_ROOT}/governance/TIER_0_CANON_MANIFEST.json"
+CANON_INVENTORY_MANIFEST="${REPO_ROOT}/governance/CANON_INVENTORY.json"
 GOVERNANCE_INVENTORY="${REPO_ROOT}/GOVERNANCE_ARTIFACT_INVENTORY.md"
 
 ###############################################################################
@@ -186,13 +186,13 @@ analyze_gaps() {
         log_warning "GOVERNANCE_ARTIFACT_INVENTORY.md not found"
     fi
     
-    # Check TIER_0 manifest
-    if [ -f "$TIER_0_MANIFEST" ]; then
-        log_success "TIER_0 canon manifest found"
-        local tier0_count=$(grep -c '"path"' "$TIER_0_MANIFEST" 2>/dev/null || echo "0")
-        log_info "TIER_0 canon documents: $tier0_count"
+    # Check canon inventory manifest
+    if [ -f "$CANON_INVENTORY_MANIFEST" ]; then
+        log_success "Canon inventory manifest found"
+        local tier0_count=$(grep -c '"path"' "$CANON_INVENTORY_MANIFEST" 2>/dev/null || echo "0")
+        log_info "Canon inventory documents: $tier0_count"
     else
-        log_warning "TIER_0_CANON_MANIFEST.json not found"
+        log_warning "CANON_INVENTORY.json not found"
     fi
     
     # Note: Full gap analysis would involve checking each canon file
@@ -413,9 +413,9 @@ assess_health() {
   "environment": {
     "branch": "${CURRENT_BRANCH}",
     "working_tree_clean": $(git diff-index --quiet HEAD -- 2>/dev/null && echo "true" || echo "false"),
-    "governance_canon_exists": $([ -d "$GOVERNANCE_CANON" ] && echo "true" || echo "false"),
-    "tier0_manifest_exists": $([ -f "$TIER_0_MANIFEST" ] && echo "true" || echo "false"),
-    "governance_inventory_exists": $([ -f "$GOVERNANCE_INVENTORY" ] && echo "true" || echo "false")
+        "governance_canon_exists": $([ -d "$GOVERNANCE_CANON" ] && echo "true" || echo "false"),
+        "canon_inventory_exists": $([ -f "$CANON_INVENTORY_MANIFEST" ] && echo "true" || echo "false"),
+        "governance_inventory_exists": $([ -f "$GOVERNANCE_INVENTORY" ] && echo "true" || echo "false")
   },
   "status": "wake_up_complete",
   "next_action": "begin_work_phase"
@@ -470,7 +470,7 @@ EOF
 
 - \`governance/canon/\` - Canonical governance documents (source of truth)
 - \`governance/templates/\` - Templates for governance processes
-- \`governance/TIER_0_CANON_MANIFEST.json\` - Constitutional document registry
+- \`governance/CANON_INVENTORY.json\` - Constitutional document registry
 - \`.github/agents/\` - Agent contract files
 - \`.github/workflows/\` - CI/CD and merge gate workflows
 - \`.github/scripts/\` - Executable governance protocols

@@ -53,7 +53,7 @@ FM memory operates across **four hierarchical levels**:
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ LEVEL 1: CONSTITUTIONAL MEMORY (Read-Only)              │
-│ - Canonical governance (TIER_0_CANON_MANIFEST.json)     │
+│ - Canonical governance (CANON_INVENTORY.json)           │
 │ - Constitutional rules (BUILD_PHILOSOPHY.md, etc.)      │
 │ - Agent baseline contract                               │
 │ - Authority: Supreme, Immutable                         │
@@ -133,7 +133,7 @@ source .github/scripts/load-governance.sh
 # Validate baseline
 validate_baseline "foreman"
 
-# Load TIER_0_CANON_MANIFEST.json
+# Load CANON_INVENTORY.json
 load_canonical_governance
 ```
 

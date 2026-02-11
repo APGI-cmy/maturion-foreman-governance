@@ -70,7 +70,7 @@ This leads to:
 
 **Agent Behavior**:
 - Follow working contract, not static agent file
-- Reference canonical governance from TIER_0_CANON_MANIFEST.json
+- Reference canonical governance from CANON_INVENTORY.json
 - Capture lessons learned in personal workspace
 - Record patterns and anti-patterns encountered
 - Note efficiency improvements and blockers
@@ -236,7 +236,7 @@ Generated fresh each session from:
 [Last 5 sessions summary]
 
 ## Current Governance State
-[From TIER_0_CANON_MANIFEST.json + inventory]
+[From CANON_INVENTORY.json + inventory]
 
 ## Personal Reminders
 [From personal/ lessons and patterns]
@@ -253,7 +253,7 @@ Generated fresh each session from:
 
 Wake-up protocol MUST:
 1. Read `GOVERNANCE_ARTIFACT_INVENTORY.md`
-2. Compare against TIER_0_CANON_MANIFEST.json
+2. Compare against CANON_INVENTORY.json
 3. Detect missing or outdated canon files
 4. Attempt auto-remediation (pull from canonical source)
 5. Escalate if remediation fails or approval required
@@ -417,7 +417,7 @@ Multiple agents working on related tasks:
 
 ### Phase 3: Full Ecosystem Adoption
 
-1. Add LAS to TIER_0_CANON_MANIFEST.json
+1. Add LAS to CANON_INVENTORY.json
 2. Update agent onboarding documentation
 3. Establish LAS as mandatory entry protocol
 4. Monitor adoption and effectiveness
@@ -475,7 +475,7 @@ Multiple agents working on related tasks:
 - [ ] CodexAdvisor-agent migrated to LAS
 - [ ] Legacy contracts archived with documentation
 - [ ] GOVERNANCE_ARTIFACT_INVENTORY.md updated
-- [ ] TIER_0_CANON_MANIFEST.json updated
+- [ ] CANON_INVENTORY.json updated
 - [ ] Functional testing complete (3 scenarios)
 - [ ] Memory continuity verified across sessions
 - [ ] Quick start guide created
@@ -533,7 +533,7 @@ Multiple agents working on related tasks:
 - Document in START_HERE.md
 
 ### 6. TIER_0 Canon Integration
-- Add LIVING_AGENT_SYSTEM.md to TIER_0_CANON_MANIFEST.json
+- Add LIVING_AGENT_SYSTEM.md to CANON_INVENTORY.json
 - Update manifest version
 - Verify all agents load this canon at runtime
 

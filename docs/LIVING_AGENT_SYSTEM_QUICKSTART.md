@@ -68,7 +68,7 @@ The Living Agent System (LAS) replaces static agent contracts with a dynamic, me
 cat .agent-workspace/<agent-type>/working-contract.md
 
 # Do your assigned work per working contract
-# Follow canonical governance from TIER_0_CANON_MANIFEST.json
+# Follow canonical governance from CANON_INVENTORY.json
 # Capture notes in your personal/ directory as you work
 ```
 

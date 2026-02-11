@@ -179,7 +179,7 @@ governance/
      - Canon requiring explicit layer-down (controlled distribution)
 
 3. **No governance canon manifest with cross-repo visibility control**
-   - `TIER_0_CANON_MANIFEST.json` referenced in agent instructions but **does not exist**
+   - Legacy Tier-0 manifest referenced in agent instructions but **not implemented**; use `CANON_INVENTORY.json` instead
    - No authoritative index of which canon files are part of "governance contract" vs. internal
 
 ---
