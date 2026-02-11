@@ -805,9 +805,55 @@ After coordination, originating agent MUST document:
 
 **Outcome:** ✅ Complete job handover + governance improved with documented business rule
 
+### 9.4 Example: Gate Validation Failure (Coordinate with FM)
+
+**Scenario:** Builder encounters merge gate validation failure that cannot be self-resolved
+
+**Coordination Flow:**
+1. **Detection:** Builder runs pre-handover gate validation per MERGE_GATE_PHILOSOPHY v2.0
+2. **Failure:** Gate script `validate-deprecated-apis.sh` exits with code 1
+3. **Analysis:** Builder reviews error: "Error: grep: invalid option -- 'E'"
+4. **Self-Resolution Attempt 1:** Builder checks script syntax, finds grep usage issue
+5. **Self-Resolution Attempt 2:** Builder attempts local script fix, tests, but uncertain if fix is correct
+6. **Decision:** Gate script bug requires FM coordination (FM owns gate management per FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md)
+7. **Coordination Request:** Builder creates coordination issue with:
+   - Job context: "Implementing feature X, need to pass deprecation gate"
+   - Gate script: `.github/scripts/validate-deprecated-apis.sh`
+   - Error encountered: Full error output from script
+   - Self-resolution attempts: "Tried fixing grep syntax, uncertain if fix matches intent"
+   - Proposed fix: Specific grep syntax correction with rationale
+   - Urgency: HIGH (blocking PR handover per OPOJD v2.0)
+   - Current state: "All other gates GREEN, only this gate blocking handover"
+8. **FM Response:** FM reviews coordination request
+   - Validates proposed fix aligns with gate intent
+   - Approves fix with minor modification
+   - Updates gate script
+   - Confirms fix addresses issue
+9. **Builder Re-Validation:** Builder re-runs gate script
+   - Command: `.github/scripts/validate-deprecated-apis.sh`
+   - Exit code: 0 (SUCCESS)
+   - Documents re-validation in PREHANDOVER_PROOF
+10. **Completion:** Builder completes job with all gates validated
+11. **Documentation:** Builder documents coordination and gate fix in evidence
+
+**Outcome:** ✅ Complete job handover via FM coordination for gate fix + Gate improved for all future PRs
+
+**Key Points:**
+- Builder maintained job ownership throughout coordination
+- Builder did NOT hand over incomplete work
+- FM fixed gate within authority (gate management)
+- Builder re-validated after fix before handover
+- Compliance with OPOJD v2.0, MERGE_GATE_PHILOSOPHY v2.0, Ignorance Prohibition
+
 ---
 
 ## 10. Version History
+
+**v1.1 (2026-02-11):**
+- Added Example 9.4: Gate Validation Failure coordination with FM
+- Integrated with MERGE_GATE_PHILOSOPHY v2.0 gate validation mandate
+- Added cross-reference to FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md
+- Authority: Aligned with MERGE_GATE_PHILOSOPHY v2.0 (Issue #[TBD])
 
 **v1.0 (2026-02-11):**
 - Initial Cross-Agent Coordination Protocol
@@ -844,6 +890,8 @@ This protocol operates alongside and reinforces:
 **Related Governance:**
 - `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` (complete handover)
 - `governance/agent/AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md` (ignorance prohibition)
+- `governance/canon/MERGE_GATE_PHILOSOPHY.md` v2.0 (pre-handover gate validation mandate)
+- `governance/canon/FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md` (FM gate management authority)
 - `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` (contract management)
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md` (CS2 authority)
 - `governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md` (evidence requirements)
@@ -852,6 +900,7 @@ This protocol operates alongside and reinforces:
 **Implementation Requirements:**
 - Agent contracts MUST define sandbox boundaries
 - Merge gates MUST validate coordination documentation
+- Gate validation failures MUST trigger FM coordination (not incomplete handover)
 - Evidence bundles MUST include coordination records
 - Governance metrics MUST track coordination efficiency
 

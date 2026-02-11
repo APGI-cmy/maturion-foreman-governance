@@ -1,12 +1,27 @@
 # PREHANDOVER_PROOF Template
 
 **Purpose**: Standard template for documenting execution verification before PR handover.  
-**Version**: 2.2.0  
-**Authority**: `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` (including Section 5.1 Zero-Warning Enforcement), `BL-030` (Validation Evidence Requirements)  
-**Mandatory For**: All PRs requiring execution verification (workflows, gates, contracts, configurations)  
-**Optional For**: Documentation-only changes (recommended but not required)
+**Version**: 3.0.0  
+**Authority**: 
+- `governance/canon/MERGE_GATE_PHILOSOPHY.md` v2.0.0 (Pre-Handover Gate Duplication Mandate)
+- `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` v2.0 (Complete Handover)
+- `governance/agent/AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md` (No Ignorance Excuse)
+- `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` (Section 5.1 Zero-Warning Enforcement)
+- `BL-030` (Validation Evidence Requirements)
 
-**Version 2.2.0 Changes** (2026-01-27): Added validation evidence requirements per BL-030. Prohibits attestation without verification. Requires command output, exit codes, timestamps for all validations. Adds scope declaration freshness verification checklist.
+**Mandatory For**: **ALL PRs** - Pre-handover gate validation is constitutional requirement  
+**Optional For**: None (evidence required for all PRs per OPOJD v2.0 and MERGE_GATE_PHILOSOPHY v2.0)
+
+**Version 3.0.0 Changes** (2026-02-11): 
+- **CONSTITUTIONAL UPGRADE**: Aligned with MERGE_GATE_PHILOSOPHY v2.0.0 Pre-Handover Gate Duplication Mandate
+- **MAJOR**: Merge gate validation now MANDATORY for ALL PRs (was implicit, now explicit)
+- **MAJOR**: Added detailed "Pre-Handover Gate Validation (CONSTITUTIONAL)" section with 6-step protocol
+- **MAJOR**: Requires documentation of EXACT gate script commands (not just "validation method")
+- **MAJOR**: Prohibits attestation without actual script execution
+- Integrates with OPOJD v2.0, Ignorance Prohibition, Stop-and-Fix doctrines
+- Added escalation protocol section for gate validation failures
+- Added gate enumeration requirement (must list ALL applicable gates)
+- Cross-references to constitutional governance documents
 
 ---
 
@@ -116,27 +131,231 @@ Copy this template into your PR description and fill in all sections:
 
 ---
 
-### Preflight Gate Status
+### Pre-Handover Gate Validation (CONSTITUTIONAL)
 
-**Gates Triggered by This PR**:
+**Authority**: `governance/canon/MERGE_GATE_PHILOSOPHY.md` v2.0.0 Section "Pre-Handover Gate Duplication Mandate"
 
-1. **[Gate Name 1]** — ✅ PASS | ⊘ SKIP | ❌ FAIL
-   - Validation method: [How you validated this gate]
-   - Evidence: [Command/output/reasoning]
+**Constitutional Requirement**: Per OPOJD v2.0, AGENT_IGNORANCE_PROHIBITION_DOCTRINE, and MERGE_GATE_PHILOSOPHY v2.0, agents MUST duplicate ALL applicable merge gate logic locally and validate in their own environment BEFORE creating PR.
 
-2. **[Gate Name 2]** — ✅ PASS | ⊘ SKIP | ❌ FAIL
-   - Validation method: [How you validated this gate]
-   - Evidence: [Command/output/reasoning]
+**Violations**: Handing over PR without gate validation = OPOJD v2.0 violation + Ignorance Prohibition violation
 
-3. **[Gate Name 3]** — ✅ PASS | ⊘ SKIP | ❌ FAIL
-   - Validation method: [How you validated this gate]
-   - Evidence: [Command/output/reasoning]
+---
 
-[Add all gates triggered by changes to files in your PR]
+#### Step 1: Gate Enumeration (MANDATORY)
 
-**Summary**: [X applicable gates GREEN, Y gates SKIP, Z gates FAIL]
+**Requirement**: Agent MUST identify ALL merge gates that apply to this PR.
 
-**Gate Enumeration Method**: [How you identified all applicable gates, e.g., "Checked .github/workflows/ for triggers matching modified paths"]
+**Enumeration Method Used**:
+```
+[Describe how you identified applicable gates]
+Example: "Checked .github/workflows/*.yml for triggers matching modified file paths"
+Example: "Reviewed MERGE_GATE_APPLICABILITY_MATRIX.md for gates applicable to [agent-role]"
+Example: "Listed all workflow files: ls .github/workflows/, then checked each 'on:' trigger"
+```
+
+**Applicable Gates Identified**:
+```
+[List ALL gates that apply to this PR - NONE is not acceptable unless truly documentation-only]
+Example:
+1. governance-scope-to-diff-gate.yml (triggered by: any file change)
+2. governance-gate.yml (triggered by: governance/** changes)
+3. agent-governance-check.yml (triggered by: .github/agents/** changes)
+```
+
+**Total Gates**: [X gates applicable to this PR]
+
+**Ignorance Check**: 
+- [ ] I have reviewed ALL workflow files in `.github/workflows/`
+- [ ] I have checked triggers for each workflow against my changed files
+- [ ] I have NOT assumed any gate "doesn't apply" without verification
+- [ ] I CANNOT claim "didn't know gate applied" (ignorance prohibited)
+
+---
+
+#### Step 2: Gate Script Location (MANDATORY)
+
+**Requirement**: Agent MUST locate the actual validation scripts referenced in workflow files.
+
+**Gate Script Locations**:
+
+1. **[Gate Name 1]**:
+   - Workflow file: `.github/workflows/[filename].yml`
+   - Script location: [e.g., `.github/scripts/validate-scope-to-diff.sh` OR `embedded in workflow YAML`]
+   - Script verified to exist: ✅ YES | ❌ NO (if NO, escalated per protocol)
+
+2. **[Gate Name 2]**:
+   - Workflow file: `.github/workflows/[filename].yml`
+   - Script location: [script path or "embedded"]
+   - Script verified to exist: ✅ YES | ❌ NO
+
+[Repeat for ALL applicable gates]
+
+**Escalation** (if any script missing/broken):
+```
+[If any gate script is missing or broken, document escalation here]
+[Include: What was attempted, coordination with FM, resolution, re-validation after fix]
+[Cannot hand over without resolving - OPOJD v2.0 requirement]
+```
+
+---
+
+#### Step 3: Gate Script Execution (MANDATORY)
+
+**Requirement**: Agent MUST run the EXACT same commands that CI will run, in same environment/context.
+
+**Gate Execution Evidence**:
+
+##### Gate 1: [Exact Gate Name from workflow file]
+
+**Script Command Executed** (EXACT command from workflow or script):
+```bash
+[Paste EXACT command here - must match what CI runs]
+Example: .github/scripts/validate-scope-to-diff.sh
+Example: yamllint .github/agents/*.md
+```
+
+**Execution Environment**:
+- Working directory: [e.g., repository root]
+- Date/Time: [YYYY-MM-DD HH:MM:SS UTC]
+- Shell: [bash/zsh/other]
+- Relevant environment variables: [if any]
+
+**Exit Code**: [MUST be 0 for PASS, re-run until 0]
+
+**Output Excerpt** (showing success):
+```
+[Paste relevant output showing gate passed]
+[Include final success message or summary]
+[If output is long, paste key success indicators]
+```
+
+**Iterations** (if gate initially failed):
+```
+[If gate failed on first run, document:]
+- Initial failure output: [what failed]
+- Root cause: [why it failed]
+- Fix applied: [what you changed]
+- Re-run evidence: [exit code 0 after fix]
+[Per Stop-and-Fix: must fix immediately, then re-run ALL gates]
+```
+
+**Status**: ✅ PASS (exit code 0) | ❌ FAIL (cannot hand over) | ⚠️ ESCALATED (see below)
+
+---
+
+##### Gate 2: [Exact Gate Name]
+
+**Script Command Executed**:
+```bash
+[Exact command]
+```
+
+**Execution Environment**:
+- Working directory: [path]
+- Date/Time: [timestamp]
+
+**Exit Code**: [0 required]
+
+**Output Excerpt**:
+```
+[Success output]
+```
+
+**Iterations** (if any):
+```
+[Failure/fix iterations if applicable]
+```
+
+**Status**: ✅ PASS | ❌ FAIL | ⚠️ ESCALATED
+
+---
+
+[Repeat for EVERY applicable gate - NO SKIPS ALLOWED]
+
+---
+
+#### Step 4: Gate Validation Summary
+
+**All Gates Status**:
+- Total gates applicable: [X]
+- Gates validated and passed: [Y]
+- Gates skipped (with justification): [Z - should be 0]
+- Gates failed and escalated: [N - explain below]
+
+**Final Validation State**:
+- [ ] ALL applicable gates executed locally
+- [ ] ALL gates returned exit code 0 (success)
+- [ ] ZERO gates skipped without valid escalation
+- [ ] All gate failures fixed per Stop-and-Fix
+- [ ] All gates re-run after any fix
+- [ ] Evidence documented for EVERY gate
+
+**Summary**: ✅ ALL GATES GREEN | ❌ INCOMPLETE (cannot hand over)
+
+---
+
+#### Step 5: Escalation Documentation (If Applicable)
+
+**If ANY gate could not be validated (script broken, environment gap, etc.)**:
+
+**Gate**: [Which gate]
+**Issue**: [Specific problem preventing validation]
+**Category**: [Gate Script Broken | Tool/Environment Gap | Gate Scope Mismatch | Other]
+
+**Attempts Made**:
+1. [First attempt to resolve and outcome]
+2. [Second attempt to resolve and outcome]
+3. [Third attempt to resolve and outcome]
+
+**Coordination with FM** (per CROSS_AGENT_COORDINATION_PROTOCOL.md):
+```
+[Document coordination request made to FM]
+[Include: Job context, gate issue, error message, proposed fix]
+[Document FM response and resolution]
+[Document re-validation after fix]
+```
+
+**Resolution**:
+```
+[How issue was resolved - gate fixed, alternative validation, CS2 exception, etc.]
+[Include: Who fixed it, what changed, verification that it now works]
+```
+
+**Re-Validation After Resolution**:
+```
+[Paste evidence of gate passing after resolution]
+[Exit code: 0]
+```
+
+**Cannot Hand Over Without Resolution**: Per OPOJD v2.0, agent maintains job ownership until all gates validated.
+
+---
+
+#### Step 6: Prohibited Behaviors Check
+
+**Agent Attestation** (per AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md):
+
+I confirm I have NOT:
+- [ ] ❌ Created PR without running gate scripts locally
+- [ ] ❌ Provided PREHANDOVER_PROOF without actual command execution
+- [ ] ❌ Claimed "CI will validate" instead of local validation
+- [ ] ❌ Handed over with known gate failures
+- [ ] ❌ Skipped gate validation due to "script complexity"
+- [ ] ❌ Assumed gate "should pass" without running it
+- [ ] ❌ Used mental validation instead of script execution
+- [ ] ❌ Delegated gate validation to CI
+
+I confirm I HAVE:
+- [ ] ✅ Enumerated ALL applicable gates
+- [ ] ✅ Located and verified all gate scripts
+- [ ] ✅ Executed EXACT gate commands locally
+- [ ] ✅ Documented exit codes for ALL gates (all 0)
+- [ ] ✅ Fixed all failures per Stop-and-Fix
+- [ ] ✅ Escalated any unresolvable gate issues
+- [ ] ✅ Re-validated after any fixes
+- [ ] ✅ Provided complete evidence (not attestation)
+
+**Final Guarantee**: All applicable merge gates have been run locally with exit code 0. CI will confirm success via evidence-based validation, not discover failures.
 
 ---
 
