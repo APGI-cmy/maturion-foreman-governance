@@ -413,9 +413,9 @@ assess_health() {
   "environment": {
     "branch": "${CURRENT_BRANCH}",
     "working_tree_clean": $(git diff-index --quiet HEAD -- 2>/dev/null && echo "true" || echo "false"),
-        "governance_canon_exists": $([ -d "$GOVERNANCE_CANON" ] && echo "true" || echo "false"),
-        "canon_inventory_exists": $([ -f "$CANON_INVENTORY_MANIFEST" ] && echo "true" || echo "false"),
-        "governance_inventory_exists": $([ -f "$GOVERNANCE_INVENTORY" ] && echo "true" || echo "false")
+    "governance_canon_exists": $([ -d "$GOVERNANCE_CANON" ] && echo "true" || echo "false"),
+    "canon_inventory_exists": $([ -f "$CANON_INVENTORY_MANIFEST" ] && echo "true" || echo "false"),
+    "governance_inventory_exists": $([ -f "$GOVERNANCE_INVENTORY" ] && echo "true" || echo "false")
   },
   "status": "wake_up_complete",
   "next_action": "begin_work_phase"
