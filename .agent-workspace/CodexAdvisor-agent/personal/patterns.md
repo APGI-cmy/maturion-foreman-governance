@@ -43,3 +43,13 @@ This file captures recurring patterns discovered across sessions.
 ## Governance
 
 This file is persistent and must accumulate patterns over time. Never reset or clear without archiving.
+
+### Replicate Requirements Artifacts via Scoped Copy
+
+**Frequency**: Occasionally  
+**Context**: When a new agent needs requirement artifacts with identical structure to an existing agent.  
+**Description**: Copy the existing requirements JSON/MD, then update metadata and agent-specific workspace paths to align with the new agent scope.  
+**Application**: Duplicate the prior artifact, adjust authority/scope/note fields, and replace memory/escalation path references to the new agent to minimize divergence.  
+**Related Learnings**: See lessons-learned.md "Wake-Up Contract Missing" for handling gaps when creating new agent artifacts.
+
+---
