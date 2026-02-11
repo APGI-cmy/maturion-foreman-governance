@@ -117,21 +117,165 @@ done
 echo "READY (approval-gated)."
 ```
 
-## After-Work Closure (concise)
-Record session memory (task, actions, approvals, outcome, lessons). Keep last 5; archive older.
+## After Work Completes - Session Memory Protocol
 
-## Agent-Factory Protocol (creation/alignment)
-- Generate/update `.github/agents/<AgentName>-agent.md`
-- Include YAML frontmatter; bind to CANON_INVENTORY
-- Add ripple notes + degraded-mode semantics when governance inputs are incomplete
-- Prefer PRs; issues allowed; direct writes only by explicit approval
-- Do not modify authority boundaries or protections
+### Create Session Memory File
 
-## Merge Gate Expectations (advisory)
-- Repos MUST expose only:
-  - Merge Gate Interface / merge-gate/verdict
-  - Merge Gate Interface / governance/alignment
-  - Merge Gate Interface / stop-and-fix/enforcement
-- Auto-merge is allowed only when these checks are green.
+**File path:** `.agent-workspace/<agent-id>/memory/session-NNN-YYYYMMDD.md`
+
+**Example:** `.agent-workspace/governance-repo-administrator/memory/session-012-20260211.md`
+
+**Template:**
+```markdown
+# Session NNN - YYYYMMDD (Living Agent System v5.0.0)
+
+## Agent
+- Type: <agent-type>
+- Class: <agent-class>
+- Session ID: <session-id>
+
+## Task
+[What was I asked to do?]
+
+## What I Did
+### Files Modified (Auto-populated)
+[List files with SHA256 checksums]
+
+### Actions Taken
+- Action 1: [description]
+- Action 2: [description]
+
+### Decisions Made
+- Decision 1: [what and why]
+- Decision 2: [what and why]
+
+## Living Agent System v5.0.0 Evidence
+
+### Evidence Collection
+- Evidence log: [path to evidence log]
+- Status: [summary]
+
+### Ripple Status
+- Status: [ripple state]
+- Ripple required: [YES/NO]
+
+### Governance Gap Progress
+- Status: [any gaps addressed]
+
+### Governance Hygiene
+- Status: [any hygiene issues detected]
+
+## Outcome
+[✅ COMPLETE | ⚠️ PARTIAL | ❌ ESCALATED]
+
+## Lessons
+### What Worked Well
+- [lesson 1]
+- [lesson 2]
+
+### What Was Challenging
+- [challenge 1]
+- [challenge 2]
+
+### What Future Sessions Should Know
+- [recommendation 1]
+- [recommendation 2]
+
+### Governance Insights
+- [insight 1]
+- [insight 2]
+
+---
+Authority: LIVING_AGENT_SYSTEM.md v5.0.0 | Session: NNN
+```
+
+**How to create this file:**
+1. **Create the file** at the path above using your file creation capability
+2. **Fill in the template** with session-specific information
+3. **Commit the file** to git in your PR (memory persists automatically)
+
+**Note:** There is NO `store_memory` tool. Just create the file directly. The `.gitignore` is configured to persist all memory files except `working-contract.md` and `environment-health.json`.
+
+---
+
+### Memory Rotation (When > 5 Sessions)
+
+**If more than 5 session files exist in `memory/`:**
+1. Move oldest sessions to `memory/.archive/`
+2. Keep only the 5 most recent sessions in `memory/`
+3. Commit the archive operation
+
+**Example:**
+```markdown
+When session-012 is created and there are already 5+ sessions:
+- Move `session-007` to `memory/.archive/session-007-20260209.md`
+- Keep `session-008, 009, 010, 011, 012` in `memory/`
+```
+
+---
+
+### Personal Learning Updates
+
+**Also update these files (cumulative, not rotated):**
+
+**File:** `.agent-workspace/<agent-id>/personal/lessons-learned.md`
+```markdown
+## Session YYYYMMDD
+
+### Lesson: [Title]
+- Context: [when this applies]
+- Pattern: [what to watch for]
+- Action: [what to do]
+```
+
+**File:** `.agent-workspace/<agent-id>/personal/patterns.md`
+```markdown
+## Pattern: [Name]
+- Observed: YYYY-MM-DD (Session NNN)
+- Context: [when this occurs]
+- Response: [how to handle]
+```
+
+---
+
+### Escalations (If Needed)
+
+**If blockers or governance gaps found, create:**
+
+**File:** `.agent-workspace/<agent-id>/escalation-inbox/blocker-YYYYMMDD.md`
+```markdown
+# Escalation: [Title]
+
+## Type
+BLOCKER | GOVERNANCE_GAP | AUTHORITY_BOUNDARY
+
+## Description
+[What requires CS2 attention]
+
+## Context
+[Session and task context]
+
+## Recommendation
+[Proposed solution]
+
+---
+Created: Session NNN | Date: YYYY-MM-DD
+```
+
+---
+
+### Protocol Summary
+
+**All actions use standard file creation - no special tools required:**
+- ✅ Create memory file → Commit to git
+- ✅ Update personal files → Commit to git
+- ✅ Create escalations → Commit to git
+- ✅ Files persist because `.gitignore` allows them
+
+**The `.gitignore` only excludes:**
+- `working-contract.md` (ephemeral)
+- `environment-health.json` (ephemeral)
+
+**Everything else in `.agent-workspace/` persists across sessions.**
 
 Authority: LIVING_AGENT_SYSTEM.md | Version: 6.2.0 | Source shift: PR #1081 (CANON_INVENTORY-first)
