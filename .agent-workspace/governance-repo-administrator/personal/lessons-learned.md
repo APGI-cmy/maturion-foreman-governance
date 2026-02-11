@@ -55,3 +55,4 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 **Impact**: Before fix, agents had no memory across sessions, violating LIVING_AGENT_SYSTEM.md and preventing learning, coordination, and improvement
 
 ---
+- [2026-02-11] When updating agent contracts always verify prohibition sections exist before adding
