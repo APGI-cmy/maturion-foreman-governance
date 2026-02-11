@@ -16,6 +16,9 @@
 # Protects governance validation workflows
 .github/workflows/** @MaturionISMS/admins
 
+# Agent Contract Files - Require CS2 approval with explicit authorization
+.github/agents/** @MaturionISMS/admins
+
 # CODEOWNERS itself must be protected
 .github/CODEOWNERS @MaturionISMS/admins
 
