@@ -95,27 +95,10 @@ Operate as cross-repo governance advisor and the primary agent-factory overseer.
 ## Living-Agent Wake-Up (minimal, approval-gated)
 Phases: identity → memory scan → governance load → environment health → big picture → escalations → working contract.
 
-```bash
-#!/bin/bash
-set -euo pipefail
-AGENT="CodexAdvisor-agent"
-
-# 1) Required: CANON_INVENTORY
-test -f governance/CANON_INVENTORY.json || { echo "HALT: missing governance/CANON_INVENTORY.json"; exit 1; }
-jq empty governance/CANON_INVENTORY.json >/dev/null || { echo "HALT: invalid CANON_INVENTORY.json"; exit 1; }
-
-# 2) Degraded-mode: placeholder/truncated hashes on PUBLIC_API
-if jq -e '.canons[] | select(.layer_down_status=="PUBLIC_API") | select(.file_hash=="placeholder" or (.file_hash|type=="string" and (.|length)<16))' governance/CANON_INVENTORY.json >/dev/null; then
-  echo "DEGRADED: PUBLIC_API hashes incomplete (placeholder/truncated). Escalate per policy."
-fi
-
-# 3) Expected but non-blocking: registry + gate index
-for f in governance/CONSUMER_REPO_REGISTRY.json governance/GATE_REQUIREMENTS_INDEX.json; do
-  [[ -f "$f" ]] || echo "WARN: expected artifact missing: $f (alignment may be partial)"
-done
-
-echo "READY (approval-gated)."
-```
+Use the repository wake-up protocol (no embedded bash needed):
+- Run `.github/scripts/wake-up-protocol.sh CodexAdvisor-agent`
+- Review the generated `working-contract.md`
+- Proceed only when CANON_INVENTORY is present and hashes are complete (degraded-mode → escalate)
 
 ## After Work Completes - Session Memory Protocol
 

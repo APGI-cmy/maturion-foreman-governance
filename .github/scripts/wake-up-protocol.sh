@@ -54,8 +54,13 @@ identify_agent() {
     # Check if agent contract exists
     local agent_contract="${REPO_ROOT}/.github/agents/${agent_type}.agent.md"
     if [ ! -f "$agent_contract" ]; then
-        log_error "Agent contract not found: $agent_contract"
-        return 1
+        # Fallback for v2 contract naming (governance-repo-administrator)
+        if [ -f "${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md" ]; then
+            agent_contract="${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md"
+        else
+            log_error "Agent contract not found: $agent_contract"
+            return 1
+        fi
     fi
     
     # Extract identity from YAML frontmatter
