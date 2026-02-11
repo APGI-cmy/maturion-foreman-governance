@@ -8,7 +8,7 @@ maturion-foreman-governance/ (CANONICAL)
 │   ├── canon/              # Tier 0: Constitutional documents
 │   ├── policies/           # Tier 1: Policies and standards
 │   ├── procedures/         # Tier 2: Implementation procedures
-│   └── TIER_0_CANON_MANIFEST.json
+│   └── CANON_INVENTORY.json
 ├── .agent-workspace/       # Agent memory and learning
 ├── .github/
 │   ├── agents/            # Agent contracts

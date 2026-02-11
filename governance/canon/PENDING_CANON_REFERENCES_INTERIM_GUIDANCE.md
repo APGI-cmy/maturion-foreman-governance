@@ -193,7 +193,7 @@ This guidance derives authority from and implements:
 
 1. **Detect Pending Reference** (during wake-up health check, Phase 3: Governance Discovery)
    - Example: Reference to `governance/canon/GOVERNANCE_ENFORCEMENT_AUTOMATION.md` (pending)
-   - Example: Reference to `TIER_0_CANON_MANIFEST.json` (doesn't exist)
+   - Example: Reference to legacy Tier-0 manifest placeholder (superseded by `CANON_INVENTORY.json`)
 
 2. **Document Limitation** (in working contract)
    ```markdown
@@ -386,15 +386,15 @@ All critical canon referenced in GAP-007 is now published:
 
 ---
 
-### 8.3 TIER_0_CANON_MANIFEST.json
+### 8.3 Legacy Tier-0 Manifest Placeholder
 
-**Status**: ⚠️ **DOES NOT EXIST**
+**Status**: ⚠️ **DEPRECATED / NOT CREATED**
 
 **Workaround**: Use `governance/CANON_INVENTORY.json` instead
 
-**Agent Guidance**: If agent contract or governance references `TIER_0_CANON_MANIFEST.json`, substitute with `CANON_INVENTORY.json`. Functionally equivalent for canon discovery.
+**Agent Guidance**: If agent contract or governance references the legacy Tier-0 manifest placeholder, substitute with `CANON_INVENTORY.json`. Functionally equivalent for canon discovery.
 
-**Note**: TIER_0_CANON_MANIFEST.json was a proposed name that was not implemented. CANON_INVENTORY.json serves the same purpose.
+**Note**: The Tier-0 manifest filename was never implemented. `CANON_INVENTORY.json` serves the canonical purpose.
 
 ---
 
@@ -447,7 +447,7 @@ This guidance MUST be updated:
 
 1. **All critical canon from GAP-007 is now published** (FM_ROLE_CANON, WAVE_MODEL, LIVING_AGENT_SYSTEM)
 2. **Six new canonical protocols published 2026-02-08** (gate protocols, taxonomy, authority, health checks, ripple, validation)
-3. **TIER_0_CANON_MANIFEST.json does not exist** → Use CANON_INVENTORY.json instead
+3. **Legacy Tier-0 manifest placeholder does not exist** → Use CANON_INVENTORY.json instead
 4. **If pending canon encountered** → Document limitation, proceed with caution OR escalate if critical
 5. **Critical canon missing** → HALT and escalate to CS2
 

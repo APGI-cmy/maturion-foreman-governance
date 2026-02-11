@@ -46,8 +46,8 @@
 - **Responsibility**: Read-only for this agent (CS2 manages)
 - **Update Frequency**: Rare, requires CS2 approval
 
-### TIER_0_CANON_MANIFEST
-- **Source**: `governance/TIER_0_CANON_MANIFEST.json`
+### CANON_INVENTORY
+- **Source**: `governance/CANON_INVENTORY.json`
 - **Purpose**: Index of all canonical documents
 - **Responsibility**: Update when canon changes
 - **Update Frequency**: When canon files are added/removed/renamed

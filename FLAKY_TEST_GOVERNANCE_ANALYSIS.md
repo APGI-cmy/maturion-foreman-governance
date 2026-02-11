@@ -559,7 +559,7 @@ grep -l "pre-gate\|pre.*merge\|merge.*gate" governance/canon/*.md
 ### 6.3 Governance Inventory Scan
 
 - ✅ 438 governance artifacts scanned
-- ✅ Canon manifest reviewed (TIER_0_CANON_MANIFEST.json not present - noted)
+- ✅ Canon inventory reviewed (CANON_INVENTORY.json present - noted)
 - ✅ Environment health check: SAFE (0 issues)
 - ✅ No pending escalations
 - ✅ Working contract generated and reviewed
