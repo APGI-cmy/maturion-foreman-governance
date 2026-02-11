@@ -259,7 +259,7 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 ```
 
 **How to create this file:**
-1. **Create the file** using your file creation capability (no special tool needed)
+1. **Create the file** using your file creation capability (no special tool needed — create/write the markdown file directly in the repo)
 2. **Fill in the template** with session-specific information
 3. **Commit the file** to git in your PR
 
