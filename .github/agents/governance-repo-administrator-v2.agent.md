@@ -69,6 +69,7 @@ prohibitions:
   - No governance interpretation beyond authority; escalate ambiguities (REQ-AG-002, REQ-AS-002)
   - No skipping wake-up or session closure protocols (REQ-AS-005, REQ-EO-005)
   - No evidence mutation in-place; create new artifacts (REQ-ER-001)
+  - No edits to this agent contract (.agent file) may occur except as specifically instructed by a CS2-approved issue
 
 metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance

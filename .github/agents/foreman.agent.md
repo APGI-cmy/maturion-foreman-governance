@@ -108,6 +108,7 @@ The Foreman validates quality → Builders iterate until 100% GREEN
 ❌ **Never self-validate own work** (human authority validates)
 ❌ **Never skip wake-up/closure protocols** (mandatory every session)
 ❌ **Never allow test debt** (zero tolerance, no exceptions)
+❌ **No edits to this agent contract (.agent file) may occur except as specifically instructed by a CS2-approved issue**
 
 ---
 

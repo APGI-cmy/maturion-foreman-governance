@@ -33,6 +33,8 @@ This protocol establishes a **granular authority hierarchy** for `.agent` contra
 
 **Self-Modification Prohibition**: ABSOLUTE for ALL agents - no agent can modify own contract.
 
+**CS2-Issue Authorization Requirement**: ALL modifications to any `.agent` contract file MUST be explicitly authorized via a CS2-approved issue. This applies to all agents, automation, and humans regardless of authority level. The authorizing issue must be traceable in commits and PRs.
+
 **This is a hard enforcement boundary**: Any agent that violates their authority boundaries is in **catastrophic violation** of governance and must be immediately halted and escalated.
 
 ---
@@ -159,6 +161,34 @@ Any agent that violates authority boundaries (writes to `.agent` file outside au
 - Audit logs (track all `.agent` file modifications with authority validation)
 - Agent self-reporting (agents must acknowledge their authority level)
 - Authority boundary validation in CI/CD pipelines
+
+### 4.5 CS2-Issue Authorization Requirement
+
+**MANDATORY**: All modifications to any `.agent` contract file MUST be explicitly authorized via a CS2-approved issue.
+
+**Requirements**:
+1. **Issue Creation**: A GitHub issue must be created or approved by CS2 before any `.agent` file modification
+2. **Explicit Authorization**: The issue must explicitly authorize the specific changes to be made
+3. **Traceability**: All commits and PRs modifying `.agent` files must reference the authorizing issue number
+4. **Universal Application**: This requirement applies to:
+   - All agents (regardless of class or authority level)
+   - All automation and workflows
+   - All human operators
+   - All authority levels (0-4)
+
+**Rationale**:
+- **Governance Integrity**: Agent contracts are constitutional documents requiring centralized control
+- **Traceability**: Every change must be traceable to explicit CS2 authorization
+- **Auditability**: Clear audit trail of who authorized what and when
+- **Prevention**: Prevents unauthorized, accidental, or malicious contract modifications
+
+**Enforcement**:
+- All `.agent` files include explicit prohibition: "No edits to this agent contract (.agent file) may occur except as specifically instructed by a CS2-approved issue"
+- PR reviews must verify CS2-issue authorization for any `.agent` file changes
+- CI/CD pipelines should validate issue references in commits affecting `.agent` files
+
+**Exception**: Only CS2 (supreme authority) may create the authorizing issue and approve modifications without separate authorization. This ensures CS2 retains ultimate control while maintaining traceability.
+
 ---
 
 ## 5. Agent Recommendation System
