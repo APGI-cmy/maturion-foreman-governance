@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-10",
-  "total_canons": 132,
-  "generation_timestamp": "2026-02-10T12:09:17Z",
+  "last_updated": "2026-02-11",
+  "total_canons": 135,
+  "generation_timestamp": "2026-02-11T06:52:00Z",
   "canons": [
     {
       "filename": ".agent.schema.md",
@@ -1455,6 +1455,39 @@
       "path": "governance/canon/scope-declaration.template.md",
       "layer_down_status": "INTERNAL",
       "file_hash_sha256": "06e4173ff8485b6a1af86a91d12484856c5c7f4d193f38ae88e79573e646c5ee"
+    },
+    {
+      "filename": "OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md",
+      "version": "2.0",
+      "file_hash": "885fb9f96de9",
+      "effective_date": "2026-02-11",
+      "description": "OPOJD v2.0: Complete Job Handover Doctrine. Mandates agents deliver 100% complete jobs on handover with zero tolerance for partial work, failed gates, or excuse-based handovers. Includes pre-handover self-validation, Stop-and-Fix integration, mandatory improvement capture, and no-excuse policy. Constitutional upgrade to OPOJD v1.0.",
+      "type": "canon",
+      "path": "governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "885fb9f96de9f9cfe960b2e966ccb52d5de5e18f282a70bd1d6e00d704245065"
+    },
+    {
+      "filename": "CROSS_AGENT_COORDINATION_PROTOCOL.md",
+      "version": "1.0",
+      "file_hash": "4709bf48a7b3",
+      "effective_date": "2026-02-11",
+      "description": "Cross-Agent Coordination Protocol. Canonical process for cross-agent coordination when agents encounter authority or capability boundaries. Defines boundary detection, coordination workflow, decision trees, sandbox clarity requirements, and integration with OPOJD for complete handover. Distinguishes coordination from delegation.",
+      "type": "canon",
+      "path": "governance/coordination/CROSS_AGENT_COORDINATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "4709bf48a7b3d299262a837290660ddf25cc42b1066800bba26c5442a66febba"
+    },
+    {
+      "filename": "AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md",
+      "version": "1.0",
+      "file_hash": "4d72706e145d",
+      "effective_date": "2026-02-11",
+      "description": "Agent Ignorance Prohibition Doctrine. Zero tolerance for ignorance-based failures. Defines 8 ignorance categories (authority, capability, requirement, governance, coordination, context, process, tool), bans ignorance as excuse, requires proactive elimination through research/coordination/escalation. Includes merge gate integration and enforcement model (education, escalation, suspension).",
+      "type": "canon",
+      "path": "governance/agent/AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "4d72706e145df2a503e4c016c953e314a25b12916c0fa1032f2d4019b240c977"
     }
   ]
 }
