@@ -46,3 +46,22 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 **Related Learnings**: Forgetting ripple after canon changes causes governance drift across repositories
 
 ---
+
+### Self-Referential Detection in Meta-Tooling
+
+**Frequency**: Uncommon but recurring in gate/validation implementations
+
+**Context**: When implementing checks that scan for specific text patterns (e.g., STOP-AND-FIX markers, TODO comments, security keywords)
+
+**Description**: Detection tools can trigger false positives by detecting the pattern in their own implementation code. Gate implementations that scan for "STOP-AND-FIX" will find that text in the grep command itself.
+
+**Application**:
+1. Always exclude tool implementation directories from pattern searches
+2. For this repo: exclude `.github/` from STOP-AND-FIX detection
+3. Test both CI workflow and local validator to ensure consistency
+4. Document exclusion rationale in comments
+5. Verify real instances would still be detected after exclusion
+
+**Related Learnings**: Fixed in Session 012 (Issue #1091) - gate was detecting itself, causing false positives on gate implementation PRs
+
+---
