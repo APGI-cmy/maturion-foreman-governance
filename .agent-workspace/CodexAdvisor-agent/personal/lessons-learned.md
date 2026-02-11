@@ -39,3 +39,13 @@ This file captures mistakes to avoid, accumulated across all sessions.
 ## Governance
 
 This file is persistent and must accumulate learnings over time. Never reset or clear without archiving.
+
+### 2026-02-11 - Wake-Up Contract Missing
+
+**Context**: Running the wake-up protocol for CodexAdvisor-agent at session start.  
+**Mistake**: Proceeded without an available agent contract, causing the wake-up script to fail.  
+**Root Cause**: The repository lacks `CodexAdvisor-agent.agent.md`, and no fallback path was prepared.  
+**Remedy**: Escalate or request the missing contract before the session when feasible, and note degraded mode in the session record.  
+**Impact**: Operating without a generated working contract; must document the deviation and proceed cautiously.
+
+---
