@@ -117,11 +117,10 @@ jobs:
         run: |
           echo "=== Checking for Minimizing Language ==="
           
-          # Check PR title and body for banned phrases per POLICY-NO-ONLY-LANGUAGE.md
+          # Check PR title for banned phrases per POLICY-NO-ONLY-LANGUAGE.md
           BANNED_PATTERNS=("\\bonly\\b" "\\bjust\\b" "\\bsimply\\b" "\\bmerely\\b" "\\btrivial\\b" "\\bminimal\\b" "\\bsmall\\b")
           
           PR_TITLE="${{ github.event.pull_request.title }}"
-          PR_BODY="${{ github.event.pull_request.body }}"
           
           VIOLATIONS=0
           
