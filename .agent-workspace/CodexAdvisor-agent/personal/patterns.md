@@ -53,3 +53,13 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 **Related Learnings**: See lessons-learned.md "Wake-Up Contract Missing" for handling gaps when creating new agent artifacts.
 
 ---
+
+### Gold-Standard Contract Scaffolding
+
+**Frequency**: Frequent when introducing new agent contracts.  
+**Context**: Authoring or upgrading agent contracts without an existing working-contract output (degraded wake-up).  
+**Description**: Use the governance-repo-administrator-v2 agent file as scaffolding to ensure all governance requirement categories, memory/evidence protocols, and merge gate expectations are preserved.  
+**Application**: Copy structure and requirement headings, then tailor mission/roles/invariants while keeping evidence, escalation, and merge-gate sections intact.  
+**Related Learnings**: See lessons-learned.md "Contract Authoring in Degraded Mode".
+
+---
