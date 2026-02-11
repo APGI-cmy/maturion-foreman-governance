@@ -192,8 +192,11 @@ All other 106 PUBLIC_API files had their hashes regenerated. Many remained uncha
 **Consumer Action Required**:
 - Update local copies of QA_POLICY_MASTER.md with LF line endings
 - Pull 5 new PUBLIC_API canons if applicable
+- Run `git add --renormalize .` to ensure .gitattributes rules apply to existing checkouts
 - Regenerate local GOVERNANCE_ALIGNMENT_INVENTORY.json
 - Verify hash alignment
+
+**Note**: The new .gitattributes file enforces LF for future commits, but existing checkouts may still have CRLF until files are re-normalized or re-checked out.
 
 ---
 

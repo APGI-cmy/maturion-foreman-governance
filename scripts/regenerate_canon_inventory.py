@@ -28,7 +28,11 @@ def calculate_sha256(file_path: Path, truncate: int = 12) -> tuple[str, str]:
 
 
 def extract_metadata(file_path: Path) -> Dict:
-    """Extract metadata from a canon file's header."""
+    """Extract metadata from a canon file's header.
+    
+    Note: Reads first 3000 characters assuming all metadata appears in the header.
+    This assumption is safe for standard canon files which have metadata at the top.
+    """
     metadata = {
         "version": "unknown",
         "effective_date": "unknown",
@@ -38,7 +42,7 @@ def extract_metadata(file_path: Path) -> Dict:
     
     try:
         with open(file_path, "r", encoding="utf-8") as f:
-            content = f.read(2000)  # Read first 2000 chars for metadata
+            content = f.read(3000)  # Read first 3000 chars for metadata (expanded for safety)
             
         # Extract version
         version_match = re.search(r'\*\*Version\*\*:\s*([^\n]+)', content, re.IGNORECASE)
@@ -200,11 +204,14 @@ def generate_inventory(base_path: Path) -> Dict:
     print("\nScanning governance directory for canon files...")
     canons = scan_governance_directory(base_path, existing_inventory)
     
+    # Use consistent date format - last_updated is date-only for human readability
+    # generation_timestamp is full ISO 8601 for precise tracking
+    now = datetime.now()
     inventory = {
         "version": "1.0.0",
-        "last_updated": datetime.now().strftime("%Y-%m-%d"),
+        "last_updated": now.strftime("%Y-%m-%d"),  # Date-only for readability
         "total_canons": len(canons),
-        "generation_timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generation_timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ"),  # Full ISO 8601 for precision
         "canons": canons,
     }
     
