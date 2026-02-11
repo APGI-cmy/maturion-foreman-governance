@@ -253,6 +253,16 @@ Agent contract files define agent roles, authority, and responsibilities.
 
 ---
 
+## Governance Agent Policies (governance/agent/)
+
+Agent behavior and prohibition policies.
+
+| File | Purpose | Categories |
+|------|---------|------------|
+| `AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md` | **NEW v1.0 (2026-02-11)** - Agent Ignorance Prohibition Doctrine. Zero tolerance for ignorance-based failures. Defines 8 ignorance categories (authority, capability, requirement, governance, coordination, context, process, tool), bans ignorance as excuse, requires proactive elimination through research/coordination/escalation. Includes merge gate integration and enforcement model (education, escalation, suspension). | Readiness, PR-gates, Feedback/learning |
+
+---
+
 ## Governance Philosophy (governance/philosophy/)
 
 Philosophy files define foundational principles and doctrines.
@@ -275,9 +285,20 @@ OPOJD (One Point of Job Definition) governance files.
 | `CS5_ANTI_INTERRUPTION_RULE.md` | Anti-interruption rule for execution | Readiness |
 | `CS6_EXECUTION_MANDATE.md` | CS6 execution mandate | Readiness |
 | `OPOJD_ARCHITECTURE.md` | OPOJD architecture definition | Readiness |
+| `OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` | **NEW v2.0 (2026-02-11)** - OPOJD v2.0: Complete Job Handover Doctrine. Mandates agents deliver 100% complete jobs on handover with zero tolerance for partial work, failed gates, or excuse-based handovers. Includes pre-handover self-validation, Stop-and-Fix integration, mandatory improvement capture, and no-excuse policy. Constitutional upgrade to OPOJD v1.0. | Readiness, PR-gates, Feedback/learning |
 | `OPOJD_COMPLETION_REPORT.md` | OPOJD completion report | Readiness |
 | `OPOJD_COMPLETION_REPORT_TEMPLATE.md` | Template for OPOJD completion reports | (template) |
 | `OPOJD_DOCTRINE.md` | OPOJD doctrine and principles | Readiness |
+
+---
+
+## Governance Coordination (governance/coordination/)
+
+Cross-agent coordination governance files.
+
+| File | Purpose | Categories |
+|------|---------|------------|
+| `CROSS_AGENT_COORDINATION_PROTOCOL.md` | **NEW v1.0 (2026-02-11)** - Cross-Agent Coordination Protocol. Canonical process for cross-agent coordination when agents encounter authority or capability boundaries. Defines boundary detection, coordination workflow, decision trees, sandbox clarity requirements, and integration with OPOJD for complete handover. Distinguishes coordination from delegation. | Readiness, PR-gates, Feedback/learning |
 
 ---
 
