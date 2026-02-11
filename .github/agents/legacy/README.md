@@ -47,8 +47,12 @@ This directory contains archived versions of agent contracts that have been supe
 ## Active Agent Contracts
 
 Current agent contracts are minimal identity files:
-- `.github/agents/governance-repo-administrator.agent.md` (current, minimal)
+- `.github/agents/governance-repo-administrator-v2.agent.md` (current, minimal)
 - `.github/agents/CodexAdvisor-agent.md` (current, minimal)
+
+Legacy contracts have been archived for reference:
+- `.github/agents/governance-repo-administrator-v5.0.0-archive.md`
+- `.github/agents/governance-repo-administrator-v1.0.0-archive.md`
 
 ## Canonical Protocol
 
