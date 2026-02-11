@@ -1,0 +1,28 @@
+# Enforce LF line endings for all text files in the governance repository
+# This ensures deterministic SHA256 checksums across platforms
+
+# Markdown files (canon and policy documents)
+*.md text eol=lf
+
+# JSON files (inventories and configuration)
+*.json text eol=lf
+
+# YAML files (CI/CD and configuration)
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Python scripts
+*.py text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Other text files
+*.txt text eol=lf
+
+# Prevent binary files from being modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
