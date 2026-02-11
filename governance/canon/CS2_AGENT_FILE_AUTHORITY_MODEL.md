@@ -33,6 +33,8 @@ CS2 (Johan Ras in bootstrap mode, Maturion in production) retains **supreme auth
 
 ## CS2-Issue Authorization Requirement
 
+This section defines a universal requirement that applies to all authority levels (0-4) described in the granular authority hierarchy below.
+
 **MANDATORY**: All modifications to any `.agent` contract file MUST be explicitly authorized via a CS2-approved GitHub issue.
 
 **Universal Application**:

@@ -93,7 +93,7 @@ All agent contracts follow a **minimal, reference-based format**:
 
 ### Agent Contract Edit Protocol
 
-**⚠️ CRITICAL RULE: CS2-Issue Authorization Required**
+**Important: CS2-Issue Authorization Required**
 
 All agent contract files (`.agent` files in `.github/agents/`) are protected and may **only** be edited when:
 - Changes are explicitly authorized via a CS2-approved issue

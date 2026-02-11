@@ -187,7 +187,7 @@ Any agent that violates authority boundaries (writes to `.agent` file outside au
 - PR reviews must verify CS2-issue authorization for any `.agent` file changes
 - CI/CD pipelines should validate issue references in commits affecting `.agent` files
 
-**Exception**: Only CS2 (supreme authority) may create the authorizing issue and approve modifications without separate authorization. This ensures CS2 retains ultimate control while maintaining traceability.
+**Exception**: Only CS2 (supreme authority) may self-authorize modifications through self-created and self-approved issues. This ensures CS2 retains ultimate control while maintaining traceability through the issue system.
 
 ---
 
