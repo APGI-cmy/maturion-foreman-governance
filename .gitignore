@@ -26,6 +26,12 @@ Thumbs.db
 .env.*.local
 GOVERNANCE_ALIGNMENT_INVENTORY.json
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
 # Agent workspace - Persist memory, exclude only ephemeral files
 # Per LIVING_AGENT_SYSTEM.md: Memory must persist across sessions
 .agent-workspace/*/working-contract.md

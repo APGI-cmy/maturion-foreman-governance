@@ -16,6 +16,13 @@
       "enabled": false,
       "tags": ["staged"],
       "notes": "Enable after pilot validation. Use canonical owner/repo spelling for clarity (GitHub is case-insensitive)."
+    },
+    {
+      "owner": "APGI-cmy",
+      "repo": "R_Roster",
+      "enabled": false,
+      "tags": ["staged"],
+      "notes": "Enable after pilot validation and PartPulse stabilization."
     }
   ]
 }

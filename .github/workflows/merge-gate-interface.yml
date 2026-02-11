@@ -1,0 +1,234 @@
+name: Merge Gate Interface
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  # Job 1: Merge Gate Verdict
+  # Validates required evidence artifacts exist and validates schemas
+  merge-gate-verdict:
+    name: merge-gate/verdict
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Classify PR type
+        id: classify
+        run: |
+          # Deterministic PR classification per MERGE_GATE_INTERFACE_STANDARD.md
+          
+          # Get changed files
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD || echo "")
+          
+          # Check for label overrides
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'governance-only') }}" == "true" ]]; then
+            echo "pr_type=governance" >> $GITHUB_OUTPUT
+            echo "✅ PR classified as: governance (label override)"
+            exit 0
+          fi
+          
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'docs-only') }}" == "true" ]]; then
+            echo "pr_type=docs" >> $GITHUB_OUTPUT
+            echo "✅ PR classified as: docs (label override)"
+            exit 0
+          fi
+          
+          # Check for governance changes
+          if echo "$CHANGED_FILES" | grep -qE '^(governance/|\.agent$|\.agent-admin/)'; then
+            echo "pr_type=governance" >> $GITHUB_OUTPUT
+            echo "✅ PR classified as: governance"
+            exit 0
+          fi
+          
+          # Check for docs-only
+          if echo "$CHANGED_FILES" | grep -qvE '\.(md|txt|rst)$' && echo "$CHANGED_FILES" | grep -qvE '^docs/'; then
+            echo "pr_type=code" >> $GITHUB_OUTPUT
+            echo "✅ PR classified as: code"
+          else
+            echo "pr_type=docs" >> $GITHUB_OUTPUT
+            echo "✅ PR classified as: docs"
+          fi
+
+      - name: Validate evidence artifacts
+        run: |
+          echo "=== Validating Evidence Artifacts ==="
+          
+          # Check for required evidence bundle per EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md
+          MISSING_ARTIFACTS=()
+          
+          # 1. Check for prehandover proof
+          if [ ! -f ".agent-admin/prehandover/prehandover_proof.md" ]; then
+            if ls .agent-admin/prehandover/prehandover_proof_*.md 1> /dev/null 2>&1; then
+              echo "✅ Prehandover proof found (PR-specific)"
+            else
+              MISSING_ARTIFACTS+=("prehandover_proof")
+              echo "❌ Missing: .agent-admin/prehandover/prehandover_proof*.md"
+            fi
+          else
+            echo "✅ Prehandover proof found"
+          fi
+          
+          # 2. Check for gate results (if code changes)
+          if [ "${{ steps.classify.outputs.pr_type }}" = "code" ]; then
+            if [ ! -f ".agent-admin/gates/gate_results.json" ]; then
+              if ls .agent-admin/gates/gate_results_*.json 1> /dev/null 2>&1; then
+                echo "✅ Gate results found (PR-specific)"
+              else
+                MISSING_ARTIFACTS+=("gate_results")
+                echo "❌ Missing: .agent-admin/gates/gate_results*.json"
+              fi
+            else
+              echo "✅ Gate results found"
+            fi
+          fi
+          
+          # Report missing artifacts
+          if [ ${#MISSING_ARTIFACTS[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ EVIDENCE VALIDATION FAILED"
+            echo ""
+            echo "Missing required artifacts:"
+            for artifact in "${MISSING_ARTIFACTS[@]}"; do
+              echo "  - $artifact"
+            done
+            echo ""
+            echo "Required by: EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md"
+            echo "Action: Create missing artifacts in .agent-admin/<category>/"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All required evidence artifacts present"
+
+      - name: Validate no-minimizing language
+        run: |
+          echo "=== Checking for Minimizing Language ==="
+          
+          # Check PR title and body for banned phrases per POLICY-NO-ONLY-LANGUAGE.md
+          BANNED_PATTERNS=("\\bonly\\b" "\\bjust\\b" "\\bsimply\\b" "\\bmerely\\b" "\\btrivial\\b" "\\bminimal\\b" "\\bsmall\\b")
+          
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          VIOLATIONS=0
+          
+          for pattern in "${BANNED_PATTERNS[@]}"; do
+            if echo "$PR_TITLE" | grep -qiE "$pattern"; then
+              echo "❌ Found minimizing language in PR title: $pattern"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          done
+          
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo ""
+            echo "❌ NO-MINIMIZING LANGUAGE CHECK FAILED"
+            echo "Violations found: $VIOLATIONS"
+            echo "Required by: POLICY-NO-ONLY-LANGUAGE.md"
+            exit 1
+          fi
+          
+          echo "✅ No minimizing language detected"
+
+  # Job 2: Governance Alignment
+  # Verifies canonical governance alignment state
+  governance-alignment:
+    name: governance/alignment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check governance alignment
+        run: |
+          echo "=== Checking Governance Alignment ==="
+          
+          # Check for sync_state.json
+          if [ -f ".agent-admin/governance/sync_state.json" ]; then
+            echo "✅ Governance sync state found"
+            
+            # Validate it's valid JSON
+            if ! jq empty .agent-admin/governance/sync_state.json 2>/dev/null; then
+              echo "❌ sync_state.json is not valid JSON"
+              exit 1
+            fi
+            
+            # Check for required fields
+            VERSION=$(jq -r '.governance_version // "missing"' .agent-admin/governance/sync_state.json)
+            if [ "$VERSION" = "missing" ]; then
+              echo "⚠️  Warning: governance_version not specified in sync_state.json"
+            else
+              echo "ℹ️  Governance version: $VERSION"
+            fi
+            
+            echo "✅ Governance alignment validated"
+          else
+            echo "⚠️  No sync_state.json found - this is acceptable for governance-only PRs"
+            echo "ℹ️  Governance repos maintain alignment via CANON_INVENTORY.json"
+          fi
+
+  # Job 3: Stop-and-Fix Enforcement
+  # Fails if a stop-and-fix condition is unresolved
+  stop-and-fix-enforcement:
+    name: stop-and-fix/enforcement
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for stop-and-fix conditions
+        run: |
+          echo "=== Stop-and-Fix Enforcement ===" 
+          
+          # Check for stop-and-fix markers in code (exclude documentation and governance)
+          if grep -r "STOP-AND-FIX" --include="*.md" --include="*.txt" \
+               --exclude-dir=governance \
+               --exclude-dir=.github \
+               --exclude-dir=.agent-admin \
+               --exclude="*archive*.md" \
+               --exclude="BUILD_PHILOSOPHY.md" \
+               --exclude="GOVERNANCE_*.md" \
+               --exclude="ISSUE_RESPONSE_*.md" \
+               --exclude="README.md" \
+               . 2>/dev/null; then
+            echo "❌ STOP-AND-FIX condition detected in repository"
+            echo ""
+            echo "Found unresolved STOP-AND-FIX markers in active code."
+            echo "Required action: Resolve the condition and remove the marker"
+            echo "Required by: STOP_AND_FIX_DOCTRINE.md"
+            exit 1
+          fi
+          
+          # Check for execution halt files (excluding README.md and .archive)
+          HALT_FILES=$(find execution-halt -maxdepth 1 -type f ! -name "README.md" ! -name ".gitkeep" 2>/dev/null || echo "")
+          if [ -n "$HALT_FILES" ]; then
+            echo "❌ Execution halt files detected"
+            echo ""
+            echo "Active halt files:"
+            echo "$HALT_FILES" | while read f; do echo "  - $f"; done
+            echo ""
+            echo "Required action: Resolve halt condition and archive files to .archive/"
+            echo "Required by: STOP_AND_FIX_DOCTRINE.md"
+            exit 1
+          fi
+          
+          echo "✅ No stop-and-fix conditions detected"

@@ -1,0 +1,11 @@
+{
+  "dry_run": true,
+  "timestamp": "2026-02-10T15:12:59Z",
+  "canonical_commit": "6b5016252ae41eab90d75508dbc4ca4757836a5e",
+  "inventory_version": "1.0.0",
+  "registry_path": "governance/CONSUMER_REPO_REGISTRY.json",
+  "consumers_enabled": 1,
+  "consumers_total": 3,
+  "status": "DRY_RUN_SUCCESS",
+  "note": "Dry-run completed during governance self-audit (Issue #1069)"
+}
