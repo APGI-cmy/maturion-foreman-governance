@@ -1,0 +1,74 @@
+name: Governance Ripple Dispatch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'governance/**'
+      - 'BUILD_PHILOSOPHY.md'
+      - '.github/workflows/**'
+
+jobs:
+  dispatch-ripple:
+    name: Dispatch Governance Ripple to Consumers
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout governance repo
+        uses: actions/checkout@v4
+      
+      - name: Read consumer registry
+        id: registry
+        run: |
+          if [ ! -f "governance/CONSUMER_REPO_REGISTRY.json" ]; then
+            echo "❌ FATAL: Consumer registry not found"
+            exit 1
+          fi
+          
+          # Extract enabled consumer repos
+          CONSUMERS=$(jq -r '.consumers[] | select(.enabled == true) | .repository' governance/CONSUMER_REPO_REGISTRY.json)
+          echo "consumers<<EOF" >> $GITHUB_OUTPUT
+          echo "$CONSUMERS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "📡 Will dispatch ripple to:"
+          echo "$CONSUMERS"
+      
+      - name: Dispatch ripple events
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+        run: |
+          COMMIT_SHA="${{ github.sha }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          
+          echo "${{ steps.registry.outputs.consumers }}" | while read -r repo; do
+            [ -z "$repo" ] && continue
+            
+            echo "📤 Dispatching ripple to $repo..."
+            
+            gh api repos/$repo/dispatches \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -f event_type="governance-ripple" \
+              -f client_payload[source_repo]="APGI-cmy/maturion-foreman-governance" \
+              -f client_payload[commit_sha]="$COMMIT_SHA" \
+              -f client_payload[commit_message]="$COMMIT_MESSAGE" \
+              -f client_payload[timestamp]="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              && echo "  ✅ Dispatched successfully" \
+              || echo "  ❌ Dispatch failed"
+          done
+      
+      - name: Record ripple dispatch
+        run: |
+          mkdir -p .agent-admin/ripple
+          cat > .agent-admin/ripple/dispatch-$(date +%Y%m%d-%H%M%S).json <<EOF
+          {
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "commit_sha": "${{ github.sha }}",
+            "commit_message": "${{ github.event.head_commit.message }}",
+            "consumers_notified": $(jq -c '[.consumers[] | select(.enabled == true) | .repository]' governance/CONSUMER_REPO_REGISTRY.json)
+          }
+          EOF
+          
+          echo "✅ Ripple dispatch recorded"
