@@ -3,12 +3,14 @@
 ## Consumer Repositories
 - APGI-cmy/maturion-foreman-office-app
 - APGI-cmy/PartPulse
+- APGI-cmy/maturion-isms
 - APGI-cmy/R_Roster
 
 ## Ripple History
 <!-- Format: [YYYY-MM-DD HH:MM] TIER_0 vX.X.X → consumer-repo (STATUS) -->
 <!-- STATUS: NOTIFIED | ACKNOWLEDGED | APPLIED | DRIFTED -->
 
+[2026-02-12 10:35] CONSUMER_REPO_REGISTRY.json updated: R_Roster onboarded as consumer (enabled)
 [2026-02-11 06:52] PR #[TBD] New Canons: OPOJD 2.0, Coordination, Ignorance Prohibition (3 files) → RIPPLE REQUIRED
 [2026-02-09 06:57] PR #1052 Canon Changes (5 files) → maturion-foreman-office-app (NOTIFIED) #701
 [2026-02-09 06:57] PR #1052 Canon Changes (5 files) → PartPulse (NOTIFIED) #236
