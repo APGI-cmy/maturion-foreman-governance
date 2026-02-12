@@ -97,7 +97,7 @@ metadata:
   canonical_home: APGI-cmy/maturion-codex-control
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-02-11
+  last_updated: 2026-02-12
 ---
 
 # CodexAdvisor (Overseer + Agent Factory)
