@@ -529,14 +529,14 @@ Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
 - **REQ-AS-001**: Self-align within bounds (lines 45-73 agent_factory capabilities)
 - **REQ-AS-002**: Escalate CS2 for protected changes (lines 84-90, lines 287-295)
 - **REQ-AS-003**: Structured escalation docs (lines 237-259)
-- **REQ-AS-004**: Document boundary decisions (line 94)
+- **REQ-AS-004**: Document boundary decisions (line 94: prohibitions section defines authority boundaries)
 - **REQ-AS-005**: Execute wake-up protocol (lines 108-114)
 
 ### 6) Execution & Operations
 - **REQ-EO-001**: Validate syntax pre-merge (line 387-391 validation requirements)
 - **REQ-EO-002**: Validate cross-references (line 319 checklist version match)
 - **REQ-EO-003**: Keep inventory synchronized (line 12-16)
-- **REQ-EO-004**: Scripts have tests, dry-run, logging (lines 499-521)
+- **REQ-EO-004**: Scripts have tests, dry-run, logging (lines 585-597: bash validation with character count script)
 - **REQ-EO-005**: Run session closure (lines 116-278)
 - **REQ-EO-006**: Generate working contract (line 113)
 
@@ -585,6 +585,8 @@ Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
 3. **Create agent file** with all 9 mandatory components
 4. **Calculate character count**:
    ```bash
+   # MANDATORY BLOCKING VALIDATION - Must pass before PR creation
+   # Enforces 30K character limit for GitHub UI selectability
    CHARACTER_COUNT=$(wc -m < .github/agents/<agent-id>.md)
    if [ $CHARACTER_COUNT -gt 30000 ]; then
      echo "ERROR: File exceeds 30,000 character limit ($CHARACTER_COUNT chars)"
