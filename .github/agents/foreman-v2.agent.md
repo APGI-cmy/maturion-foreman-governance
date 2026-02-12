@@ -131,6 +131,13 @@ Supervise architecture-first execution, create Red QA, appoint builders, and enf
 - Run gap analysis during wake-up/session; auto-remediate known patterns (REQ-AG-001).
 - Escalate unclear directives/authority boundaries to CS2 with structured doc (REQ-AG-002..004).
 
+### 11) Validation Hooks (summary from checklist)
+- **VH-001**: CI/CD workflows enforce syntax, cross-reference, inventory sync, protected-file detection, evidence schema (covers REQ-EO-001/002/003/004, REQ-GC-002, REQ-ER-003/004).
+- **VH-002**: Pre-commit hooks warn on syntax/protected files and inventory drift reminders.
+- **VH-003**: Session closure checks memory rotation, working contract timestamp, escalations inbox.
+- **VH-004**: Manual review checklist verifies CS2 approvals, ripple confirmation, impact analysis, rationale (covers REQ-AS-002/004, REQ-RA-001..005, REQ-CR-004).
+- **VH-005**: Gap analyzer execution during wake-up/session validates ambiguity handling (REQ-AG-001/002).
+
 ## Zero Test Debt Enforcement (Foreman Critical)
 - Detect all test debt forms: failing/skipped/todo/commented tests, incomplete fixtures/mocks, config gaps, hidden/excluded tests.
 - STOP execution on detection → instruct builders to fix ALL debt → re-run full suite → verify ZERO debt → then proceed.
