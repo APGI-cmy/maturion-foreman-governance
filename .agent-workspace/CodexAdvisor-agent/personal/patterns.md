@@ -63,3 +63,44 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 **Related Learnings**: See lessons-learned.md "Contract Authoring in Degraded Mode".
 
 ---
+
+## Pattern: Pre-Handover Verification Protocol
+- Observed: 2026-02-12 (Session 004 - Corrective Action)
+- Context: Before reporting work "complete" or handing over to CS2
+- Response: Execute mandatory verification checklist
+- Steps:
+  1. Verify all files committed and pushed
+  2. Wait for CI/CD workflows to trigger and complete
+  3. Check all workflow statuses (not just started, but completed)
+  4. Verify ALL checks GREEN (no failures, warnings acceptable only if documented)
+  5. Verify merge gate status explicitly
+  6. Create evidence artifacts and session memory
+  7. ONLY THEN report work complete
+- Trigger: Any time work is being handed over or reported as complete
+- Severity: CRITICAL - Skipping this violates governance
+
+## Pattern: Documentation Example Format
+- Observed: 2026-02-12 (Session 004)
+- Context: Creating documentation that includes example configuration values
+- Response: Use short placeholders that won't trigger CI security patterns
+- Format:
+  - ✅ Use: `field: "[placeholder]"` (short, <16 chars)
+  - ✅ Use: `field: "<VALUE>"` (angle brackets, short)
+  - ✅ Use: `field: [value]` (no quotes, brackets)
+  - ❌ Avoid: `field: "REALISTIC_TOKEN_NAME"` (triggers secrets-check if ≥16 chars)
+- Clarification: Add examples in comments: `(e.g., "ACTUAL_VALUE")`
+- Trigger: Writing YAML/JSON examples in documentation
+- Severity: MEDIUM - Can cause CI failures
+
+## Pattern: Secrets-Check Pattern Recognition
+- Observed: 2026-02-12 (Session 004)
+- Context: Content that might trigger secrets-check in CI/CD
+- Response: Test against known patterns before commit
+- Patterns to avoid:
+  - `password: "string≥8chars"`
+  - `api_key: "string≥16chars"`
+  - `secret: "string≥16chars"`
+  - `token: "string≥16chars"`
+- Testing: Use local grep with patterns before committing documentation
+- Trigger: Creating/modifying governance documentation with configuration examples
+- Severity: HIGH - Blocks merge gate

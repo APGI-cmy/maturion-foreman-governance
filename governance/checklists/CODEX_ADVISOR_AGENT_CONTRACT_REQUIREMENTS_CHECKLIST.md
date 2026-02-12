@@ -62,7 +62,7 @@ Automated validators MUST:
   - `governance.expected_artifacts: [list]`
   - `governance.degraded_on_placeholder_hashes: true`
   - `governance.execution_identity.name: "Maturion Bot"`
-  - `governance.execution_identity.secret: "MATURION_BOT_TOKEN"`
+  - `governance.execution_identity.secret: "[secret-name]"` (e.g., "MATURION_BOT_TOKEN")
   - `governance.execution_identity.safety.never_push_main: true`
   - `governance.execution_identity.safety.write_via_pr_by_default: true`
   - `merge_gate_interface.required_checks: [list of 3 checks]`

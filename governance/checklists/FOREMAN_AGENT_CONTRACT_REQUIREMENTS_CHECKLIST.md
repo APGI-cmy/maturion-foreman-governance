@@ -69,7 +69,7 @@ Automated validators MUST:
   - `scope.write_access: [list]`
   - `scope.escalation_required: [list]`
   - `execution_identity.name: "Maturion Bot"`
-  - `execution_identity.secret: "MATURION_BOT_TOKEN"`
+  - `execution_identity.secret: "[secret-name]"` (e.g., "MATURION_BOT_TOKEN")
   - `execution_identity.never_push_main: true`
   - `execution_identity.write_via_pr: true`
   - `prohibitions: [list]`
