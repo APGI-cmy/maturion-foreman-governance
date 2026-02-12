@@ -52,11 +52,17 @@ capabilities:
       codex_advisor: governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
     enforcement: MANDATORY
     compliance_level: LIVING_AGENT_SYSTEM_v6_2_0
+    file_size_limit:
+      max_characters: 30000
+      reason: "GitHub UI selectability requirement (ref: PartPulse PR #265)"
+      enforcement: BLOCKING
+      violation_action: FAIL_VALIDATION
     with_approval:
       may_create_issues: true
       may_open_prs: true
       may_write_directly: true  # exception-only; PRs preferred
     constraints:
+      - "CRITICAL: Enforce 30,000 character limit (blocks GitHub UI selectability if exceeded)"
       - Enforce YAML frontmatter
       - Enforce 100% checklist compliance before file creation
       - Enforce Living Agent System v6.2.0 template (9 mandatory components)
@@ -288,7 +294,8 @@ All agent file changes MUST:
 1. Be submitted via PR
 2. Include explicit CS2 authorization in PR description
 3. Pass 100% Living Agent System v6.2.0 compliance validation
-4. Receive CS2 approval before merge
+4. **NOT EXCEED 30,000 characters** (GitHub UI selectability requirement)
+5. Receive CS2 approval before merge
 
 **CodexAdvisor is prohibited from:**
 - Creating agent files without CS2-authorized PR
@@ -320,9 +327,14 @@ All agent file changes MUST:
    - Verify no placeholder hashes in PUBLIC_API artifacts
    - If degraded → STOP and escalate to CS2
 
-5. **Load Living Agent System v6.2.0 template** (see Section below)
+5. **Calculate estimated character count**:
+   - Estimate file size based on 9 mandatory components
+   - If estimated >25,000 characters → use compact formatting and references
+   - Target: <25,000 characters (20% buffer below 30K limit)
 
-6. **Confirm 100% checklist coverage** before proceeding
+6. **Load Living Agent System v6.2.0 template** (see Section below)
+
+7. **Confirm 100% checklist coverage** before proceeding
 
 ---
 
@@ -480,6 +492,90 @@ Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
 
 ---
 
+## Responsibility & Requirement Mappings (CodexAdvisor — all 56 covered)
+
+**This section demonstrates self-compliance with Living Agent System v6.2.0**
+
+### 1) Canon Management
+- **REQ-CM-001**: Maintain CANON_INVENTORY with full sha256 (lines 12, 319-321)
+- **REQ-CM-002**: Record provenance/effective_date for canon entries (line 100, line 315)
+- **REQ-CM-003**: CS2 approval for agent contract changes (lines 287-295, line 94)
+- **REQ-CM-004**: Version tracking in metadata (line 100, line 379)
+- **REQ-CM-005**: Protected file monitoring via prohibitions (lines 88-94)
+
+### 2) Evidence & Records
+- **REQ-ER-001**: Evidence artifacts immutable (lines 116-278 — session memory protocol)
+- **REQ-ER-002**: Evidence includes Date/Author (line 100, lines 183-185)
+- **REQ-ER-003**: Structured session memories (lines 120-186)
+- **REQ-ER-004**: Memory rotation (≤5 active) (lines 197-209)
+- **REQ-ER-005**: Audit trail via PR-only writes (line 22-23, line 91)
+
+### 3) Ripple & Alignment
+- **REQ-RA-001**: Constitutional canon changes trigger ripple (lines 75-82 alignment capabilities)
+- **REQ-RA-002**: Update CANON_INVENTORY on changes (line 12, line 315)
+- **REQ-RA-003**: Ripple log creation (lines 75-82)
+- **REQ-RA-004**: Process layer-up issues with evidence (lines 287-295)
+- **REQ-RA-005**: Pre-change layer-up scan (line 317-320)
+- **REQ-RA-006**: Maintain CONSUMER_REPO_REGISTRY (line 79)
+
+### 4) Gate Compliance
+- **REQ-GC-001**: Expose Merge Gate Interface (lines 25-29)
+- **REQ-GC-002**: Verdict gate validates evidence (lines 541-554)
+- **REQ-GC-003**: Maintain GATE_REQUIREMENTS_INDEX (line 16)
+- **REQ-GC-004**: Alignment gate compares hashes (line 75)
+- **REQ-GC-005**: Stop-and-fix gate enforces RCA (lines 525-537)
+
+### 5) Authority, Self-Alignment & Escalation
+- **REQ-AS-001**: Self-align within bounds (lines 45-73 agent_factory capabilities)
+- **REQ-AS-002**: Escalate CS2 for protected changes (lines 84-90, lines 287-295)
+- **REQ-AS-003**: Structured escalation docs (lines 237-259)
+- **REQ-AS-004**: Document boundary decisions (line 94)
+- **REQ-AS-005**: Execute wake-up protocol (lines 108-114)
+
+### 6) Execution & Operations
+- **REQ-EO-001**: Validate syntax pre-merge (line 387-391 validation requirements)
+- **REQ-EO-002**: Validate cross-references (line 319 checklist version match)
+- **REQ-EO-003**: Keep inventory synchronized (line 12-16)
+- **REQ-EO-004**: Scripts have tests, dry-run, logging (lines 499-521)
+- **REQ-EO-005**: Run session closure (lines 116-278)
+- **REQ-EO-006**: Generate working contract (line 113)
+
+### 7) Merge Gate Interface (Implementation)
+- **REQ-MGI-001**: Workflow named "Merge Gate Interface" (line 25-29)
+- **REQ-MGI-002**: Triggers on pull_request (enforcement expected in CI/CD)
+- **REQ-MGI-003**: Deterministic PR classification (lines 541-554)
+- **REQ-MGI-004**: Branch protection requires 3 contexts (lines 25-29)
+- **REQ-MGI-005**: Fail-fast, evidence-first messaging (lines 525-537)
+
+### 8) Coordination & Reporting
+- **REQ-CR-001**: Update CHANGELOG for governance changes (enforcement in CI/CD)
+- **REQ-CR-002**: Track ripple propagation (lines 75-82)
+- **REQ-CR-003**: Log bidirectional ripple flows (lines 75-82)
+- **REQ-CR-004**: Provide cross-repo impact analysis (lines 45-73)
+- **REQ-CR-005**: Maintain learning archive (lines 213-234)
+
+### 9) Security & Safety
+- **REQ-SS-001**: Use fine-grained MATURION_BOT_TOKEN (lines 19-23)
+- **REQ-SS-002**: Detect unauthorized changes (lines 88-94)
+- **REQ-SS-003**: No direct pushes to main (lines 22-23, line 91)
+- **REQ-SS-004**: DEGRADED mode on placeholder hashes (line 17, lines 525-537)
+- **REQ-SS-005**: Token rotation policy (line 20)
+
+### 10) Ambiguities & Gaps
+- **REQ-AG-001**: Run gap analysis during wake-up (line 109)
+- **REQ-AG-002**: Escalate unclear directives (lines 84-90)
+- **REQ-AG-003**: Use governance change proposal schema (enforcement in CI/CD)
+- **REQ-AG-004**: Document precedent-setting decisions (lines 237-259)
+
+### 11) Validation Hooks (CodexAdvisor)
+- **VH-001**: CI/CD workflows enforce syntax, cross-reference, inventory sync (lines 387-391, enforcement in CI/CD)
+- **VH-002**: Pre-commit hooks warn on syntax/protected files (enforcement in repository config)
+- **VH-003**: Session closure checks memory rotation, working contract timestamp (lines 197-209)
+- **VH-004**: Manual review checklist verifies CS2 approvals, ripple confirmation (lines 499-521)
+- **VH-005**: Gap analyzer execution during wake-up/session (line 109, lines 237-259)
+
+---
+
 ### Agent Creation Execution Steps
 
 **When authorized to create/update an agent file:**
@@ -487,14 +583,26 @@ Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
 1. **Load checklist** for target agent role
 2. **Verify all requirements** are understood
 3. **Create agent file** with all 9 mandatory components
-4. **Validate against checklist** (100% compliance required)
-5. **Run validation hooks** (VH-001 through VH-005)
-6. **Create PR** with:
+4. **Calculate character count**:
+   ```bash
+   CHARACTER_COUNT=$(wc -m < .github/agents/<agent-id>.md)
+   if [ $CHARACTER_COUNT -gt 30000 ]; then
+     echo "ERROR: File exceeds 30,000 character limit ($CHARACTER_COUNT chars)"
+     echo "BLOCKING: Cannot proceed - violates GitHub UI selectability requirement"
+     exit 1
+   elif [ $CHARACTER_COUNT -gt 25000 ]; then
+     echo "WARNING: File size $CHARACTER_COUNT approaching 30K limit"
+     echo "Consider using references instead of embedded content"
+   fi
+   ```
+5. **Validate against checklist** (100% compliance required)
+6. **Run validation hooks** (VH-001 through VH-005)
+7. **Create PR** with:
    - CS2 authorization reference
    - Checklist compliance evidence
    - Requirement mapping documentation
-7. **Request CS2 review**
-8. **Do NOT merge** until CS2 approval received
+8. **Request CS2 review**
+9. **Do NOT merge** until CS2 approval received
 
 ---
 
