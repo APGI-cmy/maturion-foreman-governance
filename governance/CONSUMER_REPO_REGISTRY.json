@@ -1,25 +1,39 @@
 {
   "version": "1.0.0",
   "schema_version": "1.0.0",
-  "last_updated": "2026-02-12T00:00:00Z",
+  "last_updated": "2026-02-12T10:35:00Z",
   "consumers": [
     {
       "repository": "APGI-cmy/maturion-foreman-office-app",
       "enabled": true,
-      "ripple_events": ["governance-ripple"],
+      "ripple_events": [
+        "governance-ripple"
+      ],
       "description": "Foreman Office App (FPC implementation + governance testing ground)"
     },
     {
       "repository": "APGI-cmy/PartPulse",
       "enabled": true,
-      "ripple_events": ["governance-ripple"],
+      "ripple_events": [
+        "governance-ripple"
+      ],
       "description": "PartPulse App (main business application)"
     },
     {
       "repository": "APGI-cmy/maturion-isms",
       "enabled": true,
-      "ripple_events": ["governance-ripple"],
+      "ripple_events": [
+        "governance-ripple"
+      ],
       "description": "ISMS Repository (governance coupling test repo)"
+    },
+    {
+      "repository": "APGI-cmy/R_Roster",
+      "enabled": true,
+      "ripple_events": [
+        "governance-ripple"
+      ],
+      "description": "R_Roster App (governance coupling test repo)"
     }
   ]
 }
