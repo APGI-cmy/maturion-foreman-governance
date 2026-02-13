@@ -57,3 +57,4 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 ---
 - [2026-02-11] When updating agent contracts always verify prohibition sections exist before adding
 - [2026-02-11] Always preserve layer_down_status from existing inventory when regenerating - prevents classification drift
+- [2026-02-13] TRS stage fills critical gap between FRS and Architecture - validates technical constraints early
