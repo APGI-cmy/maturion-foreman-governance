@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-09
+**Last Updated**: 2026-02-13
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -163,7 +163,7 @@ Policy files define operational governance requirements and protocols.
 
 | File | Purpose | Categories |
 |------|---------|------------|
-| `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | Defines application description requirements | Readiness, Layer-down |
+| `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | **UPDATED v1.0 (2026-02-13)** - Defines application description requirements with TRS stage added to canonical flow: App Description → FRS → TRS → Architecture → Build Authorization → Implementation. Updated ordering rule to include TRS as mandatory stage. Layer-up from maturion-isms#98 | Readiness, Layer-down |
 | `BUILDER_QA_HANDOVER_POLICY.md` | Defines builder QA requirements before handover | PR-gates, Readiness |
 | `FM_MATURION_DELEGATED_ACTION_POLICY.md` | Defines FM delegated action authority and requirements | Readiness |
 | `minimizing_language_examples.json` | Fixture examples for minimizing-language enforcement | PR-gates, Readiness |
@@ -171,6 +171,16 @@ Policy files define operational governance requirements and protocols.
 | `POLICY-NO-ONLY-LANGUAGE.md` | Zero-tolerance policy banning minimizing language in status reporting | PR-gates, Readiness |
 | `PR_GATE_FAILURE_HANDLING_PROTOCOL.md` | Defines protocol for handling PR gate failures | PR-gates, Feedback/learning |
 | `QA_POLICY_MASTER.md` | Master QA policy document | PR-gates, Readiness |
+
+---
+
+## Governance Strategy (governance/strategy/)
+
+Strategy files define high-level governance strategies and architectural approaches.
+
+| File | Purpose | Categories |
+|------|---------|------------|
+| `MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md` | **NEW v1.0 (2026-02-13)** - Strategy for module lifecycle and repository structure with TRS (Technical Requirements Specification) as Stage 1.5. Defines 7-stage canonical module lifecycle: App Description → FRS → TRS → Architecture → Implementation Plan → Builder Appointment → Execute Build. Comprehensive TRS stage definition including purpose, ownership, scope (technical constraints, performance requirements, integration requirements, traceability matrices, tool validation rules), deliverables, and relationships to FRS and Architecture. Layer-up from maturion-isms#98 | Readiness, Layer-down |
 
 ---
 
@@ -211,6 +221,7 @@ Template files provide reusable structures for governance artifacts.
 
 | File | Purpose | Categories |
 |------|---------|------------|
+| `BUILD_PROGRESS_TRACKER_TEMPLATE.md` | **NEW v1.0.0 (2026-02-13)** - Template for tracking module lifecycle progress through all 7 stages including TRS (Stage 1.5). Provides standardized checklists for artifacts, approvals, completion dates, governance compliance tracking, and module status summary. Layer-up from maturion-isms#98 | Readiness, Layer-down |
 | `BUILDER_TASK_TEMPLATE.md` | Template for builder task definitions | Readiness |
 | `CANON_CREATION_AND_PROPAGATION_CHECKLIST.md` | Comprehensive workflow checklist for canon creation and propagation with mandatory inventory maintenance | Layer-down, Feedback/learning |
 | `PREHANDOVER_PROOF_TEMPLATE.md` | **UPDATED v2.2.0 (2026-01-27)** - Template for execution verification documentation with Zero-Warning Validation section and **NEW** validation evidence requirements per BL-030. Prohibits attestation without verification. Requires command output, exit codes, timestamps for all validations. Adds scope declaration freshness verification checklist | PR-gates, Readiness |
