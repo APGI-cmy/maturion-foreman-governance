@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-02-13",
-  "total_canons": 153,
+  "total_canons": 154,
   "generation_timestamp": "2026-02-13T13:23:55Z",
   "canons": [
     {
@@ -1136,6 +1136,17 @@
       "path": "governance/canon/MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "59e84814c60c54b78f5058096320454adcd6017f6277c03d371ec42c4701d4a6"
+    },
+    {
+      "filename": "MANDATORY_CROSS_APP_COMPONENTS.md",
+      "version": "1.0.0",
+      "file_hash": "fc7270ff15c4",
+      "effective_date": "2026-02-13",
+      "description": "This document provides a **single, authoritative specification** listing all mandatory components and patterns that MUST be present in every Maturion application/repository.",
+      "type": "canon",
+      "path": "governance/canon/MANDATORY_CROSS_APP_COMPONENTS.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "fc7270ff15c425af7227d703014e6831f6de69b34b9f0db55c44c2c519cfbb4f"
     },
     {
       "filename": "MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md",
