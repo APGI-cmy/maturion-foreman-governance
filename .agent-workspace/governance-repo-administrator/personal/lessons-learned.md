@@ -57,3 +57,16 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 ---
 - [2026-02-11] When updating agent contracts always verify prohibition sections exist before adding
 - [2026-02-11] Always preserve layer_down_status from existing inventory when regenerating - prevents classification drift
+
+---
+
+## Session 20260213 - Event Type Naming Convention
+
+### Lesson: GitHub repository_dispatch Event Types Use Underscores
+
+- Context: Cross-repo ripple events not being received by consumer repositories
+- Pattern: GitHub API repository_dispatch requires underscores in event_type, not hyphens
+- Action: Always use underscores (governance_ripple) not hyphens (governance-ripple) for event types
+- Evidence: CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md line 50 specifies correct format
+
+---
