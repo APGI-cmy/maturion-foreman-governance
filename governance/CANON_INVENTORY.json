@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-11",
-  "total_canons": 151,
-  "generation_timestamp": "2026-02-11T14:03:46Z",
+  "last_updated": "2026-02-13",
+  "total_canons": 153,
+  "generation_timestamp": "2026-02-13T13:23:55Z",
   "canons": [
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
@@ -49,6 +49,17 @@
       "file_hash_sha256": "fba2f30452b1ffa4a76a385ddaf93fb70440af18f9921ac49be99478b8edfa99"
     },
     {
+      "filename": "AGENT_CONTRACT.template.md",
+      "version": "unknown",
+      "file_hash": "4eaf65d74185",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: AGENT_CONTRACT.template",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "4eaf65d74185465433746076bded72545c6f9dc0315f24867c2b7c79254f6372"
+    },
+    {
       "filename": "AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md",
       "version": "3.1.0",
       "file_hash": "ebf75726638d",
@@ -58,6 +69,17 @@
       "path": "governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "ebf75726638d06df25bd101d94c33d2c460e111efdc2f07bfd05e1fdc0218891"
+    },
+    {
+      "filename": "AGENT_CONTRACT_MIGRATION_GUIDE.md",
+      "version": "1.0.0",
+      "file_hash": "d3f2e17da237",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: AGENT_CONTRACT_MIGRATION_GUIDE",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "d3f2e17da23733e5f5e27a71bb0c5d0071da1d1c10fab73a23fbd902d60fe2d9"
     },
     {
       "filename": "AGENT_CONTRACT_PROTECTION_PROTOCOL.md",
@@ -71,11 +93,77 @@
       "file_hash_sha256": "de6777e1cbffbf10c7bdce2f5b0b13dd2b1df053f46bd6e1428d4357480449d7"
     },
     {
+      "filename": "AGENT_FILE_BINDING_REQUIREMENTS.md",
+      "version": "1.0.0",
+      "file_hash": "8ef8716b2228",
+      "effective_date": "2026-01-12",
+      "description": "This document defines **which canonical governance documents** repository `.agent` files MUST or SHOULD bind to, establishing the **minimum governance foundation** for all repositories.",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "8ef8716b2228c651572aa8880cc17f4d9d05715511f21920fe67396755514e7f"
+    },
+    {
+      "filename": "AGENT_FILE_CREATION_POLICY.md",
+      "version": "unknown",
+      "file_hash": "f6a225c14794",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: AGENT_FILE_CREATION_POLICY",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/AGENT_FILE_CREATION_POLICY.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "f6a225c1479465b66b7378cdb4d52c27b61c41546d1cee31638e15f9df331fea"
+    },
+    {
+      "filename": "AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md",
+      "version": "1.0.0",
+      "file_hash": "3f8fc501bd8a",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: AGENT_FILE_LOCKED_SECTIONS_TEMPLATE",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "3f8fc501bd8a9c13deeb630b6cf1d48d9184a308da5f7528a2399dbfaf665dc1"
+    },
+    {
+      "filename": "AGENT_FILE_MAINTENANCE.md",
+      "version": "1.0.0",
+      "file_hash": "1a8f8160ef72",
+      "effective_date": "2026-01-12",
+      "description": "This runbook defines the **ongoing maintenance protocol** for repository `.agent` files, ensuring:\n- Files remain synchronized with canonical governance\n- Changes are made with appropriate authorit...",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "1a8f8160ef72ec19b6dac1fcba39c3e301544cfdfc143d0697cc2cf27bd9430a"
+    },
+    {
+      "filename": "AGENT_FILE_VALIDATION.md",
+      "version": "1.0.0",
+      "file_hash": "58896fa2469d",
+      "effective_date": "2026-01-12",
+      "description": "This runbook defines the **complete validation process** for repository `.agent` files, ensuring:\n- Structural correctness against schema\n- Mandatory bindings are present\n- Canonical references are...",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "58896fa2469dac4a5562d8e5ccd11ecc2857779bd41779ad6817c5938173de0a"
+    },
+    {
+      "filename": "AGENT_ONBOARDING_QUICKSTART.md",
+      "version": "1.0.0",
+      "file_hash": "c105ef35fe27",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: AGENT_ONBOARDING_QUICKSTART",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "c105ef35fe27174905d4af5587b93d99f399e2739f85600959d8153024aa35fb"
+    },
+    {
       "filename": "AGENT_RECRUITMENT.md",
       "version": "1",
       "file_hash": "963eed45e027",
       "effective_date": "unknown",
-      "description": "This document defines the only legitimate process by which software agents may be introduced (“recruited”) into the governance system administered by the Foreman.",
+      "description": "This document defines the only legitimate process by which software agents may be introduced (\u201crecruited\u201d) into the governance system administered by the Foreman.",
       "type": "canon",
       "path": "governance/canon/AGENT_RECRUITMENT.md",
       "layer_down_status": "PUBLIC_API",
@@ -126,6 +214,17 @@
       "file_hash_sha256": "a6094dc8aa600bb036b5a6d02f51cbc5e4c52037588bdcef90a7f1d2f50c1259"
     },
     {
+      "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
+      "version": "1.0",
+      "file_hash": "3e14b061c313",
+      "effective_date": "2026-02-13",
+      "description": "This policy establishes **App Descriptions as mandatory upstream authority artifacts** for all applications in the Maturion ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "3e14b061c313aab7b70197846b333f17b7de7db445b6feb9b9cf57afc88b422c"
+    },
+    {
       "filename": "APP_STARTUP_REQUIREMENTS_DECLARATION.md",
       "version": "1.0",
       "file_hash": "758eb2210a3f",
@@ -146,6 +245,17 @@
       "path": "governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "1db9160d2ee2a2abc321b0e9c7b98311e5012b268e6e974fc76c8a758e26d51d"
+    },
+    {
+      "filename": "ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
+      "version": "1.0",
+      "file_hash": "428f63b31733",
+      "effective_date": "unknown",
+      "description": "This policy defines the **CORRECT vs INCORRECT methodology** for tracing tests to architectural requirements.",
+      "type": "policy",
+      "path": "governance/policy/ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "428f63b3173397878800bd996d30b80b434e251c711665025c044971d967d566"
     },
     {
       "filename": "ASSISTED_RIPPLE_SCAN_HUMAN_REVIEW_SEMANTICS.md",
@@ -179,6 +289,17 @@
       "path": "governance/canon/AUDIT_READINESS_MODEL.md",
       "layer_down_status": "OPTIONAL",
       "file_hash_sha256": "d627ef3ee892d2d694413e824dcad4557707bd5ec3960967881c18662372bdee"
+    },
+    {
+      "filename": "AUTOMATED_DEPRECATION_DETECTION_GATE.md",
+      "version": "1.0",
+      "file_hash": "eab436d8df86",
+      "effective_date": "unknown",
+      "description": "This policy establishes a **mandatory automated deprecation detection gate** for technical debt prevention across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/AUTOMATED_DEPRECATION_DETECTION_GATE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "eab436d8df86923e3075f9cbe6026f4a09e8e5d0eff774ac154ec1dc63119265"
     },
     {
       "filename": "BOOTSTRAP_EXECUTION_LEARNINGS.md",
@@ -225,6 +346,17 @@
       "file_hash_sha256": "ca9d2c96be68a944a9a04ed504e2c3faf1aed8b3cd70acc82d0be09cb4b8a0cf"
     },
     {
+      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
+      "version": "1.0",
+      "file_hash": "dffdaddb554d",
+      "effective_date": "unknown",
+      "description": "This policy defines the **Builder QA Handover Contract** - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
+      "type": "policy",
+      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "dffdaddb554d1b9486122bcf1c8b03b6331943aadc390c8131104ff6587f874b"
+    },
+    {
       "filename": "BUILD_EFFECTIVENESS_STANDARD.md",
       "version": "1",
       "file_hash": "36351307c8d6",
@@ -256,6 +388,17 @@
       "path": "governance/canon/BUILD_NODE_INSPECTION_MODEL.md",
       "layer_down_status": "OPTIONAL",
       "file_hash_sha256": "9e20439593c57c41ea3772226a0864796bd0438855d5e267a4405c0a399b33ab"
+    },
+    {
+      "filename": "BUILD_PROGRESS_TRACKER_TEMPLATE.md",
+      "version": "1.0.0",
+      "file_hash": "070d3345e0b3",
+      "effective_date": "2026-02-13",
+      "description": "Template for tracking module lifecycle progress through all 7 stages including TRS",
+      "type": "template",
+      "path": "governance/templates/BUILD_PROGRESS_TRACKER_TEMPLATE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "070d3345e0b3904e8b14fcb8a3dde745cd2dca5787c3e275c9355283e2c8e1f4"
     },
     {
       "filename": "BUILD_TREE_EXECUTION_MODEL.md",
@@ -314,7 +457,7 @@
     },
     {
       "filename": "COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md",
-      "version": "1.1.0 — ACTIVE OPERATIONAL GOVERNANCE",
+      "version": "1.1.0 \u2014 ACTIVE OPERATIONAL GOVERNANCE",
       "file_hash": "d9d45cb972b7",
       "effective_date": "2026-01-03 (Activation), 2025-12-24 (Original)",
       "description": "This document formally defines the **Cognitive Capability Orchestration Model** for the Maturion ecosystem.",
@@ -597,6 +740,17 @@
       "path": "governance/canon/FM_GOVERNANCE_LOADING_PROTOCOL.md",
       "layer_down_status": "INTERNAL",
       "file_hash_sha256": "bf8cd5ce9f94250abc0bf5f8c78fb882fed5ef04d4625d56b19e27d051cf4fbf"
+    },
+    {
+      "filename": "FM_MATURION_DELEGATED_ACTION_POLICY.md",
+      "version": "1.0",
+      "file_hash": "5668a48a689f",
+      "effective_date": "unknown",
+      "description": "This policy establishes the complete governance framework for FM-to-Maturion delegated platform actions, defining:\n- When and how FM delegates platform actions to Maturion\n- What instructions FM mu...",
+      "type": "policy",
+      "path": "governance/policy/FM_MATURION_DELEGATED_ACTION_POLICY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "5668a48a689ff7f5dbaeebf460f11d4ca96ff7e9e4b8620f18f990ba37e3c14c"
     },
     {
       "filename": "FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md",
@@ -889,7 +1043,7 @@
       "version": "1.0",
       "file_hash": "23d86014f109",
       "effective_date": "unknown",
-      "description": "This document defines the **Initialization Completeness Gate** — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
+      "description": "This document defines the **Initialization Completeness Gate** \u2014 a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
       "type": "canon",
       "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1105,6 +1259,17 @@
       "file_hash_sha256": "6278dbbc6d3b136ec4d1a0d7dc368cf0585ea3c916f86f713095bd1818023e64"
     },
     {
+      "filename": "MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md",
+      "version": "1.0",
+      "file_hash": "faa5f9361eb3",
+      "effective_date": "2026-02-13",
+      "description": "Strategy for module lifecycle and repository structure with TRS (Technical Requirements Specification) as Stage 1.5",
+      "type": "strategy",
+      "path": "governance/strategy/MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "faa5f9361eb312efcafafeea6353ec8481ae3984b437356432e2a1903aca7819"
+    },
+    {
       "filename": "PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",
       "version": "1.0.0",
       "file_hash": "0a86a0ccfec8",
@@ -1120,7 +1285,7 @@
       "version": "1.0.0",
       "file_hash": "1faef6d0741c",
       "effective_date": "2025-12-25",
-      "description": "This document formally defines the **authority boundary** between:\n- **Foreman (FM)** — execution authority within repositories\n- **Maturion** — control-plane authority for platform actions (GitHub)",
+      "description": "This document formally defines the **authority boundary** between:\n- **Foreman (FM)** \u2014 execution authority within repositories\n- **Maturion** \u2014 control-plane authority for platform actions (GitHub)",
       "type": "canon",
       "path": "governance/canon/PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
@@ -1136,6 +1301,17 @@
       "path": "governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "1be0d0e1e3282c9916cef6e7e346668c4b5a36008e1a781e80ab0c24886b0261"
+    },
+    {
+      "filename": "POLICY-NO-ONLY-LANGUAGE.md",
+      "version": "v1.0",
+      "file_hash": "88369fb8b764",
+      "effective_date": "2026-01-08",
+      "description": "This policy establishes a **zero-tolerance ban on minimizing language** when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
+      "type": "policy",
+      "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253"
     },
     {
       "filename": "PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
@@ -1171,6 +1347,17 @@
       "file_hash_sha256": "416e0bd5bbc4a1095b76f9de1e4862a16f254dd52c636c000be00872ba746d6a"
     },
     {
+      "filename": "PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
+      "version": "1.0",
+      "file_hash": "2fc7c5faf729",
+      "effective_date": "unknown",
+      "description": "This protocol defines the **canonical procedure** for handling PR Gate failures across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "2fc7c5faf7292ca295529644822d02d45aa3505fbb14569fa477a5f80dd6965a"
+    },
+    {
       "filename": "PR_GATE_PRECONDITION_RULE.md",
       "version": "unknown",
       "file_hash": "9ca7bbbcb65f",
@@ -1202,6 +1389,28 @@
       "path": "governance/canon/QA_CATALOG_ALIGNMENT_GATE_CANON.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "b28b6bb6f58887be6a8b0a325b7cd450650c0e7fd8ce2ac4a3ea6113dd5a9a82"
+    },
+    {
+      "filename": "QA_POLICY_MASTER.md",
+      "version": "1.0",
+      "file_hash": "506f2db83ea2",
+      "effective_date": "2025-12-16",
+      "description": "Canonical governance document: QA_POLICY_MASTER",
+      "type": "policy",
+      "path": "governance/policy/QA_POLICY_MASTER.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "506f2db83ea27539966ab9311fb8cc07f95c7c8fc007ff7f774adafe34bba972"
+    },
+    {
+      "filename": "README.md",
+      "version": "unknown",
+      "file_hash": "2ec60edea3b5",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: README",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/README.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "2ec60edea3b5e5086b28191f22bcab82b854e3b93b0ebefb7889f9392d9574ce"
     },
     {
       "filename": "REPOSITORY_INITIALIZATION_AND_GOVERNANCE_SEEDING_PROTOCOL.md",
@@ -1296,7 +1505,7 @@
       "version": "1",
       "file_hash": "d2c96ce6d14c",
       "effective_date": "unknown",
-      "description": "This rule enforces alignment between a PR’s declared scope\nand the files actually modified in the PR.",
+      "description": "This rule enforces alignment between a PR\u2019s declared scope\nand the files actually modified in the PR.",
       "type": "canon",
       "path": "governance/canon/SCOPE_TO_DIFF_RULE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1345,6 +1554,17 @@
       "path": "governance/canon/TARP_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "66ebc152177664126ce596a449232c1eb35e3c7a803920f6c08b7bcf1dc31917"
+    },
+    {
+      "filename": "TEST_REMOVAL_GOVERNANCE_GATE.md",
+      "version": "1.0",
+      "file_hash": "1bd997b07837",
+      "effective_date": "unknown",
+      "description": "This policy establishes a **zero-tolerance governance gate** for test removal across all repositories in the Maturion Engineering Ecosystem.",
+      "type": "policy",
+      "path": "governance/policy/TEST_REMOVAL_GOVERNANCE_GATE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "1bd997b07837e1c3375f5b4b40c9086a8fd39d598341f749ed7c8e23f0ad3c84"
     },
     {
       "filename": "VERSIONING_AND_EVOLUTION_GOVERNANCE.md",
@@ -1435,105 +1655,6 @@
       "file_hash_sha256": "fe01cf1078ec905fafbc235eddec117325e9491e5575b5d0233b8216e13a7574"
     },
     {
-      "filename": "AGENT_CONTRACT_MIGRATION_GUIDE.md",
-      "version": "1.0.0",
-      "file_hash": "d3f2e17da237",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: AGENT_CONTRACT_MIGRATION_GUIDE",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/AGENT_CONTRACT_MIGRATION_GUIDE.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "d3f2e17da23733e5f5e27a71bb0c5d0071da1d1c10fab73a23fbd902d60fe2d9"
-    },
-    {
-      "filename": "AGENT_FILE_BINDING_REQUIREMENTS.md",
-      "version": "1.0.0",
-      "file_hash": "8ef8716b2228",
-      "effective_date": "2026-01-12",
-      "description": "This document defines **which canonical governance documents** repository `.agent` files MUST or SHOULD bind to, establishing the **minimum governance foundation** for all repositories.",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/AGENT_FILE_BINDING_REQUIREMENTS.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "8ef8716b2228c651572aa8880cc17f4d9d05715511f21920fe67396755514e7f"
-    },
-    {
-      "filename": "AGENT_FILE_CREATION_POLICY.md",
-      "version": "unknown",
-      "file_hash": "f6a225c14794",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: AGENT_FILE_CREATION_POLICY",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/AGENT_FILE_CREATION_POLICY.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "f6a225c1479465b66b7378cdb4d52c27b61c41546d1cee31638e15f9df331fea"
-    },
-    {
-      "filename": "AGENT_ONBOARDING_QUICKSTART.md",
-      "version": "1.0.0",
-      "file_hash": "c105ef35fe27",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: AGENT_ONBOARDING_QUICKSTART",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "c105ef35fe27174905d4af5587b93d99f399e2739f85600959d8153024aa35fb"
-    },
-    {
-      "filename": "README.md",
-      "version": "unknown",
-      "file_hash": "2ec60edea3b5",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: README",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/README.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "2ec60edea3b5e5086b28191f22bcab82b854e3b93b0ebefb7889f9392d9574ce"
-    },
-    {
-      "filename": "AGENT_FILE_MAINTENANCE.md",
-      "version": "1.0.0",
-      "file_hash": "1a8f8160ef72",
-      "effective_date": "2026-01-12",
-      "description": "This runbook defines the **ongoing maintenance protocol** for repository `.agent` files, ensuring:\n- Files remain synchronized with canonical governance\n- Changes are made with appropriate authorit...",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "1a8f8160ef72ec19b6dac1fcba39c3e301544cfdfc143d0697cc2cf27bd9430a"
-    },
-    {
-      "filename": "AGENT_FILE_VALIDATION.md",
-      "version": "1.0.0",
-      "file_hash": "58896fa2469d",
-      "effective_date": "2026-01-12",
-      "description": "This runbook defines the **complete validation process** for repository `.agent` files, ensuring:\n- Structural correctness against schema\n- Mandatory bindings are present\n- Canonical references are...",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "58896fa2469dac4a5562d8e5ccd11ecc2857779bd41779ad6817c5938173de0a"
-    },
-    {
-      "filename": "AGENT_CONTRACT.template.md",
-      "version": "unknown",
-      "file_hash": "4eaf65d74185",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: AGENT_CONTRACT.template",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "4eaf65d74185465433746076bded72545c6f9dc0315f24867c2b7c79254f6372"
-    },
-    {
-      "filename": "AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md",
-      "version": "1.0.0",
-      "file_hash": "3f8fc501bd8a",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: AGENT_FILE_LOCKED_SECTIONS_TEMPLATE",
-      "type": "canon",
-      "path": "governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "3f8fc501bd8a9c13deeb630b6cf1d48d9184a308da5f7528a2399dbfaf665dc1"
-    },
-    {
       "filename": "effectiveness.template.md",
       "version": "1",
       "file_hash": "ff1b2f86f2c7",
@@ -1565,105 +1686,6 @@
       "path": "governance/canon/scope-declaration.template.md",
       "layer_down_status": "INTERNAL",
       "file_hash_sha256": "06e4173ff8485b6a1af86a91d12484856c5c7f4d193f38ae88e79573e646c5ee"
-    },
-    {
-      "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
-      "version": "1.0",
-      "file_hash": "8aa9b82cd110",
-      "effective_date": "unknown",
-      "description": "This policy establishes **App Descriptions as mandatory upstream authority artifacts** for all applications in the Maturion ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "8aa9b82cd1100210bdb75b1f6f27be62e998f27e176c83f0ab1418a13f033ab7"
-    },
-    {
-      "filename": "ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
-      "version": "1.0",
-      "file_hash": "428f63b31733",
-      "effective_date": "unknown",
-      "description": "This policy defines the **CORRECT vs INCORRECT methodology** for tracing tests to architectural requirements.",
-      "type": "policy",
-      "path": "governance/policy/ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "428f63b3173397878800bd996d30b80b434e251c711665025c044971d967d566"
-    },
-    {
-      "filename": "AUTOMATED_DEPRECATION_DETECTION_GATE.md",
-      "version": "1.0",
-      "file_hash": "eab436d8df86",
-      "effective_date": "unknown",
-      "description": "This policy establishes a **mandatory automated deprecation detection gate** for technical debt prevention across all repositories in the Maturion Engineering Ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/AUTOMATED_DEPRECATION_DETECTION_GATE.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "eab436d8df86923e3075f9cbe6026f4a09e8e5d0eff774ac154ec1dc63119265"
-    },
-    {
-      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
-      "version": "1.0",
-      "file_hash": "dffdaddb554d",
-      "effective_date": "unknown",
-      "description": "This policy defines the **Builder QA Handover Contract** - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
-      "type": "policy",
-      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "dffdaddb554d1b9486122bcf1c8b03b6331943aadc390c8131104ff6587f874b"
-    },
-    {
-      "filename": "FM_MATURION_DELEGATED_ACTION_POLICY.md",
-      "version": "1.0",
-      "file_hash": "5668a48a689f",
-      "effective_date": "unknown",
-      "description": "This policy establishes the complete governance framework for FM-to-Maturion delegated platform actions, defining:\n- When and how FM delegates platform actions to Maturion\n- What instructions FM mu...",
-      "type": "policy",
-      "path": "governance/policy/FM_MATURION_DELEGATED_ACTION_POLICY.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "5668a48a689ff7f5dbaeebf460f11d4ca96ff7e9e4b8620f18f990ba37e3c14c"
-    },
-    {
-      "filename": "POLICY-NO-ONLY-LANGUAGE.md",
-      "version": "v1.0",
-      "file_hash": "88369fb8b764",
-      "effective_date": "2026-01-08",
-      "description": "This policy establishes a **zero-tolerance ban on minimizing language** when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
-      "type": "policy",
-      "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253"
-    },
-    {
-      "filename": "PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
-      "version": "1.0",
-      "file_hash": "2fc7c5faf729",
-      "effective_date": "unknown",
-      "description": "This protocol defines the **canonical procedure** for handling PR Gate failures across all repositories in the Maturion Engineering Ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "2fc7c5faf7292ca295529644822d02d45aa3505fbb14569fa477a5f80dd6965a"
-    },
-    {
-      "filename": "QA_POLICY_MASTER.md",
-      "version": "1.0",
-      "file_hash": "506f2db83ea2",
-      "effective_date": "2025-12-16",
-      "description": "Canonical governance document: QA_POLICY_MASTER",
-      "type": "policy",
-      "path": "governance/policy/QA_POLICY_MASTER.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "506f2db83ea27539966ab9311fb8cc07f95c7c8fc007ff7f774adafe34bba972"
-    },
-    {
-      "filename": "TEST_REMOVAL_GOVERNANCE_GATE.md",
-      "version": "1.0",
-      "file_hash": "1bd997b07837",
-      "effective_date": "unknown",
-      "description": "This policy establishes a **zero-tolerance governance gate** for test removal across all repositories in the Maturion Engineering Ecosystem.",
-      "type": "policy",
-      "path": "governance/policy/TEST_REMOVAL_GOVERNANCE_GATE.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "1bd997b07837e1c3375f5b4b40c9086a8fd39d598341f749ed7c8e23f0ad3c84"
     }
   ]
 }
