@@ -65,3 +65,22 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 **Related Learnings**: Fixed in Session 012 (Issue #1091) - gate was detecting itself, causing false positives on gate implementation PRs
 
 ---
+
+### Canonical Protocol Alignment
+
+**Frequency**: Occasional - when implementing workflows that integrate with canonical protocols
+
+**Context**: When workflow files (.github/workflows/) implement transport mechanisms specified in canonical governance documents
+
+**Description**: Workflow implementation must exactly match event types, field names, and payload structures specified in canonical protocol documents. Naming mismatches (e.g., hyphens vs underscores) break integrations silently.
+
+**Application**:
+1. Before implementing workflows, review canonical protocol specifications (e.g., CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md)
+2. Extract exact field names and event types from protocol specification
+3. Use grep to verify consistency between protocol and implementation
+4. Test end-to-end event dispatch and receipt
+5. Document alignment in PR descriptions
+
+**Related Learnings**: Fixed in Session 016 - event_type mismatch (governance-ripple vs governance_ripple) blocked all cross-repo governance synchronization
+
+---
