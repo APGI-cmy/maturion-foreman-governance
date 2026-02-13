@@ -50,7 +50,7 @@ jobs:
             gh api repos/$repo/dispatches \
               -X POST \
               -H "Accept: application/vnd.github+json" \
-              -f event_type="governance-ripple" \
+              -f event_type="governance_ripple" \
               -f client_payload[source_repo]="APGI-cmy/maturion-foreman-governance" \
               -f client_payload[commit_sha]="$COMMIT_SHA" \
               -f client_payload[commit_message]="$COMMIT_MESSAGE" \
