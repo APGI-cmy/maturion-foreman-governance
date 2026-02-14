@@ -1,9 +1,20 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-14T09:53:14Z",
-  "total_canons": 155,
-  "generation_timestamp": "2026-02-14T08:20:00Z",
+  "last_updated": "2026-02-14T11:26:34Z",
+  "total_canons": 156,
+  "generation_timestamp": "2026-02-14T11:26:34Z",
   "canons": [
+    {
+      "filename": ".agent.schema.md",
+      "version": "unknown",
+      "file_hash": "6af228775791",
+      "effective_date": "unknown",
+      "description": "Schema definition for agent contracts with LOCKED sections requirements, protection protocol integration, and reference to AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md",
+      "type": "canon",
+      "path": "governance/canon/agent-contracts-guidance/.agent.schema.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "6af22877579114d66916e9b1bf3bdd1914da0f41f713de0c8ba70dfda0531291"
+    },
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
       "version": "1.0",
@@ -95,7 +106,7 @@
     {
       "filename": "AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md",
       "version": "1.1.0",
-      "file_hash": "e638c94a4815",
+      "file_hash": "9ee48f13d99e",
       "effective_date": "2026-02-14",
       "description": "Constitutional canon establishing mandatory pre-task environmental health scanning, autonomous remediation, escalation, and full auditability requirements for all agents in the Living Agent System.",
       "type": "canon",
@@ -335,39 +346,6 @@
       "file_hash_sha256": "c34600f193a8f729d0642ff11b04a7fbaec361f4a80e9c29f8cc3e940160dad9"
     },
     {
-      "filename": "BUILDER_CONTRACT_BINDING_CHECKLIST.md",
-      "version": "1.2.0",
-      "file_hash": "1294da29d84f",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: BUILDER_CONTRACT_BINDING_CHECKLIST",
-      "type": "canon",
-      "path": "governance/canon/BUILDER_CONTRACT_BINDING_CHECKLIST.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "1294da29d84fb47af3fe7367068c635a277fd4575134439dc24c77167a22e67f"
-    },
-    {
-      "filename": "BUILDER_FIRST_PR_MERGE_MODEL.md",
-      "version": "1.0.0",
-      "file_hash": "ca9d2c96be68",
-      "effective_date": "2025-12-22",
-      "description": "Canonical governance document: BUILDER_FIRST_PR_MERGE_MODEL",
-      "type": "canon",
-      "path": "governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "ca9d2c96be68a944a9a04ed504e2c3faf1aed8b3cd70acc82d0be09cb4b8a0cf"
-    },
-    {
-      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
-      "version": "1.0",
-      "file_hash": "dffdaddb554d",
-      "effective_date": "unknown",
-      "description": "This policy defines the **Builder QA Handover Contract** - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
-      "type": "policy",
-      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "dffdaddb554d1b9486122bcf1c8b03b6331943aadc390c8131104ff6587f874b"
-    },
-    {
       "filename": "BUILD_EFFECTIVENESS_STANDARD.md",
       "version": "1",
       "file_hash": "36351307c8d6",
@@ -421,6 +399,39 @@
       "path": "governance/canon/BUILD_TREE_EXECUTION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "01a65186bf0b1bd9b17ef330a554476bffe1764c0350e9f366515d640afcc9bf"
+    },
+    {
+      "filename": "BUILDER_CONTRACT_BINDING_CHECKLIST.md",
+      "version": "1.2.0",
+      "file_hash": "1294da29d84f",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: BUILDER_CONTRACT_BINDING_CHECKLIST",
+      "type": "canon",
+      "path": "governance/canon/BUILDER_CONTRACT_BINDING_CHECKLIST.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "1294da29d84fb47af3fe7367068c635a277fd4575134439dc24c77167a22e67f"
+    },
+    {
+      "filename": "BUILDER_FIRST_PR_MERGE_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "ca9d2c96be68",
+      "effective_date": "2025-12-22",
+      "description": "Canonical governance document: BUILDER_FIRST_PR_MERGE_MODEL",
+      "type": "canon",
+      "path": "governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "ca9d2c96be68a944a9a04ed504e2c3faf1aed8b3cd70acc82d0be09cb4b8a0cf"
+    },
+    {
+      "filename": "BUILDER_QA_HANDOVER_POLICY.md",
+      "version": "1.0",
+      "file_hash": "dffdaddb554d",
+      "effective_date": "unknown",
+      "description": "This policy defines the **Builder QA Handover Contract** - the canonical requirements for Builder agents to hand over work to the Governance Gate for merge authorization.",
+      "type": "policy",
+      "path": "governance/policy/BUILDER_QA_HANDOVER_POLICY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "dffdaddb554d1b9486122bcf1c8b03b6331943aadc390c8131104ff6587f874b"
     },
     {
       "filename": "CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md",
@@ -555,6 +566,17 @@
       "file_hash_sha256": "4004262d4a0e3b49e04be6318f8843dcf3f4d30e8b8b901463f8fa31386378ae"
     },
     {
+      "filename": "CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "d3775794a67f",
+      "effective_date": "2026-02-10",
+      "description": "This canon defines the **mandatory transport protocol** for governance ripple events",
+      "type": "canon",
+      "path": "governance/canon/CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "d3775794a67fcb35ef2ccc2d663e844f09bcd7985191d6ba03f8a81c3b167b7b"
+    },
+    {
       "filename": "CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md",
       "version": "1.0.0",
       "file_hash": "953b3a49327f",
@@ -575,17 +597,6 @@
       "path": "governance/canon/CROSS_REPOSITORY_RIPPLE_AWARENESS_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "43105c47f70c4d455d6cf5a104f5a47224c882d3fc25dd1b9c3225df7a0ce61d"
-    },
-    {
-      "filename": "CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "d3775794a67f",
-      "effective_date": "2026-02-10",
-      "description": "This canon defines the **mandatory transport protocol** for governance ripple events",
-      "type": "canon",
-      "path": "governance/canon/CROSS_REPO_RIPPLE_TRANSPORT_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "d3775794a67fcb35ef2ccc2d663e844f09bcd7985191d6ba03f8a81c3b167b7b"
     },
     {
       "filename": "CS2_AGENT_FILE_AUTHORITY_MODEL.md",
@@ -665,6 +676,17 @@
       "file_hash_sha256": "99ac8dcabc3780e28914c3ca25a4629f20b3ff331983307b333635a5aa3f7913"
     },
     {
+      "filename": "effectiveness.template.md",
+      "version": "1",
+      "file_hash": "ff1b2f86f2c7",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: effectiveness.template",
+      "type": "canon",
+      "path": "governance/canon/effectiveness.template.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "ff1b2f86f2c7ff80a987789fed75718c7ee8c699f4fd238609714c92ba8f8381"
+    },
+    {
       "filename": "ENFORCEMENT_DESIGN_NOTE.md",
       "version": "1.0.0",
       "file_hash": "0edcd8f08eb2",
@@ -718,6 +740,17 @@
       "path": "governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL_MONITORING_AND_ENFORCEMENT.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "f16bd300b7a32964772198b4201c9a5077bd41be0b74b5e758131b4d81689d2c"
+    },
+    {
+      "filename": "failure.template.md",
+      "version": "1",
+      "file_hash": "21ef14966907",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: failure.template",
+      "type": "canon",
+      "path": "governance/canon/failure.template.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "21ef14966907a7b21bc90dc092f549f9554a379288be542e0bc8aa07bf51951a"
     },
     {
       "filename": "FAILURE_PROMOTION_RULE.md",
@@ -1050,17 +1083,6 @@
       "file_hash_sha256": "8bcec0b387419dfb023c3b58f965c21320d51ef49a40eae000477f94aaa4f257"
     },
     {
-      "filename": "INITIALIZATION_COMPLETENESS_GATE.md",
-      "version": "1.0",
-      "file_hash": "23d86014f109",
-      "effective_date": "unknown",
-      "description": "This document defines the **Initialization Completeness Gate** — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
-      "type": "canon",
-      "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "23d86014f109ddcd13fb2ade8c3a911deb698d04e772563b570b12fa67b9320a"
-    },
-    {
       "filename": "IN_BETWEEN_WAVE_RECONCILIATION.md",
       "version": "1.0.0",
       "file_hash": "e19cc6889611",
@@ -1070,6 +1092,17 @@
       "path": "governance/canon/IN_BETWEEN_WAVE_RECONCILIATION.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "e19cc6889611ab34e2054133844fed28d384fea7a9d82c319cca7bae01f60775"
+    },
+    {
+      "filename": "INITIALIZATION_COMPLETENESS_GATE.md",
+      "version": "1.0",
+      "file_hash": "23d86014f109",
+      "effective_date": "unknown",
+      "description": "This document defines the **Initialization Completeness Gate** — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
+      "type": "canon",
+      "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "23d86014f109ddcd13fb2ade8c3a911deb698d04e772563b570b12fa67b9320a"
     },
     {
       "filename": "LAYER_UP_PROTOCOL.md",
@@ -1129,13 +1162,13 @@
     {
       "filename": "LIVING_AGENT_SYSTEM.md",
       "version": "1.0.0 | **Authority**: CS2",
-      "file_hash": "43e751bd6dc6",
+      "file_hash": "ce26928e1492",
       "effective_date": "unknown",
       "description": "Canonical governance document: LIVING_AGENT_SYSTEM",
       "type": "canon",
       "path": "governance/canon/LIVING_AGENT_SYSTEM.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "43e751bd6dc6a358bc640775ef90cee15676d6743d98a2ff0edf1aed366b3f6f"
+      "file_hash_sha256": "ce26928e149252e0afdc1b3f1edc7cda3e5c18b6908a78024ab99fe9af9ef4cd"
     },
     {
       "filename": "MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md",
@@ -1336,28 +1369,6 @@
       "file_hash_sha256": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253"
     },
     {
-      "filename": "PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "ea3b2086b494",
-      "effective_date": "2026-01-14",
-      "description": "This protocol establishes **Pre-Implementation Behavior Review** as a mandatory step in all enhancement testing workflows to prevent repeated test rework cycles caused by assumptions about expected...",
-      "type": "canon",
-      "path": "governance/canon/PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "ea3b2086b49496a777a661085a1c24c5ca4fd2d827c10faf3589d02489ffd48a"
-    },
-    {
-      "filename": "PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "bef0d48e538f",
-      "effective_date": "2026-02-04",
-      "description": "This protocol establishes **mandatory pre-work governance self-test and gap detection** for ALL agents before starting any new job, issue, or pull request",
-      "type": "canon",
-      "path": "governance/canon/PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "bef0d48e538f93e5dc9298b4ddad95c79ca75d34e3e5265653c89498e2299a61"
-    },
-    {
       "filename": "PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md",
       "version": "1.0.0",
       "file_hash": "416e0bd5bbc4",
@@ -1400,6 +1411,28 @@
       "path": "governance/canon/PR_SCOPE_CONTROL_POLICY.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "05bb5cdcbbd07accef92c1a21bca8f553c2018919752839171cdd719adedfd98"
+    },
+    {
+      "filename": "PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "ea3b2086b494",
+      "effective_date": "2026-01-14",
+      "description": "This protocol establishes **Pre-Implementation Behavior Review** as a mandatory step in all enhancement testing workflows to prevent repeated test rework cycles caused by assumptions about expected...",
+      "type": "canon",
+      "path": "governance/canon/PRE_IMPLEMENTATION_BEHAVIOR_REVIEW_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "ea3b2086b49496a777a661085a1c24c5ca4fd2d827c10faf3589d02489ffd48a"
+    },
+    {
+      "filename": "PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "bef0d48e538f",
+      "effective_date": "2026-02-04",
+      "description": "This protocol establishes **mandatory pre-work governance self-test and gap detection** for ALL agents before starting any new job, issue, or pull request",
+      "type": "canon",
+      "path": "governance/canon/PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "bef0d48e538f93e5dc9298b4ddad95c79ca75d34e3e5265653c89498e2299a61"
     },
     {
       "filename": "QA_CATALOG_ALIGNMENT_GATE_CANON.md",
@@ -1510,6 +1543,17 @@
       "path": "governance/canon/RIPPLE_RUNTIME_INTEGRATION_SURVEY.md",
       "layer_down_status": "INTERNAL",
       "file_hash_sha256": "91be57a892684c2686f8f85b5a63f0bb817884ecab5a06b667258b338e1ad76c"
+    },
+    {
+      "filename": "scope-declaration.template.md",
+      "version": "1",
+      "file_hash": "06e4173ff848",
+      "effective_date": "unknown",
+      "description": "Canonical governance document: scope-declaration.template",
+      "type": "canon",
+      "path": "governance/canon/scope-declaration.template.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "06e4173ff8485b6a1af86a91d12484856c5c7f4d193f38ae88e79573e646c5ee"
     },
     {
       "filename": "SCOPE_DECLARATION_SCHEMA.md",
@@ -1675,39 +1719,6 @@
       "path": "governance/canon/WE_ONLY_FAIL_ONCE_DOCTRINE.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "fe01cf1078ec905fafbc235eddec117325e9491e5575b5d0233b8216e13a7574"
-    },
-    {
-      "filename": "effectiveness.template.md",
-      "version": "1",
-      "file_hash": "ff1b2f86f2c7",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: effectiveness.template",
-      "type": "canon",
-      "path": "governance/canon/effectiveness.template.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "ff1b2f86f2c7ff80a987789fed75718c7ee8c699f4fd238609714c92ba8f8381"
-    },
-    {
-      "filename": "failure.template.md",
-      "version": "1",
-      "file_hash": "21ef14966907",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: failure.template",
-      "type": "canon",
-      "path": "governance/canon/failure.template.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "21ef14966907a7b21bc90dc092f549f9554a379288be542e0bc8aa07bf51951a"
-    },
-    {
-      "filename": "scope-declaration.template.md",
-      "version": "1",
-      "file_hash": "06e4173ff848",
-      "effective_date": "unknown",
-      "description": "Canonical governance document: scope-declaration.template",
-      "type": "canon",
-      "path": "governance/canon/scope-declaration.template.md",
-      "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "06e4173ff8485b6a1af86a91d12484856c5c7f4d193f38ae88e79573e646c5ee"
     }
   ]
 }

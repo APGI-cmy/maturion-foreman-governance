@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-14
+**Last Updated**: 2026-02-14 (Survey update)
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -893,6 +893,7 @@ Implementation completion reports (not canonical governance, but records impleme
 ## Summary
 
 **Total Governance Artifacts Inventoried**: 286+
+**Total Canon Inventory Entries (CANON_INVENTORY.json)**: 156
 
 **Category Distribution**:
 - **Readiness**: Primary category for platform, build, and execution readiness governance
@@ -903,13 +904,86 @@ Implementation completion reports (not canonical governance, but records impleme
 **Notes**:
 - Some artifacts are uncategorized (marked as documentation, philosophy, templates, or implementation status)
 - Many artifacts serve multiple categories simultaneously
-- No interpretation, correction, or gap analysis has been applied
-- This inventory was last updated 2026-02-04 to include governance inventory system artifacts (GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md, GOVERNANCE_INVENTORY_SCHEMA.json, PRE_WORK_GOVERNANCE_SELF_TEST_PROTOCOL.md, governance-gap-analyzer.sh, GOVERNANCE_INVENTORY.json.template)
+- This inventory was last updated 2026-02-14 with comprehensive survey findings
 
 **PUBLIC_API Artifacts** (external tooling may depend on these):
 - `GOVERNANCE_AGENT_REQUIREMENTS_MATRIX.md` - Agent requirements matrix
 - `GOVERNANCE_INVENTORY_SCHEMA.json` - Inventory validation schema
 - `governance-gap-analyzer.sh` - Gap detection script
+
+---
+
+## Survey Findings (2026-02-14)
+
+### Survey Scope
+Comprehensive survey of the entire governance repository per issue request. Covers canon inventory integrity, duplicate detection, conflict identification, provenance completeness, and structural recommendations.
+
+### CANON_INVENTORY.json Integrity Fixes Applied
+
+| Issue | File | Before | After |
+|-------|------|--------|-------|
+| Stale SHA256 hash | `LIVING_AGENT_SYSTEM.md` | `43e751bd6dc6...` | `ce26928e1492...` (matches disk) |
+| Stale short hash | `AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md` | `e638c94a4815` | `9ee48f13d99e` (matches sha256 prefix) |
+| Missing entry | `agent-contracts-guidance/.agent.schema.md` | Not in inventory | Added with correct sha256 |
+| Incorrect count | `total_canons` | 155 | 156 |
+
+### Files Outside `governance/canon/` Listed in Canon Inventory
+
+11 files in CANON_INVENTORY.json are located outside `governance/canon/`:
+
+| File | Location | Type |
+|------|----------|------|
+| `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | `governance/policy/` | policy |
+| `ARCHITECTURE_TEST_TRACEABILITY_METHODOLOGY.md` | `governance/policy/` | policy |
+| `AUTOMATED_DEPRECATION_DETECTION_GATE.md` | `governance/policy/` | policy |
+| `BUILDER_QA_HANDOVER_POLICY.md` | `governance/policy/` | policy |
+| `FM_MATURION_DELEGATED_ACTION_POLICY.md` | `governance/policy/` | policy |
+| `POLICY-NO-ONLY-LANGUAGE.md` | `governance/policy/` | policy |
+| `PR_GATE_FAILURE_HANDLING_PROTOCOL.md` | `governance/policy/` | policy |
+| `QA_POLICY_MASTER.md` | `governance/policy/` | policy |
+| `TEST_REMOVAL_GOVERNANCE_GATE.md` | `governance/policy/` | policy |
+| `MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md` | `governance/strategy/` | strategy |
+| `BUILD_PROGRESS_TRACKER_TEMPLATE.md` | `governance/templates/` | template |
+
+**Assessment**: These files are correctly typed as policy/strategy/template and their current locations match their types. They are legitimately tracked in the canon inventory even though they are not in the `governance/canon/` subdirectory. No action required — the inventory correctly reflects their actual locations.
+
+### Duplicate Filenames Across Repository
+
+Files with the same name appearing in multiple locations:
+
+| Filename | Locations | Assessment |
+|----------|-----------|------------|
+| `scope-declaration.md` | `./scope-declaration.md`, `./governance/scope-declaration.md` | Potential conflict — recommend consolidating |
+| `WAVE_MODEL.md` | `governance/canon/WAVE_MODEL.md`, `governance/execution/WAVE_MODEL.md` | Potential conflict — canon version is authoritative |
+| `IMPLEMENTATION_COMPLETE.md` | `./IMPLEMENTATION_COMPLETE.md`, `./implementation/IMPLEMENTATION_COMPLETE.md` | Different scopes — root is repo-level, implementation/ is phase-specific |
+| `IMPLEMENTATION_SUMMARY.md` | `./IMPLEMENTATION_SUMMARY.md`, `./implementation/IMPLEMENTATION_SUMMARY.md` | Different scopes — similar to above |
+| Other duplicates | `lessons-learned.md`, `patterns.md`, `README.md`, etc. | Agent workspace files — expected per-agent duplication |
+
+### Provenance Gaps
+
+69 out of 156 canon entries have incomplete provenance:
+- **Missing `effective_date`**: 69 entries have `"effective_date": "unknown"`
+- **Missing `version`**: 2 entries have `"version": "unknown"`
+
+This is documented but not automatically remediable — provenance data requires manual review of each canon file's header to extract accurate dates and versions.
+
+### Root-Level File Accumulation
+
+67 markdown files exist at the repository root level. Many are:
+- **Archive/historical files**: 17 `PREHANDOVER_PROOF_archive_*` files
+- **RCA/analysis documents**: 4 `RCA_*.md` files
+- **Implementation status documents**: Multiple `*_IMPLEMENTATION_*.md`, `*_SUMMARY.md` files
+- **One-time reports**: `GAP_ANALYSIS.md`, `GOVERNANCE_GAP_ANALYSIS_FINDINGS.md`, etc.
+
+**Recommendation**: These files contribute to root-level clutter. Consider archiving completed/historical documents to a dedicated `archive/` directory. This is a CS2-level structural decision.
+
+### Structural Recommendations (Require CS2 Approval)
+
+1. **Archive root-level historical files**: Move `PREHANDOVER_PROOF_archive_*` and completed RCA/analysis files to an `archive/` directory
+2. **Resolve `WAVE_MODEL.md` duplication**: Determine if `governance/execution/WAVE_MODEL.md` should be removed or redirected to canon version
+3. **Resolve `scope-declaration.md` duplication**: Consolidate the two root-level and governance-level copies
+4. **Fill provenance gaps**: Schedule systematic review to populate `effective_date` and `version` for the 69 canon entries with `"unknown"` values
+5. **Automate inventory validation**: Add CI check to verify CANON_INVENTORY.json hashes match actual files on disk
 
 ---
 
