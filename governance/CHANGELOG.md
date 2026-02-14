@@ -67,11 +67,11 @@ Each entry follows this structure:
 ### [LEARNING-FILE-STALENESS-ENFORCEMENT] - 2026-02-14 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)
-**Approved By**: Pending (CS2/Johan approval for PR merge)
-**Effective Date**: Upon PR merge (target: 2026-02-14)
+**Approved By**: CS2 approval tracked in PR review
+**Effective Date**: 2026-02-14
 **Layer-Down Status**: PUBLIC_API - Recommended ripple to all consumer repositories (non-breaking)
 
-**Summary**: Enhanced AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md (v1.0.0 → v1.1.0) to add learning file staleness enforcement (Section 15). Prevents personal learning files from remaining as placeholders indefinitely by detecting and flagging files unchanged after 3+ agent sessions. Includes new CI/CD gate (`learning-file-staleness-gate.yml`) and enhanced session closure protocol with explicit learning capture warnings. Addresses Issue #[TBD] - Learning Loop: Prevent Learning File Placeholders from Bypassing True Insight Capture.
+**Summary**: Enhanced AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md (v1.0.0 → v1.1.0) to add learning file staleness enforcement (Section 15). Prevents personal learning files from remaining as placeholders indefinitely by detecting and flagging files unchanged after 3+ agent sessions. Includes new CI/CD gate (`learning-file-staleness-gate.yml`) and enhanced session closure protocol with explicit learning capture warnings. Addresses issue: Learning Loop - Prevent Learning File Placeholders from Bypassing True Insight Capture (tag: learning-files-placeholder-enforcement-20260214).
 
 **Affected Artifacts**:
 - `governance/canon/AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md` (UPDATED v1.0.0 → v1.1.0 - added Section 15: Learning File Staleness Enforcement)
