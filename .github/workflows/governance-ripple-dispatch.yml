@@ -8,6 +8,12 @@ on:
       - 'governance/**'
       - 'BUILD_PHILOSOPHY.md'
       - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual dispatch (e.g., smoke test, replay)'
+        required: false
+        default: 'Manual smoke test'
 
 jobs:
   dispatch-ripple:
@@ -41,6 +47,9 @@ jobs:
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          DISPATCH_REASON="${{ github.event.inputs.reason || 'Auto dispatch from push' }}"
+          
+          echo "📋 Dispatch reason: $DISPATCH_REASON"
           
           echo "${{ steps.registry.outputs.consumers }}" | while read -r repo; do
             [ -z "$repo" ] && continue
@@ -54,6 +63,7 @@ jobs:
               -f client_payload[source_repo]="APGI-cmy/maturion-foreman-governance" \
               -f client_payload[commit_sha]="$COMMIT_SHA" \
               -f client_payload[commit_message]="$COMMIT_MESSAGE" \
+              -f client_payload[dispatch_reason]="$DISPATCH_REASON" \
               -f client_payload[timestamp]="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
               && echo "  ✅ Dispatched successfully" \
               || echo "  ❌ Dispatch failed"
