@@ -6,7 +6,7 @@
 PR_ID: copilot/create-governance-inventory-system
 DATE_UTC: 2026-02-04T13:45:00Z
 AGENT_ID: governance-repo-administrator
-RESPONSIBILITY_DOMAIN: Canonical Governance Maintenance
+RESPONSIBILITY_DOMAIN: Governance Administration
 CHANGE_TYPE: governance_canon_creation
 ---
 ```
