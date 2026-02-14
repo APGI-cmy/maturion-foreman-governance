@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-13",
-  "total_canons": 154,
-  "generation_timestamp": "2026-02-13T13:23:55Z",
+  "last_updated": "2026-02-14",
+  "total_canons": 155,
+  "generation_timestamp": "2026-02-14T08:20:00Z",
   "canons": [
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
@@ -91,6 +91,17 @@
       "path": "governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "de6777e1cbffbf10c7bdce2f5b0b13dd2b1df053f46bd6e1428d4357480449d7"
+    },
+    {
+      "filename": "AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md",
+      "version": "1.0.0",
+      "file_hash": "e638c94a4815",
+      "effective_date": "2026-02-14",
+      "description": "Constitutional canon establishing mandatory pre-task environmental health scanning, autonomous remediation, escalation, and full auditability requirements for all agents in the Living Agent System.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "edb6389b652000722776971f542b032d07fb6c029da0c2bcc223b675412950fb"
     },
     {
       "filename": "AGENT_FILE_BINDING_REQUIREMENTS.md",

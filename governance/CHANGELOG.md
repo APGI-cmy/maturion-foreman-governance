@@ -64,6 +64,72 @@ Each entry follows this structure:
 
 ## Change History
 
+### [AGENT-ENVIRONMENTAL-RESPONSIBILITY-DOCTRINE] - 2026-02-14 - [BREAKING_CHANGE]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)
+**Approved By**: Pending (CS2/Johan approval for PR merge)
+**Effective Date**: Upon PR merge (target: 2026-02-14)
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories
+
+**Summary**: Created new Tier-0 constitutional canon (AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md) establishing mandatory pre-task environmental health scanning, autonomous remediation, escalation, and full auditability requirements for all agents in the Living Agent System. Enhances wake-up protocol with Step 4.5 (Environment Health Scan & Remediation) to ensure agents are truly autonomous and responsible stewards of their operating environment.
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md` (NEW - Tier-0 constitutional canon defining Scan → Remediate → Escalate → Work workflow)
+- `.github/scripts/wake-up-protocol.sh` (UPDATED - added Step 4.5: Environment Health Scan & Remediation with autonomous remediation functions)
+- `governance/canon/LIVING_AGENT_SYSTEM.md` (UPDATED - documented enhanced wake-up protocol with Step 5 renumbered to include new health scan)
+- `governance/CANON_INVENTORY.json` (UPDATED - added new doctrine with full SHA256 hash: edb6389b652000722776971f542b032d07fb6c029da0c2bcc223b675412950fb)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED - documented new constitutional canon)
+- `governance/CHANGELOG.md` (UPDATED - this entry)
+
+**Migration Required**: YES - Mandatory layer-down to all consumer repositories
+
+**Migration Guidance**: 
+1. **All Consumer Repositories** (APGI-cmy/maturion-foreman-office-app, APGI-cmy/PartPulse, APGI-cmy/maturion-isms, APGI-cmy/R_Roster):
+   - Copy AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md to governance/canon/
+   - Update CANON_INVENTORY.json with new doctrine entry and SHA256 hash
+   - Update wake-up-protocol.sh with Step 4.5 environment health scan
+   - Add LOCKED Environmental Responsibility section to all agent contracts
+   - Update governance/alignment merge gate to verify environment health status
+   - Test wake-up protocol execution with all agents
+   - Validate autonomous remediation for common issues (missing directories, memory rotation)
+
+2. **Agent Contract Updates** (ALL agents in ALL repositories):
+   - Add LOCKED "Environmental Responsibility" section per Section 10 of doctrine
+   - Section MUST reference doctrine version 1.0.0
+   - Section MUST list autonomous remediation authority
+   - Section MUST list escalation-required issues
+   - Section protected by check_locked_sections.py validation
+
+3. **Merge Gate Updates**:
+   - governance/alignment gate MUST verify environment-health.json exists and is recent
+   - Block merge if environment health status is CRITICAL
+   - Verify LOCKED sections exist in all agent contracts
+   - Log environment health status in CI/CD build artifacts
+
+**Rationale**: 
+- **Autonomous Responsibility Gap**: Agents currently rely on manual intervention for common workspace issues (missing directories, memory rotation, file initialization)
+- **Environment Debt**: Workspace degradation accumulates across sessions without systematic detection/remediation
+- **Governance Alignment**: Agents need pre-task verification of CANON_INVENTORY.json and governance state before work
+- **Auditability**: Environment health checks, remediations, and escalations must be logged for compliance
+- **CS2 Workload**: Reduce CS2 escalations for trivial environment issues that agents can autonomously fix
+
+**Impact**: 
+- **Breaking Change Classification**: MAJOR BREAKING CHANGE (affects all agents, all repositories, all sessions)
+- **Affected Repositories**: All 4 consumer repos + governance repo (5 total)
+- **Affected Agents**: ALL agent classes (Overseer, Administrator, Liaison, Builder, Foreman) - 100% coverage
+- **Affected Processes**: Wake-up protocol, session start, environment health management, escalation workflows
+- **Backward Compatibility**: NOT backward compatible - all agents MUST adopt Step 4.5 before next session
+- **Immediate Action Required**: All consumer repositories must receive ripple within 7 days per doctrine Section 14.3
+
+**References**:
+- Issue: APGI-cmy/maturion-foreman-governance (Issue tracking constitutional canon creation and ripple activation)
+- PR: (This PR - governance-repo-administrator execution)
+- Authority: LIVING_AGENT_SYSTEM.md v1.0.0, AGENT_SELF_GOVERNANCE_PROTOCOL.md v1.0.0
+- Doctrine Version: 1.0.0 (effective 2026-02-14)
+- CS2 Approval: REQUIRED (constitutional canon change)
+
+---
+
 ### [TRS-GOVERNANCE-LAYER-UP] - 2026-02-13 - [BREAKING_CHANGE]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)

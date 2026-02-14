@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-13
+**Last Updated**: 2026-02-14
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -67,6 +67,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical gate protocols for each agent class (Overseer, Liaison, Builder, Foreman). Defines merge gate requirements, self-alignment authority, escalation triggers, validation methods, and CI/CD integration per agent class. Addresses GAP-001 from Living Agent System v5.0.0 rollout | PR-gates, Readiness, Layer-down |
 | `AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` | **UPDATED v3.1.0 (2026-01-26)** - Granular authority hierarchy for agent contracts with atomic layer-down compliance requirements for consumer repos | PR-gates, Layer-down, Readiness |
 | `AGENT_CONTRACT_PROTECTION_PROTOCOL.md` | **UPDATED v1.1.0 (2026-01-26)** - Protocol for agent contract protection with locked sections and atomic layer-down requirements | PR-gates, Layer-down, Readiness |
+| `AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md` | **NEW v1.0.0 (2026-02-14) PUBLIC_API CONSTITUTIONAL** - Tier-0 constitutional canon establishing mandatory pre-task environmental health scanning, autonomous remediation, escalation, and full auditability requirements for all agents. Defines Scan → Remediate → Escalate → Work workflow, sandbox boundaries, LOCKED Environmental Responsibility section requirement for all agent contracts, and integration with wake-up protocol Step 4.5. Critical foundation for truly autonomous and responsible Living Agent System | Readiness, Layer-down, PR-gates, Feedback/learning |
 | `AGENT_RECRUITMENT.md` | Defines rules for recruiting and activating agents | Readiness |
 | `AGENT_ROLE_GATE_APPLICABILITY.md` | Maps which PR gates apply to which agent roles | PR-gates |
 | `AGENT_SELF_GOVERNANCE_PROTOCOL.md` | **NEW (2026-01-21)** - Defines universal agent self-governance check before every job, agent-specific alignment rules, and mandatory attestation requirements | Layer-down, Readiness, PR-gates |
