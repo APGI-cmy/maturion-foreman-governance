@@ -84,3 +84,13 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 **Related Learnings**: Fixed in Session 016 - event_type mismatch (governance-ripple vs governance_ripple) blocked all cross-repo governance synchronization
 
 ---
+
+## Pattern: Canon Inventory Hash Drift
+- Observed: 2026-02-14 (Session 024)
+- Context: When canon files are updated (e.g. LIVING_AGENT_SYSTEM.md), the CANON_INVENTORY.json hashes may not be regenerated
+- Response: Run sha256 verification against all inventory entries after any canon file change; fix mismatches immediately
+
+## Pattern: Root-Level File Accumulation
+- Observed: 2026-02-14 (Session 024)
+- Context: Historical/archive files accumulate at repository root level (67 md files found)
+- Response: Document for CS2 review; recommend archival to dedicated directory
