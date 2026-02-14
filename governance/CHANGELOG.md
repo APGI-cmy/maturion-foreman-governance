@@ -64,6 +64,64 @@ Each entry follows this structure:
 
 ## Change History
 
+### [LEARNING-FILE-STALENESS-ENFORCEMENT] - 2026-02-14 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)
+**Approved By**: CS2 approval tracked in PR review
+**Effective Date**: 2026-02-14
+**Layer-Down Status**: PUBLIC_API - Recommended ripple to all consumer repositories (non-breaking)
+
+**Summary**: Enhanced AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md (v1.0.0 → v1.1.0) to add learning file staleness enforcement (Section 15). Prevents personal learning files from remaining as placeholders indefinitely by detecting and flagging files unchanged after 3+ agent sessions. Includes new CI/CD gate (`learning-file-staleness-gate.yml`) and enhanced session closure protocol with explicit learning capture warnings. Addresses issue: Learning Loop - Prevent Learning File Placeholders from Bypassing True Insight Capture (tag: learning-files-placeholder-enforcement-20260214).
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md` (UPDATED v1.0.0 → v1.1.0 - added Section 15: Learning File Staleness Enforcement)
+- `.github/scripts/check-learning-file-staleness.sh` (NEW - detection script for placeholder-only learning files with session count tracking)
+- `.github/workflows/learning-file-staleness-gate.yml` (NEW - CI/CD gate enforcing learning capture after 3 sessions)
+- `.github/scripts/session-closure.sh` (UPDATED - enhanced Step 4 with staleness checking and interactive learning capture for patterns/anti-patterns)
+- `governance/CANON_INVENTORY.json` (UPDATED - doctrine hash: 9ee48f13d99e962be536b1cd85d73a47f4c8b5c89bae81438820ffbb18529ea8, version: 1.1.0)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED - documented doctrine update)
+- `governance/CHANGELOG.md` (UPDATED - this entry)
+
+**Migration Required**: NO (non-breaking enhancement - backward compatible)
+
+**Migration Guidance**: 
+1. **Recommended for All Consumer Repositories** (optional but beneficial):
+   - Copy updated AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md to governance/canon/
+   - Update CANON_INVENTORY.json with new doctrine hash and version 1.1.0
+   - Copy check-learning-file-staleness.sh to .github/scripts/
+   - Copy learning-file-staleness-gate.yml to .github/workflows/
+   - Update session-closure.sh with enhanced Step 4 learning capture
+   - Test staleness detection with existing agent workspaces
+
+2. **Enforcement Thresholds**:
+   - Sessions 0-1: Placeholder content acceptable
+   - Session 2: Warning displayed during session closure
+   - Sessions 3+: CI gate fails, merge blocked
+
+3. **Acceptable Justifications** (if no real learnings):
+   - Document explicit justification replacing placeholder
+   - Example: "No failures encountered in last N sessions - all processes worked as expected"
+
+**Rationale**: 
+Learning capture is foundational to agent self-evolution, risk avoidance, and auditability. Without enforcement, placeholder files persist indefinitely, undermining:
+- Post-mortem reviews (failures may repeat undetected)
+- Pattern recognition across agent lifecycles
+- Constitutional requirements in MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md
+
+**Impact**: 
+- **All agents** with personal learning files in .agent-workspace/<agent-type>/personal/
+- **CI/CD pipelines** gain new learning-capture/staleness gate
+- **Session closure protocol** now enforces explicit learning capture confirmation
+- **Merge gates** will block PRs if learning files are stale (3+ sessions with placeholders)
+
+**References**: 
+- Issue: [Learning Loop] Prevent Learning File Placeholders from Bypassing True Insight Capture in Environmental Responsibility Doctrine
+- Tag: learning-files-placeholder-enforcement-20260214
+- Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.1.0 Section 15
+- Authority: MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md
+
+---
+
 ### [AGENT-ENVIRONMENTAL-RESPONSIBILITY-DOCTRINE] - 2026-02-14 - [BREAKING_CHANGE]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)

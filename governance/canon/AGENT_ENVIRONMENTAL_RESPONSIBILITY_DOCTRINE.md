@@ -3,8 +3,9 @@
 ## Status
 **Type**: Constitutional Canon  
 **Authority**: CS2 (Johan Ras)  
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Effective Date**: 2026-02-14  
+**Last Updated**: 2026-02-14  
 **Owner**: Maturion Engineering Leadership  
 **Precedence**: Tier-0 Constitutional Canon - Supreme Authority  
 **Applies To**: All Agents, All Repositories, All Sessions  
@@ -797,15 +798,168 @@ If environment health scan returns DEGRADED (not CRITICAL), agents MAY proceed w
 
 ---
 
-## 15. Version History
+## 15. Learning File Staleness Enforcement
 
-| Version | Date       | Changes                                    | Authority    |
-|---------|------------|--------------------------------------------|--------------|
-| 1.0.0   | 2026-02-14 | Initial constitutional canon creation      | CS2 (Johan)  |
+### 15.1 Purpose
+
+This section addresses the risk of personal learning files remaining as placeholders indefinitely, bypassing the learning capture intent foundational to agent self-evolution and governance.
+
+**Problem**: The autonomous remediation authority (Section 5.1.2) allows agents to create learning files with placeholder templates. Without enforcement, these files may never be updated with real learnings, undermining:
+- Post-mortem reviews (failures may repeat undetected)
+- Pattern recognition across agent lifecycles
+- The constitutional requirement for continuous learning capture
+
+### 15.2 Learning File Staleness Definition
+
+**Stale Learning File**: A personal learning file that:
+1. Contains only placeholder content (e.g., "No lessons yet - first session")
+2. Has remained unchanged for N or more agent sessions (N = 3)
+3. Lacks justification for emptiness
+
+**Personal Learning Files Subject to Enforcement**:
+- `personal/lessons-learned.md` - Mistakes to avoid
+- `personal/patterns.md` - Recurring positive patterns
+- `personal/anti-patterns.md` - Things that don't work
+- `personal/efficiency-log.md` - Process improvements
+
+### 15.3 Detection Mechanism
+
+**Automated Detection**: `.github/scripts/check-learning-file-staleness.sh`
+
+**Detection Criteria**:
+1. File content analysis for placeholder markers:
+   - "No lessons yet - first session"
+   - "No patterns yet - first session"
+   - "No efficiency notes yet - first session"
+   - "No anti-patterns documented yet - first session"
+2. Minimal content check (< 3 non-header lines)
+3. Session count tracking from memory directory
+
+**Session Count Calculation**:
+```
+Total Sessions = Active Sessions (memory/) + Archived Sessions (memory/.archive/)
+```
+
+### 15.4 Enforcement Thresholds
+
+| Sessions | Status | Action |
+|----------|--------|--------|
+| 0-1 | ACCEPTABLE | Placeholder allowed for first/second session |
+| 2 | WARNING | Warn agent during session closure |
+| 3+ | STALE | Fail CI/CD, block merge |
+
+### 15.5 CI/CD Integration
+
+**Workflow**: `.github/workflows/learning-file-staleness-gate.yml`
+
+**Job Name**: `learning-capture/staleness`
+
+**Trigger Events**:
+- `pull_request` (opened, synchronize, reopened)
+- `push` to main branch
+
+**Failure Behavior**:
+- Block merge if stale files detected
+- Provide clear error messages with file names and session counts
+- Reference this doctrine and MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md
+
+**Evidence-Based Bypass**: Per BL-027/BL-028, if PREHANDOVER_PROOF documents learning file validation, skip redundant execution.
+
+### 15.6 Session Closure Integration
+
+**Enhanced Session Closure** (`.github/scripts/session-closure.sh`):
+
+**Step 4 - Update Personal Learnings** now includes:
+1. **Staleness Check**: Scan all learning files for placeholder content
+2. **Warning Display**: Prominent warning if stale files detected
+3. **Interactive Capture**: Prompt for lessons, patterns, anti-patterns
+4. **Explicit Justification**: If no learnings, require WHY (e.g., "No failures encountered")
+5. **Session Memory**: Log learning file update status in session memory
+
+**Warning Display Format**:
+```
+═══════════════════════════════════════════════════════════════
+  LEARNING CAPTURE WARNING
+═══════════════════════════════════════════════════════════════
+The following learning files still have placeholder content:
+  - lessons-learned.md
+  - patterns.md
+  
+Learning capture is MANDATORY per:
+  - AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.1.0
+  - MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md
+
+Placeholder files beyond 3 sessions will cause CI failures.
+═══════════════════════════════════════════════════════════════
+```
+
+### 15.7 Acceptable Empty File Justifications
+
+Agents MAY maintain empty/minimal learning files IF explicitly documented:
+
+**Acceptable Justifications**:
+- "No failures encountered in last N sessions - all processes worked as expected"
+- "No new patterns detected - existing patterns remain applicable"
+- "No anti-patterns discovered - development proceeded smoothly"
+- "Efficiency baseline established - no optimization opportunities identified"
+
+**Documentation Method**: Replace placeholder with explicit statement:
+```markdown
+# Lessons Learned
+
+## Session Status (Updated: 2026-02-14)
+
+No lessons learned in last 3 sessions. All processes executed without failures or unexpected behaviors. Existing patterns (see patterns.md) remain sufficient.
+
+---
+```
+
+### 15.8 Remediation Requirements
+
+**For Agents with Stale Files**:
+1. Review session memories for last N sessions
+2. Extract actual learnings, patterns, or anti-patterns
+3. Update learning files with real content
+4. If genuinely no learnings exist, document explicit justification
+5. Commit updated files to PR
+
+**For Governance Administrators**:
+- Monitor staleness trends across agents
+- Escalate persistent staleness (> 5 sessions) to CS2
+- Propose doctrine refinements if patterns emerge
+
+### 15.9 Escalation Path
+
+**Level 1**: Agent self-remediates during session closure  
+**Level 2**: CI gate blocks merge, requires file updates  
+**Level 3**: Persistent staleness (> 5 sessions) escalated to governance administrator  
+**Level 4**: Governance administrator escalates to CS2 if agent pattern indicates systemic issue
+
+### 15.10 Audit and Reporting
+
+**Audit Trail**:
+- Learning file update timestamps in session memory
+- Staleness warnings logged in session closure output
+- CI gate results archived in workflow artifacts
+- Escalations documented in `.agent-workspace/<agent>/escalation-inbox/`
+
+**Reporting**:
+- Monthly learning capture effectiveness report
+- Staleness trend analysis across agents
+- Correlation with incident rates and governance gap discovery
 
 ---
 
-## 16. References
+## 16. Version History
+
+| Version | Date       | Changes                                                           | Authority    |
+|---------|------------|-------------------------------------------------------------------|--------------|
+| 1.0.0   | 2026-02-14 | Initial constitutional canon creation                             | CS2 (Johan)  |
+| 1.1.0   | 2026-02-14 | Added learning file staleness enforcement (Section 15)            | CS2 (Johan)  |
+
+---
+
+## 17. References
 
 - **LIVING_AGENT_SYSTEM.md** - Agent lifecycle and wake-up protocol
 - **AGENT_SELF_GOVERNANCE_PROTOCOL.md** - Self-governance check procedures
@@ -816,5 +970,5 @@ If environment health scan returns DEGRADED (not CRITICAL), agents MAY proceed w
 
 ---
 
-**Authority**: Constitutional Canon | CS2 (Johan Ras) | Version 1.0.0 | Effective 2026-02-14  
+**Authority**: Constitutional Canon | CS2 (Johan Ras) | Version 1.1.0 | Effective 2026-02-14  
 **File**: governance/canon/AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md

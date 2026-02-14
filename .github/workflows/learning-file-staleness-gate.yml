@@ -1,0 +1,80 @@
+---
+name: Learning File Staleness Gate
+
+# Purpose: Enforce learning capture by detecting placeholder-only files
+# Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.1.0
+# Requirement: Prevent indefinite persistence of empty learning files
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  learning-file-staleness-check:
+    name: learning-capture/staleness
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for Evidence-Based Validation (BL-027/028)
+        id: evidence_check
+        run: |
+          echo "=== Evidence-Based Validation Check (BL-027/028) ==="
+          echo "Gate: Learning File Staleness"
+          echo ""
+
+          # Look for PREHANDOVER_PROOF with learning file validation documented
+          if [ -f "PREHANDOVER_PROOF.md" ] && grep -Eqi "(learning.*(file|capture)|staleness.*check)" PREHANDOVER_PROOF.md; then
+            echo "✅ Found PREHANDOVER_PROOF.md with learning file validation"
+            echo "✅ ACCEPTING evidence-based validation per BL-027/028"
+            echo "skip_execution=true" >> $GITHUB_OUTPUT
+          elif ls PREHANDOVER_PROOF_*.md 1> /dev/null 2>&1 && grep -Eqi "(learning.*(file|capture)|staleness.*check)" PREHANDOVER_PROOF_*.md 2>/dev/null; then
+            echo "✅ Found PREHANDOVER_PROOF with learning file validation"
+            echo "✅ ACCEPTING evidence-based validation per BL-027/028"
+            echo "skip_execution=true" >> $GITHUB_OUTPUT
+          else
+            echo "ℹ️  No evidence-based validation found - proceeding with check"
+            echo "skip_execution=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run Learning File Staleness Check
+        if: steps.evidence_check.outputs.skip_execution != 'true'
+        run: |
+          set -e
+
+          echo "=== Learning File Staleness Detection ==="
+          echo ""
+          echo "This check enforces learning capture by detecting:"
+          echo "  - Personal learning files with only placeholder content"
+          echo "  - Files unchanged after N agent sessions (N=3)"
+          echo ""
+          echo "Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.1.0"
+          echo "Requirement: Agents MUST capture real learnings, patterns, and anti-patterns"
+          echo ""
+
+          # Run the staleness detection script
+          if [ -x ".github/scripts/check-learning-file-staleness.sh" ]; then
+            ./.github/scripts/check-learning-file-staleness.sh
+          else
+            echo "❌ Script not found or not executable: .github/scripts/check-learning-file-staleness.sh"
+            exit 1
+          fi
+
+      - name: Report Evidence-Based Skip
+        if: steps.evidence_check.outputs.skip_execution == 'true'
+        run: |
+          echo "✅ Learning file staleness check SKIPPED"
+          echo "Reason: Evidence-based validation found in PREHANDOVER_PROOF"
+          echo "Authority: BL-027 (Evidence-Based Validation Acceptance)"
+          echo "Authority: BL-028 (Avoid Redundant Execution)"
