@@ -1,3 +1,4 @@
+---
 name: Learning File Staleness Gate
 
 # Purpose: Enforce learning capture by detecting placeholder-only files
@@ -32,7 +33,7 @@ jobs:
           echo "=== Evidence-Based Validation Check (BL-027/028) ==="
           echo "Gate: Learning File Staleness"
           echo ""
-          
+
           # Look for PREHANDOVER_PROOF with learning file validation documented
           if [ -f "PREHANDOVER_PROOF.md" ] && grep -Eqi "(learning.*(file|capture)|staleness.*check)" PREHANDOVER_PROOF.md; then
             echo "✅ Found PREHANDOVER_PROOF.md with learning file validation"
@@ -51,7 +52,7 @@ jobs:
         if: steps.evidence_check.outputs.skip_execution != 'true'
         run: |
           set -e
-          
+
           echo "=== Learning File Staleness Detection ==="
           echo ""
           echo "This check enforces learning capture by detecting:"
@@ -61,7 +62,7 @@ jobs:
           echo "Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.1.0"
           echo "Requirement: Agents MUST capture real learnings, patterns, and anti-patterns"
           echo ""
-          
+
           # Run the staleness detection script
           if [ -x ".github/scripts/check-learning-file-staleness.sh" ]; then
             ./.github/scripts/check-learning-file-staleness.sh
