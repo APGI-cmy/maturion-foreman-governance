@@ -94,3 +94,28 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 - Observed: 2026-02-14 (Session 024)
 - Context: Historical/archive files accumulate at repository root level (67 md files found)
 - Response: Document for CS2 review; recommend archival to dedicated directory
+
+## Pattern: Infrastructure Audit with GitHub Actions MCP
+
+- Observed: 2026-02-14 (Session 026)
+- Context: Auditing workflow-based infrastructure for operational readiness
+- Pattern: Use GitHub Actions MCP tools for comprehensive audit:
+  1. List workflows → identify target workflow by name
+  2. List workflow runs → check recent execution history
+  3. List workflow jobs → get job IDs for specific runs
+  4. Get job logs → verify execution details and outcomes
+  5. Check consumer repos → verify event receipt (repository_dispatch)
+- Response: This pattern provides complete audit trail without requiring direct workflow execution
+- Effectiveness: Successfully audited 11 workflow runs, confirmed 100% success rate, identified consumer receiver gaps
+
+## Pattern: Phased Infrastructure Activation
+
+- Observed: 2026-02-14 (Session 026)
+- Context: When central infrastructure is ready but downstream dependencies are not
+- Pattern: Activate central mechanism independently, allow phased downstream rollout:
+  - Central dispatch can be activated when it meets quality/reliability thresholds
+  - Consumer integrations can follow separate timeline
+  - Document partial deployment status clearly
+  - Provide guidance for downstream teams to complete integration
+- Response: Declare central dispatch "PRODUCTION READY" while consumer receivers are "PARTIAL DEPLOYMENT"
+- Justification: Central and consumer concerns are separable; central readiness should not be blocked by consumer delays

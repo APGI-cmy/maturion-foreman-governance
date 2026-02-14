@@ -61,3 +61,23 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - [2026-02-14] **CRITICAL**: ALWAYS verify responsibility domain against RESPONSIBILITY_DOMAIN_REGISTRY.md BEFORE creating scope-declaration.md - unregistered domains cause catastrophic merge gate failures
 - [2026-02-14] CANON_INVENTORY.json hashes can go stale when canon files are updated without regenerating the inventory — always verify sha256 after canon edits
 - [2026-02-14] Short hash (file_hash) field must equal first 12 chars of file_hash_sha256 — check both fields during validation
+
+### 2026-02-14 - Ripple Dispatch vs Consumer Receipt Are Separate Concerns
+
+**Context**: Auditing auto governance ripple end-to-end functionality
+
+**Lesson**: Central dispatch success does NOT guarantee consumer receipt - these are separate systems
+
+**Pattern**: 
+- Governance repo can only verify dispatch was sent (HTTP 204 success)
+- Consumer receipt depends on receiver workflows in consumer repos
+- Cannot verify consumer receipt from governance repo directly
+- Must check consumer repo workflow runs for repository_dispatch events
+
+**Action**: When auditing ripple:
+1. First verify dispatch mechanism (governance side)
+2. Then separately verify receipt (consumer side)
+3. Do not conflate dispatch success with end-to-end success
+4. Document receiver deployment status for each consumer
+
+**Impact**: Prevented false "all systems go" declaration when only 25% of consumers had receivers
