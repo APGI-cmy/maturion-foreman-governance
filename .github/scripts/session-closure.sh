@@ -291,11 +291,84 @@ EOF
 # Step 4: Update Personal Learnings
 ###############################################################################
 
+check_learning_file_staleness() {
+    local filepath="$1"
+    local filename="$2"
+    
+    if [ ! -f "$filepath" ]; then
+        return 1  # File doesn't exist
+    fi
+    
+    # Check for placeholder markers
+    if grep -qi "No lessons yet - first session" "$filepath" || \
+       grep -qi "No patterns yet - first session" "$filepath" || \
+       grep -qi "No efficiency notes yet - first session" "$filepath" || \
+       grep -qi "No anti-patterns documented yet - first session" "$filepath"; then
+        return 0  # Is placeholder
+    fi
+    
+    # Check for minimal content
+    local content_lines=$(cat "$filepath" | grep -v "^#" | grep -v "^-" | grep -v "^\*" | grep -v "^$" | grep -v "^\s*$" | wc -l)
+    if [ "$content_lines" -lt 3 ]; then
+        return 0  # Too little content
+    fi
+    
+    return 1  # Not placeholder
+}
+
 update_personal_learnings() {
     log_info "Step 4: Updating Personal Learnings"
     
     local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
     local personal_dir="${agent_workspace}/personal"
+    
+    # Check staleness of all learning files
+    local learning_files=(
+        "lessons-learned.md"
+        "patterns.md"
+        "anti-patterns.md"
+        "efficiency-log.md"
+    )
+    
+    local stale_files=()
+    
+    echo ""
+    log_info "Checking learning file staleness..."
+    for file in "${learning_files[@]}"; do
+        local filepath="${personal_dir}/${file}"
+        if check_learning_file_staleness "$filepath" "$file"; then
+            log_warning "⚠️  $file still has placeholder content"
+            stale_files+=("$file")
+        else
+            log_success "✓ $file has meaningful content"
+        fi
+    done
+    
+    # Warn if stale files exist
+    if [ ${#stale_files[@]} -gt 0 ]; then
+        echo ""
+        log_warning "═══════════════════════════════════════════════════════════════"
+        log_warning "  LEARNING CAPTURE WARNING"
+        log_warning "═══════════════════════════════════════════════════════════════"
+        echo ""
+        log_warning "The following learning files still have placeholder content:"
+        for file in "${stale_files[@]}"; do
+            echo "  - $file"
+        done
+        echo ""
+        log_warning "Learning capture is MANDATORY per:"
+        log_warning "  - AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.1.0"
+        log_warning "  - MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md"
+        echo ""
+        log_warning "Please update these files with real learnings from this session."
+        log_warning "If no learnings exist, document WHY (e.g., 'No failures encountered')."
+        echo ""
+        log_warning "Placeholder files beyond 3 sessions will cause CI failures."
+        log_warning "═══════════════════════════════════════════════════════════════"
+        echo ""
+    fi
+    
+    # Interactive lesson capture
     local lessons_file="${personal_dir}/lessons-learned.md"
     
     echo ""
@@ -311,7 +384,39 @@ update_personal_learnings() {
             log_success "Lesson added to personal learnings"
         fi
     else
-        log_info "No lessons added"
+        log_info "No lessons added this session"
+    fi
+    
+    # Optional: Add patterns
+    echo ""
+    read -p "Add pattern observation? (y/N): " add_pattern
+    
+    if [[ "$add_pattern" =~ ^[Yy]$ ]]; then
+        echo ""
+        log_info "Enter pattern observed (recurring theme):"
+        read -p "Pattern: " pattern_text
+        
+        if [ -n "$pattern_text" ]; then
+            local patterns_file="${personal_dir}/patterns.md"
+            echo "- [$(date -u +"%Y-%m-%d")] $pattern_text" >> "$patterns_file"
+            log_success "Pattern added to personal learnings"
+        fi
+    fi
+    
+    # Optional: Add anti-patterns
+    echo ""
+    read -p "Add anti-pattern? (y/N): " add_antipattern
+    
+    if [[ "$add_antipattern" =~ ^[Yy]$ ]]; then
+        echo ""
+        log_info "Enter anti-pattern (what doesn't work):"
+        read -p "Anti-pattern: " antipattern_text
+        
+        if [ -n "$antipattern_text" ]; then
+            local antipatterns_file="${personal_dir}/anti-patterns.md"
+            echo "- [$(date -u +"%Y-%m-%d")] $antipattern_text" >> "$antipatterns_file"
+            log_success "Anti-pattern added to personal learnings"
+        fi
     fi
 }
 
