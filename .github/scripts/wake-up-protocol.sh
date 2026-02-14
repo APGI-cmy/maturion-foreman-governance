@@ -175,6 +175,230 @@ check_environment() {
 }
 
 ###############################################################################
+# Step 4.5: Environment Health Scan & Remediation (NEW - Constitutional)
+# Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.0.0
+###############################################################################
+
+check_and_create_file() {
+    local filepath="$1"
+    local content="$2"
+    
+    if [ ! -f "$filepath" ]; then
+        log_warning "Missing file: $filepath"
+        echo -e "$content" > "$filepath"
+        log_success "[REMEDIATED] Created file: $(basename "$filepath")"
+        ENVIRONMENT_HEALTH_STATUS="REMEDIATED"
+        return 0
+    fi
+    return 1
+}
+
+create_environment_escalation() {
+    local issue_type="$1"
+    local summary="$2"
+    local impact="$3"
+    
+    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local escalation_file="${agent_workspace}/escalation-inbox/blocker-environment-${SESSION_TIMESTAMP}.md"
+    
+    mkdir -p "${agent_workspace}/escalation-inbox"
+    
+    cat > "$escalation_file" <<EOF
+# Environment Health Escalation
+
+## Type
+ENVIRONMENT_HEALTH_CRITICAL
+
+## Issue Summary
+$summary
+
+## Issue Type
+$issue_type
+
+## Impact
+$impact
+
+## Attempted Remediation
+Autonomous remediation not authorized for this issue type.
+
+## Recommendation
+CS2 intervention required to resolve critical environment issue.
+
+## Session Context
+- **Agent**: ${AGENT_TYPE}
+- **Session**: ${SESSION_TIMESTAMP}
+- **Branch**: ${CURRENT_BRANCH}
+
+---
+Created: $(date -u +"%Y-%m-%dT%H:%M:%SZ") | Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.0.0
+EOF
+    
+    log_error "CRITICAL ESCALATION created: $escalation_file"
+}
+
+environment_health_scan() {
+    log_info "Step 4.5: Environment Health Scan & Remediation"
+    log_info "Authority: AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md v1.0.0"
+    
+    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    ENVIRONMENT_HEALTH_STATUS="HEALTHY"
+    
+    # 1. Check and create workspace structure
+    log_info "Checking workspace structure..."
+    local required_dirs=(
+        "${agent_workspace}/memory"
+        "${agent_workspace}/memory/.archive"
+        "${agent_workspace}/personal"
+        "${agent_workspace}/context"
+        "${agent_workspace}/escalation-inbox"
+        "${agent_workspace}/escalation-inbox/resolved"
+    )
+    
+    for dir in "${required_dirs[@]}"; do
+        if [ ! -d "$dir" ]; then
+            log_warning "Missing directory: $dir"
+            mkdir -p "$dir"
+            log_success "[REMEDIATED] Created directory: $dir"
+            ENVIRONMENT_HEALTH_STATUS="REMEDIATED"
+        fi
+    done
+    
+    # 2. Check and create personal learning files
+    log_info "Checking personal learning files..."
+    check_and_create_file "${agent_workspace}/personal/lessons-learned.md" \
+"# Lessons Learned
+
+*Mistakes to avoid in future sessions*
+
+---
+
+*(No lessons yet - first session)*"
+    
+    check_and_create_file "${agent_workspace}/personal/patterns.md" \
+"# Recurring Patterns
+
+*Patterns observed across sessions*
+
+---
+
+*(No patterns yet - first session)*"
+    
+    check_and_create_file "${agent_workspace}/personal/efficiency-log.md" \
+"# Efficiency Log
+
+*Process improvements and optimization opportunities*
+
+---
+
+*(No efficiency notes yet - first session)*"
+    
+    check_and_create_file "${agent_workspace}/personal/anti-patterns.md" \
+"# Anti-Patterns
+
+*Things that don't work - avoid these*
+
+---
+
+*(No anti-patterns documented yet - first session)*"
+    
+    # 3. Check and create context files
+    log_info "Checking context files..."
+    check_and_create_file "${agent_workspace}/context/system-purpose.md" \
+"# System Purpose
+
+*Repository and system context*
+
+## Maturion Governance System
+
+The Maturion governance system provides constitutional discipline for software development across multiple repositories.
+
+---
+
+*(Initialized by environment health scan)*"
+    
+    check_and_create_file "${agent_workspace}/context/architecture.md" \
+"# System Architecture
+
+*High-level architecture understanding*
+
+## Repository Structure
+
+- \`governance/canon/\` - Canonical governance documents
+- \`.github/agents/\` - Agent contract files
+- \`.github/workflows/\` - CI/CD and merge gates
+
+---
+
+*(Initialized by environment health scan)*"
+    
+    check_and_create_file "${agent_workspace}/context/agent-role.md" \
+"# Agent Role: ${AGENT_TYPE}
+
+${AGENT_DESCRIPTION}
+
+## Primary Responsibilities
+
+*To be populated based on agent contract*
+
+---
+
+*(Initialized by environment health scan)*"
+    
+    # 4. Check memory rotation (max 5 sessions)
+    log_info "Checking memory rotation..."
+    local memory_dir="${agent_workspace}/memory"
+    if [ -d "$memory_dir" ]; then
+        local session_count=$(find "$memory_dir" -maxdepth 1 -name "session-*.md" 2>/dev/null | wc -l)
+        
+        if [ "$session_count" -gt 5 ]; then
+            log_warning "Memory rotation required: $session_count sessions (max 5)"
+            local sessions_to_archive=$((session_count - 5))
+            find "$memory_dir" -maxdepth 1 -name "session-*.md" | sort | head -n "$sessions_to_archive" | while read -r session; do
+                mv "$session" "$memory_dir/.archive/"
+                log_success "[REMEDIATED] Archived session: $(basename "$session")"
+            done
+            ENVIRONMENT_HEALTH_STATUS="REMEDIATED"
+        else
+            log_success "Memory rotation OK: $session_count sessions (max 5)"
+        fi
+    fi
+    
+    # 5. CRITICAL CHECK: Verify CANON_INVENTORY.json exists
+    log_info "Verifying governance alignment capability..."
+    if [ ! -f "$CANON_INVENTORY_MANIFEST" ]; then
+        log_error "CRITICAL: CANON_INVENTORY.json missing - cannot verify governance alignment"
+        create_environment_escalation "missing_canon_inventory" \
+            "CANON_INVENTORY.json not found at $CANON_INVENTORY_MANIFEST" \
+            "Session HALTED - cannot proceed without governance alignment verification"
+        ENVIRONMENT_HEALTH_STATUS="CRITICAL"
+        return 1
+    else
+        log_success "CANON_INVENTORY.json verified"
+    fi
+    
+    # 6. Check for protected file changes (warning only)
+    log_info "Checking for protected file changes..."
+    if git diff --name-only HEAD 2>/dev/null | grep -qE "(governance/canon/|\.github/agents/)"; then
+        log_warning "Uncommitted changes detected in protected paths (governance/canon/ or .github/agents/)"
+        log_warning "Review these changes carefully before proceeding"
+    fi
+    
+    # 7. Log overall health status
+    echo ""
+    if [ "$ENVIRONMENT_HEALTH_STATUS" = "HEALTHY" ]; then
+        log_success "Environment Health: HEALTHY ✓"
+    elif [ "$ENVIRONMENT_HEALTH_STATUS" = "REMEDIATED" ]; then
+        log_success "Environment Health: REMEDIATED ✓ (issues auto-fixed)"
+    elif [ "$ENVIRONMENT_HEALTH_STATUS" = "CRITICAL" ]; then
+        log_error "Environment Health: CRITICAL ✗ (session cannot proceed)"
+        return 1
+    fi
+    echo ""
+    
+    export ENVIRONMENT_HEALTH_STATUS
+}
+
+###############################################################################
 # Step 5: Gap Analysis
 ###############################################################################
 
@@ -422,12 +646,15 @@ assess_health() {
     "canon_inventory_exists": $([ -f "$CANON_INVENTORY_MANIFEST" ] && echo "true" || echo "false"),
     "governance_inventory_exists": $([ -f "$GOVERNANCE_INVENTORY" ] && echo "true" || echo "false")
   },
+  "environment_health_status": "${ENVIRONMENT_HEALTH_STATUS:-HEALTHY}",
+  "environment_health_doctrine_version": "1.0.0",
   "status": "wake_up_complete",
   "next_action": "begin_work_phase"
 }
 EOF
     
     log_success "Health assessment recorded: $health_file"
+    log_info "Environment Health Status: ${ENVIRONMENT_HEALTH_STATUS:-HEALTHY}"
 }
 
 ###############################################################################
@@ -573,6 +800,7 @@ main() {
     scan_memory
     load_context
     check_environment || exit 1
+    environment_health_scan || exit 1
     analyze_gaps
     generate_working_contract
     check_escalations

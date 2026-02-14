@@ -56,15 +56,18 @@ This leads to:
 2. **Memory Scan**: Read last 5 session memories from `.agent-workspace/<agent-type>/memory/`
 3. **Context Load**: Read big-picture context and architecture
 4. **Environment Check**: Verify repo state, branches, governance alignment
-5. **Gap Analysis**: Check governance inventory for missing/outdated canon
-6. **Working Contract Generation**: Create session-specific `working-contract.md`
-7. **Escalation Check**: Review escalation inbox for handoffs from other agents
-8. **Health Assessment**: Record environment health in `environment-health.json`
+5. **Environment Health Scan & Remediation** (NEW - Constitutional): Pre-task environment scanning, autonomous remediation, and escalation per AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md
+6. **Gap Analysis**: Check governance inventory for missing/outdated canon
+7. **Working Contract Generation**: Create session-specific `working-contract.md`
+8. **Escalation Check**: Review escalation inbox for handoffs from other agents
+9. **Health Assessment**: Record environment health in `environment-health.json`
 
 **Output**: 
 - `working-contract.md` (session-specific context, boundaries, mandates)
-- `environment-health.json` (last health check timestamp and status)
+- `environment-health.json` (last health check timestamp and status with environment_health_status)
 - Console confirmation of readiness state
+- Autonomous remediations logged (if any)
+- Escalations created (if critical issues detected)
 
 ### 2. Working Phase (Execution)
 
