@@ -67,8 +67,8 @@ Each entry follows this structure:
 ### [POST-MORTEM-PROTOCOL] - 2026-02-15 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)
-**Approved By**: CS2 approval tracked in PR review
-**Effective Date**: 2026-02-15
+**Approved By**: CS2 approval pending in PR review
+**Effective Date**: 2026-02-15 (upon CS2 approval)
 **Layer-Down Status**: PUBLIC_API - Recommended ripple to all consumer repositories
 
 **Summary**: Created POST_MORTEM_PROTOCOL.md (v1.0.0) establishing universal post-mortem process for completed builds. Defines mandatory agent query set (8 universal + role-specific questions), self-report requirements, foreman reconciliation process, governance up-layer/down-layer mechanisms, gap analysis methodology, standards compliance tracking, and integration with agent memory systems. Includes comprehensive templates for agent reports, reconciliation reports, gap analysis, and JSON schema for automation. Addresses organizational learning closure per WE_ONLY_FAIL_ONCE_DOCTRINE.md and BUILD_PHILOSOPHY.md.
@@ -117,8 +117,8 @@ Systematic post-mortem process closes organizational learning loop, prevents rep
 - **Institutional memory** preserved through canonical lessons learned documents
 
 **References**: 
-- Issue: [Post-Mortem Process] Canonise Lessons Learned and Improvement Report System for All Agents
-- PR: [Link to PR after merge]
+- Issue: Post-Mortem Process: Canonise Lessons Learned and Improvement Report System for All Agents
+- PR: [To be added upon merge]
 - Authority: POST_MORTEM_PROTOCOL.md v1.0.0
 - Related Canon: WE_ONLY_FAIL_ONCE_DOCTRINE.md, BUILD_PHILOSOPHY.md, LEARNING_INTAKE_AND_PROMOTION_MODEL.md, LAYER_UP_PROTOCOL.md, IN_BETWEEN_WAVE_RECONCILIATION.md
 
