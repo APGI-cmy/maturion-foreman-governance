@@ -259,12 +259,12 @@ For each CST checkpoint, explicit test reconciliation is required:
 
 | Wave | Total Tests | GREEN | RED | Pass Rate | Status |
 |------|-------------|-------|-----|-----------|--------|
-| Wave 1 | [N tests] | [N] | [0] | [100%] | [✅ PASS] |
-| Wave 2 | [N tests] | [N] | [0] | [100%] | [✅ PASS] |
-| Wave 3 | [N tests] | [N] | [0] | [100%] | [✅ PASS] |
+| Wave 1 | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| Wave 2 | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| Wave 3 | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
 | ... | ... | ... | ... | ... | ... |
-| Wave [N] | [N tests] | [N] | [0] | [100%] | [✅ PASS] |
-| **TOTAL** | **[SUM]** | **[SUM]** | **[0]** | **[100%]** | **[✅ RECONCILED]** |
+| Wave [N] | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| **TOTAL** | **[SUM]** | **[SUM]** | **[SUM]** | **[X%]** | **[✅ RECONCILED / ⚠️ MISMATCH]** |
 
 **Test Count Reconciliation Verification:**
 - [ ] Cumulative test tally calculated (sum across all waves)
@@ -280,9 +280,9 @@ For each CST checkpoint, explicit test reconciliation is required:
 - Evidence: [Links to supporting documentation]
 
 **Test Debt Documentation (if any RED tests remain):**
-> **Default: Zero-test-debt policy applies. All tests MUST be GREEN unless CS2 approves exemption.**
+> **Policy: Zero-test-debt. All tests MUST be GREEN unless CS2 approves exemption.**
 
-- Number of RED tests remaining: [N tests] (Default: 0)
+- Number of RED tests remaining: [N tests] (Policy: Must be 0 unless exempted)
 - Test debt justification: [Why deferred, exemption rationale]
 - CS2 approval status: [APPROVED / PENDING / NOT REQUIRED]
 - Impact assessment: [Risk of proceeding with test debt]
