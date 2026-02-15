@@ -104,3 +104,78 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 - Testing: Use local grep with patterns before committing documentation
 - Trigger: Creating/modifying governance documentation with configuration examples
 - Severity: HIGH - Blocks merge gate
+
+---
+
+## Pattern: Incremental Commits for Audit Trail
+- Observed: 2026-02-15 (Session 005)
+- Context: Multi-step governance enhancement (content + inventory + ripple signal)
+- Response: Create separate commits for logically distinct changes
+- Steps:
+  1. Initial plan commit (checklist)
+  2. Core content change commit (canon + inventory update)
+  3. Supporting artifact commit (ripple signal)
+  4. Evidence commit (session memory + learning updates)
+- Benefits: Clear audit trail, recovery points, easier review
+- Trigger: Complex governance tasks with multiple artifact types
+- Severity: MEDIUM (best practice, not requirement)
+
+## Pattern: Delegation Requires Mode Distinction
+- Observed: 2026-02-15 (Session 005)
+- Context: Documenting Foreman delegation to builders
+- Response: Explicitly distinguish execution mode from validation mode
+- Model:
+  - **Work Mode**: Foreman delegates execution to builders
+  - **Evaluation Mode**: Foreman validates independently (QA rerun, architecture review)
+- Critical Rule: Never conflate modes (delegation ≠ abdication of validation)
+- Accountability: Foreman remains accountable even when delegating
+- Trigger: Any authority model involving delegation
+- Severity: HIGH - Prevents accountability gaps
+
+## Pattern: Guidance-Level vs Protocol-Level Documentation
+- Observed: 2026-02-15 (Session 005)
+- Context: Phase 1 guidance (immediate use) vs Phase 2 protocol (formalized after learnings)
+- Response: Match documentation depth to strategic phase
+- Guidance-Level (Phase 1):
+  - Principles and best practices
+  - Flexible interpretation
+  - Supports immediate execution
+  - Example: Section 5.5 delegation guidance
+- Protocol-Level (Phase 2):
+  - Formal specifications
+  - Enforcement mechanisms
+  - Schema validation
+  - Example: Future AGENT_INVOCATION_PROTOCOL.md
+- Transition: Document future protocol reference in guidance
+- Trigger: Strategic phasing identified in issue requirements
+- Severity: MEDIUM - Prevents over-engineering Phase 1
+
+## Pattern: Ripple Signal Criticality Classification
+- Observed: 2026-02-15 (Session 005)
+- Context: Classifying governance canon update for consumer repos
+- Response: Use three-level criticality model
+- Levels:
+  - **HIGH**: Breaking changes, immediate action required, blocks execution
+  - **MEDIUM**: Important updates, awareness required, no immediate block
+  - **LOW**: Minor changes, informational only, optional awareness
+- Factors:
+  - Breaking nature (does it invalidate existing behaviors?)
+  - Urgency (does it require immediate action?)
+  - Scope (how many consumer repos affected?)
+- Example: Section 5.5 delegation guidance = MEDIUM (affects interpretation but non-breaking)
+- Trigger: Creating ripple signals for governance changes
+- Severity: MEDIUM - Affects consumer repo response expectations
+
+## Pattern: CANON_INVENTORY Hash Update Protocol
+- Observed: 2026-02-15 (Session 005)
+- Context: Updated canonical governance file requires inventory update
+- Response: Execute systematic hash update protocol
+- Steps:
+  1. Calculate SHA256 of modified file: `sha256sum <file>`
+  2. Update both `file_hash` (first 12 chars) and `file_hash_sha256` (full hash)
+  3. Update `last_updated` and `generation_timestamp` in inventory metadata
+  4. Optionally update `description` if change is significant
+  5. Validate JSON syntax: `python3 -m json.tool <file> > /dev/null`
+- Critical: Both hash fields must match (truncated + full)
+- Trigger: Any change to governance/canon/* files
+- Severity: HIGH - Breaks alignment checks if incorrect

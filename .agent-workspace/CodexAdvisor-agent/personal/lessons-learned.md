@@ -89,3 +89,42 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - Action: **NEVER** trust without verify; evidence-first always
 - Impact: Violated evidence-first principle fundamental to governance
 - Prevention: Add verification steps to all completion criteria
+
+---
+
+## Session 20260215 (Session 005 - Delegation Guidance Enhancement)
+
+### Lesson: Strategic Use of Explore Agent for Context Analysis
+- Context: Needed comprehensive understanding of existing delegation models and POLC framework
+- Pattern: Using explore agent to search governance canon saved significant time and ensured completeness
+- Action: For complex governance tasks, use explore agent proactively before making changes
+- Impact: Identified 5 key context areas (delegation canons, work/evaluation modes, accountability chains, POLC integrity, agent invocation) in single query
+- Prevention: N/A (positive pattern to repeat)
+
+### Lesson: Section Placement Critical for Document Flow
+- Context: Adding new Section 5.5 to 15-section canonical document
+- Pattern: Placement between 5.4 (Builder Revocation) and Section 6 (Prohibition) creates logical bridge
+- Action: Analyze document flow and authority hierarchy before inserting new sections
+- Impact: Section 5.5 naturally bridges supervision (5.1-5.4) with prohibition rules (Section 6)
+- Prevention: Consider alternative placements (separate section, appendix) and justify decision
+
+### Lesson: Work vs Evaluation Mode Distinction Essential for Clarity
+- Context: Foreman delegates work but performs validation independently
+- Pattern: Explicit mode distinction prevents conflation of supervision with execution
+- Action: When documenting authority models, clearly separate execution modes from validation modes
+- Impact: Clarifies when Foreman delegates (work mode) vs when Foreman validates directly (evaluation mode)
+- Prevention: Look for similar mode confusion in other authority models
+
+### Lesson: Guidance-Level Content Appropriate for Phase 1
+- Context: Issue requested "guidance, not full protocol" for Phase 1 (MAT build support)
+- Pattern: Deferred full protocol to Phase 2 (AGENT_INVOCATION_PROTOCOL.md) after MAT learnings
+- Action: Match content depth to strategic phase; avoid over-engineering Phase 1 deliverables
+- Impact: Minimizes disruption during MAT build; allows protocol refinement based on practice
+- Prevention: Document future protocol reference (5.5.6) to signal Phase 2 intent
+
+### Lesson: Ripple Signal Template Ensures Schema Compliance
+- Context: Creating ripple signal for governance canon update
+- Pattern: Following RIPPLE_SIGNAL.template.md ensured 100% schema compliance
+- Action: Always use canonical templates for structured governance artifacts
+- Impact: Created comprehensive 329-line ripple signal covering all schema requirements
+- Prevention: Locate template before starting; validate against schema after completion
