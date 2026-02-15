@@ -151,6 +151,35 @@
 - Integration issues caught before wave completion: [N issues]
 - Rework avoided due to CST: [Estimated effort saved]
 
+### 3A.2a CST Test Count Reconciliation (MANDATORY)
+
+**Authority**: COMBINED_TESTING_PATTERN.md § 8.4.2
+
+For each CST checkpoint, explicit test reconciliation is required:
+
+**CST Checkpoint 1:**
+- Tests executed at this checkpoint: [N total tests, N passed, N failed]
+- Tests turned RED→GREEN since last checkpoint: [N tests fixed]
+- Cumulative subwave test tally: [Sum of all subwave tests at this point]
+- Test count reconciliation status: [✅ RECONCILED / ⚠️ MISMATCH DETECTED]
+- Audit trail: [Links to test logs, subwave QA evidence]
+- Mismatch details (if any): [Description and resolution]
+
+**CST Checkpoint 2:**
+- Tests executed at this checkpoint: [N total tests, N passed, N failed]
+- Tests turned RED→GREEN since last checkpoint: [N tests fixed]
+- Cumulative subwave test tally: [Sum of all subwave tests at this point]
+- Test count reconciliation status: [✅ RECONCILED / ⚠️ MISMATCH DETECTED]
+- Audit trail: [Links to test logs, subwave QA evidence]
+- Mismatch details (if any): [Description and resolution]
+
+**CST Test Reconciliation Summary:**
+- [ ] All CST checkpoints have documented test counts
+- [ ] Test RED→GREEN progression tracked
+- [ ] Cumulative test tally reconciled at each checkpoint
+- [ ] All mismatches investigated and resolved
+- [ ] Audit trail links provided
+
 ### 3A.3 CST Lessons Learned
 
 **What Worked Well:**
@@ -208,6 +237,57 @@
 | Multi-Scenario (Edge) | [N tests] | [N passed] | [N failed] | [X%] |
 
 **Overall CWT Pass Rate:** [X%] (Must be 100% for IBWR completion)
+
+### 3B.2a CWT Test Count Reconciliation (MANDATORY)
+
+**Authority**: COMBINED_TESTING_PATTERN.md § 8.4.3
+
+> **CWT CANNOT pass without explicit test count reconciliation. Test count mismatches MUST be resolved before IBWR completion.**
+
+**Cumulative Wave Test Reconciliation:**
+
+**Total Tests Across All Waves:**
+- Total tests executed: [N tests]
+- Tests passed (GREEN): [N tests] (Must be 100% for CWT PASS)
+- Tests failed (RED): [N tests] (Must be 0 for CWT PASS)
+
+**Tests Turned RED→GREEN During Wave [N]:**
+- Tests fixed during Wave [N]: [N tests]
+- Audit trail: [Links to issue fixes, QA re-validation]
+
+**Per-Wave Test Breakdown:**
+
+| Wave | Total Tests | GREEN | RED | Pass Rate | Status |
+|------|-------------|-------|-----|-----------|--------|
+| Wave 1 | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| Wave 2 | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| Wave 3 | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| ... | ... | ... | ... | ... | ... |
+| Wave [N] | [N tests] | [N] | [N] | [X%] | [✅ PASS / ⚠️ FAIL] |
+| **TOTAL** | **[SUM]** | **[SUM]** | **[SUM]** | **[X%]** | **[✅ RECONCILED / ⚠️ MISMATCH]** |
+
+**Test Count Reconciliation Verification:**
+- [ ] Cumulative test tally calculated (sum across all waves)
+- [ ] Per-wave test counts documented
+- [ ] Test RED→GREEN progression tracked
+- [ ] Test count reconciliation status: [✅ RECONCILED / ⚠️ MISMATCH DETECTED]
+- [ ] Audit trail provided: [Links to wave QA results, test logs]
+
+**Test Count Mismatch Investigation (if applicable):**
+- Mismatch description: [What counts do not reconcile]
+- Root cause: [Why mismatch occurred]
+- Resolution: [How reconciled or justified]
+- Evidence: [Links to supporting documentation]
+
+**Test Debt Documentation (if any RED tests remain):**
+> **Policy: Zero-test-debt. All tests MUST be GREEN unless CS2 approves exemption.**
+
+- Number of RED tests remaining: [N tests] (Policy: Must be 0 unless exempted)
+- Test debt justification: [Why deferred, exemption rationale]
+- CS2 approval status: [APPROVED / PENDING / NOT REQUIRED]
+- Impact assessment: [Risk of proceeding with test debt]
+- Resolution plan: [When tests will be fixed, who responsible]
+- Exemption reference: [Link to CS2 approval document]
 
 ### 3B.3 CWT Validation Results
 
@@ -473,8 +553,21 @@
 - [ ] CWT PASS verdict recorded (Section 3B.4)
 - [ ] CWT evidence documented and auditable
 
+**Test Count Reconciliation (MANDATORY):**
+**Authority**: COMBINED_TESTING_PATTERN.md § 8.4.3
+
+- [ ] Cumulative test tally documented across all waves (Section 3B.2a)
+- [ ] Per-wave test breakdown provided with GREEN/RED counts
+- [ ] Tests turned RED→GREEN tracked and documented
+- [ ] Test count reconciliation verified (RECONCILED status)
+- [ ] All test count mismatches resolved and documented
+- [ ] Audit trail links provided for all test counts
+- [ ] Test debt documented (if any RED tests remain)
+- [ ] CS2 approval obtained for any test debt carryover
+- [ ] Zero-test-debt policy satisfied (or exemption documented)
+
 **Blocking Rule:**
-> **IBWR CANNOT complete without CWT PASS.**
+> **IBWR CANNOT complete without CWT PASS and explicit test count reconciliation.**
 
 ### 8.3 Governance Changes Implemented
 
