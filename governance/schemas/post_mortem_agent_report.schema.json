@@ -1,0 +1,679 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://maturion.com/schemas/post-mortem-agent-report.schema.json",
+  "title": "Post-Mortem Agent Report Schema",
+  "description": "Schema for agent self-report in post-mortem process per POST_MORTEM_PROTOCOL.md",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "build_info",
+    "agent_info",
+    "build_experience",
+    "lessons_learned",
+    "recommendations",
+    "evidence_references"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility",
+      "const": "1.0.0"
+    },
+    "build_info": {
+      "type": "object",
+      "required": ["build_name", "repository", "report_date"],
+      "properties": {
+        "build_name": {
+          "type": "string",
+          "description": "Name or identifier of the build"
+        },
+        "repository": {
+          "type": "string",
+          "description": "Repository name"
+        },
+        "report_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of report creation (YYYY-MM-DD)"
+        },
+        "post_mortem_issue": {
+          "type": "string",
+          "description": "Link to post-mortem issue"
+        }
+      }
+    },
+    "agent_info": {
+      "type": "object",
+      "required": ["agent_id", "agent_role"],
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "description": "Agent identifier"
+        },
+        "agent_role": {
+          "type": "string",
+          "description": "Agent role in build (e.g., 'Schema Builder', 'QA Builder')"
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Session ID if applicable"
+        }
+      }
+    },
+    "participation_summary": {
+      "type": "object",
+      "properties": {
+        "deliverables": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of deliverables provided"
+        },
+        "waves_participated": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["wave_name", "contribution"],
+            "properties": {
+              "wave_name": {
+                "type": "string"
+              },
+              "contribution": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "handovers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["to", "status"],
+            "properties": {
+              "to": {
+                "type": "string",
+                "description": "Who handover was to"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["ACCEPTED", "REJECTED", "PENDING"]
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "build_experience": {
+      "type": "object",
+      "required": ["positives", "challenges"],
+      "properties": {
+        "positives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["description"],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "description": "What worked well"
+        },
+        "challenges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["description", "impact"],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "description": "What was challenging"
+        }
+      }
+    },
+    "lessons_learned": {
+      "type": "object",
+      "required": ["lessons"],
+      "properties": {
+        "lessons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "what", "why_important", "how_to_apply"],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Concise lesson title"
+              },
+              "what": {
+                "type": "string",
+                "description": "What happened or what was learned"
+              },
+              "why_important": {
+                "type": "string",
+                "description": "Why this matters for future builds"
+              },
+              "how_to_apply": {
+                "type": "string",
+                "description": "Concrete guidance for future agents"
+              },
+              "authority_reference": {
+                "type": "string",
+                "description": "Related canonical governance or standards"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Links to evidence"
+              },
+              "promotion_candidate": {
+                "type": "boolean",
+                "description": "Should this be promoted to canon?"
+              }
+            }
+          }
+        },
+        "mistakes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["mistake", "impact", "prevention"],
+            "properties": {
+              "mistake": {
+                "type": "string",
+                "description": "What went wrong"
+              },
+              "impact": {
+                "type": "string",
+                "description": "Consequence of this mistake"
+              },
+              "prevention": {
+                "type": "string",
+                "description": "How to avoid in future"
+              },
+              "evidence": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "would_do_differently": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "What would be done differently if starting over"
+        }
+      }
+    },
+    "performance_improvement": {
+      "type": "object",
+      "properties": {
+        "self_improvements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "What agent can do to improve next time"
+        },
+        "tools_needed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tools/templates/guidance that would have helped"
+        },
+        "unnecessary_slowdowns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["blocker", "remedy"],
+            "properties": {
+              "blocker": {
+                "type": "string",
+                "description": "What slowed down work unnecessarily"
+              },
+              "remedy": {
+                "type": "string",
+                "description": "Suggested remedy"
+              }
+            }
+          }
+        }
+      }
+    },
+    "build_quality": {
+      "type": "object",
+      "properties": {
+        "quality_improvements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "What could have produced better build"
+        },
+        "artifact_improvements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["artifact", "improvement"],
+            "properties": {
+              "artifact": {
+                "type": "string"
+              },
+              "improvement": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "version_2_recommendations": {
+          "type": "object",
+          "properties": {
+            "add": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "change": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "remove_simplify": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "standards_compliance": {
+      "type": "object",
+      "properties": {
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["standard", "gap_description", "risk_level", "recommendation"],
+            "properties": {
+              "standard": {
+                "type": "string",
+                "description": "Standard name (e.g., ISO 9001, OWASP, WCAG 2.1)"
+              },
+              "gap_description": {
+                "type": "string"
+              },
+              "risk_level": {
+                "type": "string",
+                "enum": ["HIGH", "MEDIUM", "LOW"]
+              },
+              "recommendation": {
+                "type": "string",
+                "description": "What to do to comply"
+              },
+              "evidence": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "achievements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["standard", "how_complied"],
+            "properties": {
+              "standard": {
+                "type": "string"
+              },
+              "how_complied": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "process_assessment": {
+      "type": "object",
+      "properties": {
+        "governance_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gap", "impact", "remedy"],
+            "properties": {
+              "gap": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "remedy": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "communication_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gap", "impact", "remedy"],
+            "properties": {
+              "gap": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "remedy": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "technical_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gap", "impact", "remedy"],
+            "properties": {
+              "gap": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "remedy": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "evidence_trail": {
+          "type": "object",
+          "required": ["sufficient"],
+          "properties": {
+            "sufficient": {
+              "type": "boolean"
+            },
+            "gaps": {
+              "type": "string",
+              "description": "Description of gaps if not sufficient"
+            },
+            "recommendations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "handover_protocol": {
+          "type": "object",
+          "required": ["effective"],
+          "properties": {
+            "effective": {
+              "type": "boolean"
+            },
+            "issues": {
+              "type": "string",
+              "description": "Description of issues if not effective"
+            },
+            "recommendations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "knowledge_transfer": {
+      "type": "object",
+      "properties": {
+        "upstream_learnings": {
+          "type": "object",
+          "required": ["benefited"],
+          "properties": {
+            "benefited": {
+              "type": "boolean",
+              "description": "Did upstream lessons help?"
+            },
+            "how": {
+              "type": "string",
+              "description": "How they helped"
+            },
+            "recommendations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["blocker", "impact", "remedy"],
+            "properties": {
+              "blocker": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string",
+                "description": "Time/quality impact"
+              },
+              "remedy": {
+                "type": "string",
+                "description": "How to remove in future"
+              }
+            }
+          }
+        },
+        "knowledge_wished_for": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["knowledge", "impact"],
+            "properties": {
+              "knowledge": {
+                "type": "string",
+                "description": "What you wish you'd known"
+              },
+              "impact": {
+                "type": "string",
+                "description": "How it would have helped"
+              }
+            }
+          }
+        }
+      }
+    },
+    "additional_insights": {
+      "type": "object",
+      "properties": {
+        "patterns_observed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["pattern", "significance"],
+            "properties": {
+              "pattern": {
+                "type": "string"
+              },
+              "significance": {
+                "type": "string",
+                "description": "Why it matters"
+              }
+            }
+          }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["question", "significance"],
+            "properties": {
+              "question": {
+                "type": "string"
+              },
+              "significance": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "additional_comments": {
+          "type": "string"
+        }
+      }
+    },
+    "recommendations": {
+      "type": "object",
+      "required": ["high_priority"],
+      "properties": {
+        "high_priority": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["recommendation", "rationale"],
+            "properties": {
+              "recommendation": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Must fix before next build"
+        },
+        "medium_priority": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["recommendation", "rationale"],
+            "properties": {
+              "recommendation": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Should improve"
+        },
+        "low_priority": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["recommendation", "rationale"],
+            "properties": {
+              "recommendation": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Nice to have"
+        }
+      }
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item", "location", "description"],
+        "properties": {
+          "item": {
+            "type": "string",
+            "description": "Evidence item name"
+          },
+          "location": {
+            "type": "string",
+            "description": "Path or URL"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "All evidence referenced in this report"
+    },
+    "promotion_recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["learning", "target", "rationale"],
+        "properties": {
+          "learning": {
+            "type": "string",
+            "description": "Learning title"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target canon document"
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Why should be canonical"
+          }
+        }
+      },
+      "description": "Learnings recommended for promotion to canon"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "completed_by": {
+          "type": "string"
+        },
+        "completion_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "session_memory_location": {
+          "type": "string",
+          "description": "Path to session memory file containing this report"
+        }
+      }
+    }
+  }
+}

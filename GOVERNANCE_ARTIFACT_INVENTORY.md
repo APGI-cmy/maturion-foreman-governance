@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-14 (Survey update)
+**Last Updated**: 2026-02-15 (Post-mortem protocol addition)
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -135,6 +135,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `MERGE_GATE_PHILOSOPHY.md` | **UPDATED v1.1.0 (2026-02-09)** - Defines merge gate philosophy (CI confirmatory not diagnostic), evidence-based validation pattern, two-mode validation (evidence vs. script), and gate types. **NEW: Comprehensive governance compliance checklist** for gate implementation, evidence-based validation, role detection, failure messages, FM gate management, and escalation procedures | PR-gates, Layer-down, Readiness |
 | `PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Interim guidance for handling references to canonical governance documents. Clarifies published status of FM_ROLE_CANON.md, WAVE_MODEL.md, LIVING_AGENT_SYSTEM.md, and newly published canon (2026-02-08). Provides workaround guidance for pending canon references. Addresses GAP-007 from Living Agent System v5.0.0 rollout | Readiness, Layer-down |
 | `PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md` | Defines platform authority boundaries | Readiness |
+| `POST_MORTEM_PROTOCOL.md` | **NEW v1.0.0 (2026-02-15) PUBLIC_API** - Canonical protocol establishing universal post-mortem process for completed builds. Defines mandatory agent query set, self-report requirements, foreman reconciliation process, governance up-layer/down-layer mechanisms, gap analysis methodology for continuous improvement, standards compliance tracking, and integration with agent memory systems. Requires all agents to deliver domain-specific lessons learned upon build closure, formalizes organizational learning loop, prevents repeat mistakes through systematic analysis, and enables version 2 planning based on version 1 learnings | Feedback/learning, Layer-down, Readiness |
 | `PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md` | Canonical definition of platform readiness | Readiness |
 | `PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md` | Defines PR gate evaluation process | PR-gates |
 | `PR_GATE_PRECONDITION_RULE.md` | Defines preconditions for PR gate applicability | PR-gates |
@@ -210,6 +211,7 @@ Schema files define data structures for governance artifacts.
 | `LEARNING_SCHEMA.schema.md` | Schema for learning records | Feedback/learning |
 | `PLATFORM_ACTION_AUDIT_ENTRY.schema.md` | Schema for platform action audit entries | Readiness |
 | `PLATFORM_READINESS_EVIDENCE.schema.md` | Schema for platform readiness evidence | Readiness |
+| `post_mortem_agent_report.schema.json` | **NEW v1.0.0 (2026-02-15) PUBLIC_API** - JSON Schema for agent self-report in post-mortem process. Validates structured data format for build participation, experience, lessons learned, performance improvements, quality assessment, standards compliance, process gaps, knowledge transfer, recommendations, and evidence references. Enables automation of post-mortem collection and analysis per POST_MORTEM_PROTOCOL.md | Feedback/learning, Layer-down |
 | `REPOSITORY_INITIALIZATION_EVIDENCE.schema.md` | Schema for repository initialization evidence | Layer-down, Readiness |
 | `REQUIREMENT_SPECIFICATION.schema.md` | Schema for requirement specifications | Readiness |
 | `RIPPLE_SCAN_REPORT.schema.md` | Schema for ripple scan reports (Wave 2.1) | Feedback/learning, Layer-down |
@@ -232,6 +234,9 @@ Template files provide reusable structures for governance artifacts.
 | `PR_GATE_RELEASE_CHECKLIST_BUILDER.md` | Builder-specific PR gate release checklist | PR-gates |
 | `PR_GATE_RELEASE_CHECKLIST_FM.md` | FM-specific PR gate release checklist | PR-gates |
 | `PR_GATE_RELEASE_CHECKLIST_GOVERNANCE_ADMIN.md` | Governance Admin-specific PR gate release checklist | PR-gates |
+| `POST_MORTEM_AGENT_REPORT.template.md` | **NEW v1.0.0 (2026-02-15)** - Template for agent self-report in post-mortem process. Structured format for capturing build experience, lessons learned, mistakes, performance improvements, build quality assessment, standards compliance gaps, process assessment, knowledge transfer, and recommendations. Integrates with agent session memory per POST_MORTEM_PROTOCOL.md | Feedback/learning, Layer-down |
+| `POST_MORTEM_GAP_ANALYSIS.template.md` | **NEW v1.0.0 (2026-02-15)** - Template for post-mortem gap analysis comparing current vs previous builds. Structures comparison across improvements verified, regressions detected, new patterns, standards compliance trajectory, build metrics, and recommendations for next build. Enables continuous improvement tracking per POST_MORTEM_PROTOCOL.md | Feedback/learning, Readiness |
+| `POST_MORTEM_RECONCILIATION_REPORT.template.md` | **NEW v1.0.0 (2026-02-15)** - Template for foreman reconciliation report synthesizing all agent post-mortem inputs. Structures reconciliation across lessons by category, standards compliance, cross-cutting themes, version 2 recommendations, learnings for promotion, and governance up-layer plan per POST_MORTEM_PROTOCOL.md | Feedback/learning, Layer-down |
 | `RIPPLE_SCAN_REPORT.template.md` | Template for ripple scan reports (Wave 2.1) | Feedback/learning, Layer-down |
 | `RIPPLE_SIGNAL.template.md` | Template for cross-repository ripple signals (Wave 2.2) | Feedback/learning, Layer-down |
 | `minimum-architecture-template.md` | Template for minimum architecture artifacts | Readiness, Layer-down |

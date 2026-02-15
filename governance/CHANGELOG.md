@@ -64,6 +64,66 @@ Each entry follows this structure:
 
 ## Change History
 
+### [POST-MORTEM-PROTOCOL] - 2026-02-15 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)
+**Approved By**: CS2 approval pending in PR review
+**Effective Date**: 2026-02-15 (upon CS2 approval)
+**Layer-Down Status**: PUBLIC_API - Recommended ripple to all consumer repositories
+
+**Summary**: Created POST_MORTEM_PROTOCOL.md (v1.0.0) establishing universal post-mortem process for completed builds. Defines mandatory agent query set (8 universal + role-specific questions), self-report requirements, foreman reconciliation process, governance up-layer/down-layer mechanisms, gap analysis methodology, standards compliance tracking, and integration with agent memory systems. Includes comprehensive templates for agent reports, reconciliation reports, gap analysis, and JSON schema for automation. Addresses organizational learning closure per WE_ONLY_FAIL_ONCE_DOCTRINE.md and BUILD_PHILOSOPHY.md.
+
+**Affected Artifacts**:
+- `governance/canon/POST_MORTEM_PROTOCOL.md` (NEW v1.0.0 - canonical post-mortem protocol)
+- `governance/templates/POST_MORTEM_AGENT_REPORT.template.md` (NEW - agent self-report template)
+- `governance/templates/POST_MORTEM_RECONCILIATION_REPORT.template.md` (NEW - foreman reconciliation template)
+- `governance/templates/POST_MORTEM_GAP_ANALYSIS.template.md` (NEW - gap analysis template)
+- `governance/schemas/post_mortem_agent_report.schema.json` (NEW - JSON schema for automation)
+- `governance/CANON_INVENTORY.json` (UPDATED - added POST_MORTEM_PROTOCOL.md, total canons: 157)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED - documented protocol, templates, and schema)
+- `governance/CHANGELOG.md` (UPDATED - this entry)
+
+**Migration Required**: NO (new additive protocol - backward compatible)
+
+**Migration Guidance**: 
+1. **For All Consumer Repositories** (recommended when builds complete):
+   - Copy POST_MORTEM_PROTOCOL.md to governance/canon/
+   - Copy all three templates to governance/templates/
+   - Copy JSON schema to governance/schemas/
+   - Update CANON_INVENTORY.json with new protocol entry
+   - Review protocol integration with existing IBWR and learning intake processes
+   - Train foreman and builders on post-mortem obligations
+
+2. **Protocol Adoption**:
+   - Phase 1: Use protocol for next completed build
+   - Phase 2: Update agent contracts to reference post-mortem obligations
+   - Phase 3: Establish post-mortem as standard build closure step
+
+3. **Integration Points**:
+   - Complements IN_BETWEEN_WAVE_RECONCILIATION.md (wave-level vs build-level)
+   - Uses LAYER_UP_PROTOCOL.md for governance feedback
+   - Integrates with LEARNING_INTAKE_AND_PROMOTION_MODEL.md
+   - References LIVING_AGENT_SYSTEM.md v6.2.0 session memory protocols
+
+**Rationale**: 
+Systematic post-mortem process closes organizational learning loop, prevents repeat mistakes, raises build quality, and ensures institutional knowledge survives agent sessions. Addresses gap between wave-level reconciliation and build-level learning consolidation. Enables version 2 planning based on version 1 learnings. Formalizes standards compliance tracking across international best practices (ISO, OWASP, WCAG, etc.).
+
+**Impact**: 
+- **All agents** participating in builds must file post-mortem self-reports
+- **Foreman** must reconcile all agent reports and identify promotion candidates
+- **Governance Administrator** must up-layer qualified learnings to canon
+- **CS2** must approve constitutional canon changes from post-mortem learnings
+- **Build process** gains mandatory post-mortem step after final IBWR
+- **Institutional memory** preserved through canonical lessons learned documents
+
+**References**: 
+- Issue: Post-Mortem Process: Canonise Lessons Learned and Improvement Report System for All Agents
+- PR: [To be added upon merge]
+- Authority: POST_MORTEM_PROTOCOL.md v1.0.0
+- Related Canon: WE_ONLY_FAIL_ONCE_DOCTRINE.md, BUILD_PHILOSOPHY.md, LEARNING_INTAKE_AND_PROMOTION_MODEL.md, LAYER_UP_PROTOCOL.md, IN_BETWEEN_WAVE_RECONCILIATION.md
+
+---
+
 ### [LEARNING-FILE-STALENESS-ENFORCEMENT] - 2026-02-14 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)

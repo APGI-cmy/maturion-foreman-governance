@@ -47,6 +47,44 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 
 ---
 
+### Canonical Protocol Creation Requires Templates
+
+**Frequency**: When creating new process-oriented canonical protocols
+
+**Context**: Creating protocols that define processes agents must follow (e.g., POST_MORTEM_PROTOCOL)
+
+**Description**: Process protocols need matching templates to be practical. Templates validate protocol requirements are implementable and provide concrete guidance.
+
+**Application**:
+1. Draft protocol sections defining process steps
+2. Create corresponding template sections in parallel
+3. If template is hard to create, protocol may be too abstract/impractical
+4. Add JSON Schema for automation (if applicable)
+5. Templates should be comprehensive (8-14KB each for major processes)
+
+**Related Learnings**: Session 027 - Created POST_MORTEM_PROTOCOL.md (24KB) with three templates (35KB total) and JSON Schema
+
+---
+
+### Discovery Phase Prevents Integration Conflicts
+
+**Frequency**: When creating new canonical governance
+
+**Context**: Before drafting new canonical protocols or governance
+
+**Description**: Using search_code_subagent to find existing related protocols prevents duplication and ensures proper integration. New protocols should complement, not replace, existing governance.
+
+**Application**:
+1. Use search_code_subagent with relevant keywords
+2. Read identified protocols to understand integration points
+3. Position new protocol as "complements" in documentation
+4. Explicitly document relationships in protocol (e.g., Section 15 "Integration with Existing Protocols")
+5. Cross-reference related protocols throughout
+
+**Related Learnings**: Session 027 - POST_MORTEM_PROTOCOL complements IBWR (wave vs build level), LAYER_UP (mechanism), LEARNING_INTAKE (capture process)
+
+---
+
 ### Self-Referential Detection in Meta-Tooling
 
 **Frequency**: Uncommon but recurring in gate/validation implementations
@@ -94,3 +132,4 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 - Observed: 2026-02-14 (Session 024)
 - Context: Historical/archive files accumulate at repository root level (67 md files found)
 - Response: Document for CS2 review; recommend archival to dedicated directory
+- [2026-02-15] Create templates alongside protocols to validate usability
