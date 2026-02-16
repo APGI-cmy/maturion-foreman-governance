@@ -24,7 +24,7 @@ This protocol establishes **comprehensive handover and quality requirements** fo
 - **Quality Verification Checklist**: No failures, warnings, or debt handed over
 - **Delivery Beyond Minimum**: Exceeding expectations as standard operating procedure
 
-**Core Principle**: Handovers are not mere completion—they are validated, improved, excellence-driven deliveries with compulsory learning capture.
+**Core Principle**: Handovers are not mere completion—they are validated, improved, excellence-driven deliveries with mandatory learning capture.
 
 ---
 
