@@ -64,6 +64,120 @@ Each entry follows this structure:
 
 ## Change History
 
+### [LIVING-AGENT-OPERATING-MODEL-V1] - 2026-02-16 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)
+**Approved By**: CS2 approval pending in PR review
+**Effective Date**: 2026-02-16 (upon CS2 approval)
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories
+
+**Summary**: Created comprehensive Living Agent Operating Model enhancement with 5 new canonical governance documents establishing mandatory agent invocation, accountability, handover protocols, and creative responsibility. Implements: (1) AGENT_INVOCATION_AND_DELEGATION_PROTOCOL.md - Makes agent invocation MANDATORY (not optional) when work exceeds authority, formalizes OPOJD accountability model, establishes "if you see it, you own it" doctrine; (2) AGENT_RIGHTS_BOUNDARIES_AND_DUTIES_REGISTRY.md - Centralized registry of each agent's MAY/MAY NOT/MUST DO/MUST INVOKE boundaries with complete authority matrix; (3) AGENT_HANDOVER_AND_QUALITY_PROTOCOL.md - Three-tier governance prompt structure (Role & General / Specific Protocol / Pre-Handover), mandatory pre-handover duplicate merge gate runs in workspace, improvement parking station; (4) AGENT_CREATIVE_OWNERSHIP_AND_IMPROVEMENT_DOCTRINE.md - Agents are intelligent and creative professionals, proactive improvement mindset, no blame-shifting, deliver beyond minimum, relentless quality focus; (5) AGENT_MERGE_GATE_HANDOVER_ENHANCEMENT.md - Comprehensive test debt detection (8 categories), test dodging detection, technical debt detection, warning/deprecation detection, evidence-first failure messaging. Updated AGENT_CONTRACT.template.md with three-tier structure. Addresses issue requirements for agent rights/boundaries codification, mandatory invocation, OPOJD doctrine, three-tier prompts, creative responsibility, merge-gate enhancements, improvement capture, and handover protocols.
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_INVOCATION_AND_DELEGATION_PROTOCOL.md` (NEW v1.0.0 G-C-AOP-001 - mandatory invocation and delegation)
+- `governance/canon/AGENT_RIGHTS_BOUNDARIES_AND_DUTIES_REGISTRY.md` (NEW v1.0.0 G-C-AOP-002 - agent authority registry)
+- `governance/canon/AGENT_HANDOVER_AND_QUALITY_PROTOCOL.md` (NEW v1.0.0 G-C-AOP-003 - three-tier prompts and handover)
+- `governance/canon/AGENT_CREATIVE_OWNERSHIP_AND_IMPROVEMENT_DOCTRINE.md` (NEW v1.0.0 G-C-AOP-004 - creative ownership)
+- `governance/canon/AGENT_MERGE_GATE_HANDOVER_ENHANCEMENT.md` (NEW v1.0.0 G-C-AOP-005 - merge gate enhancements)
+- `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md` (UPDATED - integrated three-tier structure)
+- `governance/CANON_INVENTORY.json` (TO UPDATE - add 5 new documents)
+- `governance/GOVERNANCE_ARTIFACT_INVENTORY.md` (TO UPDATE - document new standards)
+- `governance/CHANGELOG.md` (UPDATED - this entry)
+
+**Migration Required**: YES (affects all agent contracts and operating procedures)
+
+**Migration Guidance**:
+1. **For All Consumer Repositories** (60-day transition period: 2026-02-16 to 2026-04-17):
+   - Copy all 5 new canonical documents to governance/canon/
+   - Update CANON_INVENTORY.json with new standards
+   - Update all agent contracts using new AGENT_CONTRACT.template.md structure
+   - Implement three-tier governance prompt structure in agent contracts
+   - Create `.agent-workspace/<agent-type>/` directory structure for each agent
+   - Create improvement parking station structure
+   - Update wake-up and session closure scripts per new requirements
+   - Add pre-handover gate validation scripts
+   - Update merge gate workflows to include test debt/dodging/technical debt detection
+
+2. **Agent Contract Migration**:
+   - Add Tier 1 (Role & General Governance) section to each agent contract
+   - Add Tier 2 (Agent-Specific Protocol) section specific to agent type
+   - Reference Tier 3 (Pre-Handover & Delivery Protocol) from AGENT_HANDOVER_AND_QUALITY_PROTOCOL.md
+   - Update MAY/MAY NOT/MUST DO/MUST INVOKE sections per AGENT_RIGHTS_BOUNDARIES_AND_DUTIES_REGISTRY.md
+   - Add delegation management section
+   - Add improvement capture requirements
+
+3. **Workspace Structure** (create for each agent):
+   ```
+   .agent-workspace/<agent-type>/
+   ├── memory/                      # Session memories (≤5 active)
+   ├── evidence/                    # Evidence artifacts
+   ├── delegations/                 # Delegation documents
+   │   ├── active/
+   │   ├── sent/
+   │   └── archive/
+   ├── escalation-inbox/            # Escalation documents
+   ├── improvement-parking/         # Improvement suggestions
+   │   ├── improvements.md
+   │   ├── high-priority/
+   │   ├── medium-priority/
+   │   ├── low-priority/
+   │   └── implemented/
+   ├── gate-validation/             # Pre-handover gate runs
+   └── personal/                    # Personal learning files
+       ├── lessons-learned.md
+       ├── patterns.md
+       ├── creative-ownership-log.md
+       └── delegation-patterns.md
+   ```
+
+4. **Scripts to Create/Update**:
+   - `.agent-workspace/<agent-type>/gate-validation/run-gates.sh` - Run all merge gates locally
+   - `.github/scripts/detect-test-debt.sh` - Detect all forms of test debt
+   - `.github/scripts/detect-test-dodging.sh` - Detect test avoidance patterns
+   - `.github/scripts/detect-technical-debt.sh` - Detect code-level technical debt
+   - `.github/scripts/detect-warnings.sh` - Detect compiler/runtime warnings
+   - `.github/scripts/validate-prehandover-proof.sh` - Validate pre-handover proof complete
+
+5. **Merge Gate Workflow Updates**:
+   - Add quality/test-debt-detection job
+   - Add quality/test-dodging-detection job
+   - Add quality/technical-debt-detection job
+   - Add quality/warning-detection job
+   - Add quality/pre-handover-proof job
+   - Update branch protection to require new gates
+
+**Rationale**: 
+- Addresses critical gaps in agent authority boundaries causing scope drift and authority conflicts
+- Formalizes OPOJD (One Plan, One Job Done) accountability model preventing blame-shifting
+- Implements "if you see it, you own it" doctrine preventing ignored problems
+- Mandates agent invocation (not optional) when work exceeds authority boundaries
+- Establishes three-tier governance prompt structure for consistent agent understanding
+- Requires pre-handover duplicate merge gate runs catching failures before PR submission
+- Implements comprehensive test debt detection preventing quality erosion
+- Mandates improvement suggestions at every handover driving continuous improvement
+- Establishes creative ownership mindset—agents are intelligent professionals, not mechanical executors
+- Prevents test dodging, technical debt accumulation, and warning suppression
+- Creates improvement parking station for systematic enhancement tracking and prioritization
+
+**Impact**: 
+- All agents in all repositories
+- All agent contracts require update
+- All handover processes require pre-handover proof
+- All PRs require improvement analysis
+- Merge gate workflows require enhancement
+- Training required for all agents on new protocols
+
+**References**:
+- Issue: Living Agent Operating Model: Enhanced Agent Invocation, Accountability, Handover Protocols, and Creative Responsibility
+- Related: AGREED_POST_MAT_IMPLEMENTATION_STRATEGY.md (phase strategy background)
+- Related: LIVING_AGENT_SYSTEM.md v6.2.0 (agent lifecycle foundation)
+- Related: DELEGATION_INSTRUCTION_AND_AUDIT_MODEL.md (platform delegation)
+- Related: FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md (POLC-only constraint)
+- Related: MANDATORY_PROCESS_IMPROVEMENT_REFLECTION_PROTOCOL.md (continuous improvement)
+- Related: BUILD_PHILOSOPHY.md (zero test debt)
+
+---
+
 ### [FULLY-FUNCTIONAL-DELIVERY-STANDARD] - 2026-02-16 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)
