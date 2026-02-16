@@ -95,3 +95,7 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - [2026-02-14] Short hash (file_hash) field must equal first 12 chars of file_hash_sha256 — check both fields during validation
 - [2026-02-15] Always use search_code_subagent before creating new canonical governance to understand integration points
 - [2026-02-16] Delegate complex cross-repository analysis to specialized agents for efficiency and consistency
+- [2026-02-16] **CRITICAL GOVERNANCE GAP**: "Tested" ≠ "Delivered" - waves can close with 100% GREEN tests but missing critical deliverables (e.g., required frontend app never built). Solution: FULLY_FUNCTIONAL_DELIVERY_STANDARD.md with explicit definitions and enforced wave gates
+- [2026-02-16] When governance gaps affect wave closure, must create structural enforcement (gates, certificates, prohibitions) not just documentation
+- [2026-02-16] "Fully functional" needs three separate definitions: Design (architecture), App (implementation), Delivery (complete system) - each with distinct validation criteria
+- [2026-02-16] Wave closure certificates must include deliverable inventory with evidence, not just test results
