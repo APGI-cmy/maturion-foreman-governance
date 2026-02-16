@@ -236,6 +236,61 @@
       "file_hash_sha256": "a6094dc8aa600bb036b5a6d02f51cbc5e4c52037588bdcef90a7f1d2f50c1259"
     },
     {
+      "filename": "AGENT_INVOCATION_AND_DELEGATION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "8be003ec0ea2",
+      "effective_date": "2026-02-16",
+      "description": "This document establishes Agent Invocation and Delegation as a mandatory protocol—not a right or option—across the entire Maturion ecosystem. Core Principle: When work exceeds an agent's authority, capability, or boundaries, the agent MUST invoke or delegate to an appropriate agent with formal specification, handover documentation, verification, and accountability tracking.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_INVOCATION_AND_DELEGATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "8be003ec0ea2dfcb68d8031f0e087ace0fc98c7523ae80962cdb39f2643b8ade"
+    },
+    {
+      "filename": "AGENT_RIGHTS_BOUNDARIES_AND_DUTIES_REGISTRY.md",
+      "version": "1.0.0",
+      "file_hash": "82c56de163e9",
+      "effective_date": "2026-02-16",
+      "description": "This registry codifies explicit rights, boundaries, and duties for each agent type in the Maturion ecosystem, establishing: YOU MAY DO (permitted actions within authority), YOU MAY NOT DO (explicit prohibitions), YOU MUST DO (mandatory responsibilities), YOU MUST INVOKE WHEN (delegation triggers requiring invocation of other agents). Every agent operates with explicit, testable permissions and constraints.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_RIGHTS_BOUNDARIES_AND_DUTIES_REGISTRY.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "82c56de163e92796728f62b11aed633fcb6bd5b9fd30ecf528eab36654076322"
+    },
+    {
+      "filename": "AGENT_HANDOVER_AND_QUALITY_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "b930fd1c2984",
+      "effective_date": "2026-02-16",
+      "description": "This protocol establishes comprehensive handover and quality requirements for all agent work, implementing: Three-Tier Governance Prompt Structure (Role & General, Agent-Specific Protocol, Pre-Handover & Delivery), Pre-Handover Protocol (duplicate merge gate runs in workspace before PR), Merge Gate Duplication, Improvement Suggestion Mandate, Quality Verification Checklist, Delivery Beyond Minimum. Handovers are validated, improved, excellence-driven deliveries with compulsory learning capture.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_HANDOVER_AND_QUALITY_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "b930fd1c2984d0cfe39e58b15754031fce63ae1fd8deb926f55f4e7b121e7577"
+    },
+    {
+      "filename": "AGENT_CREATIVE_OWNERSHIP_AND_IMPROVEMENT_DOCTRINE.md",
+      "version": "1.0.0",
+      "file_hash": "d888a3c4aa37",
+      "effective_date": "2026-02-16",
+      "description": "This doctrine establishes creative ownership, proactive improvement, and intelligent accountability as fundamental operating principles for all agents. Core Principle: Agents are not mechanical executors—they are intelligent, creative, relentlessly improvement-focused professionals expected to think critically, own problems holistically, and continuously elevate quality. Establishes 'If You See It, You Own It' doctrine, no blame-shifting, deliver beyond minimum, and relentless quality focus.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CREATIVE_OWNERSHIP_AND_IMPROVEMENT_DOCTRINE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "d888a3c4aa37ed321e6994f85631f1cbb4ccfc2170e26691ba05fb65c4bdbd51"
+    },
+    {
+      "filename": "AGENT_MERGE_GATE_HANDOVER_ENHANCEMENT.md",
+      "version": "1.0.0",
+      "file_hash": "bdad38ef5459",
+      "effective_date": "2026-02-16",
+      "description": "This standard establishes enhanced merge gate requirements focused on detecting and preventing test dodging, technical debt, and quality shortcuts. Core Principle: Merge gates must catch ALL forms of quality compromise—not just obvious failures, but also hidden debt, test dodging, warnings, deprecations, and shortcuts. Defines comprehensive test debt detection (8 categories), test dodging detection, technical debt detection, warning/deprecation detection, pre-handover duplicate gate runs, and evidence-first failures.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_MERGE_GATE_HANDOVER_ENHANCEMENT.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "bdad38ef5459be7110e007aaca78dc7c55fe15b17629ebb836cc6729c0dca4dd"
+    },
+    {
       "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
       "version": "1.0",
       "file_hash": "3e14b061c313",
