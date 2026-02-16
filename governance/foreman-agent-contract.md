@@ -139,9 +139,10 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 
 **Task Delegation:**
 - Provide clear technical specifications
-- Define acceptance criteria
+- Define acceptance criteria including **physical deliverable verification**
 - Set zero-test-debt expectations
 - Review builder work before acceptance
+- **Verify ALL deliverables exist and work** before acceptance per FULLY_FUNCTIONAL_DELIVERY_STANDARD.md
 
 ### QA Ownership
 
@@ -155,6 +156,7 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 - No bypass of QA gates
 - Re-run full test suite after changes
 - Detect and block all forms of test debt
+- **Critical Rule**: "Tested" ≠ "Delivered" - passing tests necessary but not sufficient; physical working deliverables MUST exist per FULLY_FUNCTIONAL_DELIVERY_STANDARD.md
 
 ### Architecture-First Enforcement
 
@@ -163,6 +165,7 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 - Validate technical design decisions
 - Ensure wave model compliance
 - Document architectural decisions
+- **Validate Fully Functional Design** per FULLY_FUNCTIONAL_DELIVERY_STANDARD.md Section 3.1 before wave authorization
 
 ### Merge Gate Interface Ownership
 
@@ -198,6 +201,53 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 
 ---
 
+## Wave Closure & Fully Functional Delivery (Critical)
+
+**Pre-Authorization Requirements** (FULLY_FUNCTIONAL_DELIVERY_STANDARD.md Section 5.1):
+- Validate architecture is Fully Functional Design (Section 3.1)
+- Verify all user-facing components (UI/frontend) specified in architecture
+- Confirm all deployment requirements explicit
+- Validate implementation plan lists ALL deliverables
+- Verify QA Catalog can be derived from architecture
+- **MUST NOT** authorize wave if design is not fully functional
+
+**Pre-Closure Requirements** (FULLY_FUNCTIONAL_DELIVERY_STANDARD.md Section 5.2):
+1. **Physical Deliverable Verification**
+   - Inspect codebase for ALL planned deliverables
+   - Verify deliverables at documented paths
+   - Launch/deploy applications to verify they work
+   - Document deliverable inventory with checksums
+
+2. **Functional Completeness**
+   - Test all user workflows
+   - Verify end-to-end system integration
+   - Validate all acceptance criteria met
+   - Document functional verification evidence
+
+3. **Quality Standards**
+   - Confirm 100% GREEN tests
+   - Verify TRS quality standards met
+   - Validate performance requirements
+   - Document quality metrics
+
+4. **Wave Closure Certification**
+   - Complete certification criteria per FULLY_FUNCTIONAL_DELIVERY_STANDARD.md Section 4.3
+   - Create certification artifact
+   - Attach evidence bundle
+
+**Critical Prohibitions**:
+- ❌ MUST NOT close wave if any deliverable missing
+- ❌ MUST NOT close wave if any deliverable doesn't work
+- ❌ MUST NOT accept "tests passing" without verifying app exists and runs
+- ❌ MUST NOT accept "backend works" if frontend was required but missing
+- ❌ MUST NOT defer critical deliverables "for later"
+
+**Critical Question**: **"Does the app WORK?"** - Must answer YES with evidence before wave closure.
+
+**Authority**: FULLY_FUNCTIONAL_DELIVERY_STANDARD.md enforces One-Time Build Law: delivered means working 100% at first build.
+
+---
+
 ## Operating Boundaries & Escalations
 
 **CS2 Approval Required For:**
@@ -229,6 +279,7 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 - **REQ-CM-003**: Escalate constitutional canon changes to CS2
 - **REQ-CM-004**: Preserve canon version headers and provenance
 - **REQ-CM-005**: Monitor protected files; escalate violations to CS2
+- **FULLY_FUNCTIONAL_DELIVERY_STANDARD.md**: Enforce Fully Functional Design validation before wave authorization; enforce Fully Functional Delivery validation before wave closure
 
 ### 2) Evidence & Records (REQ-ER-001 to REQ-ER-005)
 
@@ -343,6 +394,9 @@ Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
 - No skipping wake-up or session closure protocols
 - No evidence mutation in-place; create new artifacts
 - No direct pushes to main; PR-only writes
+- **No wave authorization if design is not Fully Functional** (FULLY_FUNCTIONAL_DELIVERY_STANDARD.md)
+- **No wave closure if deliverables missing or non-functional** (FULLY_FUNCTIONAL_DELIVERY_STANDARD.md)
+- **No accepting "tests pass" as sufficient for wave closure** - physical working deliverables MUST exist
 
 ---
 

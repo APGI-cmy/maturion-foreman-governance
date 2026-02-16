@@ -133,3 +133,51 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 - Context: Historical/archive files accumulate at repository root level (67 md files found)
 - Response: Document for CS2 review; recommend archival to dedicated directory
 - [2026-02-15] Create templates alongside protocols to validate usability
+
+---
+
+### Governance Gap Detection Pattern
+
+**Frequency**: Rare but critical - when execution failures reveal governance design flaws
+
+**Context**: When systems fail despite governance checkpoints passing (e.g., wave closure gates passed but deliverables missing)
+
+**Description**: Operational failures that shouldn't be possible under existing governance indicate gap between governance intent and enforcement. Pattern: (1) failure occurs, (2) gates were "passed", (3) deliverable verification was insufficient or absent.
+
+**Application**:
+1. Analyze: What governance checkpoints existed?
+2. Identify: Why didn't they catch the issue?
+3. Diagnose: Missing definition, missing enforcement, or ambiguous criteria?
+4. Create: New canonical standard with explicit definitions
+5. Strengthen: Add structural enforcement (gates, certificates, prohibitions)
+6. Ripple: Propagate to all affected repositories
+
+**Example**: MAT module - frontend app required in all governance docs but never built. Wave closure gates only checked test results, not deliverable existence. Solution: FULLY_FUNCTIONAL_DELIVERY_STANDARD.md with explicit "fully functional" definitions and enforced deliverable verification.
+
+**Related Learnings**: WE_ONLY_FAIL_ONCE_DOCTRINE.md Section 3.2 - mandatory structural change prevents recurrence
+
+**Related Patterns**: Canon Changes Require Ripple, Structural Enforcement vs Documentation Only
+
+---
+
+### Structural Enforcement vs Documentation Only
+
+**Frequency**: Common - when addressing governance gaps
+
+**Context**: After discovering governance failures, deciding between documentation update vs structural change
+
+**Description**: Documentation alone is insufficient to prevent recurrence. Structural enforcement includes: (1) automated gates/CI checks, (2) required evidence artifacts, (3) explicit prohibitions in contracts, (4) certificate requirements, (5) manual checklists with sign-off.
+
+**Application**:
+1. If failure caused by missing guidance → add documentation
+2. If failure possible despite guidance → add structural enforcement
+3. For critical paths (wave authorization, wave closure) → always structural
+4. Test: Could failure recur if someone "forgot" to read documentation? If yes → structural enforcement needed
+
+**Example**: FULLY_FUNCTIONAL_DELIVERY_STANDARD.md includes (a) explicit definitions (documentation), (b) wave gate requirements (structural), (c) certificate templates (structural), (d) prohibited patterns in contracts (structural), (e) CI deliverable checks (structural).
+
+**Related Learnings**: WE_ONLY_FAIL_ONCE_DOCTRINE.md requires structural governance changes, not advisory documentation
+
+**Related Patterns**: Governance Gap Detection Pattern
+
+---
