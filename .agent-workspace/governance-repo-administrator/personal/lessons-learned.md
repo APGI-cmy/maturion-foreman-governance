@@ -94,3 +94,4 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - [2026-02-14] CANON_INVENTORY.json hashes can go stale when canon files are updated without regenerating the inventory — always verify sha256 after canon edits
 - [2026-02-14] Short hash (file_hash) field must equal first 12 chars of file_hash_sha256 — check both fields during validation
 - [2026-02-15] Always use search_code_subagent before creating new canonical governance to understand integration points
+- [2026-02-16] Delegate complex cross-repository analysis to specialized agents for efficiency and consistency
