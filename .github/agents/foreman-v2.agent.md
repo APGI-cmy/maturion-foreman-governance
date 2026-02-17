@@ -600,7 +600,7 @@ if [ "${MEMORY_COUNT}" -gt 5 ]; then
 fi
 
 # FM_M: Update environment health
-jq '.environment_health_status = "SAFE_FOR_HANDOVER"'    "${WORKSPACE}/environment-health.json" > "${WORKSPACE}/environment-health.json.tmp"
+jq '.environment_health_status = "SAFE_FOR_HANDOVER" | .' "${WORKSPACE}/environment-health.json" > "${WORKSPACE}/environment-health.json.tmp"
 mv "${WORKSPACE}/environment-health.json.tmp" "${WORKSPACE}/environment-health.json"
 
 echo "✅ SESSION CLOSURE COMPLETE"
@@ -632,7 +632,7 @@ DEBT_COUNT=$(grep -r "\.skip(|\.todo(|// TODO" tests/ 2>/dev/null | wc -l)
 [ "${DEBT_COUNT}" -gt 0 ] && COMPLIANCE_ISSUES+=("Test debt detected")
 
 # Check 3: Evidence artifacts
-[ ! -f ".agent-admin/prehandover/proof-"*.md ] && COMPLIANCE_ISSUES+=("Missing proof")
+[ $(ls .agent-admin/prehandover/proof-*.md 2>/dev/null | wc -l) -eq 0 ] && COMPLIANCE_ISSUES+=("Missing proof")
 
 # FM_H: Evaluate compliance
 if [ ${#COMPLIANCE_ISSUES[@]} -gt 0 ]; then
