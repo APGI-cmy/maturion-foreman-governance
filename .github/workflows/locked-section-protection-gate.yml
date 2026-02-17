@@ -43,18 +43,18 @@ jobs:
         run: |
           echo "Checking for evidence-based validation in PREHANDOVER_PROOF..."
           
-          # Check if PREHANDOVER_PROOF.md exists
-          if [ -f "PREHANDOVER_PROOF.md" ]; then
+          # Check if PREHANDOVER_PROOF.md exists in governance directory
+          if [ -f "governance/PREHANDOVER_PROOF.md" ]; then
             echo "evidence_file_exists=true" >> $GITHUB_OUTPUT
             
             # Check if it contains locked section validation evidence
-            if grep -qi "locked.*section\|locked section validation\|check_locked_sections" PREHANDOVER_PROOF.md; then
+            if grep -qi "locked.*section\|locked section validation\|check_locked_sections" governance/PREHANDOVER_PROOF.md; then
               echo "evidence_found=true" >> $GITHUB_OUTPUT
               echo "✓ PREHANDOVER_PROOF.md contains locked section validation evidence"
               
               # Check for attestation/signature and exit code 0
-              if grep -qi "attestation\|signature\|manually verified\|evidence-based" PREHANDOVER_PROOF.md && \
-                 grep -qi "exit code.*0\|exit.*code.*0\|exit: 0" PREHANDOVER_PROOF.md; then
+              if grep -qi "attestation\|signature\|manually verified\|evidence-based" governance/PREHANDOVER_PROOF.md && \
+                 grep -qi "exit code.*0\|exit.*code.*0\|exit: 0" governance/PREHANDOVER_PROOF.md; then
                 echo "attestation_found=true" >> $GITHUB_OUTPUT
                 echo "✓ Attestation/signature and exit code 0 found in PREHANDOVER_PROOF"
               else
@@ -67,7 +67,7 @@ jobs:
             fi
           else
             echo "evidence_file_exists=false" >> $GITHUB_OUTPUT
-            echo "⚠️ PREHANDOVER_PROOF.md not found"
+            echo "⚠️ PREHANDOVER_PROOF.md not found in governance directory"
           fi
       
       - name: Check for locked section modifications
