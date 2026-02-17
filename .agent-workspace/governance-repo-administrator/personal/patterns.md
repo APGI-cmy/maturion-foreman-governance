@@ -181,3 +181,22 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 **Related Patterns**: Governance Gap Detection Pattern
 
 ---
+
+## Pattern: Executable Agent Contracts
+- Observed: 2026-02-17 (Session 031)
+- Context: When agent contracts need to be both documentation and executable
+- Response: Use embedded bash scripts with priority codes, not prose descriptions
+- Benefits: Testable, deterministic, transparent behavior vs. interpreted prose
+
+## Pattern: Incremental Code Review
+- Observed: 2026-02-17 (Session 031)
+- Context: When implementing complex files with embedded code
+- Response: Run code review after each major change, fix issues iteratively
+- Benefits: Catches issues early before they compound; improves final quality
+
+## Pattern: Python for Large File Creation
+- Observed: 2026-02-17 (Session 031)
+- Context: When bash heredoc fails with large content blocks
+- Response: Use Python with triple-quoted strings to create files in parts
+- Benefits: Avoids heredoc timeout issues; clearer syntax for multi-line content
+
