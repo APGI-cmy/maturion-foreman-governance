@@ -144,3 +144,4 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - Context: When adding model escalation guidance (Sonnet→Opus)
 - Pattern: Integrate with COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL to distinguish authority escalation vs capability switching
 - Action: Ensure model-specific guidance aligns with existing capability orchestration framework
+- [2026-02-17] Canonical consolidation pattern: search distributed content first with search_code_subagent before creating canonical file - ensures comprehensive coverage and saves time
