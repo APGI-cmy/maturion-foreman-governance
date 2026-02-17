@@ -1,0 +1,6 @@
+# Level 1: High (Role-Specific Canon)
+# Loaded: ALWAYS, SECOND
+# Purpose: Builder-specific canonical guidance
+
+# NOTE: Builder-specific canon to be defined
+# Placeholder for future BUILDER_ROLE_CANON.md

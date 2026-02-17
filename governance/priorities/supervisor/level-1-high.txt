@@ -1,0 +1,7 @@
+# Level 1: High (Role-Specific Canon)
+# Loaded: ALWAYS, SECOND
+# Purpose: Foreman-specific canonical guidance
+
+governance/maturion/FM_ROLE_CANON.md
+governance/canon/FOREMAN_MEMORY_PROTOCOL.md
+governance/canon/AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md

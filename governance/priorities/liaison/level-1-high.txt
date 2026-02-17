@@ -1,0 +1,6 @@
+# Level 1: High (Role-Specific Canon)
+# Loaded: ALWAYS, SECOND
+# Purpose: Liaison-specific canonical guidance
+
+# NOTE: Liaison-specific canon to be defined
+# Placeholder for cross-repo synchronization canon

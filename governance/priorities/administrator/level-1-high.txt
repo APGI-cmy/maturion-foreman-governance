@@ -1,0 +1,9 @@
+# Level 1: High (Role-Specific Canon)
+# Loaded: ALWAYS, SECOND
+# Purpose: Administrator-specific canonical guidance
+
+governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md
+governance/canon/CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md
+governance/canon/SELF_ALIGNMENT_AUTHORITY_MODEL.md
+governance/canon/GOVERNANCE_ARTIFACT_TAXONOMY.md
+governance/canon/AGENT_RECRUITMENT_AND_CONTRACT_AUTHORITY_MODEL.md

@@ -1,0 +1,6 @@
+# Level 3: Low (Reference Material)
+# Loaded: ON-DEMAND ONLY
+# Purpose: Templates, examples, runbooks
+
+governance/templates/PR_GATE_RELEASE_CHECKLIST_FM.md
+governance/templates/PREHANDOVER_PROOF_TEMPLATE.md
