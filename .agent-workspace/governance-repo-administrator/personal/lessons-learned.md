@@ -99,3 +99,26 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - [2026-02-16] When governance gaps affect wave closure, must create structural enforcement (gates, certificates, prohibitions) not just documentation
 - [2026-02-16] "Fully functional" needs three separate definitions: Design (architecture), App (implementation), Delivery (complete system) - each with distinct validation criteria
 - [2026-02-16] Wave closure certificates must include deliverable inventory with evidence, not just test results
+
+## Session 20260217
+
+### Lesson: Four-Phase Agent Contracts Enable Executable Governance
+- Context: When designing agent contracts that need to be both readable and executable
+- Pattern: Separating Preflight (identity), Induction (context), Build (orchestration), Handover (closure) phases
+- Action: Use executable bash scripts within contract, not just prose descriptions
+
+### Lesson: Priority Codes Make Requirements Explicit
+- Context: When everything feels equally important in a contract
+- Pattern: Using FM_H/M/L and B_H/M/L priority codes throughout
+- Action: Prefix all requirements and script sections with priority codes
+
+### Lesson: Code Review Iterations Catch Shell Scripting Issues
+- Context: When embedding bash scripts in documentation
+- Pattern: Run code review multiple times, fixing shell-specific issues
+- Action: Pay special attention to grep regex patterns, glob expansion, jq safety
+
+### Lesson: POLC-Only Examples Block Implementation Defaults
+- Context: When traditional coding agents jump to implementation
+- Pattern: Show wrong (code) vs. right (POLC) behavior side-by-side
+- Action: Use concrete prohibited behavior examples with priorities
+
