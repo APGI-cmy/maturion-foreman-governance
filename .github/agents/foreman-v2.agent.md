@@ -244,7 +244,7 @@ fi
 
 # FM_H: Check for placeholder hashes (degraded alignment)
 echo "[FM_H] Checking for placeholder PUBLIC_API hashes..."
-PLACEHOLDER_COUNT=$(jq '[.constitutional_canon[]?.public_api_hash | select(. == "placeholder" or . == "TBD" or length < 64)] | length' governance/CANON_INVENTORY.json)
+PLACEHOLDER_COUNT=$(jq '(.constitutional_canon // []) | [.[] | .public_api_hash? | select(. == "placeholder" or . == "TBD" or (type == "string" and length < 64))] | length' governance/CANON_INVENTORY.json)
 if [ "${PLACEHOLDER_COUNT}" -gt 0 ]; then
   echo "⚠️  [FM_H] ${PLACEHOLDER_COUNT} placeholder hashes detected - DEGRADED ALIGNMENT"
   echo "ACTION: Failing alignment gate and escalating to CS2..."
@@ -338,7 +338,7 @@ echo "🏗️  ARCHITECTURE DESIGN PHASE"
 echo "[FM_H] Reviewing task requirements against canonical standards..."
 
 # Check: Does task require canonical review?
-if grep -qi "governance|canon|constitution" <<< "${TASK_DESCRIPTION}"; then
+if grep -qiE 'governance|canon|constitution' <<< "${TASK_DESCRIPTION}"; then
   echo "⚠️  [FM_H] Task touches protected governance - CS2 escalation required"
   exit 1
 fi
@@ -464,7 +464,7 @@ if [ "${FAILED_TESTS}" -gt 0 ] || [ "${SKIPPED_TESTS}" -gt 0 ]; then
 fi
 
 # FM_H: Verify no hidden test debt
-STUB_COUNT=$(grep -rE '// TODO|\.skip\(|\.todo\(' tests/ 2>/dev/null | wc -l)
+STUB_COUNT=$(grep -rE '// TODO|\\.skip\\(|\\.todo\\(' tests/ 2>/dev/null | wc -l)
 if [ "${STUB_COUNT}" -gt 0 ]; then
   echo "❌ [FM_H] HIDDEN TEST DEBT DETECTED"
   echo "FM ORDER: Remove ALL test debt"
@@ -629,7 +629,7 @@ COMPLIANCE_ISSUES=()
 [ "${FAILED_TESTS}" -gt 0 ] && COMPLIANCE_ISSUES+=("NOT 100% GREEN")
 
 # Check 2: Zero test debt
-DEBT_COUNT=$(grep -rE '\.skip\(|\.todo\(|// TODO' tests/ 2>/dev/null | wc -l)
+DEBT_COUNT=$(grep -rE '\\.skip\\(|\\.todo\\(|// TODO' tests/ 2>/dev/null | wc -l)
 [ "${DEBT_COUNT}" -gt 0 ] && COMPLIANCE_ISSUES+=("Test debt detected")
 
 # Check 3: Evidence artifacts
