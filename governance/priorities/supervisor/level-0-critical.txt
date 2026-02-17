@@ -1,0 +1,13 @@
+# Level 0: Critical (Constitutional Constraints)
+# Loaded: ALWAYS, FIRST
+# Purpose: Constitutional documents defining immutable boundaries
+
+governance/CONSTITUTION.md
+governance/canon/BUILD_PHILOSOPHY.md
+governance/canon/GOVERNANCE_PURPOSE_AND_SCOPE.md
+governance/canon/LIVING_AGENT_SYSTEM.md
+governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
+governance/canon/AGENT_PREFLIGHT_PATTERN.md
+governance/canon/AGENT_PRIORITY_SYSTEM.md
+governance/canon/AGENT_INDUCTION_PROTOCOL.md
+governance/canon/AGENT_HANDOVER_AUTOMATION.md

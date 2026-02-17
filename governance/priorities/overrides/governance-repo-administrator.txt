@@ -1,0 +1,6 @@
+# Agent-Specific Override: governance-repo-administrator
+# Loaded: After Level 1, before Level 2
+# Purpose: Repository-specific context for this specific agent instance
+
+# Example: Repository-specific constraints or context
+# (None defined yet - this is a template)

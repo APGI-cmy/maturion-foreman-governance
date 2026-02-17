@@ -28,17 +28,17 @@ jobs:
         run: |
           echo "Checking for evidence-based validation in PREHANDOVER_PROOF..."
           
-          # Check if PREHANDOVER_PROOF.md exists
-          if [ -f "PREHANDOVER_PROOF.md" ]; then
+          # Check if PREHANDOVER_PROOF.md exists in governance directory
+          if [ -f "governance/PREHANDOVER_PROOF.md" ]; then
             echo "evidence_file_exists=true" >> $GITHUB_OUTPUT
             
             # Check if it contains scope-to-diff validation evidence
-            if grep -qi "scope.*to.*diff\|scope.*declaration" PREHANDOVER_PROOF.md; then
+            if grep -qi "scope.*to.*diff\|scope.*declaration" governance/PREHANDOVER_PROOF.md; then
               echo "evidence_found=true" >> $GITHUB_OUTPUT
               echo "✓ PREHANDOVER_PROOF.md contains scope validation evidence"
               
               # Check for attestation/signature
-              if grep -qi "attestation\|signature\|manually verified\|evidence-based" PREHANDOVER_PROOF.md; then
+              if grep -qi "attestation\|signature\|manually verified\|evidence-based" governance/PREHANDOVER_PROOF.md; then
                 echo "attestation_found=true" >> $GITHUB_OUTPUT
                 echo "✓ Attestation/signature found in PREHANDOVER_PROOF"
               else
@@ -51,7 +51,7 @@ jobs:
             fi
           else
             echo "evidence_file_exists=false" >> $GITHUB_OUTPUT
-            echo "⚠️ PREHANDOVER_PROOF.md not found"
+            echo "⚠️ PREHANDOVER_PROOF.md not found in governance directory"
           fi
 
       - name: Enforce scope-to-diff via registry (script execution path)
@@ -71,8 +71,15 @@ jobs:
           ALLOWED=$(awk "/### DOMAIN: $DOMAIN/{flag=1} /Allowed Paths/{getline; while (\$0 ~ /^-/) {print \$2; getline}} flag && /Forbidden Paths/{exit}" "$REGISTRY")
           FORBIDDEN=$(awk "/### DOMAIN: $DOMAIN/{flag=1} /Forbidden Paths/{getline; while (\$0 ~ /^-/) {print \$2; getline}} flag && /Typical Failure/{exit}" "$REGISTRY")
 
-          git fetch origin ${{ github.base_ref }} --depth=1
-          FILES=$(git diff --name-only origin/${{ github.base_ref }})
+          # Determine base branch based on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.base_ref }}"
+          else
+            BASE_REF="main"
+          fi
+
+          git fetch origin $BASE_REF --depth=1
+          FILES=$(git diff --name-only origin/$BASE_REF)
 
           for FILE in $FILES; do
             for BAD in $FORBIDDEN; do
@@ -192,7 +199,7 @@ jobs:
               comment += '# Exit code must be 0\n';
               comment += '```\n\n';
               comment += '### Path 2: Evidence-Based Validation (Agent Environments)\n';
-              comment += '- Create `PREHANDOVER_PROOF.md` in PR root\n';
+              comment += '- Create `governance/PREHANDOVER_PROOF.md` in governance directory\n';
               comment += '- Document manual scope-to-diff comparison\n';
               comment += '- Include attestation that all files match\n';
               comment += '- Sign with agent name and timestamp\n\n';
