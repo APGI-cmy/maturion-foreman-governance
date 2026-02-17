@@ -323,6 +323,93 @@ echo "✅ FOREMAN WAKE-UP COMPLETE"
 
 ## PHASE 3: BUILD SCRIPT (FM ORCHESTRATION TASKS)
 
+### 3.0 🔒 Pre-Wave Authorization Gate — Agent Availability Check (LOCKED)
+
+**Authority**: FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md v1.0.0  
+**Learning**: BL-031 (Agent Discovery Failure - Wave 5.5)  
+**Priority**: FM_H (Foreman High - Constitutional Mandate)  
+**Protection**: AGENT_CONTRACT_PROTECTION_PROTOCOL.md  
+
+**MANDATORY BEFORE WAVE EXECUTION**:
+
+Before starting ANY wave, Foreman MUST verify all assigned builder agents are available:
+
+1. **[ ] Review wave task assignments** from implementation plan
+   - Load wave plan artifact
+   - Identify all wave steps and assignments
+   - Extract list of required builder agents
+
+2. **[ ] Identify all builder agents required**
+   - api-builder (API implementation)
+   - ui-builder (UI component implementation)
+   - qa-builder (QA test implementation)
+   - schema-builder (Schema/data model implementation)
+   - integration-builder (Integration/glue code implementation)
+
+3. **[ ] Verify EACH builder appears in GitHub agent selection list**
+   - Access GitHub Copilot workspace
+   - Open agent selection interface
+   - Visually confirm each required builder present
+   - Take screenshot as verification evidence
+
+4. **[ ] If ANY builder unavailable**:
+   - **[ ] HALT wave execution** (do NOT proceed)
+   - **[ ] Create issue**: "[BUG][LIVING AGENT] [builder-name] agent file present but missing from agent list"
+   - **[ ] Investigate**: YAML frontmatter compliance (BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md), file location, GitHub recognition
+   - **[ ] Assign to CS2** for agent contract fix
+   - **[ ] Wait for fix PR** to merge
+   - **[ ] Re-verify agent availability** after fix
+   - **[ ] Resume wave ONLY** after all builders available
+
+5. **[ ] Document agent availability verification** in wave planning evidence
+   - Record verification timestamp
+   - List all verified builders
+   - Attach screenshot of agent selection list
+   - Note any issues detected and resolved
+
+**PROHIBITED** (FM_H - Governance violations):
+- ❌ Starting wave with unavailable builders
+- ❌ Substituting generic coding agent for missing builder
+- ❌ Substituting other builder types (e.g., api-builder for ui-builder)
+- ❌ Proceeding with "workaround" agents
+- ❌ Skipping or deferring agent availability check
+
+**Consequence**: Governance violation, potential CATASTROPHIC FAILURE if repeated (BL-031)
+
+**Evidence Template**:
+```markdown
+## Pre-Wave Agent Availability Check
+
+**Date**: YYYY-MM-DD HH:MM:SS UTC  
+**Wave**: [Wave number and description]  
+**Foreman**: foreman-v2
+
+### Required Builders
+- [ ] api-builder (verified in agent list: YES/NO)
+- [ ] ui-builder (verified in agent list: YES/NO)
+- [ ] qa-builder (verified in agent list: YES/NO)
+- [ ] schema-builder (verified in agent list: YES/NO)
+- [ ] integration-builder (verified in agent list: YES/NO)
+
+### Verification Status
+✅ ALL required builders available - Wave authorized to proceed
+OR
+❌ [N] builders unavailable - Wave HALTED, escalation initiated
+
+### Evidence Attachments
+- [x] Screenshot of GitHub agent selection list
+- [x] Builder contract file paths verified
+- [x] YAML frontmatter validation results
+```
+
+**References**:
+- BL-031: Pre-Flight Builder Agent Availability Check (BOOTSTRAP_EXECUTION_LEARNINGS.md)
+- FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md v1.0.0
+- BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md v1.0.0
+- WE_ONLY_FAIL_ONCE_DOCTRINE.md
+
+---
+
 ### 3.1 Architecture-First Design (FM_H)
 
 **Script**: Not "write code" - Script for "design and delegate"

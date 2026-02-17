@@ -64,6 +64,80 @@ Each entry follows this structure:
 
 ## Change History
 
+### [BL-031-CANONIZATION] - 2026-02-17 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 approval pending in PR review  
+**Effective Date**: 2026-02-17 (upon CS2 approval)  
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories with Foreman agents
+
+**Summary**: Canonized BL-031 (Agent Discovery Failure - Wave 5.5) prevention measures by creating two new PUBLIC_API tier-0 protocols and updating Foreman agent contracts. Created `FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md` defining mandatory pre-flight check ensuring all assigned builder agents are discoverable in GitHub Copilot agent list before wave execution starts. Created `BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md` defining permitted and prohibited YAML frontmatter fields to prevent GitHub parser rejection (root cause: non-standard `assigned_waves` field broke ui-builder recognition in Wave 5.5). Updated foreman-v2.agent.md with LOCKED section 3.0 enforcing pre-wave agent availability check with explicit prohibited actions (no substitutions, no bypasses, no workarounds). Implements "We Only Fail Once" doctrine—if this pattern repeats, triggers CATASTROPHIC FAILURE.
+
+**Root Cause (BL-031)**: 
+- **Symptom**: ui-builder agent file existed at `.github/agents/ui-builder.md` but was NOT visible in GitHub Copilot agent selection list
+- **Root Cause**: Non-standard YAML frontmatter field `assigned_waves` broke GitHub parser recognition
+- **Impact**: Wave 5.5 stalled, generic coding agent substituted (governance violation), 2 hours wasted
+- **Timeline**: PR #288 created with wrong agent, closed after discovery, rework required via PR #293
+- **Foreman Failure**: Started wave without verifying builder availability (missing pre-flight check)
+
+**Affected Artifacts**:
+- `governance/canon/FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md` (NEW v1.0.0 - PUBLIC_API tier-0 protocol)
+- `governance/canon/BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md` (NEW v1.0.0 - PUBLIC_API tier-0 protocol)
+- `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (UPDATED - BL-031 status changed to "CANONICAL (protocols created and enforced)")
+- `.github/agents/foreman-v2.agent.md` (UPDATED - Added LOCKED section 3.0 for pre-wave agent availability check)
+- `governance/CANON_INVENTORY.json` (UPDATED - Added 2 new protocols with full SHA256 hashes, total_canons: 164→166)
+
+**Migration Required**: YES (All consumer repositories with Foreman agents)
+
+**Migration Guidance**:
+1. **Consumer Repositories** (maturion-isms, maturion-foreman-office-app, PartPulse, R_Roster):
+   - Update Foreman agent contracts with LOCKED section 3.0 from canonical governance
+   - Audit all builder agent contracts for YAML frontmatter compliance
+   - Remove any prohibited fields: `assigned_waves`, `wave_assignments`, `task_queue`, `custom_*`
+   - Validate YAML syntax with `yamllint`
+   - Test GitHub Copilot agent recognition for all builders
+   - Document pre-wave agent availability check in wave planning evidence
+
+2. **Foreman Agents**:
+   - Execute pre-wave agent availability check BEFORE starting any wave
+   - Verify all assigned builders appear in GitHub agent selection list
+   - HALT wave execution if any builder unavailable
+   - Create escalation issue for agent discovery failures
+   - Wait for CS2 fix, re-verify, then resume
+   - NEVER substitute generic coding agent or different builder type
+
+3. **Builder Contracts**:
+   - Only use permitted YAML fields (id, description, agent, governance, scope, execution_identity, capabilities, constraints, enforcement, prohibitions, metadata)
+   - Avoid optional fields unless documented and tested
+   - Never use custom metadata fields in YAML frontmatter
+   - Store runtime state in `.agent-workspace/<agent-id>/`, not YAML
+
+**Rationale**: 
+- Prevent recurrence of Wave 5.5 agent discovery failure (BL-031)
+- Enforce "We Only Fail Once" doctrine
+- Lock pre-wave check into Foreman contracts as constitutional requirement
+- Establish YAML compliance specification to prevent GitHub parser rejection
+- Enable ecosystem-wide compliance audit and remediation
+- Provide clear escalation path when builders unavailable
+- Prevent governance violations through agent substitution
+
+**Impact**: 
+- **ALL Foreman agents**: Must execute pre-wave check before every wave
+- **ALL builder contracts**: Must comply with YAML frontmatter spec
+- **ALL wave executions**: Blocked until builder availability verified
+- **Consumer repos**: Require Foreman contract updates and builder audits
+- **Merge gates**: New validation for builder contract YAML compliance
+
+**References**:
+- BL-031: Pre-Flight Builder Agent Availability Check (BOOTSTRAP_EXECUTION_LEARNINGS.md lines 3727-3857)
+- Issue: [POST-MORTEM][GOVERNANCE GAP][BL-030] Canonize agent discovery protocol (current issue)
+- Evidence: modules/mat/05-build-evidence/RCA_WAVE_5.5_AGENT_CONTRACT_DEVIATION.md (maturion-isms repo)
+- Related Issues: APGI-cmy/maturion-isms#290 (agent discovery), #292 (resubmission)
+- Related PRs: APGI-cmy/maturion-isms#288 (wrong agent, closed), #291 (ui-builder fix), #293 (correct approach)
+- WE_ONLY_FAIL_ONCE_DOCTRINE.md - Learning promotion rule
+
+---
+
 ### [ESCALATION-POLICY-CANONICAL] - 2026-02-17 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)

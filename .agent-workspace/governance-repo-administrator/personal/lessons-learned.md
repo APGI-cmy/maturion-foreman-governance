@@ -145,3 +145,33 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - Pattern: Integrate with COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL to distinguish authority escalation vs capability switching
 - Action: Ensure model-specific guidance aligns with existing capability orchestration framework
 - [2026-02-17] Canonical consolidation pattern: search distributed content first with search_code_subagent before creating canonical file - ensures comprehensive coverage and saves time
+
+---
+
+### 2026-02-17 - BL-031 Canonization: Bootstrap Learning → Constitutional Enforcement
+
+**Context**: Converting BL-031 (agent discovery failure) from documented learning to enforced prevention
+
+**Lesson**: Canonizing a bootstrap learning requires more than just creating protocols—it needs constitutional enforcement through LOCKED sections, merge gates, and CATASTROPHIC FAILURE consequences.
+
+**Pattern**: BL-xxx → Canonical Protocols → LOCKED Sections → Ripple → Enforcement → "We Only Fail Once"
+
+**Remedy**: When a failure pattern is documented as BL-xxx:
+1. Create canonical protocol(s) in governance/canon/ (PUBLIC_API tier-0)
+2. Add full SHA256 hashes to CANON_INVENTORY.json (no placeholders)
+3. Update BL-xxx status in BOOTSTRAP_EXECUTION_LEARNINGS.md
+4. Add LOCKED sections to affected agent contracts (protected by AGENT_CONTRACT_PROTECTION_PROTOCOL.md)
+5. Create CHANGELOG entry with migration guidance
+6. Create ripple log for layer-down propagation to all consumer repos
+7. Define CATASTROPHIC FAILURE consequence if pattern repeats (WE_ONLY_FAIL_ONCE_DOCTRINE.md)
+
+**Impact**: BL-031 now has teeth—if a Foreman starts a wave without verifying builder availability, it's a governance catastrophic failure. The LOCKED section 3.0 in foreman-v2.agent.md cannot be removed or weakened without CS2 approval.
+
+**Example Files Created**: 
+- FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md (13KB, 12 sections)
+- BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md (16KB, 13 sections)
+- Ripple log with 4 consumer repos requiring updates
+
+**Authority**: BOOTSTRAP_EXECUTION_LEARNINGS.md BL-031, WE_ONLY_FAIL_ONCE_DOCTRINE.md, AGENT_CONTRACT_PROTECTION_PROTOCOL.md
+
+---
