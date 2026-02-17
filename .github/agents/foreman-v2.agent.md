@@ -292,10 +292,11 @@ fi
 
 # FM_M: Check for escalations from other agents
 echo "[FM_M] Checking escalation inbox..."
-ESCALATION_COUNT=$(ls -1 "${WORKSPACE}/escalation-inbox"/*.md 2>/dev/null | grep -v "/resolved/" | wc -l)
+UNRESOLVED_ESCALATIONS=$(ls -1 "${WORKSPACE}/escalation-inbox"/*.md 2>/dev/null | grep -v "/resolved/")
+ESCALATION_COUNT=$(echo "${UNRESOLVED_ESCALATIONS}" | grep -c . || echo 0)
 if [ "${ESCALATION_COUNT}" -gt 0 ]; then
   echo "⚠️  [FM_M] ${ESCALATION_COUNT} unresolved escalations found"
-  ls "${WORKSPACE}/escalation-inbox"/*.md 2>/dev/null | grep -v "/resolved/" | while read esc; do
+  echo "${UNRESOLVED_ESCALATIONS}" | while read esc; do
     echo "  - $(basename "${esc}")"
   done
 else
@@ -463,7 +464,7 @@ if [ "${FAILED_TESTS}" -gt 0 ] || [ "${SKIPPED_TESTS}" -gt 0 ]; then
 fi
 
 # FM_H: Verify no hidden test debt
-STUB_COUNT=$(grep -r "// TODO|\.skip(|\.todo(" tests/ 2>/dev/null | wc -l)
+STUB_COUNT=$(grep -rE '// TODO|\.skip\(|\.todo\(' tests/ 2>/dev/null | wc -l)
 if [ "${STUB_COUNT}" -gt 0 ]; then
   echo "❌ [FM_H] HIDDEN TEST DEBT DETECTED"
   echo "FM ORDER: Remove ALL test debt"
@@ -600,7 +601,7 @@ if [ "${MEMORY_COUNT}" -gt 5 ]; then
 fi
 
 # FM_M: Update environment health
-jq '.environment_health_status = "SAFE_FOR_HANDOVER" | .' "${WORKSPACE}/environment-health.json" > "${WORKSPACE}/environment-health.json.tmp"
+jq '.environment_health_status = "SAFE_FOR_HANDOVER"' "${WORKSPACE}/environment-health.json" > "${WORKSPACE}/environment-health.json.tmp"
 mv "${WORKSPACE}/environment-health.json.tmp" "${WORKSPACE}/environment-health.json"
 
 echo "✅ SESSION CLOSURE COMPLETE"
@@ -628,7 +629,7 @@ COMPLIANCE_ISSUES=()
 [ "${FAILED_TESTS}" -gt 0 ] && COMPLIANCE_ISSUES+=("NOT 100% GREEN")
 
 # Check 2: Zero test debt
-DEBT_COUNT=$(grep -r "\.skip(|\.todo(|// TODO" tests/ 2>/dev/null | wc -l)
+DEBT_COUNT=$(grep -rE '\.skip\(|\.todo\(|// TODO' tests/ 2>/dev/null | wc -l)
 [ "${DEBT_COUNT}" -gt 0 ] && COMPLIANCE_ISSUES+=("Test debt detected")
 
 # Check 3: Evidence artifacts
