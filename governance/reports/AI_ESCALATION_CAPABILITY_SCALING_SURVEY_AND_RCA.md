@@ -27,7 +27,7 @@ This report provides a comprehensive survey of AI escalation and capability-awar
 ### 1.1 ESCALATION_POLICY.md (governance/escalation/)
 
 **Status**: EXISTS  
-**Location**: `governance/escalation/ESCALATION_POLICY.md`  
+**Location**: `governance/canon/ESCALATION_POLICY.md`  
 **Date**: Undated (pre-2025-12-24 canonization)
 
 **Content Summary**:

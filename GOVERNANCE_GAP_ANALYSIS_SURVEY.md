@@ -372,7 +372,7 @@ This survey reveals a **critical governance integrity gap** across the governanc
   - governance/philosophy/BYG_DOCTRINE.md
   - governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md
   - governance/CONSTITUTION.md
-  - governance/escalation/ESCALATION_POLICY.md
+  - governance/canon/ESCALATION_POLICY.md
 - No application code in governance repo
 
 **Canonical Basis**: Implicit (not explicitly referenced to canon)

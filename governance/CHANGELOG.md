@@ -64,6 +64,71 @@ Each entry follows this structure:
 
 ## Change History
 
+### [ESCALATION-POLICY-CANONICAL] - 2026-02-17 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)
+**Approved By**: CS2 approval pending in PR review
+**Effective Date**: 2026-02-17 (upon CS2 approval)
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories
+
+**Summary**: Created canonical `governance/canon/ESCALATION_POLICY.md` (v3.0.0) consolidating all distributed escalation protocols, triggers, procedures, and authority chains. Previously, escalation guidance was fragmented across ~15+ governance documents with broken references to non-existent `governance/escalation/ESCALATION_POLICY.md`. New comprehensive canonical file establishes: (1) Four-level escalation hierarchy (L1 Builder → L2 Foreman → L3 Codex/GA/Watchdog → L4 Human); (2) Comprehensive escalation triggers (proactive complexity-aware, reactive failure-based, stop-and-fix remediation); (3) Model-specific cognitive escalation guidance (Sonnet 4.5 L2 → Opus/o1 L3 for cognitive overload, complex governance, strategic decisions); (4) Escalation document structure, templates, and required content; (5) Step-by-step procedures (halt, escalate, wait, resume, learn); (6) Integration with Stop-and-Fix Doctrine, Cognitive Capability Orchestration, Self-Alignment Authority, PR Gate Evaluation; (7) Auditing, metrics, and learning from escalations. Supersedes model-focused `governance/escalation/ESCALATION_POLICY.md` v1.0. Updated all references across 30+ files to point to canonical location. Critical principle: "Escalation is NOT failure—it is appropriate use of authority hierarchy when issues exceed agent capability, authority, or cognitive limits."
+
+**Affected Artifacts**:
+- `governance/canon/ESCALATION_POLICY.md` (NEW v3.0.0 - canonical escalation policy with comprehensive hierarchy, triggers, model-specific guidance)
+- `governance/canon/PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md` (UPDATED - reference to canonical path)
+- `governance/canon/FM_RUNTIME_ENFORCEMENT_AND_AWARENESS_MODEL.md` (UPDATED - reference to canonical path)
+- `governance/canon/GOVERNANCE_BUILDER_SUBMISSION_SURVEY.md` (UPDATED - reference to canonical path)
+- `governance/canon/STOP_AND_FIX_DOCTRINE.md` (UPDATED - reference to canonical path)
+- `governance/canon/COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md` (UPDATED - reference to canonical path)
+- `governance/canon/FM_GOVERNANCE_LOADING_PROTOCOL.md` (UPDATED - reference to canonical path)
+- `governance/canon/GOVERNANCE_LIAISON_ROLE_SURVEY.md` (UPDATED - reference to canonical path)
+- `governance/canon/GOVERNANCE_LIAISON_MINIMUM_APPOINTMENT_REQUIREMENTS.md` (UPDATED - reference to canonical path)
+- `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (UPDATED - reference to canonical path)
+- `governance/canon/RIPPLE_RUNTIME_INTEGRATION_SURVEY.md` (UPDATED - reference to canonical path)
+- `governance/canon/BUILDER_CONTRACT_BINDING_CHECKLIST.md` (UPDATED - reference to canonical path)
+- `governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md` (UPDATED - reference to canonical path)
+- `governance/canon/agent-contracts-guidance/templates/AGENT_FILE_LOCKED_SECTIONS_TEMPLATE.md` (UPDATED - reference to canonical path)
+- `README.md` (UPDATED - reference to canonical path)
+- `governance/templates/PLATFORM_READINESS_CHECKLIST.template.md` (UPDATED - reference to canonical path)
+- `governance/schemas/PLATFORM_READINESS_EVIDENCE.schema.md` (UPDATED - reference to canonical path)
+- `governance/incidents/README.md` (UPDATED - reference to canonical path)
+- `governance/runbooks/CODEX_USAGE_RUNBOOK.md` (UPDATED - reference to canonical path)
+- `governance/evidence/PLATFORM_READINESS_EVIDENCE_2025-12-30.md` (UPDATED - reference to canonical path)
+- `governance/reports/AI_ESCALATION_CAPABILITY_SCALING_SURVEY_AND_RCA.md` (UPDATED - reference to canonical path)
+- `governance/reports/ZERO_WARNING_POLICY_ALIGNMENT_COMPLETION_REPORT.md` (UPDATED - reference to canonical path)
+- `governance/reports/GOVERNANCE_LIAISON_HANDOVER_ZERO_WARNING_LAYERDOWN.md` (UPDATED - reference to canonical path)
+- `governance/reports/GOVERNANCE_DEPENDENCY_AND_ACTIVATION_SCAN.md` (UPDATED - reference to canonical path)
+- `governance/reports/PR_SUBMISSION_INVARIANT_VERIFICATION_REPORT.md` (UPDATED - reference to canonical path)
+- `governance/reports/COGNITIVE_ORCHESTRATION_GOVERNANCE_IMPACT.md` (UPDATED - reference to canonical path)
+- `PRE_MERGE_SYSTEM_DETECTABILITY_SURVEY.md` (UPDATED - reference to canonical path)
+- `PLATFORM_READINESS_GAP_ANALYSIS.md` (UPDATED - reference to canonical path)
+- `GOVERNANCE_GAP_ANALYSIS_SURVEY.md` (UPDATED - reference to canonical path)
+- `memory/TENANT/README.md` (UPDATED - reference to canonical path)
+- `memory/TENANT/_PRODUCTION_DISABLED/README.md` (UPDATED - reference to canonical path)
+- `governance/CANON_INVENTORY.json` (UPDATED - added ESCALATION_POLICY.md, total canons: 164)
+- `governance/CHANGELOG.md` (UPDATED - this entry)
+
+**Migration Required**: NO - This is a consolidation and enhancement, all existing escalation behaviors remain valid
+
+**Migration Guidance**: N/A - Additive canonical document. Existing escalation processes continue to work. All references updated to point to canonical location. Layer-down propagation required for PUBLIC_API status.
+
+**Rationale**: Addresses critical governance gap where escalation protocols were distributed across 15+ documents with broken references. Unifies escalation hierarchy, triggers, and procedures in single canonical source. Adds missing model-specific cognitive escalation guidance (Sonnet→Opus/o1) critical for agent ecosystem complexity awareness. Eliminates ambiguity about when/how to escalate. Provides comprehensive templates and procedures. Establishes escalation as positive governance behavior (not failure).
+
+**Impact**: 
+- All agents now have single authoritative source for escalation protocols
+- Broken references to `governance/escalation/ESCALATION_POLICY.md` resolved
+- Model-specific escalation (Sonnet→Opus) guidance now canonical
+- Foreman has clear triggers for cognitive capacity escalation
+- Builders have comprehensive escalation trigger list
+- Governance Administrator has self-alignment vs. escalation boundaries
+- All repositories consuming governance must update to canonical path (layer-down required)
+
+**References**: 
+- Issue: Create Canonical ESCALATION_POLICY.md: Consolidate Escalation Protocols for All Agents (incl. Model Escalation Guidance)
+- Authority: PR_GATE_EVALUATION_AND_ROLE_PROTOCOL.md 10.2, FM_RUNTIME_ENFORCEMENT_AND_AWARENESS_MODEL.md 8.2/8.3, FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md 7.3/7.4, GOVERNANCE_BUILDER_SUBMISSION_SURVEY.md 11.1-11.4, SELF_ALIGNMENT_AUTHORITY_MODEL.md 6.1-6.4
+
+---
+
 ### [FULLY-FUNCTIONAL-DELIVERY-STANDARD] - 2026-02-16 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)
@@ -446,7 +511,7 @@ The governance gap between FRS (what to build) and Architecture (how to build it
 
 **Affected Artifacts**:
 - `governance/policy/QA_POLICY_MASTER.md` (UPDATED - Section 1.1.2, NEW Section 3.3, Section 5.3)
-- `governance/escalation/ESCALATION_POLICY.md` (UPDATED - reactive escalation triggers)
+- `governance/canon/ESCALATION_POLICY.md` (UPDATED - reactive escalation triggers)
 - `governance/canon/FM_PREAUTH_CHECKLIST_CANON.md` (UPDATED - NEW Section 2.6)
 - `governance/policy/BUILDER_QA_HANDOVER_POLICY.md` (UPDATED - Section 4.1, NEW Section 8.4)
 - `governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md` (UPDATED - NEW Section 5.10, Section 6)

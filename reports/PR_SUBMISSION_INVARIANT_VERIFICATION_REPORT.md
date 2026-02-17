@@ -581,7 +581,7 @@ CI execution logs, PR failure diagnostics, and GitHub Actions output are **NOT a
 6. `governance/policy/QA_POLICY_MASTER.md`
 7. `governance/opojd/OPOJD_DOCTRINE.md`
 8. `governance/parking-station/README.md`
-9. `governance/escalation/ESCALATION_POLICY.md`
+9. `governance/canon/ESCALATION_POLICY.md`
 10. `governance/agents/governance-administrator.agent.md`
 
 ### 7.2 Related Schemas

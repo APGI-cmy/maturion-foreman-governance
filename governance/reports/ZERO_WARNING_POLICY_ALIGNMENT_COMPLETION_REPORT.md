@@ -144,7 +144,7 @@ The governance canon has been comprehensively updated to make the doctrine of **
 
 ### Updated Canon/Policy Documents (6)
 1. `governance/policy/QA_POLICY_MASTER.md` (Section 1.1.2, NEW Section 3.3, Section 5.3)
-2. `governance/escalation/ESCALATION_POLICY.md` (Reactive escalation triggers)
+2. `governance/canon/ESCALATION_POLICY.md` (Reactive escalation triggers)
 3. `governance/canon/FM_PREAUTH_CHECKLIST_CANON.md` (NEW Section 2.6)
 4. `governance/policy/BUILDER_QA_HANDOVER_POLICY.md` (Section 4.1, NEW Section 8.4)
 5. `governance/policy/PR_GATE_FAILURE_HANDLING_PROTOCOL.md` (NEW Section 5.10, Section 6)

@@ -111,7 +111,7 @@ When FM receives a WARNING_DISCOVERY_REPORT from any agent:
    - Document forward-scan results
 
 **Reference**: governance/canon/WARNING_DISCOVERY_BLOCKER_PROTOCOL.md Section 3  
-**Reference**: governance/escalation/ESCALATION_POLICY.md (reactive escalation: warning discovery)
+**Reference**: governance/canon/ESCALATION_POLICY.md (reactive escalation: warning discovery)
 ```
 
 ---
@@ -327,7 +327,7 @@ After completion, Governance Liaison SHOULD:
 - `governance/canon/QA_POLICY_MASTER.md` Section 3.3 (core policy)
 - `governance/canon/FM_PREAUTH_CHECKLIST_CANON.md` Section 2.6 (FM validation)
 - `governance/policy/BUILDER_QA_HANDOVER_POLICY.md` Section 8.4 (builder obligations)
-- `governance/escalation/ESCALATION_POLICY.md` (warning discovery trigger)
+- `governance/canon/ESCALATION_POLICY.md` (warning discovery trigger)
 
 **Schemas**:
 - `governance/schemas/WARNING_DISCOVERY_REPORT.schema.md`
