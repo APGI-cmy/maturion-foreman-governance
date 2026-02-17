@@ -1,0 +1,6 @@
+# Level 1: High (Role-Specific Canon)
+# Loaded: ALWAYS, SECOND
+# Purpose: Overseer-specific canonical guidance (CodexAdvisor)
+
+# NOTE: Overseer-specific canon to be defined
+# Placeholder for cross-repo governance oversight canon

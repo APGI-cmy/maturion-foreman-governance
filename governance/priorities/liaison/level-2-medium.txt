@@ -1,0 +1,5 @@
+# Level 2: Medium (Domain-Specific Guidance)
+# Loaded: CONDITIONAL (task-dependent)
+# Purpose: Governance synchronization procedures
+
+# NOTE: Liaison-specific guidance to be defined

@@ -1,0 +1,6 @@
+# Level 2: Medium (Domain-Specific Guidance)
+# Loaded: CONDITIONAL (task-dependent)
+# Purpose: QA, testing, and quality standards
+
+governance/canon/QA_CATALOG_ALIGNMENT_GATE_CANON.md
+governance/canon/FM_PREAUTH_CHECKLIST_CANON.md

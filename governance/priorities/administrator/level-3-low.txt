@@ -1,0 +1,7 @@
+# Level 3: Low (Reference Material)
+# Loaded: ON-DEMAND ONLY
+# Purpose: Templates, checklists, examples
+
+governance/templates/CANON_CREATION_AND_PROPAGATION_CHECKLIST.md
+governance/templates/PR_GATE_RELEASE_CHECKLIST_GOVERNANCE_ADMIN.md
+governance/templates/PREHANDOVER_PROOF_TEMPLATE.md

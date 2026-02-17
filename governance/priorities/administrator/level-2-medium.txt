@@ -1,0 +1,6 @@
+# Level 2: Medium (Domain-Specific Guidance)
+# Loaded: CONDITIONAL (task-dependent)
+# Purpose: Ripple, inventory maintenance, protection protocols
+
+governance/canon/LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md
+governance/canon/AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md

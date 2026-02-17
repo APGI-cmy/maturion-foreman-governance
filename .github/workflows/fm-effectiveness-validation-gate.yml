@@ -26,11 +26,11 @@ jobs:
           echo ""
           
           # Look for PREHANDOVER_PROOF with FM effectiveness validation documented
-          if [ -f "PREHANDOVER_PROOF.md" ] && grep -Eqi "FM.*(Effectiveness|effectiveness)" PREHANDOVER_PROOF.md; then
+          if [ -f "governance/PREHANDOVER_PROOF.md" ] && grep -Eqi "FM.*(Effectiveness|effectiveness)" governance/PREHANDOVER_PROOF.md; then
             echo "✅ Found PREHANDOVER_PROOF.md with FM Effectiveness validation"
             echo "✅ ACCEPTING evidence-based validation per BL-027/028"
             echo "skip_execution=true" >> $GITHUB_OUTPUT
-          elif ls PREHANDOVER_PROOF_*.md 1> /dev/null 2>&1 && grep -Eqi "FM.*(Effectiveness|effectiveness)" PREHANDOVER_PROOF_*.md 2>/dev/null; then
+          elif ls governance/PREHANDOVER_PROOF_*.md 1> /dev/null 2>&1 && grep -Eqi "FM.*(Effectiveness|effectiveness)" governance/PREHANDOVER_PROOF_*.md 2>/dev/null; then
             echo "✅ Found PREHANDOVER_PROOF with FM Effectiveness validation"
             echo "✅ ACCEPTING evidence-based validation per BL-027/028"
             echo "skip_execution=true" >> $GITHUB_OUTPUT

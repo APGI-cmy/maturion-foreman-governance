@@ -1,0 +1,5 @@
+# Level 2: Medium (Domain-Specific Guidance)
+# Loaded: CONDITIONAL (task-dependent)
+# Purpose: Implementation standards, testing, quality
+
+# NOTE: Builder-specific guidance to be defined
