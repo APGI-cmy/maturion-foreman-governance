@@ -73,7 +73,12 @@ Each entry follows this structure:
 
 **Summary**: Canonized BL-031 (Agent Discovery Failure - Wave 5.5) prevention measures by creating two new PUBLIC_API tier-0 protocols and updating Foreman agent contracts. Created `FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md` defining mandatory pre-flight check ensuring all assigned builder agents are discoverable in GitHub Copilot agent list before wave execution starts. Created `BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md` defining permitted and prohibited YAML frontmatter fields to prevent GitHub parser rejection (root cause: non-standard `assigned_waves` field broke ui-builder recognition in Wave 5.5). Updated foreman-v2.agent.md with LOCKED section 3.0 enforcing pre-wave agent availability check with explicit prohibited actions (no substitutions, no bypasses, no workarounds). Implements "We Only Fail Once" doctrine—if this pattern repeats, triggers CATASTROPHIC FAILURE.
 
-**Root Cause (BL-031)**: ui-builder agent file existed at `.github/agents/ui-builder.md` but was NOT visible in GitHub Copilot agent selection list due to non-standard YAML frontmatter field `assigned_waves`. Wave 5.5 stalled, generic coding agent substituted (governance violation), 2 hours wasted, PR #288 closed, rework required. Foreman started wave without verifying builder availability.
+**Root Cause (BL-031)**: 
+- **Symptom**: ui-builder agent file existed at `.github/agents/ui-builder.md` but was NOT visible in GitHub Copilot agent selection list
+- **Root Cause**: Non-standard YAML frontmatter field `assigned_waves` broke GitHub parser recognition
+- **Impact**: Wave 5.5 stalled, generic coding agent substituted (governance violation), 2 hours wasted
+- **Timeline**: PR #288 created with wrong agent, closed after discovery, rework required via PR #293
+- **Foreman Failure**: Started wave without verifying builder availability (missing pre-flight check)
 
 **Affected Artifacts**:
 - `governance/canon/FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md` (NEW v1.0.0 - PUBLIC_API tier-0 protocol)
