@@ -3728,7 +3728,7 @@ Assess Impact: Critical / High / Medium / Low
 
 **Category**: Build Execution Learning  
 **Severity**: HIGH  
-**Status**: CANONICAL (requires governance protocol creation)
+**Status**: CANONICAL (protocols created and enforced)
 
 ### Context
 Wave 5.5 (MAT Frontend Assembly) attempted execution with ui-builder agent that was present in repository but NOT available in GitHub agent selection list due to YAML frontmatter non-standard field (`assigned_waves`).
@@ -3794,31 +3794,39 @@ Before starting ANY wave, Foreman MUST verify all assigned builder agents are av
 **Authority**: BL-030, RCA_WAVE_5.5_AGENT_CONTRACT_DEVIATION.md
 ```
 
-#### 2. Governance Canon Protocol (NEW)
+#### 2. Governance Canon Protocol (CREATED)
 **File**: `governance/canon/FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md`
 
 **Type**: PUBLIC_API TIER-0  
-**Version**: v1.0.0
+**Version**: v1.0.0  
+**Status**: ✅ CREATED (2026-02-17)
 
 **Purpose**: Define mandatory pre-flight agent availability check protocol for all wave executions.
 
-**Content** (to be created by governance-repo-administrator):
+**Content**:
 - Agent availability verification requirements
 - GitHub agent list validation procedure
 - YAML frontmatter compliance requirements
 - Escalation protocol when builders unavailable
 - Evidence documentation requirements
+- Integration with Foreman LOCKED sections
 
-#### 3. Builder Agent YAML Compliance Spec (NEW)
-**File**: `governance/specs/BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md`
+#### 3. Builder Agent YAML Compliance Spec (CREATED)
+**File**: `governance/canon/BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md`
+
+**Type**: PUBLIC_API TIER-0  
+**Version**: v1.0.0  
+**Status**: ✅ CREATED (2026-02-17)
 
 **Purpose**: Define permitted and prohibited YAML frontmatter fields for builder agent contracts to ensure GitHub Copilot recognition.
 
-**Content** (to be created by governance-repo-administrator):
+**Content**:
 - Permitted YAML fields (documented, GitHub-compatible)
 - Prohibited YAML fields (breaks parser: `assigned_waves`, custom metadata)
 - YAML structure validation
 - Merge gate enforcement
+- Cross-repository compliance audit procedures
+- Migration guide for existing contracts
 
 #### 4. Merge Gate Validation
 **Gate**: Builder Agent Contract Compliance

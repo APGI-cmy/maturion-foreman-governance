@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-17T07:14:24Z",
-  "total_canons": 163,
+  "last_updated": "2026-02-17T12:00:00Z",
+  "total_canons": 166,
   "generation_timestamp": "2026-02-17T07:14:24Z",
   "canons": [
     {
@@ -680,7 +680,7 @@
       "version": "3.0.0",
       "file_hash": "27cb87ee3a04",
       "effective_date": "2026-02-17",
-      "description": "This policy establishes the canonical escalation hierarchy, triggers, procedures, and authority chain for the Maturion ecosystem, including model-specific cognitive escalation (Sonnet\u2192Opus/o1).",
+      "description": "This policy establishes the canonical escalation hierarchy, triggers, procedures, and authority chain for the Maturion ecosystem, including model-specific cognitive escalation (Sonnet→Opus/o1).",
       "type": "canon",
       "path": "governance/canon/ESCALATION_POLICY.md",
       "layer_down_status": "PUBLIC_API",
@@ -1807,6 +1807,28 @@
       "path": "governance/canon/AGENT_HANDOVER_AUTOMATION.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "d5fcd80e8fcbde88b8b91974d8c4e3a48d852e47c7dd9c6796ec92f3b4275f1e"
+    },
+    {
+      "filename": "BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md",
+      "version": "1.0.0",
+      "file_hash": "296e7a5acb55",
+      "effective_date": "2026-02-17",
+      "description": "Canonical specification defining permitted and prohibited YAML frontmatter fields for builder agent contracts to ensure GitHub Copilot parser compatibility and agent discovery (implements BL-031 prevention)",
+      "type": "canon",
+      "path": "governance/canon/BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "296e7a5acb55e6c41d1c895c7d6a0d8ce09553967055856af092754157dffd22"
+    },
+    {
+      "filename": "FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md",
+      "version": "1.0.0",
+      "file_hash": "13b3633cd90e",
+      "effective_date": "2026-02-17",
+      "description": "Mandatory pre-flight agent availability check protocol for all Foreman wave executions, ensuring builder agents are discoverable before wave start (implements BL-031 prevention)",
+      "type": "canon",
+      "path": "governance/canon/FOREMAN_PRE_WAVE_AGENT_AVAILABILITY_CHECK.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "13b3633cd90e520c9121315aee33f2ef4cf34bceddd308dc5d2716963436855f"
     }
   ]
 }
