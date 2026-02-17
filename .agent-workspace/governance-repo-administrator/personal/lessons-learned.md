@@ -122,3 +122,25 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - Pattern: Show wrong (code) vs. right (POLC) behavior side-by-side
 - Action: Use concrete prohibited behavior examples with priorities
 
+
+## Session 20260217 (Session 032)
+
+### Lesson: Use Search-First Strategy for Distributed Content
+- Context: When consolidating governance guidance scattered across many files
+- Pattern: Use search_code_subagent early to find all related content before creating canonical file
+- Action: Search first, then consolidate; saves time vs. manual exploration and ensures comprehensive coverage
+
+### Lesson: Batch Updates for Reference Changes
+- Context: When updating many file references from old path to new canonical path
+- Pattern: Use sed for batch updates across templates, schemas, reports; manual edits for core canon
+- Action: Group similar files and batch update with sed; reduces errors and saves time
+
+### Lesson: Deprecate Constitutional Content (Don't Delete)
+- Context: When superseding old governance files with new canonical versions
+- Pattern: Mark old files DEPRECATED with clear notice pointing to canonical source
+- Action: Preserve historical reference for audit trail; safer than deletion for constitutional content
+
+### Lesson: Model-Specific Guidance Integration
+- Context: When adding model escalation guidance (Sonnet→Opus)
+- Pattern: Integrate with COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL to distinguish authority escalation vs capability switching
+- Action: Ensure model-specific guidance aligns with existing capability orchestration framework
