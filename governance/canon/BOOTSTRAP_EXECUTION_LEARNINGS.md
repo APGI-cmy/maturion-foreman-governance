@@ -1077,7 +1077,7 @@ This condition is now permanently elevated.
 - Issue: 🔴 ACTIVATE AI Escalation & Capability-Aware Scaling (Governance Activation)
 - Survey: AI_ESCALATION_CAPABILITY_SCALING_SURVEY_AND_RCA.md
 - Amended Artifacts:
-  - governance/escalation/ESCALATION_POLICY.md (v2.0 — ACTIVE)
+  - governance/canon/ESCALATION_POLICY.md (v2.0 — ACTIVE)
   - governance/canon/COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md (v1.1.0 — ACTIVE)
   - governance/maturion/FM_ROLE_CANON.md (updated 2026-01-03)
 

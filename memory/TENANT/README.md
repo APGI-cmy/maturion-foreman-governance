@@ -83,7 +83,7 @@ When activated, TENANT memory will store:
 
 To activate this memory scope:
 
-1. Open governance escalation per `governance/escalation/ESCALATION_POLICY.md`
+1. Open governance escalation per `governance/canon/ESCALATION_POLICY.md`
 2. Document activation requirements and rationale
 3. Obtain governance authority approval
 4. Update memory authority policies to permit tenant memory

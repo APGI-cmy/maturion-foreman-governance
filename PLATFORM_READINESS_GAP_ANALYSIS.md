@@ -486,7 +486,7 @@ Readiness assumes STOP is enforceable but enforcement has not been tested. BL-00
 
 **Canonical Reference**:  
 - `governance/canon/PLATFORM_READINESS_FOR_GOVERNED_BUILD_EXECUTION.md` Section 4.4
-- `governance/escalation/ESCALATION_POLICY.md`
+- `governance/canon/ESCALATION_POLICY.md`
 - `governance/canon/CASCADING_FAILURE_CIRCUIT_BREAKER.md`
 
 **Nature of Gap**:  

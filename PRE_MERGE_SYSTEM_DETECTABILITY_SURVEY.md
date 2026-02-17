@@ -42,7 +42,7 @@
      - `governance/philosophy/BYG_DOCTRINE.md`
      - `governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md`
      - `governance/CONSTITUTION.md`
-     - `governance/escalation/ESCALATION_POLICY.md`
+     - `governance/canon/ESCALATION_POLICY.md`
    - **Does it check for Governance Liaison files?**: **NO**
    - **Reason**: File checks are hardcoded; new files not in list
 
@@ -186,7 +186,7 @@ Current state:
    - **Is this automated?**: **NO** — relies on agent behavior compliance
    - **Would violation auto-escalate?**: **NO** — requires agent to self-report
 
-2. **Escalation Policy** (`governance/escalation/ESCALATION_POLICY.md`)
+2. **Escalation Policy** (`governance/canon/ESCALATION_POLICY.md`)
    - **Defines**: L1 (Builder), L2 (FM), L3 (Codex), L4 (Human)
    - **Does it monitor Governance Liaison behavior?**: **NO**
    - **Evidence**: Escalation policy defines escalation paths but does not monitor for violations

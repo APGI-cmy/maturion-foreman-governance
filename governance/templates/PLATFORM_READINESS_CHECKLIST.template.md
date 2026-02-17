@@ -484,7 +484,7 @@ For each application to be built, architecture MUST address:
 
 ## 9. STOP & Escalation Enforcement
 
-**Canonical Source**: `governance/escalation/ESCALATION_POLICY.md`, `governance/canon/CASCADING_FAILURE_CIRCUIT_BREAKER.md`  
+**Canonical Source**: `governance/canon/ESCALATION_POLICY.md`, `governance/canon/CASCADING_FAILURE_CIRCUIT_BREAKER.md`  
 **Canon Section**: 4.4 (STOP and Escalation Mechanics Are Enforceable)  
 **Validation Method**: Deterministic (per Canon v2.0.0)  
 **REQUIRED Condition**: AMBER NOT PERMITTED (STOP authority gaps block readiness)
@@ -761,7 +761,7 @@ This checklist implements requirements from:
 - `GOVERNANCE_GATE_CANON.md`
 - `governance/canon/AGENT_ROLE_GATE_APPLICABILITY.md`
 - `governance/canon/FM_GOVERNANCE_LOADING_PROTOCOL.md`
-- `governance/escalation/ESCALATION_POLICY.md`
+- `governance/canon/ESCALATION_POLICY.md`
 - `governance/canon/CASCADING_FAILURE_CIRCUIT_BREAKER.md`
 - `governance/canon/AUDIT_READINESS_MODEL.md`
 - `governance/canon/SYSTEM_COMMISSIONING_AND_PROGRESSIVE_ACTIVATION_PROTOCOL.md`

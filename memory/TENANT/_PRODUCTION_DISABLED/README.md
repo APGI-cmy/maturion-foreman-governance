@@ -44,7 +44,7 @@ Before ANY file can be placed in this directory, ALL of the following MUST be tr
 To activate production tenant memory:
 
 1. **Governance Escalation**
-   - Open escalation per `governance/escalation/ESCALATION_POLICY.md`
+   - Open escalation per `governance/canon/ESCALATION_POLICY.md`
    - Document all activation requirements
    - Obtain explicit approval from governance authority
 

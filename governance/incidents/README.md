@@ -152,7 +152,7 @@ When an incident reveals a structural pattern that should be permanently prevent
 - `BUILD_PHILOSOPHY.md` - Constitutional principles
 
 ### Escalation
-- `governance/escalation/ESCALATION_POLICY.md` - When to escalate incidents
+- `governance/canon/ESCALATION_POLICY.md` - When to escalate incidents
 
 ### Learning Models
 - `governance/canon/LEARNING_INTAKE_AND_PROMOTION_MODEL.md` - How incidents become learnings

@@ -372,7 +372,7 @@ This evidence artifact implements requirements from:
 - GOVERNANCE_GATE_CANON.md
 - governance/canon/AGENT_ROLE_GATE_APPLICABILITY.md
 - governance/canon/FM_GOVERNANCE_LOADING_PROTOCOL.md
-- governance/escalation/ESCALATION_POLICY.md
+- governance/canon/ESCALATION_POLICY.md
 - governance/canon/CASCADING_FAILURE_CIRCUIT_BREAKER.md
 - governance/canon/AUDIT_READINESS_MODEL.md
 - governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md

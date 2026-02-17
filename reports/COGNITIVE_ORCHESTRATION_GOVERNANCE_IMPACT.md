@@ -46,7 +46,7 @@ The Cognitive Hygiene Protocol (CHP) introduces a sophisticated cognitive stabil
 3. `governance/canon/WATCHDOG_AUTHORITY_AND_SCOPE.md` (v1.0.0)
 4. `governance/canon/VISION_ALIGNMENT_AND_DRIFT_MODEL.md` (v1.0)
 5. `governance/canon/GOVERNANCE_VERSIONING_AND_SYNC_PROTOCOL.md` (v1.0.0)
-6. `governance/escalation/ESCALATION_POLICY.md`
+6. `governance/canon/ESCALATION_POLICY.md`
 
 ### 2.2 Assessment Dimensions
 

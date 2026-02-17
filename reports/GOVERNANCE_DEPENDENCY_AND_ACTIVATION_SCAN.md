@@ -73,7 +73,7 @@ This section maps major governance artifacts and their dependencies on each othe
 | **CONSTITUTION.md** | `/governance/CONSTITUTION.md` | None (root authority) | All governance documents |
 | **BYG_DOCTRINE.md** | `/governance/philosophy/BYG_DOCTRINE.md` | CONSTITUTION.md | QA_POLICY_MASTER.md, BUILDER_QA_HANDOVER_POLICY.md, all builder workflows |
 | **GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md** | `/governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md` | CONSTITUTION.md, BYG_DOCTRINE.md | ESCALATION_POLICY.md, PR_GATE_FAILURE_HANDLING_PROTOCOL.md |
-| **ESCALATION_POLICY.md** | `/governance/escalation/ESCALATION_POLICY.md` | CONSTITUTION.md, BYG_DOCTRINE.md | All policies requiring escalation triggers |
+| **ESCALATION_POLICY.md** | `/governance/canon/ESCALATION_POLICY.md` | CONSTITUTION.md, BYG_DOCTRINE.md | All policies requiring escalation triggers |
 
 **Authority Principle**: These documents define WHO has authority, WHAT roles exist, and WHEN escalation is required.
 
@@ -647,7 +647,7 @@ These gaps involve governance mechanisms that are defined but not yet activated 
 - `governance/CONSTITUTION.md`
 - `governance/philosophy/BYG_DOCTRINE.md`
 - `governance/philosophy/GOVERNANCE_INCIDENT_RESPONSE_DOCTRINE.md`
-- `governance/escalation/ESCALATION_POLICY.md`
+- `governance/canon/ESCALATION_POLICY.md`
 
 **Canonical Governance (31 documents)**:
 ```

@@ -59,7 +59,7 @@ The following documents are **BINDING** and must be respected by all systems and
    - Governance supremacy rule
    - Required outputs per task
 
-4. **`governance/escalation/ESCALATION_POLICY.md`** - Escalation procedures
+4. **`governance/canon/ESCALATION_POLICY.md`** - Escalation procedures
    - When to escalate to higher authority
    - Who has decision authority
    - Escalation paths and timeframes
@@ -184,7 +184,7 @@ When working with this repository:
 ## Contact
 
 For questions about governance policies or this repository:
-- See `governance/escalation/ESCALATION_POLICY.md` for escalation procedures
+- See `governance/canon/ESCALATION_POLICY.md` for escalation procedures
 - See `governance/runbooks/` for operational guidance
 
 ---

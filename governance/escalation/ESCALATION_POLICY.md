@@ -1,9 +1,38 @@
 # AI Model Usage Escalation Policy
 
-**Status**: ACTIVE — Operational Governance
-**Authority**: Canonical
-**Effective Date**: 2026-01-03
-**Integration**: COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md, FM_ROLE_CANON.md
+**Status**: DEPRECATED — SUPERSEDED by `governance/canon/ESCALATION_POLICY.md` v3.0.0  
+**Authority**: Historical Reference Only  
+**Effective Date**: 2026-01-03 - 2026-02-17 (SUPERSEDED)  
+**Integration**: See `governance/canon/ESCALATION_POLICY.md` for current canonical policy
+
+---
+
+## DEPRECATION NOTICE
+
+**This file has been SUPERSEDED by the comprehensive canonical escalation policy:**
+
+**New Location**: `governance/canon/ESCALATION_POLICY.md` v3.0.0  
+**Effective Date**: 2026-02-17
+
+**What Changed**:
+- Escalation policy consolidated from 15+ distributed documents into single canonical source
+- Added comprehensive four-level hierarchy (L1→L2→L3→L4)
+- Added model-specific cognitive escalation guidance (Sonnet→Opus/o1)
+- Added escalation triggers, procedures, templates, and integration with all governance
+- Added proactive complexity-aware escalation semantics
+- Added Stop-and-Fix escalation integration
+
+**Action Required**:
+- All references should now point to `governance/canon/ESCALATION_POLICY.md`
+- This file is preserved for historical reference only
+- Do NOT update this file; update the canonical version instead
+
+---
+
+## Original Content (Historical Reference)
+
+This content below is the original model-focused escalation policy v1.0.
+For current policy, see `governance/canon/ESCALATION_POLICY.md`.
 
 ---
 

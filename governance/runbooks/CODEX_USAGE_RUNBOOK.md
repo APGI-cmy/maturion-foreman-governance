@@ -10,7 +10,7 @@
 **Related Artifacts:**
 - `.github/agents/CodexAdvisor-agent.md` — CodexAdvisor Agent Contract
 - `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` — Authority Model
-- `governance/escalation/ESCALATION_POLICY.md` — Escalation Protocol
+- `governance/canon/ESCALATION_POLICY.md` — Escalation Protocol
 
 ---
 
@@ -454,7 +454,7 @@ This runbook MUST remain aligned with:
 
 ### Canonical Governance
 - **Foreman Authority Model:** `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md`
-- **Escalation Policy:** `governance/escalation/ESCALATION_POLICY.md`
+- **Escalation Policy:** `governance/canon/ESCALATION_POLICY.md`
 - **OPOJD Doctrine:** `governance/opojd/OPOJD_DOCTRINE.md`
 - **Build Philosophy:** `BUILD_PHILOSOPHY.md`
 

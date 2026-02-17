@@ -200,3 +200,27 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 - Response: Use Python with triple-quoted strings to create files in parts
 - Benefits: Avoids heredoc timeout issues; clearer syntax for multi-line content
 
+
+## Pattern: Canonical File Consolidation
+
+- Observed: 2026-02-17 (Session 032)
+- Context: When governance guidance is distributed across many documents with broken references
+- Response: 
+  1. Use search_code_subagent to find all distributed content
+  2. Create comprehensive canonical file in governance/canon/
+  3. Update all references systematically (batch sed for similar files, manual for canon)
+  4. Deprecate old files with clear notice (don't delete)
+  5. Update CANON_INVENTORY.json with SHA256 hash
+  6. Add comprehensive CHANGELOG.md entry
+  7. Validate all cross-references before commit
+
+## Pattern: Model Escalation Guidance
+
+- Observed: 2026-02-17 (Session 032)
+- Context: When adding model-specific cognitive escalation (Sonnet→Opus/o1)
+- Response:
+  1. Distinguish authority escalation (L1→L2→L3→L4) from capability switching
+  2. Integrate with COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md
+  3. Provide clear triggers: cognitive overload, complex governance, strategic decisions, safety-critical
+  4. Include procedural steps: recognize, document, escalate, receive, resume
+  5. Emphasize escalation is NOT failure—it's healthy governance awareness
