@@ -64,6 +64,67 @@ Each entry follows this structure:
 
 ## Change History
 
+### [WAVES-5-7-LESSONS-INSTITUTIONALIZATION] - 2026-02-18 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 approval pending in PR review  
+**Effective Date**: 2026-02-18 (upon CS2 approval)  
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories with wave-based builds
+
+**Summary**: Institutionalized critical lessons learned from MAT Waves 5-7 regarding recurring failures to deliver complete, working, deployed infrastructure components (frontend scaffolding, backend deployment, UI wiring) despite clear architectural specifications. Created new PUBLIC_API canon (WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md) documenting failure patterns across three waves: Wave 5.5 (missing React app scaffolding/wiring), Wave 5.6 (missing UI wiring/integration tests), Wave 5.7 (missing Supabase backend deployment). Updated architecture template (minimum-architecture-template.md) with three new mandatory sections: Infrastructure Deployment Validation (4.1.1), Frontend-Backend Wiring (4.11.1), and Mandatory Workflow Evidence (4.12.1). Updated BUILD_PROGRESS_TRACKER_TEMPLATE with Critical Deliverable Validation (5.1) section including explicit prohibitions against wave closure without deployed frontend, backend, database, or working E2E workflows. Strengthened wave closure gates to require physical deliverable verification, deployment URL validation, integration wiring tests, and E2E test execution against deployed environments. Integrates with FULLY_FUNCTIONAL_DELIVERY_STANDARD.md and BUILD_PHILOSOPHY.md One-Time Build Law. Prevents "tests pass but app doesn't exist/deploy/work" pattern recurrence.
+
+**Affected Artifacts**:
+- `governance/canon/WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md` (NEW v1.0.0 - PUBLIC_API tier-1 canon, 22KB)
+- `governance/templates/minimum-architecture-template.md` (UPDATED - Added sections 4.1.1, 4.11.1, 4.12.1)
+- `governance/templates/BUILD_PROGRESS_TRACKER_TEMPLATE.md` (UPDATED - Added section 5.1 with deliverable validation)
+- `governance/CANON_INVENTORY.json` (UPDATED - Added WAVES_5_TO_7 canon with full SHA256, total_canons: 167→168)
+- `governance/CHANGELOG.md` (UPDATED - This entry)
+
+**Migration Required**: YES (All consumer repositories with wave-based builds)
+
+**Migration Guidance**:
+1. **Consumer Repositories** (maturion-isms, maturion-foreman-office-app, PartPulse, future MAT repos):
+   - Copy WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md to consumer governance/canon/
+   - Copy updated minimum-architecture-template.md to consumer governance/templates/
+   - Copy updated BUILD_PROGRESS_TRACKER_TEMPLATE.md to consumer governance/templates/
+   - Review existing architecture documents and add sections 4.1.1, 4.11.1, 4.12.1 where missing
+   - Update Foreman agent contracts to reference WAVES_5_TO_7 canon in pre-wave and closure gates
+   - Update builder contracts to include deployment evidence requirements
+   - Train agents on new deliverable verification protocols
+
+2. **Foreman Agents**:
+   - Implement Pre-Wave Infrastructure Validation checklist (section 5.1)
+   - Implement Wave Closure Deployment Verification protocol (section 5.2)
+   - Require deployment URLs before wave closure
+   - Require E2E test execution against deployed environments
+   - Prohibit wave closure without physical deliverables
+
+3. **Builder Agents**:
+   - Include deployment configuration in all deliverables
+   - Document deployment URLs in handover evidence
+   - Provide E2E test coverage for critical workflows
+   - Demonstrate working deployments before handover
+
+**Rationale**: 
+Cross-wave failure pattern analysis revealed recurring governance gap where wave closures validated test pass rates but NOT deliverable existence, deployment status, or integration wiring. Waves 5.5, 5.6, 5.7 closed as "complete" despite missing frontend apps, backend deployments, and UI-to-API wiring. This violated BUILD_PHILOSOPHY.md One-Time Build Law and FULLY_FUNCTIONAL_DELIVERY_STANDARD.md requirements. Structural governance changes institutionalize prevention measures to prevent recurrence per WE_ONLY_FAIL_ONCE_DOCTRINE.md.
+
+**Impact**: 
+- All future waves require deployment verification before closure
+- Architecture approval requires infrastructure deployment sections
+- Wave closure gates strengthened with physical deliverable checks
+- E2E tests mandatory for systems with UI+backend
+- Foreman and builder workflows updated with new validation steps
+
+**References**: 
+- Issue: [Governance/Architecture Retro] Institutionalize Infra, Wiring, and Frontend Validation (Waves 5-7)
+- Related Issue: APGI-cmy/maturion-foreman-governance#13 (Wave 5.7 backend deployment deviation)
+- Canon: FULLY_FUNCTIONAL_DELIVERY_STANDARD.md (sections 3.1, 3.2, 3.3, 4.2)
+- Canon: BUILD_PHILOSOPHY.md (One-Time Build Law)
+- Canon: WE_ONLY_FAIL_ONCE_DOCTRINE.md
+- Canon: BOOTSTRAP_EXECUTION_LEARNINGS.md (BL-031 - Wave 5.5 agent discovery)
+
+---
+
 ### [FCWT-PROTOCOL-ESTABLISHMENT] - 2026-02-17 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  

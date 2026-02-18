@@ -167,6 +167,51 @@ For each component, define:
 **Deployment Entry Point**: {How application starts}  
 **Platform Limitations**: {Constraints, e.g., timeouts, cold starts}
 
+#### 4.1.1 Infrastructure Deployment Validation (Waves 5-7 Lessons)
+
+**Pre-Wave Validation Checklist** (MANDATORY before wave authorization):
+
+**Frontend Infrastructure**:
+- [ ] Deployment platform account created (Vercel/Netlify/etc.)
+- [ ] Project configured in deployment platform
+- [ ] Build settings configured and tested
+- [ ] Environment variables configured in platform
+- [ ] Custom domain configured (if applicable)
+- [ ] Preview deployment URL generated and accessible
+- [ ] Production deployment configuration documented
+
+**Backend Infrastructure**:
+- [ ] Database platform account created (Supabase/PostgreSQL/etc.)
+- [ ] Database instance provisioned
+- [ ] Database schema creation scripts ready
+- [ ] Database migration tool configured
+- [ ] API hosting platform configured (Vercel/AWS/etc.)
+- [ ] API deployment tested and accessible
+- [ ] Database connection string configured in API
+
+**Critical Post-Deployment Validation**:
+- [ ] Frontend deploys successfully to production
+- [ ] Backend API deploys successfully to production
+- [ ] Database schema deployed and seeded
+- [ ] Frontend can connect to backend API
+- [ ] Backend can connect to database
+- [ ] Health check endpoints return 200 OK
+- [ ] At least one complete user workflow works end-to-end
+
+**Evidence Requirements for Wave Closure**:
+- Working frontend URL (e.g., https://app.example.com)
+- Working backend API URL (e.g., https://api.example.com)
+- Database connection verification screenshot
+- E2E workflow demonstration video/screenshots
+- Deployment configuration files committed to repo
+
+**Prohibited Patterns** (Deviation Prevention):
+- ❌ Wave closure without deployed frontend
+- ❌ Wave closure without deployed backend
+- ❌ "We'll deploy it later" deferral
+- ❌ Missing database deployment
+- ❌ Untested deployment configuration
+
 ### 4.2 Runtime Entrypoint and Filesystem Expectations
 
 **Application Entry Point**: {Primary entry file(s)}  
@@ -264,6 +309,48 @@ For each component, define:
 **Startup Order**: {Definition of startup order and dependency resolution}  
 **Shutdown and Failure Cascades**: {Shutdown sequences and failure cascades}
 
+#### 4.11.1 Frontend-Backend Wiring (REQUIRED if UI exists)
+
+**Critical Validation Points** (Waves 5-7 Lessons - Deviations #9, #12, #13):
+
+**Frontend Application Scaffolding**:
+- [ ] React app (or chosen framework) scaffolded and launches successfully
+- [ ] UI component library/design system integrated
+- [ ] Routing configured (if multi-page app)
+- [ ] Build configuration (Vite/Webpack/etc.) complete and tested
+- [ ] Development server runs without errors
+- [ ] Production build succeeds without errors
+
+**UI → API Integration Wiring**:
+- [ ] API client library configured (fetch/axios/tRPC/etc.)
+- [ ] API endpoint URLs configurable (env variables)
+- [ ] Authentication token handling implemented
+- [ ] API error handling implemented in UI
+- [ ] CORS configuration documented and tested
+- [ ] Request/response payload validation in place
+
+**Backend Deployment Configuration**:
+- [ ] Backend deployment target specified (Supabase/Vercel/AWS/etc.)
+- [ ] Database schema deployed and seeded
+- [ ] Database migration strategy tested
+- [ ] Backend API accessible from deployment URL
+- [ ] Environment variables configured in deployment platform
+- [ ] Health check endpoints implemented and verified
+
+**UI Wiring Tests** (MANDATORY - cannot skip):
+- [ ] E2E tests covering critical user workflows
+- [ ] Integration tests for API client → backend
+- [ ] Component tests for UI state management
+- [ ] Visual regression tests (if applicable)
+- [ ] Mobile/responsive tests (if applicable)
+
+**Deployment Evidence Requirements**:
+- Working deployment URL for frontend application
+- Working API endpoint URL for backend
+- Database connection verification
+- Seeded test data confirmation
+- End-to-end workflow demonstration (screenshots/video)
+
 ### 4.12 End-to-End Functional Paths
 
 **Primary User Workflows**: {Main user-facing functionality - complete path}  
@@ -273,6 +360,33 @@ For each component, define:
 
 **Path Tracing**: Each path must trace through all layers:
 > UI → API → Domain Logic → Data → External Dependencies → Response → Observability
+
+#### 4.12.1 Mandatory Workflow Evidence (Waves 5-7 Lessons)
+
+**For EVERY primary user workflow, provide**:
+- [ ] **Working Frontend**: Live deployment URL showing UI
+- [ ] **Working Backend**: Live API endpoint responding to requests
+- [ ] **Integrated Data Flow**: Demonstrated data persistence and retrieval
+- [ ] **E2E Test Coverage**: Automated test covering full workflow
+- [ ] **Evidence Artifacts**:
+  - Screenshot/video of workflow execution
+  - Test execution logs showing GREEN status
+  - Deployment URLs (frontend + backend)
+  - Database query results showing persisted data
+
+**Example Evidence Structure**:
+```markdown
+## Workflow: User Login
+- Frontend URL: https://app.example.com/login
+- API Endpoint: https://api.example.com/auth/login
+- E2E Test: tests/e2e/auth/login.spec.ts (✅ PASSING)
+- Evidence:
+  - Screenshot: evidence/login-flow.png
+  - Test Log: evidence/login-test-results.txt
+  - Database Verification: User record created in auth.users table
+```
+
+**Critical Rule**: Architecture approval REQUIRES live demonstration of at least ONE complete end-to-end workflow with working frontend, backend, and data persistence.
 
 ### 4.13 Wave-Based One-Time Build Model (If Applicable)
 
