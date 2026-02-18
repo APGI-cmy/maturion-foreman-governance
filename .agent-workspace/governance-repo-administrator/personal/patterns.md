@@ -224,3 +224,68 @@ This file is persistent and must accumulate patterns over time. Never reset or c
   3. Provide clear triggers: cognitive overload, complex governance, strategic decisions, safety-critical
   4. Include procedural steps: recognize, document, escalate, receive, resume
   5. Emphasize escalation is NOT failure—it's healthy governance awareness
+
+## Pattern: Comprehensive Protocol Creation (Template-Driven Governance)
+
+- Observed: 2026-02-17 (Session 034 - FCWT Protocol)
+- Context: Creating new governance protocol requiring agent execution
+- Pattern: Protocol + Execution Checklist + Evidence Templates = Executable Governance
+- Response: 
+  1. Create canonical protocol (governance/canon/) with comprehensive sections
+  2. Create execution checklist template showing step-by-step tasks
+  3. Create evidence templates (handover contract, summary report, etc.)
+  4. Define evidence directory structure in protocol
+  5. Add all artifacts to inventories and CHANGELOG
+  6. Provide migration guidance for consumer repos
+- Example: FCWT protocol (34KB) + 3 templates (18KB, 16KB, 16KB) = 84KB executable governance package
+- Authority: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md
+
+---
+
+## Pattern: Evidence-First Design (Deterministic Evidence Structure)
+
+- Observed: 2026-02-17 (Session 034 - FCWT Protocol)
+- Context: Designing audit-compliant evidence collection
+- Pattern: Define directory structure upfront, not as afterthought
+- Response:
+  1. Define standardized evidence directory (e.g., .fcwt-evidence/)
+  2. Define subdirectories by category (test-results/, seed-data/, functional-tests/, ux-tests/, media/)
+  3. Specify file naming conventions (e.g., suffix with YYYYMMDD)
+  4. Document structure in protocol and templates
+  5. Make evidence location deterministic for auditors
+- Example: .fcwt-evidence/ with 5 subdirectories and naming conventions
+- Authority: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md Section 7.1
+
+---
+
+## Pattern: Integration Over Isolation (Building on Existing Canon)
+
+- Observed: 2026-02-17 (Session 034 - FCWT Protocol)
+- Context: Creating new protocol that could stand alone or integrate
+- Pattern: Integrate with existing governance rather than creating parallel process
+- Response:
+  1. Identify related canonical governance (FULLY_FUNCTIONAL_DELIVERY_STANDARD.md, WAVE_MODEL.md)
+  2. Reference existing definitions (3 "fully functional" definitions)
+  3. Extend existing processes (wave closure requires FCWT)
+  4. Create integration table showing touchpoints
+  5. Update related canon to reference new protocol
+- Example: FCWT validates against FULLY_FUNCTIONAL_DELIVERY_STANDARD.md 3 definitions, integrates with WAVE_MODEL.md closure requirements
+- Authority: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md Section 12
+
+---
+
+## Pattern: Blocking Authority and Escalation (No-Guessing Policy)
+
+- Observed: 2026-02-17 (Session 034 - FCWT Protocol)
+- Context: FCWT executor may need FM/owner input during execution
+- Pattern: Define blocking protocol when information unavailable
+- Response:
+  1. Identify scenarios requiring domain knowledge or guidance
+  2. Create input request protocol (documented request format)
+  3. Define BLOCKING behavior (executor MUST NOT proceed with guesswork)
+  4. Require FM/owner response documentation
+  5. Include all inputs in handover evidence
+- Example: FCWT executor creates .fcwt-evidence/fm-input-requests/request-NNN.md, BLOCKS execution until FM responds
+- Authority: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md Section 6.2
+
+---

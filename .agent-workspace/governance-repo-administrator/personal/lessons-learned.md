@@ -175,3 +175,65 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 **Authority**: BOOTSTRAP_EXECUTION_LEARNINGS.md BL-031, WE_ONLY_FAIL_ONCE_DOCTRINE.md, AGENT_CONTRACT_PROTECTION_PROTOCOL.md
 
 ---
+
+### 2026-02-17 - FCWT Protocol Creation: Template-Driven Governance Design
+
+**Context**: Creating comprehensive Final Complete Wave Test (FCWT) protocol from scratch based on issue requirements
+
+**Lesson**: When establishing new governance protocol, create protocol + supporting templates simultaneously. Templates transform abstract protocol into executable checklist and reduce interpretation ambiguity.
+
+**Pattern**: Protocol Definition → Execution Checklist → Evidence Templates → Summary Report → Handover Contract
+
+**Remedy**: For any new canonical protocol:
+1. Define comprehensive protocol in governance/canon/ with 10+ sections covering purpose, authority, definitions, steps, evidence, integration
+2. Create execution checklist template showing step-by-step what to do (governance/templates/PROTOCOL_CHECKLIST.template.md)
+3. Create evidence templates showing what artifacts to produce (e.g., FCWT_HANDOVER_CONTRACT, FCWT_SUMMARY_REPORT)
+4. Include concrete examples (not just "document X", but "document X with sections A, B, C and evidence Y, Z")
+5. Define evidence directory structure (e.g., .fcwt-evidence/ with subdirectories)
+6. Integrate with existing governance (FULLY_FUNCTIONAL_DELIVERY_STANDARD.md, WAVE_MODEL.md, etc.)
+7. Add to CANON_INVENTORY.json with full SHA256 hash
+8. Add protocol + all templates to GOVERNANCE_ARTIFACT_INVENTORY.md
+9. Create comprehensive CHANGELOG entry with migration guidance
+
+**Impact**: FCWT protocol is immediately executable—agents know exactly what to do, what evidence to create, and what format to use. Templates prevent "what does comprehensive mean?" ambiguity.
+
+**Example**: 
+- Protocol: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md (34KB, 13 sections, 10 steps)
+- Templates: FCWT_CHECKLIST.template.md (18KB), FCWT_HANDOVER_CONTRACT.template.md (16KB), FCWT_SUMMARY_REPORT.template.md (16KB)
+- Total governance package: 84KB covering protocol + execution + evidence + handover
+
+**Authority**: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md, FULLY_FUNCTIONAL_DELIVERY_STANDARD.md, WAVE_MODEL.md
+
+---
+
+### 2026-02-17 - Evidence-First Protocol Design: .fcwt-evidence/ Directory Structure
+
+**Context**: Designing evidence collection for FCWT protocol
+
+**Lesson**: Define evidence directory structure upfront in protocol, not as afterthought. Structure enables consistent collection, easy audit access, and clear evidence categorization.
+
+**Pattern**: Protocol → Evidence Structure → Template References → Audit Trail
+
+**Remedy**: When creating protocol requiring evidence:
+1. Define standardized evidence directory (e.g., .fcwt-evidence/)
+2. Define subdirectories by evidence category (test-results/, seed-data/, functional-tests/, ux-tests/, media/, etc.)
+3. Specify file naming conventions (e.g., qa-to-red-full-suite-YYYYMMDD.log)
+4. Document evidence in templates (checklist shows where to put files, summary report shows where to reference files)
+5. Make evidence location deterministic (auditors know exactly where to look)
+
+**Impact**: FCWT evidence is organized, discoverable, and audit-ready. No "where did I put that test log?" confusion.
+
+**Example Structure**:
+```
+.fcwt-evidence/
+├── test-results/ (QA-to-Red logs, summaries)
+├── seed-data/ (scripts, dumps, documentation)
+├── functional-tests/ (use-case logs, edge-case matrix, adversarial logs)
+├── ux-tests/ (UX checklist, performance metrics, accessibility audit)
+├── media/ (screenshots/, video links)
+└── fcwt-summary-report.md (consolidation)
+```
+
+**Authority**: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md Section 7.1, FCWT_CHECKLIST.template.md
+
+---
