@@ -237,3 +237,111 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 **Authority**: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md Section 7.1, FCWT_CHECKLIST.template.md
 
 ---
+
+## Session 20260218 (Session 035)
+
+### Lesson: Cross-Wave Pattern Analysis Reveals Systemic Governance Gaps
+
+- **Context**: Institutionalizing lessons from MAT Waves 5-7 failures
+- **Pattern**: Individual wave failures appear isolated, but cross-wave analysis reveals systemic governance gaps
+- **Action**: 
+  * Examine multiple related failures together (Waves 5.5, 5.6, 5.7)
+  * Identify common root causes across waves
+  * Document as failure patterns vs. isolated incidents
+  * Create systemic prevention measures vs. point fixes
+- **Example**: Waves 5.5 (missing React app), 5.6 (missing UI wiring), 5.7 (missing Supabase deployment) all stem from "wave closure validates tests but not deliverable existence" gap
+- **Impact**: Created WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md (22KB) documenting 4 systemic patterns with structural prevention measures
+
+---
+
+### Lesson: Template-Embedded Prevention > Post-Hoc Validation
+
+- **Context**: Preventing deliverable omissions in future waves
+- **Pattern**: Embedding validation requirements directly into architecture template ensures proactive enforcement
+- **Action**:
+  * Add validation sections to templates used at wave start (architecture, implementation plan)
+  * Make validation checkboxes part of approval criteria
+  * Require evidence before wave authorization (not just at closure)
+  * Shift enforcement from reactive (closure gate) to proactive (authorization gate)
+- **Example**: Added sections 4.1.1 (Infrastructure Deployment Validation), 4.11.1 (Frontend-Backend Wiring), 4.12.1 (Mandatory Workflow Evidence) to minimum-architecture-template.md
+- **Impact**: Future architectures cannot be approved without addressing infrastructure/wiring/evidence requirements
+- **Authority**: minimum-architecture-template.md, BUILD_PROGRESS_TRACKER_TEMPLATE.md
+
+---
+
+### Lesson: "Tests Pass" ≠ "Deployed" ≠ "Working" (Trinity Rule)
+
+- **Context**: Waves closed with 100% GREEN tests but missing critical deliverables
+- **Pattern**: Test coverage provides false confidence; must validate all three states
+- **Action**:
+  * **Tests Pass**: Validate automated test execution (unit, integration, E2E)
+  * **Deployed**: Validate working deployment URLs (frontend + backend)
+  * **Working**: Validate end-to-end workflows with evidence (screenshots/video)
+  * Require ALL THREE before wave closure
+  * Add explicit prohibitions against closure without any one of three
+- **Example**: BUILD_PROGRESS_TRACKER_TEMPLATE Section 5.1 prohibits wave closure without frontend deployment, backend deployment, database deployment, working E2E workflows
+- **Impact**: Institutionalizes trinity rule across templates and canon; prevents "tests pass, wave complete" false closures
+- **Authority**: WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md Section 3.2, FULLY_FUNCTIONAL_DELIVERY_STANDARD.md
+
+---
+
+### Lesson: Integration Cannot Be Assumed (Wiring Law)
+
+- **Context**: Wave 5.6 had frontend and backend code but disconnected
+- **Pattern**: Component existence ≠ integrated system; wiring must be explicitly tested
+- **Action**:
+  * When both UI and backend exist, UI-to-backend wiring tests are MANDATORY
+  * E2E tests must run against deployed environment (not just localhost)
+  * CORS configuration must be tested
+  * Authentication flow must be validated
+  * Add "Wiring Validation" section to build tracker
+- **Example**: Added Section 4.11.1 to architecture template requiring explicit wiring validation when both UI and backend exist
+- **Impact**: Future waves with both frontend and backend cannot close without demonstrating integration
+- **Authority**: WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md Section 3.4
+
+---
+
+### Lesson: Deviation Chain Documentation Enables Pattern Recognition
+
+- **Context**: Finding related deviations #9, #12, #13 to understand failure patterns
+- **Pattern**: Explicitly linking deviations creates chain enabling cross-wave pattern analysis
+- **Action**:
+  * Document deviation chain in canonical lessons (which issues are related)
+  * Cross-reference related deviations in CHANGELOG
+  * Create dedicated section in canon showing deviation progression
+  * Include deviation chain in governance artifact inventory
+- **Example**: WAVES_5_TO_7 canon Section 9 documents deviation chain with clear linkage
+- **Impact**: Future governance reviews can identify related failures and prevent pattern recurrence
+- **Authority**: WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md Section 9
+
+---
+
+### Lesson: Reactive vs. Proactive Governance Transparency
+
+- **Context**: Creating governance measures after failures vs. before
+- **Pattern**: Honest acknowledgment of reactive vs. proactive governance strengthens credibility
+- **Action**:
+  * When creating reactive governance (after failure), acknowledge it
+  * Document ideal proactive state in canon
+  * Create path from reactive to proactive
+  * Use reactive measures as bootstrap toward proactive governance
+- **Example**: WAVES_5_TO_7 canon Section 12 "Governance Hygiene Note" acknowledges reactive nature and defines future proactive state
+- **Impact**: Sets realistic expectations and creates improvement trajectory
+- **Authority**: WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md Section 12
+
+---
+
+### Lesson: Quick Reference Appendix Makes Canon Actionable
+
+- **Context**: 22KB canon document may be too detailed for daily use
+- **Pattern**: Comprehensive canon + quick reference checklist = usable governance
+- **Action**:
+  * Create detailed canonical document with full analysis and rationale
+  * Add Appendix with one-page quick reference checklist
+  * Ensure appendix captures all critical validation points
+  * Reference appendix in templates and contracts
+- **Example**: WAVES_5_TO_7 canon Appendix A provides one-page wave closure checklist
+- **Impact**: Agents can use checklist daily while canon provides deep reference when needed
+- **Authority**: WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md Appendix A
+
+---
