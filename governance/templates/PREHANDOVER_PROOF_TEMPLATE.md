@@ -1,16 +1,32 @@
 # PREHANDOVER_PROOF Template
 
 **Purpose**: Standard template for documenting execution verification before PR handover.  
-**Version**: 3.0.0  
+**Version**: 4.0.0  
 **Authority**: 
 - `governance/canon/MERGE_GATE_PHILOSOPHY.md` v2.0.0 (Pre-Handover Gate Duplication Mandate)
 - `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` v2.0 (Complete Handover)
 - `governance/agent/AGENT_IGNORANCE_PROHIBITION_DOCTRINE.md` (No Ignorance Excuse)
 - `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` (Section 5.1 Zero-Warning Enforcement)
+- `BUILD_PHILOSOPHY.md` (One-Time Build Law: delivered means 100% working)
+- `WE_ONLY_FAIL_ONCE_DOCTRINE.md` (Structural governance prevents repeat failures)
 - `BL-030` (Validation Evidence Requirements)
+- Issue: "Governance Policy Update: Mandatory Lint/Static Analysis Gates Before Handover" (Wave 5.6 Post-Mortem)
 
 **Mandatory For**: **ALL PRs** - Pre-handover gate validation is constitutional requirement  
 **Optional For**: None (evidence required for all PRs per OPOJD v2.0 and MERGE_GATE_PHILOSOPHY v2.0)
+
+**Version 4.0.0 Changes** (2026-02-18): 
+- **CRITICAL GOVERNANCE UPDATE**: Added mandatory "Static Analysis & Build Gates" section
+- **MAJOR**: Lint validation now MANDATORY with ZERO errors/warnings requirement (Wave 5.6 learning)
+- **MAJOR**: Type-check validation now MANDATORY with ZERO errors requirement
+- **MAJOR**: Build validation now MANDATORY with success requirement
+- **MAJOR**: Post-static-analysis test re-confirmation required
+- **BREAKING**: Handover strictly prohibited if ANY static gate fails (lint/type/build)
+- Added 4-gate protocol: Lint, Type-Check, Build, Tests (post-fixes)
+- Added detailed evidence requirements for each static gate
+- Added iterations protocol for gate failures and fixes
+- Implements learning from Wave 5.6 post-mortem: "QA-to-Red test results alone are NOT sufficient"
+- Cross-references to BUILD_PHILOSOPHY, WE_ONLY_FAIL_ONCE_DOCTRINE
 
 **Version 3.0.0 Changes** (2026-02-11): 
 - **CONSTITUTIONAL UPGRADE**: Aligned with MERGE_GATE_PHILOSOPHY v2.0.0 Pre-Handover Gate Duplication Mandate
@@ -128,6 +144,243 @@ Copy this template into your PR description and fill in all sections:
 **Guarantee**: All tests passed locally before PR creation. CI will confirm success, not discover test failures.
 
 **Authority**: `governance/runbooks/AGENT_TEST_EXECUTION_PROTOCOL.md`
+
+---
+
+### Static Analysis & Build Gates (MANDATORY)
+
+**Purpose**: Document zero-defect static analysis and build validation compliance before handover.
+
+**Authority**: 
+- Issue: "Governance Policy Update: Mandatory Lint/Static Analysis Gates Before Handover" (Wave 5.6 Post-Mortem)
+- `BUILD_PHILOSOPHY.md` — One-Time Build Law: delivered means working 100%
+- `governance/canon/STOP_AND_FIX_DOCTRINE.md` — Warnings = Errors
+- `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` — Section 5.1 Zero-Warning Enforcement
+
+**Constitutional Requirement**: ALL handovers MUST include evidence that lint, type-check, and build gates pass with ZERO errors and ZERO warnings. Handover is strictly prohibited if any gate fails.
+
+**Background**: Wave 5.6 deployment failed post-merge due to unresolved lint errors. Pre-handover certification focused on behavioral tests only, not static analysis, leading to governance violation.
+
+**Applicability**: 
+- ✅ MANDATORY for ALL PRs with application code changes (TypeScript, JavaScript, Python, Go, Rust, etc.)
+- ✅ MANDATORY for ALL PRs to application repositories
+- ⊘ Not applicable for governance-only repository changes without application code
+- ⚠️ Exception requires CS2 approval and documented justification
+
+---
+
+#### Static Analysis Gate Requirements
+
+**Critical Requirements**:
+- ✅ ALL lint commands must exit 0 with ZERO errors
+- ✅ ALL lint commands must exit 0 with ZERO warnings
+- ✅ ALL type-check commands must exit 0 with ZERO errors
+- ✅ Build command must complete successfully (exit 0)
+- ✅ ALL test suites must pass (exit 0, 100% GREEN)
+- ✅ Evidence of ALL gate executions attached (CLI output, exit codes, timestamps)
+- ✅ Local validation is MANDATORY (CI is confirmatory, not diagnostic)
+
+**Prohibited Actions**:
+- ❌ Handing over with ANY lint error or warning
+- ❌ Handing over with ANY type-check error
+- ❌ Handing over with build failures
+- ❌ Stating "will fix in follow-up PR" to defer static analysis issues
+- ❌ Stating "will validate in CI" to defer local validation
+- ❌ Treating pre-existing lint/type issues as exemption from remediation
+- ❌ Partial handovers with known static analysis failures
+- ❌ Skipping static analysis validation for "minor changes"
+
+---
+
+#### Gate 1: Lint Validation
+
+**Requirement**: All lint checks must pass with ZERO errors and ZERO warnings.
+
+**Applicability**: 
+- ✅ Required for all application code changes (TypeScript, JavaScript, Python, Go, Rust, etc.)
+- ⊘ Not applicable if repository has no linter configured
+
+**Lint Command Executed**:
+```bash
+[Exact command used to run linter, e.g., yarn lint, npm run lint, eslint ., pylint src/, cargo clippy]
+```
+
+**Execution Details**:
+- **Date**: [YYYY-MM-DD HH:MM:SS UTC]
+- **Environment**: [OS, Node/Python/Go/Rust version, Linter version]
+- **Exit Code**: [MUST be 0]
+
+**Lint Results**:
+```
+[Paste FULL lint output or summary showing:]
+- Total files linted: [N]
+- Errors found: [MUST be 0]
+- Warnings found: [MUST be 0]
+- Final status: [e.g., "✨ No issues found", "All checks passed"]
+```
+
+**Status**: ✅ PASS (0 errors, 0 warnings) | ❌ FAIL (cannot hand over) | ⊘ NOT APPLICABLE
+
+**Iterations** (if any):
+```
+[If lint failed initially:]
+- Initial errors/warnings: [list what failed]
+- Root cause: [why it failed]
+- Fix applied: [what you changed]
+- Re-run evidence: [exit code 0, 0 errors, 0 warnings after fix]
+[If no iterations: "Lint passed on first execution with zero errors/warnings"]
+```
+
+**Prohibition**: If ANY lint error or warning remains, MUST fix immediately per STOP_AND_FIX_DOCTRINE before handover.
+
+---
+
+#### Gate 2: Type-Check Validation
+
+**Requirement**: All type-checking must pass with ZERO errors (if applicable).
+
+**Applicability**: 
+- ✅ Required for TypeScript projects
+- ✅ Required for Python projects with type hints (mypy, pyright)
+- ✅ Required for any language with type checking
+- ⊘ Not applicable if language/project does not use static typing
+
+**Type-Check Command Executed**:
+```bash
+[Exact command, e.g., yarn type-check, tsc --noEmit, mypy ., cargo check]
+```
+
+**Execution Details**:
+- **Date**: [YYYY-MM-DD HH:MM:SS UTC]
+- **Environment**: [OS, TypeScript/Python/other version, Type-checker version]
+- **Exit Code**: [MUST be 0]
+
+**Type-Check Results**:
+```
+[Paste output showing:]
+- Files checked: [N]
+- Type errors found: [MUST be 0]
+- Final status: [e.g., "No errors found", "Type-check passed"]
+```
+
+**Status**: ✅ PASS (0 type errors) | ❌ FAIL (cannot hand over) | ⊘ NOT APPLICABLE
+
+**Iterations** (if any):
+```
+[If type-check failed initially:]
+- Initial type errors: [list what failed]
+- Root cause: [why it failed]
+- Fix applied: [what you changed]
+- Re-run evidence: [exit code 0, 0 errors after fix]
+[If no iterations: "Type-check passed on first execution with zero errors"]
+```
+
+**Prohibition**: If ANY type error remains, MUST fix immediately before handover.
+
+---
+
+#### Gate 3: Build Validation
+
+**Requirement**: Application build must complete successfully.
+
+**Applicability**: 
+- ✅ MANDATORY for ALL application code PRs
+- ✅ Required even if "minor changes" (CSS, config, etc.)
+- ⊘ Not applicable for documentation-only changes in governance repos
+
+**Build Command Executed**:
+```bash
+[Exact command, e.g., yarn build, npm run build, make build, cargo build --release]
+```
+
+**Execution Details**:
+- **Date**: [YYYY-MM-DD HH:MM:SS UTC]
+- **Environment**: [OS, Build tool versions]
+- **Exit Code**: [MUST be 0]
+
+**Build Results**:
+```
+[Paste output showing:]
+- Build started: [timestamp]
+- Build completed: [timestamp]
+- Build artifacts generated: [list key artifacts, e.g., dist/, build/]
+- Warnings during build: [MUST be 0 or documented/approved]
+- Final status: [e.g., "Build succeeded", "webpack compiled successfully"]
+```
+
+**Status**: ✅ PASS (build succeeded) | ❌ FAIL (cannot hand over)
+
+**Iterations** (if any):
+```
+[If build failed initially:]
+- Initial build errors: [list what failed]
+- Root cause: [why it failed]
+- Fix applied: [what you changed]
+- Re-run evidence: [exit code 0, successful build after fix]
+[If no iterations: "Build succeeded on first execution"]
+```
+
+**Prohibition**: If build fails, MUST fix immediately before handover.
+
+---
+
+#### Gate 4: Complete Test Suite (Re-confirmation)
+
+**Note**: This gate re-confirms test execution after ALL static analysis fixes applied.
+
+**Requirement**: After fixing any lint/type/build issues, ALL tests MUST still pass.
+
+**Rationale**: Fixes to lint/type issues may introduce test failures. Must verify complete system health.
+
+**Test Command Re-Executed**:
+```bash
+[Same test command from "Test Execution Validation" section above]
+```
+
+**Execution Details**:
+- **Date**: [YYYY-MM-DD HH:MM:SS UTC] (AFTER lint/type/build fixes)
+- **Exit Code**: [MUST be 0]
+
+**Test Results Summary**:
+```
+[Paste output confirming:]
+- All test suites passed: [X/X]
+- All tests passed: [Y/Y]
+- Final status: [100% GREEN]
+```
+
+**Status**: ✅ ALL GREEN | ❌ FAILURES (cannot hand over)
+
+**Cross-Reference**: See "Test Execution Validation" section above for initial test execution.
+
+---
+
+#### Static Analysis Summary
+
+**All Gates Status**:
+- Lint: ✅ PASS (0 errors, 0 warnings) | ❌ FAIL | ⊘ N/A
+- Type-Check: ✅ PASS (0 errors) | ❌ FAIL | ⊘ N/A
+- Build: ✅ PASS | ❌ FAIL | ⊘ N/A
+- Tests (post-static-fixes): ✅ PASS (100% GREEN) | ❌ FAIL | ⊘ N/A
+
+**Final Static Analysis State**:
+- [ ] ALL applicable gates executed locally
+- [ ] ALL gates returned exit code 0 (success)
+- [ ] ZERO lint errors
+- [ ] ZERO lint warnings
+- [ ] ZERO type errors
+- [ ] Build succeeded
+- [ ] ALL tests still GREEN after static analysis fixes
+- [ ] Evidence documented for EVERY gate
+
+**Summary**: ✅ ALL STATIC GATES GREEN | ❌ INCOMPLETE (CANNOT HAND OVER)
+
+**Handover Prohibition**: Per governance policy (Wave 5.6 learning), handover is **strictly prohibited** if ANY static analysis gate fails. CI will confirm success via evidence-based validation, not discover lint/type/build failures.
+
+**Authority**: 
+- Issue: "Governance Policy Update: Mandatory Lint/Static Analysis Gates Before Handover"
+- `BUILD_PHILOSOPHY.md` — Delivered means 100% working
+- `WE_ONLY_FAIL_ONCE_DOCTRINE.md` — Structural governance prevents repeat failures
 
 ---
 
