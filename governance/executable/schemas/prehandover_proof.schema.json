@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://maturion.com/schemas/governance/prehandover_proof.schema.json",
   "title": "Prehandover Proof",
-  "description": "Structured prehandover proof for governed PRs.",
+  "description": "Structured prehandover proof for governed PRs with mandatory static analysis gates.",
   "type": "object",
   "required": [
     "schema_version",
@@ -16,7 +16,8 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "1.0.0"
+      "const": "2.0.0",
+      "description": "Schema version 2.0.0 adds mandatory static analysis gates (lint, type-check, build) per Wave 5.6 post-mortem"
     },
     "generated_at": {
       "type": "string",
@@ -50,7 +51,45 @@
     },
     "test_status": {
       "type": "string",
-      "enum": ["PASS", "FAIL", "NOT_RUN"]
+      "enum": ["PASS", "FAIL", "NOT_RUN"],
+      "description": "Overall test execution status (PASS = 100% GREEN, 0 failures)"
+    },
+    "lint_status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "NOT_APPLICABLE"],
+      "description": "Lint validation status (PASS = 0 errors, 0 warnings; MANDATORY for application code PRs)"
+    },
+    "type_check_status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "NOT_APPLICABLE"],
+      "description": "Type-check validation status (PASS = 0 type errors; MANDATORY for TypeScript/typed languages)"
+    },
+    "build_status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "NOT_APPLICABLE"],
+      "description": "Build validation status (PASS = successful build, exit code 0; MANDATORY for application code PRs)"
+    },
+    "static_analysis_summary": {
+      "type": "object",
+      "description": "Summary of all static analysis gate results",
+      "properties": {
+        "all_gates_pass": {
+          "type": "boolean",
+          "description": "True if ALL applicable static gates (lint, type-check, build, tests) pass"
+        },
+        "blocking_failures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of gates that failed and block handover"
+        },
+        "handover_permitted": {
+          "type": "boolean",
+          "description": "False if ANY static gate fails; handover strictly prohibited per Wave 5.6 learning"
+        }
+      },
+      "required": ["all_gates_pass", "handover_permitted"]
     },
     "evidence_paths": {
       "type": "array",

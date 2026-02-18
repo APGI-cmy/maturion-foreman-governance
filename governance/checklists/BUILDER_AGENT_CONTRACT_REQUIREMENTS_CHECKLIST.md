@@ -137,15 +137,19 @@ Automated validators MUST:
 ### 2.2 Prehandover Proof Requirements
 
 - **Requirement**: MANDATORY
-- **Validation**: Contains prehandover proof protocol
+- **Validation**: Contains prehandover proof protocol with static analysis gates
 - **Required Elements**:
   - Evidence bundle creation before handover
-  - Test execution logs
-  - Build success verification
-  - Lint/format compliance
-  - Zero warnings/errors requirement
-- **Canonical Reference**: PREHANDOVER_PROOF_CANON.md
-- **Severity if Missing**: BLOCKER - Cannot verify work quality
+  - Test execution logs (100% GREEN, 0 failures)
+  - **Lint validation (0 errors, 0 warnings)**
+  - **Type-check validation (0 errors, if applicable)**
+  - **Build success verification (exit code 0)**
+  - CLI/CI evidence for ALL gates (tests, lint, type-check, build)
+  - Zero warnings/errors requirement across all gates
+  - Handover prohibition if ANY gate fails
+- **Canonical Reference**: PREHANDOVER_PROOF_TEMPLATE.md v4.0.0
+- **Authority**: Issue "Governance Policy Update: Mandatory Lint/Static Analysis Gates Before Handover" (Wave 5.6 Post-Mortem)
+- **Severity if Missing**: BLOCKER - Cannot verify work quality, violates Wave 5.6 learning
 
 ### 2.3 Architecture-First Acknowledgment
 
