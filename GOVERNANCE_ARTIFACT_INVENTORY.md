@@ -69,7 +69,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` | **UPDATED v3.1.0 (2026-01-26)** - Granular authority hierarchy for agent contracts with atomic layer-down compliance requirements for consumer repos | PR-gates, Layer-down, Readiness |
 | `AGENT_CONTRACT_PROTECTION_PROTOCOL.md` | **UPDATED v1.1.0 (2026-01-26)** - Protocol for agent contract protection with locked sections and atomic layer-down requirements | PR-gates, Layer-down, Readiness |
 | `AGENT_ENVIRONMENTAL_RESPONSIBILITY_DOCTRINE.md` | **UPDATED v1.1.0 (2026-02-14) PUBLIC_API CONSTITUTIONAL** - Tier-0 constitutional canon establishing mandatory pre-task environmental health scanning, autonomous remediation, escalation, and full auditability requirements for all agents. Defines Scan → Remediate → Escalate → Work workflow, sandbox boundaries, LOCKED Environmental Responsibility section requirement for all agent contracts, and integration with wake-up protocol Step 4.5. **v1.1.0 adds learning file staleness enforcement** to prevent placeholder learning files from bypassing true insight capture (Section 15). Critical foundation for truly autonomous and responsible Living Agent System | Readiness, Layer-down, PR-gates, Feedback/learning |
-| `AGENT_HANDOVER_AUTOMATION.md` | **NEW v1.0.0 (2026-02-17) PUBLIC_API** - Canonical Handover phase (Phase 4) template defining automated evidence generation, session memory creation/rotation, compliance checking, and escalation protocols. Provides agent-class-specific compliance verification patterns and enforcement mechanisms | PR-gates, Layer-down, Readiness |
+| `AGENT_HANDOVER_AUTOMATION.md` | **UPDATED v1.1.0 (2026-02-18) PUBLIC_API** - Canonical Handover phase (Phase 4) template defining automated evidence generation, session memory creation/rotation, compliance checking, and escalation protocols. **NEW: Added mandatory static analysis gates (lint, type-check, build) to Builder evidence requirements and compliance checks per Wave 5.6 post-mortem.** Provides agent-class-specific compliance verification patterns and enforcement mechanisms | PR-gates, Layer-down, Readiness |
 | `AGENT_INDUCTION_PROTOCOL.md` | **NEW v1.0.0 (2026-02-17) PUBLIC_API** - Canonical Induction phase (Phase 2) template defining session wake-up protocol with dynamic governance loading, memory scan, degraded-mode detection, and working contract generation. Executable and testable induction scripts for all agent classes | PR-gates, Layer-down, Readiness |
 | `AGENT_PREFLIGHT_PATTERN.md` | **NEW v1.0.0 (2026-02-17) PUBLIC_API** - Canonical Preflight phase (Phase 1) template defining identity, authority, sandbox constraints, and governance bindings. Blocks default coding behaviors with concrete ❌ WRONG vs ✅ CORRECT examples. Establishes critical invariants and operating models by agent class | PR-gates, Layer-down, Readiness |
 | `AGENT_PRIORITY_SYSTEM.md` | **NEW v1.0.0 (2026-02-17) PUBLIC_API** - Canonical priority coding system (H/M/L) for all agents. Defines priority levels, decision tree, escalation rules, fail-fast patterns, and usage patterns across agent classes. Enables explicit trade-off decisions and deterministic task sequencing | PR-gates, Layer-down, Readiness |
@@ -99,11 +99,11 @@ Canon files define constitutional governance rules, models, and protocols.
 | `DOMAIN_OWNERSHIP_ACCOUNTABILITY.md` | Defines domain ownership and accountability rules | Readiness |
 | `DOMAIN_STATE_ENFORCEMENT_RULE.md` | Defines enforcement of domain state requirements | Readiness |
 | `ENVIRONMENT_PROVISIONING_PROCESS.md` | Defines environment setup and provisioning | Readiness |
-| `EXECUTION_BOOTSTRAP_PROTOCOL.md` | **UPDATED v1.1.0 (2026-01-26)** - Mandatory execution verification protocol with zero-warning enforcement, agent contract propagation wait, and STOP-AND-FIX integration | PR-gates, Readiness |
+| `EXECUTION_BOOTSTRAP_PROTOCOL.md` | **UPDATED v1.2.0 (2026-02-18)** - Mandatory execution verification protocol with zero-warning enforcement, **NEW: mandatory static analysis gates (lint, type-check, build) for application repositories per Wave 5.6 post-mortem**, agent contract propagation wait, and STOP-AND-FIX integration. Adds prohibition against handover with static gate failures | PR-gates, Readiness |
 | `FAILURE_PROMOTION_RULE.md` | Defines when failures must be escalated/promoted | Feedback/learning |
 | `FULLY_FUNCTIONAL_DELIVERY_STANDARD.md` | **NEW v1.0.0 (2026-02-16) PUBLIC_API** - Canonical standard defining "fully functional" delivery across design, implementation, and deployment phases. Establishes Fully Functional Design, Fully Functional App, and Fully Functional Delivery definitions with wave gate strengthening, pre-authorization and pre-closure requirements, certification criteria, and enforcement mechanisms. Addresses critical governance gap where deliverables were specified but never physically delivered despite passing tests | Readiness, Layer-down, PR-gates, Feedback/learning |
 | `WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md` | **NEW v1.0.0 (2026-02-18) PUBLIC_API** - Canonical lessons learned from MAT Waves 5-7 institutionalizing prevention measures for infrastructure deployment, frontend scaffolding, backend deployment, and UI wiring validation failures. Documents cross-wave failure patterns (Wave 5.5: missing React app scaffolding, Wave 5.6: missing UI wiring/tests, Wave 5.7: missing Supabase deployment). Strengthens wave closure gates with physical deliverable verification, deployment URL validation, integration wiring tests, and E2E execution requirements. Updates architecture templates (minimum-architecture-template sections 4.1.1, 4.11.1, 4.12.1) and BUILD_PROGRESS_TRACKER_TEMPLATE (section 5.1). Integrates with FULLY_FUNCTIONAL_DELIVERY_STANDARD.md and BUILD_PHILOSOPHY.md One-Time Build Law. Prevents "tests pass but app doesn't exist/deploy/work" pattern recurrence per WE_ONLY_FAIL_ONCE_DOCTRINE | Readiness, Layer-down, PR-gates, Feedback/learning |
-| `FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md` | **NEW v1.0.0 (2026-02-17) PUBLIC_API** - Canonical protocol establishing Final Complete Wave Test (FCWT) as mandatory last build/test step before audit sign-off. Defines comprehensive validation combining automated QA-to-Red tests (100% GREEN), seed data population (50+ audits/100+ criteria/200+ evidence), functional workflow testing, edge/error case testing, UX/accessibility/performance validation, adversarial/stress testing, video walkthrough documentation, and formal handover contract. Integrates with FULLY_FUNCTIONAL_DELIVERY_STANDARD.md three definitions validation and WAVE_MODEL.md closure requirements. Provides FCWT executor authority, FM supervision protocol, test debt policy, FM/owner input protocol, evidence chain requirements, and blocking authority for audit sign-off | Readiness, Layer-down, PR-gates, Feedback/learning |
+| `FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md` | **UPDATED v1.1.0 (2026-02-18) PUBLIC_API** - Canonical protocol establishing Final Complete Wave Test (FCWT) as mandatory last build/test step before audit sign-off. **NEW: Added mandatory static analysis gates (lint, type-check, build) to Step 2 QA suite compilation per Wave 5.6 post-mortem.** Defines comprehensive validation combining automated QA-to-Red tests (100% GREEN), **static analysis gates (0 errors/warnings)**, seed data population (50+ audits/100+ criteria/200+ evidence), functional workflow testing, edge/error case testing, UX/accessibility/performance validation, adversarial/stress testing, video walkthrough documentation, and formal handover contract. Integrates with FULLY_FUNCTIONAL_DELIVERY_STANDARD.md three definitions validation and WAVE_MODEL.md closure requirements. Provides FCWT executor authority, FM supervision protocol, test debt policy, FM/owner input protocol, evidence chain requirements, and blocking authority for audit sign-off | Readiness, Layer-down, PR-gates, Feedback/learning |
 | `FM_GOVERNANCE_LOADING_PROTOCOL.md` | Protocol for loading governance into FM context | Layer-down, Readiness |
 | `FM_MERGE_GATE_MANAGEMENT_PROTOCOL.md` | **NEW v1.0.0 (2026-02-09) PUBLIC_API** - Canonical protocol for FM authority to manage merge gates. Defines FM autonomous fix authority for gate misalignments, detection and classification of gate issues, fix vs. escalation decision matrix, governance compliance checklist, and operational workflows. Enables FM to correct gates that misapply agent-class requirements without bypassing governance | PR-gates, Layer-down, Readiness |
 | `FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` | Defines FM authority boundaries and supervision rules | Readiness |
@@ -239,11 +239,11 @@ Template files provide reusable structures for governance artifacts.
 | `FCWT_CHECKLIST.template.md` | **NEW v1.0.0 (2026-02-17)** - Template for Final Complete Wave Test (FCWT) execution checklist. Provides comprehensive step-by-step checklist covering pre-FCWT validation, QA-to-Red suite execution, seed data population, major use-case flow testing, edge/error case testing, UX/accessibility testing, adversarial/stress testing, documentation compilation, handover contract validation, and FM certification. Integrates with FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md and FULLY_FUNCTIONAL_DELIVERY_STANDARD.md | Readiness, Layer-down, PR-gates |
 | `FCWT_HANDOVER_CONTRACT.template.md` | **NEW v1.0.0 (2026-02-17)** - Template for FCWT handover contract establishing formal application delivery and sign-off. Structures application identification, functional completeness declaration, requirements traceability, quality assurance declaration, fully functional delivery validation (against 3 definitions), evidence archive inventory, known issues documentation, and sign-off section (executor, FM, CS2). Provides formal contract of application completeness for audit approval | Readiness, Layer-down, PR-gates |
 | `FCWT_SUMMARY_REPORT.template.md` | **NEW v1.0.0 (2026-02-17)** - Template for FCWT summary report consolidating all test results and evidence. Structures executive summary, test coverage summary (QA-to-Red, functional, edge, UX, adversarial), evidence inventory, issues/resolutions, functional completeness declaration, FM input summary, test debt created, lessons learned, and final recommendations. Comprehensive reporting format for audit evidence package | Readiness, Layer-down, Feedback/learning |
-| `PREHANDOVER_PROOF_TEMPLATE.md` | **UPDATED v2.2.0 (2026-01-27)** - Template for execution verification documentation with Zero-Warning Validation section and **NEW** validation evidence requirements per BL-030. Prohibits attestation without verification. Requires command output, exit codes, timestamps for all validations. Adds scope declaration freshness verification checklist | PR-gates, Readiness |
+| `PREHANDOVER_PROOF_TEMPLATE.md` | **UPDATED v4.0.0 (2026-02-18) BREAKING** - Template for execution verification documentation with **NEW: mandatory "Static Analysis & Build Gates" section** per Wave 5.6 post-mortem. Adds 4-gate protocol (lint, type-check, build, tests-post-fixes) with zero-defect requirement (0 errors, 0 warnings). Handover strictly prohibited if ANY static gate fails. Includes evidence requirements (CLI output, exit codes), iterations protocol, and cross-references to BUILD_PHILOSOPHY, WE_ONLY_FAIL_ONCE_DOCTRINE. Implements Wave 5.6 learning: "QA-to-Red test results alone are NOT sufficient" | PR-gates, Readiness, Layer-down |
 | `PLATFORM_READINESS_CHECKLIST.template.md` | Template for platform readiness checklists | Readiness |
 | `PR_GATE_RELEASE_CHECKLISTS_README.md` | Documentation for PR gate release checklists | PR-gates |
 | `PR_GATE_RELEASE_CHECKLIST_BUILDER.md` | Builder-specific PR gate release checklist | PR-gates |
-| `PR_GATE_RELEASE_CHECKLIST_FM.md` | FM-specific PR gate release checklist | PR-gates |
+| `PR_GATE_RELEASE_CHECKLIST_FM.md` | **UPDATED v2.1.0 (2026-02-18)** - FM-specific PR gate release checklist with **NEW: mandatory static analysis gates (lint, type-check, build) in Category 0 Execution Bootstrap Protocol** per Wave 5.6 post-mortem. Adds sub-items 0.3a-d and 0.4a, 0.6a for static gate validation and evidence. Prohibition against handover with lint/type/build failures for application repos | PR-gates, Readiness |
 | `PR_GATE_RELEASE_CHECKLIST_GOVERNANCE_ADMIN.md` | Governance Admin-specific PR gate release checklist | PR-gates |
 | `POST_MORTEM_AGENT_REPORT.template.md` | **NEW v1.0.0 (2026-02-15)** - Template for agent self-report in post-mortem process. Structured format for capturing build experience, lessons learned, mistakes, performance improvements, build quality assessment, standards compliance gaps, process assessment, knowledge transfer, and recommendations. Integrates with agent session memory per POST_MORTEM_PROTOCOL.md | Feedback/learning, Layer-down |
 | `POST_MORTEM_GAP_ANALYSIS.template.md` | **NEW v1.0.0 (2026-02-15)** - Template for post-mortem gap analysis comparing current vs previous builds. Structures comparison across improvements verified, regressions detected, new patterns, standards compliance trajectory, build metrics, and recommendations for next build. Enables continuous improvement tracking per POST_MORTEM_PROTOCOL.md | Feedback/learning, Readiness |
@@ -1068,5 +1068,50 @@ This is documented but not automatically remediable — provenance data requires
 ---
 
 **Completion Status**: CURRENT  
-**Last Updated**: 2026-01-21
+**Last Updated**: 2026-02-18 (Wave 5.6 Post-Mortem: Mandatory Static Analysis Gates)
 **Next Phase**: Gap analysis (Phase 1.2 - requires separate authorization)
+
+---
+
+## Recent Updates (2026-02-18)
+
+**Wave 5.6 Post-Mortem: Mandatory Lint/Static Analysis Gates Before Handover**
+
+Updated governance artifacts to enforce mandatory static analysis gates (lint, type-check, build) before handover:
+
+1. **PREHANDOVER_PROOF_TEMPLATE.md v4.0.0** (BREAKING):
+   - Added mandatory "Static Analysis & Build Gates" section
+   - 4-gate protocol: lint (0 errors/warnings), type-check (0 errors), build (success), tests (post-fixes)
+   - Handover strictly prohibited if ANY static gate fails
+   - Authority: Wave 5.6 learning "QA-to-Red test results alone are NOT sufficient"
+
+2. **AGENT_HANDOVER_AUTOMATION.md v1.1.0**:
+   - Updated Builder evidence requirements to include lint/type-check/build
+   - Added compliance checks for static gates with exit code validation
+
+3. **EXECUTION_BOOTSTRAP_PROTOCOL.md v1.2.0**:
+   - Added mandatory static analysis gates to Step 3 (Execute/Verify Locally)
+   - Prohibition against handover with static gate failures
+   - Examples for lint/type-check/build commands
+
+4. **FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md v1.1.0**:
+   - Added lint/type-check/build validation to Step 2 (QA Suite Compilation)
+   - Updated evidence requirements and blocking criteria
+   - Wave 5.6 learning integration
+
+5. **PR_GATE_RELEASE_CHECKLIST_FM.md v2.1.0**:
+   - Added static gate sub-items to Category 0 Execution Bootstrap Protocol
+   - Mandatory for application repositories
+
+6. **BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md**:
+   - Updated Section 2.2 Prehandover Proof Requirements with static gates
+   - Reference to PREHANDOVER_PROOF_TEMPLATE.md v4.0.0
+
+7. **prehandover_proof.schema.json v2.0.0**:
+   - Added lint_status, type_check_status, build_status fields
+   - Added static_analysis_summary object
+   - handover_permitted boolean enforces blocking
+
+**Authority**: Issue "Governance Policy Update: Mandatory Lint/Static Analysis Gates Before Handover"  
+**Ripple Required**: YES - Layer-down to all consumer application repositories  
+**Evidence**: Wave 5.6 deployment failure due to unresolved lint errors (governance violation)
