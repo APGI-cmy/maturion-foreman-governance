@@ -479,16 +479,19 @@ DEBT_COUNT=$(grep -rE '\\.skip\\(|\\.todo\\(|// TODO' tests/ 2>/dev/null | wc -l
 [ "${SKIPPED_TESTS}" -gt 0 ] && COMPLIANCE_ISSUES+=("Skipped tests: ${SKIPPED_TESTS}")
 
 # Check 3: Lint validation PASS (0 errors, 0 warnings)
+# Note: Customize command for your repository (yarn/npm/pnpm lint, eslint, pylint, etc.)
 LINT_EXIT_CODE=$(yarn lint > /dev/null 2>&1; echo $?)
 [ "${LINT_EXIT_CODE}" -ne 0 ] && COMPLIANCE_ISSUES+=("Lint failed: exit code ${LINT_EXIT_CODE}")
 
 # Check 4: Type-check validation PASS (0 errors)
+# Note: Adapt command and condition for your repository's type system
 if command -v tsc &> /dev/null || [ -f "package.json" ]; then
   TYPECHECK_EXIT_CODE=$(yarn type-check > /dev/null 2>&1; echo $?)
   [ "${TYPECHECK_EXIT_CODE}" -ne 0 ] && COMPLIANCE_ISSUES+=("Type-check failed: exit code ${TYPECHECK_EXIT_CODE}")
 fi
 
 # Check 5: Build validation PASS
+# Note: Customize command for your repository (yarn/npm build, make, cargo build, etc.)
 BUILD_EXIT_CODE=$(yarn build > /dev/null 2>&1; echo $?)
 [ "${BUILD_EXIT_CODE}" -ne 0 ] && COMPLIANCE_ISSUES+=("Build failed: exit code ${BUILD_EXIT_CODE}")
 
