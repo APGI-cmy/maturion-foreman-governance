@@ -57,16 +57,26 @@ FM agents may act in different capacities:
 - [ ] **0.1** Step 1: Requirements documented (clear list of what must be created/changed)
 - [ ] **0.2** Step 2: Actual artifacts created (not just documented, actually created)
 - [ ] **0.3** Step 3: Executed/verified locally (run validation, check directories, test workflows)
+  - [ ] **0.3a** For application repos: ALL tests pass (100% GREEN)
+  - [ ] **0.3b** For application repos: Lint validation PASS (0 errors, 0 warnings)
+  - [ ] **0.3c** For application repos: Type-check PASS (0 errors, if applicable)
+  - [ ] **0.3d** For application repos: Build validation PASS (successful build)
 - [ ] **0.4** Step 4: Output captured (terminal logs, exit codes, timestamps recorded)
+  - [ ] **0.4a** For application repos: CLI evidence for tests, lint, type-check, build
 - [ ] **0.5** Step 5: Preflight validated (all gates triggered by PR enumerated and checked)
 - [ ] **0.6** Step 6: PREHANDOVER_PROOF attached (complete proof in PR description per template)
+  - [ ] **0.6a** For application repos: Static Analysis & Build Gates section included
 - [ ] **0.7** Step 7: Completion declared (only after Steps 1-6 complete and execution GREEN)
 
-**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md`
+**Template**: `governance/templates/PREHANDOVER_PROOF_TEMPLATE.md` v4.0.0
 
-**Prohibition**: Do NOT hand over PRs without PREHANDOVER_PROOF when execution verification is required.
+**Static Analysis Requirement** (Wave 5.6 Learning): For application repositories, ALL static gates (lint, type-check, build) MUST pass with ZERO errors/warnings before handover. "QA-to-Red test results alone are NOT sufficient."
 
-**Authority**: Mandatory per `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` (Effective: 2026-01-11)
+**Prohibition**: Do NOT hand over PRs without PREHANDOVER_PROOF when execution verification is required. Do NOT hand over application PRs with ANY lint/type/build failures.
+
+**Authority**: 
+- Mandatory per `governance/canon/EXECUTION_BOOTSTRAP_PROTOCOL.md` (Effective: 2026-01-11)
+- Issue: "Governance Policy Update: Mandatory Lint/Static Analysis Gates Before Handover" (Wave 5.6 Post-Mortem)
 
 ---
 
