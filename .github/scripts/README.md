@@ -8,6 +8,7 @@ These scripts implement governance requirements defined in:
 - `governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md` (BL-027, BL-028)
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md`
 - `governance/canon/SCOPE_TO_DIFF_RULE.md`
+- `governance/canon/PLATFORM_AI_REQUIREMENTS.md` (LL-031)
 
 ## Available Scripts
 
@@ -67,6 +68,77 @@ These scripts implement governance requirements defined in:
 **Requirements**:
 - yamllint must be installed: `pip install yamllint`
 - Files must contain YAML frontmatter between `---` markers
+
+---
+
+### `validate-platform-ai-features.sh`
+
+**Purpose**: Validate that applications implement mandatory platform AI features.
+
+**Authority**: LL-031 Platform AI Requirements Omission canonical lesson  
+`governance/canon/PLATFORM_AI_REQUIREMENTS.md`
+
+**Usage**:
+```bash
+./.github/scripts/validate-platform-ai-features.sh [--repo-path <path>]
+
+# Examples
+./.github/scripts/validate-platform-ai-features.sh
+./.github/scripts/validate-platform-ai-features.sh --repo-path /path/to/app/repo
+```
+
+**Exit Codes**:
+- `0` = PASS (all AI features present or CS2 exemption documented)
+- `1` = FAIL (missing AI features without CS2 exemption)
+- `2` = FAIL (invalid usage or missing dependencies)
+
+**What This Script Validates**:
+1. Agent file exists and contains `ai_capabilities` section
+2. AI assistant component exists in codebase (UI files)
+3. Red tests for AI features exist
+4. `APP_STARTUP_REQUIREMENTS.md` includes AI compliance section (or exemption)
+5. CS2 exemption documented (if AI features omitted)
+
+**Requirements**:
+- Agent file exists at repository root (`.agent`)
+- `APP_STARTUP_REQUIREMENTS.md` exists (or CS2 exemption documented)
+- Red tests for AI features exist
+
+---
+
+### `agent-file-validator.sh`
+
+**Purpose**: Validate agent file structure and AI capabilities section.
+
+**Authority**: `governance/canon/PLATFORM_AI_REQUIREMENTS.md`
+
+**Usage**:
+```bash
+./.github/scripts/agent-file-validator.sh [agent-file-path]
+
+# Examples
+./.github/scripts/agent-file-validator.sh                  # Validates .agent in current directory
+./.github/scripts/agent-file-validator.sh .agent.md        # Validates .agent.md
+./.github/scripts/agent-file-validator.sh /path/to/.agent  # Validates agent file at specific path
+```
+
+**Exit Codes**:
+- `0` = PASS (agent file valid with required ai_capabilities)
+- `1` = FAIL (agent file invalid or missing required sections)
+- `2` = FAIL (invalid usage or file not found)
+
+**Validation Checks**:
+1. File exists and is readable
+2. File has YAML frontmatter (optional but recommended)
+3. `ai_capabilities` section exists
+4. `primary_model` field exists
+5. `task_routing` array exists
+6. `task_routing` entries have required fields (`task_type`, `model`)
+
+**Requirements**:
+- Agent file must exist
+- Agent file must contain `ai_capabilities` section (for application agents)
+- `ai_capabilities` must include: `primary_model`, `task_routing`
 
 ---
 
@@ -236,5 +308,5 @@ Both paths are equally compliant with governance. The key is **comprehensive doc
 
 ---
 
-**Last Updated**: 2026-01-19  
+**Last Updated**: 2026-02-19  
 **Maintained By**: Governance Repository Administrator
