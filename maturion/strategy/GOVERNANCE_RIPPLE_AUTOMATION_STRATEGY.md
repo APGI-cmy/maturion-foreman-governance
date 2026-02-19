@@ -7,11 +7,11 @@ authority: CS2
 category: strategy
 tags: [governance, ripple, automation, layer-down, agent-driven]
 related:
-  - governance/canon/CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md
-  - governance/canon/LIVING_AGENT_SYSTEM.md
-  - governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
-  - governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
-  - governance/canon/CROSS_REPOSITORY_RIPPLE_AWARENESS_MODEL.md
+  - governance/canon/CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md v1.0.0
+  - governance/canon/LIVING_AGENT_SYSTEM.md v6.2.0
+  - governance/canon/AGENT_CONTRACT_ARCHITECTURE.md v1.0.0
+  - governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md v1.0.0
+  - governance/canon/CROSS_REPOSITORY_RIPPLE_AWARENESS_MODEL.md v1.0.0
 ---
 
 # Governance Ripple Automation Strategy
@@ -27,7 +27,7 @@ The automated governance layer-down system is fully operational. When governance
 - Copies governance files from canonical to consumer repos with hash verification
 - Tracks synchronization state via `CANON_INVENTORY.json` and `sync_state.json`
 
-Evidence: `RIPPLE_AUTOMATION_AUDIT_REPORT_2026-02-16.md` confirms successful dispatch and reception across all consumer repositories (maturion-isms, maturion-foreman-office-app, PartPulse, R_Roster).
+Evidence: Root-level `RIPPLE_AUTOMATION_AUDIT_REPORT_2026-02-16.md` confirms successful dispatch and reception across all consumer repositories (maturion-isms, maturion-foreman-office-app, PartPulse, R_Roster).
 
 **Ripple Does NOT Work ❌**:
 While governance files are successfully copied, consumer files are not automatically updated to align with new governance:
@@ -518,12 +518,13 @@ ripple_targets:
 
 #### Auto-Merge Criteria (ALL must be true)
 
-✅ **Only governance/* files updated** (no consumer file changes beyond alignment metadata)  
-✅ **No `.github/agents/*.md` modifications**  
+✅ **No `.github/agents/*.md` modifications** (consumer files updated, but not agent contracts)  
 ✅ **No constitutional files modified** (BUILD_PHILOSOPHY.md, GOVERNANCE_PURPOSE_AND_SCOPE.md)  
 ✅ **QA validation passed** (build/test/lint green)  
 ✅ **CodexAdvisor QA validation passed** (ripple scope correct, updates valid)  
 ✅ **Fewer than 20 files changed** (scope threshold)
+
+**Note**: After ripple execution, consumer files (workflows, trackers, templates) may be updated. Auto-merge is approved when these updates do NOT include agent contracts or constitutional files.
 
 **Action**: PR auto-merges after CodexAdvisor approval
 
