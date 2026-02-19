@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-18T05:43:00Z",
-  "total_canons": 168,
-  "generation_timestamp": "2026-02-18T05:43:00Z",
+  "last_updated": "2026-02-19T08:08:00Z",
+  "total_canons": 171,
+  "generation_timestamp": "2026-02-19T08:08:00Z",
   "canons": [
     {
       "filename": ".agent.schema.md",
@@ -1851,6 +1851,39 @@
       "path": "governance/canon/WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "503d2a4d8d0ebdc8f44e4d1efa7dea82bce7229a2c5680a018bb7242b61025ff"
+    },
+    {
+      "filename": "PLATFORM_AI_REQUIREMENTS.md",
+      "version": "1.0.0",
+      "file_hash": "1e99a0fe28dc",
+      "effective_date": "2026-02-19",
+      "description": "Canonical specification for mandatory platform-wide AI features including embedded AI assistant, context-aware AI in application UI, agent file AI capabilities, and AI task routing. Derived from LL-031 Platform AI Requirements Omission lesson.",
+      "type": "canon",
+      "path": "governance/canon/PLATFORM_AI_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "1e99a0fe28dc9556d37227109dcbe0d2a21678f858e5710aacb0366085dc20be"
+    },
+    {
+      "filename": "LL-031_platform_ai_requirements_omission.md",
+      "version": "1.0.0",
+      "file_hash": "5f9a1ebe5229",
+      "effective_date": "2026-02-19",
+      "description": "Canonical lesson LL-031: Platform-wide AI requirements omission during MAT frontend deployment. Documents catastrophic governance gap, root causes, structural changes required, and validation questions per LEARNING_INTAKE_AND_PROMOTION_MODEL.md.",
+      "type": "lesson",
+      "path": "governance/memory/canonical-lessons/LL-031_platform_ai_requirements_omission.md",
+      "layer_down_status": "INTERNAL",
+      "file_hash_sha256": "5f9a1ebe5229f18ebd5a217d8fd7961beca7892d192b3078d56e75e080e6171a"
+    },
+    {
+      "filename": "PLATFORM_AI_REQUIREMENTS_CHECKLIST.md",
+      "version": "1.0.0",
+      "file_hash": "54043b8a8eb0",
+      "effective_date": "2026-02-19",
+      "description": "Builder validation checklist for platform-wide AI requirements. Validates AI assistant, context-aware AI, agent file AI capabilities, AI task routing, red tests, and compliance documentation before handover.",
+      "type": "checklist",
+      "path": "governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "54043b8a8eb00715a07bf97f3e68d675019aa3750d1af49a2b8cf0f1452ad37f"
     }
   ]
 }
