@@ -64,6 +64,83 @@ Each entry follows this structure:
 
 ## Change History
 
+### [LL-031-PLATFORM-AI-REQUIREMENTS] - 2026-02-19 - [BREAKING_CHANGE]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) via LL-031 issue creation  
+**Effective Date**: 2026-02-19 (immediate for new apps, existing apps require compliance roadmap)  
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories
+
+**Summary**: Canonized platform-wide AI requirements as mandatory for all Maturion applications following catastrophic oversight in MAT frontend deployment (LL-031). MAT frontend was built without any embedded AI features despite platform-wide expectation that all apps provide AI assistant, context-aware AI in UI, agent file with AI capabilities, and AI task routing. Created PLATFORM_AI_REQUIREMENTS.md as canonical specification defining four mandatory AI feature categories. Created LL-031 canonical lesson documenting root causes (implicit vs. explicit requirements, no enforcement gate, no FRS/TRS platform inheritance protocol, precedent ≠ canon). Created PLATFORM_AI_REQUIREMENTS_CHECKLIST.md for builder validation. Updated MANDATORY_CROSS_APP_COMPONENTS.md Section 13 from conditional ("for apps with AI chat interfaces") to universal ("MANDATORY - all applications" with CS2 exemption process). Implements new merge gate `platform-ai-features` (BLOCKING) to prevent recurrence. All future apps must implement embedded AI or obtain CS2 written exemption with documented justification.
+
+**Affected Artifacts**:
+- `governance/canon/PLATFORM_AI_REQUIREMENTS.md` (NEW v1.0.0 - PUBLIC_API canon, 17KB)
+  - SHA256: 1e99a0fe28dc9556d37227109dcbe0d2a21678f858e5710aacb0366085dc20be
+- `governance/memory/canonical-lessons/LL-031_platform_ai_requirements_omission.md` (NEW v1.0.0 - canonical lesson, 13KB)
+  - SHA256: 5f9a1ebe5229f18ebd5a217d8fd7961beca7892d192b3078d56e75e080e6171a
+- `governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md` (NEW v1.0.0 - PUBLIC_API checklist, 10KB)
+  - SHA256: 54043b8a8eb00715a07bf97f3e68d675019aa3750d1af49a2b8cf0f1452ad37f
+- `governance/canon/MANDATORY_CROSS_APP_COMPONENTS.md` (UPDATED - Section 13 rewritten)
+- `governance/CANON_INVENTORY.json` (UPDATED - Added 3 new entries, total_canons: 168→171)
+- `governance/CHANGELOG.md` (UPDATED - This entry)
+
+**Migration Required**: YES (All consumer repositories - BREAKING CHANGE)
+
+**Migration Guidance**:
+1. **Consumer Repositories** (all application repos including MAT, Foreman Office, PartPulse, future apps):
+   - Copy PLATFORM_AI_REQUIREMENTS.md to consumer governance/canon/
+   - Copy PLATFORM_AI_REQUIREMENTS_CHECKLIST.md to consumer governance/checklists/
+   - Copy LL-031 lesson to consumer governance/memory/canonical-lessons/
+   - Update MANDATORY_CROSS_APP_COMPONENTS.md Section 13 with new mandatory requirements
+   - Update APP_STARTUP_REQUIREMENTS.md to include Platform AI Features Compliance section
+   - Implement merge gate validation script `.github/scripts/validate-platform-ai-features.sh`
+
+2. **Applications Under Development**:
+   - **MAT Frontend** (BLOCKED): Implement AI assistant UI, context-aware AI in scoring/reports, agent file AI capabilities, AI task routing
+   - **All New Apps**: Include platform AI requirements in FRS/TRS from start
+   - **Existing Apps**: Create compliance roadmap and schedule AI feature implementation
+
+3. **Foreman Agents**:
+   - FRS approval MUST verify platform AI requirements included or CS2 exemption documented
+   - Builder alignment handoff MUST include PLATFORM_AI_REQUIREMENTS_CHECKLIST.md
+   - QA validation MUST verify red tests for AI features passing
+   - Wave closure MUST verify AI features functional before handover
+
+4. **Builder Agents**:
+   - FRS/TRS MUST include platform AI requirements (inherit from PLATFORM_AI_REQUIREMENTS.md)
+   - Implementation plan MUST include AI assistant, context-aware AI, agent file AI capabilities, AI task routing
+   - Red tests MUST validate AI features before green tests
+   - APP_STARTUP_REQUIREMENTS.md MUST include Platform AI Features Compliance section with evidence
+
+5. **Exemption Process**:
+   - If app has legitimate reason to omit AI (security, compliance, legacy), submit exemption request to CS2
+   - Exemption MUST include: justification, risk assessment, alternative approach, sunset plan
+   - CS2 written approval MUST be documented in APP_STARTUP_REQUIREMENTS.md
+   - Exemption tracked in governance/CONSUMER_REPO_REGISTRY.json with periodic review
+
+**Rationale**: 
+- **Precedent ≠ Canon**: Foreman Office has AI features, but this was not canonical requirement
+- **Implicit Requirements Fail**: Builders/agents have no visibility into other repos' implementations
+- **Platform Standards Need Enforcement**: Universal requirements need universal gates, not manual checking
+- **Conditional Language Creates Gaps**: "For apps with AI" makes AI optional; must say "all apps must have AI"
+- **FRS/TRS Don't Inherit Platform Requirements**: No protocol for platform requirement inheritance in app specs
+
+**Impact**: 
+- **BLOCKING**: MAT frontend deployment blocked until AI features implemented
+- **NEW APPS**: All future apps MUST include AI features or obtain CS2 exemption
+- **EXISTING APPS**: Compliance roadmap required; exemption process available for legitimate cases
+- **BUILDERS**: FRS/TRS templates must include platform requirements section
+- **FOREMAN**: FRS approval gates on platform requirements; builder handoff includes AI checklist
+- **GOVERNANCE**: New merge gate `platform-ai-features` enforces compliance; ripple required to all consumer repos
+
+**References**:
+- Issue: LL-031 Catastrophic Oversight - Embedded AI Features Missing in MAT Frontend
+- Canonical Lesson: governance/memory/canonical-lessons/LL-031_platform_ai_requirements_omission.md
+- Specification: governance/canon/PLATFORM_AI_REQUIREMENTS.md
+- Checklist: governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md
+
+---
+
 ### [WAVES-5-7-LESSONS-INSTITUTIONALIZATION] - 2026-02-18 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
