@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-10",
+  "last_updated": "2026-02-19",
   "provenance": {
     "source": "governance/GATE_REQUIREMENTS_INDEX.json",
     "canonical_commit": "b0a4af472e38e607b5b96d842774b4a90368340d",
@@ -115,5 +115,24 @@
     "registry": [
       "governance:registry_valid"
     ]
+  },
+  "enforcement_gates": {
+    "platform_ai_features": {
+      "gate_id": "platform-ai-features",
+      "category": "platform-compliance",
+      "requirement": "Platform-wide AI features implementation",
+      "description": "Validates that all applications implement mandatory platform AI features (AI assistant, context-aware AI, agent file AI capabilities, AI task routing) or have CS2 exemption documented",
+      "applies_to": [
+        "builder",
+        "foreman"
+      ],
+      "enforcement": "BLOCKING",
+      "validation_script": ".github/scripts/validate-platform-ai-features.sh",
+      "documentation": "governance/canon/PLATFORM_AI_REQUIREMENTS.md",
+      "checklist": "governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md",
+      "effective_date": "2026-02-19",
+      "authority": "LL-031 Platform AI Requirements Omission canonical lesson",
+      "exemption_process": "CS2 written approval required in APP_STARTUP_REQUIREMENTS.md"
+    }
   }
 }
