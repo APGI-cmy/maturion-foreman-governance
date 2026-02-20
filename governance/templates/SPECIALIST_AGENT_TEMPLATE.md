@@ -17,7 +17,7 @@ governance:
 
 execution_identity:
   name: "Maturion Bot"
-  secret: "MATURION_BOT_TOKEN"
+  secret: "<secret-name>"
   never_push_main: true
   write_via_pr: true
 
