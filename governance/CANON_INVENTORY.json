@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-19T08:08:00Z",
-  "total_canons": 171,
+  "last_updated": "2026-02-20T08:19:22Z",
+  "total_canons": 175,
   "generation_timestamp": "2026-02-19T08:08:00Z",
   "canons": [
     {
@@ -185,7 +185,7 @@
       "version": "1",
       "file_hash": "963eed45e027",
       "effective_date": "unknown",
-      "description": "This document defines the only legitimate process by which software agents may be introduced (“recruited”) into the governance system administered by the Foreman.",
+      "description": "This document defines the only legitimate process by which software agents may be introduced (\u201crecruited\u201d) into the governance system administered by the Foreman.",
       "type": "canon",
       "path": "governance/canon/AGENT_RECRUITMENT.md",
       "layer_down_status": "PUBLIC_API",
@@ -479,7 +479,7 @@
     },
     {
       "filename": "COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md",
-      "version": "1.1.0 — ACTIVE OPERATIONAL GOVERNANCE",
+      "version": "1.1.0 \u2014 ACTIVE OPERATIONAL GOVERNANCE",
       "file_hash": "d9d45cb972b7",
       "effective_date": "2026-01-03 (Activation), 2025-12-24 (Original)",
       "description": "This document formally defines the **Cognitive Capability Orchestration Model** for the Maturion ecosystem.",
@@ -680,7 +680,7 @@
       "version": "3.0.0",
       "file_hash": "27cb87ee3a04",
       "effective_date": "2026-02-17",
-      "description": "This policy establishes the canonical escalation hierarchy, triggers, procedures, and authority chain for the Maturion ecosystem, including model-specific cognitive escalation (Sonnet→Opus/o1).",
+      "description": "This policy establishes the canonical escalation hierarchy, triggers, procedures, and authority chain for the Maturion ecosystem, including model-specific cognitive escalation (Sonnet\u2192Opus/o1).",
       "type": "canon",
       "path": "governance/canon/ESCALATION_POLICY.md",
       "layer_down_status": "PUBLIC_API",
@@ -1142,7 +1142,7 @@
       "version": "1.0",
       "file_hash": "23d86014f109",
       "effective_date": "unknown",
-      "description": "This document defines the **Initialization Completeness Gate** — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
+      "description": "This document defines the **Initialization Completeness Gate** \u2014 a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
       "type": "canon",
       "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1384,7 +1384,7 @@
       "version": "1.0.0",
       "file_hash": "1faef6d0741c",
       "effective_date": "2025-12-25",
-      "description": "This document formally defines the **authority boundary** between:\n- **Foreman (FM)** — execution authority within repositories\n- **Maturion** — control-plane authority for platform actions (GitHub)",
+      "description": "This document formally defines the **authority boundary** between:\n- **Foreman (FM)** \u2014 execution authority within repositories\n- **Maturion** \u2014 control-plane authority for platform actions (GitHub)",
       "type": "canon",
       "path": "governance/canon/PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
@@ -1615,7 +1615,7 @@
       "version": "1",
       "file_hash": "d2c96ce6d14c",
       "effective_date": "unknown",
-      "description": "This rule enforces alignment between a PR’s declared scope\nand the files actually modified in the PR.",
+      "description": "This rule enforces alignment between a PR\u2019s declared scope\nand the files actually modified in the PR.",
       "type": "canon",
       "path": "governance/canon/SCOPE_TO_DIFF_RULE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1766,14 +1766,14 @@
     },
     {
       "filename": "AGENT_CONTRACT_ARCHITECTURE.md",
-      "version": "1.0.0",
-      "file_hash": "6077885d5910",
-      "effective_date": "2026-02-17",
-      "description": "Canonical four-phase agent contract architecture (Preflight-Induction-Build-Handover) for all Living Agent System v6.2.0 agents. Defines structure, benefits, and migration path.",
+      "version": "1.1.0",
+      "file_hash": "7b382a1e2f86",
+      "effective_date": "2026-02-20",
+      "description": "Four-component canonical contract architecture for all agent classes including orchestrator and specialist. Defines Preflight-Induction-Build-Handover pattern with class-specific build scripts.",
       "type": "canon",
       "path": "governance/canon/AGENT_CONTRACT_ARCHITECTURE.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "6077885d591083280a2fdcfb5a12b39af9148ecae2f9520130cc2b2391aaf558"
+      "file_hash_sha256": "7b382a1e2f8654b5511e89906503512877f99226eeaaf73a5ef4506ee578abeb"
     },
     {
       "filename": "AGENT_PREFLIGHT_PATTERN.md",
@@ -1884,6 +1884,50 @@
       "path": "governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "54043b8a8eb00715a07bf97f3e68d675019aa3750d1af49a2b8cf0f1452ad37f"
+    },
+    {
+      "filename": "ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md",
+      "version": "1.0.0",
+      "file_hash": "48a87a907c94",
+      "effective_date": "2026-02-20",
+      "description": "Defines orchestrator and specialist agent roles, authority model, lifecycle, and governance integration. Orchestrators coordinate; specialists execute. Both classes governed by Living Agent System v6.2.0.",
+      "type": "canon",
+      "path": "governance/canon/ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "48a87a907c948d291cee3ae155e0edb2b80d5ed399a2f9d838aa3c82a9dba938"
+    },
+    {
+      "filename": "AGENT_DELEGATION_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "1c9016dddcdd",
+      "effective_date": "2026-02-20",
+      "description": "Canonical protocol for task delegation between orchestrators and specialists. Covers pre-delegation validation, delegation package structure, specialist execution, result integration, failure handling, and audit trail requirements.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_DELEGATION_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "1c9016dddcdd98143c49441ee5c0bbda3b37a2d918ad4e0b17fd9e51d09ef2d8"
+    },
+    {
+      "filename": "SPECIALIST_KNOWLEDGE_MANAGEMENT.md",
+      "version": "1.0.0",
+      "file_hash": "dc27a4588542",
+      "effective_date": "2026-02-20",
+      "description": "Defines how specialist agents acquire, maintain, validate, and retire domain knowledge. Establishes three-tier knowledge model (constitutional, operational, session) with staleness detection and retirement protocols.",
+      "type": "canon",
+      "path": "governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "dc27a45885426d0b67306ff3ee432d6de0b5814e63b0154492572cd45399d10c"
+    },
+    {
+      "filename": "MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "1ad56794e3f2",
+      "effective_date": "2026-02-20",
+      "description": "Canonical model for orchestrating multiple simultaneous specialist embodiments. Covers parallel execution, embodiment identity, state management, hierarchical orchestration depth limits, and governance compliance under multi-embodiment.",
+      "type": "canon",
+      "path": "governance/canon/MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "1ad56794e3f284b04f29dda876e683344d0719a1edb44a1fc646a1f3769f41e3"
     }
   ]
 }

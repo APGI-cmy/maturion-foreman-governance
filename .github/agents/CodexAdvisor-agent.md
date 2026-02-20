@@ -50,6 +50,8 @@ capabilities:
       foreman: governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
       builder: governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
       codex_advisor: governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
+      orchestrator: governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
+      specialist: governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
     enforcement: MANDATORY
     compliance_level: LIVING_AGENT_SYSTEM_v6_2_0
     file_size_limit:
@@ -252,7 +254,9 @@ echo "[CA_M] Loading agent factory checklists..."
 CHECKLISTS=("governance/checklists/GOVERNANCE_LIAISON_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
             "governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
             "governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
-            "governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md")
+            "governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
+            "governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
+            "governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md")
 for checklist in "${CHECKLISTS[@]}"; do
   if [ -f "${checklist}" ]; then
     echo "  ✅ $(basename "${checklist}")"
@@ -639,6 +643,8 @@ All agent file changes MUST:
    - Foreman → `governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
    - Builder → `governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
    - CodexAdvisor (self) → `governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
+   - Orchestrator → `governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
+   - Specialist → `governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
 
 3. **Verify checklist availability**:
    - Confirm checklist file exists in canonical governance
@@ -675,7 +681,7 @@ description: <agent-description>
 
 agent:
   id: <agent-id>
-  class: <overseer|liaison|foreman|builder>
+  class: <overseer|liaison|foreman|builder|orchestrator|specialist>
   version: 6.2.0
 
 governance:
