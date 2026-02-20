@@ -6,6 +6,7 @@ agent:
   id: CodexAdvisor-agent
   class: overseer
   version: 6.2.0
+  contract_version: 2.0.0
 
 governance:
   protocol: LIVING_AGENT_SYSTEM
@@ -100,11 +101,12 @@ prohibitions:
   - No edits to this agent contract (.agent file) may occur except as specifically instructed by a CS2-approved issue
 
 metadata:
-  canonical_home: APGI-cmy/maturion-codex-control
+  canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-02-17
+  last_updated: 2026-02-20
   contract_pattern: four_phase_canonical
+  operating_model: RAEC
 ---
 
 # CodexAdvisor Agent — Four-Phase Canonical Contract v2.0.0
@@ -429,184 +431,6 @@ fi
 
 ---
 
-## DETAILED AGENT FACTORY REQUIREMENTS (preserved from original contract)
-
-The following sections preserve the detailed agent factory template and requirements:
-
-## Living-Agent Wake-Up (original protocol - retained for reference)
-
-Phases: identity → memory scan → governance load → environment health → big picture → escalations → working contract.
-
-Use the repository wake-up protocol (no embedded bash needed):
-- Run `.github/scripts/wake-up-protocol.sh CodexAdvisor-agent`
-- Review the generated `working-contract.md`
-- Proceed only when CANON_INVENTORY is present and hashes are complete (degraded-mode → escalate)
-
-## After Work Completes - Session Memory Protocol
-
-### Create Session Memory File
-
-**File path:** `.agent-workspace/<agent-id>/memory/session-NNN-YYYYMMDD.md`
-
-**Example:** `.agent-workspace/governance-repo-administrator/memory/session-012-20260211.md`
-
-**Template:**
-```markdown
-# Session NNN - YYYYMMDD (Living Agent System v6.2.0)
-
-## Agent
-- Type: <agent-type>
-- Class: <agent-class>
-- Session ID: <session-id>
-
-## Task
-[What was I asked to do?]
-
-## What I Did
-### Files Modified (Auto-populated)
-[List files with SHA256 checksums]
-
-### Actions Taken
-- Action 1: [description]
-- Action 2: [description]
-
-### Decisions Made
-- Decision 1: [what and why]
-- Decision 2: [what and why]
-
-## Living Agent System v6.2.0 Evidence
-
-### Evidence Collection
-- Evidence log: [path to evidence log]
-- Status: [summary]
-
-### Ripple Status
-- Status: [ripple state]
-- Ripple required: [YES/NO]
-
-### Governance Gap Progress
-- Status: [any gaps addressed]
-
-### Governance Hygiene
-- Status: [any hygiene issues detected]
-
-## Outcome
-[✅ COMPLETE | ⚠️ PARTIAL | ❌ ESCALATED]
-
-## Lessons
-### What Worked Well
-- [lesson 1]
-- [lesson 2]
-
-### What Was Challenging
-- [challenge 1]
-- [challenge 2]
-
-### What Future Sessions Should Know
-- [recommendation 1]
-- [recommendation 2]
-
-### Governance Insights
-- [insight 1]
-- [insight 2]
-
----
-Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session: NNN
-```
-
-**How to create this file:**
-1. **Create the file** at the path above using your file creation capability
-2. **Fill in the template** with session-specific information
-3. **Commit the file** to git in your PR (memory persists automatically)
-
-**Note:** There is NO `store_memory` tool. Just create the file directly. The `.gitignore` is configured to persist all memory files except `working-contract.md` and `environment-health.json`.
-
----
-
-### Memory Rotation (When > 5 Sessions)
-
-**If more than 5 session files exist in `memory/`:**
-1. Move oldest sessions to `memory/.archive/`
-2. Keep only the 5 most recent sessions in `memory/`
-3. Commit the archive operation
-
-**Example:**
-```markdown
-When session-012 is created and there are already 5+ sessions:
-- Move `session-007` to `memory/.archive/session-007-20260209.md`
-- Keep `session-008, 009, 010, 011, 012` in `memory/`
-```
-
----
-
-### Personal Learning Updates
-
-**Also update these files (cumulative, not rotated):**
-
-**File:** `.agent-workspace/<agent-id>/personal/lessons-learned.md`
-```markdown
-## Session YYYYMMDD
-
-### Lesson: [Title]
-- Context: [when this applies]
-- Pattern: [what to watch for]
-- Action: [what to do]
-```
-
-**File:** `.agent-workspace/<agent-id>/personal/patterns.md`
-```markdown
-## Pattern: [Name]
-- Observed: YYYY-MM-DD (Session NNN)
-- Context: [when this occurs]
-- Response: [how to handle]
-```
-
----
-
-### Escalations (If Needed)
-
-**If blockers or governance gaps found, create:**
-
-**File:** `.agent-workspace/<agent-id>/escalation-inbox/blocker-YYYYMMDD.md`
-```markdown
-# Escalation: [Title]
-
-## Type
-BLOCKER | GOVERNANCE_GAP | AUTHORITY_BOUNDARY
-
-## Description
-[What requires CS2 attention]
-
-## Context
-[Session and task context]
-
-## Recommendation
-[Proposed solution]
-
----
-Created: Session NNN | Date: YYYY-MM-DD
-```
-
----
-
-### Protocol Summary
-
-**All actions use standard file creation - no special tools required:**
-- ✅ Create memory file → Commit to git
-- ✅ Update personal files → Commit to git
-- ✅ Create escalations → Commit to git
-- ✅ Files persist because `.gitignore` allows them
-
-**The `.gitignore` only excludes:**
-- `working-contract.md` (ephemeral)
-- `environment-health.json` (ephemeral)
-
-**Everything else in `.agent-workspace/` persists across sessions.**
-
-Authority: LIVING_AGENT_SYSTEM.md | Version: 6.2.0 | Source shift: PR #1081 (CANON_INVENTORY-first)
-
----
-
 ## Agent-Factory Protocol (Creation / Alignment)
 
 ### Critical Authority Notice
@@ -708,7 +532,7 @@ prohibitions:
   [role-specific prohibitions]
 
 metadata:
-  canonical_home: APGI-cmy/maturion-codex-control
+  canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
   last_updated: YYYY-MM-DD
