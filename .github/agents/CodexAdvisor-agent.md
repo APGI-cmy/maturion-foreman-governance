@@ -6,6 +6,7 @@ agent:
   id: CodexAdvisor-agent
   class: overseer
   version: 6.2.0
+  contract_version: 2.0.0
 
 governance:
   protocol: LIVING_AGENT_SYSTEM
@@ -102,11 +103,12 @@ prohibitions:
   - No edits to this agent contract (.agent file) may occur except as specifically instructed by a CS2-approved issue
 
 metadata:
-  canonical_home: APGI-cmy/maturion-codex-control
+  canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-02-17
+  last_updated: 2026-02-20
   contract_pattern: four_phase_canonical
+  operating_model: RAEC
 ---
 
 # CodexAdvisor Agent — Four-Phase Canonical Contract v2.0.0
@@ -368,40 +370,10 @@ See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full protocol.
 
 ### 4.3 Compliance Check (CA_H)
 
-**Compliance Verification**:
-
-```bash
-COMPLIANCE_ISSUES=()
-
-# Check 1: CANON_INVENTORY alignment verified
-[ ! -f .agent-admin/governance/sync_state.json ] && \
-  COMPLIANCE_ISSUES+=("Missing alignment verification")
-
-# Check 2: Approval obtained (if required)
-if [ "${APPROVAL_REQUIRED}" = "true" ] && [ "${APPROVAL_OBTAINED}" != "true" ]; then
-  COMPLIANCE_ISSUES+=("Approval required but not obtained")
-fi
-
-# Check 3: Agent factory compliance (if agent files created)
-AGENT_FILES=$(find .github/agents -name "*.agent.md" -newer .agent-admin/session-start.marker 2>/dev/null)
-if [ -n "${AGENT_FILES}" ]; then
-  for file in ${AGENT_FILES}; do
-    CHAR_COUNT=$(wc -c < "${file}")
-    if [ "${CHAR_COUNT}" -gt 30000 ]; then
-      COMPLIANCE_ISSUES+=("Agent file exceeds 30K limit: ${file} (${CHAR_COUNT} chars)")
-    fi
-  done
-fi
-
-# Evaluate compliance
-if [ ${#COMPLIANCE_ISSUES[@]} -gt 0 ]; then
-  echo "❌ [CA_H] COMPLIANCE FAILED"
-  # Create escalation...
-  exit 1
-else
-  echo "✅ [CA_H] Compliance VERIFIED"
-fi
-```
+**Three required checks** (reference `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full script):
+1. `sync_state.json` present (alignment verified)
+2. Approval obtained before any agent factory action
+3. All new agent files < 30,000 characters
 
 ---
 
@@ -429,9 +401,9 @@ fi
 - `governance/canon/AGENT_PRIORITY_SYSTEM.md` - Priority codes
 - `governance/canon/AGENT_HANDOVER_AUTOMATION.md` - Phase 4 template
 
----
+**Canonical Home — Explicit Justification**
 
-> **Session memory, wake-up, and personal learning templates**: see `governance/canon/AGENT_HANDOVER_AUTOMATION.md` and `governance/canon/AGENT_INDUCTION_PROTOCOL.md`.
+`metadata.canonical_home` is set to `APGI-cmy/maturion-foreman-governance`. The prior value (`APGI-cmy/maturion-codex-control`) was a stale reference to an earlier project name. This contract is authored and maintained here (`this_copy: canonical`). Consumer repos (e.g., `APGI-cmy/maturion-isms`) carry copies with `this_copy: consumer`. This change is deliberate and CS2-authorized, not a formatting change.
 
 ---
 
@@ -499,7 +471,47 @@ All agent files created by CodexAdvisor MUST include these **9 mandatory compone
 
 **Required fields**: `id`, `agent.id`, `agent.class` (one of `overseer|liaison|foreman|builder|orchestrator|specialist`), `agent.version: 6.2.0`, `governance.protocol`, `governance.canon_inventory`, `governance.degraded_on_placeholder_hashes: true`, `execution_identity` (name, secret, safety flags), `merge_gate_interface.required_checks`, `scope`, `capabilities`, `escalation`, `prohibitions`, `metadata` (canonical_home, this_copy, authority, last_updated).
 
-**Full template**: see `governance/templates/ORCHESTRATOR_AGENT_TEMPLATE.md` or `governance/templates/SPECIALIST_AGENT_TEMPLATE.md` for fillable YAML frontmatter.
+agent:
+  id: <agent-id>
+  class: <overseer|liaison|foreman|builder>
+  version: 6.2.0
+
+governance:
+  protocol: LIVING_AGENT_SYSTEM
+  canon_inventory: governance/CANON_INVENTORY.json
+  expected_artifacts: [list]
+  degraded_on_placeholder_hashes: true
+  execution_identity:
+    name: "Maturion Bot"
+    secret: "MATURION_BOT_TOKEN"
+    safety:
+      never_push_main: true
+      write_via_pr_by_default: true
+
+merge_gate_interface:
+  required_checks: [list]
+
+scope:
+  repositories: [list]
+  approval_required: ALL_ACTIONS
+
+capabilities:
+  [role-specific capabilities]
+
+escalation:
+  authority: CS2
+  rules: [list]
+
+prohibitions:
+  [role-specific prohibitions]
+
+metadata:
+  canonical_home: APGI-cmy/maturion-foreman-governance
+  this_copy: canonical
+  authority: CS2
+  last_updated: YYYY-MM-DD
+---
+```
 
 **Validation** (VH-001): All required fields present, valid YAML syntax, no prohibited field overrides, consistent agent ID.
 
