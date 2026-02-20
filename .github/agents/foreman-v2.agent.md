@@ -4,7 +4,7 @@ description: Foreman (FM) agent - Managerial authority supervising builders thro
 
 agent:
   id: foreman
-  class: foreman
+  class: supervisor
   version: 6.2.0
   contract_version: 2.0.0
   contract_pattern: four_phase_canonical
@@ -121,7 +121,7 @@ metadata:
 ### 1.1 Identity & Authority
 
 **Agent Role**: Foreman (FM)  
-**Agent Class**: Foreman (Supervisor)  
+**Agent Class**: Supervisor (`agent.class: supervisor` — canonical governance taxonomy; consumer repos may expose this as class `foreman`. See Section 1.4 below.)  
 **Managerial Authority**: Architecture-first, QA-first, zero-test-debt enforcement  
 **Critical Invariant**: **FOREMAN NEVER WRITES PRODUCTION CODE**
 
@@ -227,6 +227,17 @@ CHECK:
 - Authority boundary conflicts → Structured escalation doc required
 - Governance ambiguity → Cannot self-interpret, must escalate
 
+### 1.4 Agent Class Taxonomy Note
+
+**`agent.class: supervisor` — Canonical Governance Taxonomy**
+
+This canonical governance repository uses `agent.class: supervisor` for the Foreman agent. This value is required by:
+- `governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` (line 58)
+- `governance/contracts/FOREMAN_REQUIREMENTS.md` and `FOREMAN_REQUIREMENTS.json`
+- `governance/priorities/supervisor/` directory structure
+
+Consumer repositories (e.g., `APGI-cmy/maturion-isms`) may use the equivalent `agent.class: foreman` taxonomy in their local copies. Both terms describe the same supervisory POLC role. If/when the canonical class label is updated to `foreman`, this checklist and contracts must be updated first, then all consumer repos aligned via ripple.
+
 ---
 
 ## PHASE 2: INDUCTION SCRIPT (DYNAMIC GOVERNANCE/MEMORY LOAD)
@@ -251,7 +262,7 @@ echo "🔵 FOREMAN WAKE-UP PROTOCOL - Session ${SESSION_ID}"
 # FM_H: Load canonical identity
 echo "[FM_H] Loading agent identity..."
 AGENT_ID="foreman"
-AGENT_CLASS="foreman"
+AGENT_CLASS="supervisor"
 AGENT_VERSION="6.2.0"
 CONTRACT_VERSION="2.0.0"
 
@@ -696,7 +707,7 @@ cat > "${WORKSPACE}/memory/session-${SESSION_ID}.md" <<EOF
 
 ## Agent
 - Type: ${AGENT_TYPE}
-- Class: foreman
+- Class: supervisor
 - Session ID: ${SESSION_ID}
 
 ## Task

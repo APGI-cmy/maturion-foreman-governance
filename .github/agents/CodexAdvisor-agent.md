@@ -368,40 +368,10 @@ See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full protocol.
 
 ### 4.3 Compliance Check (CA_H)
 
-**Compliance Verification**:
-
-```bash
-COMPLIANCE_ISSUES=()
-
-# Check 1: CANON_INVENTORY alignment verified
-[ ! -f .agent-admin/governance/sync_state.json ] && \
-  COMPLIANCE_ISSUES+=("Missing alignment verification")
-
-# Check 2: Approval obtained (if required)
-if [ "${APPROVAL_REQUIRED}" = "true" ] && [ "${APPROVAL_OBTAINED}" != "true" ]; then
-  COMPLIANCE_ISSUES+=("Approval required but not obtained")
-fi
-
-# Check 3: Agent factory compliance (if agent files created)
-AGENT_FILES=$(find .github/agents -name "*.agent.md" -newer .agent-admin/session-start.marker 2>/dev/null)
-if [ -n "${AGENT_FILES}" ]; then
-  for file in ${AGENT_FILES}; do
-    CHAR_COUNT=$(wc -c < "${file}")
-    if [ "${CHAR_COUNT}" -gt 30000 ]; then
-      COMPLIANCE_ISSUES+=("Agent file exceeds 30K limit: ${file} (${CHAR_COUNT} chars)")
-    fi
-  done
-fi
-
-# Evaluate compliance
-if [ ${#COMPLIANCE_ISSUES[@]} -gt 0 ]; then
-  echo "❌ [CA_H] COMPLIANCE FAILED"
-  # Create escalation...
-  exit 1
-else
-  echo "✅ [CA_H] Compliance VERIFIED"
-fi
-```
+**Three required checks** (reference `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full script):
+1. `sync_state.json` present (alignment verified)
+2. Approval obtained before any agent factory action
+3. All new agent files < 30,000 characters
 
 ---
 
@@ -428,6 +398,10 @@ fi
 - `governance/canon/AGENT_INDUCTION_PROTOCOL.md` - Phase 2 template
 - `governance/canon/AGENT_PRIORITY_SYSTEM.md` - Priority codes
 - `governance/canon/AGENT_HANDOVER_AUTOMATION.md` - Phase 4 template
+
+**Canonical Home — Explicit Justification**
+
+`metadata.canonical_home` is set to `APGI-cmy/maturion-foreman-governance`. The prior value (`APGI-cmy/maturion-codex-control`) was a stale reference to an earlier project name. This contract is authored and maintained here (`this_copy: canonical`). Consumer repos (e.g., `APGI-cmy/maturion-isms`) carry copies with `this_copy: consumer`. This change is deliberate and CS2-authorized, not a formatting change.
 
 ---
 
