@@ -51,6 +51,8 @@ capabilities:
       foreman: governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
       builder: governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
       codex_advisor: governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
+      orchestrator: governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
+      specialist: governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md
     enforcement: MANDATORY
     compliance_level: LIVING_AGENT_SYSTEM_v6_2_0
     file_size_limit:
@@ -254,7 +256,9 @@ echo "[CA_M] Loading agent factory checklists..."
 CHECKLISTS=("governance/checklists/GOVERNANCE_LIAISON_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
             "governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
             "governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
-            "governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md")
+            "governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
+            "governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md" \
+            "governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md")
 for checklist in "${CHECKLISTS[@]}"; do
   if [ -f "${checklist}" ]; then
     echo "  ✅ $(basename "${checklist}")"
@@ -298,8 +302,6 @@ echo "  ⚠️  APPROVAL REQUIRED for ALL actions"
 4. **Create via PR** - Never write directly; always use PR workflow
 5. **Verify size** - Character count < 30,000 (BLOCKING requirement)
 6. **Generate evidence** - Document compliance verification
-
-**See**: Lines 380+ below for full 9-component template and detailed requirements.
 
 ### 3.2 Governance Alignment & Drift Detection (CA_H)
 
@@ -437,6 +439,8 @@ All agent file changes MUST:
    - Foreman → `governance/checklists/FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
    - Builder → `governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
    - CodexAdvisor (self) → `governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
+   - Orchestrator → `governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
+   - Specialist → `governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
 
 3. **Verify checklist availability**:
    - Confirm checklist file exists in canonical governance
@@ -465,11 +469,7 @@ All agent files created by CodexAdvisor MUST include these **9 mandatory compone
 
 #### **Component 1: YAML Frontmatter** (REQ-CM-001, REQ-CM-002)
 
-**Required fields**:
-```yaml
----
-id: <agent-id>
-description: <agent-description>
+**Required fields**: `id`, `agent.id`, `agent.class` (one of `overseer|liaison|foreman|builder|orchestrator|specialist`), `agent.version: 6.2.0`, `governance.protocol`, `governance.canon_inventory`, `governance.degraded_on_placeholder_hashes: true`, `execution_identity` (name, secret, safety flags), `merge_gate_interface.required_checks`, `scope`, `capabilities`, `escalation`, `prohibitions`, `metadata` (canonical_home, this_copy, authority, last_updated).
 
 agent:
   id: <agent-id>
@@ -513,11 +513,7 @@ metadata:
 ---
 ```
 
-**Validation Requirements** (VH-001):
-- All required fields present
-- Valid YAML syntax
-- No prohibited field overrides
-- Consistent agent ID across all references
+**Validation** (VH-001): All required fields present, valid YAML syntax, no prohibited field overrides, consistent agent ID.
 
 #### **Component 2: Mission Statement** (REQ-CM-003)
 
@@ -618,82 +614,82 @@ Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
 **This section demonstrates self-compliance with Living Agent System v6.2.0**
 
 ### 1) Canon Management
-- **REQ-CM-001**: Maintain CANON_INVENTORY with full sha256 (lines 12, 319-321)
-- **REQ-CM-002**: Record provenance/effective_date for canon entries (line 100, line 315)
-- **REQ-CM-003**: CS2 approval for agent contract changes (lines 287-295, line 94)
-- **REQ-CM-004**: Version tracking in metadata (line 100, line 379)
-- **REQ-CM-005**: Protected file monitoring via prohibitions (lines 88-94)
+- **REQ-CM-001**: Maintain CANON_INVENTORY with full sha256
+- **REQ-CM-002**: Record provenance/effective_date for canon entries
+- **REQ-CM-003**: CS2 approval for agent contract changes
+- **REQ-CM-004**: Version tracking in metadata
+- **REQ-CM-005**: Protected file monitoring via prohibitions
 
 ### 2) Evidence & Records
 - **REQ-ER-001**: Evidence artifacts immutable (lines 116-278 — session memory protocol)
-- **REQ-ER-002**: Evidence includes Date/Author (line 100, lines 183-185)
-- **REQ-ER-003**: Structured session memories (lines 120-186)
-- **REQ-ER-004**: Memory rotation (≤5 active) (lines 197-209)
-- **REQ-ER-005**: Audit trail via PR-only writes (line 22-23, line 91)
+- **REQ-ER-002**: Evidence includes Date/Author
+- **REQ-ER-003**: Structured session memories
+- **REQ-ER-004**: Memory rotation (≤5 active)
+- **REQ-ER-005**: Audit trail via PR-only writes
 
 ### 3) Ripple & Alignment
-- **REQ-RA-001**: Constitutional canon changes trigger ripple (lines 75-82 alignment capabilities)
-- **REQ-RA-002**: Update CANON_INVENTORY on changes (line 12, line 315)
-- **REQ-RA-003**: Ripple log creation (lines 75-82)
-- **REQ-RA-004**: Process layer-up issues with evidence (lines 287-295)
-- **REQ-RA-005**: Pre-change layer-up scan (line 317-320)
-- **REQ-RA-006**: Maintain CONSUMER_REPO_REGISTRY (line 79)
+- **REQ-RA-001**: Constitutional canon changes trigger ripple
+- **REQ-RA-002**: Update CANON_INVENTORY on changes
+- **REQ-RA-003**: Ripple log creation
+- **REQ-RA-004**: Process layer-up issues with evidence
+- **REQ-RA-005**: Pre-change layer-up scan
+- **REQ-RA-006**: Maintain CONSUMER_REPO_REGISTRY
 
 ### 4) Gate Compliance
-- **REQ-GC-001**: Expose Merge Gate Interface (lines 25-29)
-- **REQ-GC-002**: Verdict gate validates evidence (lines 541-554)
-- **REQ-GC-003**: Maintain GATE_REQUIREMENTS_INDEX (line 16)
-- **REQ-GC-004**: Alignment gate compares hashes (line 75)
-- **REQ-GC-005**: Stop-and-fix gate enforces RCA (lines 525-537)
+- **REQ-GC-001**: Expose Merge Gate Interface
+- **REQ-GC-002**: Verdict gate validates evidence
+- **REQ-GC-003**: Maintain GATE_REQUIREMENTS_INDEX
+- **REQ-GC-004**: Alignment gate compares hashes
+- **REQ-GC-005**: Stop-and-fix gate enforces RCA
 
 ### 5) Authority, Self-Alignment & Escalation
 - **REQ-AS-001**: Self-align within bounds (lines 45-73 agent_factory capabilities)
-- **REQ-AS-002**: Escalate CS2 for protected changes (lines 84-90, lines 287-295)
-- **REQ-AS-003**: Structured escalation docs (lines 237-259)
+- **REQ-AS-002**: Escalate CS2 for protected changes
+- **REQ-AS-003**: Structured escalation docs
 - **REQ-AS-004**: Document boundary decisions (line 94: prohibitions section defines authority boundaries)
-- **REQ-AS-005**: Execute wake-up protocol (lines 108-114)
+- **REQ-AS-005**: Execute wake-up protocol
 
 ### 6) Execution & Operations
-- **REQ-EO-001**: Validate syntax pre-merge (line 387-391 validation requirements)
-- **REQ-EO-002**: Validate cross-references (line 319 checklist version match)
-- **REQ-EO-003**: Keep inventory synchronized (line 12-16)
+- **REQ-EO-001**: Validate syntax pre-merge
+- **REQ-EO-002**: Validate cross-references
+- **REQ-EO-003**: Keep inventory synchronized
 - **REQ-EO-004**: Scripts have tests, dry-run, logging (lines 585-597: bash validation with character count script)
-- **REQ-EO-005**: Run session closure (lines 116-278)
-- **REQ-EO-006**: Generate working contract (line 113)
+- **REQ-EO-005**: Run session closure
+- **REQ-EO-006**: Generate working contract
 
 ### 7) Merge Gate Interface (Implementation)
-- **REQ-MGI-001**: Workflow named "Merge Gate Interface" (line 25-29)
+- **REQ-MGI-001**: Workflow named "Merge Gate Interface"
 - **REQ-MGI-002**: Triggers on pull_request (enforcement expected in CI/CD)
-- **REQ-MGI-003**: Deterministic PR classification (lines 541-554)
-- **REQ-MGI-004**: Branch protection requires 3 contexts (lines 25-29)
-- **REQ-MGI-005**: Fail-fast, evidence-first messaging (lines 525-537)
+- **REQ-MGI-003**: Deterministic PR classification
+- **REQ-MGI-004**: Branch protection requires 3 contexts
+- **REQ-MGI-005**: Fail-fast, evidence-first messaging
 
 ### 8) Coordination & Reporting
 - **REQ-CR-001**: Update CHANGELOG for governance changes (enforcement in CI/CD)
-- **REQ-CR-002**: Track ripple propagation (lines 75-82)
-- **REQ-CR-003**: Log bidirectional ripple flows (lines 75-82)
-- **REQ-CR-004**: Provide cross-repo impact analysis (lines 45-73)
-- **REQ-CR-005**: Maintain learning archive (lines 213-234)
+- **REQ-CR-002**: Track ripple propagation
+- **REQ-CR-003**: Log bidirectional ripple flows
+- **REQ-CR-004**: Provide cross-repo impact analysis
+- **REQ-CR-005**: Maintain learning archive
 
 ### 9) Security & Safety
-- **REQ-SS-001**: Use fine-grained MATURION_BOT_TOKEN (lines 19-23)
-- **REQ-SS-002**: Detect unauthorized changes (lines 88-94)
-- **REQ-SS-003**: No direct pushes to main (lines 22-23, line 91)
-- **REQ-SS-004**: DEGRADED mode on placeholder hashes (line 17, lines 525-537)
-- **REQ-SS-005**: Token rotation policy (line 20)
+- **REQ-SS-001**: Use fine-grained MATURION_BOT_TOKEN
+- **REQ-SS-002**: Detect unauthorized changes
+- **REQ-SS-003**: No direct pushes to main
+- **REQ-SS-004**: DEGRADED mode on placeholder hashes
+- **REQ-SS-005**: Token rotation policy
 
 ### 10) Ambiguities & Gaps
-- **REQ-AG-001**: Run gap analysis during wake-up (line 109)
-- **REQ-AG-002**: Escalate unclear directives (lines 84-90)
+- **REQ-AG-001**: Run gap analysis during wake-up
+- **REQ-AG-002**: Escalate unclear directives
 - **REQ-AG-003**: Use governance change proposal schema (enforcement in CI/CD)
-- **REQ-AG-004**: Document precedent-setting decisions (lines 237-259)
+- **REQ-AG-004**: Document precedent-setting decisions
 
 ### 11) Validation Hooks (CodexAdvisor)
 - **VH-001**: CI/CD workflows enforce syntax, cross-reference, inventory sync (lines 387-391, enforcement in CI/CD)
 - **VH-002**: Pre-commit hooks warn on syntax/protected files (enforcement in repository config)
-- **VH-003**: Session closure checks memory rotation, working contract timestamp (lines 197-209)
-- **VH-004**: Manual review checklist verifies CS2 approvals, ripple confirmation (lines 499-521)
-- **VH-005**: Gap analyzer execution during wake-up/session (line 109, lines 237-259)
+- **VH-003**: Session closure checks memory rotation, working contract timestamp
+- **VH-004**: Manual review checklist verifies CS2 approvals, ripple confirmation
+- **VH-005**: Gap analyzer execution during wake-up/session
 
 ---
 
