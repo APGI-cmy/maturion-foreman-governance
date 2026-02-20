@@ -123,17 +123,39 @@ CS2 (Human Authority)
 
 ## Agent Class Registration
 
-All orchestrator and specialist agents MUST be registered in CANON_INVENTORY.json with:
+All orchestrator and specialist agents MUST be registered in **`governance/AGENT_REGISTRY.json`** (not CANON_INVENTORY.json). CANON_INVENTORY.json tracks governance *artifacts*; AGENT_REGISTRY.json tracks deployed *agents*. See `governance/canon/AGENT_REGISTRY_ARCHITECTURE.md` for the full schema definition, validation requirements, and lifecycle operations.
 
+**Registration entry** (in `governance/AGENT_REGISTRY.json`):
 ```json
 {
-  "filename": "<AgentName>.agent.md",
+  "agent_id": "<unique-agent-id>",
   "agent_class": "orchestrator|specialist",
-  "domain": "<primary-domain>",
-  "orchestrator_link": "<orchestrator-id or null>",
+  "filename": "<AgentName>.agent.md",
+  "path": ".github/agents/<AgentName>.agent.md",
+  "domain": "<primary-domain or null for orchestrators>",
+  "orchestrator_link": "<orchestrator-agent-id or null for orchestrators>",
+  "status": "active",
+  "registered_date": "<YYYY-MM-DD>",
+  "canon_inventory_ref": "<CANON_INVENTORY.json filename entry>",
+  "description": "<brief description>",
   "layer_down_status": "PUBLIC_API"
 }
 ```
+
+Agent contracts are **also** tracked in CANON_INVENTORY.json (as governance artifacts with SHA256 hashes) — the two registrations serve different purposes and must stay synchronized.
+
+---
+
+## Registry Decision
+
+| Concern | File | Rationale |
+|---------|------|-----------|
+| **Where registry lives** | `governance/AGENT_REGISTRY.json` | Dedicated agent registry, separate from artifact inventory |
+| **What is tracked** | agent_id, class, domain, orchestrator_link, status, registered_date | Operational metadata for agent discovery and validation |
+| **How validated** | SHA256 of registry file in CANON_INVENTORY.json; integrity checks in alignment gate | Drift detected when registry SHA256 mismatches CANON_INVENTORY entry |
+| **How consumer repos receive it** | Layer-down governance ripple (same as all PUBLIC_API artifacts) | Orchestrators load registry at session start to discover available specialists |
+
+See `governance/canon/AGENT_REGISTRY_ARCHITECTURE.md` for full schema and lifecycle protocol.
 
 ---
 
@@ -142,7 +164,7 @@ All orchestrator and specialist agents MUST be registered in CANON_INVENTORY.jso
 ### Orchestrator Lifecycle
 
 1. **Activation**: Receives task from Foreman/CS2 with scope and authority grant
-2. **Registration**: Loads specialist registry from CANON_INVENTORY.json
+2. **Registration**: Loads specialist registry from `governance/AGENT_REGISTRY.json`
 3. **Decomposition**: Breaks task into domain-partitioned subtasks
 4. **Delegation**: Dispatches subtasks to specialists via AGENT_DELEGATION_PROTOCOL.md
 5. **Monitoring**: Tracks specialist progress; handles escalations
@@ -190,7 +212,9 @@ Orchestrator and specialist agents use the **same four-component canonical contr
 - `governance/canon/AGENT_DELEGATION_PROTOCOL.md` - Delegation mechanics
 - `governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md` - Specialist domain knowledge
 - `governance/canon/MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md` - Multi-embodiment patterns
+- `governance/canon/AGENT_REGISTRY_ARCHITECTURE.md` - Agent registry schema and lifecycle
 - `governance/canon/LIVING_AGENT_SYSTEM.md` - Living Agent framework v6.2.0
+- `governance/AGENT_REGISTRY.json` - The agent registry itself
 - `governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
 - `governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
 

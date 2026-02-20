@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-20T08:19:22Z",
-  "total_canons": 175,
+  "last_updated": "2026-02-20T12:05:28Z",
+  "total_canons": 177,
   "generation_timestamp": "2026-02-19T08:08:00Z",
   "canons": [
     {
@@ -1887,25 +1887,25 @@
     },
     {
       "filename": "ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md",
-      "version": "1.0.0",
-      "file_hash": "48a87a907c94",
+      "version": "1.1.0",
+      "file_hash": "0ff730650dd3",
       "effective_date": "2026-02-20",
-      "description": "Defines orchestrator and specialist agent roles, authority model, lifecycle, and governance integration. Orchestrators coordinate; specialists execute. Both classes governed by Living Agent System v6.2.0.",
+      "description": "Defines orchestrator and specialist agent roles, authority model, lifecycle, and governance integration. Includes Registry Decision section \u2014 agent registration lives in AGENT_REGISTRY.json, not CANON_INVENTORY.",
       "type": "canon",
       "path": "governance/canon/ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "48a87a907c948d291cee3ae155e0edb2b80d5ed399a2f9d838aa3c82a9dba938"
+      "file_hash_sha256": "0ff730650dd34742dac3cce642011f48cd9b3efa3864335833db0931d87071b3"
     },
     {
       "filename": "AGENT_DELEGATION_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "1c9016dddcdd",
+      "version": "1.0.1",
+      "file_hash": "e91ccd075fa1",
       "effective_date": "2026-02-20",
       "description": "Canonical protocol for task delegation between orchestrators and specialists. Covers pre-delegation validation, delegation package structure, specialist execution, result integration, failure handling, and audit trail requirements.",
       "type": "canon",
       "path": "governance/canon/AGENT_DELEGATION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "1c9016dddcdd98143c49441ee5c0bbda3b37a2d918ad4e0b17fd9e51d09ef2d8"
+      "file_hash_sha256": "e91ccd075fa151668a38419a9e716359669590cc0457dc7edc15a9f4be724b47"
     },
     {
       "filename": "SPECIALIST_KNOWLEDGE_MANAGEMENT.md",
@@ -1928,6 +1928,28 @@
       "path": "governance/canon/MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "1ad56794e3f284b04f29dda876e683344d0719a1edb44a1fc646a1f3769f41e3"
+    },
+    {
+      "filename": "AGENT_REGISTRY_ARCHITECTURE.md",
+      "version": "1.0.0",
+      "file_hash": "4bc5862119a8",
+      "effective_date": "2026-02-20",
+      "description": "Defines the dedicated agent registry architecture. AGENT_REGISTRY.json tracks deployed orchestrators and specialists (class, domain, status, owner); CANON_INVENTORY.json tracks governance artifacts. Defines schema, validation requirements, and lifecycle operations.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_REGISTRY_ARCHITECTURE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "4bc5862119a83aca540e56aa64b76a40e652afc962fe637a2308bd63714b0beb"
+    },
+    {
+      "filename": "AGENT_REGISTRY.json",
+      "version": "1.0.0",
+      "file_hash": "bea6e92602c4",
+      "effective_date": "2026-02-20",
+      "description": "Active registry of deployed orchestrator and specialist agents. Initially empty; populated when Phase 2 (Maturion orchestrator) and Phase 3 (MVP specialists) are deployed.",
+      "type": "registry",
+      "path": "governance/AGENT_REGISTRY.json",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "bea6e92602c407730d0f6539538f4ffad1eff9bb092d569c449ce975fdd30b98"
     }
   ]
 }

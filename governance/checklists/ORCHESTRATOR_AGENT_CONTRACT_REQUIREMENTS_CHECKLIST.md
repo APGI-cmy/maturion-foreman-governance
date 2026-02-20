@@ -66,7 +66,7 @@ Automated validators MUST:
   - `execution_identity.never_push_main: true`
   - `execution_identity.write_via_pr: true`
   - `orchestrator.principal: [CS2|foreman-id]`
-  - `orchestrator.specialist_registry: governance/CANON_INVENTORY.json`
+  - `orchestrator.specialist_registry: governance/AGENT_REGISTRY.json`
   - `orchestrator.max_concurrent_specialists: [N]`
   - `orchestrator.delegation_log_path: .agent-admin/delegations/`
   - `prohibitions: [list]`
@@ -105,7 +105,7 @@ Automated validators MUST:
 - **Validation**: Contains executable induction script
 - **Required Elements**:
   - Wake-up protocol reference: `.github/scripts/wake-up-protocol.sh [orchestrator-id]`
-  - Specialist registry load: verify all registered specialists exist in CANON_INVENTORY
+  - Specialist registry load: verify all registered specialists exist in `AGENT_REGISTRY.json`
   - CANON_INVENTORY integrity check: no placeholder PUBLIC_API hashes
   - Authority grant verification: confirm principal authorization exists
   - Working contract generation
@@ -156,7 +156,7 @@ Automated validators MUST:
 - **Required Declaration**:
   - Each specialist's agent-id
   - Each specialist's primary domain
-  - Each specialist's CANON_INVENTORY entry reference
+  - Each specialist's `AGENT_REGISTRY.json` entry reference
   - max_concurrent_specialists declared
 - **Severity if Missing**: HIGH - Specialist scope undefined
 
@@ -223,11 +223,11 @@ Automated validators MUST:
 - **Check Locations**: YAML frontmatter, session memory template, authority footer
 - **Severity if Inconsistent**: HIGH
 
-### 3.3 CANON_INVENTORY Reference
+### 3.3 Agent Registry Reference
 
 - **Requirement**: MANDATORY
-- **Validation**: Specialist registry references CANON_INVENTORY.json (not hardcoded)
-- **Rationale**: Specialists may be added/removed; dynamic registry prevents stale wiring
+- **Validation**: Specialist registry references `AGENT_REGISTRY.json` (not CANON_INVENTORY)
+- **Rationale**: CANON_INVENTORY is an artifact inventory; AGENT_REGISTRY.json is the agent operational registry. See `governance/canon/AGENT_REGISTRY_ARCHITECTURE.md`.
 - **Severity if Missing**: HIGH
 
 ---

@@ -23,7 +23,7 @@ execution_identity:
 
 orchestrator:
   principal: <CS2|foreman-id>
-  specialist_registry: governance/CANON_INVENTORY.json
+  specialist_registry: governance/AGENT_REGISTRY.json
   max_concurrent_specialists: <N>
   delegation_log_path: .agent-admin/delegations/
 
@@ -75,7 +75,7 @@ metadata:
 
 **What I NEVER Do**:
 - ❌ Execute specialist-domain work directly (security scans, code implementation, etc.)
-- ❌ Delegate to specialists not registered in CANON_INVENTORY.json
+- ❌ Delegate to specialists not registered in `governance/AGENT_REGISTRY.json`
 - ❌ Expand task scope after delegation package issued
 - ❌ Grant authority I do not hold from my principal
 - ❌ Log silent failures; all failures MUST be escalated
@@ -127,11 +127,12 @@ INTEGRATE:
 - `governance/canon/ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md` - Architecture overview
 - `governance/canon/AGENT_DELEGATION_PROTOCOL.md` - Delegation mechanics
 - `governance/canon/MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md` - Multi-embodiment patterns
-- `governance/CANON_INVENTORY.json` - Specialist registry and hash validation
+- `governance/AGENT_REGISTRY.json` - Specialist registry (agent operational status)
+- `governance/CANON_INVENTORY.json` - Artifact registry (hash validation)
 
 **Degraded Mode Triggers**:
 - CANON_INVENTORY has placeholder/truncated PUBLIC_API hashes → FAIL, ESCALATE to CS2
-- Specialist not found in CANON_INVENTORY → HALT delegation, ESCALATE
+- Specialist not found in `AGENT_REGISTRY.json` → HALT delegation, ESCALATE
 - Principal authorization not confirmed → HALT, do NOT proceed
 - ≥2 specialist FAILED/ESCALATED in session → STOP-AND-FIX, escalate to principal
 
@@ -155,7 +156,7 @@ echo "[ORC_H] Verifying CANON_INVENTORY integrity..."
 # If degraded: HALT, escalate to CS2
 
 # ORC_H: Load specialist registry
-echo "[ORC_H] Loading specialist registry from CANON_INVENTORY..."
+echo "[ORC_H] Loading specialist registry from AGENT_REGISTRY.json..."
 # Verify all registered specialists exist
 # For each specialist: confirm agent contract present, no degraded state
 
@@ -241,7 +242,7 @@ echo "[ORC_M] Referencing all specialist evidence artifacts..."
 ```markdown
 ## Orchestration Evidence
 ✅ Principal authorization verified
-✅ Specialist registry loaded from CANON_INVENTORY
+✅ Specialist registry loaded from AGENT_REGISTRY.json
 ✅ All delegation packages constructed and logged
 ✅ All specialist results received (or escalations documented)
 ✅ Integration gate passed (or failures escalated)

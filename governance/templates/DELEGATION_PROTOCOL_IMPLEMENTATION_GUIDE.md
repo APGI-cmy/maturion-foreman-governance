@@ -56,24 +56,24 @@ For each specialist, define explicit boundaries:
 
 **Rule**: If a task falls outside all declared domains → **the task is misrouted** and must be escalated to principal for scope redefinition.
 
-### Step 1.3: Map to CANON_INVENTORY
+### Step 1.3: Map to AGENT_REGISTRY.json
 
-Each specialist MUST have a canonical entry before the orchestrator can reference it:
+Each specialist MUST have an entry in `governance/AGENT_REGISTRY.json` (not CANON_INVENTORY — CANON_INVENTORY tracks artifacts; AGENT_REGISTRY tracks deployed agents):
 
 ```bash
-# Check if specialist exists in CANON_INVENTORY
+# Check if specialist exists in AGENT_REGISTRY.json
 python3 -c "
 import json
-with open('governance/CANON_INVENTORY.json') as f:
-    inv = json.load(f)
-specialists = [c for c in inv['canons'] if c.get('agent_class') == 'specialist']
-print('Registered specialists:')
+with open('governance/AGENT_REGISTRY.json') as f:
+    reg = json.load(f)
+specialists = [a for a in reg['agents'] if a.get('status') == 'active']
+print('Registered active specialists:')
 for s in specialists:
-    print(f'  {s[\"filename\"]} — domain: {s.get(\"domain\", \"unknown\")}')
+    print(f'  {s[\"agent_id\"]} — domain: {s.get(\"domain\", \"unknown\")}')
 "
 ```
 
-If specialist is not in CANON_INVENTORY → **stop and add it before proceeding**.
+If specialist is not in `AGENT_REGISTRY.json` → **stop and add it before proceeding**.
 
 ---
 
@@ -221,19 +221,19 @@ echo "✅ [SPEC_M] Result package written: .agent-admin/specialist-results/${DEL
 Before live execution, verify the delegation chain is wired correctly:
 
 ```bash
-# Test: Orchestrator can find all registered specialists in CANON_INVENTORY
+# Test: Orchestrator can find all registered specialists in AGENT_REGISTRY.json
 echo "Testing specialist registry..."
 for specialist_id in "<specialist-id-1>" "<specialist-id-2>"; do
   if python3 -c "
 import json, sys
-with open('governance/CANON_INVENTORY.json') as f:
-    inv = json.load(f)
-found = any(c['filename'].startswith('${specialist_id}') for c in inv['canons'])
+with open('governance/AGENT_REGISTRY.json') as f:
+    reg = json.load(f)
+found = any(a['agent_id'] == '${specialist_id}' and a['status'] == 'active' for a in reg['agents'])
 sys.exit(0 if found else 1)
   "; then
-    echo "  ✅ ${specialist_id} found in CANON_INVENTORY"
+    echo "  ✅ ${specialist_id} found in AGENT_REGISTRY.json"
   else
-    echo "  ❌ ${specialist_id} NOT found in CANON_INVENTORY — add before proceeding"
+    echo "  ❌ ${specialist_id} NOT found in AGENT_REGISTRY.json — add before proceeding"
   fi
 done
 ```
@@ -283,29 +283,34 @@ echo "Verifying evidence artifacts..."
 | Specialist accepts out-of-domain task | Domain boundary violation | Implement strict domain check; return rejected_delegation |
 | delegation_id reused across sessions | Audit log corruption | Use timestamp-based unique IDs |
 | Evidence artifact not generated | Integration gate fails | Treat evidence generation as SPEC_H (non-deferrable) |
-| Specialist not in CANON_INVENTORY | Orchestrator cannot load registry | Add specialist to CANON_INVENTORY before wiring |
+| Specialist not in AGENT_REGISTRY.json | Orchestrator cannot load registry | Add specialist to AGENT_REGISTRY.json before wiring |
 | Stop-and-fix not triggered | Failure cascade continues | Implement ≥2-failure trigger in integration gate |
 
 ---
 
-## Part 6: Adding to CANON_INVENTORY
+## Part 6: Adding to CANON_INVENTORY and AGENT_REGISTRY
 
-When your orchestrator and specialist contracts are ready, add entries to CANON_INVENTORY.json:
+When your orchestrator and specialist contracts are ready:
 
+**Step 1: Register in CANON_INVENTORY.json** (artifact tracking with SHA256):
 ```bash
 # Compute SHA256 for new agent files
 sha256sum .github/agents/<orchestrator-id>.agent.md
 sha256sum .github/agents/<specialist-id>.agent.md
 
-# Add entries to governance/CANON_INVENTORY.json
-# See existing entries for format reference
+# Add entries to governance/CANON_INVENTORY.json with:
+# filename, version, file_hash, effective_date, description, type, path
+# layer_down_status: "PUBLIC_API", file_hash_sha256 (full 64 chars)
 ```
 
-Each entry needs:
-- `filename`, `version`, `file_hash`, `effective_date`
-- `description`, `type: "agent"`, `path`
-- `layer_down_status: "PUBLIC_API"`
-- `file_hash_sha256`: full 64-character SHA256
+**Step 2: Register in AGENT_REGISTRY.json** (agent operational status):
+```bash
+# Add entries to governance/AGENT_REGISTRY.json with:
+# agent_id, agent_class, filename, path, domain (specialists only)
+# orchestrator_link (specialists only), status: "active"
+# registered_date, canon_inventory_ref, description, layer_down_status
+# See governance/canon/AGENT_REGISTRY_ARCHITECTURE.md for full schema
+```
 
 ---
 

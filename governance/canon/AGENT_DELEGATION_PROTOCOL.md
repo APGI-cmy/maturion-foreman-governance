@@ -54,7 +54,7 @@ echo "[ORC_H] Checking CANON_INVENTORY for degraded state..."
 
 # ORC_H: Verify specialist registration
 echo "[ORC_H] Verifying specialist is registered for target domain..."
-# Load specialist registry from CANON_INVENTORY.json
+# Load specialist registry from AGENT_REGISTRY.json
 # Confirm target specialist exists and is not in degraded state
 # If specialist missing: HALT, escalate to CS2 — do NOT improvise
 
