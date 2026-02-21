@@ -340,9 +340,9 @@ Every layer-down completion creates:
 - [ ] Update ECOSYSTEM_VOCABULARY.md with layering/rippling definitions (✅ COMPLETE)
 - [ ] Create LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md (✅ THIS DOCUMENT)
 - [ ] Update GOVERNANCE_RIPPLE_MODEL.md with terminology fixes (see Section 11)
-- [ ] Rename `governance-ripple-dispatch.yml` → `governance-layer-down-dispatch.yml`
-- [ ] Update workflow to create GitHub issues in consumer repos
-- [ ] Update workflow comments to use correct terminology
+- [x] Rename `governance-ripple-dispatch.yml` → `governance-layer-down-dispatch.yml`
+- [x] Update workflow to create GitHub issues in consumer repos
+- [x] Update workflow comments to use correct terminology
 - [ ] Update CANON_INVENTORY.json with new/updated canon versions
 - [ ] Execute layer-down to all consumer repos
 
@@ -396,7 +396,7 @@ Search and update references in:
 - `governance/canon/GOVERNANCE_RIPPLE_MODEL.md` — Bidirectional governance evolution (to be updated)
 - `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md` — Agent contract authority
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md` — Protected file enforcement
-- `.github/workflows/governance-ripple-dispatch.yml` — Current layer-down dispatch workflow
+- `.github/workflows/governance-layer-down-dispatch.yml` — Layer-down dispatch workflow (upgraded)
 
 ---
 
