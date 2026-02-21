@@ -64,6 +64,39 @@ Each entry follows this structure:
 
 ## Change History
 
+### [CANON-3TIER-BUNDLE-PROXY] - 2026-02-21 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) via issue "[CANON] Align governance for Living Agent System: 3-Tier Architecture, Agent Creation Bundle, Proxy Authority Model"  
+**Effective Date**: 2026-02-21  
+**Layer-Down Status**: PUBLIC_API - Mandatory ripple to all consumer repositories
+
+**Summary**: Canonised three new governance documents to align the Living Agent System v6.2.0 with the 3-tier agent knowledge architecture, agent creation bundle requirements, and proxy authority model. Added `THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` defining the three-tier knowledge structure (Tier 1 constitutional/SHA256-verified, Tier 2 operational stubs in `.agent-workspace/<agent>/knowledge/`, Tier 3 ephemeral session context) and inter-tier interaction rules. Added `AGENT_CREATION_BUNDLE_REQUIREMENTS.md` specifying the five mandatory outputs for all new agent creations (contract, Tier 2 stubs, registry entry, routing update, pre-handover commissioning proof). Added `PROXY_AUTHORITY_MODEL.md` canonically defining how Foreman may act as CS2 proxy for agent file creation using explicit issue-scoped proxy grant language. Updated `ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` and `SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` to require bundle completeness and proxy authority verification. Implements pattern from consumer repo issues APGI-cmy/maturion-isms#360, #362, and this governance repo #361.
+
+**Affected Artifacts**:
+- `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` (NEW v1.0.0 - PUBLIC_API canon)
+  - SHA256: dfbf032c0e5054613ffe2ecece98a2624032acfdb593880cacadd520733d8c93
+- `governance/canon/AGENT_CREATION_BUNDLE_REQUIREMENTS.md` (NEW v1.0.0 - PUBLIC_API canon)
+  - SHA256: 47fa11a5447d30cf2deb7a4be82800c0db6f2ea04770390a98160b009d0df17d
+- `governance/canon/PROXY_AUTHORITY_MODEL.md` (NEW v1.0.0 - PUBLIC_API canon)
+  - SHA256: 4f95fb1aaadaa99adb1503782024c55def41e176326011d385f685a8a476049c
+- `governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` (UPDATED v1.0.0→v1.1.0 - Sections 4+5 added)
+- `governance/checklists/SPECIALIST_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` (UPDATED v1.0.0→v1.1.0 - Sections 4+5 added)
+- `governance/CANON_INVENTORY.json` (UPDATED - Added 3 new entries, total_canons: 177→180)
+- `governance/CHANGELOG.md` (UPDATED - This entry)
+
+**Migration Required**: YES for consumer repositories adding new agents after 2026-02-21
+
+**Migration Guidance**:
+1. All new agent creations MUST use the full five-component bundle (see `AGENT_CREATION_BUNDLE_REQUIREMENTS.md`)
+2. All Foreman-led agent creations MUST have explicit proxy grant language in the CS2-approved issue
+3. Existing agent contracts should have Tier 2 stubs created in `.agent-workspace/<agent>/knowledge/` on next wave planning
+4. Orchestrator and specialist agent templates should reference both new canon files
+
+**References**: APGI-cmy/maturion-isms#360, APGI-cmy/maturion-isms#362, APGI-cmy/maturion-foreman-governance#361
+
+---
+
 ### [LL-031-PLATFORM-AI-REQUIREMENTS] - 2026-02-19 - [BREAKING_CHANGE]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
