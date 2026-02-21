@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-02-21",
-  "total_canons": 180,
+  "total_canons": 181,
   "generation_timestamp": "2026-02-21T07:13:00Z",
   "canons": [
     {
@@ -1983,6 +1983,17 @@
       "path": "governance/canon/PROXY_AUTHORITY_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "4f95fb1aaadaa99adb1503782024c55def41e176326011d385f685a8a476049c"
+    },
+    {
+      "filename": "AGENT_TIER_ARCHITECTURE.md",
+      "version": "1.0.0",
+      "file_hash": "facdee9e0ac1",
+      "effective_date": "2026-02-21",
+      "description": "Named alias — redirects to THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md. Exists so consumer-repo forward references to governance/canon/AGENT_TIER_ARCHITECTURE.md resolve without error. Canonical content is in THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md.",
+      "type": "alias",
+      "path": "governance/canon/AGENT_TIER_ARCHITECTURE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "facdee9e0ac11ced482c0a985c8064f5d30cee20616edc61e6e236dc545e389f"
     }
   ]
 }
