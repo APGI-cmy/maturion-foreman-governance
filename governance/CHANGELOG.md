@@ -64,6 +64,53 @@ Each entry follows this structure:
 
 ## Change History
 
+### [ECOSYSTEM-VOCAB-FOREMAN-MODALITIES] - 2026-02-21 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras / APGI-cmy) via issue "Formalize ECOSYSTEM_VOCABULARY.md & Adjust Foreman Agent Modalities (Orchestration, QA, Implementation Guard)"  
+**Effective Date**: 2026-02-21  
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to all consumer repositories
+
+**Summary**: Created and canonized `ECOSYSTEM_VOCABULARY.md` as a new Tier-2 living canon document defining all key terms, verbs, modes, and concepts used across the Maturion ecosystem. Updated `foreman-v2.agent.md` contract (v2.0.0→v2.1.0) to add the Verb Classification Gate (Phase 1.5) and Mode-Switching Protocol (Phase 1.6) with three explicit operating modes: POLC-Orchestration, Implementation Guard, and Quality Professor. All modal/verb logic is executable-script-based. Quality Professor mode is strictly separated from builder/orchestration modes and is mandatory before handover/merge. ECOSYSTEM_VOCABULARY.md is explicitly referenced as the canonical source for all verb classification decisions in the Foreman contract.
+
+**Affected Artifacts**:
+- `governance/canon/ECOSYSTEM_VOCABULARY.md` (NEW v1.0.0 - PUBLIC_API Tier-2 canon)
+  - SHA256: fd2f98bc638eb36829e0955af90e7c08ae28c38bb0b33b127d2c6b1002ed301c
+  - Defines: orchestrate, implement, review, evaluate, quality assurance, build, 100% build, escalate, canonize, fully functional, living agent, wave, governance gap
+  - Mode Reference Table: POLC-Orchestration, Implementation Guard, Quality Professor
+- `.github/agents/foreman-v2.agent.md` (UPDATED v2.0.0→v2.1.0)
+  - SHA256: 58eec29f4fce0ced4ea38ab6d4754e174ce9ab1faa5d98f283fd04ecfe56bf3b
+  - Added: Section 1.5 Verb Classification Gate (executable bash script)
+  - Added: Section 1.6 Mode-Switching Protocol (three modes with executable scripts)
+  - Added: ECOSYSTEM_VOCABULARY.md to expected_artifacts, governance bindings, canonical references, and metadata
+  - Updated: Contract version 2.0.0→2.1.0, last_updated 2026-02-20→2026-02-21
+- `governance/CANON_INVENTORY.json` (UPDATED — Added ECOSYSTEM_VOCABULARY entry, total_canons: 181→182)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED — Added ECOSYSTEM_VOCABULARY entry)
+- `governance/CHANGELOG.md` (UPDATED — This entry)
+
+**Migration Required**: NO for existing consumer repositories (additive changes only)
+
+**Migration Guidance**: Consumer repositories should update their local copy of `foreman-v2.agent.md` via the standard ripple issue to gain the Verb Classification Gate and Mode-Switching Protocol. ECOSYSTEM_VOCABULARY.md should be copied to `governance/canon/` in each consumer repo (or referenced via governance canon sync).
+
+**Rationale**:
+1. Establish canonical, unambiguous vocabulary for all Maturion agents to prevent misclassification of FM tasks
+2. Make verb/mode logic executable and enforceable (not just prose)
+3. Formally separate Quality Professor (QA review) from builder/orchestration modes
+4. Ensure Quality Professor is mandatory before any handover or merge gate release
+5. Prevent implementation attempts directed at FM by making the Implementation Guard mode explicit and auto-rejecting
+
+**Impact**:
+- Foreman agent: Now has explicit Verb Classification Gate and three operating modes with enforcement scripts
+- All agents: Canonical vocabulary source established — no more ambiguous verb interpretation
+- Consumer repos: Must layer down ECOSYSTEM_VOCABULARY.md and updated foreman contract
+- Governance: New vocabulary evolution protocol defined in ECOSYSTEM_VOCABULARY.md
+
+**References**:
+- Issue: "Formalize ECOSYSTEM_VOCABULARY.md & Adjust Foreman Agent Modalities (Orchestration, QA, Implementation Guard)"
+- CS2 Authorization: Approved by platform owner (APGI-cmy)
+
+---
+
 ### [CANON-3TIER-BUNDLE-PROXY] - 2026-02-21 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  

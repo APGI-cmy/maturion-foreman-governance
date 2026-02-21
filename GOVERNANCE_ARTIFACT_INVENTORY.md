@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-21 (3-tier knowledge architecture, agent creation bundle, proxy authority model)
+**Last Updated**: 2026-02-21 (ECOSYSTEM_VOCABULARY.md, foreman-v2 Verb Classification Gate & Mode-Switching Protocol)
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -97,6 +97,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `COMPLIANCE_AND_STANDARDS_GOVERNANCE.md` | Defines compliance framework (ISO/NIST) alignment | Readiness |
 | `DELEGATION_INSTRUCTION_AND_AUDIT_MODEL.md` | Defines delegation instruction format and audit requirements | Readiness |
 | `DOMAIN_EVOLUTION_RULES.md` | Defines how responsibility domains evolve | Readiness |
+| `ECOSYSTEM_VOCABULARY.md` | **NEW v1.0.0 (2026-02-21) PUBLIC_API** - Canonical living vocabulary document defining all key terms, verbs, modes, and concepts used across the Maturion ecosystem. Establishes definitions for: orchestrate, implement, review, evaluate, quality assurance, build, 100% build, escalate, canonize, fully functional, living agent, wave, governance gap. Includes Mode Reference Table mapping verbs to FM operating modes (POLC-Orchestration, Implementation Guard, Quality Professor). Mandatory reference for all agent contracts especially Foreman and orchestrator agents. Referenced by `foreman-v2.agent.md` Verb Classification Gate (Phase 1.5). CS2-approved via issue "Formalize ECOSYSTEM_VOCABULARY.md & Adjust Foreman Agent Modalities". | Readiness, Layer-down, PR-gates |
 | `DOMAIN_OWNERSHIP_ACCOUNTABILITY.md` | Defines domain ownership and accountability rules | Readiness |
 | `DOMAIN_STATE_ENFORCEMENT_RULE.md` | Defines enforcement of domain state requirements | Readiness |
 | `ENVIRONMENT_PROVISIONING_PROCESS.md` | Defines environment setup and provisioning | Readiness |
