@@ -1,7 +1,9 @@
 ---
 title: "Governance Ripple Automation Strategy"
 version: 1.0.0
-status: PROPOSED
+status: DEPRECATED
+deprecated_date: 2026-02-21
+superseded_by: governance/strategy/LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.0.0
 created: 2026-02-18
 authority: CS2
 category: strategy
@@ -13,6 +15,18 @@ related:
   - governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md v1.0.0
   - governance/canon/CROSS_REPOSITORY_RIPPLE_AWARENESS_MODEL.md v1.0.0
 ---
+
+> ⚠️ **DEPRECATED** (2026-02-21)
+>
+> This document has been superseded by the canonical strategy document:
+> **[governance/strategy/LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.0.0](../../governance/strategy/LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md)**
+>
+> The terminology used here ("ripple" for cross-repo distribution) has been corrected per
+> **ECOSYSTEM_VOCABULARY.md v1.1.0**:
+> - Cross-repo distribution = **Layering Down** (not "ripple")
+> - Within-repo integration = **Rippling**
+>
+> Do NOT use this document for implementation guidance. Refer to the canonical strategy above.
 
 # Governance Ripple Automation Strategy
 
