@@ -1,8 +1,45 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-02-21",
-  "total_canons": 176,
-  "generation_timestamp": "2026-02-21T10:47:46Z",
+  "total_canons": 177,
+  "generation_timestamp": "2026-02-21T16:30:00Z",
+  "canon_entry_schema": {
+    "description": "Schema for canon entries in CANON_INVENTORY.json",
+    "required_fields": [
+      "filename",
+      "version",
+      "file_hash",
+      "effective_date",
+      "description",
+      "type",
+      "path",
+      "layer_down_status",
+      "file_hash_sha256"
+    ],
+    "optional_fields": {
+      "canonical_version": {
+        "type": "string",
+        "description": "Canonical version (same as version field); used for version guard tracking",
+        "example": "1.2.0"
+      },
+      "local_version": {
+        "type": "string",
+        "description": "Highest known consumer repo version if local extension exists; null otherwise",
+        "example": "1.3.0"
+      },
+      "local_extension": {
+        "type": "boolean",
+        "description": "Whether any consumer repo has a local extension (local_version > canonical_version)",
+        "default": false
+      },
+      "layer_up_status": {
+        "type": "string",
+        "description": "Current status of layer-up processing for this file",
+        "enum": ["NONE", "PENDING", "PROPOSED", "APPROVED", "INTEGRATED", "REJECTED"],
+        "default": "NONE"
+      }
+    }
+  },
   "canons": [
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
@@ -1092,6 +1129,17 @@
       "path": "governance/canon/LAYER_UP_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "0f5b2d9c14640e156300a72370841d38dcc52da2c519c8c181683f33694f39c3"
+    },
+    {
+      "filename": "GOVERNANCE_LAYER_UP_PROTOCOL.md",
+      "version": "1.0.0",
+      "file_hash": "4ff8cec4cae3",
+      "effective_date": "2026-02-21",
+      "description": "This protocol defines the **automated mechanism** for detecting and proposing canonization of local governance extensions in consumer repositories when a consumer repo's governance file version exceeds the canonical repository's version.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_LAYER_UP_PROTOCOL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "4ff8cec4cae38d0ce47129defcd861622fcc5d96c5589fc110db41b0a296a142"
     },
     {
       "filename": "LEARNING_INTAKE_AND_PROMOTION_MODEL.md",
