@@ -1,4 +1,9 @@
-name: Governance Ripple Dispatch
+name: Governance Layer-Down Dispatch
+
+# TERMINOLOGY NOTE (2026-02-21):
+# This workflow implements LAYER-DOWN (cross-repo distribution of governance artifacts).
+# "Rippling" refers to within-repo integration and occurs in consumer repos after layer-down.
+# See ECOSYSTEM_VOCABULARY.md v1.1.0 and LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md.
 
 on:
   push:
@@ -10,8 +15,8 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  dispatch-ripple:
-    name: Dispatch Governance Ripple to Consumers
+  dispatch-layer-down:
+    name: Dispatch Governance Layer-Down to Consumer Repos
     runs-on: ubuntu-latest
     
     steps:
@@ -32,10 +37,10 @@ jobs:
           echo "$CONSUMERS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
-          echo "📡 Will dispatch ripple to:"
+          echo "📡 Will dispatch layer-down to:"
           echo "$CONSUMERS"
       
-      - name: Dispatch ripple events
+      - name: Dispatch layer-down events
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
@@ -45,12 +50,12 @@ jobs:
           echo "${{ steps.registry.outputs.consumers }}" | while read -r repo; do
             [ -z "$repo" ] && continue
             
-            echo "📤 Dispatching ripple to $repo..."
+            echo "📤 Dispatching layer-down to $repo..."
             
             gh api repos/$repo/dispatches \
               -X POST \
               -H "Accept: application/vnd.github+json" \
-              -f event_type="governance_ripple" \
+              -f event_type="governance_layer_down" \
               -f client_payload[source_repo]="APGI-cmy/maturion-foreman-governance" \
               -f client_payload[commit_sha]="$COMMIT_SHA" \
               -f client_payload[commit_message]="$COMMIT_MESSAGE" \
@@ -59,10 +64,10 @@ jobs:
               || echo "  ❌ Dispatch failed"
           done
       
-      - name: Record ripple dispatch
+      - name: Record layer-down dispatch
         run: |
-          mkdir -p .agent-admin/ripple
-          cat > .agent-admin/ripple/dispatch-$(date +%Y%m%d-%H%M%S).json <<EOF
+          mkdir -p .agent-admin/layer-down
+          cat > .agent-admin/layer-down/dispatch-$(date +%Y%m%d-%H%M%S).json <<EOF
           {
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "commit_sha": "${{ github.sha }}",
@@ -71,4 +76,4 @@ jobs:
           }
           EOF
           
-          echo "✅ Ripple dispatch recorded"
+          echo "✅ Layer-down dispatch recorded"

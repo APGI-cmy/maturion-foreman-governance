@@ -1,10 +1,10 @@
 # ECOSYSTEM_VOCABULARY.md
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Type**: Tier-2 Canon (Operational Canon)  
 **Authority**: CS2 (Johan Ras / APGI-cmy) — CS2-Approved via issue "Formalize ECOSYSTEM_VOCABULARY.md & Adjust Foreman Agent Modalities"  
 **Effective Date**: 2026-02-21  
-**Layer-Down Status**: PUBLIC_API — Mandatory layer-down to all consumer repositories  
+**Layer-Down Status**: PUBLIC_API — Mandatory layer down to all consumer repositories  
 **Maintained By**: Governance Administrator  
 **Referenced By**: All agent contracts (especially Foreman and Orchestrator agents)
 
@@ -46,6 +46,9 @@ This is a **living document**: vocabulary grows as the ecosystem evolves. All ad
 | **living agent** | Noun | An agent operating under the Living Agent System (LAS) framework — governed by a four-phase canonical contract (Preflight-Induction-Build-Handover), session memory, escalation protocols, and evidence-first operations. Living agents are self-governing, auditable, and continuously improving. | All agents in the Maturion ecosystem are living agents when bound to LIVING_AGENT_SYSTEM.md. | ❌ A static script or simple prompt is not a living agent — it lacks the self-governance, memory, and escalation infrastructure. |
 | **wave** | Noun | A time-boxed, architecturally-bounded unit of work assigned to one or more builders under FM supervision. Each wave has a defined scope, Red QA suite, builder assignments, and a completion gate (100% GREEN + evidence). Waves are sequential by default; parallel only when explicitly authorized. | FM plans waves; builders execute within waves. | ❌ A wave is not a sprint or iteration in the agile sense — waves have strict entry/exit criteria and require FM sign-off before and after. |
 | **governance gap** | Noun | A missing, incomplete, ambiguous, or inconsistent governance artifact, rule, or process that leaves agents without clear guidance. Governance gaps must be escalated to CS2 and tracked until resolved. Operating in a governance gap without escalation is a governance violation. | GAP analysis surfaces governance gaps. FM escalates gaps found during session work. | ❌ A governance gap is not a TODO or enhancement — it is an active deficiency that may block correct agent behavior and must be treated as a priority issue. |
+| **layering down** | Verb / Process | The process of distributing governance artifacts (canons, templates, agent contracts, schemas) from the canonical governance repository to downstream consumer repositories. This is a **cross-repository** propagation mechanism that establishes governance alignment. Layering down is triggered when PUBLIC_API canon files are created or modified. | Governance Administrator layers down new canon files to all consumer repos. Layer-down creates issues in consumer repos for integration. | ❌ Do not confuse with _rippling_ (within-repo integration). Layering down is the cross-repo **distribution** of artifacts; rippling is the subsequent **integration** of those artifacts within the consumer repo. |
+| **layering up** | Verb / Process | The reverse of layering down: the process of propagating learnings, proposals, governance improvements, and strategic feedback from consumer repositories back to the canonical governance repository. This enables bidirectional governance evolution grounded in real-world execution evidence. | Consumer repo governance-liaison creates layer-up issue with lessons learned. Governance Administrator validates and integrates the learning into canon. | ❌ Do not confuse with _escalation_ (blocking issue). Layer-up is a **learning and improvement** flow; escalation is an authority boundary breach requiring CS2 intervention. |
+| **rippling** | Verb / Process | The process of integrating governance artifacts **within a single repository** to ensure consistency across all files, systems, agent contracts, templates, and references. Rippling executes after layering down to align the entire repository with newly received governance. Rippling may include contract alignment (rare), cross-reference updates, template synchronization, and LOCKED section synchronization. Rippling does NOT trigger cross-repo propagation. | After layering down ECOSYSTEM_VOCABULARY.md, the consumer repo ripples to update all agent contracts that reference it, synchronize templates, and update cross-references. | ❌ Do not confuse with _layering_ (cross-repo distribution). Rippling is **intra-repository** integration; layering is **inter-repository** propagation. Rippling completes the integration of layered artifacts locally. |
 
 ---
 
@@ -82,7 +85,7 @@ This table maps the above vocabulary to **agent operating modes** — specifical
 ---
 
 **Authority**: CS2 (Johan Ras / APGI-cmy)  
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Effective Date**: 2026-02-21  
-**Layer-Down Status**: PUBLIC_API — ripple to all consumer repos mandatory  
-**Last Updated**: 2026-02-21
+**Layer-Down Status**: PUBLIC_API — layer down to all consumer repos mandatory  
+**Last Updated**: 2026-02-21 (v1.1.0: Added layering down/up/rippling definitions)
