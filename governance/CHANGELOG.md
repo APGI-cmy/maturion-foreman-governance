@@ -64,6 +64,46 @@ Each entry follows this structure:
 
 ## Change History
 
+### [GOVERNANCE-LAYER-UP-PROTOCOL] - 2026-02-21 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) via issue "[CANON] Define GOVERNANCE_LAYER_UP_PROTOCOL.md and CANON_INVENTORY schema for automated layer-up of local governance extensions"  
+**Effective Date**: 2026-02-21  
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to all consumer repositories
+
+**Summary**: Created `GOVERNANCE_LAYER_UP_PROTOCOL.md` as a new canonical protocol defining automated layer-up for local governance extensions when consumer repo version exceeds canonical version. Complements existing `LAYER_UP_PROTOCOL.md` (manual layer-up for learnings) with automated detection, canonization candidate PR creation, CS2 approval gate, and integration/rejection flows. Added `canon_entry_schema` section to `CANON_INVENTORY.json` documenting optional version guard fields (canonical_version, local_version, local_extension, layer_up_status) for tracking local extensions and layer-up processing state. Schema section is for documentation only; existing 176 canon entries are not retroactively modified.
+
+**Affected Artifacts**:
+- `governance/canon/GOVERNANCE_LAYER_UP_PROTOCOL.md` (NEW v1.0.0 - PUBLIC_API canon)
+  - SHA256: 4ff8cec4cae38d0ce47129defcd861622fcc5d96c5589fc110db41b0a296a142
+  - Defines: local extension detection, layer-up triggers, canonization candidate PR template, CS2 approval gate, version guard fields, integration/rejection workflows, CANON_INVENTORY schema extension
+- `governance/CANON_INVENTORY.json` (UPDATED — Added GOVERNANCE_LAYER_UP_PROTOCOL entry and canon_entry_schema section, total_canons: 176→177, last_updated: 2026-02-21, generation_timestamp: 2026-02-21T16:30:00Z)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED — Added GOVERNANCE_LAYER_UP_PROTOCOL entry in Layer-Down/Layer-Up section)
+- `governance/CHANGELOG.md` (UPDATED — This entry)
+
+**Migration Required**: NO for existing consumer repositories (additive changes only)
+
+**Migration Guidance**: Consumer repositories should implement auto-listener for local extension detection (optional but recommended). Manual layer-up via existing `LAYER_UP_PROTOCOL.md` remains valid. Consumer repos with local extensions should track them in `.agent-admin/governance/local-extensions.json` per Section 7.2 of the new protocol.
+
+**Rationale**:
+1. Close the bidirectional governance loop by automating detection and propagation of local governance extensions
+2. Prevent governance fragmentation by tracking all local extensions explicitly with canonization decision path
+3. Enable controlled innovation in consumer repos with clear path to canonization
+4. Provide full audit trail for local extensions and layer-up processing
+5. Complement manual layer-up (learnings) with automated layer-up (version advances)
+
+**Impact**:
+- Governance repo: New automated layer-up protocol for local extensions
+- Consumer repos: Can implement auto-listener for local extension detection (optional)
+- CANON_INVENTORY: Schema documentation added for version guard fields (no retroactive changes to existing entries)
+- All repos: Bidirectional governance evolution now fully documented and enforceable
+
+**References**:
+- Issue: "[CANON] Define GOVERNANCE_LAYER_UP_PROTOCOL.md and CANON_INVENTORY schema for automated layer-up of local governance extensions"
+- Related Protocols: LAYER_UP_PROTOCOL.md, CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md, GOVERNANCE_RIPPLE_MODEL.md
+
+---
+
 ### [ECOSYSTEM-VOCAB-FOREMAN-MODALITIES] - 2026-02-21 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
