@@ -242,9 +242,75 @@ Automated validators MUST:
 
 ---
 
+## SECTION 4: AGENT CREATION BUNDLE REQUIREMENTS
+
+All new specialist agent contracts MUST be accompanied by the full creation bundle defined in `AGENT_CREATION_BUNDLE_REQUIREMENTS.md`. Validation of these items is REQUIRED before the agent is declared active.
+
+### 4.1 Tier 2 Knowledge Stubs Present
+
+- **Requirement**: MANDATORY at agent creation
+- **Validation**: `.agent-workspace/[specialist-id]/knowledge/` directory exists with required files
+- **Required Files**:
+  - `domain-flag-index.md` - Domain capability flags and activation states (non-empty)
+  - `specialist-registry.md` - Known orchestrators and related specialists (non-empty)
+- **Severity if Missing**: BLOCKER - Specialist has no Tier 2 operational context; agent incomplete
+
+### 4.2 Agent Registry Entry
+
+- **Requirement**: MANDATORY at agent creation
+- **Validation**: Entry exists in `governance/AGENT_REGISTRY.json` for this specialist
+- **Required Fields**: `agent_id`, `agent_class: specialist`, `domain`, `orchestrator_link`, `status: active`, `registered_date`
+- **Severity if Missing**: BLOCKER - Specialist invisible to orchestrators; cannot be delegated to
+
+### 4.3 CANON_INVENTORY.json Entry
+
+- **Requirement**: MANDATORY at agent creation
+- **Validation**: `governance/CANON_INVENTORY.json` entry exists for the contract file with full SHA256 (no placeholder)
+- **Severity if Missing**: BLOCKER - Contract not tracked in governance inventory; alignment gate fails
+
+### 4.4 Routing Update Confirmed
+
+- **Requirement**: MANDATORY at agent creation
+- **Validation**: Registered orchestrator's specialist list updated to include this agent, OR explicit note with rationale if standalone
+- **Severity if Missing**: HIGH - Specialist unreachable from orchestration layer
+
+### 4.5 Pre-Handover Proof (Commissioning Evidence)
+
+- **Requirement**: MANDATORY before agent declared active
+- **Validation**: `.agent-workspace/[specialist-id]/memory/session-001-*.md` exists with commissioning evidence
+- **Required Content**: Tier 1 + Tier 2 knowledge load verified, CS2-approved issue reference, outcome: ✅ COMPLETE
+- **Severity if Missing**: HIGH - No evidence agent was commissioned, not just filed
+
+---
+
+## SECTION 5: PROXY AUTHORITY PRE-CHECK
+
+Before creating or accepting a specialist contract as valid, the creating authority MUST verify CS2 authorization per `PROXY_AUTHORITY_MODEL.md`.
+
+### 5.1 CS2-Approved Issue Exists
+
+- **Requirement**: MANDATORY
+- **Validation**: A GitHub issue explicitly authorising this specialist's creation exists and was CS2-approved
+- **Severity if Missing**: BLOCKER - No authority to create; governance violation
+
+### 5.2 Proxy Authority Language (if Foreman-created)
+
+- **Requirement**: MANDATORY when Foreman created the contract (not CS2 directly)
+- **Validation**: Authorising issue contains the required proxy grant pattern:
+  `"For this issue only, CS2 grants Foreman proxy authority to create/modify [agent name(s)]..."`
+- **Severity if Missing**: BLOCKER - Foreman acted without explicit proxy authority; governance violation
+
+### 5.3 Contract Provenance Recorded
+
+- **Requirement**: MANDATORY
+- **Validation**: YAML frontmatter includes `metadata.authority_issue: "#NNN"` referencing the CS2-approved issue
+- **Severity if Missing**: HIGH - Contract creation authority unverifiable
+
+---
+
 ## VALIDATION SUMMARY
 
-**Total Required Sections**: 9 mandatory components + 3 specialist-specific + 3 validation  
+**Total Required Sections**: 9 mandatory components + 3 specialist-specific + 3 validation + 5 bundle + 3 proxy  
 **Compliance Threshold**: 100% (ALL items MUST be ✅)  
 **Character Limit**: < 30,000 characters (BLOCKING)  
 **Version Requirement**: Living Agent System v6.2.0  
@@ -255,8 +321,8 @@ Automated validators MUST:
 ## Authority
 
 **Living Agent System**: v6.2.0  
-**Checklist Version**: 1.0.0  
+**Checklist Version**: 1.1.0  
 **Authority**: CS2 (Johan Ras)  
 **Canonical Home**: APGI-cmy/maturion-foreman-governance  
-**Last Updated**: 2026-02-20  
+**Last Updated**: 2026-02-21  
 **Review Frequency**: Quarterly

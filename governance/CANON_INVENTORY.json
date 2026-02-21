@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-20T12:05:28Z",
-  "total_canons": 177,
-  "generation_timestamp": "2026-02-19T08:08:00Z",
+  "last_updated": "2026-02-21",
+  "total_canons": 180,
+  "generation_timestamp": "2026-02-21T07:13:00Z",
   "canons": [
     {
       "filename": ".agent.schema.md",
@@ -185,7 +185,7 @@
       "version": "1",
       "file_hash": "963eed45e027",
       "effective_date": "unknown",
-      "description": "This document defines the only legitimate process by which software agents may be introduced (\u201crecruited\u201d) into the governance system administered by the Foreman.",
+      "description": "This document defines the only legitimate process by which software agents may be introduced (“recruited”) into the governance system administered by the Foreman.",
       "type": "canon",
       "path": "governance/canon/AGENT_RECRUITMENT.md",
       "layer_down_status": "PUBLIC_API",
@@ -479,7 +479,7 @@
     },
     {
       "filename": "COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md",
-      "version": "1.1.0 \u2014 ACTIVE OPERATIONAL GOVERNANCE",
+      "version": "1.1.0 — ACTIVE OPERATIONAL GOVERNANCE",
       "file_hash": "d9d45cb972b7",
       "effective_date": "2026-01-03 (Activation), 2025-12-24 (Original)",
       "description": "This document formally defines the **Cognitive Capability Orchestration Model** for the Maturion ecosystem.",
@@ -680,7 +680,7 @@
       "version": "3.0.0",
       "file_hash": "27cb87ee3a04",
       "effective_date": "2026-02-17",
-      "description": "This policy establishes the canonical escalation hierarchy, triggers, procedures, and authority chain for the Maturion ecosystem, including model-specific cognitive escalation (Sonnet\u2192Opus/o1).",
+      "description": "This policy establishes the canonical escalation hierarchy, triggers, procedures, and authority chain for the Maturion ecosystem, including model-specific cognitive escalation (Sonnet→Opus/o1).",
       "type": "canon",
       "path": "governance/canon/ESCALATION_POLICY.md",
       "layer_down_status": "PUBLIC_API",
@@ -1142,7 +1142,7 @@
       "version": "1.0",
       "file_hash": "23d86014f109",
       "effective_date": "unknown",
-      "description": "This document defines the **Initialization Completeness Gate** \u2014 a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
+      "description": "This document defines the **Initialization Completeness Gate** — a mandatory governance gate that verifies repository initialization completeness before architecture, build, or execution activities...",
       "type": "canon",
       "path": "governance/canon/INITIALIZATION_COMPLETENESS_GATE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1384,7 +1384,7 @@
       "version": "1.0.0",
       "file_hash": "1faef6d0741c",
       "effective_date": "2025-12-25",
-      "description": "This document formally defines the **authority boundary** between:\n- **Foreman (FM)** \u2014 execution authority within repositories\n- **Maturion** \u2014 control-plane authority for platform actions (GitHub)",
+      "description": "This document formally defines the **authority boundary** between:\n- **Foreman (FM)** — execution authority within repositories\n- **Maturion** — control-plane authority for platform actions (GitHub)",
       "type": "canon",
       "path": "governance/canon/PLATFORM_AUTHORITY_BOUNDARY_AND_DELEGATION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
@@ -1615,7 +1615,7 @@
       "version": "1",
       "file_hash": "d2c96ce6d14c",
       "effective_date": "unknown",
-      "description": "This rule enforces alignment between a PR\u2019s declared scope\nand the files actually modified in the PR.",
+      "description": "This rule enforces alignment between a PR’s declared scope\nand the files actually modified in the PR.",
       "type": "canon",
       "path": "governance/canon/SCOPE_TO_DIFF_RULE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1890,7 +1890,7 @@
       "version": "1.1.0",
       "file_hash": "0ff730650dd3",
       "effective_date": "2026-02-20",
-      "description": "Defines orchestrator and specialist agent roles, authority model, lifecycle, and governance integration. Includes Registry Decision section \u2014 agent registration lives in AGENT_REGISTRY.json, not CANON_INVENTORY.",
+      "description": "Defines orchestrator and specialist agent roles, authority model, lifecycle, and governance integration. Includes Registry Decision section — agent registration lives in AGENT_REGISTRY.json, not CANON_INVENTORY.",
       "type": "canon",
       "path": "governance/canon/ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md",
       "layer_down_status": "PUBLIC_API",
@@ -1950,6 +1950,39 @@
       "path": "governance/AGENT_REGISTRY.json",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "bea6e92602c407730d0f6539538f4ffad1eff9bb092d569c449ce975fdd30b98"
+    },
+    {
+      "filename": "THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md",
+      "version": "1.0.0",
+      "file_hash": "dfbf032c0e50",
+      "effective_date": "2026-02-21",
+      "description": "Canonical 3-tier agent knowledge architecture. Defines Tier 1 (constitutional/immutable, SHA256-verified), Tier 2 (operational domain knowledge in .agent-workspace/<agent>/knowledge/), and Tier 3 (ephemeral session context). Governs knowledge acquisition, staleness detection, and inter-tier interaction rules for all agent classes.",
+      "type": "canon",
+      "path": "governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "dfbf032c0e5054613ffe2ecece98a2624032acfdb593880cacadd520733d8c93"
+    },
+    {
+      "filename": "AGENT_CREATION_BUNDLE_REQUIREMENTS.md",
+      "version": "1.0.0",
+      "file_hash": "47fa11a5447d",
+      "effective_date": "2026-02-21",
+      "description": "Defines the minimum required outputs for every new agent creation: contract file, Tier 2 knowledge stubs, AGENT_REGISTRY.json entry, routing update, and pre-handover commissioning proof. No agent is active until all five components are present and verified.",
+      "type": "canon",
+      "path": "governance/canon/AGENT_CREATION_BUNDLE_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "47fa11a5447d30cf2deb7a4be82800c0db6f2ea04770390a98160b009d0df17d"
+    },
+    {
+      "filename": "PROXY_AUTHORITY_MODEL.md",
+      "version": "1.0.0",
+      "file_hash": "4f95fb1aaada",
+      "effective_date": "2026-02-21",
+      "description": "Canonical model for CS2-to-Foreman proxy authority delegation. Defines required language pattern, scope constraints, verification protocol, and lifecycle for proxy grants. Extends CS2_AGENT_FILE_AUTHORITY_MODEL.md Level 3. All agents must verify explicit proxy authority before accepting Foreman-created agent files.",
+      "type": "canon",
+      "path": "governance/canon/PROXY_AUTHORITY_MODEL.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "4f95fb1aaadaa99adb1503782024c55def41e176326011d385f685a8a476049c"
     }
   ]
 }
