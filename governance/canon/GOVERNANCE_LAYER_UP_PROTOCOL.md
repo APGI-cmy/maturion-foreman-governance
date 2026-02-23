@@ -152,8 +152,8 @@ PR is merged to consumer repo's main branch
 
 | Field | Type | Description | Values |
 |-------|------|-------------|--------|
-| `canonical_version` | string | The canonical version of this governance file (same as `version` field) | Semantic version (e.g., "1.2.0") |
-| `local_version` | string (optional) | If a consumer repo has a local extension, the highest known consumer version | Semantic version (e.g., "1.3.0") or null |
+| `canonical_version` | string | The canonical version of this governance file; same as `version` field and intentionally redundant to support version-guard tooling in consumer repos | Semantic version (e.g., "1.2.0") |
+| `local_version` | string \| null | If a consumer repo has a local extension, the highest known consumer version; null when no extension exists | Semantic version (e.g., "1.3.0") |
 | `local_extension` | boolean (optional) | Whether any consumer repo has a local extension (local_version > canonical_version) | `true` or `false` (default: false) |
 | `layer_up_status` | string (optional) | Current status of layer-up processing for this file | See Section 4.6 |
 
@@ -165,22 +165,45 @@ PR is merged to consumer repo's main branch
 
 ### 4.6 Layer-Up Status Values
 
-The `layer_up_status` field tracks the state of automated layer-up processing:
+The `layer_up_status` field tracks the state of automated layer-up processing.
 
-| Status | Description | Transition Trigger |
-|--------|-------------|-------------------|
-| `NONE` | No layer-up activity (default state) | Initial state for all files |
-| `PENDING` | Local extension detected but canonization candidate PR not yet opened | Auto-listener detects local extension |
-| `PROPOSED` | Canonization candidate PR opened in governance repo | Auto-listener creates PR |
-| `APPROVED` | Canonization candidate PR approved by CS2 | CS2 approves PR |
-| `INTEGRATED` | Canonization candidate PR merged; canonical version updated | PR merged to main |
-| `REJECTED` | Canonization candidate PR rejected by CS2 | CS2 rejects/closes PR |
+> **Normative requirement**: These are the **only** allowed values for `layer_up_status`. Consumers and automation **MUST** use these exact strings. Additional or alternate values are **PROHIBITED**.
 
-**State Transitions**:
+| Status | Description | Transition Trigger | Actor |
+|--------|-------------|-------------------|-------|
+| `NONE` | No layer-up activity (default state) | Initial state for all files | — |
+| `PENDING` | Local extension detected but canonization candidate PR not yet opened | Auto-listener detects local extension | Consumer auto-listener |
+| `PROPOSED` | Canonization candidate PR opened in governance repo | Auto-listener creates PR | Consumer auto-listener |
+| `APPROVED` | Canonization candidate PR approved by CS2 | CS2 approves PR | CS2 (Johan Ras) |
+| `INTEGRATED` | Canonization candidate PR merged; canonical version updated | PR merged to main | governance-repo-administrator |
+| `REJECTED` | Canonization candidate PR rejected by CS2 | CS2 rejects/closes PR | CS2 (Johan Ras) |
+
+#### Authoritative State Machine
+
 ```
-NONE → PENDING → PROPOSED → APPROVED → INTEGRATED → NONE (cycle complete)
-                          └→ REJECTED → NONE (rejection path)
+[NONE] ──(extension detected)──► [PENDING]
+  ▲                                   │
+  │                    (PR opened)    │
+  │                                   ▼
+  │                             [PROPOSED]
+  │                               │       │
+  │               (CS2 approves)  │       │ (CS2 rejects)
+  │                               ▼       ▼
+  │                         [APPROVED]  [REJECTED]
+  │                               │       │
+  │          (PR merged to main)  │       │ (targeted layer-down complete)
+  │                               ▼       │
+  └────────────── (cycle) ── [INTEGRATED]─┘
 ```
+
+**Actor responsibilities**:
+- `NONE → PENDING`: Consumer auto-listener (on PR merge when `consumer_version > canonical_version`)
+- `PENDING → PROPOSED`: Consumer auto-listener (after opening canonization candidate PR)
+- `PROPOSED → APPROVED`: CS2 (Johan Ras) via PR approval
+- `PROPOSED → REJECTED`: CS2 (Johan Ras) via PR rejection/close
+- `APPROVED → INTEGRATED`: governance-repo-administrator (after merging canonization PR and updating CANON_INVENTORY.json)
+- `INTEGRATED → NONE`: governance-repo-administrator (after successful layer-down propagation complete)
+- `REJECTED → NONE`: governance-repo-administrator (after targeted layer-down to originating consumer repo complete)
 
 **Persistence**: Status is recorded in `CANON_INVENTORY.json` and preserved across layer-up cycles.
 
@@ -522,6 +545,16 @@ Upon rejection (Step 5), the governance ripple system triggers targeted layer-do
 **Optional**: If auto-listener is not implemented, manual layer-up per `LAYER_UP_PROTOCOL.md` is acceptable but less efficient.
 
 **Recommendation**: Implement auto-listener as GitHub Action triggered on merge to main branch.
+
+#### 9.2.1 Reference Implementation (non-canon)
+
+The canonical protocol above defines **what** the auto-listener must do. The GitHub Action / workflow implementation is **non-canon** and lives in each consumer repository, not here.
+
+- The reference implementation for consumer repos (e.g., `maturion-isms`) will be tracked via a follow-up issue/PR in the relevant consumer repository.
+- Placeholder: TBD — see issue to be created in the consumer repo (e.g., `APGI-cmy/maturion-isms`) to implement the auto-listener GitHub Action.
+- Once the reference implementation exists, its location will be linked here as a non-normative pointer.
+
+**Note**: This section is informational only. The protocol requirements in Sections 5 and 6 remain authoritative regardless of which implementation is chosen.
 
 ---
 

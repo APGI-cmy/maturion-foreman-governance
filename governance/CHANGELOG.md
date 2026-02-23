@@ -75,7 +75,7 @@ Each entry follows this structure:
 
 **Affected Artifacts**:
 - `governance/canon/GOVERNANCE_LAYER_UP_PROTOCOL.md` (NEW v1.0.0 - PUBLIC_API canon)
-  - SHA256: 4ff8cec4cae38d0ce47129defcd861622fcc5d96c5589fc110db41b0a296a142
+  - SHA256: 5f00356e78a11466290758c6f9363cb646546295e01597b0a1e0969629b11bd7
   - Defines: local extension detection, layer-up triggers, canonization candidate PR template, CS2 approval gate, version guard fields, integration/rejection workflows, CANON_INVENTORY schema extension
 - `governance/CANON_INVENTORY.json` (UPDATED — Added GOVERNANCE_LAYER_UP_PROTOCOL entry and canon_entry_schema section, total_canons: 176→177, last_updated: 2026-02-21, generation_timestamp: 2026-02-21T16:30:00Z)
 - `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED — Added GOVERNANCE_LAYER_UP_PROTOCOL entry in Layer-Down/Layer-Up section)
