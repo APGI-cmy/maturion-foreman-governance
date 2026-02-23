@@ -1,0 +1,213 @@
+name: Governance Layer-Up Intake
+
+# TERMINOLOGY (per ECOSYSTEM_VOCABULARY.md v1.1.0):
+# - LAYERING UP: Reverse flow — propagating learnings/extensions from consumer repos
+#                back to the canonical governance repo.
+# - RIPPLING: Within-repo integration (distinct from cross-repo layering).
+#
+# PURPOSE:
+#   Receive layer-up issues dispatched from consumer repos (e.g. maturion-isms via
+#   layer-up-dispatch.yml), ensure required labels exist, acknowledge the intake,
+#   and route to the governance-repo-administrator for action.
+#
+# AUTHORITY: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5 (Automated Layer-Up Process)
+#            LAYER_UP_PROTOCOL.md v1.0.0
+#
+# TRIGGER:
+#   Issues opened or labeled in THIS (governance) repo with the "layer-up" label.
+#   This mirrors the ISMS layer-up-dispatch.yml which creates issues here with
+#   labels "layer-up" and "governance-improvement".
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # STEP 1: Ensure required labels exist in this repo (bootstrap gate)
+  # ────────────────────────────────────────────────────────────────────────────
+  ensure-labels:
+    name: Ensure Layer-Up Labels Exist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bootstrap labels
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          declare -A LABELS=(
+            ["layer-up"]="0075ca|Governance layer-up: issue escalated from consumer repo"
+            ["governance-improvement"]="e4e669|Governance improvement proposal for canonical governance"
+            ["layer-up-intake"]="d93f0b|Layer-up issue received and being processed by governance-repo-administrator"
+            ["layer-up-resolved"]="0e8a16|Layer-up resolved; layer-down close-loop dispatched to originating repo"
+          )
+          for LABEL_NAME in "${!LABELS[@]}"; do
+            IFS='|' read -r COLOR DESCRIPTION <<< "${LABELS[$LABEL_NAME]}"
+            gh label create "$LABEL_NAME" \
+              --repo "${{ github.repository }}" \
+              --color "$COLOR" \
+              --description "$DESCRIPTION" 2>/dev/null \
+              && echo "Created label: $LABEL_NAME" \
+              || echo "Label already exists (or skipped): $LABEL_NAME"
+          done
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # STEP 2: Check if this issue is a layer-up intake (has "layer-up" label)
+  # ────────────────────────────────────────────────────────────────────────────
+  check-layer-up:
+    name: Check Layer-Up Label
+    runs-on: ubuntu-latest
+    outputs:
+      is_layer_up: ${{ steps.check.outputs.is_layer_up }}
+      issue_number: ${{ steps.check.outputs.issue_number }}
+    steps:
+      - name: Evaluate label
+        id: check
+        run: |
+          HAS_LAYER_UP="${{ contains(github.event.issue.labels.*.name, 'layer-up') }}"
+          echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+
+          if [ "$HAS_LAYER_UP" = "true" ]; then
+            echo "is_layer_up=true" >> $GITHUB_OUTPUT
+            echo "Issue #${{ github.event.issue.number }} is a layer-up intake — will process"
+          else
+            echo "is_layer_up=false" >> $GITHUB_OUTPUT
+            echo "Issue #${{ github.event.issue.number }} does not carry 'layer-up' label — skipping"
+          fi
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # STEP 3: Acknowledge and route the layer-up issue
+  # ────────────────────────────────────────────────────────────────────────────
+  acknowledge-layer-up:
+    name: Acknowledge and Route Layer-Up
+    runs-on: ubuntu-latest
+    needs: [ensure-labels, check-layer-up]
+    if: needs.check-layer-up.outputs.is_layer_up == 'true'
+    steps:
+      - name: Parse originating reference from issue body
+        id: parse
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+
+          ISSUE_BODY=$(gh issue view "$ISSUE_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --json body --jq '.body' 2>/dev/null || echo "")
+
+          # Extract "Reference: OWNER/REPO#NUMBER" line written by layer-up-dispatch.yml
+          # Format: "Reference: APGI-cmy/maturion-isms#428" (last line of issue body)
+          # NOTE: This format must match the format used in governance-layer-up-close-loop.yml
+          REFERENCE_LINE=$(echo "$ISSUE_BODY" | grep -oE 'Reference: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+' | head -1 || echo "")
+          ORIGIN_REPO=$(echo "$REFERENCE_LINE" | sed 's/Reference: //' | sed 's/#[0-9]*//' || echo "")
+          ORIGIN_ISSUE=$(echo "$REFERENCE_LINE" | grep -oE '#[0-9]+' | tr -d '#' || echo "")
+
+          echo "reference_line=$REFERENCE_LINE" >> $GITHUB_OUTPUT
+          echo "origin_repo=$ORIGIN_REPO" >> $GITHUB_OUTPUT
+          echo "origin_issue=$ORIGIN_ISSUE" >> $GITHUB_OUTPUT
+
+          echo "Parsed reference: repo=$ORIGIN_REPO issue=#$ORIGIN_ISSUE"
+
+      - name: Add layer-up-intake label
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          gh issue edit "${{ needs.check-layer-up.outputs.issue_number }}" \
+            --repo "${{ github.repository }}" \
+            --add-label "layer-up-intake" 2>/dev/null \
+            || echo "Could not add layer-up-intake label (may already exist or missing)"
+
+      - name: Post acknowledgment and routing comment
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          if [ -n "$ORIGIN_REPO" ] && [ -n "$ORIGIN_ISSUE" ]; then
+            ORIGIN_REF="**Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE})"
+          else
+            ORIGIN_REF="_Originating issue reference not detected in issue body — please check format._"
+          fi
+
+          COMMENT=$(cat <<'COMMENT_EOF'
+## ✅ Layer-Up Received — Governance Intake Acknowledged
+
+This layer-up issue has been received by the canonical governance repository and routed for processing.
+
+COMMENT_EOF
+          )
+          COMMENT="${COMMENT}
+${ORIGIN_REF}
+- **Received at**: ${TIMESTAMP}
+- **Workflow run**: ${RUN_URL}
+
+---
+
+### Action Required: governance-repo-administrator
+
+Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5.3 (CS2 Review)**:
+
+1. **Validate** the evidence package in the originating issue
+2. **Classify** priority: CRITICAL / HIGH / MEDIUM / LOW
+3. **Assess** whether this is a local extension (consumer version > canonical) or a manual layer-up (learnings/improvements)
+4. **Take canonical action**:
+   - For local extensions: open a canonization candidate PR per Section 5.2
+   - For manual layer-ups: log in governance CHANGELOG and take action per LAYER_UP_PROTOCOL.md
+5. **Close this issue** once governance action is complete — the close-loop workflow will automatically notify the originating repo
+
+> When this issue is **closed**, the \`governance-layer-up-close-loop\` workflow will dispatch a layer-down
+> notification back to the originating repo, completing the full round-trip.
+
+---
+*Governance Layer-Up Intake — governance-layer-up-intake.yml*
+*Authority: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0 | LAYER_UP_PROTOCOL.md v1.0.0*"
+
+          gh issue comment "$ISSUE_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --body "$COMMENT" \
+            || echo "Could not post acknowledgment comment on issue #$ISSUE_NUMBER"
+
+      - name: Comment on originating issue (cross-link)
+        if: steps.parse.outputs.origin_repo != '' && steps.parse.outputs.origin_issue != ''
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          GOV_ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+          GOV_ISSUE_URL="${{ github.server_url }}/${{ github.repository }}/issues/${GOV_ISSUE_NUMBER}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          COMMENT="## ✅ Layer-Up Received in Governance Repository
+
+Your layer-up request has been received and is being processed.
+
+- **Governance issue**: [${GOV_ISSUE_URL}](${GOV_ISSUE_URL})
+- **Received at**: ${TIMESTAMP}
+- **Status**: Awaiting governance-repo-administrator review
+
+Once governance takes canonical action and closes the governance issue, you will receive an automated
+layer-down notification here to complete the full round-trip.
+
+---
+*Cross-link posted by governance-layer-up-intake.yml*
+*Authority: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*"
+
+          gh issue comment "$ORIGIN_ISSUE" \
+            --repo "$ORIGIN_REPO" \
+            --body "$COMMENT" 2>/dev/null \
+            || echo "Could not post cross-link on originating issue ${ORIGIN_REPO}#${ORIGIN_ISSUE} (token may lack cross-repo permissions)"
+
+      - name: Record intake evidence
+        run: |
+          DATESTAMP=$(date -u +%Y%m%dT%H%M%SZ)
+          echo "Layer-up intake recorded at ${DATESTAMP} for issue #${{ needs.check-layer-up.outputs.issue_number }}"
+          echo "Origin: ${{ steps.parse.outputs.origin_repo }}#${{ steps.parse.outputs.origin_issue }}"
+          echo "Governance issue: ${{ github.repository }}#${{ needs.check-layer-up.outputs.issue_number }}"

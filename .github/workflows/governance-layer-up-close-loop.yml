@@ -1,0 +1,329 @@
+name: Governance Layer-Up Close Loop
+
+# TERMINOLOGY (per ECOSYSTEM_VOCABULARY.md v1.1.0):
+# - LAYERING DOWN: Cross-repo distribution of governance artifacts (this workflow's close-loop action).
+# - LAYERING UP: Reverse flow from consumer repos — the request that this workflow closes the loop on.
+#
+# PURPOSE:
+#   When a layer-up issue in the governance repo is closed (i.e. governance has taken canonical
+#   action), extract the originating consumer repo/issue reference from the issue body and
+#   dispatch a layer-down close-loop notification back to the originating repo.
+#   This completes the full round-trip:
+#     consumer layer-up issue → governance issue → governance action → layer-down back to consumer
+#
+# AUTHORITY: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Sections 5.4 (Integration) and 5.5 (Rejection)
+#            CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md v1.1.0
+#            LAYER_UP_PROTOCOL.md v1.0.0
+#
+# TRIGGER:
+#   A layer-up issue in THIS (governance) repo is closed.
+#   Only fires when the issue carries the "layer-up" label.
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # GATE: only process layer-up issues
+  # ────────────────────────────────────────────────────────────────────────────
+  check-layer-up:
+    name: Check Layer-Up Label on Closed Issue
+    runs-on: ubuntu-latest
+    outputs:
+      is_layer_up: ${{ steps.check.outputs.is_layer_up }}
+      issue_number: ${{ steps.check.outputs.issue_number }}
+    steps:
+      - name: Evaluate label
+        id: check
+        run: |
+          HAS_LAYER_UP="${{ contains(github.event.issue.labels.*.name, 'layer-up') }}"
+          echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+
+          if [ "$HAS_LAYER_UP" = "true" ]; then
+            echo "is_layer_up=true" >> $GITHUB_OUTPUT
+            echo "Closed issue #${{ github.event.issue.number }} carries 'layer-up' label — will close loop"
+          else
+            echo "is_layer_up=false" >> $GITHUB_OUTPUT
+            echo "Closed issue #${{ github.event.issue.number }} is not a layer-up issue — skipping"
+          fi
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # MAIN: parse origin, dispatch close-loop layer-down notification
+  # ────────────────────────────────────────────────────────────────────────────
+  close-loop:
+    name: Dispatch Close-Loop Layer-Down to Originating Repo
+    runs-on: ubuntu-latest
+    needs: check-layer-up
+    if: needs.check-layer-up.outputs.is_layer_up == 'true'
+
+    steps:
+      - name: Parse originating reference from issue body
+        id: parse
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+
+          ISSUE_BODY=$(gh issue view "$ISSUE_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --json body --jq '.body' 2>/dev/null || echo "")
+
+          ISSUE_TITLE=$(gh issue view "$ISSUE_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --json title --jq '.title' 2>/dev/null || echo "")
+
+          # Extract "Reference: OWNER/REPO#NUMBER" line written by layer-up-dispatch.yml
+          # Format: "Reference: APGI-cmy/maturion-isms#428" (last line of issue body)
+          REFERENCE_LINE=$(echo "$ISSUE_BODY" | grep -oE 'Reference: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+' | head -1 || echo "")
+          ORIGIN_REPO=$(echo "$REFERENCE_LINE" | sed 's/Reference: //' | sed 's/#[0-9]*//' || echo "")
+          ORIGIN_ISSUE=$(echo "$REFERENCE_LINE" | grep -oE '#[0-9]+' | tr -d '#' || echo "")
+          # ORIGIN_ISSUE_REF: use issue number as string, or 'unknown' if parsing failed (for use in title only)
+          ORIGIN_ISSUE_REF="${ORIGIN_ISSUE:-unknown}"
+
+          # Determine resolution type from issue state_reason (if available via gh)
+          STATE_REASON=$(gh issue view "$ISSUE_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --json stateReason --jq '.stateReason // "completed"' 2>/dev/null || echo "completed")
+
+          echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
+          echo "reference_line=$REFERENCE_LINE" >> $GITHUB_OUTPUT
+          echo "origin_repo=$ORIGIN_REPO" >> $GITHUB_OUTPUT
+          echo "origin_issue=$ORIGIN_ISSUE" >> $GITHUB_OUTPUT
+          echo "state_reason=$STATE_REASON" >> $GITHUB_OUTPUT
+
+          echo "Parsed reference: repo=$ORIGIN_REPO issue=#$ORIGIN_ISSUE"
+          echo "State reason: $STATE_REASON"
+
+      - name: Create close-loop issue in originating repo
+        id: create_close_loop
+        if: steps.parse.outputs.origin_repo != '' && steps.parse.outputs.origin_issue != ''
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          GOV_ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+          GOV_ISSUE_URL="${{ github.server_url }}/${{ github.repository }}/issues/${GOV_ISSUE_NUMBER}"
+          ISSUE_TITLE="${{ steps.parse.outputs.issue_title }}"
+          STATE_REASON="${{ steps.parse.outputs.state_reason }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          DATE=$(date -u +"%Y-%m-%d")
+
+          # Determine resolution label/text based on state reason
+          if [ "$STATE_REASON" = "not_planned" ]; then
+            RESOLUTION_TYPE="REJECTED"
+            RESOLUTION_LABEL="Layer-Down (Rejected)"
+            RESOLUTION_NOTE="The governance team has reviewed and **not planned / rejected** this layer-up request.
+The originating consumer repo should revert any local extensions to the canonical baseline per
+**GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5.5 (Rejection and Rollback)**."
+          else
+            RESOLUTION_TYPE="RESOLVED"
+            RESOLUTION_LABEL="Layer-Down (Resolved)"
+            RESOLUTION_NOTE="The governance team has **resolved and completed** canonical action for this layer-up request.
+Any canonical updates have been propagated. Please verify alignment and update
+\`GOVERNANCE_ALIGNMENT.md\` with the latest canonical version."
+          fi
+
+          CLOSE_LOOP_TITLE="[Layer-Down / Close-Loop] Governance Response to Layer-Up #${ORIGIN_ISSUE_REF} — ${RESOLUTION_TYPE} (${DATE})"
+
+          CLOSE_LOOP_BODY="## Layer-Down Close-Loop: Governance Response
+
+This issue closes the round-trip loop for your layer-up request.
+
+| Field | Value |
+|-------|-------|
+| **Originating Issue** | [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE}) |
+| **Governance Issue** | [${GOV_ISSUE_URL}](${GOV_ISSUE_URL}) |
+| **Resolution** | ${RESOLUTION_TYPE} |
+| **Closed At** | ${TIMESTAMP} |
+| **Dispatched By** | governance-layer-up-close-loop.yml |
+
+---
+
+## Resolution
+
+${RESOLUTION_NOTE}
+
+---
+
+## Next Steps
+
+Per **CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md v1.1.0, Section 6.2 (Layer-Down Steps)**:
+
+1. Review the resolution details in the governance issue: [${GOV_ISSUE_URL}](${GOV_ISSUE_URL})
+2. Update your local governance files if canonical updates were made
+3. Update \`GOVERNANCE_ALIGNMENT.md\` with the new canonical version
+4. Close this issue once local ripple (within-repo integration) is complete
+
+---
+
+**References**:
+- [GOVERNANCE_LAYER_UP_PROTOCOL.md](https://github.com/APGI-cmy/maturion-foreman-governance/blob/main/governance/canon/GOVERNANCE_LAYER_UP_PROTOCOL.md)
+- [CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md](https://github.com/APGI-cmy/maturion-foreman-governance/blob/main/governance/canon/CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md)
+- [LAYER_UP_PROTOCOL.md](https://github.com/APGI-cmy/maturion-foreman-governance/blob/main/governance/canon/LAYER_UP_PROTOCOL.md)
+
+---
+*Auto-generated by governance-layer-up-close-loop.yml*
+*Authority: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0 | CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md v1.1.0*
+*Reference: ${{ github.repository }}#${GOV_ISSUE_NUMBER}*"
+
+          # Check if originating repo is accessible
+          if ! gh repo view "$ORIGIN_REPO" --json name &>/dev/null; then
+            echo "Warning: Cannot access $ORIGIN_REPO — token may lack cross-repo permissions"
+            echo "close_loop_created=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          CREATED_ISSUE=$(gh issue create \
+            --repo "$ORIGIN_REPO" \
+            --title "$CLOSE_LOOP_TITLE" \
+            --body "$CLOSE_LOOP_BODY" \
+            --label "layer-down,governance" 2>/dev/null || echo "")
+
+          if [ -n "$CREATED_ISSUE" ]; then
+            CLOSE_LOOP_ISSUE_NUMBER=$(echo "$CREATED_ISSUE" | grep -oE '[0-9]+$' || echo "")
+            echo "close_loop_created=true" >> $GITHUB_OUTPUT
+            echo "close_loop_issue_number=${CLOSE_LOOP_ISSUE_NUMBER}" >> $GITHUB_OUTPUT
+            echo "close_loop_issue_url=${CREATED_ISSUE}" >> $GITHUB_OUTPUT
+            echo "Created close-loop issue in ${ORIGIN_REPO}: ${CREATED_ISSUE}"
+          else
+            echo "close_loop_created=false" >> $GITHUB_OUTPUT
+            echo "close_loop_issue_number=" >> $GITHUB_OUTPUT
+            echo "close_loop_issue_url=" >> $GITHUB_OUTPUT
+            echo "Could not create close-loop issue in ${ORIGIN_REPO} — see logs"
+          fi
+
+      - name: Comment on governance issue with close-loop outcome
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          GOV_ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          CLOSE_LOOP_CREATED="${{ steps.create_close_loop.outputs.close_loop_created }}"
+          CLOSE_LOOP_URL="${{ steps.create_close_loop.outputs.close_loop_issue_url }}"
+          STATE_REASON="${{ steps.parse.outputs.state_reason }}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          if [ -z "$ORIGIN_REPO" ] || [ -z "$ORIGIN_ISSUE" ]; then
+            COMMENT="## ⚠️ Layer-Up Close Loop — No Originating Reference Found
+
+This issue was closed but no originating repo/issue reference was found in the issue body.
+The close-loop layer-down could not be dispatched automatically.
+
+If this issue originated from a consumer repo, please manually notify the originating team.
+
+- **Workflow run**: ${RUN_URL}
+
+---
+*governance-layer-up-close-loop.yml*"
+
+          elif [ "$CLOSE_LOOP_CREATED" = "true" ]; then
+            COMMENT="## ✅ Layer-Up Close Loop — Layer-Down Dispatched
+
+Governance action is complete. A close-loop layer-down notification has been sent back to the
+originating repository.
+
+- **Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE})
+- **Close-loop issue**: ${CLOSE_LOOP_URL}
+- **Resolution**: ${STATE_REASON}
+- **Workflow run**: ${RUN_URL}
+
+The full round-trip is complete:
+\`consumer layer-up → governance intake → governance action → layer-down close-loop\`
+
+---
+*governance-layer-up-close-loop.yml*
+*Authority: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*"
+
+          else
+            COMMENT="## ⚠️ Layer-Up Close Loop — Manual Action Required
+
+This layer-up issue was closed but the close-loop layer-down could not be automatically
+dispatched to the originating repo. This may be due to missing cross-repo token permissions.
+
+- **Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE})
+- **Resolution**: ${STATE_REASON}
+- **Workflow run**: ${RUN_URL}
+
+**Please manually notify** the originating repo by creating an issue in \`${ORIGIN_REPO}\`
+referencing this governance issue and describing the resolution.
+
+---
+*governance-layer-up-close-loop.yml*"
+          fi
+
+          gh issue comment "$GOV_ISSUE_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --body "$COMMENT" \
+            || echo "Could not post close-loop comment on governance issue #$GOV_ISSUE_NUMBER"
+
+      # Post a direct cross-link comment on the originating issue when:
+      # - The originating reference was parsed successfully (origin_repo + origin_issue both set), AND
+      # - The close-loop issue was NOT created (e.g. token lacks cross-repo write access).
+      # When close_loop_created=true, the close-loop issue already serves as the cross-link.
+      - name: Comment on originating issue (close-loop cross-link)
+        if: steps.parse.outputs.origin_repo != '' && steps.parse.outputs.origin_issue != '' && steps.create_close_loop.outputs.close_loop_created != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          GOV_ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
+          GOV_ISSUE_URL="${{ github.server_url }}/${{ github.repository }}/issues/${GOV_ISSUE_NUMBER}"
+          STATE_REASON="${{ steps.parse.outputs.state_reason }}"
+
+          if [ "$STATE_REASON" = "not_planned" ]; then
+            RESOLUTION_TEXT="The governance team has reviewed and **not planned / rejected** this layer-up request."
+          else
+            RESOLUTION_TEXT="The governance team has **resolved and completed** canonical action."
+          fi
+
+          COMMENT="## ✅ Governance Response — Layer-Up Loop Closed
+
+Your layer-up request has been processed by the canonical governance repository.
+
+${RESOLUTION_TEXT}
+
+- **Governance issue**: [${GOV_ISSUE_URL}](${GOV_ISSUE_URL})
+- **Resolution**: ${STATE_REASON}
+
+Please review the governance issue for details and update your local alignment accordingly.
+
+---
+*Cross-link posted by governance-layer-up-close-loop.yml*
+*Authority: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*"
+
+          gh issue comment "$ORIGIN_ISSUE" \
+            --repo "$ORIGIN_REPO" \
+            --body "$COMMENT" 2>/dev/null \
+            || echo "Could not post cross-link on originating issue ${ORIGIN_REPO}#${ORIGIN_ISSUE}"
+
+      - name: Add layer-up-resolved label to governance issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          gh issue edit "${{ needs.check-layer-up.outputs.issue_number }}" \
+            --repo "${{ github.repository }}" \
+            --add-label "layer-up-resolved" 2>/dev/null \
+            || echo "Could not add layer-up-resolved label (may be missing or already set)"
+
+      - name: Record close-loop evidence
+        if: always()
+        run: |
+          echo "=== Layer-Up Close Loop Evidence ==="
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "Governance issue: ${{ github.repository }}#${{ needs.check-layer-up.outputs.issue_number }}"
+          echo "Origin repo: ${{ steps.parse.outputs.origin_repo }}"
+          echo "Origin issue: #${{ steps.parse.outputs.origin_issue }}"
+          echo "State reason: ${{ steps.parse.outputs.state_reason }}"
+          echo "Close-loop created: ${{ steps.create_close_loop.outputs.close_loop_created }}"
+          echo "Close-loop URL: ${{ steps.create_close_loop.outputs.close_loop_issue_url }}"
+          echo "======================================"
