@@ -64,6 +64,52 @@ Each entry follows this structure:
 
 ## Change History
 
+### [PRE-BUILD-REALITY-CHECK-CANON] - 2026-02-23 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) — issue APGI-cmy/maturion-foreman-governance#459  
+**Effective Date**: 2026-02-23  
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to all consumer repositories
+
+**Summary**: Created new governance canon `PRE_BUILD_REALITY_CHECK_CANON.md` v1.0.0 establishing a mandatory Pre-Build Reality Check gate. The gate must be executed by the Foreman (POLC: Checking) before any ticket generation or build wave begins, requiring a structured multi-party review of all pre-build artifacts against original user intent. Updated `LIVING_AGENT_SYSTEM.md` (added §2.5), `foreman-v2.agent.md` (added Phase 2.5), and `CANON_INVENTORY.json` (entry 179). Ripple evidence created.
+
+**Affected Artifacts**:
+- `governance/canon/PRE_BUILD_REALITY_CHECK_CANON.md` (NEW v1.0.0 — PUBLIC_API canon)
+  - SHA256: 0e3296398d33d95ea56ee944b4ade17c60bd93dd2e0885f32f5d15e725ee49cd
+  - Defines: Pre-Build Reality Check gate process, §4.3 review checklist (7 sections), mandatory participants, gap handling protocol, Reality Check Log evidence format, retroactive application mandate
+- `governance/canon/LIVING_AGENT_SYSTEM.md` (UPDATED — Added §2.5 Pre-Build Reality Check Gate section)
+- `.github/agents/foreman-v2.agent.md` (UPDATED — Added Phase 2.5 between Induction and Build phases)
+- `governance/CANON_INVENTORY.json` (UPDATED — Added PRE_BUILD_REALITY_CHECK_CANON entry, total_canons: 178→179, last_updated: 2026-02-23)
+- `governance/CHANGELOG.md` (UPDATED — This entry)
+- `governance/ripple/RIPPLE-PRE-BUILD-REALITY-CHECK-CANON-20260223.md` (NEW — Ripple evidence)
+
+**Migration Required**: NO for build process changes (additive gate; no existing artifacts removed or invalidated)
+
+**Migration Guidance**: The following actions are required across all active modules and consumer repositories:
+
+1. **Module manifests** — Add `Pre-Build Reality Check Gate: PRE_BUILD_REALITY_CHECK_CANON.md v1.0.0 (MANDATORY)` to each module manifest's required delivery gates section
+2. **Active modules in pre-build phase** (MAT, ROADMAP, AIMC, PIT, RADAM) — Execute full §4.3 gate before next build wave
+3. **Active modules past 50% build** — Execute Retrospective Reality Check per §6.2 of the canon
+4. **Consumer repo governance liaisons** — Create layer-down issues per GOVERNANCE_RIPPLE_MODEL.md
+
+**Rationale**:
+1. Prior delivery stages (FRS, TRS, Architecture, Plan, Red QA) do not individually guarantee full user intent capture
+2. MAT, ROADMAP, and AIMC retrospectives identified requirement gaps discovered only during or after build
+3. A mandatory pre-build gate with multi-party sign-off closes this structural delivery gap
+4. The One-Time Build Law (BUILD_PHILOSOPHY.md) requires builds to be right from the start
+
+**Impact**:
+- Foreman: New mandatory Phase 2.5 gate added to delivery lifecycle
+- All modules: Must execute Pre-Build Reality Check before each major build phase
+- Consumer repos: Must ripple the new canon and add gate reference to module manifests
+- Build timeline: Adds one structured review checkpoint; reduces downstream rework risk
+
+**References**:
+- Issue: APGI-cmy/maturion-foreman-governance#459
+- Related canons: BUILD_PHILOSOPHY.md, FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md, GOVERNANCE_RIPPLE_MODEL.md
+
+---
+
 ### [AIMC-STRATEGY-CANONIZATION] - 2026-02-23 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  

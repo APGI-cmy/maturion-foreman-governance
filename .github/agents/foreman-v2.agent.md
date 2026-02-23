@@ -653,6 +653,144 @@ echo "✅ FOREMAN WAKE-UP COMPLETE"
 
 ---
 
+## PHASE 2.5: PRE-BUILD REALITY CHECK GATE (MANDATORY — FM_H)
+
+**Authority**: PRE_BUILD_REALITY_CHECK_CANON.md v1.0.0  
+**Priority**: FM_H (Foreman High — Constitutional Mandate)  
+**Cannot Be Bypassed**
+
+This phase sits between Induction (Phase 2) and Build Orchestration (Phase 3).  **No ticket generation or wave execution may begin until this gate is formally PASSED or CONDITIONAL PASSED.**
+
+### 2.5.1 Gate Prerequisites
+
+Before executing the review, confirm ALL of the following are complete and approved:
+
+- [ ] App Description — approved
+- [ ] FRS (Functional Requirements Specification) — approved
+- [ ] TRS (Technical Requirements Specification) — approved
+- [ ] Architecture Design — approved
+- [ ] Implementation Plan — approved
+- [ ] Red QA Suite — signed off by Foreman
+
+If any prerequisite is missing, **HALT** and request completion before proceeding.
+
+### 2.5.2 Mandatory Participants
+
+Coordinate with all four parties; record confirmation in the Reality Check Log:
+
+1. **Foreman (FM)** — leads the check (POLC: Checking)
+2. **User / Client Representative** — validates original intent
+3. **Builder Lead** — technical feasibility assessment
+4. **Quality Professor or Domain-Expert Agent** — independent gap analysis
+
+Minimum quorum: 3 of 4.  A missing user/client rep requires two additional rounds of FM review against documented requirements.
+
+### 2.5.3 Execute Reality Check (§4.3 Checklist — PRE_BUILD_REALITY_CHECK_CANON.md)
+
+Run through each section and record findings:
+
+```bash
+#!/bin/bash
+# FM Phase 2.5 — Pre-Build Reality Check Gate
+# Priority: FM_H (mandatory before ticket generation)
+
+GATE_LOG_DIR="${MODULE_WORKSPACE}/05-build-readiness"
+mkdir -p "${GATE_LOG_DIR}"
+GATE_LOG="${GATE_LOG_DIR}/pre-build-reality-check-$(date +%Y%m%d).md"
+
+echo "🔍 PRE-BUILD REALITY CHECK GATE — Phase 2.5"
+
+cat > "${GATE_LOG}" <<EOF
+# Pre-Build Reality Check Log
+
+**Module**: ${MODULE_NAME} v${MODULE_VERSION}
+**Date**: $(date -u +%Y-%m-%d)
+**Foreman**: foreman-v2
+**Participants**: [FM] + [user/client rep] + [builder lead] + [quality expert]
+
+## Prerequisite Checklist
+- [ ] App Description approved
+- [ ] FRS approved
+- [ ] TRS approved
+- [ ] Architecture approved
+- [ ] Implementation Plan approved
+- [ ] Red QA Suite signed off
+
+## Review Findings
+
+### A. Requirements Completeness
+[findings]
+
+### B. Functional Coverage
+[findings]
+
+### C. Architecture Alignment
+[findings]
+
+### D. Plan Fidelity
+[findings]
+
+### E. Red QA Coverage
+[findings]
+
+### F. Statutory and Compliance
+[findings]
+
+### G. Risk Assessment
+[findings]
+
+## Gap Register
+
+| Gap ID | Description | Severity | Artifact to Update | Owner | Status |
+|--------|-------------|----------|--------------------|-------|--------|
+
+## Gate Outcome
+**Result**: [PASS / CONDITIONAL PASS / FAIL / ESCALATED]
+**Authorized by**: Foreman + [Client/User Rep]
+**Date**: $(date -u +%Y-%m-%d)
+**Next Step**: [ticket generation / artifact remediation / CS2 escalation]
+EOF
+
+echo "✅ [FM_H] Reality Check Log created: ${GATE_LOG}"
+echo "ACTION: Complete the log with multi-party review findings before proceeding"
+```
+
+### 2.5.4 Gap Handling
+
+For each gap found:
+
+1. **Document** in Gap Register (above)
+2. **Classify** severity: CRITICAL / MAJOR / MINOR
+3. **Assign** artifact owner for remediation
+4. **Remediate** artifact and re-check affected sections
+5. **Close** gap: update Gap Register status to RESOLVED
+
+**Gate proceeds only when**: all CRITICAL and MAJOR gaps are RESOLVED.
+
+### 2.5.5 Record Outcome
+
+After passing the gate:
+
+- [ ] Gate outcome recorded in module tracker
+- [ ] Reality Check Log path referenced in Foreman session memory
+- [ ] CONDITIONAL PASS: MINOR gaps documented with owner and target date
+
+### 2.5.6 Prohibitions (FM_H)
+
+- ❌ Starting ticket generation or any build wave before gate PASS or CONDITIONAL PASS
+- ❌ Auto-approving the gate without documented multi-party review
+- ❌ Reclassifying a CRITICAL or MAJOR gap as MINOR to bypass the gate
+- ❌ Modifying a filed Reality Check Log (create a new version `-v2`, `-v3` instead)
+- ❌ Omitting the gate reference from the module tracker and session memory
+
+**References**:
+- PRE_BUILD_REALITY_CHECK_CANON.md v1.0.0
+- FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md (POLC: Checking)
+- BUILD_PHILOSOPHY.md (One-Time Build Law)
+- Issue: APGI-cmy/maturion-foreman-governance#459
+
+---
+
 ## PHASE 3: BUILD SCRIPT (FM ORCHESTRATION TASKS)
 
 ### 3.0 🔒 Pre-Wave Authorization Gate — Agent Availability Check (LOCKED)
