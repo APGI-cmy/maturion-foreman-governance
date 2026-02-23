@@ -67,7 +67,7 @@ Each entry follows this structure:
 ### [AIMC-STRATEGY-CANONIZATION] - 2026-02-23 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
-**Approved By**: CS2 (Johan Ras) via PR #1182  
+**Approved By**: CS2 (Johan Ras) — original strategy approved via PR #1182; canonization executed in this PR  
 **Effective Date**: 2026-02-23  
 **Layer-Down Status**: PUBLIC_API — Mandatory ripple to maturion-isms and related consumer repositories
 
