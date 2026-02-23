@@ -2002,7 +2002,7 @@
     {
       "filename": "AIMC_STRATEGY.md",
       "version": "1.0.0",
-      "file_hash": "dfe539fe2901",
+      "file_hash": "dfe539fe290148e6e7c9112fa269b5cd0124c456954de1d75c9a7870cd79b2dc",
       "effective_date": "2026-02-23",
       "description": "This document defines the Maturion AI Management Centre (AIMC) \u2014 a centralised AI capability platform enabling all ISMS modules to access diverse AI capabilities via a single, governed, plug-and-play integration point",
       "type": "canon",
