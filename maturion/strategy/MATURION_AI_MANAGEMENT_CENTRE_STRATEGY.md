@@ -179,10 +179,10 @@ The AIMC defines eight capability types. All modules request capabilities by nam
 |---|---|---|---|---|
 | `advisory` | Conversational guidance, recommendations, Q&A | GitHub Models (GPT-4o) | OpenAI direct | All modules |
 | `analysis` | Scoring, structured reasoning, evaluation | GitHub Models (o3-mini) | OpenAI o1 | MAT, risk, incident-intelligence, PIT |
-| `deep-search` | Real-time research, threat intel, standards lookup | Perplexity API | OpenAI web search | incident-intelligence, risk, isms-core |
+| `deep-search` | Real-time research, threat intel, standards lookup | Perplexity API *(Phase 5 — future)* | OpenAI web search | incident-intelligence, risk, isms-core |
 | `image-generation` | Diagrams, visuals, course materials | OpenAI DALL-E 3 | Flux (open source) | course-crafter, maturity-roadmap |
 | `video-generation` | Course videos, explainers, walkthroughs | Runway API | (future: Sora) | course-crafter |
-| `document-generation` | Long-form structured documents, reports | GitHub Models (Claude 3.5) | Anthropic direct | All modules |
+| `document-generation` | Long-form structured documents, reports | Anthropic (Claude 3.5 Sonnet) | GitHub Models (GPT-4o) | All modules |
 | `embeddings` | Vector embeddings for semantic search / RAG | OpenAI embeddings | Supabase pgvector | All modules (knowledge retrieval) |
 | `algorithm-execution` | Structured analytical models, scoring algorithms | OpenAI o3 | Claude Opus | xdetect, risk, MAT |
 
