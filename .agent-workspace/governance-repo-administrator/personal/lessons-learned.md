@@ -345,3 +345,22 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - **Authority**: WAVES_5_TO_7_INFRA_FE_WIRING_LESSONS.md Appendix A
 
 ---
+
+## Session 20260223 (Session 050)
+
+### Lesson: Silent Failure in Cross-Repo Issue Creation Masks Root Cause
+- **Context**: ISMS layer-up-dispatch.yml creates issues in governance repo with labels that don't exist there, causing silent failure
+- **Pattern**: Cross-repo `gh issue create --label <label>` silently fails when labels don't exist in target repo
+- **Action**: Always bootstrap required labels in the RECEIVING repo's intake workflow — do not rely on labels existing beforehand
+
+### Lesson: Layer-Up Loop Requires Two Governance-Side Workflows
+- **Context**: The full layer-up round-trip (consumer → governance → consumer) requires both an intake workflow and a close-loop workflow
+- **Pattern**: Intake = trigger on issue opened/labeled; Close-loop = trigger on issue closed
+- **Action**: Design layer-up automation as two complementary workflows mirroring the existing layer-down-dispatch pattern
+
+### Lesson: Cross-Reference in Issue Body is the Routing Key
+- **Context**: The originating repo/issue reference (`Reference: OWNER/REPO#NUMBER`) written by layer-up-dispatch.yml is the only reliable link back to the consumer
+- **Pattern**: Always parse `Reference:` line from issue body for close-loop routing
+- **Action**: Governance intake and close-loop workflows must extract this reference; ISMS format is `Reference: APGI-cmy/maturion-isms#NUMBER`
+
+---
