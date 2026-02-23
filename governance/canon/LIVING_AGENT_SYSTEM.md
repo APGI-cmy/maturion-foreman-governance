@@ -87,6 +87,28 @@ This leads to:
 - Blockers encountered
 - Governance gaps identified
 
+### 2.5 Pre-Build Reality Check Gate (Foreman — MANDATORY)
+
+**Authority**: PRE_BUILD_REALITY_CHECK_CANON.md v1.0.0  
+**Priority**: FM_H — Cannot be bypassed  
+**Applies To**: All module deliveries (MAT, ROADMAP, PIT, AIMC, RADAM, and successors)
+
+Before any ticket generation or build wave begins, the Foreman MUST execute the Pre-Build Reality Check gate:
+
+1. **Verify prerequisites complete**: App Description, FRS, TRS, Architecture, Implementation Plan, Red QA Suite — all approved
+2. **Coordinate multi-party review**: Foreman + client/user rep + builder lead + quality/domain expert
+3. **Execute §4.3 checklist** (PRE_BUILD_REALITY_CHECK_CANON.md): requirements completeness, functional coverage, architecture alignment, plan fidelity, Red QA coverage, statutory compliance, risk assessment
+4. **Document findings**: Record all gaps in Reality Check Log with severity classification
+5. **Resolve gaps**: All CRITICAL and MAJOR gaps must be closed; re-check affected sections after each fix
+6. **Record gate outcome**: PASS / CONDITIONAL PASS / FAIL / ESCALATED in module tracker and session memory
+7. **Proceed only on PASS or CONDITIONAL PASS**: Build must not start while gate is FAIL or ESCALATED
+
+**Evidence Required**: Reality Check Log at `<module>/05-build-readiness/pre-build-reality-check-YYYYMMDD.md` or equivalent path per canon.
+
+**Retroactive Mandate**: Modules in active delivery must apply this gate before their next build wave.
+
+---
+
 ### 3. Session Closure Phase (Handover)
 
 **Executable**: `.github/scripts/session-closure.sh`
