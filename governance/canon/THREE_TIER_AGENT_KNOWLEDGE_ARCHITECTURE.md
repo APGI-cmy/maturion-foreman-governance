@@ -249,6 +249,7 @@ These issues serve as the canonical reference for how consumer repositories impl
 - `governance/canon/AGENT_DELEGATION_PROTOCOL.md` — Delegation mechanics
 - `governance/canon/LAYER_UP_PROTOCOL.md` — Tier 2/3 knowledge promotion path
 - `governance/canon/LIVING_AGENT_SYSTEM.md` — Governance framework v6.2.0
+- `governance/canon/AIMC_STRATEGY.md` — Runtime application AI platform (embeddings capability for RAG/knowledge retrieval)
 - `governance/CANON_INVENTORY.json` — Canonical governance inventory (Tier 1 validation source)
 
 ---

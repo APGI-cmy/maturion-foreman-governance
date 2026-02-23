@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-02-21 (GOVERNANCE_LAYER_UP_PROTOCOL.md - automated layer-up for local extensions)
+**Last Updated**: 2026-02-23 (AIMC_STRATEGY.md - AI Management Centre canonical strategy)
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -77,6 +77,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `AGENT_RECRUITMENT.md` | Defines rules for recruiting and activating agents | Readiness |
 | `AGENT_ROLE_GATE_APPLICABILITY.md` | Maps which PR gates apply to which agent roles | PR-gates |
 | `AGENT_SELF_GOVERNANCE_PROTOCOL.md` | **NEW (2026-01-21)** - Defines universal agent self-governance check before every job, agent-specific alignment rules, and mandatory attestation requirements | Layer-down, Readiness, PR-gates |
+| `AIMC_STRATEGY.md` | **NEW v1.0.0 (2026-02-23) PUBLIC_API** - Canonical AI Management Centre (AIMC) strategy defining centralised AI capability platform for all Maturion ISMS modules. Defines 8 capability types (advisory, analysis, deep-search, image-generation, video-generation, document-generation, embeddings, algorithm-execution), provider strategy (GitHub Models, OpenAI, Anthropic, Perplexity, Runway), Memory Centre architecture (session + persistent), agent persona namespace separation (app vs build), 6-phase build sequence, and 9 constitutional governance principles prohibiting direct provider calls. Canonized from maturion/strategy/MATURION_AI_MANAGEMENT_CENTRE_STRATEGY.md via PR #1182 | Layer-down, Readiness, PR-gates |
 | `APP_STARTUP_REQUIREMENTS_DECLARATION.md` | Defines application commissioning and startup requirements | Readiness, Layer-down |
 | `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` | Defines architecture artifact completeness criteria | Readiness, PR-gates |
 | `AUDIT_READINESS_MODEL.md` | Defines audit trail and evidence requirements | Readiness |

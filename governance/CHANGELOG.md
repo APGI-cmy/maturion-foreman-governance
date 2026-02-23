@@ -64,6 +64,54 @@ Each entry follows this structure:
 
 ## Change History
 
+### [AIMC-STRATEGY-CANONIZATION] - 2026-02-23 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) — original strategy approved via PR #1182; canonization executed in this PR  
+**Effective Date**: 2026-02-23  
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to maturion-isms and related consumer repositories
+
+**Summary**: Canonized the AI Management Centre (AIMC) strategy from `maturion/strategy/MATURION_AI_MANAGEMENT_CENTRE_STRATEGY.md` (PR #1182) as formal Governance Canon at `governance/canon/AIMC_STRATEGY.md`. Defines the centralised AI capability platform for all Maturion ISMS modules, establishing capability taxonomy (advisory, analysis, deep-search, image-generation, video-generation, document-generation, embeddings, algorithm-execution), provider strategy (GitHub Models, OpenAI, Anthropic, Perplexity, Runway), Memory Centre architecture, agent persona governance, phased build sequence, and constitutional rules prohibiting direct provider calls from modules.
+
+**Affected Artifacts**:
+- `governance/canon/AIMC_STRATEGY.md` (NEW v1.0.0 - PUBLIC_API canon)
+  - SHA256: dfe539fe290148e6e7c9112fa269b5cd0124c456954de1d75c9a7870cd79b2dc
+  - Defines: 8 AI capability types, provider selection strategy, Memory Centre (session + persistent), agent persona namespace separation (app personas vs. build agents), 6-phase build sequence, 9 constitutional governance principles, enforcement requirements
+- `governance/CANON_INVENTORY.json` (UPDATED — Added AIMC_STRATEGY entry, total_canons: 177→178, last_updated: 2026-02-23)
+- `governance/CHANGELOG.md` (UPDATED — This entry)
+
+**Migration Required**: NO for existing repositories (new capability, additive only)
+
+**Migration Guidance**: Consumer repositories implementing ISMS modules must:
+1. Route all AI calls through `@maturion/ai-centre` gateway (no direct provider calls)
+2. Request capabilities by abstract name (advisory, analysis, etc.) never by provider/model
+3. Include `organisationId` in all AI calls for tenant isolation
+4. Store app-facing advisor personas in `packages/ai-centre/agents/` (NOT `.github/agents/`)
+5. Await Phase 1 availability before adding AI features to modules
+
+**Rationale**:
+1. Prevent module-level AI integration duplication and vendor lock-in
+2. Centralise memory governance per MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md
+3. Enable single-point key management and cost attribution
+4. Provide fix-once-deploy-everywhere upgrade path for AI capabilities
+5. Enforce constitutional separation between build agents and runtime app personas
+6. Establish phased rollout preventing premature AI feature implementation
+
+**Impact**:
+- Governance repo: New constitutional canon for runtime AI platform governance
+- maturion-isms repo: MUST implement AIMC gateway before module AI features
+- All ISMS modules: Prohibited from direct AI provider calls; must use AIMC abstraction
+- Build agents: Namespace separation enforced (`.github/agents/` ≠ `packages/ai-centre/agents/`)
+- Memory Centre: Constitutional authority for application-layer memory management
+- Provider strategy: All provider keys centrally managed by CS2; modules never hold keys
+
+**References**:
+- Source: maturion/strategy/MATURION_AI_MANAGEMENT_CENTRE_STRATEGY.md
+- Provenance: PR #1182 (commit 6cd642c5932788d571d6ec16a5c7c63e05fd2c2e)
+- Related canons: COGNITIVE_CAPABILITY_ORCHESTRATION_MODEL.md (build-time), MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md (memory governance), THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md (knowledge management)
+
+---
+
 ### [GOVERNANCE-LAYER-UP-PROTOCOL] - 2026-02-21 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  

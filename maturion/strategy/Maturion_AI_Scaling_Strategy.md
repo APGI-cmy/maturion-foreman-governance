@@ -1,5 +1,14 @@
 # Maturion AI Usage & Scaling Strategy
 
+> ⚠️ **SCOPE CLARIFICATION** (2026-02-23)
+>
+> This document governs **build-time agent model tiering** (Foreman/builder agent model assignment: Tier A/B/C).
+> It does NOT govern runtime AI capability routing for ISMS modules.
+>
+> For runtime AI capability selection, provider dispatch, memory integration, and escalation routing
+> across all ISMS modules, refer to the authoritative canon:
+> **[governance/canon/AIMC_STRATEGY.md v1.0.0](../../governance/canon/AIMC_STRATEGY.md)**
+
 **Version:** 1.0\
 **Author:** CS2 (Johan Ras)\
 **Purpose:** Define scalable AI model strategy for Orchestrator +
