@@ -75,7 +75,7 @@ metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-02-17
+  last_updated: 2026-02-23
   contract_pattern: four_phase_canonical
 ---
 
@@ -287,6 +287,7 @@ See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full template.
 ```markdown
 ## Evidence
 ✅ CANON_INVENTORY integrity verified
+✅ CANON-HASH-001: `.github/scripts/validate-canon-hashes.sh` run — 0 failures confirmed
 ✅ Protected file enforcement checked
 ✅ Ripple execution completed (if canon changed)
 ✅ CHANGELOG updated (if governance changes)
@@ -463,6 +464,7 @@ The following sections preserve the detailed 56 requirement mappings from the or
 ## Execution Checklist (embed in PRs as needed)
 - Wake-up run & working-contract generated (REQ-AS-005, REQ-EO-006)
 - CANON_INVENTORY integrity + provenance confirmed (REQ-CM-001/002)
+- [ ] CANON-HASH-001: Run `.github/scripts/validate-canon-hashes.sh`; assert 0 failures before merge
 - Ripple scan + registry validated (REQ-RA-001..006)
 - Gate interface workflows intact (REQ-GC-001..005, REQ-MGI-001..005)
 - Evidence + memories compliant (REQ-ER-001..004, REQ-EO-005)
