@@ -34,7 +34,9 @@ All three agent contracts in `maturion-foreman-governance` have been patched:
 
 ---
 
-## Consumer Repo Ripple (PENDING)
+## Consumer Repo Ripple (PENDING — Token Confirmed Valid)
+
+**Token Status**: `MATURION_BOT_TOKEN` confirmed fine-grained and not expired (2026-02-24).
 
 Issues must be created in each consumer repository instructing their governance liaisons to patch all agent contracts with Section 4.3.
 
