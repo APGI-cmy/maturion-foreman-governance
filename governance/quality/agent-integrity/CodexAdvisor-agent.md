@@ -18,7 +18,7 @@ governance:
   degraded_on_placeholder_hashes: true
   execution_identity:
     name: "Maturion Bot"
-    secret: "MATURION_BOT_TOKEN"
+    secret: ENV_SECRET_NOT_STORED_IN_REPO
     safety:
       never_push_main: true
       write_via_pr_by_default: true
