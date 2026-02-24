@@ -19,6 +19,9 @@ Each agent maintains a persistent workspace to enable:
 │   └── .archive/               # Older sessions + monthly summaries
 │       ├── summary-YYYY-MM.md  # Monthly summary
 │       └── sessions-YYYY-MM/   # Full archived sessions
+├── knowledge/                   # Tier 2: Operational domain knowledge (PERSISTENT)
+│   ├── FAIL-ONLY-ONCE.md       # Breach prevention registry (MANDATORY — read every session)
+│   └── index.md                # Knowledge index listing all Tier 2 documents
 ├── working-contract.md         # Current session context (EPHEMERAL)
 ├── environment-health.json     # Last environment check (EPHEMERAL)
 ├── personal/                   # Private learnings (PERSISTENT)
@@ -44,6 +47,7 @@ Each agent maintains a persistent workspace to enable:
 
 ### Persistent (Committed)
 - All `memory/` files - Session history and learning
+- All `knowledge/` files - Tier 2 operational domain knowledge (including `FAIL-ONLY-ONCE.md`)
 - All `personal/` files - Agent-specific learnings
 - All `context/` files - System understanding
 - All `escalation-inbox/` files - Cross-agent coordination

@@ -201,7 +201,13 @@ COORDINATE:
 | Canon update | Advises change | STOPS → escalates to CS2 (no authority) | CA_H |
 | Governance gap | Notes issue | Creates structured escalation document | CA_M |
 
-### 1.3 Canonical Governance Bindings
+### 1.3 FAIL-ONLY-ONCE Attestation (mandatory, every session)
+
+At session start: read `.agent-workspace/CodexAdvisor-agent/knowledge/FAIL-ONLY-ONCE.md` in full; self-attest
+against all Universal Rules (Section A) and matching Conditional Rules (Section B); STOP and resolve any
+violation before continuing; after every breach, append a new entry as part of the RCA commit (non-negotiable).
+
+### 1.4 Canonical Governance Bindings
 
 **Required Reading** (loaded during Induction):
 - `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 - Living Agent framework
