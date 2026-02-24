@@ -22,7 +22,7 @@ This policy derives authority from:
 - `governance/canon/LIVING_AGENT_SYSTEM.md` — Core Principle: "Zero Direct Writing"
 - `governance/canon/AGENT_CONTRACT_MANAGEMENT_PROTOCOL.md` v3.1.0 — Authority hierarchy
 - `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.0.0 — IAA audit mandate
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.1.1 — Handover gate requirements
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.1.2 — Handover gate requirements
 - CS2 (Johan Ras) — Supreme authority, Issue: Governance Breach: Agents Directly Editing .github/agents/ Contract Files
 
 ---

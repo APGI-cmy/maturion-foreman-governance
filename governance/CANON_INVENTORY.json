@@ -2067,7 +2067,7 @@
         {
             "filename": "AGENT_CONTRACT_FILE_PROTECTION_POLICY.md",
             "version": "1.0.0",
-            "file_hash": "9d8052a599933b2d5de97df7b6a15bd61cba9e4a93aa40c3337628b2778170c3",
+            "file_hash": "77f14bc5cb1e4440735a2822fab91ee0723f7743ca6efc393f5cab22848a6b2a",
             "effective_date": "2026-02-24",
             "description": "Constitutional policy: strict prohibition against agents (other than CodexAdvisor with explicit CS2 permission) modifying .github/agents/ contract files. Defines mandatory CodexAdvisor handoff pathway, IAA audit requirements, CI/CD enforcement, and breach protocol.",
             "type": "canon",
@@ -2077,7 +2077,7 @@
             "ripple_notice": "governance/layer-down/AGENT_CONTRACT_FILE_PROTECTION_RIPPLE_NOTICE.md",
             "amendment_authority": "CS2-only",
             "last_updated": "2026-02-24",
-            "file_hash_sha256": "9d8052a599933b2d5de97df7b6a15bd61cba9e4a93aa40c3337628b2778170c3"
+            "file_hash_sha256": "77f14bc5cb1e4440735a2822fab91ee0723f7743ca6efc393f5cab22848a6b2a"
         }
     ]
 }

@@ -14,6 +14,9 @@ jobs:
   agent-contract-audit:
     name: agent-contract/authority-check
     runs-on: ubuntu-latest
+    env:
+      CS2_ACTORS: "APGI-cmy johanras maturion-bot"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,7 +29,7 @@ jobs:
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
 
-          MODIFIED_AGENT_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- '.github/agents/**' '.github/agents/*' 2>/dev/null || \
+          MODIFIED_AGENT_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- '.github/agents/' 2>/dev/null || \
             git diff --name-only "origin/${{ github.event.pull_request.base.ref }}" "HEAD" -- '.github/agents/' 2>/dev/null || echo "")
 
           if [ -z "$MODIFIED_AGENT_FILES" ]; then
@@ -97,7 +100,7 @@ jobs:
 
           # CS2 direct commit (actor is the repo owner) — bypass for CS2 direct action
           ACTOR="${{ github.actor }}"
-          if [ "$ACTOR" = "APGI-cmy" ] || [ "$ACTOR" = "johanras" ] || [ "$ACTOR" = "maturion-bot" ]; then
+          if echo "$CS2_ACTORS" | grep -qw "$ACTOR"; then
             echo "✅ Actor is CS2/repo-owner — direct authority"
             CS2_AUTH_FOUND=true
             POLICY_REF_FOUND=true
@@ -128,7 +131,7 @@ jobs:
           fi
 
           # CS2 direct action is always acceptable
-          if [ "$ACTOR" = "APGI-cmy" ] || [ "$ACTOR" = "johanras" ] || [ "$ACTOR" = "maturion-bot" ]; then
+          if echo "$CS2_ACTORS" | grep -qw "$ACTOR"; then
             CODEX_INVOLVED=true
             echo "✅ CS2 direct action — CodexAdvisor involvement not required"
           fi
