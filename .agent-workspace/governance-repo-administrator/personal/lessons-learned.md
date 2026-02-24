@@ -364,3 +364,21 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - **Action**: Governance intake and close-loop workflows must extract this reference; ISMS format is `Reference: APGI-cmy/maturion-isms#NUMBER`
 
 ---
+
+## Session 20260224 (Session 055)
+
+### Lesson: In-Repo Agent Contract Ripple Before Consumer Ripple
+- **Context**: Layer-down ripple for AGENT_HANDOVER_AUTOMATION.md v1.1.1 §4.3 required patching agent contracts in both the governance repo and all 4 consumer repos
+- **Pattern**: Always patch the governance repo's own agent contracts FIRST, then document consumer repo ripple as PENDING with a ready-to-use issue template
+- **Action**: In-repo patches go in the same PR as the CHANGELOG/ripple-log; consumer repo issues are created separately (CS2 or governance liaison)
+
+### Lesson: Phase 4 Section Renumbering Is a Non-Breaking Syntactic Change
+- **Context**: Inserting a new §4.3 between §4.2 and old §4.3 required renaming old §4.3 → §4.4 in all three agent contracts
+- **Pattern**: Section insertions + renumbering are within GA syntactic authority when canon mandates the new structure
+- **Action**: Verify canon mandates the structure (AGENT_HANDOVER_AUTOMATION.md is constitutional canon), then proceed — no CS2 approval needed for the ripple itself, only for the original canon change
+
+### Lesson: Three-Gate Parity Check Pattern Is Universal
+- **Context**: The §4.3 parity check runs the same three gates in every agent contract: merge-gate/verdict, governance/alignment, stop-and-fix/enforcement
+- **Pattern**: The three gates are fixed; only the priority code prefix (FM_H/CA_H/GA_H) and the specific verdict-check logic change per agent class
+- **Action**: Use this pattern as the template for all future agent contract ripple work involving §4.3
+

@@ -289,3 +289,26 @@ This file is persistent and must accumulate patterns over time. Never reset or c
 - Authority: FINAL_COMPLETE_WAVE_TEST_PROTOCOL.md Section 6.2
 
 ---
+
+## Pattern: Agent Contract Phase 4 Ripple
+
+- Observed: 2026-02-24 (Session 055)
+- Context: When AGENT_HANDOVER_AUTOMATION.md canon is updated with new Phase 4 sections, all agent contracts must be patched
+- Response:
+  1. Read the canon update to understand the exact new section structure
+  2. Inspect each agent contract's Phase 4 section numbers
+  3. Insert new section at the correct position, renumber subsequent sections
+  4. Use agent-specific priority codes (FM_H, CA_H, GA_H, etc.) — do NOT use generic `<Agent>_H` placeholders
+  5. Patch in-repo contracts first, then create consumer repo layer-down issues
+  6. Record ripple log, CHANGELOG entry, session memory
+- Example: AGENT_HANDOVER_AUTOMATION.md §4.3 ripple patched foreman, CodexAdvisor, and governance-repo-administrator contracts; consumer repos pending
+
+## Pattern: CANON_INVENTORY Ripple Tracking Fields
+
+- Observed: 2026-02-24 (Session 055)
+- Context: CANON_INVENTORY.json has no formal ripple tracking schema; tracking fields needed inline on the canon entry
+- Response:
+  - Add `ripple_dispatched` (date), `ripple_log` (path), `ripple_in_repo_status`, `ripple_consumer_status` as inline fields
+  - These fields do not affect hash validation (file_hash_sha256 remains unchanged)
+  - Propose formal schema addition to CS2 if pattern recurs
+

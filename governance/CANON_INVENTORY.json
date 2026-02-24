@@ -171,7 +171,11 @@
       "type": "canon",
       "path": "governance/canon/AGENT_HANDOVER_AUTOMATION.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "6f106031e2d17098aa33f76725959a3d80f98bbe31e9437a684b41537eabeea3"
+      "file_hash_sha256": "6f106031e2d17098aa33f76725959a3d80f98bbe31e9437a684b41537eabeea3",
+      "ripple_dispatched": "2026-02-24",
+      "ripple_log": ".agent-admin/governance/ripple-logs/ripple-agent-handover-parity-20260224.md",
+      "ripple_in_repo_status": "COMPLETE",
+      "ripple_consumer_status": "PENDING — layer-down issues to be created in consumer repos"
     },
     {
       "filename": "AGENT_INDUCTION_PROTOCOL.md",
