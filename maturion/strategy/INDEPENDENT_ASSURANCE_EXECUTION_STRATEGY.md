@@ -204,17 +204,145 @@ The only refinement required is:
 
 ---
 
-# 10. Strategic Next Decision
+# 10. Operational Integration Model
 
-The remaining architectural choice is:
+## 10.1 Assurance Must Be Embedded Pre-Handover
 
-Should Quality Professor be:
+Independent Assurance is **not a post-PR audit**. It must be embedded inside the job execution loop — specifically as a gate that runs before the PR is declared ready for CS2 final review.
 
-1. A permanent structural layer (always active)?
-2. A toggleable escalation layer (risk-triggered)?
-3. A context-aware dynamic reviewer (activated based on change scope and risk profile)?
+Running assurance only after work is "done" defeats the economic purpose: you pay premium review costs on defective work and generate repeated review cycles. The correct model is to resolve defects inside the PR loop before handover.
 
-This decision affects long-term architectural complexity and performance.
+## 10.2 Economic and Operational Driver
+
+Unverified PRs reaching CS2 or human review create compounding cost:
+
+- Each defect found late requires a re-review cycle (premium cost × N iterations).
+- Accumulation of soft approvals undermines governance integrity.
+- Silent drift embeds quietly rather than being caught at source.
+
+The assurance layer **automates the STOP-AND-FIX loop** inside the PR, iterating until PASS is achieved, so that CS2 final audit receives only verified work.
+
+## 10.3 The Assurance Loop
+
+```
+Builder work
+    │
+    ▼
+Assurance verdict (Quality Professor)
+    │
+    ├─ PASS ─────────────────────────────► CS2 final audit
+    │
+    ├─ STOP-AND-FIX ──► Builder fixes ──► re-enter loop
+    │
+    └─ ESCALATE ─────────────────────────► human / CS2 triage
+```
+
+The loop runs inside the PR. Only a PASS verdict advances the PR to CS2 final audit.
+
+---
+
+# 11. Assurance Agent Role: Gate Operator
+
+The Independent Assurance agent (Quality Professor) acts as a **gate operator**, not a reviewer.
+
+**Permitted verdicts:**
+
+| Verdict | Meaning |
+|---|---|
+| `PASS` | Work meets all applicable checks. PR may advance. |
+| `STOP-AND-FIX` | Specific defects found. Builder must resolve before re-submission. |
+| `ESCALATE` | Issue exceeds agent authority (ambiguous canon, systemic risk, policy gap). Requires human or CS2 triage. |
+
+**Constraints:**
+
+- No "soft" approvals (e.g., "mostly good", "acceptable with caveats"). The verdict must be one of the three above.
+- The assurance agent must be **independent from the builder identity** — it cannot be the same agent or role that produced the work under review. This prevents *self-attestation*: a party certifying the quality of their own output, which removes the adversarial pressure that makes independent review valuable.
+- Verdicts must reference specific checks (from Tier 2) that were passed or failed.
+
+---
+
+# 12. 3-Tier Assurance Structure
+
+To keep the assurance system maintainable and canon-aligned, it is organised in three tiers:
+
+**Tier 3 — Canon Definitions**
+Authoritative standards that define what "correct" means:
+- Fully Functional Delivery Standard
+- OPOJD (One PR One Job Definition)
+- Evidence integrity requirements
+- Gate merge conditions
+- Any other governance canon from this repository
+
+**Tier 2 — Checklists / Trigger Tables**
+Concrete, enumerated checks derived from Tier 3 canon, mapped to PR categories.  
+Each entry maps: *canon reference → observable check → pass/fail criterion*.  
+These are the artefacts the assurance agent loads at evaluation time.
+
+**Tier 1 — Agent Contract Phase Scripts**
+Phase-level scripts that:
+1. Identify the PR category (see §13).
+2. Load the appropriate Tier 2 checklist(s).
+3. Execute each check against the PR evidence.
+4. Produce a structured verdict (PASS / STOP-AND-FIX / ESCALATE) with per-check detail.
+
+Tier 3 is owned by governance. Tier 2 is maintained alongside the canon. Tier 1 is the operational execution layer used by the Quality Professor agent.
+
+---
+
+# 13. Category-Specific Evaluation Overlays
+
+Different PR types carry different risk profiles and require different evaluation lenses. A single flat checklist is insufficient.
+
+**Recognised categories and their overlays:**
+
+| Category | Primary concerns |
+|---|---|
+| Build / implementation PR | Functional correctness, test coverage, dependency integrity, OPOJD compliance |
+| Documentation / governance PR | Canon consistency, evidence completeness, no conflicting definitions |
+| CI / workflow changes | Blast radius, security posture, gate bypass risk, reproducibility |
+| Agent contract changes | Role boundary integrity, verdict contract compliance, independence enforcement |
+
+**Implementation approach:**
+
+- Define a **shared core invariants checklist** covering checks that apply to all PR types (e.g., OPOJD compliance, evidence completeness, no self-attestation).
+- Define **category overlays** that extend the core for each PR type above.
+- The Tier 1 script selects `core + overlay(category)` at runtime.
+
+This avoids over-checking low-risk PRs while ensuring high-risk categories (CI, agent contracts) receive proportionate scrutiny.
+
+---
+
+# 14. Phased Adoption
+
+Independent Assurance will be implemented as a **side workstream** running in parallel to current delivery. It will not block existing deadlines.
+
+**Phased introduction:**
+
+1. **Phase A (now):** Define Tier 3 canon references and draft the core invariants checklist. No change to current PR flow.
+2. **Phase B (after Phase A checklist is drafted and reviewed):** Introduce assurance checks as advisory (PASS / flag) on high-risk PR categories only (CI changes, agent contract changes). Builder acts on flags voluntarily.
+3. **Phase C (after Phase B produces stable, low false-positive results):** Assurance verdicts become binding for high-risk categories. STOP-AND-FIX is enforced before handover.
+4. **Phase D (after Phase C is stable across high-risk categories):** Full assurance loop active across all PR categories.
+
+Starting with high-risk PRs only (Phase B) limits surface area while the checklist quality is validated. Advisory mode in Phase B avoids false positives blocking delivery before the system is calibrated.
+
+---
+
+# 15. Strategic Architecture Decision
+
+The architectural question raised in the earlier draft is now resolved.
+
+**Decision: Option 3 — context-aware dynamic reviewer with deterministic triggers.**
+
+Quality Professor activates based on **deterministic, pre-defined triggers** tied to PR category and risk profile (as defined in §13 overlays). Triggers are not discretionary toggles — they are fixed rules evaluated automatically.
+
+**Why not Option 1 (always-on)?**
+Always-on review adds latency and cost to every PR regardless of risk, including trivial documentation changes. It also creates habituation to approval cycles, which dulls responsiveness to genuine failures.
+
+**Why not Option 2 (manual toggle)?**
+A manually toggled escalation layer depends on the builder or reviewer deciding when to invoke it. This introduces self-attestation risk — the same party whose work is under scrutiny decides whether scrutiny is needed. It defeats the independence requirement.
+
+**Why Option 3 with deterministic triggers?**
+Deterministic triggers preserve independence (no discretion), apply proportionate scrutiny (high-risk PRs get full evaluation, low-risk PRs get core checks only), and are auditable (trigger conditions are documented in Tier 2 tables, not embedded in agent judgment).
 
 ---
 
@@ -226,7 +354,7 @@ The strategy is value-adding.
 
 It increases system robustness, reduces blind spots, and improves artifact quality.
 
-The key is disciplined integration — not abandonment.
+The operational model is now defined: assurance runs **inside the PR loop, pre-handover**, as a deterministic gate operator with structured verdict outputs, supported by a 3-tier canon-aligned evaluation framework, introduced progressively to avoid disrupting current delivery.
 
 ---
 
