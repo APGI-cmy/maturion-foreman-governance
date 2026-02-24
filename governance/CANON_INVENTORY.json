@@ -164,14 +164,14 @@
     },
     {
       "filename": "AGENT_HANDOVER_AUTOMATION.md",
-      "version": "1.1.0",
-      "file_hash": "41ebe7661561c577b80f7a1a0fcdebfbe3c5e80a20d08e1d7139c6319ba3b5b9",
+      "version": "1.1.1",
+      "file_hash": "6f106031e2d17098aa33f76725959a3d80f98bbe31e9437a684b41537eabeea3",
       "effective_date": "2026-02-24",
       "description": "Canonical governance document: AGENT_HANDOVER_AUTOMATION",
       "type": "canon",
       "path": "governance/canon/AGENT_HANDOVER_AUTOMATION.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "41ebe7661561c577b80f7a1a0fcdebfbe3c5e80a20d08e1d7139c6319ba3b5b9"
+      "file_hash_sha256": "6f106031e2d17098aa33f76725959a3d80f98bbe31e9437a684b41537eabeea3"
     },
     {
       "filename": "AGENT_INDUCTION_PROTOCOL.md",

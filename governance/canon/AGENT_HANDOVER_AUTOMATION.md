@@ -1,7 +1,7 @@
 # AGENT_HANDOVER_AUTOMATION
 
-**Status**: CANONICAL | **Version**: 1.1.0 | **Authority**: CS2  
-**Date**: 2026-02-17
+**Status**: CANONICAL | **Version**: 1.1.1 | **Authority**: CS2  
+**Date**: 2026-02-24
 
 ---
 
@@ -386,6 +386,9 @@ echo "🔍 Environment: SAFE_FOR_HANDOVER"
 **Script**: Run all merge gate checks locally before opening the PR
 
 **Parity Check Protocol**:
+
+> **Consumer note**: The closing fence of the bash block below uses escaped backticks (`` \`\`\` ``) to prevent Markdown fence collision inside this outer code block. When copying this template into an agent contract or script, replace every `` \`\`\` `` (backslash + three backticks) with ` ``` ` (three plain backticks).
+
 ```bash
 #!/bin/bash
 # <Agent> Handover - Pre-Handover Merge Gate Parity Check
@@ -418,14 +421,15 @@ echo "  Running: governance/alignment"
 if [ -f ".github/scripts/validate-canon-hashes.sh" ]; then
   bash .github/scripts/validate-canon-hashes.sh > /dev/null 2>&1
   ALIGNMENT_RESULT=$?
+  if [ "${ALIGNMENT_RESULT}" -ne 0 ]; then
+    GATE_FAILURES+=("governance/alignment: FAIL")
+    echo "  ❌ governance/alignment: FAIL"
+  else
+    echo "  ✅ governance/alignment: PASS"
+  fi
 else
-  ALIGNMENT_RESULT=0  # no alignment script present; skip
-fi
-if [ "${ALIGNMENT_RESULT}" -ne 0 ]; then
-  GATE_FAILURES+=("governance/alignment: FAIL")
-  echo "  ❌ governance/alignment: FAIL"
-else
-  echo "  ✅ governance/alignment: PASS"
+  echo "  ⚠️  governance/alignment: SKIPPED — .github/scripts/validate-canon-hashes.sh not found"
+  echo "     Confirm whether absence of this script is expected before opening the PR."
 fi
 
 # stop-and-fix/enforcement — verify no open RCA blockers
@@ -775,7 +779,7 @@ Before session ends, verify:
 
 ---
 
-**Version**: 1.1.0  
+**Version**: 1.1.1  
 **Last Updated**: 2026-02-24  
 **Authority**: CS2 (Johan Ras)  
 **Living Agent System**: v6.2.0
