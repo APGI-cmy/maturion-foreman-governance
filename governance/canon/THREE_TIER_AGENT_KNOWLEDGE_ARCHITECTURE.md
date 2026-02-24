@@ -214,6 +214,7 @@ The agent accumulates Tier 3 knowledge during execution:
 | **orchestrator** | Coordination canon (SHA256 verified) | Specialist registry from `AGENT_REGISTRY.json` | Multi-domain coordination context |
 | **foreman** | FM governance canon (SHA256 verified) | Wave state, builder registry, pre-auth checklist | Wave/subwave context |
 | **governance-admin** | `CANON_INVENTORY.json` + constitutional canon | Ripple state, consumer registry | Session-specific governance context |
+| **assurance** | IAA canon (SHA256 verified) + `CANON_INVENTORY.json` | `governance/quality/agent-integrity/` reference index | PR-specific assurance context |
 
 ---
 
@@ -225,6 +226,7 @@ The agent accumulates Tier 3 knowledge during execution:
 - ❌ Specialist NEVER shares Tier 2 knowledge laterally to other specialists
 - ❌ Agent NEVER self-promotes Tier 3 knowledge to Tier 1 without CS2 approval
 - ❌ Contract creation without Tier 2 stubs in `.agent-workspace/<agent>/knowledge/` is INCOMPLETE
+- ❌ `assurance` class agent NEVER assures work performed by itself (independence requirement)
 
 ---
 

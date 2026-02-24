@@ -231,3 +231,123 @@ jobs:
           fi
           
           echo "✅ No stop-and-fix conditions detected"
+
+  # Job 4: IAA Assurance Check
+  # Requires ASSURANCE-TOKEN for qualifying PRs per INDEPENDENT_ASSURANCE_AGENT_CANON.md
+  iaa-assurance-check:
+    name: iaa/assurance-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine if IAA is required
+        id: iaa_required
+        run: |
+          echo "=== IAA Trigger Check ==="
+
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD || echo "")
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          IAA_REQUIRED=false
+
+          # Label-based triggers
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'aawp-deliverable') }}" == "true" ]]; then
+            echo "🔴 IAA required: label aawp-deliverable"
+            IAA_REQUIRED=true
+          fi
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'mat-deliverable') }}" == "true" ]]; then
+            echo "🔴 IAA required: label mat-deliverable"
+            IAA_REQUIRED=true
+          fi
+
+          # Path-based triggers
+          if echo "$CHANGED_FILES" | grep -qE '^\.github/agents/|^governance/agents/'; then
+            echo "🔴 IAA required: agent contract file changed"
+            IAA_REQUIRED=true
+          fi
+          if echo "$CHANGED_FILES" | grep -qE '^governance/contracts/|.*-agent-contract\.md$'; then
+            echo "🔴 IAA required: agent contract changed"
+            IAA_REQUIRED=true
+          fi
+          if echo "$CHANGED_FILES" | grep -qE '^governance/canon/'; then
+            echo "🔴 IAA required: canon file changed"
+            IAA_REQUIRED=true
+          fi
+          if echo "$CHANGED_FILES" | grep -qE '^governance/quality/agent-integrity/'; then
+            echo "🔴 IAA required: agent-integrity folder changed"
+            IAA_REQUIRED=true
+          fi
+          if echo "$CHANGED_FILES" | grep -qE '^\.github/workflows/merge-gate-interface\.yml$'; then
+            echo "🔴 IAA required: merge gate workflow changed"
+            IAA_REQUIRED=true
+          fi
+
+          echo "iaa_required=$IAA_REQUIRED" >> $GITHUB_OUTPUT
+          if [ "$IAA_REQUIRED" == "true" ]; then
+            echo "✅ IAA check is REQUIRED for this PR"
+          else
+            echo "ℹ️  IAA check is NOT required for this PR (docs-only / parking-station / admin)"
+          fi
+
+      - name: Check for ASSURANCE-TOKEN
+        if: steps.iaa_required.outputs.iaa_required == 'true'
+        run: |
+          echo "=== IAA Assurance Token Check ==="
+          echo "Required by: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0"
+          echo ""
+
+          TOKEN_FILES=$(find .agent-admin/assurance/ -maxdepth 1 -name "assurance-token-*.md" 2>/dev/null || true)
+
+          if [ -z "$TOKEN_FILES" ]; then
+            echo "❌ MERGE BLOCKED: No ASSURANCE-TOKEN found in .agent-admin/assurance/"
+            echo ""
+            echo "This PR requires Independent Assurance Agent (IAA) sign-off before merge."
+            echo ""
+            echo "Required action:"
+            echo "  1. IAA must review the five-phase delivery proof (Preflight, Governance,"
+            echo "     Working, Handover, Assurance Invocation)"
+            echo "  2. If all phases pass and agent integrity is verified, IAA issues:"
+            echo "     .agent-admin/assurance/assurance-token-<PR#>.md"
+            echo "  3. If any phase fails, IAA issues a REJECTION-PACKAGE — resolve all"
+            echo "     proof gaps before re-requesting assurance"
+            echo ""
+            echo "See: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md"
+
+            # Also check for rejection package (informational)
+            REJECTION_FILES=$(find .agent-admin/assurance/ -maxdepth 1 -name "rejection-package-*.md" 2>/dev/null || true)
+            if [ -n "$REJECTION_FILES" ]; then
+              echo ""
+              echo "⚠️  REJECTION-PACKAGE found:"
+              echo "$REJECTION_FILES"
+              echo "Resolve all items in the rejection package before re-requesting assurance."
+            fi
+
+            exit 1
+          fi
+
+          echo "✅ ASSURANCE-TOKEN found:"
+          echo "$TOKEN_FILES"
+
+          # Verify token is not empty
+          for TOKEN_FILE in $TOKEN_FILES; do
+            if ! grep -q "ASSURANCE-TOKEN" "$TOKEN_FILE"; then
+              echo "❌ Token file $TOKEN_FILE does not contain ASSURANCE-TOKEN marker"
+              exit 1
+            fi
+            if ! grep -q "Verdict: MERGE PERMITTED" "$TOKEN_FILE"; then
+              echo "❌ Token file $TOKEN_FILE does not contain 'Verdict: MERGE PERMITTED'"
+              exit 1
+            fi
+          done
+
+          echo "✅ IAA ASSURANCE-TOKEN validated — merge permitted per IAA"
+
+      - name: IAA not required — skip
+        if: steps.iaa_required.outputs.iaa_required != 'true'
+        run: |
+          echo "ℹ️  IAA assurance not required for this PR type"
+          echo "✅ iaa/assurance-check: SKIPPED (not applicable)"

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-19",
+  "last_updated": "2026-02-24",
   "provenance": {
     "source": "governance/GATE_REQUIREMENTS_INDEX.json",
     "canonical_commit": "b0a4af472e38e607b5b96d842774b4a90368340d",
@@ -133,6 +133,34 @@
       "effective_date": "2026-02-19",
       "authority": "LL-031 Platform AI Requirements Omission canonical lesson",
       "exemption_process": "CS2 written approval required in APP_STARTUP_REQUIREMENTS.md"
+    },
+    "iaa_assurance_gate": {
+      "gate_id": "iaa-assurance-check",
+      "category": "independent-assurance",
+      "requirement": "Independent Assurance Agent (IAA) pass token required before merge",
+      "description": "For qualifying PRs (AAWP/MAT deliverables, agent file changes, canon/architecture/contract updates), the IAA must issue an ASSURANCE-TOKEN artifact in .agent-admin/assurance/ before merge is permitted. A REJECTION-PACKAGE blocks merge.",
+      "applies_to": [
+        "builder",
+        "foreman",
+        "governance-admin",
+        "specialist"
+      ],
+      "trigger_conditions": [
+        "PR labelled aawp-deliverable or mat-deliverable",
+        "Changes to .github/agents/ or governance/agents/",
+        "Changes to governance/contracts/ or *-agent-contract.md files",
+        "Changes to governance/canon/",
+        "Changes to governance/quality/agent-integrity/",
+        "Changes to .github/workflows/merge-gate-interface.yml"
+      ],
+      "enforcement": "BLOCKING",
+      "validation_script": ".github/workflows/merge-gate-interface.yml (iaa-assurance-check job)",
+      "documentation": "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
+      "assurance_token_path": ".agent-admin/assurance/assurance-token-*.md",
+      "rejection_package_path": ".agent-admin/assurance/rejection-package-*.md",
+      "effective_date": "2026-02-24",
+      "authority": "CS2 (Johan Ras) — INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0",
+      "exemption_process": "CS2 explicit written sign-off only; no agent-level exemptions"
     }
   }
 }
