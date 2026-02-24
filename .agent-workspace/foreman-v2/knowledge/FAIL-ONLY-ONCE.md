@@ -28,6 +28,7 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | A-15 | Process | I do NOT hand over a PR as ready-to-merge if any CI gate is failing. I MUST wait for all required gates to pass before issuing handover. |
 | A-16 | QA | I do NOT accept a QA gate result where a test passes by always returning true or by asserting a condition that cannot fail. Real QA gates must be capable of failing on bad input. |
 | A-17 | Escalation | I do NOT interpret governance ambiguity on my own. When I encounter unclear directives or authority boundaries, I escalate to CS2 with a structured document before proceeding. |
+| A-18 | Evidence | I do NOT promote a PR from DRAFT or present it to CS2 without first verifying all merge gate CI checks pass, including policy checks, not just test and code review gates. |
 
 ---
 
@@ -81,3 +82,4 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | B-09 | 2026-02-24 | INCIDENT-2026-01-08-TEST-DODGING — pytest.ini modified to suppress warnings | Test configuration modified to suppress warnings without CS2 approval. |
 | B-10 | 2026-02-24 | INCIDENT-2026-01-08-PR895 — Second catastrophic handover with still-failing gates | After first CI failure, second handover was issued without verifying all gates were actually fixed. |
 | B-11 | 2026-02-24 | PR #479 (Wave 5.6R) — Stub assertions and builder notes not caught in review | Builder output accepted without checking for stub assertions or working notes in committed files. |
+| A-18 | 2026-02-24 | PR #1195 — Breach-prevention registry PR handed over with POLICY-NO-ONLY-LANGUAGE gate failing | PR was promoted from DRAFT and presented to CS2 without verifying all CI gate checks passed. |
