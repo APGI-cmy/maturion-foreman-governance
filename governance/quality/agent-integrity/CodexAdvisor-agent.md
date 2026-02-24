@@ -18,7 +18,7 @@ governance:
   degraded_on_placeholder_hashes: true
   execution_identity:
     name: "Maturion Bot"
-    secret: ENV_SECRET_NOT_STORED_IN_REPO
+    secret_env_var: MATURION_BOT_TOKEN
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -372,8 +372,6 @@ See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full template.
 
 See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full protocol.
 
-**Session Memory Template**: `.agent-workspace/CodexAdvisor-agent/memory/session-NNN-YYYYMMDD.md`
-
 ### 4.3 Compliance Check (CA_H)
 
 **Three required checks** (reference `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full script):
@@ -475,7 +473,7 @@ All agent files created by CodexAdvisor MUST include these **9 mandatory compone
 
 #### **Component 1: YAML Frontmatter** (REQ-CM-001, REQ-CM-002)
 
-**Required fields**: `id`, `agent.id`, `agent.class` (one of `overseer|liaison|foreman|builder|orchestrator|specialist`), `agent.version: 6.2.0`, `governance.protocol`, `governance.canon_inventory`, `governance.degraded_on_placeholder_hashes: true`, `execution_identity` (name, secret, safety flags), `merge_gate_interface.required_checks`, `scope`, `capabilities`, `escalation`, `prohibitions`, `metadata` (canonical_home, this_copy, authority, last_updated).
+**Required fields**: `id`, `agent.id`, `agent.class` (one of `overseer|liaison|foreman|builder|orchestrator|specialist`), `agent.version: 6.2.0`, `governance.protocol`, `governance.canon_inventory`, `governance.degraded_on_placeholder_hashes: true`, `execution_identity` (name, secret_env_var, safety flags), `merge_gate_interface.required_checks`, `scope`, `capabilities`, `escalation`, `prohibitions`, `metadata` (canonical_home, this_copy, authority, last_updated).
 
 agent:
   id: <agent-id>
@@ -489,7 +487,7 @@ governance:
   degraded_on_placeholder_hashes: true
   execution_identity:
     name: "Maturion Bot"
-    secret: "MATURION_BOT_TOKEN"
+    secret_env_var: MATURION_BOT_TOKEN
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -516,103 +514,8 @@ metadata:
   this_copy: canonical
   authority: CS2
   last_updated: YYYY-MM-DD
----
-```
-
-**Validation** (VH-001): All required fields present, valid YAML syntax, no prohibited field overrides, consistent agent ID.
-
-#### **Component 2: Mission Statement** (REQ-CM-003)
-
-```markdown
-# <Agent Name>
-
-## Mission
-[Clear, concise mission statement aligned to Living Agent System v6.2.0]
-```
-
-#### **Component 3: Wake-Up Protocol** (REQ-CM-004)
-
-```markdown
-## Living-Agent Wake-Up (minimal, approval-gated)
-Phases: identity → memory scan → governance load → environment health → big picture → escalations → working contract.
-
-Use the repository wake-up protocol (no embedded bash needed):
-- Run `.github/scripts/wake-up-protocol.sh <agent-id>`
-- Review the generated `working-contract.md`
-- Proceed only when CANON_INVENTORY is present and hashes are complete (degraded-mode → escalate)
-```
-
-#### **Component 4: Session Memory Protocol** (REQ-CM-005)
-
-```markdown
-## After Work Completes - Session Memory Protocol
-
-[Standard session memory template with:
-- Session memory file creation
-- Memory rotation (when > 5 sessions)
-- Personal learning updates
-- Escalations protocol]
-```
-
-#### **Component 5: Role-Specific Operational Protocol** (REQ-CM-006)
-
-For each agent class, include appropriate operational sections:
-- **Liaison**: Repository sync, ripple dispatch, gate enforcement
-- **Foreman**: Task delegation, builder management, QA enforcement
-- **Builder**: Code changes, test creation, prehandover proof
-- **Overseer**: Cross-repo coordination, agent creation, governance alignment
-
-#### **Component 6: Validation Hooks** (REQ-CM-007)
-
-**Required validation hooks** (VH-001 through VH-005):
-- VH-001: YAML frontmatter validation
-- VH-002: Checklist compliance validation
-- VH-003: CANON_INVENTORY hash validation
-- VH-004: Merge gate interface validation
-- VH-005: Prohibition enforcement validation
-
-#### **Component 7: Requirement Mappings** (REQ-CM-008)
-
-**56 requirement mappings** (REQ-CM-001 through REQ-AG-004):
-- Common requirements (REQ-CM-001 to REQ-CM-010)
-- Liaison requirements (REQ-LI-001 to REQ-LI-015)
-- Foreman requirements (REQ-FM-001 to REQ-FM-015)
-- Builder requirements (REQ-BL-001 to REQ-BL-012)
-- Overseer requirements (REQ-OV-001 to REQ-OV-004)
-
-Each requirement must be traceable to specific agent contract sections.
-
-#### **Component 8: LOCKED Section Metadata** (REQ-CM-009)
-
-```markdown
----
-## LOCKED SECTION
-
-**Lock ID**: <unique-lock-id>
-**Authority**: CS2 (Johan Ras)
-**Review Frequency**: Quarterly
-**Modification Authority**: CS2 only via authorized PR
-
-**Protected Elements**:
-- YAML frontmatter structure
-- Core prohibitions
-- Escalation rules
-- Authority boundaries
-
-**Last Review**: YYYY-MM-DD
-**Next Review Due**: YYYY-MM-DD
----
-```
-
-#### **Component 9: Authority and Version Footer** (REQ-CM-010)
-
-```markdown
----
-Authority: LIVING_AGENT_SYSTEM.md | Version: 6.2.0 | Agent Contract: <agent-id>
-Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
----
-```
-
+  contract_pattern: four_phase_canonical
+  operating_model: RAEC
 ---
 
 ## Responsibility & Requirement Mappings (CodexAdvisor — all 56 covered)
@@ -630,7 +533,7 @@ Checklist Compliance: 100% | Last Updated: YYYY-MM-DD
 - **REQ-ER-001**: Evidence artifacts immutable (lines 116-278 — session memory protocol)
 - **REQ-ER-002**: Evidence includes Date/Author
 - **REQ-ER-003**: Structured session memories
-- **REQ-ER-004**: Memory rotation (≤5 active)
+- **REQ-ER-004**: Memory rotation (when > 5 sessions)
 - **REQ-ER-005**: Audit trail via PR-only writes
 
 ### 3) Ripple & Alignment
