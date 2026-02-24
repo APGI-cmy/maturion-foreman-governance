@@ -64,6 +64,55 @@ Each entry follows this structure:
 
 ## Change History
 
+### [UNIVERSAL-FAIL-ONLY-ONCE-POLICY] - 2026-02-24 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) — issue APGI-cmy/maturion-foreman-governance#1196  
+**Effective Date**: 2026-02-24  
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to all consumer repositories
+
+**Summary**: Expanded the 'We Only Fail Once' breach registry and mandatory preflight attestation requirement from Foreman-only to ALL agent classes. Created `UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md` v1.0.0 as the formal policy canon. Added preflight attestation sections (§1.3) to CodexAdvisor and governance-repo-administrator agent contracts. Created per-agent Tier 2 knowledge FAIL-ONLY-ONCE registry stubs for CodexAdvisor and governance-repo-administrator. Updated `AGENT_CONTRACT.template.md` and `AGENT_ONBOARDING_QUICKSTART.md` so all new agents inherit the requirement. Updated `.agent-workspace-template` to include `knowledge/` directory with FAIL-ONLY-ONCE stub. Updated `CANON_INVENTORY.json` (entry 180).
+
+**Affected Artifacts**:
+- `governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md` (NEW v1.0.0 — PUBLIC_API canon)
+  - Defines: universal applicability, per-agent vs shared registry model, registry format, preflight attestation requirement, CodexAdvisor/liaison enforcement obligations, template for new agents
+- `.github/agents/CodexAdvisor-agent.md` (UPDATED — Added §1.3 FAIL-ONLY-ONCE Attestation, renumbered §1.3→1.4 Canonical Governance Bindings)
+- `.github/agents/governance-repo-administrator-v2.agent.md` (UPDATED — Added §1.3 FAIL-ONLY-ONCE Attestation, renumbered §1.3→1.4 Canonical Governance Bindings)
+- `governance/canon/agent-contracts-guidance/templates/AGENT_CONTRACT.template.md` (UPDATED — Added mandatory FAIL-ONLY-ONCE Preflight Attestation section)
+- `governance/canon/agent-contracts-guidance/AGENT_ONBOARDING_QUICKSTART.md` (UPDATED — Added Failure Prevention (ALL Agents — Mandatory) subsection in Step 3)
+- `.agent-workspace/CodexAdvisor-agent/knowledge/FAIL-ONLY-ONCE.md` (NEW — Per-agent breach registry, seeded with 8 Universal Rules + 5 Conditional Rules)
+- `.agent-workspace/CodexAdvisor-agent/knowledge/index.md` (NEW — Tier 2 knowledge index)
+- `.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md` (NEW — Per-agent breach registry, seeded with 8 Universal Rules + 5 Conditional Rules)
+- `.agent-workspace/governance-repo-administrator/knowledge/index.md` (NEW — Tier 2 knowledge index)
+- `.agent-workspace-template/knowledge/FAIL-ONLY-ONCE.md` (NEW — Stub for new agents, includes 4 mandatory universal seed rules)
+- `.agent-workspace-template/knowledge/index.md` (NEW — Template knowledge index)
+- `.agent-workspace-template/README.md` (UPDATED — Added `knowledge/` directory to structure documentation)
+- `governance/CANON_INVENTORY.json` (UPDATED — Added UNIVERSAL_FAIL_ONLY_ONCE_POLICY entry, total_canons: 179→180, last_updated: 2026-02-24)
+- `governance/CHANGELOG.md` (UPDATED — This entry)
+
+**Migration Required**: NO for existing governance processes (additive policy; no existing artifacts removed or invalidated)
+
+**Migration Guidance**: The following actions are required for all active agents and consumer repositories:
+
+1. **Consumer repo agents** — All existing agent contracts in consumer repositories (governance-liaison, foreman, builders) must be updated to include a FAIL-ONLY-ONCE preflight attestation section in Phase 1. Create layer-down issues per GOVERNANCE_RIPPLE_MODEL.md.
+2. **Consumer repo workspaces** — Create `.agent-workspace/<agent>/knowledge/FAIL-ONLY-ONCE.md` for all active agents in consumer repos using the canonical template at `.agent-workspace-template/knowledge/FAIL-ONLY-ONCE.md`.
+3. **New agent creation** — All future agent creation bundles MUST include the `knowledge/FAIL-ONLY-ONCE.md` stub. CodexAdvisor MUST enforce this as a blocking validation.
+
+**Rationale**:
+1. If only the Foreman learns from failure, repeated systemic breach is inevitable
+2. Institutional memory and fail-once doctrine must apply to ALL agents, not just orchestration
+3. The `WE_ONLY_FAIL_ONCE_DOCTRINE.md` constitutional principle was only operationalised at Foreman level — this change operationalises it universally
+4. CodexAdvisor and governance-liaison can now enforce structural correctness of FAIL-ONLY-ONCE registries in all agent-file and ripple PRs
+
+**Impact**: All agent classes across all repositories. No existing behavior removed; additive requirements only.
+
+**References**:
+- Issue: APGI-cmy/maturion-foreman-governance#1196
+- Constitutional Authority: WE_ONLY_FAIL_ONCE_DOCTRINE.md, LIVING_AGENT_SYSTEM.md v6.2.0
+- CS2: Johan Ras | 2026-02-24
+
+---
+
 ### [PRE-BUILD-REALITY-CHECK-CANON] - 2026-02-23 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  

@@ -169,7 +169,19 @@ RECORD:
 | Memory rotation | Manual | Automated via session closure (≤5 kept) | GA_M |
 | Evidence creation | Ad hoc | Immutable artifacts, never mutate in-place | GA_M |
 
-### 1.3 Canonical Governance Bindings
+### 1.3 FAIL-ONLY-ONCE Attestation (mandatory, every session)
+
+Before any session work begins, governance-repo-administrator reads `.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md`
+in full and self-attests against every Universal Rule (Section A) and every matching
+Conditional Rule (Section B). If any rule is being violated, governance-repo-administrator STOPS immediately
+and resolves the violation before continuing.
+
+After any governance breach, governance-repo-administrator MUST append a new entry to `FAIL-ONLY-ONCE.md` as
+part of the RCA commit. This step is non-negotiable and cannot be skipped.
+
+**Policy authority**: `governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md`
+
+### 1.4 Canonical Governance Bindings
 
 **Required Reading** (loaded during Induction):
 - `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 - Living Agent framework
