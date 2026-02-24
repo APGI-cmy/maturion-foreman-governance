@@ -64,6 +64,45 @@ Each entry follows this structure:
 
 ## Change History
 
+### [AGENT-HANDOVER-PARITY-RIPPLE] - 2026-02-24 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) — via PR #1202 (AGENT_HANDOVER_AUTOMATION.md v1.1.0→v1.1.1)  
+**Effective Date**: 2026-02-24  
+**Layer-Down Status**: LAYER_DOWN — ripple dispatched to governance repo agent contracts; consumer repo issues pending
+
+**Summary**: Executed layer-down ripple of `AGENT_HANDOVER_AUTOMATION.md` v1.1.1 (Section 4.3 Pre-Handover Merge Gate Parity Check) to all agent contracts in the governance repo. All three agent contracts now implement the mandatory four-section Phase 4 structure: 4.1 Evidence, 4.2 Memory, 4.3 Pre-Handover Parity Check (BLOCKING), 4.4 Compliance Check.
+
+**Affected Artifacts**:
+- `.github/agents/foreman-v2.agent.md` — Added §4.3 Pre-Handover Merge Gate Parity Check (FM_H — BLOCKING); renumbered old §4.3 → §4.4
+  SHA256: `817eb9f674c1b57aad9cf873d9e7fd9c159ca9e6e5eba833f6e1694c289eee2e`
+- `.github/agents/CodexAdvisor-agent.md` — Added §4.3 Pre-Handover Merge Gate Parity Check (CA_H — BLOCKING); renumbered old §4.3 → §4.4
+  SHA256: `7046ab9414df16fbe5b3374aa29f036f9604e8e1d6f1c18482ae0bb4540ceae5`
+- `.github/agents/governance-repo-administrator-v2.agent.md` — Added §4.3 Pre-Handover Merge Gate Parity Check (GA_H — BLOCKING); renumbered old §4.3 → §4.4
+  SHA256: `fbeedb971f1fe194bb9dabd07af88bd8271ff2a880e734d61d207f15b4f8bd9c`
+- `.agent-admin/governance/ripple-logs/ripple-agent-handover-parity-20260224.md` — Ripple log entry (NEW)
+- `governance/CHANGELOG.md` — This entry (UPDATED)
+
+**Migration Required**: NO
+
+**Migration Guidance**: Not applicable — additive only. Each agent contract has a new §4.3 inserted; no existing contract sections removed. Consumer repos must add §4.3 to their own agent contracts.
+
+**Consumer Repo Ripple Status**:
+- `APGI-cmy/maturion-isms` — Ripple issue pending creation
+- `APGI-cmy/maturion-foreman-office-app` — Ripple issue pending creation
+- `APGI-cmy/PartPulse` — Ripple issue pending creation
+- `APGI-cmy/R_Roster` — Ripple issue pending creation
+
+**Rationale**: 
+`AGENT_HANDOVER_AUTOMATION.md` v1.1.0 introduced Section 4.3 "Pre-Handover Merge Gate Parity Check" as a BLOCKING mandatory phase in all agent handovers. All agent contracts must be aligned to the four-section Phase 4 structure. This ripple patches all in-repo contracts; consumer repo patches follow via standard layer-down issues.
+
+**References**:
+- Canon: `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.1.1
+- PR: #1202 (canon merge)
+- Ripple Log: `.agent-admin/governance/ripple-logs/ripple-agent-handover-parity-20260224.md`
+
+---
+
 ### [IAA-001] - 2026-02-24 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
