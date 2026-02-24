@@ -81,13 +81,13 @@ jobs:
           POLICY_REF_FOUND=false
 
           # Check for CS2 issue reference
-          if echo "$PR_BODY" | grep -qiE "(CS2|Johan Ras).*(approved|authorized|permission|issue|layer.down)"; then
+          if echo "$PR_BODY" | grep -qiE "(CS2|Johan Ras).*(approved|authorized|permission|issue|layer[.-]down)"; then
             CS2_AUTH_FOUND=true
             echo "✅ CS2 authorization reference found in PR description"
           fi
 
           # Also accept explicit issue number references that imply authorization
-          if echo "$PR_BODY" | grep -qE "(issue|Issue|ISSUE).*#[0-9]+|#[0-9]+.*(CS2|Johan|layer.down)"; then
+          if echo "$PR_BODY" | grep -qE "(issue|Issue|ISSUE).*#[0-9]+|#[0-9]+.*(CS2|Johan|layer[.-]down)"; then
             CS2_AUTH_FOUND=true
             echo "✅ Issue reference (potential CS2 authorization) found in PR description"
           fi
