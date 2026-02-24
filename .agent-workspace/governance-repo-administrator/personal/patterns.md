@@ -312,3 +312,28 @@ This file is persistent and must accumulate patterns over time. Never reset or c
   - These fields do not affect hash validation (file_hash_sha256 remains unchanged)
   - Propose formal schema addition to CS2 if pattern recurs
 
+
+## Pattern: Agent Contract File Protection Escalation
+
+- Observed: 2026-02-24 (Session 056)
+- Context: When ripple or any governance operation requires changes to .github/agents/ files
+- Response:
+  1. STOP — do NOT modify .github/agents/ files
+  2. Create structured escalation at .agent-workspace/<agent>/escalation-inbox/agent-contract-modification-YYYYMMDD.md
+  3. Include: files to modify, exact diff spec, originating ripple/issue reference
+  4. Wait for CS2 to review and authorize CodexAdvisor via layer-down issue
+  5. Do NOT include .github/agents/ changes in the current PR — document as out-of-scope
+- Example: Session 055 pattern of patching agent contracts during AGENT_HANDOVER_AUTOMATION.md ripple is the WRONG approach; escalate instead
+
+## Pattern: Constitutional Prohibition Document Structure
+
+- Observed: 2026-02-24 (Session 056)
+- Context: When enacting a new constitutional rule/prohibition
+- Response:
+  1. Create dedicated policy document with: Purpose, Constitutional Authority, Absolute Prohibition, Write Authority Matrix, Mandatory Pathway, Audit Checklist, CI/CD Enforcement, Breach Protocol, FAQ
+  2. Update the relevant canon document (e.g., LIVING_AGENT_SYSTEM.md) with explicit reference
+  3. Create CI/CD workflow for enforcement
+  4. Create incident record (if triggered by breach)
+  5. Create layer-down ripple notice for consumer repos
+  6. Update CHANGELOG, CANON_INVENTORY, FAIL-ONLY-ONCE in same PR
+- Example: AGENT_CONTRACT_FILE_PROTECTION_POLICY.md created with all six components

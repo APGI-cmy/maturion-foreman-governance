@@ -64,6 +64,57 @@ Each entry follows this structure:
 
 ## Change History
 
+### [AGCFPP-001] - 2026-02-24 - [BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent, Session 056)  
+**Approved By**: CS2 (Johan Ras) — Issue: Governance Breach: Agents Directly Editing .github/agents/ Contract Files  
+**Effective Date**: 2026-02-24  
+**Layer-Down Status**: LAYER_DOWN — ripple notice created; consumer repo issues pending  
+**Incident Reference**: `governance/incidents/INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md`
+
+**Summary**: Enacted constitutional prohibition against agents (other than CodexAdvisor with explicit CS2 permission) modifying `.github/agents/` contract files. Triggered by governance breach in `APGI-cmy/maturion-isms` PR #517. Added mandatory CodexAdvisor handoff pathway, IAA audit requirement, CI/CD enforcement workflow, incident documentation, and ripple layer-down notice.
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md` (NEW v1.0.0) — Constitutional policy: absolute prohibition, write authority matrix, mandatory CodexAdvisor handoff pathway, IAA audit checklist, CI/CD enforcement spec, breach protocol
+  SHA256: `9d8052a599933b2d5de97df7b6a15bd61cba9e4a93aa40c3337628b2778170c3`
+- `governance/canon/LIVING_AGENT_SYSTEM.md` (UPDATED v1.0.0 → v1.1.0) — Prohibition #1 made explicit for `.github/agents/`; new Agent Contract File Protection section added
+  SHA256: `eb0933820bbc2b9a7600672309ea7bc36d4a49885eccd5c37fa4467894f09e9e`
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (UPDATED v1.1.1 → v1.1.2) — §4.3 Agent Contract File Modification Prohibition subsection added with CodexAdvisor handoff pathway template
+  SHA256: `280efc805b140ccbab71a96b2d10896b5094d2a5f55775a4e17fe17944fdd6b8`
+- `.github/workflows/agent-contract-audit.yml` (NEW) — CI/CD enforcement: runs on all PRs modifying `.github/agents/**`; checks CS2 authorization, CodexAdvisor involvement, generates diff report
+- `governance/incidents/INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md` (NEW) — Incident record for maturion-isms PR #517 breach
+- `governance/layer-down/AGENT_CONTRACT_FILE_PROTECTION_RIPPLE_NOTICE.md` (NEW) — Layer-down ripple notice for all consumer repositories
+- `governance/CANON_INVENTORY.json` (UPDATED) — New AGCFPP entry; updated LIVING_AGENT_SYSTEM.md and AGENT_HANDOVER_AUTOMATION.md hashes
+
+**Migration Required**: YES — BREAKING for any existing practice of ripple agents patching agent files directly
+
+**Migration Guidance**:
+- All agents: Stop patching `.github/agents/` files directly — create escalation and let CS2/CodexAdvisor handle
+- Consumer repos: Must adopt policy, workflow, and updated canon (see ripple notice)
+- Existing PRs that modified `.github/agents/` without CS2 authorization: retroactive CS2 review required
+
+**Rationale**:
+A governance breach occurred in `APGI-cmy/maturion-isms` PR #517 where a ripple agent modified `.github/agents/` files without CodexAdvisor involvement or explicit CS2 authorization. The breach exposed a gap: the principle-level "Zero Direct Writing" rule was insufficient without an operational policy, CI/CD enforcement, and defined escalation pathway. This change closes that gap with constitutional force.
+
+**Impact**:
+- All agents: Must stop and escalate to CS2 when ripple requires `.github/agents/` modifications
+- CodexAdvisor: Now the sole authorized agent executor for `.github/agents/` changes (with CS2 permission)
+- IAA: Hard trigger on all `.github/agents/` modifications added to assurance protocol
+- CI/CD: New audit workflow blocks unauthorized agent contract modifications
+
+**Consumer Repo Ripple Status**:
+- `APGI-cmy/maturion-isms` — Issue pending (PRIORITY: breach origin)
+- `APGI-cmy/maturion-foreman-office-app` — Issue pending
+- `APGI-cmy/PartPulse` — Issue pending
+- `APGI-cmy/R_Roster` — Issue pending
+
+**References**:
+- Incident: `governance/incidents/INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md`
+- Policy: `governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md`
+- Ripple Notice: `governance/layer-down/AGENT_CONTRACT_FILE_PROTECTION_RIPPLE_NOTICE.md`
+
+---
+
 ### [AGENT-HANDOVER-PARITY-RIPPLE] - 2026-02-24 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
