@@ -59,7 +59,7 @@ capabilities:
 
 execution_identity:
   name: "Maturion Bot"
-  secret: "MATURION_BOT_TOKEN"
+  secret: ENV_SECRET_NOT_STORED_IN_REPO
   never_push_main: true
   write_via_pr: true
 
