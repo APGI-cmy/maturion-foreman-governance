@@ -64,6 +64,29 @@ Each entry follows this structure:
 
 ## Change History
 
+### [IAA-001] - 2026-02-24 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent)  
+**Approved By**: CS2 (Johan Ras) — issue: Create Governance Canon: Independent Assurance Agent (IAA)  
+**Effective Date**: 2026-02-24  
+**Layer-Down Status**: INTERNAL — governance repo only
+
+**Summary**: Introduced the Independent Assurance Agent (IAA) as a new `assurance` agent class with hard-trigger, non-bypassable merge block authority. Created canonical governance documents, agent integrity reference store, and merge gate enforcement for qualifying PRs.
+
+**Affected Artifacts**:
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (NEW v1.0.0) — Full IAA class definition: independence requirements, five-phase delivery proof protocol, binary output (ASSURANCE-TOKEN / REJECTION-PACKAGE), trigger table, amendment authority
+- `governance/quality/agent-integrity/README.md` (NEW) — CS2-only amendment authority for agent integrity store
+- `governance/quality/agent-integrity/INTEGRITY_INDEX.md` (NEW) — SHA256 baseline index for agent contract reference files
+- `governance/quality/agent-integrity/CodexAdvisor-agent.md` (NEW) — Reference copy
+- `governance/quality/agent-integrity/foreman-v2.agent.md` (NEW) — Reference copy
+- `governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md` (NEW) — Reference copy
+- `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` (UPDATED) — Added `assurance` class row and prohibited behavior for self-assurance
+- `governance/CANON_INVENTORY.json` (UPDATED) — Added entry 181 for INDEPENDENT_ASSURANCE_AGENT_CANON.md
+- `governance/GATE_REQUIREMENTS_INDEX.json` (UPDATED) — Added `iaa_assurance_gate` enforcement gate
+- `.github/workflows/merge-gate-interface.yml` (UPDATED) — Added `iaa-assurance-check` Job 4
+
+**Migration Guidance**: No breaking changes. New `iaa-assurance-check` gate only triggers for qualifying PRs (AAWP/MAT deliverables, agent/canon/architecture/contract file changes). Docs-only and parking-station PRs unaffected.
+
 ### [UNIVERSAL-FAIL-ONLY-ONCE-POLICY] - 2026-02-24 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent)  
