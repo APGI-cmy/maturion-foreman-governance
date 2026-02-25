@@ -64,6 +64,34 @@ Each entry follows this structure:
 
 ## Change History
 
+### [ISMS-TIER2-CANONIZATION] - 2026-02-25 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent, Session 057)  
+**Approved By**: CS2 (Johan Ras) / CodexAdvisor-agent — maturion-isms PR #366 (2026-02-21)  
+**Effective Date**: 2026-02-21 (first draft); canonized 2026-02-25  
+**Layer-Down Status**: No layer-down required — artifact canonization only; hashes unchanged  
+
+**Summary**: Formal canonization (layer-up) of 5 ISMS-origin Tier-2 governance artifacts and 1 checklist from maturion-isms PR #366. These files were already present in `governance/canon/` and `governance/CANON_INVENTORY.json`, but lacked layer-up provenance, layer_up_status, and had placeholder/unknown effective_date values. This change records provenance, sets `layer_up_status: INTEGRATED` on all 5 canon entries and the checklist, fixes `effective_date` from "unknown"/"YYYY-MM-DD" to "2026-02-21" for 4 files, and formally adds `PLATFORM_AI_REQUIREMENTS_CHECKLIST.md` to the inventory.
+
+**Affected Artifacts**:
+- `governance/canon/PROXY_AUTHORITY_MODEL.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/AGENT_CREATION_BUNDLE_REQUIREMENTS.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/AGENT_REGISTRY_ARCHITECTURE.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/PLATFORM_AI_REQUIREMENTS.md` (v1.0.0) — layer_up_status=INTEGRATED, provenance recorded (effective_date 2026-02-19 preserved)
+- `governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md` (v1.0.0 NEW in inventory) — added to CANON_INVENTORY with full SHA256, layer_up_status=INTEGRATED, provenance recorded
+- `governance/CANON_INVENTORY.json` — 5 entries updated, 1 new entry added (total_canons: 182→183), last_updated: 2026-02-25
+
+**Migration Required**: NO
+
+**Rationale**: These 5-6 files originated in maturion-isms and were brought into the governance canon as part of PR #366 (2026-02-21). While the file content was correctly integrated, the CANON_INVENTORY lacked formal provenance metadata. This change closes that gap and establishes a complete audit trail per REQ-CM-002 (provenance/effective_date) and REQ-RA-003 (layer-up log entries).
+
+**Impact**: Governance inventory now has full provenance for all ISMS-origin Tier-2 artifacts. No consumer repo changes required.
+
+**Source Provenance**: `APGI-cmy/maturion-foreman-governance` PR #366 (2026-02-21)
+
+---
+
 ### [AGCFPP-001] - 2026-02-24 - [BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent, Session 056)  
