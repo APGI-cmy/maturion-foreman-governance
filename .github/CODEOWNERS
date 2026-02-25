@@ -1,34 +1,66 @@
-# CODEOWNERS - Governance Protection
-# 
-# This file defines ownership rules for critical governance files.
-# These paths require explicit human approval before merging.
+# CODEOWNERS — Maturion Foreman Governance
 #
-# Purpose: Protect governance policies, rules, and enforcement mechanisms
-# from unauthorized modifications.
+# AMENDMENT AUTHORITY: CS2 (Johan Ras / @APGI-cmy) ONLY
+# This file is itself protected — any change requires @APGI-cmy approval.
 #
+# Purpose: Defines ownership of critical governance files.
+#          These paths require explicit CS2 approval before ANY PR can merge.
+#          This file is the manual "unlock gate" for .github/agents/ changes.
+#
+# Policy reference: governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md
 # More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-# =============================================================================
-# CRITICAL GOVERNANCE FILES - REQUIRE ADMIN APPROVAL
-# =============================================================================
+# ===========================================================================
+# AGENT CONTRACT FILES — ABSOLUTE LOCK (CONSTITUTIONAL)
+#
+# @APGI-cmy is the SOLE owner. No merge permitted without explicit CS2
+# approval. This is the manual "unlock" gate — CS2 approving this PR IS
+# the authorisation for CodexAdvisor to have made these changes.
+#
+# Per AGENT_CONTRACT_FILE_PROTECTION_POLICY.md §1:
+# No agent other than CodexAdvisor (with explicit CS2 permission) may
+# modify these files. All other agents are PROHIBITED.
+# ===========================================================================
 
-# GitHub Actions Workflows - Governance CI/CD
-# Protects governance validation workflows
-.github/workflows/** @MaturionISMS/admins
+.github/agents/**       @APGI-cmy
 
-# Agent Contract Files - Require CS2 approval with explicit authorization
-.github/agents/** @MaturionISMS/admins
+# ===========================================================================
+# CODEOWNERS ITSELF — MUST BE LOCKED
+# Prevents any agent from modifying ownership rules to bypass the lock.
+# ===========================================================================
 
-# CODEOWNERS itself must be protected
-.github/CODEOWNERS @MaturionISMS/admins
+.github/CODEOWNERS      @APGI-cmy
 
-# All Governance Content
-# Protects all governance policies, rules, doctrines, and templates
-governance/** @MaturionISMS/admins
+# ===========================================================================
+# CI/CD ENFORCEMENT WORKFLOWS — LOCKED
+# Protects the audit gate workflows themselves from being tampered with.
+# An agent modifying workflows could bypass the agent-contract-audit gate.
+# ===========================================================================
 
-# =============================================================================
-# GOVERNANCE REPOSITORY
-# =============================================================================
+.github/workflows/**    @APGI-cmy
+
+# ===========================================================================
+# GOVERNANCE CANON — LOCKED
+# All constitutional policy documents, incidents, and layer-down notices
+# require CS2 sign-off.
+# ===========================================================================
+
+governance/canon/**         @APGI-cmy
+governance/incidents/**     @APGI-cmy
+governance/layer-down/**    @APGI-cmy
+governance/CHANGELOG.md     @APGI-cmy
+governance/CANON_INVENTORY.json @APGI-cmy
+
+# ===========================================================================
+# ALL OTHER GOVERNANCE CONTENT
+# General governance artifacts — CS2 approval required.
+# ===========================================================================
+
+governance/**           @APGI-cmy
+
+# ===========================================================================
+# GOVERNANCE REPOSITORY — Context Note
+# ===========================================================================
 #
 # This is a PURE GOVERNANCE REPOSITORY containing only:
 # - Governance policies and doctrines
@@ -37,9 +69,10 @@ governance/** @MaturionISMS/admins
 # - Runbooks and templates
 # - Governance validation CI
 #
-# All application code has been removed (Wave 2.5 cleanup).
 # This repository serves as the highest-order authority for Maturion systems.
+# All application code has been removed (Wave 2.5 cleanup).
 #
-# =============================================================================
+# ===========================================================================
 
 # End of CODEOWNERS
+# Version: 2.0.0 | Updated: 2026-02-25 | Authority: CS2 (@APGI-cmy)
