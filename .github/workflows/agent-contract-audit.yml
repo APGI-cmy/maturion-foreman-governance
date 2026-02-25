@@ -1,0 +1,270 @@
+name: Agent Contract Audit Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/agents/**'
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  agent-contract-audit:
+    name: agent-contract/authority-check
+    runs-on: ubuntu-latest
+    env:
+      CS2_ACTORS: "APGI-cmy johanras maturion-bot"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect modified agent contract files
+        id: detect
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          MODIFIED_AGENT_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- '.github/agents/' 2>/dev/null || \
+            git diff --name-only "origin/${{ github.event.pull_request.base.ref }}" "HEAD" -- '.github/agents/' 2>/dev/null || echo "")
+
+          if [ -z "$MODIFIED_AGENT_FILES" ]; then
+            MODIFIED_AGENT_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep "^\.github/agents/" || echo "")
+          fi
+
+          echo "Modified agent files:"
+          echo "$MODIFIED_AGENT_FILES"
+
+          if [ -z "$MODIFIED_AGENT_FILES" ]; then
+            echo "files_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "files_changed=true" >> "$GITHUB_OUTPUT"
+            # Store file list safely
+            printf '%s' "$MODIFIED_AGENT_FILES" > /tmp/agent_files_changed.txt
+          fi
+
+      - name: Generate diff report
+        id: diff
+        if: steps.detect.outputs.files_changed == 'true'
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          echo "## Agent Contract Diff Report" > /tmp/diff_report.md
+          echo "" >> /tmp/diff_report.md
+          echo "**PR**: #${{ github.event.pull_request.number }}" >> /tmp/diff_report.md
+          echo "**Branch**: ${{ github.event.pull_request.head.ref }}" >> /tmp/diff_report.md
+          echo "**Generated**: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> /tmp/diff_report.md
+          echo "" >> /tmp/diff_report.md
+          echo "### Files Modified" >> /tmp/diff_report.md
+          cat /tmp/agent_files_changed.txt >> /tmp/diff_report.md
+          echo "" >> /tmp/diff_report.md
+          echo "### Diffs" >> /tmp/diff_report.md
+          echo '```diff' >> /tmp/diff_report.md
+          git diff "$BASE_SHA" "$HEAD_SHA" -- '.github/agents/' 2>/dev/null >> /tmp/diff_report.md || echo "(diff unavailable)" >> /tmp/diff_report.md
+          echo '```' >> /tmp/diff_report.md
+
+          echo "Diff report generated"
+
+      - name: Check CS2 authorization in PR description
+        id: cs2_check
+        if: steps.detect.outputs.files_changed == 'true'
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+
+          # Check for CS2 authorization references
+          CS2_AUTH_FOUND=false
+          POLICY_REF_FOUND=false
+
+          # Check for CS2 issue reference
+          if echo "$PR_BODY" | grep -qiE "(CS2|Johan Ras).*(approved|authorized|permission|issue|layer[.-]down)"; then
+            CS2_AUTH_FOUND=true
+            echo "✅ CS2 authorization reference found in PR description"
+          fi
+
+          # Also accept explicit issue number references that imply authorization
+          if echo "$PR_BODY" | grep -qE "(issue|Issue|ISSUE).*#[0-9]+|#[0-9]+.*(CS2|Johan|layer[.-]down)"; then
+            CS2_AUTH_FOUND=true
+            echo "✅ Issue reference (potential CS2 authorization) found in PR description"
+          fi
+
+          # Check for policy reference
+          if echo "$PR_BODY" | grep -qi "AGENT_CONTRACT_FILE_PROTECTION_POLICY\|agent.*contract.*protection\|agent-contract-audit"; then
+            POLICY_REF_FOUND=true
+            echo "✅ Policy reference found in PR description"
+          fi
+
+          # CS2 direct commit (actor is the repo owner) — bypass for CS2 direct action
+          ACTOR="${{ github.actor }}"
+          if echo "$CS2_ACTORS" | grep -qw "$ACTOR"; then
+            echo "✅ Actor is CS2/repo-owner — direct authority"
+            CS2_AUTH_FOUND=true
+            POLICY_REF_FOUND=true
+          fi
+
+          echo "cs2_auth_found=$CS2_AUTH_FOUND" >> "$GITHUB_OUTPUT"
+          echo "policy_ref_found=$POLICY_REF_FOUND" >> "$GITHUB_OUTPUT"
+
+      - name: Verify CodexAdvisor involvement
+        id: codex_check
+        if: steps.detect.outputs.files_changed == 'true'
+        run: |
+          # Check if the branch name or PR description references CodexAdvisor
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          ACTOR="${{ github.actor }}"
+
+          CODEX_INVOLVED=false
+
+          if echo "$PR_BODY" | grep -qi "CodexAdvisor\|codex-advisor\|codex_advisor"; then
+            CODEX_INVOLVED=true
+            echo "✅ CodexAdvisor reference found in PR description"
+          fi
+
+          if echo "$BRANCH" | grep -qi "codex"; then
+            CODEX_INVOLVED=true
+            echo "✅ CodexAdvisor branch detected"
+          fi
+
+          # CS2 direct action is always acceptable
+          if echo "$CS2_ACTORS" | grep -qw "$ACTOR"; then
+            CODEX_INVOLVED=true
+            echo "✅ CS2 direct action — CodexAdvisor involvement not required"
+          fi
+
+          echo "codex_involved=$CODEX_INVOLVED" >> "$GITHUB_OUTPUT"
+
+      - name: Compute SHA256 of modified agent files
+        id: hashes
+        if: steps.detect.outputs.files_changed == 'true'
+        run: |
+          echo "## SHA256 Hashes of Modified Agent Contract Files" > /tmp/hashes.md
+          echo "" >> /tmp/hashes.md
+
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              HASH=$(sha256sum "$file" | awk '{print $1}')
+              echo "- \`$file\`: \`$HASH\`" >> /tmp/hashes.md
+              echo "Hash: $file -> $HASH"
+            else
+              echo "- \`$file\`: DELETED" >> /tmp/hashes.md
+            fi
+          done < /tmp/agent_files_changed.txt
+
+          cat /tmp/hashes.md
+
+      - name: Post audit summary as PR comment
+        if: steps.detect.outputs.files_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            const cs2AuthFound = '${{ steps.cs2_check.outputs.cs2_auth_found }}' === 'true';
+            const policyRefFound = '${{ steps.cs2_check.outputs.policy_ref_found }}' === 'true';
+            const codexInvolved = '${{ steps.codex_check.outputs.codex_involved }}' === 'true';
+
+            let diffReport = '';
+            try { diffReport = fs.readFileSync('/tmp/diff_report.md', 'utf8'); } catch(e) { diffReport = '(diff report unavailable)'; }
+
+            let hashReport = '';
+            try { hashReport = fs.readFileSync('/tmp/hashes.md', 'utf8'); } catch(e) { hashReport = '(hash report unavailable)'; }
+
+            const authStatus = cs2AuthFound ? '✅ CS2 Authorization Reference: FOUND' : '❌ CS2 Authorization Reference: NOT FOUND';
+            const policyStatus = policyRefFound ? '✅ Policy Reference: FOUND' : '⚠️ Policy Reference: NOT FOUND (recommended)';
+            const codexStatus = codexInvolved ? '✅ CodexAdvisor Involvement: DETECTED' : '⚠️ CodexAdvisor Involvement: NOT DETECTED';
+
+            const overallPass = cs2AuthFound && codexInvolved;
+            const overallStatus = overallPass
+              ? '✅ **AGENT CONTRACT AUDIT: PASS** — Authority checks satisfied'
+              : '❌ **AGENT CONTRACT AUDIT: FAIL** — Authority requirements not met';
+
+            const body = `## 🔍 Agent Contract Audit Gate
+
+${overallStatus}
+
+### Authority Checks
+${authStatus}
+${policyStatus}
+${codexStatus}
+
+### Policy Reference
+This PR modifies files in \`.github/agents/\`. Per \`governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md\`:
+- Only **CodexAdvisor** (with explicit CS2 permission) may modify agent contract files
+- A **CS2-approved layer-down issue** must authorize the changes
+- **IAA audit** is required for qualifying PRs
+
+${!overallPass ? `### ❌ Required Actions
+${!cs2AuthFound ? '1. Add reference to CS2-approved authorization issue in PR description\n' : ''}${!codexInvolved ? '2. Confirm CodexAdvisor executed these changes (add note to PR description)\n' : ''}
+See \`governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md\` §3 for the mandatory pathway.
+` : ''}
+
+---
+
+${hashReport}
+
+---
+
+<details>
+<summary>📋 Diff Report (click to expand)</summary>
+
+${diffReport}
+
+</details>
+
+---
+*Generated by agent-contract-audit.yml | Policy: AGENT_CONTRACT_FILE_PROTECTION_POLICY.md v1.0.0*`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Enforce gate result
+        if: steps.detect.outputs.files_changed == 'true'
+        run: |
+          CS2_AUTH="${{ steps.cs2_check.outputs.cs2_auth_found }}"
+          CODEX_INVOLVED="${{ steps.codex_check.outputs.codex_involved }}"
+
+          echo ""
+          echo "========================================="
+          echo "AGENT CONTRACT AUDIT GATE — FINAL VERDICT"
+          echo "========================================="
+          echo ""
+
+          if [ "$CS2_AUTH" != "true" ]; then
+            echo "❌ FAIL: No CS2 authorization reference found in PR description."
+            echo ""
+            echo "Per AGENT_CONTRACT_FILE_PROTECTION_POLICY.md §1:"
+            echo "  No agent may modify .github/agents/ files without explicit CS2 permission"
+            echo "  via a CS2-approved layer-down issue."
+            echo ""
+            echo "Required: Add reference to CS2 authorization issue in PR description."
+            echo ""
+            exit 1
+          fi
+
+          if [ "$CODEX_INVOLVED" != "true" ]; then
+            echo "⚠️  WARNING: CodexAdvisor involvement not detected in PR description."
+            echo ""
+            echo "Per AGENT_CONTRACT_FILE_PROTECTION_POLICY.md §2:"
+            echo "  Agent contract file modifications should be executed by CodexAdvisor"
+            echo "  with CS2 permission, or by CS2 directly."
+            echo ""
+            echo "If CodexAdvisor was involved, please add a note to the PR description."
+            echo "Proceeding with WARNING (CS2 authorization found)."
+            echo ""
+            # Warning only (not blocking) when CS2 auth is present but CodexAdvisor not explicitly noted
+          fi
+
+          echo "✅ PASS: CS2 authorization reference found."
+          echo "✅ Agent Contract Audit Gate: PASS"
+          echo ""
+          echo "NOTE: IAA assurance token still required for merge per"
+          echo "  INDEPENDENT_ASSURANCE_AGENT_CANON.md (agent-file-change trigger)."

@@ -39,3 +39,12 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 
 | Rule ID | Date Added | Incident Reference | One-line Summary |
 |---------|------------|--------------------|------------------|
+| NEW-B-06 | 2026-02-24 | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md | Agent in maturion-isms PR #517 modified .github/agents/ files without CodexAdvisor involvement or CS2 layer-down issue — AGCFPP-001 enacted |
+
+---
+
+## Section D — Rules Added via RCA
+
+| ID | Category | Rule | Added By RCA |
+|----|----------|------|-------------|
+| B-06 | Agent Contract Protection | I do NOT modify any file in `.github/agents/` under any circumstance — including ripple execution. If ripple requires agent contract changes, I STOP, create an escalation, and wait for CS2 to authorize CodexAdvisor. | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md |

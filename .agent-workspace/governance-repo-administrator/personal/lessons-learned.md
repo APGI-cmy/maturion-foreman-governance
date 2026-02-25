@@ -382,3 +382,22 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - **Pattern**: The three gates are fixed; only the priority code prefix (FM_H/CA_H/GA_H) and the specific verdict-check logic change per agent class
 - **Action**: Use this pattern as the template for all future agent contract ripple work involving §4.3
 
+
+---
+
+## Session 20260224 (Session 056)
+
+### Lesson: Principle-Level Rules Are Insufficient Without Operational Enforcement
+- **Context**: "Zero Direct Writing" in LIVING_AGENT_SYSTEM.md did not prevent agents from patching .github/agents/ files during ripple operations
+- **Pattern**: Every major prohibition needs: dedicated policy doc + CI/CD enforcement + explicit escalation pathway
+- **Action**: When implementing a new prohibition, create all four components — don't rely on principle statements alone
+
+### Lesson: Agent Contract File Protection Requires CodexAdvisor Handoff Pattern
+- **Context**: Ripple agents face .github/agents/ modification requirements when propagating canon changes
+- **Pattern**: Ripple agents must STOP at .github/agents/ files and create a structured escalation — CS2 authorizes CodexAdvisor separately
+- **Action**: Add AGENT_CONTRACT_FILE_PROTECTION_POLICY.md §3 pathway to all ripple agent contexts
+
+### Lesson: RCA-Derived Rules Should Be Structured in FAIL-ONLY-ONCE Section D
+- **Context**: A-03 requires appending rules to FAIL-ONLY-ONCE after every breach RCA
+- **Pattern**: Create Section D for machine-readable, structured RCA-derived rules separate from the breach log
+- **Action**: Always create a Section D entry and a breach log entry together for each RCA

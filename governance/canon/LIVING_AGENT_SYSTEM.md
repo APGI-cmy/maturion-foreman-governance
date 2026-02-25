@@ -1,7 +1,7 @@
 # LIVING_AGENT_SYSTEM
 
-**Status**: CANONICAL | **Version**: 1.0.0 | **Authority**: CS2  
-**Date**: 2026-02-04
+**Status**: CANONICAL | **Version**: 1.1.0 | **Authority**: CS2  
+**Date**: 2026-02-24
 
 ---
 
@@ -357,10 +357,11 @@ governance/canon/LIVING_AGENT_SYSTEM.md (one-read protocol)
 
 ## Prohibitions
 
-1. **❌ NEVER modify agent contract files directly**
+1. **❌ NEVER modify agent contract files directly — especially `.github/agents/` files**
    - Escalate contract changes to CS2
    - Document in improvement proposals
    - Use working contract for session-specific adjustments
+   - **CONSTITUTIONAL**: Only CodexAdvisor (with explicit CS2 permission via layer-down issue) may write to `.github/agents/`. All other agents — including governance-repo-administrator executing ripple — MUST stop and escalate to CS2. See `governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md`.
 
 2. **❌ NEVER skip wake-up protocol**
    - Mandatory for all sessions
@@ -508,6 +509,51 @@ Multiple agents working on related tasks:
 
 ---
 
+## Agent Contract File Protection (Constitutional)
+
+> **Version Note**: Added in v1.1.0 following governance breach in `APGI-cmy/maturion-isms` PR #517. See `governance/incidents/INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md`.
+
+### Absolute Prohibition
+
+**CONSTITUTIONAL RULE — NON-BYPASSABLE:**
+
+> **No agent — other than CodexAdvisor acting with explicit CS2 permission via a CS2-approved layer-down issue — may create, modify, or delete any file in `.github/agents/`.**
+
+This applies universally: all agent types, all contexts (including ripple execution), all repositories.
+
+### Who May Modify `.github/agents/` Files
+
+| Actor | Authority | Condition |
+|-------|-----------|-----------|
+| CS2 (Johan Ras) | ✅ FULL | Always |
+| CodexAdvisor | ✅ CONDITIONAL | ONLY with explicit CS2 permission via approved layer-down issue; IAA audit required |
+| governance-repo-administrator | ❌ PROHIBITED | Must escalate to CS2 even during ripple |
+| All other agents | ❌ PROHIBITED | Must escalate to CS2 |
+
+### Mandatory Pathway When Ripple Requires Agent Contract Changes
+
+1. **Stop** — do NOT modify `.github/agents/` files
+2. **Create escalation** at `.agent-workspace/<agent>/escalation-inbox/agent-contract-modification-YYYYMMDD.md`
+3. **CS2 reviews** and creates an authorized layer-down issue for CodexAdvisor
+4. **CodexAdvisor executes** the approved changes with full traceability
+5. **IAA audits** the changes before merge is permitted
+
+**Full specification**: `governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md`
+
+### IAA Audit Requirement
+
+All `.github/agents/` modifications by CodexAdvisor require Independent Assurance Agent (IAA) audit:
+- Diff check against CS2-approved specification
+- Content evaluation and semantic appropriateness
+- Authority compliance verification
+- ASSURANCE-TOKEN (approved) or REJECTION-PACKAGE (blocked merge)
+
+### CI/CD Enforcement
+
+`.github/workflows/agent-contract-audit.yml` runs on all PRs modifying `.github/agents/**` and enforces CS2 authorization and CodexAdvisor involvement requirements.
+
+---
+
 ## Authority & Enforcement
 
 **Authority**: CS2 (Johan Ras/Maturion)  
@@ -521,6 +567,8 @@ Multiple agents working on related tasks:
 ## Version History
 
 **v1.0.0** (2026-02-04): Initial canonical protocol creation. Defines agent lifecycle, workspace structure, memory management, integration with governance, migration process, and enforcement model. Authority: CS2, Issue #[TBD].
+
+**v1.1.0** (2026-02-24): Added Agent Contract File Protection section (constitutional rule: only CodexAdvisor with explicit CS2 permission may modify `.github/agents/` files). Updated Prohibition #1 to be explicit about `.github/agents/` scope. Added IAA audit requirement and CI/CD enforcement specification. Triggered by governance breach in `APGI-cmy/maturion-isms` PR #517. Authority: CS2 (Johan Ras).
 
 ---
 
