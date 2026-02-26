@@ -64,6 +64,36 @@ Each entry follows this structure:
 
 ## Change History
 
+### [WAVE-ARTIFACT-NAMING-001] - 2026-02-26 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent, Session 057)  
+**Approved By**: CS2 (Johan Ras) — Issue: [Governance Canon] Formalize unique per-wave artifact filenames for agent session records  
+**Effective Date**: 2026-02-26
+
+**Summary**: Formalize mandatory per-wave artifact naming convention to prevent session ID collision when multiple waves execute within a single foreman session/date.
+
+**Affected Artifacts**:
+- `governance/canon/FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md` (v1.0.0 → v1.1.0) — Added §5.3 naming convention, updated §8.1 and §10
+
+**Migration Required**: NO  
+**Migration Guidance**: New artifacts created during wave execution MUST follow the `<TYPE>-session-<NNN>-wave<W[.S]>-<YYYYMMDD>.<ext>` pattern. Existing artifacts MUST NOT be renamed retroactively.
+
+**Rationale**:  
+Session ID collision was observed in `PREHANDOVER-session-058-20260226.md` where both Wave 7 and Wave 9.1 ran in session 058. Without a wave-scoped suffix, both files share the same name, causing merge conflicts and audit-trail loss. This change makes the naming convention explicit and mandatory in the canonical protocol.
+
+**Impact**:  
+- Foreman (FM): Must include wave/subwave ID in all session records generated during wave execution.
+- QA Agent, IAA, Builder agents: Same requirement applies to all workspace governance proofs.
+- Governance Administrator: Must validate naming convention compliance in merge gate checks.
+- Ripple required to all consumer repos so affected agent contracts (foreman, QA, IAA) are updated.
+
+**References**:  
+- Issue: [Governance Canon] Formalize unique per-wave artifact filenames for agent session records (PREHANDOVER, memory, etc.)
+- Learning L-004 (parking station)
+- `governance/canon/FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md` §5.3
+
+---
+
 ### [AGCFPP-001] - 2026-02-24 - [BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent, Session 056)  
