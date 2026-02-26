@@ -64,33 +64,31 @@ Each entry follows this structure:
 
 ## Change History
 
-### [WAVE-ARTIFACT-NAMING-001] - 2026-02-26 - [NON_BREAKING_ENHANCEMENT]
+### [ISMS-TIER2-CANONIZATION] - 2026-02-25 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent, Session 057)  
-**Approved By**: CS2 (Johan Ras) — Issue: [Governance Canon] Formalize unique per-wave artifact filenames for agent session records  
-**Effective Date**: 2026-02-26
+**Approved By**: CS2 (Johan Ras) / CodexAdvisor-agent — maturion-isms PR #366 (2026-02-21)  
+**Effective Date**: 2026-02-21 (first draft); canonized 2026-02-25  
+**Layer-Down Status**: No layer-down required — artifact canonization only; hashes unchanged  
 
-**Summary**: Formalize mandatory per-wave artifact naming convention to prevent session ID collision when multiple waves execute within a single foreman session/date.
+**Summary**: Formal canonization (layer-up) of 5 ISMS-origin Tier-2 governance artifacts and 1 checklist from maturion-isms PR #366. These files were already present in `governance/canon/` and `governance/CANON_INVENTORY.json`, but lacked layer-up provenance, layer_up_status, and had placeholder/unknown effective_date values. This change records provenance, sets `layer_up_status: INTEGRATED` on all 5 canon entries and the checklist, fixes `effective_date` from "unknown"/"YYYY-MM-DD" to "2026-02-21" for 4 files, and formally adds `PLATFORM_AI_REQUIREMENTS_CHECKLIST.md` to the inventory.
 
 **Affected Artifacts**:
-- `governance/canon/FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md` (v1.0.0 → v1.1.0) — Added §5.3 naming convention, updated §8.1 and §10
+- `governance/canon/PROXY_AUTHORITY_MODEL.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/AGENT_CREATION_BUNDLE_REQUIREMENTS.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/AGENT_REGISTRY_ARCHITECTURE.md` (v1.0.0) — effective_date fixed, layer_up_status=INTEGRATED, provenance recorded
+- `governance/canon/PLATFORM_AI_REQUIREMENTS.md` (v1.0.0) — layer_up_status=INTEGRATED, provenance recorded (effective_date 2026-02-19 preserved)
+- `governance/checklists/PLATFORM_AI_REQUIREMENTS_CHECKLIST.md` (v1.0.0 NEW in inventory) — added to CANON_INVENTORY with full SHA256, layer_up_status=INTEGRATED, provenance recorded
+- `governance/CANON_INVENTORY.json` — 5 entries updated, 1 new entry added (total_canons: 182→183), last_updated: 2026-02-25
 
-**Migration Required**: NO  
-**Migration Guidance**: New artifacts created during wave execution MUST follow the `<TYPE>-session-<NNN>-wave<W[.S]>-<YYYYMMDD>.<ext>` pattern. Existing artifacts MUST NOT be renamed retroactively.
+**Migration Required**: NO
 
-**Rationale**:  
-Session ID collision was observed in `PREHANDOVER-session-058-20260226.md` where both Wave 7 and Wave 9.1 ran in session 058. Without a wave-scoped suffix, both files share the same name, causing merge conflicts and audit-trail loss. This change makes the naming convention explicit and mandatory in the canonical protocol.
+**Rationale**: These 5-6 files originated in maturion-isms and were brought into the governance canon as part of PR #366 (2026-02-21). While the file content was correctly integrated, the CANON_INVENTORY lacked formal provenance metadata. This change closes that gap and establishes a complete audit trail per REQ-CM-002 (provenance/effective_date) and REQ-RA-003 (layer-up log entries).
 
-**Impact**:  
-- Foreman (FM): Must include wave/subwave ID in all session records generated during wave execution.
-- QA Agent, IAA, Builder agents: Same requirement applies to all workspace governance proofs.
-- Governance Administrator: Must validate naming convention compliance in merge gate checks.
-- Ripple required to all consumer repos so affected agent contracts (foreman, QA, IAA) are updated.
+**Impact**: Governance inventory now has full provenance for all ISMS-origin Tier-2 artifacts. No consumer repo changes required.
 
-**References**:  
-- Issue: [Governance Canon] Formalize unique per-wave artifact filenames for agent session records (PREHANDOVER, memory, etc.)
-- Learning L-004 (parking station)
-- `governance/canon/FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md` §5.3
+**Source Provenance**: `APGI-cmy/maturion-foreman-governance` PR #366 (2026-02-21)
 
 ---
 
