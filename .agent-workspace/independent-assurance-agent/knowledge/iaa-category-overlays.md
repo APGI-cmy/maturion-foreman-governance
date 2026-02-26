@@ -1,8 +1,8 @@
 # IAA Category Overlays — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
-**Version**: 1.1.0  
+**Version**: 1.2.0  
 **Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification)  
+**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.2.0 — Test & Assertion Quality overlay subsection added)  
 **Purpose**: Category-specific evaluation overlays for IAA assurance sessions. Overlays refine the core invariant checklist with delivery-type-specific checks. Load alongside `iaa-core-invariants-checklist.md`.
 
 ---
@@ -70,6 +70,16 @@ Multiple overlays may apply to a single PR (e.g., a canon update that also modif
 | **OVC-006** | **YAML frontmatter compliance verified (per BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md)** | For builder agents: YAML frontmatter fields present and compliant | **YAML frontmatter missing or non-compliant — recurring shortfall: builders omit or abbreviate required metadata** |
 | **OVC-007** | **Build effectiveness standard satisfied (per BUILD_EFFECTIVENESS_STANDARD.md)** | Deliverable meets the functional, testable, and deployable standard | **Partially functional deliverable submitted without acknowledgement — recurring shortfall: incomplete builds merged** |
 | **OVC-008** | **Wave closure artifact or wave completion certification exists (per MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md)** | Wave closure certificate present in `.agent-admin/` or equivalent | **Wave completed without closure artifact — recurring shortfall: wave outcomes not formally recorded** |
+
+### C.2 Test & Assertion Quality Checks
+
+| ID | Check | Pass Condition | Fail Trigger |
+|----|-------|---------------|-------------|
+| **OVC-009** | **No provider/model string assertions unless the ticket explicitly requires it** | Test assertions do not hard-code provider names (e.g. `"gpt-4"`, `"claude-3"`, `"openai"`) unless the relevant ticket acceptance criterion explicitly mandates provider-specific verification | Test contains a provider or model string literal that is not justified by a ticket requirement |
+| **OVC-010** | **Tests assert capability routing, not model routing** | Test assertions verify that the correct capability (function/skill) is invoked; model-identity assertions are absent or explicitly justified | Test checks which model handled the request rather than whether the correct capability was exercised |
+| **OVC-011** | **Snapshot updates include rationale and scope documentation** | Any snapshot update commit or PR contains an explanation of why the snapshot changed and which components are affected | Snapshot updated with no rationale (e.g. silent `--updateSnapshot` without description) |
+| **OVC-012** | **Mock contracts match the current adapter response schema** | Mocked response objects in tests reflect the live adapter/API response shape; fields added or removed in the adapter are reflected in mocks | Mock response diverges from the actual adapter schema documented in the working proof or code |
+| **OVC-013** | **Negative-path tests exist for every new error-handling branch** | For each new `catch`, error guard, or fallback path introduced in the PR, at least one test exercises that branch with an invalid/error input | New error-handling code has no corresponding negative-path test |
 
 ---
 
@@ -142,6 +152,7 @@ The following table tracks the categories of recurring improvement suggestions t
 | Version | Date | Change |
 |---------|------|--------|
 | 1.0.0 | 2026-02-24 | Initial seeding — IAA bootstrap with Overlays A–E |
+| 1.2.0 | 2026-02-26 | Added Overlay C.2 (Test & Assertion Quality): OVC-009–OVC-013 |
 | 1.1.0 | 2026-02-26 | Added Overlay F (Learning Loop), recurring shortfall items in Overlays A–E, self-improvement feedback table |
 
 ---
