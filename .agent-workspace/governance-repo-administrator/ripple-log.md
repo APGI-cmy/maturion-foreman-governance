@@ -10,6 +10,10 @@
 <!-- Format: [YYYY-MM-DD HH:MM] TIER_0 vX.X.X → consumer-repo (STATUS) -->
 <!-- STATUS: NOTIFIED | ACKNOWLEDGED | APPLIED | DRIFTED -->
 
+[2026-02-26 08:46] PR #[TBD] FOREMAN_WAVE_PLANNING protocol v1.1.0 (per-wave naming convention §5.3) → maturion-foreman-office-app (RIPPLE REQUIRED)
+[2026-02-26 08:46] PR #[TBD] FOREMAN_WAVE_PLANNING protocol v1.1.0 (per-wave naming convention §5.3) → PartPulse (RIPPLE REQUIRED)
+[2026-02-26 08:46] PR #[TBD] FOREMAN_WAVE_PLANNING protocol v1.1.0 (per-wave naming convention §5.3) → maturion-isms (RIPPLE REQUIRED)
+[2026-02-26 08:46] PR #[TBD] FOREMAN_WAVE_PLANNING protocol v1.1.0 (per-wave naming convention §5.3) → R_Roster (RIPPLE REQUIRED)
 [2026-02-12 10:35] CONSUMER_REPO_REGISTRY.json updated: R_Roster onboarded as consumer (enabled)
 [2026-02-11 06:52] PR #[TBD] New Canons: OPOJD 2.0, Coordination, Ignorance Prohibition (3 files) → RIPPLE REQUIRED
 [2026-02-09 06:57] PR #1052 Canon Changes (5 files) → maturion-foreman-office-app (NOTIFIED) #701
@@ -375,6 +379,47 @@ For each consumer repository:
 - **Last Canon Change**: 2026-02-11 (New Canons: OPOJD 2.0, Coordination, Ignorance Prohibition)
 - **Last Ripple Notification**: PENDING (awaiting PR merge)
 - **Ripple Debt Status**: ⚠️ RIPPLE REQUIRED - High priority constitutional changes
+
+---
+
+## Ripple Details: WAVE-ARTIFACT-NAMING-001 - Per-Wave Artifact Naming Convention
+
+**Canon Change**: `FOREMAN_WAVE_PLANNING_AND_ISSUE_ARTIFACT_GENERATION_PROTOCOL.md` v1.0.0 → v1.1.0  
+**Change Date**: 2026-02-26  
+**Issue**: [Governance Canon] Formalize unique per-wave artifact filenames for agent session records  
+**Ripple Trigger**: PUBLIC_API change — §5.3 naming convention affects all consumer repos running foreman/QA/IAA agents
+
+### Affected Agent Contracts (all consumer repos)
+- `foreman` / `foreman-v2` — must use per-wave naming for PREHANDOVER proofs and session memory
+- QA Agent — must use per-wave naming for QA evidence artifacts
+- IAA (Independent Assurance Agent) — must use per-wave naming for assurance proofs
+- Builder agents — must use per-wave naming for any workspace governance proofs created during wave execution
+
+### Ripple Status by Repository
+
+#### APGI-cmy/maturion-foreman-office-app
+- **Status**: RIPPLE REQUIRED (2026-02-26)
+- **Issue**: #[TBD] (to be created post-merge)
+- **Priority**: HIGH (primary foreman execution repo)
+- **Guidance**: Update foreman, QA, IAA agent contract checklists to mandate `<TYPE>-session-<NNN>-wave<W[.S]>-<YYYYMMDD>.<ext>` naming per §5.3
+
+#### APGI-cmy/PartPulse
+- **Status**: RIPPLE REQUIRED (2026-02-26)
+- **Issue**: #[TBD] (to be created post-merge)
+- **Priority**: MEDIUM
+- **Guidance**: Same as above
+
+#### APGI-cmy/maturion-isms
+- **Status**: RIPPLE REQUIRED (2026-02-26)
+- **Issue**: #[TBD] (to be created post-merge)
+- **Priority**: HIGH (ISMS governance coupling — CodexAdvisor to update affected contracts)
+- **Guidance**: Same as above
+
+#### APGI-cmy/R_Roster
+- **Status**: RIPPLE REQUIRED (2026-02-26)
+- **Issue**: #[TBD] (to be created post-merge)
+- **Priority**: MEDIUM
+- **Guidance**: Same as above
 
 ---
 
