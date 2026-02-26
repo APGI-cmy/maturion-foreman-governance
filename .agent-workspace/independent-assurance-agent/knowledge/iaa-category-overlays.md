@@ -152,8 +152,8 @@ The following table tracks the categories of recurring improvement suggestions t
 | Version | Date | Change |
 |---------|------|--------|
 | 1.0.0 | 2026-02-24 | Initial seeding — IAA bootstrap with Overlays A–E |
-| 1.2.0 | 2026-02-26 | Added Overlay C.2 (Test & Assertion Quality): OVC-009–OVC-013 |
 | 1.1.0 | 2026-02-26 | Added Overlay F (Learning Loop), recurring shortfall items in Overlays A–E, self-improvement feedback table |
+| 1.2.0 | 2026-02-26 | Added Overlay C.2 (Test & Assertion Quality): OVC-009–OVC-013 |
 
 ---
 
