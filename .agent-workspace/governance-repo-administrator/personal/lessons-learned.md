@@ -401,3 +401,20 @@ This file is persistent and must accumulate learnings over time. Never reset or 
 - **Context**: A-03 requires appending rules to FAIL-ONLY-ONCE after every breach RCA
 - **Pattern**: Create Section D for machine-readable, structured RCA-derived rules separate from the breach log
 - **Action**: Always create a Section D entry and a breach log entry together for each RCA
+
+## Session 20260226 (Session 058)
+
+### Lesson: Canonical Gaps in Testing Require Structural Closure, Not Advisory Guidance
+- **Context**: GitHub issue identified 4 gaps — contract testing, SAST/DAST/quality tooling, coverage thresholds, and post-production telemetry — where governance was advisory or absent
+- **Pattern**: Advisory guidance that is not gate-enforced is effectively optional. Only BLOCKING gates with minimum thresholds close governance gaps structurally
+- **Action**: When creating a new canon to close a gap, always define: (a) minimum thresholds, (b) BLOCKING gate trigger conditions, (c) required evidence artifacts, (d) exception process
+
+### Lesson: "100% GREEN" Without Coverage Floor Is Insufficient
+- **Context**: The existing mandate was "all tests pass" but placed no floor on test quantity/coverage. A project with 3 tests, all passing, technically satisfied the gate
+- **Pattern**: Test quality governance requires two independent axes: (a) all tests pass, (b) minimum coverage floor by project type
+- **Action**: CODE_COVERAGE_THRESHOLD_CANON.md addresses this; future canon reviews should check for similar "quality without quantity" gaps
+
+### Lesson: Post-Production Governance Is Often the Last Layer Defined
+- **Context**: Strong pre-production quality gates existed but nothing governed what happens after deployment. Telemetry, health snapshots, and regression scheduling were unaddressed
+- **Pattern**: Governance completeness requires covering the full lifecycle: pre-build → build → pre-merge → pre-release → post-release → ongoing
+- **Action**: POST_PRODUCTION_TELEMETRY_CANON.md closes the post-release gap; future governance surveys should audit the full lifecycle
