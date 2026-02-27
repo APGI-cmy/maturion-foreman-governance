@@ -1,0 +1,111 @@
+### Title
+[Governance Repo] Replace layer-down dispatch system: agent-instructed issue pipeline + delete all legacy workflows
+
+### Body
+> ⚠️ **AGENT PREFLIGHT MANDATORY** — call `agent_bootstrap` with your agent ID before reading below.
+
+## Authority
+CS2 (Johan Ras / @APGI-cmy)
+Governed by: `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0
+Workflow authority: `LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md` v1.0.0
+
+---
+
+## Context
+
+PR #1221 fixed the 5 structural gaps in the layer-down pipeline. However, the **consumer-side** pattern remains wrong: `governance-ripple-sync.yml` in consumer repos auto-creates "dump-file" PRs instead of issuing surgical agent instructions. This issue completes the redesign on the **governance repo (sender) side**.
+
+The target design:
+- Governance canonical push → `governance-layer-down-dispatch.yml` fires
+- For each enabled consumer repo: creates **one issue** with full surgical agent instructions, auto-assigned to the correct `governance-liaison-{repo}-agent`
+- Also sends `repository_dispatch` (`governance_ripple`) to trigger the consumer-side intake workflow
+- The **agent** layers down, ripples, invokes CodexAdvisor for tier 2/3 alignment, opens a ripple PR, enables auto-merge, closes the issue
+- No files are ever auto-dumped by any workflow
+
+---
+
+## Task
+
+### 1. Rewrite `.github/layer-down-issue-template.md`
+
+Replace the current generic checklist with full surgical agent instructions. The new template must include:
+
+**Required sections:**
+- Mandatory `agent_bootstrap` preflight banner (⚠️ DO NOT SKIP)
+- Source repo, canonical commit SHA (`{{COMMIT_SHA}}`), short SHA (`{{SHORT_SHA}}`), timestamp (`{{TIMESTAMP}}`), commit message (`{{COMMIT_MESSAGE}}`)
+- Explicit list of changed artifacts (`{{FILES_LIST}}`)
+- **Phase 1** — Preflight: call `agent_bootstrap`, record session memory
+- **Phase 2** — Layer Down: copy each listed canon file into this repo at the correct path; update `GOVERNANCE_ALIGNMENT_INVENTORY.json`
+- **Phase 3** — Agent File Gate:
+  - If any artifact is `.github/agents/*.md`: **HALT**. Create escalation doc at `.agent-workspace/governance-liaison-{repo}/escalation-inbox/agent-contract-escalation-{{SHORT_SHA}}.md`. Notify CS2. STOP.
+  - If NO agent files: continue to Phase 4
+- **Phase 4** — Ripple: invoke CodexAdvisor agent with explicit instruction to align tier 2/3 artifacts referencing the updated canon; update all cross-references; update `GOVERNANCE_ALIGNMENT_INVENTORY.json`; attach `PREHANDOVER_PROOF` if executable artifacts changed
+- **Phase 5** — PR & Auto-Merge: open ripple PR titled `[Ripple] Layer-down {{SHORT_SHA}} — {repo}`; enable auto-merge (squash); close this issue after merge
+- `{{AGENT_SECTION}}` placeholder for agent-file CS2 escalation block
+- Auto-close eligibility checklist
+
+### 2. Replace `governance/executable/workflows/consumer-alignment.yml.template`
+
+The current template deploys `governance-ripple-sync.yml` to consumer repos (the auto-dump-PR pattern). Replace it with a new template that deploys `governance-layer-down-intake.yml` instead.
+
+The new `governance-layer-down-intake.yml` template must:
+- Trigger on `repository_dispatch: types: [governance_ripple]` and `workflow_dispatch`
+- Have `permissions: contents: read, issues: write` only (no `pull-requests: write` — the agent creates PRs, not the workflow)
+- Extract payload (`commit_sha`, `short_sha`, `source_repo`, `agent_files_changed`, `timestamp`)
+- Check idempotency: if an open `governance`+`layer-down` issue for this commit SHA already exists, skip creation
+- Bootstrap `governance` and `layer-down` labels if missing
+- Create a layer-down issue (using the new template content) auto-assigned to `governance-liaison-{repo}-agent` (read liaison from `CONSUMER_REPO_REGISTRY.json` payload or hard-coded per repo)
+- Post an agent activation comment on the issue with: `agent_bootstrap` command, canonical commit, agent file gate status, and the 6-step SOP
+- **Do NOT** run `align-governance.sh`, create PRs, or copy any files
+
+### 3. Delete all legacy workflows and files
+
+Delete the following from this repo (they are superseded, wrong-pattern, or orphaned):
+
+| File | Reason |
+|------|--------|
+| `.github/workflows/qiel-template.yml.example` | Legacy QIEL template — orphaned, not part of current governance pattern |
+| `.github/workflows/foreman-governance.yml` | Legacy governance policy validation — superseded by `governance-gate.yml` |
+| `.github/workflows/fm-failure-enforcement-gate.yml` | Legacy build/failure enforcement — references `architecture/BUILD_ACTIVE` which does not exist in governance repo |
+| `.github/workflows/merge-gate-interface.yml` | Legacy merge gate — references `.agent-admin/prehandover/` evidence bundle format no longer in use |
+| `governance/executable/workflows/consumer-alignment.yml.template` | To be **replaced** (not just deleted) — see task 2 above |
+
+**DO NOT delete:**
+- `governance-layer-down-dispatch.yml` — keep, it is the correct sender
+- `governance-layer-up-intake.yml` — keep, handles the bidirectional layer-up round-trip
+- `governance-layer-up-close-loop.yml` — keep, completes the layer-up close loop
+- `governance-gate.yml` — keep, structural integrity check
+- `agent-contract-audit.yml` — keep, CS2 gate for agent file PRs
+
+### 4. Update `.github/workflows/README.md`
+
+Update the README to:
+- Reflect the current active workflow inventory (post-deletions)
+- Document the two-signal layer-down design (Signal 1: issue, Signal 2: repository_dispatch)
+- List the decommissioned legacy workflows with rationale
+- Reference `LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md` as the authoritative design document
+
+---
+
+## Acceptance Criteria
+
+- [ ] `.github/layer-down-issue-template.md` contains full 5-phase surgical agent instructions
+- [ ] `governance/executable/workflows/consumer-alignment.yml.template` produces `governance-layer-down-intake.yml` (agent-intake pattern, no auto-PR)
+- [ ] All legacy workflows listed above are deleted
+- [ ] `.github/workflows/README.md` is updated and accurate
+- [ ] All active layer-down workflows (`governance-layer-down-dispatch.yml`, layer-up pair, governance gate, agent-contract-audit) are untouched
+- [ ] PR passes governance gate and agent-contract-audit
+- [ ] PREHANDOVER_PROOF attached
+
+---
+
+## Notes
+
+- The **consumer-side** counterpart to this issue (replacing `governance-ripple-sync.yml` and `ripple-integration.yml` in `maturion-isms`) is tracked separately in `maturion-isms`
+- After this issue is merged, the template will be layered down to all 4 consumer repos via the standard layer-down pipeline
+- The 3 duplicate ripple PRs in `maturion-isms` (#639–641) are being resolved separately — do not block on them
+
+---
+*Authority: CS2 | Governed by: LIVING_AGENT_SYSTEM.md v6.2.0 | 2026-02-27* 
+
+Labels: governance, governance-improvement, layer-down
