@@ -5,6 +5,15 @@ name: Governance Layer-Down Dispatch
 # - RIPPLING: Within-repo integration/synchronization — occurs inside consumer repos AFTER layer-down.
 # These are distinct, sequential processes with different automation boundaries.
 # See: governance/strategy/LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md
+#
+# TWO-SIGNAL DISPATCH (per LAYER_DOWN_INVESTIGATION_REPORT_20260227.md):
+# For each enabled consumer repo this workflow sends two signals on every canonical push to main:
+#   Signal 1 — GitHub Issue: human-readable instructions auto-assigned to the governance-liaison.
+#   Signal 2 — repository_dispatch (governance_ripple): machine event that triggers
+#              governance-ripple-sync.yml inside the consumer repo for automated
+#              CANON_INVENTORY drift detection and alignment PR creation.
+# Without Signal 2, governance-ripple-sync.yml never fires automatically regardless of
+# how many issues are created. Both signals are required for a complete layer-down.
 
 on:
   push:
@@ -145,6 +154,35 @@ jobs:
               "${CREATE_ARGS[@]}" \
               && echo "  Issue created in $repo" \
               || echo "  Issue creation failed for $repo (labels/assignees may not exist yet)"
+          done
+
+      - name: Dispatch governance_ripple repository_dispatch to consumer repos
+        # Signal 2: machine event that triggers governance-ripple-sync.yml in each consumer repo.
+        # Without this signal, governance-ripple-sync.yml (which listens on
+        # repository_dispatch: types: [governance_ripple]) never fires automatically.
+        # Non-blocking: a failure here logs a warning but does not prevent issue creation (Signal 1).
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+        run: |
+          COMMIT_SHA="${{ github.sha }}"
+          SHORT_SHA="${COMMIT_SHA:0:8}"
+          TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
+
+          echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
+            [ -z "$repo" ] && continue
+            echo "Dispatching governance_ripple to $repo..."
+            gh api "repos/$repo/dispatches" \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -f "event_type=governance_ripple" \
+              -f "client_payload[source_repo]=${{ github.repository }}" \
+              -f "client_payload[commit_sha]=${COMMIT_SHA}" \
+              -f "client_payload[short_sha]=${SHORT_SHA}" \
+              -f "client_payload[timestamp]=${TIMESTAMP}" \
+              -f "client_payload[agent_files_changed]=${AGENT_FILES_CHANGED}" \
+              && echo "  governance_ripple dispatched to $repo" \
+              || echo "  repository_dispatch failed for $repo (MATURION_BOT_TOKEN may lack contents:write scope in that repo)"
           done
 
       - name: Record layer-down dispatch
