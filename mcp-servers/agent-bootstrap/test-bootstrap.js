@@ -14,7 +14,7 @@
 
 const fs   = require("fs");
 const path = require("path");
-const { execSync, spawn } = require("child_process");
+const { execSync } = require("child_process");
 const { REQUIRED_AGENT_IDS } = require("./agent-ids.js");
 
 let failures = 0;
