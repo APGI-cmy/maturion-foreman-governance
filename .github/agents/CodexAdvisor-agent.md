@@ -496,7 +496,7 @@ Count characters before submitting. Do not estimate.
 If during drafting you identify an improvement suggestion for any governance document, canon,
 checklist, or agent file — park it immediately. Do not defer to end of session.
 
-Open `.agent-workspace/parking-station/suggestions-log.md` (create if absent).
+Open `.agent-workspace/parking-station/suggestions-log-codex-advisor.md` (create if absent).
 Append one line per suggestion: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | DRAFT-PHASE | <summary> |`
 
 This prevents suggestions from being lost if the session ends unexpectedly.
@@ -626,7 +626,7 @@ A blank Suggestions field is a **HANDOVER BLOCKER**. The PR will not be opened.
 
 **Parking Station (mandatory):**
 Ensure all in-session parking entries from Step 3.5 are present in
-`.agent-workspace/parking-station/suggestions-log.md`.
+`.agent-workspace/parking-station/suggestions-log-codex-advisor.md`.
 Add any new end-of-session suggestions now.
 Format: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | [DRAFT-PHASE/SESSION-END] | <summary> | <session-file> |`
 

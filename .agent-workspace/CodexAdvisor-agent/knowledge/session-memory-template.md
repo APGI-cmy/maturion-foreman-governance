@@ -87,7 +87,7 @@ File naming: `.agent-workspace/CodexAdvisor-agent/memory/session-NNN-YYYYMMDD.md
 
 ## Parking Station Entries
 
-[List any entries added to `.agent-workspace/parking-station/suggestions-log.md` this session, or 'none']
+[List any entries added to `.agent-workspace/parking-station/suggestions-log-codex-advisor.md` this session, or 'none']
 
 ---
 
