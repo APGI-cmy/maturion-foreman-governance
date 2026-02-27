@@ -1,3 +1,24 @@
+> **DEPRECATION NOTICE**: This file (`governance/agents/governance-administrator.agent.md`) is
+> a legacy governance documentation artifact. The canonical agent contract for this agent is:
+>
+> **Canonical location**: `.github/agents/governance-repo-administrator-v2.agent.md`
+>
+> All operational configuration, YAML frontmatter, phase scripts, and second-tier knowledge
+> are maintained at the canonical location above. This file is retained for historical reference only.
+> Do not modify this file. Do not use this file as an operational contract.
+
+**Last Canonical Contract**: `.github/agents/governance-repo-administrator-v2.agent.md`  
+**Agent ID**: `governance-repo-administrator-v2`  
+**Contract Version**: 2.0.0  
+**Living Agent System**: v6.2.0  
+**Deprecated**: 2026-02-27
+
+---
+
+# GOVERNANCE ADMINISTRATOR CONTRACT (ARCHIVED)
+
+> ⚠️ Historical record below. This contract format is deprecated. See canonical location above.
+
 # GOVERNANCE ADMINISTRATOR CONTRACT
 
 ## Status
