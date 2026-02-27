@@ -9,7 +9,7 @@ agent:
   version: 6.2.0
   contract_version: 1.0.0
   contract_pattern: four_phase_canonical
-  model: claude-sonnet-4-5
+  model: claude-sonnet-4-6
 
 governance:
   protocol: LIVING_AGENT_SYSTEM
