@@ -1,5 +1,7 @@
 ## Layer-Down: Governance Artifact Distribution
 
+> **Auto-assigned** to the governance-liaison configured in `CONSUMER_REPO_REGISTRY.json`.
+
 **Source**: `APGI-cmy/maturion-foreman-governance`
 **Commit**: `{{COMMIT_SHA}}`
 **Date**: `{{TIMESTAMP}}`
@@ -16,14 +18,24 @@ Per **LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.0.0 Section 3.2**:
 1. Review all changed artifacts listed above
 2. Execute rippling protocol within this repo (see Section 4 of strategy doc)
 3. Update `GOVERNANCE_ALIGNMENT_INVENTORY.json` with new artifact versions
-4. Create a ripple PR with all synchronization changes
-5. Attach `PREHANDOVER_PROOF` if any executable artifacts changed
-6. Request approval:
+4. Create a ripple PR with all synchronization changes and attach `PREHANDOVER_PROOF` if any executable artifacts changed
+5. Request approval:
    - **CS2 (Johan Ras)** if agent contract files (`.github/agents/*.md`) are modified
    - **FM / Governance-Liaison** if only non-agent files changed
-7. Merge after approval
+6. Merge after approval
 
 {{AGENT_SECTION}}
+
+### Auto-Close Eligibility
+
+This issue may be **closed without escalation** when all of the following are true:
+
+- [ ] Only non-agent governance files changed (no `.github/agents/*.md` in the artifact list above)
+- [ ] Ripple PR merged to `main` in this repo
+- [ ] `GOVERNANCE_ALIGNMENT_INVENTORY.json` updated with new canonical versions
+- [ ] `PREHANDOVER_PROOF` attached (if any executable artifacts changed)
+
+If agent contract files changed, **do NOT auto-close** — escalate to CS2 per the Agent File Detection Gate section above.
 
 ### References
 

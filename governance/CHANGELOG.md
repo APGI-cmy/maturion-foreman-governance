@@ -64,6 +64,46 @@ Each entry follows this structure:
 
 ## Change History
 
+### [LAYER-DOWN-INVESTIGATION-2026-02-27] - 2026-02-27 - GOVERNANCE_IMPROVEMENT
+
+**Changed By**: governance-repo-administrator (Session 059)
+**Approved By**: CS2 (Johan Ras) — via GitHub issue "[Investigation] End-to-end auto layering-down and ripple process – governance repo"
+**Effective Date**: 2026-02-27
+**Layer-Down Status**: INTERNAL (governance repo) + consumer repos that deployed `consumer-alignment.yml.template` must update token (Gap 4 fix)
+
+**Summary**: End-to-end investigation of auto layering-down and ripple processes. Five structural
+gaps identified and resolved. Gap 2 (missing `repository_dispatch` sender) is the root cause of
+the auto-layering failure: `governance-ripple-sync.yml` in consumer repos listens on
+`repository_dispatch: types: [governance_ripple]` but no such event was ever sent.
+
+**Changes Made**:
+1. **(Gap 1)** `CONSUMER_REPO_REGISTRY.json` v1.1.0 → v1.2.0: populated `governance_liaison` for all 4 consumer repos — root cause of silent-unassign backlog
+2. **(Gap 2 — CRITICAL)** `governance-layer-down-dispatch.yml`: added `repository_dispatch` (`governance_ripple`) sender step — without this, `governance-ripple-sync.yml` never fired automatically
+3. **(Gap 3)** Confirmed `governance-layer-up-close-loop.yml` and `governance-layer-up-intake.yml` are active, non-conflicting, required for the layer-up round-trip — both retained
+4. **(Gap 4)** `consumer-alignment.yml.template`: replaced undefined `RIPPLE_DISPATCH_TOKEN` with `MATURION_BOT_TOKEN` — undefined secret caused silent clone failures and circuit-breaker opening
+5. **(Gap 5)** Created `governance/layer-down/LAYER_DOWN_INVESTIGATION_REPORT_20260227.md` with gap analysis, 6 missed layer-down events, backfill plan, and future-proofing steps
+6. Updated `.github/layer-down-issue-template.md` with auto-close eligibility section
+7. Confirmed legacy `governance-ripple-dispatch.yml` (auto-PR) workflow is discontinued
+
+**Affected Artifacts**:
+- `governance/CONSUMER_REPO_REGISTRY.json` (v1.1.0 → v1.2.0)
+- `.github/workflows/governance-layer-down-dispatch.yml`
+- `governance/executable/workflows/consumer-alignment.yml.template`
+- `.github/layer-down-issue-template.md`
+- `governance/layer-down/LAYER_DOWN_INVESTIGATION_REPORT_20260227.md` (NEW)
+
+**Migration Required**: YES — consumer repos that deployed `consumer-alignment.yml.template`
+before 2026-02-27 must update the `Checkout governance canonical` step to use `MATURION_BOT_TOKEN`.
+
+**Rationale**: Gap 2 is the primary root cause. Every canonical push now sends two signals: a
+human-readable issue (Signal 1, assigned to the liaison) and a `governance_ripple`
+`repository_dispatch` event (Signal 2, triggers automated drift detection + alignment PR).
+
+**References**: "[Investigation] End-to-end auto layering-down and ripple process – governance repo";
+Session 059; `governance/layer-down/LAYER_DOWN_INVESTIGATION_REPORT_20260227.md`
+
+---
+
 ### [TESTING-CANON-GAPS-2026-02-26] - 2026-02-26 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent, Session 058)
