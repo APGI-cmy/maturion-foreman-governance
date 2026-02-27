@@ -11,6 +11,7 @@ const REQUIRED_AGENT_IDS = [
   "CodexAdvisor-agent",
   "foreman-v2.agent",
   "governance-repo-administrator-v2.agent",
+  "independent-assurance-agent",
 ];
 
 module.exports = { REQUIRED_AGENT_IDS };
