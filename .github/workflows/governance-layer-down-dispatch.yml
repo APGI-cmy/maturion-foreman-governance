@@ -103,6 +103,8 @@ jobs:
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
+          # Sanitize: first line only, replace pipe chars (sed delimiter safety)
+          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|' '-')"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
@@ -181,6 +183,8 @@ jobs:
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
+          # Sanitize: first line only, replace pipe chars (safe for API payload)
+          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|' '-')"
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
