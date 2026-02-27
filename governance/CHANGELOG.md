@@ -64,6 +64,54 @@ Each entry follows this structure:
 
 ## Change History
 
+### [ZERO-TOLERANCE-FINDING-PROTOCOL-2026-02-27] - 2026-02-27 - NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator
+**Approved By**: CS2 (Johan Ras) — issue APGI-cmy/maturion-foreman-governance#1200
+**Effective Date**: 2026-02-27
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to all consumer repositories
+
+**Summary**: Canonised the Zero-Tolerance Finding Principle system-wide. Every finding observed
+by any agent or AI tool is immediately blocking for merge/handover, regardless of perceived
+severity. The only exception is explicit written approval from CS2. Removes the previously
+permitted "reviewer explicitly grants non-blocking (optional)" pathway from
+`STOP_AND_FIX_DOCTRINE.md`.
+
+**Changes Made**:
+1. **(NEW)** Created `governance/canon/ZERO_TOLERANCE_FINDING_PROTOCOL.md` v1.0.0 — canonical
+   codification of zero-tolerance principle for AI/agent findings (every finding is blocking
+   unless CS2 exempts it)
+2. **(UPDATED)** `governance/canon/STOP_AND_FIX_DOCTRINE.md` v2.0.0 → v2.1.0 — removed
+   "reviewer explicitly grants non-blocking (optional)" exception; CS2-only exception now
+   applies; added `ZERO_TOLERANCE_FINDING_PROTOCOL.md` to Related Canon
+3. **(UPDATED)** `governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md` — added
+   `ZERO_TOLERANCE_FINDING_PROTOCOL.md` to Related Canon section
+4. **(UPDATED)** `governance/CANON_INVENTORY.json` v187 → v188 — added new entry for
+   `ZERO_TOLERANCE_FINDING_PROTOCOL.md`, updated hashes for `STOP_AND_FIX_DOCTRINE.md` and
+   `UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md`
+
+**Affected Artifacts**:
+- `governance/canon/ZERO_TOLERANCE_FINDING_PROTOCOL.md` (NEW — v1.0.0)
+- `governance/canon/STOP_AND_FIX_DOCTRINE.md` (v2.0.0 → v2.1.0)
+- `governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md` (related canon reference added)
+- `governance/CANON_INVENTORY.json` (total_canons: 187 → 188)
+
+**Migration Required**: YES
+**Migration Guidance**: All agents and reviewers must immediately treat every finding as
+blocking. The "non-blocking (optional)" exception pathway granted by non-CS2 reviewers is
+no longer valid. Any agent FAIL-ONLY-ONCE registry that permitted non-blocking exceptions
+without CS2 approval must be updated to add a rule referencing this protocol.
+
+**Rationale**: Eradicates the triage/evaluation-for-seriousness step that allowed agents to
+classify findings as advisory or deferrable. All handover evidence must be pristine at
+handover. The only exception path is CS2 written approval.
+
+**Impact**: All agents, all reviewers, all PRs from effective date.
+
+**References**: APGI-cmy/maturion-foreman-governance#1200
+
+---
+
 ### [LAYER-DOWN-INVESTIGATION-2026-02-27] - 2026-02-27 - GOVERNANCE_IMPROVEMENT
 
 **Changed By**: governance-repo-administrator (Session 059)
