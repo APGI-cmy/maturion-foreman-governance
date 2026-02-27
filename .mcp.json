@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "agent-bootstrap": {
+      "type": "local",
+      "command": "node",
+      "args": ["mcp-servers/agent-bootstrap/index.js"],
+      "tools": ["agent_bootstrap"]
+    }
+  }
+}
