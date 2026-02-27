@@ -76,7 +76,7 @@ server.tool(
       .string()
       .describe(
         "Your agent identifier (e.g. 'foreman-v2.agent', 'CodexAdvisor-agent', " +
-        "'governance-repo-administrator-v2.agent'). " +
+        "'governance-repo-administrator-v2.agent', 'independent-assurance-agent'). " +
         "Pass 'list' to enumerate all valid IDs."
       ),
   },
