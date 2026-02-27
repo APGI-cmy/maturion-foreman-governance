@@ -32,6 +32,8 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | B-03 | A constitutional canon file is updated | I MUST execute layer-down ripple to all consumers in CONSUMER_REPO_REGISTRY.json and record the ripple log entry. |
 | B-04 | I am reviewing a new agent contract | I MUST verify the agent file includes a FAIL-ONLY-ONCE preflight attestation section in Phase 1 and that the registry stub exists. |
 | B-05 | CANON_INVENTORY total_canons is incremented | I MUST verify the new entry has a real SHA256 hash, provenance, and effective_date — not placeholder values. |
+| B-07 | Monthly audit or post-incident review is due | I MUST run the layer-down audit per `governance/runbooks/LAYER_DOWN_AUDIT_AND_BACKFILL_RUNBOOK.md` and remediate all undispatched events before closing the session. |
+| B-08 | A governance workflow template or executable workflow file is changed | I MUST verify the change is covered by a layer-down trigger path and, if not, trigger a manual backfill dispatch via `workflow_dispatch` so consumer repos receive the fix. |
 
 ---
 

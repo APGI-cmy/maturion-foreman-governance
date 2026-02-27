@@ -14,6 +14,13 @@ name: Governance Layer-Down Dispatch
 #              CANON_INVENTORY drift detection and alignment PR creation.
 # Without Signal 2, governance-ripple-sync.yml never fires automatically regardless of
 # how many issues are created. Both signals are required for a complete layer-down.
+#
+# MANUAL BACKFILL (workflow_dispatch):
+# Governance agents and operators may trigger this workflow manually via the GitHub Actions UI
+# or API to recover from missed layer-down events. Provide a mandatory 'reason' describing the
+# backfill context and an optional 'commit_sha' to reference the historical commit being backfilled.
+# Manual dispatch sends both signals to all enabled consumer repos regardless of which files changed.
+# See governance/runbooks/LAYER_DOWN_AUDIT_AND_BACKFILL_RUNBOOK.md for the full procedure.
 
 on:
   push:
@@ -23,7 +30,18 @@ on:
       - 'governance/canon/**'
       - 'governance/schemas/**'
       - 'governance/templates/**'
+      - 'governance/executable/workflows/**'
       - 'BUILD_PHILOSOPHY.md'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual dispatch (e.g. backfill for missed layer-down event)'
+        required: true
+        type: string
+      commit_sha:
+        description: 'Commit SHA to reference in the layer-down issue (defaults to HEAD when not provided)'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -42,11 +60,22 @@ jobs:
       - name: Detect changed governance artifacts
         id: changes
         run: |
+          # For workflow_dispatch (manual backfill), skip git diff — all enabled consumers
+          # will receive the dispatch signal regardless of which files changed.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "agent_files_changed=false" >> $GITHUB_OUTPUT
+            echo "Manual dispatch triggered. Reason: ${{ inputs.reason }}"
+            echo "All enabled consumer repos will receive the layer-down signal."
+            exit 0
+          fi
+
           # List files changed in this push
           CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
 
-          # Detect PUBLIC_API canon / schema / template changes (layer-down triggers)
-          LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^governance/(canon|schemas|templates)/' || true)
+          # Detect PUBLIC_API canon / schema / template / executable-workflow changes (layer-down triggers)
+          LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^governance/(canon|schemas|templates|executable/workflows)/' || true)
           echo "changed_files<<EOF" >> $GITHUB_OUTPUT
           echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -82,12 +111,36 @@ jobs:
           echo "Will create layer-down issues in:"
           echo "$CONSUMERS" | awk -F'\t' '{print "  " $1 " (liaison: " ($2 != "" ? $2 : "unassigned") ")"}'
 
+      - name: Validate consumer liaison configuration
+        # Fail fast if any enabled consumer has no governance_liaison configured.
+        # An empty liaison means layer-down issues arrive unassigned — a silent non-compliance risk.
+        # Fix: populate governance_liaison in CONSUMER_REPO_REGISTRY.json for all enabled consumers.
+        run: |
+          EMPTY_LIAISONS=$(jq -r '.consumers[] | select(.enabled == true) | select((.governance_liaison // "") == "") | .repository' governance/CONSUMER_REPO_REGISTRY.json)
+          if [ -n "$EMPTY_LIAISONS" ]; then
+            echo "ERROR: The following enabled consumer repos have empty governance_liaison fields:"
+            echo "$EMPTY_LIAISONS"
+            echo "Layer-down dispatch blocked. Populate governance_liaison in CONSUMER_REPO_REGISTRY.json before proceeding."
+            exit 1
+          fi
+          echo "All enabled consumer repos have governance_liaison configured."
+
       - name: Create layer-down issues in consumer repos
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
-          COMMIT_SHA="${{ github.sha }}"
+          # For workflow_dispatch, use the provided commit_sha input (if given) or HEAD.
+          # For push events, always use github.sha (the push commit).
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.commit_sha }}" ]; then
+            COMMIT_SHA="${{ inputs.commit_sha }}"
+          else
+            COMMIT_SHA="${{ github.sha }}"
+          fi
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          # For manual dispatch, use the reason as the commit message context
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            COMMIT_MESSAGE="[Manual backfill] ${{ inputs.reason }}"
+          fi
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
@@ -121,7 +174,11 @@ jobs:
           echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue
 
-            ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              ISSUE_TITLE="[Layer-Down][Backfill] Governance Changes - ${DATE} (${SHORT_SHA})"
+            else
+              ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
+            fi
 
             # Substitute template variables
             ISSUE_BODY=$(sed \
@@ -164,7 +221,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
-          COMMIT_SHA="${{ github.sha }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.commit_sha }}" ]; then
+            COMMIT_SHA="${{ inputs.commit_sha }}"
+          else
+            COMMIT_SHA="${{ github.sha }}"
+          fi
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
@@ -191,9 +252,16 @@ jobs:
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATESTAMP="$(date +%Y%m%d-%H%M%S)"
           RECORD_FILE=".agent-admin/ripple/layer-down-dispatch-${DATESTAMP}.json"
-          printf '{\n  "schema_version": "1.0.0",\n  "type": "layer_down_dispatch",\n  "timestamp": "%s",\n  "commit_sha": "%s",\n  "agent_files_changed": %s,\n  "consumers_notified": %s\n}\n' \
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.commit_sha }}" ]; then
+            EFFECTIVE_SHA="${{ inputs.commit_sha }}"
+          else
+            EFFECTIVE_SHA="${{ github.sha }}"
+          fi
+          DISPATCH_TYPE="${{ github.event_name }}"
+          printf '{\n  "schema_version": "1.0.0",\n  "type": "layer_down_dispatch",\n  "dispatch_type": "%s",\n  "timestamp": "%s",\n  "commit_sha": "%s",\n  "agent_files_changed": %s,\n  "consumers_notified": %s\n}\n' \
+            "$DISPATCH_TYPE" \
             "$TIMESTAMP" \
-            "${{ github.sha }}" \
+            "$EFFECTIVE_SHA" \
             "${{ steps.changes.outputs.agent_files_changed }}" \
             "$(jq -c '[.consumers[] | select(.enabled == true) | .repository]' governance/CONSUMER_REPO_REGISTRY.json)" \
             > "$RECORD_FILE"

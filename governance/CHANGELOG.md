@@ -64,6 +64,51 @@ Each entry follows this structure:
 
 ## Change History
 
+### [LAYER-DOWN-SIGNAL-INTEGRITY-2026-02-27] - 2026-02-27 - GOVERNANCE_IMPROVEMENT
+
+**Changed By**: governance-repo-administrator (Copilot Agent, Session 060)
+**Approved By**: CS2 (Johan Ras) — via GitHub issue "[Governance Agent] Automate and Verify Layer-Down Signal Integrity (Immediate Fix Required)"
+**Effective Date**: 2026-02-27
+**Layer-Down Status**: INTERNAL (governance repo only — backfill dispatch sends signals to all consumer repos)
+
+**Summary**: Three structural improvements to prevent future silent layer-down failures and enable
+recovery from missed events. Adds `workflow_dispatch` manual backfill trigger, extends path
+filters to include executable workflow templates, adds pre-dispatch liaison validation, formalises
+the monthly audit protocol, and updates FAIL-ONLY-ONCE with two new conditional rules.
+
+**Changes Made**:
+1. **`governance-layer-down-dispatch.yml`** — Added `workflow_dispatch` trigger with mandatory `reason` and
+   optional `commit_sha` inputs for manual backfill re-dispatch. Governance agents and operators can now
+   recover from missed layer-down events without a new push to main.
+2. **`governance-layer-down-dispatch.yml`** — Added `governance/executable/workflows/**` to push trigger
+   paths so workflow template fixes (e.g. `RIPPLE_DISPATCH_TOKEN` → `MATURION_BOT_TOKEN`) always trigger
+   layer-down, even when no canon/schema/template files change.
+3. **`governance-layer-down-dispatch.yml`** — Added `Validate consumer liaison configuration` step that
+   fails fast (exit 1) if any enabled consumer has an empty `governance_liaison` field, preventing
+   silent unassigned issues from recurring.
+4. **`governance/runbooks/LAYER_DOWN_AUDIT_AND_BACKFILL_RUNBOOK.md`** (NEW) — Formal four-phase protocol
+   for governance agents: audit undispatched events, trigger backfill dispatch, verify consumer sync state,
+   and update recurrence prevention artifacts.
+5. **`.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md`** — Added two new
+   conditional rules: B-07 (monthly audit obligation) and B-08 (template path coverage check).
+
+**Affected Artifacts**:
+- `.github/workflows/governance-layer-down-dispatch.yml`
+- `governance/runbooks/LAYER_DOWN_AUDIT_AND_BACKFILL_RUNBOOK.md` (NEW)
+- `.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md`
+
+**Migration Required**: NO — additive changes only. Existing consumer repos and registry unchanged.
+
+**Rationale**: The investigation report (LAYER_DOWN_INVESTIGATION_REPORT_20260227.md) identified 6
+undispatched historical events and recommended three future-proofing measures: (1) liaison completeness
+check, (2) `workflow_dispatch` backfill trigger, and (3) monthly ripple audit. This change implements
+all three and formalises them as canonical FAIL-ONLY-ONCE rules and a runbook so they cannot be skipped.
+
+**References**: "[Governance Agent] Automate and Verify Layer-Down Signal Integrity"; Session 060;
+`governance/layer-down/LAYER_DOWN_INVESTIGATION_REPORT_20260227.md`
+
+---
+
 ### [LAYER-DOWN-INVESTIGATION-2026-02-27] - 2026-02-27 - GOVERNANCE_IMPROVEMENT
 
 **Changed By**: governance-repo-administrator (Session 059)
