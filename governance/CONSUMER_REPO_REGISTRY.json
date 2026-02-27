@@ -1,12 +1,13 @@
 {
   "version": "1.2.0",
   "schema_version": "1.1.0",
-  "last_updated": "2026-02-27T10:51:51Z",
+  "last_updated": "2026-02-27T00:00:00Z",
   "consumers": [
     {
       "repository": "APGI-cmy/maturion-foreman-office-app",
       "enabled": true,
-      "governance_liaison": "governance-liaison-office-agent",
+      "governance_liaison": "APGI-cmy",
+      "governance_liaison_agent": "governance-liaison-office-agent",
       "layer_down_events": [
         "governance_layer_down"
       ],
@@ -15,7 +16,8 @@
     {
       "repository": "APGI-cmy/PartPulse",
       "enabled": true,
-      "governance_liaison": "governance-liaison-partpulse-agent",
+      "governance_liaison": "APGI-cmy",
+      "governance_liaison_agent": "governance-liaison-partpulse-agent",
       "layer_down_events": [
         "governance_layer_down"
       ],
@@ -24,7 +26,8 @@
     {
       "repository": "APGI-cmy/maturion-isms",
       "enabled": true,
-      "governance_liaison": "governance-liaison-isms-agent",
+      "governance_liaison": "APGI-cmy",
+      "governance_liaison_agent": "governance-liaison-isms-agent",
       "layer_down_events": [
         "governance_layer_down"
       ],
@@ -33,7 +36,8 @@
     {
       "repository": "APGI-cmy/R_Roster",
       "enabled": true,
-      "governance_liaison": "governance-liaison-r-roster-agent",
+      "governance_liaison": "APGI-cmy",
+      "governance_liaison_agent": "governance-liaison-r-roster-agent",
       "layer_down_events": [
         "governance_layer_down"
       ],
