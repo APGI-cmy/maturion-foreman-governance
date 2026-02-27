@@ -26,6 +26,9 @@ Thumbs.db
 .env.*.local
 GOVERNANCE_ALIGNMENT_INVENTORY.json
 
+# Node.js
+node_modules/
+
 # Python
 __pycache__/
 *.py[cod]

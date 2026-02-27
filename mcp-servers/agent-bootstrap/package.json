@@ -1,0 +1,18 @@
+{
+  "name": "agent-bootstrap",
+  "version": "1.0.0",
+  "description": "MCP server providing the agent_bootstrap tool — enforces constitutional preflight for all governed agents",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test-bootstrap.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "zod": "3.25.76"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "UNLICENSED"
+}

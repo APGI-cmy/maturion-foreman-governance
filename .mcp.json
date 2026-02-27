@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "agent-bootstrap": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp-servers/agent-bootstrap/index.js"]
+    }
+  }
+}
