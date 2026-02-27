@@ -478,14 +478,30 @@ Verdict: MERGE BLOCKED
 Remediation Required:
   - <specific gap 1 with remediation guidance>
   - <specific gap 2 with remediation guidance>
+Re-entry Point: Phase <N> — Step <N.N> — <step name> (submitting agent must re-enter at this step)
+Routed To: <submitting agent id> — acknowledgement required before resubmission
 ```
 
 Write verdict artifact:
 - ASSURANCE-TOKEN: `.agent-admin/assurance/assurance-token-<PR#>.md`
 - REJECTION-PACKAGE: `.agent-admin/assurance/rejection-package-<PR#>.md`
 
-If REJECTION-PACKAGE: create tracking entry in
-`.agent-workspace/independent-assurance-agent/escalation-inbox/` per INV-605.
+If REJECTION-PACKAGE:
+1. Create tracking entry in `.agent-workspace/independent-assurance-agent/escalation-inbox/` per INV-605.
+2. **Route the REJECTION-PACKAGE to the submitting agent immediately.** Notify the submitting agent (via PR comment or escalation channel) of the rejection outcome. The notification MUST include: (a) the specific remediation items, (b) the exact phase and step to re-enter (e.g., "Re-enter at Phase 3, Step 3.2 — Working Proof"), and (c) an explicit requirement that the agent acknowledge receipt before resubmitting. Record delivery confirmation in the escalation tracking entry (INV-606).
+
+**Step 4.2.1 — Resubmission Protocol (MANDATORY on subsequent assurance invocations):**
+
+Before accepting any subsequent assurance invocation for a PR that has a prior REJECTION-PACKAGE on record:
+
+1. **Load the prior REJECTION-PACKAGE** artifact from `.agent-admin/assurance/rejection-package-<PR#>.md`.
+2. **Verify every remediation item** listed in the prior REJECTION-PACKAGE:
+   - For each item: confirm the submitting agent has addressed it with evidence.
+   - If any prior remediation item is unresolved → **block assurance immediately** and output:
+     > "RESUBMISSION BLOCKED — prior REJECTION-PACKAGE (prior IAA Session [PRIOR_ID]) remediation item(s) unresolved: [list items]. The submitting agent must address all items before this session proceeds."
+3. **Verify acknowledgement** of the prior REJECTION-PACKAGE by the submitting agent (per INV-607).
+4. Only if all prior remediation items are resolved and acknowledged: proceed with full Phase 3 assurance execution.
+5. Record a new session memory entry noting: which prior rejection items were checked, what evidence satisfied each item, and the resubmission outcome (INV-607).
 
 **Step 4.3 — Learning Loop (MANDATORY — INV-601 to INV-605):**
 
@@ -512,6 +528,10 @@ For own session write operations (session memory, verdict artifact):
 - Confirm no open stop-and-fix blockers in own workspace
 - Confirm all artifacts are created via PR (no direct main push)
 - Confirm session memory and verdict artifact are complete and non-empty
+- If a REJECTION-PACKAGE was issued this session:
+  1. **Confirm delivery**: Verify the submitting agent was notified via PR comment or escalation channel (per INV-606).
+  2. **Confirm acknowledgement**: Verify the submitting agent acknowledged receipt. If acknowledgement cannot be confirmed, create a follow-up blocker in the escalation inbox noting unconfirmed delivery.
+  3. **Record delivery status**: Document delivery and acknowledgement status in session memory. A REJECTION-PACKAGE that is filed but not delivered does NOT satisfy the requirement.
 
 **Step 4.5 — Session close:**
 

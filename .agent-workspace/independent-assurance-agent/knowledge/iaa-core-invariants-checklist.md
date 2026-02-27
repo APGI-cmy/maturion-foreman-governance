@@ -1,8 +1,8 @@
 # IAA Core Invariants Checklist — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
-**Version**: 1.1.0  
+**Version**: 1.2.0  
 **Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue)  
+**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue)  
 **Purpose**: Tier-2 operational checklist for IAA assurance sessions. Load this at session start alongside Tier-1 canon.
 
 ---
@@ -107,6 +107,8 @@ At every assurance invocation:
 | **INV-603** | **Any second-occurrence gap detected during this assurance session is flagged for Tier-2 promotion** | Memory file explicitly notes: "Recurring shortfall detected: [X] — flagging for FAIL-ONLY-ONCE promotion" | Recurring shortfall observed but not promoted |
 | **INV-604** | **Session memory notes whether the ASSURANCE-TOKEN or REJECTION-PACKAGE was issued and why** | Memory file records binary verdict with one-line rationale | Verdict absent from session memory |
 | **INV-605** | **After issuing a REJECTION-PACKAGE, IAA creates a follow-up tracking note** | An escalation or tracking entry is created in escalation-inbox/ for each REJECTION-PACKAGE issued | Rejection issued but no tracking record created |
+| **INV-606** | **REJECTION-PACKAGE is routed to the submitting agent with explicit remediation guidance and a precise phase/step re-entry point. Acknowledgement from the agent is required.** | Escalation tracking entry confirms: (a) submitting agent notified, (b) re-entry point stated (e.g., "Phase 3, Step 3.2"), (c) acknowledgement received or a follow-up blocker created | REJECTION-PACKAGE filed but not delivered; re-entry point absent; acknowledgement not recorded |
+| **INV-607** | **On subsequent assurance invocation for a PR with a prior REJECTION-PACKAGE, IAA loads the prior rejection, verifies all remediation items are resolved, and blocks assurance if any item is unresolved** | Session memory records: prior REJECTION-PACKAGE ID loaded, each prior remediation item checked with evidence reference, resubmission gate outcome (PASS/BLOCKED) | Subsequent invocation proceeds without verifying prior remediation items; resubmission gate skipped |
 
 ---
 
@@ -135,7 +137,7 @@ Use this summary table for quick gate tallying in the Phase 5 assurance invocati
 | Phase 3 Working | INV-301 to INV-307 | Any = Phase 3 FAIL |
 | Phase 4 Handover | INV-401 to INV-409 | Any = Phase 4 FAIL |
 | Agent Integrity | INV-501 to INV-504 | Any = Agent Integrity FAIL |
-| Learning Loop | INV-601 to INV-605 | Any = Session INCOMPLETE |
+| Learning Loop | INV-601 to INV-607 | Any = Session INCOMPLETE |
 | Traceability | INV-701 to INV-704 | Any = Phase 3/4 FAIL |
 
 ---
@@ -146,6 +148,7 @@ Use this summary table for quick gate tallying in the Phase 5 assurance invocati
 |---------|------|--------|
 | 1.0.0 | 2026-02-24 | Initial seeding — IAA bootstrap |
 | 1.1.0 | 2026-02-26 | Added recurring shortfall items (INV-106, INV-206, INV-207, INV-306, INV-307, INV-405 to INV-409, INV-504, INV-601 to INV-605, INV-701 to INV-704) per IAA self-improvement issue |
+| 1.2.0 | 2026-02-27 | Added INV-606 (REJECTION-PACKAGE delivery and acknowledgement) and INV-607 (resubmission gate enforcement) per feedback-loop closure issue |
 
 ---
 
