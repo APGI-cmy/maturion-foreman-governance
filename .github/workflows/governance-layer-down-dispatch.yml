@@ -23,7 +23,22 @@ on:
       - 'governance/canon/**'
       - 'governance/schemas/**'
       - 'governance/templates/**'
+      - 'governance/executable/**'
+      - 'governance/policy/**'
+      - 'governance/runbooks/**'
+      - 'governance/CONSUMER_REPO_REGISTRY.json'
+      - 'governance/CONSTITUTION.md'
       - 'BUILD_PHILOSOPHY.md'
+      - '.github/workflows/governance-layer-down-dispatch.yml'
+
+  # Manual trigger for recovery and testing
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual dispatch (for audit log)'
+        required: false
+        default: 'manual recovery trigger'
+        type: string
 
 permissions:
   contents: read
@@ -87,7 +102,7 @@ jobs:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
@@ -165,6 +180,7 @@ jobs:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
@@ -181,6 +197,7 @@ jobs:
               -f "client_payload[short_sha]=${SHORT_SHA}" \
               -f "client_payload[timestamp]=${TIMESTAMP}" \
               -f "client_payload[agent_files_changed]=${AGENT_FILES_CHANGED}" \
+              -f "client_payload[commit_message]=${COMMIT_MESSAGE}" \
               && echo "  governance_ripple dispatched to $repo" \
               || echo "  repository_dispatch failed for $repo (MATURION_BOT_TOKEN may lack contents:write scope in that repo)"
           done
