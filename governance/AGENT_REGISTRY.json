@@ -1,7 +1,20 @@
 {
   "schema_version": "1.0.0",
-  "last_updated": "2026-02-20T12:05:28Z",
+  "last_updated": "2026-02-27T10:50:00Z",
   "description": "Registry of active orchestrator and specialist agents in the Maturion ISMS platform. See governance/canon/AGENT_REGISTRY_ARCHITECTURE.md for schema definition and lifecycle operations.",
-  "total_agents": 0,
-  "agents": []
+  "total_agents": 1,
+  "agents": [
+    {
+      "id": "governance-repo-administrator-v2",
+      "class": "administrator",
+      "version": "6.2.0",
+      "contract_version": "2.0.0",
+      "contract_file": ".github/agents/governance-repo-administrator-v2.agent.md",
+      "tier2_knowledge": ".agent-workspace/governance-repo-administrator/knowledge/index.md",
+      "status": "active",
+      "authority": "CS2",
+      "canonical_home": "APGI-cmy/maturion-foreman-governance",
+      "registered": "2026-02-27"
+    }
+  ]
 }
