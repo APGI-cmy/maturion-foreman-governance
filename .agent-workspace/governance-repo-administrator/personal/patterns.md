@@ -337,3 +337,27 @@ This file is persistent and must accumulate patterns over time. Never reset or c
   5. Create layer-down ripple notice for consumer repos
   6. Update CHANGELOG, CANON_INVENTORY, FAIL-ONLY-ONCE in same PR
 - Example: AGENT_CONTRACT_FILE_PROTECTION_POLICY.md created with all six components
+
+## Pattern: Canonical Gap Canon Creation (4-Part Structure)
+- Observed: 2026-02-26 (Session 058)
+- Context: When closing a governance gap by creating a new Tier-1 canon
+- Response:
+  1. Identify what was advisory/absent that must become mandatory
+  2. Define clear minimum thresholds (numeric where possible)
+  3. Define BLOCKING gate trigger conditions (when does this block merge/release?)
+  4. Define required evidence artifacts (what must be present in the PR/FCWT?)
+  5. Define exception process (FM approval up to N weeks; CS2 beyond)
+  6. Add to GATE_REQUIREMENTS_INDEX.json as an enforcement gate
+  7. Add to CANON_INVENTORY.json with real SHA256 hash
+  8. Update CHANGELOG.md with versioned entry noting migration required
+
+## Pattern: Testing Lifecycle Completeness Check
+- Observed: 2026-02-26 (Session 058)
+- Context: Governance gap survey for testing/quality domains
+- Response: Always audit across the full lifecycle:
+  1. Pre-build: Tool configuration, contract definitions
+  2. Pre-merge (PR gate): Unit tests, coverage threshold, SAST, axe, contract tests
+  3. Pre-release (FCWT): Integration tests, DAST, Lighthouse, penetration test
+  4. Post-release: Observation window, telemetry monitoring, scheduled regressions
+  5. Ongoing: Quarterly health review, dependency updates, coverage drift check
+  Each layer must have mandatory requirements — advisory gaps at any layer become structural risks

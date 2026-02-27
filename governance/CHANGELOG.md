@@ -64,6 +64,41 @@ Each entry follows this structure:
 
 ## Change History
 
+### [TESTING-CANON-GAPS-2026-02-26] - 2026-02-26 - [NON_BREAKING_ENHANCEMENT]
+
+**Changed By**: governance-repo-administrator (Copilot Agent, Session 058)
+**Approved By**: CS2 (Johan Ras) — via GitHub issue "[Governance Issue] Canonical Gaps in Testing System: Contract Testing, Coverage, Tooling, and Post-Production Validation"
+**Effective Date**: 2026-02-26
+**Layer-Down Status**: Layer-down required — new PUBLIC_API canon files; consumer repos must adopt by next major wave
+
+**Summary**: Addition of 4 new Tier-1 canonical governance standards addressing identified gaps in the testing and quality governance system. These canons elevate previously unaddressed areas (contract testing, automated quality tooling, code coverage thresholds, and post-production telemetry) from absent or advisory to mandatory, gate-enforced requirements.
+
+**Affected Artifacts**:
+- `governance/canon/CONTRACT_TESTING_CANON.md` (v1.0.0 NEW) — Mandates API/interface contract testing for all AIMC and consumer module integrations; REQ-CT-001 to REQ-CT-010
+- `governance/canon/AUTOMATED_QUALITY_TOOLING_CANON.md` (v1.0.0 NEW) — Elevates SAST/DAST, Lighthouse, axe, and penetration testing from advisory to mandatory with minimum score thresholds; REQ-AQT-001 to REQ-AQT-018
+- `governance/canon/CODE_COVERAGE_THRESHOLD_CANON.md` (v1.0.0 NEW) — Establishes mandatory code coverage thresholds by project type (unit/integration/e2e) with pre-merge enforcement; REQ-CCT-001 to REQ-CCT-015
+- `governance/canon/POST_PRODUCTION_TELEMETRY_CANON.md` (v1.0.0 NEW) — Defines post-production health verification, telemetry gates, observation windows, scheduled regression testing, and health snapshots at commissioning/progressive-activation layers; REQ-PPT-001 to REQ-PPT-018
+- `governance/CANON_INVENTORY.json` — 4 new entries added (total_canons: 183→187), last_updated: 2026-02-26
+
+**Migration Required**: YES — Consumer repos must:
+1. Configure contract tests for all integration points (CONTRACT_TESTING_CANON.md)
+2. Configure SAST/DAST/axe/Lighthouse tooling in CI pipelines (AUTOMATED_QUALITY_TOOLING_CANON.md)
+3. Configure code coverage thresholds and reporting (CODE_COVERAGE_THRESHOLD_CANON.md)
+4. Instrument telemetry and configure health monitoring (POST_PRODUCTION_TELEMETRY_CANON.md)
+
+**Migration Guidance**:
+- All 4 canons include exception processes for projects that need time to achieve thresholds
+- New projects must comply from wave 1; existing projects may use the exception process for transition periods
+- FM approval required for exceptions up to 4 weeks; CS2 approval for longer
+
+**Rationale**: GitHub issue identified four canonical gaps: (1) no mandatory contract testing between AIMC and consumers, (2) SAST/DAST/accessibility/performance tooling advisory-only, (3) no code coverage minimums despite "100% GREEN" requirement, (4) no post-production health or telemetry governance. These 4 new canons close all four gaps structurally, following the WE_ONLY_FAIL_ONCE_DOCTRINE governance pattern.
+
+**Impact**: All application repositories, all builders, all Foreman instances. Requires tooling updates, CI configuration, and telemetry instrumentation across consumer repos.
+
+**References**: GitHub issue "[Governance Issue] Canonical Gaps in Testing System"; Session 058
+
+---
+
 ### [ISMS-TIER2-CANONIZATION] - 2026-02-25 - [NON_BREAKING_ENHANCEMENT]
 
 **Changed By**: governance-repo-administrator (Copilot Agent, Session 057)  

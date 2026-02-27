@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-24",
+  "last_updated": "2026-02-26",
   "provenance": {
     "source": "governance/GATE_REQUIREMENTS_INDEX.json",
     "canonical_commit": "b0a4af472e38e607b5b96d842774b4a90368340d",
@@ -114,6 +114,12 @@
     ],
     "registry": [
       "governance:registry_valid"
+    ],
+    "testing_canon": [
+      "governance:contract_testing_gate",
+      "governance:coverage_threshold_gate",
+      "governance:quality_tooling_gate",
+      "governance:post_production_telemetry_gate"
     ]
   },
   "enforcement_gates": {
@@ -159,8 +165,150 @@
       "assurance_token_path": ".agent-admin/assurance/assurance-token-*.md",
       "rejection_package_path": ".agent-admin/assurance/rejection-package-*.md",
       "effective_date": "2026-02-24",
-      "authority": "CS2 (Johan Ras) — INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0",
+      "authority": "CS2 (Johan Ras) \u2014 INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0",
       "exemption_process": "CS2 explicit written sign-off only; no agent-level exemptions"
+    },
+    "contract_testing_gate": {
+      "gate_id": "contract-testing",
+      "category": "testing-quality",
+      "requirement": "API/interface contract test coverage for all integration points",
+      "description": "Validates that all integration points have contract tests (provider and consumer), automated breaking-change detection is configured, and no unaddressed breaking changes are present. Applies to all AIMC and consumer module integrations.",
+      "applies_to": [
+        "builder",
+        "foreman",
+        "qa-agent"
+      ],
+      "enforcement": "BLOCKING",
+      "trigger_conditions": [
+        "Any PR touching integration-point modules",
+        "Any PR adding or modifying API surface",
+        "FCWT contract verification step"
+      ],
+      "required_evidence": [
+        "contract_test_suite_pass",
+        "breaking_change_detection_pass",
+        "contract_registry_current"
+      ],
+      "documentation": "governance/canon/CONTRACT_TESTING_CANON.md",
+      "effective_date": "2026-02-26",
+      "authority": "CS2 (Johan Ras) \u2014 CONTRACT_TESTING_CANON.md v1.0.0",
+      "exemption_process": "FM approval for up to 2 weeks; CS2 approval for longer"
+    },
+    "automated_quality_tooling_gate": {
+      "gate_id": "automated-quality-tooling",
+      "category": "security-accessibility-performance",
+      "requirement": "Mandatory SAST/DAST, accessibility (axe/Lighthouse), and performance tooling with minimum score thresholds",
+      "description": "Validates that SAST scanning (no unaddressed Critical/High), dependency vulnerability scanning, secret detection, axe accessibility (zero Critical/Serious violations), Lighthouse scores (Performance\u226580, Accessibility\u226595, Best Practices\u226590, SEO\u226585), and DAST scanning are all configured and passing.",
+      "applies_to": [
+        "builder",
+        "foreman",
+        "qa-agent"
+      ],
+      "enforcement": "BLOCKING",
+      "trigger_conditions": [
+        "Every PR targeting main branch (SAST, axe)",
+        "Every release build/FCWT (Lighthouse, DAST, penetration test)",
+        "Any PR introducing new dependencies (dependency scan)"
+      ],
+      "minimum_thresholds": {
+        "lighthouse_performance": 80,
+        "lighthouse_accessibility": 95,
+        "lighthouse_best_practices": 90,
+        "lighthouse_seo": 85,
+        "axe_critical_violations": 0,
+        "axe_serious_violations": 0,
+        "sast_critical_findings": 0,
+        "sast_high_findings": 0,
+        "dast_critical_findings": 0,
+        "dast_high_findings": 0
+      },
+      "required_evidence": [
+        "sast_report",
+        "dependency_scan_report",
+        "axe_scan_report",
+        "lighthouse_reports",
+        "dast_scan_report",
+        "penetration_test_report"
+      ],
+      "documentation": "governance/canon/AUTOMATED_QUALITY_TOOLING_CANON.md",
+      "effective_date": "2026-02-26",
+      "authority": "CS2 (Johan Ras) \u2014 AUTOMATED_QUALITY_TOOLING_CANON.md v1.0.0",
+      "exemption_process": "FM approval for up to 4 weeks; CS2 approval for longer or Critical-finding exceptions"
+    },
+    "code_coverage_threshold_gate": {
+      "gate_id": "code-coverage-threshold",
+      "category": "testing-quality",
+      "requirement": "Minimum code coverage thresholds by project type (unit/integration/e2e)",
+      "description": "Validates that code coverage meets the project-type-specific thresholds defined in CODE_COVERAGE_THRESHOLD_CANON.md. Coverage must be measured and reported in CI on every PR. New code delta must also meet thresholds. Prevents >2% regression in overall coverage.",
+      "applies_to": [
+        "builder",
+        "foreman",
+        "qa-agent"
+      ],
+      "enforcement": "BLOCKING",
+      "trigger_conditions": [
+        "Every PR targeting main branch",
+        "FCWT coverage verification step"
+      ],
+      "minimum_thresholds": {
+        "web_application_statement": 80,
+        "web_application_branch": 75,
+        "api_service_statement": 85,
+        "api_service_branch": 80,
+        "aimc_module_statement": 90,
+        "aimc_module_branch": 85,
+        "mobile_application_statement": 75,
+        "governance_scripts_statement": 70
+      },
+      "required_evidence": [
+        "coverage_report_machine_readable",
+        "coverage_report_html",
+        "coverage_summary_pr_comment",
+        "coverage_baseline_registered"
+      ],
+      "documentation": "governance/canon/CODE_COVERAGE_THRESHOLD_CANON.md",
+      "effective_date": "2026-02-26",
+      "authority": "CS2 (Johan Ras) \u2014 CODE_COVERAGE_THRESHOLD_CANON.md v1.0.0",
+      "exemption_process": "FM approval for up to 4 weeks; CS2 approval for AIMC modules or extended exceptions"
+    },
+    "post_production_telemetry_gate": {
+      "gate_id": "post-production-telemetry",
+      "category": "production-health",
+      "requirement": "Post-production telemetry instrumentation, health snapshots, and observation windows at activation state transitions",
+      "description": "Validates that applications are instrumented with telemetry before production deployment, that observation windows are completed after each deployment, that health snapshots are produced at activation transitions, and that scheduled regression tests are running at the required cadence.",
+      "applies_to": [
+        "builder",
+        "foreman",
+        "qa-agent"
+      ],
+      "enforcement": "BLOCKING",
+      "trigger_conditions": [
+        "Pre-production deployment (telemetry instrumentation check)",
+        "SHADOW\u2192LIMITED activation transition (48h health gate)",
+        "LIMITED\u2192GENERAL activation transition (7-day health gate)",
+        "GENERAL\u2192FULL activation transition (14-day health gate)",
+        "Commissioning milestone closure",
+        "Each production deployment (observation window)"
+      ],
+      "observation_windows": {
+        "major_release_hours": 24,
+        "minor_release_hours": 4,
+        "hotfix_hours": 2,
+        "config_change_hours": 1
+      },
+      "incident_free_verification_period_hours": 72,
+      "required_evidence": [
+        "telemetry_instrumentation_config",
+        "health_check_endpoint_verified",
+        "telemetry_baseline_registered",
+        "health_snapshot_per_activation_transition",
+        "scheduled_regression_test_results",
+        "observation_window_completion_record"
+      ],
+      "documentation": "governance/canon/POST_PRODUCTION_TELEMETRY_CANON.md",
+      "effective_date": "2026-02-26",
+      "authority": "CS2 (Johan Ras) \u2014 POST_PRODUCTION_TELEMETRY_CANON.md v1.0.0",
+      "exemption_process": "FM approval for up to 4 weeks; no exceptions for telemetry instrumentation (REQ-PPT-001)"
     }
   }
 }
