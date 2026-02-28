@@ -102,9 +102,9 @@ jobs:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
+          # Sanitize commit message: first line only, strip all sed-unsafe characters
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          # Sanitize: first line only, replace pipe chars (sed delimiter safety)
-          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|' '-')"
+          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
@@ -134,21 +134,35 @@ jobs:
             exit 1
           fi
 
+          # Export all substitution variables so they are available inside the python3 heredoc
+          export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_SECTION ISSUE_TEMPLATE
+
           # Build and post issue for each enabled consumer
           echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue
 
             ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
 
-            # Substitute template variables
-            ISSUE_BODY=$(sed \
-              -e "s|{{COMMIT_SHA}}|${COMMIT_SHA}|g" \
-              -e "s|{{SHORT_SHA}}|${SHORT_SHA}|g" \
-              -e "s|{{TIMESTAMP}}|${TIMESTAMP}|g" \
-              -e "s|{{COMMIT_MESSAGE}}|${COMMIT_MESSAGE}|g" \
-              -e "s|{{FILES_LIST}}|${FILES_LIST}|g" \
-              -e "s|{{AGENT_SECTION}}|${AGENT_SECTION}|g" \
-              "$ISSUE_TEMPLATE")
+            # Use python3 for template substitution — avoids sed delimiter conflicts
+            # with commit messages or file paths containing /, \, &, |, etc.
+            ISSUE_BODY=$(python3 - <<'PYEOF'
+import os
+template_path = os.environ['ISSUE_TEMPLATE']
+replacements = {
+    '{{COMMIT_SHA}}':    os.environ['COMMIT_SHA'],
+    '{{SHORT_SHA}}':     os.environ['SHORT_SHA'],
+    '{{TIMESTAMP}}':     os.environ['TIMESTAMP'],
+    '{{COMMIT_MESSAGE}}': os.environ['COMMIT_MESSAGE'],
+    '{{FILES_LIST}}':    os.environ['FILES_LIST'],
+    '{{AGENT_SECTION}}': os.environ['AGENT_SECTION'],
+}
+with open(template_path, 'r') as f:
+    body = f.read()
+for k, v in replacements.items():
+    body = body.replace(k, v)
+print(body, end='')
+PYEOF
+)
 
             echo "Creating layer-down issue in $repo..."
 
@@ -183,8 +197,8 @@ jobs:
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          # Sanitize: first line only, replace pipe chars (safe for API payload)
-          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|' '-')"
+          # Sanitize: first line only, strip problematic characters
+          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
