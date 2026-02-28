@@ -10,7 +10,7 @@ Entries are reviewed periodically by CS2.
 Each agent owns **one dedicated suggestions log file**. The naming pattern is:
 
 ```
-suggestions-log-{agent-id}.md
+suggestions-log-{kebab-case-agent-id}.md
 ```
 
 | Agent ID | Suggestions Log File |
@@ -40,12 +40,14 @@ Each agent MUST append only to **its own** file. Never write to another agent's 
 
 **Row format** (append one row per suggestion):
 ```
-| YYYY-MM-DD | {agent-id} | session-NNN | [PHASE] | <summary> | <evidence-file> |
+| YYYY-MM-DD | {kebab-case-agent-id} | session-NNN | [PHASE] | <summary> | <evidence-file> |
 ```
 
-- **PHASE** (optional): `DRAFT-PHASE`, `SESSION-END`, or another meaningful label
+- **PHASE**: The column is **required in every table header** but its value is optional. Typical values: `DRAFT-PHASE`, `SESSION-END`, or another meaningful label. Leave the cell blank (`|  |`) when no phase applies.
 - **summary**: Plain-language description of the suggestion (1-2 sentences)
 - **evidence-file**: Session memory filename that contains the full suggestion detail
+
+All per-agent log files MUST use exactly these six columns in this order. Rows with a different column count will not aggregate cleanly.
 
 ---
 

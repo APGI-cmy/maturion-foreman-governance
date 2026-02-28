@@ -3,7 +3,7 @@
 ## Status
 Canonical Governance Policy  
 **Policy ID**: POLICY-NO-ONLY-LANGUAGE  
-**Version**: v1.0  
+**Version**: v1.1  
 **Authority**: CS2 (Johan Ras)  
 **Effective Date**: 2026-01-08  
 **Triggered By**: PR APGI-cmy/maturion-foreman-office-app#504 (Foundation Wave, ZWZDI Campaign)  
@@ -80,6 +80,17 @@ The automated scan is intentionally scoped to **high-confidence** failure/debt p
 ### 3.3 Fixture examples
 
 See `governance/policy/minimizing_language_examples.json` for allowed/prohibited fixture examples used to validate the curated pattern list.
+
+### 3.4 Authority-language exception
+
+Governance and agent contracts routinely use **authority-scoping language** that includes "only" as a permission or scope delimiter — not as minimization. These uses are **explicitly permitted** and will not trigger the automated scanner:
+
+- ✅ "Only CS2 can authorize this change"
+- ✅ "Only applies to governance repository"
+- ✅ "Only when explicitly authorized"
+- ✅ "Only the Governance Administrator may approve"
+
+These phrases define authority boundaries; they do not minimize technical debt or incomplete work. The `only_failure_context` pattern (see §3.1) is scoped to failure/debt terms and the `allowlist` field in `minimizing_language_patterns.json` provides additional insurance against authority-phrasing false positives.
 
 ---
 
@@ -556,8 +567,8 @@ By submitting work in the Maturion ecosystem, builders acknowledge:
 
 **Policy Status**: ACTIVE  
 **Enforcement**: IMMEDIATE  
-**Version**: 1.0  
-**Last Updated**: 2026-01-08  
+**Version**: 1.1  
+**Last Updated**: 2026-02-28  
 **Next Review**: 2026-04-08 (quarterly)
 
 ---

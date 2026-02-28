@@ -1,12 +1,17 @@
 {
-  "schema_version": "1.0.0",
-  "updated_at": "2026-02-10",
+  "schema_version": "1.1.0",
+  "updated_at": "2026-02-28",
   "source": "governance/policy/minimizing_language_patterns.json",
   "patterns": [
     {
       "id": "only_failure_context",
       "pattern": "\\bonly\\b[^.\\n]{0,60}\\b(fail(?:ing|ure|ures)?|warning(?:s)?|issue(?:s)?|problem(?:s)?|debt|error(?:s)?|doc(?:s|umentation)?|lint(?:ing)?|test(?:s)?)\\b",
-      "description": "Only + failure/warning/debt context"
+      "description": "Only + failure/warning/debt context",
+      "allowlist": [
+        "\\bonly\\b[^.\\n]{0,40}\\b(CS2|Johan|authority|authorized|authorization|permission|permitted|applies to|when explicitly)\\b",
+        "\\bonly\\s+(CS2|Johan|the\\s+governance|the\\s+administrator|applies\\s+to)\\b"
+      ],
+      "allowlist_rationale": "Authority-scoping language uses 'only' as a permission/scope delimiter rather than minimization (e.g., 'Only CS2 can authorize', 'Only applies to governance repository'). These are governance scope statements, not minimizing descriptions of technical debt or incomplete work. See §3.4 of POLICY-NO-ONLY-LANGUAGE.md."
     },
     {
       "id": "just_failure_context",

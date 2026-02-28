@@ -412,7 +412,7 @@ See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full protocol.
 
 Row format:
 ```
-| YYYY-MM-DD | governance-repo-administrator | session-NNN | <summary> | <evidence-file> |
+| YYYY-MM-DD | governance-repo-administrator | session-NNN | <Phase> | <summary> | <evidence-file> |
 ```
 
 This file is owned exclusively by the governance-repo-administrator. No other agent writes to it.

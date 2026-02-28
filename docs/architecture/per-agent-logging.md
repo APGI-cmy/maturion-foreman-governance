@@ -26,8 +26,10 @@ Each agent now owns a **dedicated suggestions log file** that no other agent eve
 ### Naming Convention
 
 ```
-.agent-workspace/parking-station/suggestions-log-{agent-id}.md
+.agent-workspace/parking-station/suggestions-log-{kebab-case-agent-id}.md
 ```
+
+The agent ID is converted to **all-lowercase kebab-case** for the filename. For example, `CodexAdvisor-agent` → `codex-advisor`. All other current agent IDs are already kebab-case and map directly.
 
 ### Current Agent Files
 
@@ -59,12 +61,14 @@ No periodic merge job is needed because the per-agent files are the source of tr
 Each suggestion log entry is a Markdown table row:
 
 ```
-| YYYY-MM-DD | {agent-id} | session-NNN | [PHASE] | <summary> | <evidence-file> |
+| YYYY-MM-DD | {kebab-case-agent-id} | session-NNN | [PHASE] | <summary> | <evidence-file> |
 ```
 
-- **PHASE** (optional label): `DRAFT-PHASE`, `SESSION-END`, or another meaningful label
+- **PHASE**: The column is **required in every table header** but its value is optional. When no phase applies, leave the cell blank (`|  |`). Typical values: `DRAFT-PHASE`, `SESSION-END`.
 - **summary**: Plain-language description of the suggestion (1-2 sentences)
 - **evidence-file**: Session memory filename containing the full suggestion detail
+
+All per-agent log files MUST use exactly these six columns in this order so `cat suggestions-log-*.md` produces a clean, consistent aggregate view.
 
 ---
 

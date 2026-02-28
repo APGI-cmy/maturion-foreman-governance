@@ -497,7 +497,7 @@ If during drafting you identify an improvement suggestion for any governance doc
 checklist, or agent file — park it immediately. Do not defer to end of session.
 
 Open `.agent-workspace/parking-station/suggestions-log-codex-advisor.md` (create if absent).
-Append one line per suggestion: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | DRAFT-PHASE | <summary> |`
+Append one line per suggestion: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | DRAFT-PHASE | <summary> | <evidence-file> |`
 
 This prevents suggestions from being lost if the session ends unexpectedly.
 
