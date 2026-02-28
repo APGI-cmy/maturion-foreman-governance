@@ -70,12 +70,12 @@ jobs:
         run: |
           # For workflow_dispatch, treat all governance files as changed (manual recovery)
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            LAYERDOWN_FILES="(manual dispatch — all canon eligible)"
+            LAYERDOWN_FILES="(manual dispatch - all canon eligible)"
             echo "changed_files<<EOF" >> $GITHUB_OUTPUT
             echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
             echo "agent_files_changed=false" >> $GITHUB_OUTPUT
-            echo "Manual dispatch — skipping diff detection"
+            echo "Manual dispatch - skipping diff detection"
           else
             # List files changed in this push
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
@@ -94,7 +94,7 @@ jobs:
               echo "agent_files_changed=false" >> $GITHUB_OUTPUT
             fi
 
-            echo "Changed governance artifacts:"
+            echo "Changed governance artifacts:" 
             echo "$LAYERDOWN_FILES"
             echo "Agent files changed: $([ -n "$AGENT_FILES" ] && echo 'YES - CS2 escalation required' || echo 'NO')"
           fi
@@ -105,12 +105,10 @@ jobs:
           REGISTRY="$GITHUB_WORKSPACE/governance/CONSUMER_REPO_REGISTRY.json"
           if [ ! -f "$REGISTRY" ]; then
             echo "FATAL: Consumer registry not found at $REGISTRY"
-            echo "Contents of $GITHUB_WORKSPACE/governance/:"
             ls -la "$GITHUB_WORKSPACE/governance/" || echo "Directory not found"
             exit 1
           fi
 
-          # Extract enabled consumer repos and their governance liaisons (tab-separated)
           CONSUMERS=$(jq -r '.consumers[] | select(.enabled == true) | [.repository, (.governance_liaison // "")] | @tsv' "$REGISTRY")
           echo "consumers<<EOF" >> $GITHUB_OUTPUT
           echo "$CONSUMERS" >> $GITHUB_OUTPUT
@@ -124,7 +122,6 @@ jobs:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
-          # Sanitize commit message: first line only, safe for any downstream use
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
           COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -133,11 +130,12 @@ jobs:
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
           CHANGED_FILES="${{ steps.changes.outputs.changed_files }}"
 
-          # Build changed-files markdown list
+          # Build changed-files markdown list (pure bash, no sed)
           FILES_LIST=""
           while IFS= read -r f; do
             [ -z "$f" ] && continue
-            FILES_LIST="${FILES_LIST}"$'- `"${f}"$'`
+            FILES_LIST="${FILES_LIST}- ${f}
+"
           done <<< "$CHANGED_FILES"
           if [ -z "$FILES_LIST" ]; then
             FILES_LIST="_No PUBLIC_API governance files changed in this push._"
@@ -146,18 +144,7 @@ jobs:
           # Agent file detection section
           AGENT_SECTION=""
           if [ "$AGENT_FILES_CHANGED" = "true" ]; then
-            AGENT_SECTION="$(printf '## Agent File Detection Gate - CS2 Approval Required
-
-One or more agent contract files changed in this governance push.
-
-**Per LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md Section 4.3 and 8.2:**
-- The consumer repo ripple PR **MUST be created as DRAFT**.
-- The governance-liaison **MUST create an escalation document** at:
-  .agent-workspace/agent/escalation-inbox/agent-contract-ripple-escalation-date.md
-- **Only CS2 (Johan Ras) may approve and merge** the ripple PR.
-- Auto-merge is **NOT permitted** for agent file changes.
-
-**Authority**: CS2_AGENT_FILE_AUTHORITY_MODEL.md | AGENT_CONTRACT_PROTECTION_PROTOCOL.md')"
+            AGENT_SECTION="Agent File Detection Gate - CS2 Approval Required: One or more agent contract files changed. The ripple PR MUST be created as DRAFT. Only CS2 (Johan Ras) may approve and merge. Auto-merge is NOT permitted for agent file changes."
           fi
 
           # Use absolute path for template
@@ -168,7 +155,7 @@ One or more agent contract files changed in this governance push.
             exit 1
           fi
 
-          # Export all substitution variables for python3 heredoc
+          # Export all substitution variables for python3
           export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_SECTION ISSUE_TEMPLATE
 
           # Build and post issue for each enabled consumer
@@ -177,7 +164,7 @@ One or more agent contract files changed in this governance push.
 
             ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
 
-            # Use python3 for template substitution — avoids all sed delimiter conflicts
+            # Use python3 for template substitution - avoids all sed delimiter conflicts
             ISSUE_BODY=$(python3 - <<'PYEOF'
 import os
 template_path = os.environ['ISSUE_TEMPLATE']
