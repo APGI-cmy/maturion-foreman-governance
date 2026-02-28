@@ -88,8 +88,12 @@ jobs:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
-          COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr -dc '[:alnum:] ._-')"
+          RAW_MSG="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
+          COMMIT_MESSAGE=$(python3 -c "
+          import sys, re
+          msg = sys.argv[1].split('\n')[0]
+          print(re.sub(r'[^A-Za-z0-9 ._-]', '-', msg))
+          " "$RAW_MSG")
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
@@ -149,8 +153,12 @@ PYEOF
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
-          COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr -dc '[:alnum:] ._-')"
+          RAW_MSG="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
+          COMMIT_MESSAGE=$(python3 -c "
+          import sys, re
+          msg = sys.argv[1].split('\n')[0]
+          print(re.sub(r'[^A-Za-z0-9 ._-]', '-', msg))
+          " "$RAW_MSG")
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
