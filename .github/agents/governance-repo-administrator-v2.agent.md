@@ -404,6 +404,20 @@ See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` for full protocol.
 
 **Session Memory Template**: `.agent-workspace/governance-repo-administrator/memory/session-NNN-YYYYMMDD.md`
 
+### 4.2a Parking Station Entry (GA_M)
+
+**Per-agent suggestions log** — append improvement suggestions here (never to the shared/deprecated `suggestions-log.md`):
+
+`.agent-workspace/parking-station/suggestions-log-governance-repo-administrator.md`
+
+Row format:
+```
+| YYYY-MM-DD | governance-repo-administrator | session-NNN | <Phase> | <summary> | <evidence-file> |
+```
+
+This file is owned exclusively by the governance-repo-administrator. No other agent writes to it.
+See `.agent-workspace/parking-station/README.md` for the full convention.
+
 ### 4.3 Pre-Handover Merge Gate Parity Check (GA_H — BLOCKING)
 
 **Script**: Run all merge gate checks locally before opening the PR

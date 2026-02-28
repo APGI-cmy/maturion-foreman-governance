@@ -1,6 +1,13 @@
-# Suggestions Log
+# Suggestions Log — DEPRECATED (shared file)
+
+> ⚠️ **MIGRATION NOTICE** — This shared file is deprecated as of 2026-02-27.
+> All new suggestion entries MUST be written to the per-agent file for your agent.
+> See `README.md` in this directory for the naming convention and file list.
+> This file is preserved as a historical archive only. Do NOT append new rows here.
 
 Agent suggestions for governance promotion. Reviewed periodically by CS2.
+
+## Historical Entries (migrated to per-agent files — do not add new rows here)
 
 | Date | Agent | Session | Suggestion | Evidence |
 |------|-------|---------|------------|----------|
