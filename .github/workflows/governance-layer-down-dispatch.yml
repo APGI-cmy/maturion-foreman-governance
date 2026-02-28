@@ -1,20 +1,5 @@
 name: Governance Layer-Down Dispatch
 
-# TERMINOLOGY (per ECOSYSTEM_VOCABULARY.md v1.1.0 and LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.0.0):
-# - LAYERING DOWN: Cross-repo distribution of governance artifacts (this workflow).
-# - RIPPLING: Within-repo integration/synchronization — occurs inside consumer repos AFTER layer-down.
-# These are distinct, sequential processes with different automation boundaries.
-# See: governance/strategy/LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md
-#
-# TWO-SIGNAL DISPATCH (per LAYER_DOWN_INVESTIGATION_REPORT_20260227.md):
-# For each enabled consumer repo this workflow sends two signals on every canonical push to main:
-#   Signal 1 — GitHub Issue: human-readable instructions auto-assigned to the governance-liaison.
-#   Signal 2 — repository_dispatch (governance_ripple): machine event that triggers
-#              governance-ripple-sync.yml inside the consumer repo for automated
-#              CANON_INVENTORY drift detection and alignment PR creation.
-# Without Signal 2, governance-ripple-sync.yml never fires automatically regardless of
-# how many issues are created. Both signals are required for a complete layer-down.
-
 on:
   push:
     branches:
@@ -31,7 +16,6 @@ on:
       - 'BUILD_PHILOSOPHY.md'
       - '.github/workflows/governance-layer-down-dispatch.yml'
 
-  # Manual trigger for recovery and testing
   workflow_dispatch:
     inputs:
       reason:
@@ -58,45 +42,29 @@ jobs:
         run: |
           echo "PWD: $PWD"
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-          echo "Listing governance/:"
-          ls -la governance/ || echo "governance/ not found"
-          echo "Listing .github/:"
-          ls -la .github/ || echo ".github/ not found"
           echo "Registry exists: $(test -f governance/CONSUMER_REPO_REGISTRY.json && echo YES || echo NO)"
           echo "Template exists: $(test -f .github/layer-down-issue-template.md && echo YES || echo NO)"
 
       - name: Detect changed governance artifacts
         id: changes
         run: |
-          # For workflow_dispatch, treat all governance files as changed (manual recovery)
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            LAYERDOWN_FILES="(manual dispatch - all canon eligible)"
             echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-            echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
+            echo "manual dispatch - all canon eligible" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
             echo "agent_files_changed=false" >> $GITHUB_OUTPUT
-            echo "Manual dispatch - skipping diff detection"
           else
-            # List files changed in this push
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
-
-            # Detect PUBLIC_API canon / schema / template changes (layer-down triggers)
             LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^governance/(canon|schemas|templates)/' || true)
             echo "changed_files<<EOF" >> $GITHUB_OUTPUT
             echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
-
-            # Agent file detection gate
             AGENT_FILES=$(echo "$CHANGED_FILES" | grep -E '\.github/agents/.*\.md$' || true)
             if [ -n "$AGENT_FILES" ]; then
               echo "agent_files_changed=true" >> $GITHUB_OUTPUT
             else
               echo "agent_files_changed=false" >> $GITHUB_OUTPUT
             fi
-
-            echo "Changed governance artifacts:" 
-            echo "$LAYERDOWN_FILES"
-            echo "Agent files changed: $([ -n "$AGENT_FILES" ] && echo 'YES - CS2 escalation required' || echo 'NO')"
           fi
 
       - name: Read consumer registry
@@ -105,17 +73,15 @@ jobs:
           REGISTRY="$GITHUB_WORKSPACE/governance/CONSUMER_REPO_REGISTRY.json"
           if [ ! -f "$REGISTRY" ]; then
             echo "FATAL: Consumer registry not found at $REGISTRY"
-            ls -la "$GITHUB_WORKSPACE/governance/" || echo "Directory not found"
+            ls -la "$GITHUB_WORKSPACE/governance/" || true
             exit 1
           fi
-
           CONSUMERS=$(jq -r '.consumers[] | select(.enabled == true) | [.repository, (.governance_liaison // "")] | @tsv' "$REGISTRY")
           echo "consumers<<EOF" >> $GITHUB_OUTPUT
           echo "$CONSUMERS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
-          echo "Will create layer-down issues in:"
-          echo "$CONSUMERS" | awk -F'\t' '{print "  " $1 " (liaison: " ($2 != "" ? $2 : "unassigned") ")"}'
+          echo "Consumers:"
+          echo "$CONSUMERS"
 
       - name: Create layer-down issues in consumer repos
         env:
@@ -123,48 +89,35 @@ jobs:
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
+          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr -dc '[:alnum:] ._-')"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
           CHANGED_FILES="${{ steps.changes.outputs.changed_files }}"
+          ISSUE_TEMPLATE="$GITHUB_WORKSPACE/.github/layer-down-issue-template.md"
 
-          # Build changed-files markdown list (pure bash, no sed)
+          if [ ! -f "$ISSUE_TEMPLATE" ]; then
+            echo "FATAL: Issue template not found at $ISSUE_TEMPLATE"
+            exit 1
+          fi
+
           FILES_LIST=""
           while IFS= read -r f; do
             [ -z "$f" ] && continue
             FILES_LIST="${FILES_LIST}- ${f}
 "
           done <<< "$CHANGED_FILES"
-          if [ -z "$FILES_LIST" ]; then
-            FILES_LIST="_No PUBLIC_API governance files changed in this push._"
-          fi
+          [ -z "$FILES_LIST" ] && FILES_LIST="No PUBLIC_API governance files changed in this push."
 
-          # Agent file detection section
           AGENT_SECTION=""
-          if [ "$AGENT_FILES_CHANGED" = "true" ]; then
-            AGENT_SECTION="Agent File Detection Gate - CS2 Approval Required: One or more agent contract files changed. The ripple PR MUST be created as DRAFT. Only CS2 (Johan Ras) may approve and merge. Auto-merge is NOT permitted for agent file changes."
-          fi
+          [ "$AGENT_FILES_CHANGED" = "true" ] && AGENT_SECTION="CS2 APPROVAL REQUIRED: Agent contract files changed. Ripple PR must be DRAFT. Only CS2 may merge."
 
-          # Use absolute path for template
-          ISSUE_TEMPLATE="$GITHUB_WORKSPACE/.github/layer-down-issue-template.md"
-          if [ ! -f "$ISSUE_TEMPLATE" ]; then
-            echo "FATAL: Issue template not found at $ISSUE_TEMPLATE"
-            ls -la "$GITHUB_WORKSPACE/.github/" || echo ".github/ not listable"
-            exit 1
-          fi
-
-          # Export all substitution variables for python3
           export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_SECTION ISSUE_TEMPLATE
 
-          # Build and post issue for each enabled consumer
           echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue
-
             ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
-
-            # Use python3 for template substitution - avoids all sed delimiter conflicts
             ISSUE_BODY=$(python3 - <<'PYEOF'
 import os
 template_path = os.environ['ISSUE_TEMPLATE']
@@ -183,40 +136,24 @@ for k, v in replacements.items():
 print(body, end='')
 PYEOF
 )
-
-            echo "Creating layer-down issue in $repo..."
-
-            CREATE_ARGS=(
-              -f "title=$ISSUE_TITLE"
-              -f "body=$ISSUE_BODY"
-              -f "labels[]=governance"
-              -f "labels[]=layer-down"
-              -f "labels[]=high-priority"
-            )
-
-            if [ -n "$liaison" ]; then
-              CREATE_ARGS+=(-f "assignees[]=$liaison")
-            fi
-
-            gh api repos/$repo/issues \
-              -X POST \
-              -H "Accept: application/vnd.github+json" \
-              "${CREATE_ARGS[@]}" \
+            echo "Creating issue in $repo..."
+            CREATE_ARGS=(-f "title=$ISSUE_TITLE" -f "body=$ISSUE_BODY" -f "labels[]=governance" -f "labels[]=layer-down" -f "labels[]=high-priority")
+            [ -n "$liaison" ] && CREATE_ARGS+=(-f "assignees[]=$liaison")
+            gh api repos/$repo/issues -X POST -H "Accept: application/vnd.github+json" "${CREATE_ARGS[@]}" \
               && echo "  Issue created in $repo" \
-              || echo "  Issue creation failed for $repo (labels/assignees may not exist yet)"
+              || echo "  Issue creation failed for $repo"
           done
 
-      - name: Dispatch governance_ripple repository_dispatch to consumer repos
+      - name: Dispatch governance_ripple to consumer repos
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
+          COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr -dc '[:alnum:] ._-')"
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
-
           echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue
             echo "Dispatching governance_ripple to $repo..."
@@ -230,8 +167,8 @@ PYEOF
               -f "client_payload[timestamp]=${TIMESTAMP}" \
               -f "client_payload[agent_files_changed]=${AGENT_FILES_CHANGED}" \
               -f "client_payload[commit_message]=${COMMIT_MESSAGE}" \
-              && echo "  governance_ripple dispatched to $repo" \
-              || echo "  repository_dispatch failed for $repo (MATURION_BOT_TOKEN may lack contents:write scope in that repo)"
+              && echo "  dispatched to $repo" \
+              || echo "  dispatch failed for $repo"
           done
 
       - name: Record layer-down dispatch
@@ -239,11 +176,9 @@ PYEOF
           mkdir -p .agent-admin/ripple
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATESTAMP="$(date +%Y%m%d-%H%M%S)"
-          RECORD_FILE=".agent-admin/ripple/layer-down-dispatch-${DATESTAMP}.json"
-          printf '{\n  "schema_version": "1.0.0",\n  "type": "layer_down_dispatch",\n  "timestamp": "%s",\n  "commit_sha": "%s",\n  "agent_files_changed": %s,\n  "consumers_notified": %s\n}\n' \
+          printf '{"schema_version":"1.0.0","type":"layer_down_dispatch","timestamp":"%s","commit_sha":"%s","consumers_notified":%s}\n' \
             "$TIMESTAMP" \
             "${{ github.sha }}" \
-            "${{ steps.changes.outputs.agent_files_changed }}" \
             "$(jq -c '[.consumers[] | select(.enabled == true) | .repository]' "$GITHUB_WORKSPACE/governance/CONSUMER_REPO_REGISTRY.json")" \
-            > "$RECORD_FILE"
-          echo "Layer-down dispatch recorded at ${RECORD_FILE}"
+            > ".agent-admin/ripple/layer-down-dispatch-${DATESTAMP}.json"
+          echo "Dispatch recorded."
