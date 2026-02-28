@@ -55,11 +55,11 @@ jobs:
             echo "agent_files_changed=false" >> $GITHUB_OUTPUT
           else
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
-            LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^governance/(canon|schemas|templates)/' || true)
+            LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^(governance/(canon|schemas|templates|policy|runbooks|executable)/|governance/(CONSUMER_REPO_REGISTRY\.json|CONSTITUTION\.md)|BUILD_PHILOSOPHY\.md|\.github/agents/)' || true)
             echo "changed_files<<EOF" >> $GITHUB_OUTPUT
             echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
-            AGENT_FILES=$(echo "$CHANGED_FILES" | grep -E '\.github/agents/.*\.md$' || true)
+            AGENT_FILES=$(echo "$CHANGED_FILES" | grep -E '^\.github/agents/.*\.md$' || true)
             if [ -n "$AGENT_FILES" ]; then
               echo "agent_files_changed=true" >> $GITHUB_OUTPUT
             else
@@ -86,6 +86,9 @@ jobs:
       - name: Create layer-down issues in consumer repos
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+          CHANGED_FILES: ${{ steps.changes.outputs.changed_files }}
+          AGENT_FILES_CHANGED: ${{ steps.changes.outputs.agent_files_changed }}
+          CONSUMERS: ${{ steps.registry.outputs.consumers }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
           RAW_MSG="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
@@ -97,8 +100,6 @@ jobs:
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           DATE="$(date -u +%Y-%m-%d)"
           SHORT_SHA="${COMMIT_SHA:0:8}"
-          AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
-          CHANGED_FILES="${{ steps.changes.outputs.changed_files }}"
           ISSUE_TEMPLATE="$GITHUB_WORKSPACE/.github/layer-down-issue-template.md"
 
           if [ ! -f "$ISSUE_TEMPLATE" ]; then
@@ -109,8 +110,7 @@ jobs:
           FILES_LIST=""
           while IFS= read -r f; do
             [ -z "$f" ] && continue
-            FILES_LIST="${FILES_LIST}- ${f}
-"
+            FILES_LIST="${FILES_LIST}- ${f}"$'\n'
           done <<< "$CHANGED_FILES"
           [ -z "$FILES_LIST" ] && FILES_LIST="No PUBLIC_API governance files changed in this push."
 
@@ -119,27 +119,10 @@ jobs:
 
           export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_SECTION ISSUE_TEMPLATE
 
-          echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
+          echo "$CONSUMERS" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue
             ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
-            ISSUE_BODY=$(python3 - <<'PYEOF'
-import os
-template_path = os.environ['ISSUE_TEMPLATE']
-replacements = {
-    '{{COMMIT_SHA}}':     os.environ['COMMIT_SHA'],
-    '{{SHORT_SHA}}':      os.environ['SHORT_SHA'],
-    '{{TIMESTAMP}}':      os.environ['TIMESTAMP'],
-    '{{COMMIT_MESSAGE}}': os.environ['COMMIT_MESSAGE'],
-    '{{FILES_LIST}}':     os.environ['FILES_LIST'],
-    '{{AGENT_SECTION}}':  os.environ['AGENT_SECTION'],
-}
-with open(template_path, 'r') as f:
-    body = f.read()
-for k, v in replacements.items():
-    body = body.replace(k, v)
-print(body, end='')
-PYEOF
-)
+            ISSUE_BODY=$(python3 "$GITHUB_WORKSPACE/.github/scripts/fill-layer-down-template.py")
             echo "Creating issue in $repo..."
             CREATE_ARGS=(-f "title=$ISSUE_TITLE" -f "body=$ISSUE_BODY" -f "labels[]=governance" -f "labels[]=layer-down" -f "labels[]=high-priority")
             [ -n "$liaison" ] && CREATE_ARGS+=(-f "assignees[]=$liaison")
@@ -150,7 +133,9 @@ PYEOF
 
       - name: Dispatch governance_ripple to consumer repos
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+          GH_TOKEN: ${{ secrets.RIPPLE_DISPATCH_TOKEN || secrets.MATURION_BOT_TOKEN }}
+          CONSUMERS: ${{ steps.registry.outputs.consumers }}
+          AGENT_FILES_CHANGED: ${{ steps.changes.outputs.agent_files_changed }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
           RAW_MSG="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
@@ -161,8 +146,7 @@ PYEOF
           " "$RAW_MSG")
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          AGENT_FILES_CHANGED="${{ steps.changes.outputs.agent_files_changed }}"
-          echo "${{ steps.registry.outputs.consumers }}" | while IFS=$'\t' read -r repo liaison; do
+          echo "$CONSUMERS" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue
             echo "Dispatching governance_ripple to $repo..."
             gh api "repos/$repo/dispatches" \
