@@ -52,44 +52,66 @@ jobs:
       - name: Checkout governance repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+
+      - name: Debug working directory
+        run: |
+          echo "PWD: $PWD"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo "Listing governance/:"
+          ls -la governance/ || echo "governance/ not found"
+          echo "Listing .github/:"
+          ls -la .github/ || echo ".github/ not found"
+          echo "Registry exists: $(test -f governance/CONSUMER_REPO_REGISTRY.json && echo YES || echo NO)"
+          echo "Template exists: $(test -f .github/layer-down-issue-template.md && echo YES || echo NO)"
 
       - name: Detect changed governance artifacts
         id: changes
         run: |
-          # List files changed in this push
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
-
-          # Detect PUBLIC_API canon / schema / template changes (layer-down triggers)
-          LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^governance/(canon|schemas|templates)/' || true)
-          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-          echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-          # Agent file detection gate:
-          # If any .github/agents/*.md files are in the changed set, the consumer ripple PR
-          # MUST be created as DRAFT and escalated to CS2 for approval.
-          AGENT_FILES=$(echo "$CHANGED_FILES" | grep -E '\.github/agents/.*\.md$' || true)
-          if [ -n "$AGENT_FILES" ]; then
-            echo "agent_files_changed=true" >> $GITHUB_OUTPUT
-          else
+          # For workflow_dispatch, treat all governance files as changed (manual recovery)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            LAYERDOWN_FILES="(manual dispatch — all canon eligible)"
+            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+            echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
             echo "agent_files_changed=false" >> $GITHUB_OUTPUT
-          fi
+            echo "Manual dispatch — skipping diff detection"
+          else
+            # List files changed in this push
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
 
-          echo "Changed governance artifacts:"
-          echo "$LAYERDOWN_FILES"
-          echo "Agent files changed: $([ -n "$AGENT_FILES" ] && echo 'YES - CS2 escalation required' || echo 'NO')"
+            # Detect PUBLIC_API canon / schema / template changes (layer-down triggers)
+            LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^governance/(canon|schemas|templates)/' || true)
+            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+            echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+            # Agent file detection gate
+            AGENT_FILES=$(echo "$CHANGED_FILES" | grep -E '\.github/agents/.*\.md$' || true)
+            if [ -n "$AGENT_FILES" ]; then
+              echo "agent_files_changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "agent_files_changed=false" >> $GITHUB_OUTPUT
+            fi
+
+            echo "Changed governance artifacts:"
+            echo "$LAYERDOWN_FILES"
+            echo "Agent files changed: $([ -n "$AGENT_FILES" ] && echo 'YES - CS2 escalation required' || echo 'NO')"
+          fi
 
       - name: Read consumer registry
         id: registry
         run: |
-          if [ ! -f "governance/CONSUMER_REPO_REGISTRY.json" ]; then
-            echo "FATAL: Consumer registry not found"
+          REGISTRY="$GITHUB_WORKSPACE/governance/CONSUMER_REPO_REGISTRY.json"
+          if [ ! -f "$REGISTRY" ]; then
+            echo "FATAL: Consumer registry not found at $REGISTRY"
+            echo "Contents of $GITHUB_WORKSPACE/governance/:"
+            ls -la "$GITHUB_WORKSPACE/governance/" || echo "Directory not found"
             exit 1
           fi
 
           # Extract enabled consumer repos and their governance liaisons (tab-separated)
-          CONSUMERS=$(jq -r '.consumers[] | select(.enabled == true) | [.repository, (.governance_liaison // "")] | @tsv' governance/CONSUMER_REPO_REGISTRY.json)
+          CONSUMERS=$(jq -r '.consumers[] | select(.enabled == true) | [.repository, (.governance_liaison // "")] | @tsv' "$REGISTRY")
           echo "consumers<<EOF" >> $GITHUB_OUTPUT
           echo "$CONSUMERS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -102,7 +124,7 @@ jobs:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
-          # Sanitize commit message: first line only, strip all sed-unsafe characters
+          # Sanitize commit message: first line only, safe for any downstream use
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
           COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -115,26 +137,38 @@ jobs:
           FILES_LIST=""
           while IFS= read -r f; do
             [ -z "$f" ] && continue
-            FILES_LIST="${FILES_LIST}"$'- `'"${f}"$'`\n'
+            FILES_LIST="${FILES_LIST}"$'- `"${f}"$'`
           done <<< "$CHANGED_FILES"
           if [ -z "$FILES_LIST" ]; then
             FILES_LIST="_No PUBLIC_API governance files changed in this push._"
           fi
 
-          # Agent file detection section (appended to issue body when agent files changed)
+          # Agent file detection section
           AGENT_SECTION=""
           if [ "$AGENT_FILES_CHANGED" = "true" ]; then
-            AGENT_SECTION="$(printf '## Agent File Detection Gate - CS2 Approval Required\n\nOne or more agent contract files changed in this governance push.\n\n**Per LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md Section 4.3 and 8.2:**\n- The consumer repo ripple PR **MUST be created as DRAFT**.\n- The governance-liaison **MUST create an escalation document** at:\n  `.agent-workspace/<agent>/escalation-inbox/agent-contract-ripple-escalation-<date>.md`\n- **Only CS2 (Johan Ras) may approve and merge** the ripple PR.\n- Auto-merge is **NOT permitted** for agent file changes.\n\n**Authority**: CS2_AGENT_FILE_AUTHORITY_MODEL.md | AGENT_CONTRACT_PROTECTION_PROTOCOL.md')"
+            AGENT_SECTION="$(printf '## Agent File Detection Gate - CS2 Approval Required
+
+One or more agent contract files changed in this governance push.
+
+**Per LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md Section 4.3 and 8.2:**
+- The consumer repo ripple PR **MUST be created as DRAFT**.
+- The governance-liaison **MUST create an escalation document** at:
+  .agent-workspace/agent/escalation-inbox/agent-contract-ripple-escalation-date.md
+- **Only CS2 (Johan Ras) may approve and merge** the ripple PR.
+- Auto-merge is **NOT permitted** for agent file changes.
+
+**Authority**: CS2_AGENT_FILE_AUTHORITY_MODEL.md | AGENT_CONTRACT_PROTECTION_PROTOCOL.md')"
           fi
 
-          # Build issue body from template, substituting variables
-          ISSUE_TEMPLATE=".github/layer-down-issue-template.md"
+          # Use absolute path for template
+          ISSUE_TEMPLATE="$GITHUB_WORKSPACE/.github/layer-down-issue-template.md"
           if [ ! -f "$ISSUE_TEMPLATE" ]; then
             echo "FATAL: Issue template not found at $ISSUE_TEMPLATE"
+            ls -la "$GITHUB_WORKSPACE/.github/" || echo ".github/ not listable"
             exit 1
           fi
 
-          # Export all substitution variables so they are available inside the python3 heredoc
+          # Export all substitution variables for python3 heredoc
           export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_SECTION ISSUE_TEMPLATE
 
           # Build and post issue for each enabled consumer
@@ -143,18 +177,17 @@ jobs:
 
             ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
 
-            # Use python3 for template substitution — avoids sed delimiter conflicts
-            # with commit messages or file paths containing /, \, &, |, etc.
+            # Use python3 for template substitution — avoids all sed delimiter conflicts
             ISSUE_BODY=$(python3 - <<'PYEOF'
 import os
 template_path = os.environ['ISSUE_TEMPLATE']
 replacements = {
-    '{{COMMIT_SHA}}':    os.environ['COMMIT_SHA'],
-    '{{SHORT_SHA}}':     os.environ['SHORT_SHA'],
-    '{{TIMESTAMP}}':     os.environ['TIMESTAMP'],
+    '{{COMMIT_SHA}}':     os.environ['COMMIT_SHA'],
+    '{{SHORT_SHA}}':      os.environ['SHORT_SHA'],
+    '{{TIMESTAMP}}':      os.environ['TIMESTAMP'],
     '{{COMMIT_MESSAGE}}': os.environ['COMMIT_MESSAGE'],
-    '{{FILES_LIST}}':    os.environ['FILES_LIST'],
-    '{{AGENT_SECTION}}': os.environ['AGENT_SECTION'],
+    '{{FILES_LIST}}':     os.environ['FILES_LIST'],
+    '{{AGENT_SECTION}}':  os.environ['AGENT_SECTION'],
 }
 with open(template_path, 'r') as f:
     body = f.read()
@@ -174,7 +207,6 @@ PYEOF
               -f "labels[]=high-priority"
             )
 
-            # Assign to governance-liaison if configured for this repo
             if [ -n "$liaison" ]; then
               CREATE_ARGS+=(-f "assignees[]=$liaison")
             fi
@@ -188,16 +220,11 @@ PYEOF
           done
 
       - name: Dispatch governance_ripple repository_dispatch to consumer repos
-        # Signal 2: machine event that triggers governance-ripple-sync.yml in each consumer repo.
-        # Without this signal, governance-ripple-sync.yml (which listens on
-        # repository_dispatch: types: [governance_ripple]) never fires automatically.
-        # Non-blocking: a failure here logs a warning but does not prevent issue creation (Signal 1).
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           COMMIT_SHA="${{ github.sha }}"
           COMMIT_MESSAGE="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          # Sanitize: first line only, strip problematic characters
           COMMIT_MESSAGE="$(printf '%s' "$COMMIT_MESSAGE" | head -1 | tr '|/\\&' '----')"
           SHORT_SHA="${COMMIT_SHA:0:8}"
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -230,6 +257,6 @@ PYEOF
             "$TIMESTAMP" \
             "${{ github.sha }}" \
             "${{ steps.changes.outputs.agent_files_changed }}" \
-            "$(jq -c '[.consumers[] | select(.enabled == true) | .repository]' governance/CONSUMER_REPO_REGISTRY.json)" \
+            "$(jq -c '[.consumers[] | select(.enabled == true) | .repository]' "$GITHUB_WORKSPACE/governance/CONSUMER_REPO_REGISTRY.json")" \
             > "$RECORD_FILE"
           echo "Layer-down dispatch recorded at ${RECORD_FILE}"
