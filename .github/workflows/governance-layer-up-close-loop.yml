@@ -65,7 +65,7 @@ jobs:
       - name: Parse originating reference from issue body
         id: parse
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
 
@@ -103,7 +103,7 @@ jobs:
         id: create_close_loop
         if: steps.parse.outputs.origin_repo != '' && steps.parse.outputs.origin_issue != ''
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
           ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
@@ -201,7 +201,7 @@ Per **CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md v1.1.0, Section 6.2 (Layer-Down St
       - name: Comment on governance issue with close-loop outcome
         if: always()
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           GOV_ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
           ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
@@ -271,7 +271,7 @@ referencing this governance issue and describing the resolution.
       - name: Comment on originating issue (close-loop cross-link)
         if: steps.parse.outputs.origin_repo != '' && steps.parse.outputs.origin_issue != '' && steps.create_close_loop.outputs.close_loop_created != 'true'
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
           ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
@@ -308,7 +308,7 @@ Please review the governance issue for details and update your local alignment a
       - name: Add layer-up-resolved label to governance issue
         if: always()
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           gh issue edit "${{ needs.check-layer-up.outputs.issue_number }}" \
             --repo "${{ github.repository }}" \

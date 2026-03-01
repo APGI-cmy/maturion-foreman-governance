@@ -191,7 +191,7 @@ jobs:
           
           echo "✅ Locked section modification approved (locked-section-approved label present)"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
       
       - name: Generate gate summary
         if: always()

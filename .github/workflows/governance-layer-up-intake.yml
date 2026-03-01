@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Bootstrap labels
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           declare -A LABELS=(
             ["layer-up"]="0075ca|Governance layer-up: issue escalated from consumer repo"
@@ -93,7 +93,7 @@ jobs:
       - name: Parse originating reference from issue body
         id: parse
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
 
@@ -116,7 +116,7 @@ jobs:
 
       - name: Add layer-up-intake and awaiting-triage labels; assign governance-repo-admin
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           gh issue edit "${{ needs.check-layer-up.outputs.issue_number }}" \
             --repo "${{ github.repository }}" \
@@ -126,7 +126,7 @@ jobs:
 
       - name: Post acknowledgment and routing comment
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up.outputs.issue_number }}"
           ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
@@ -188,7 +188,7 @@ Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5.3 (CS2 Review)**:
       - name: Comment on originating issue (cross-link)
         if: steps.parse.outputs.origin_repo != '' && steps.parse.outputs.origin_issue != ''
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
           ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"

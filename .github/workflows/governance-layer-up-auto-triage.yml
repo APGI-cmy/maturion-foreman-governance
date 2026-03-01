@@ -50,7 +50,7 @@ jobs:
       - name: Check labels on commented issue
         id: check
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ github.event.issue.number }}"
           echo "issue_number=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
@@ -145,7 +145,7 @@ jobs:
       - name: Parse governance delta from issue body
         id: parse
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
 
@@ -193,7 +193,7 @@ jobs:
       - name: Handle conflicting improvement — escalate to CS2
         if: steps.parse.outputs.conflict_detected == 'true'
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
           COMMENTER="${{ needs.detect-hitl-approval.outputs.commenter }}"
@@ -254,7 +254,7 @@ ${ORIGIN_REPO:+**Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://g
       - name: Handle additive improvement — open canonization candidate PR
         if: steps.parse.outputs.conflict_detected == 'false'
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
           COMMENTER="${{ needs.detect-hitl-approval.outputs.commenter }}"
@@ -493,7 +493,7 @@ Manual action required:
     steps:
       - name: Post unauthorized notice
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
           COMMENTER="${{ needs.detect-hitl-approval.outputs.commenter }}"
@@ -543,7 +543,7 @@ A CS2-authorized principal may post \`Layer up approved\` to proceed with auto-c
     steps:
       - name: Ensure manual triage label and assignee
         env:
-          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")

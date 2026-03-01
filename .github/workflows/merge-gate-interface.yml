@@ -351,3 +351,21 @@ jobs:
         run: |
           echo "ℹ️  IAA assurance not required for this PR type"
           echo "✅ iaa/assurance-check: SKIPPED (not applicable)"
+
+  # Job 5: Governance Token Usage Check
+  # Validates that write-capable workflow steps use MATURION_BOT_TOKEN, not GITHUB_TOKEN
+  governance-token-usage-check:
+    name: governance/token-usage-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for prohibited token usage in write steps
+        run: |
+          echo "=== Governance Token Usage Check (REQ-TU-001, REQ-TU-002) ==="
+          echo "Required by: governance/canon/GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md"
+          echo ""
+          bash .github/scripts/validate-token-usage.sh .github/workflows

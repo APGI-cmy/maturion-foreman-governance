@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-02-28",
-  "total_canons": 188,
+  "last_updated": "2026-03-01",
+  "total_canons": 189,
   "generation_timestamp": "2026-02-21T16:30:00Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
@@ -1324,6 +1324,17 @@
       "path": "governance/canon/GOVERNANCE_RIPPLE_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "00cc56b025a30956d26420ba86328abb2ad2e6894399c7c661721e6c2e42f387"
+    },
+    {
+      "filename": "GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md",
+      "version": "1.0.0",
+      "file_hash": "124040f73ab3b414d45d58d065c5d22f5d05cd1288f9107595b93a9c28645a61",
+      "effective_date": "2026-03-01",
+      "description": "Canonical policy establishing universal enforcement requirement that all automated write operations across all Maturion repositories MUST use MATURION_BOT_TOKEN. Prohibits github.token and secrets.GITHUB_TOKEN for write operations (commit, push, PR, issue, merge, label, dispatch). Defines enforcement via merge gate governance/token-usage-check and layer-down to all consumer repos.",
+      "type": "canon",
+      "path": "governance/canon/GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "124040f73ab3b414d45d58d065c5d22f5d05cd1288f9107595b93a9c28645a61"
     },
     {
       "filename": "GOVERNANCE_VALIDATION_PROTOCOL.md",

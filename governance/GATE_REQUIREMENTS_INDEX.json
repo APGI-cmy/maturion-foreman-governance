@@ -271,6 +271,28 @@
       "authority": "CS2 (Johan Ras) \u2014 CODE_COVERAGE_THRESHOLD_CANON.md v1.0.0",
       "exemption_process": "FM approval for up to 4 weeks; CS2 approval for AIMC modules or extended exceptions"
     },
+    "governance_token_usage_gate": {
+      "gate_id": "governance-token-usage-check",
+      "category": "security-token-usage",
+      "requirement": "All write-capable workflow steps must use MATURION_BOT_TOKEN; GITHUB_TOKEN is prohibited for write operations",
+      "description": "Scans all .github/workflows/*.yml files for prohibited use of github.token or secrets.GITHUB_TOKEN in write-capable step positions (GH_TOKEN env, with: token:). Fails if any mutation step uses the default GitHub token. Ensures all automated writes use the MATURION_BOT_TOKEN execution identity per governance policy.",
+      "applies_to": [
+        "builder",
+        "foreman",
+        "governance-admin",
+        "specialist"
+      ],
+      "enforcement": "BLOCKING",
+      "trigger_conditions": [
+        "Any PR modifying .github/workflows/ files",
+        "Every PR targeting main branch"
+      ],
+      "validation_script": ".github/scripts/validate-token-usage.sh",
+      "documentation": "governance/canon/GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md",
+      "effective_date": "2026-03-01",
+      "authority": "CS2 (Johan Ras) \u2014 GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md v1.0.0",
+      "exemption_process": "CS2 written approval only; no agent-level exemptions for write operations"
+    },
     "post_production_telemetry_gate": {
       "gate_id": "post-production-telemetry",
       "category": "production-health",
