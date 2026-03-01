@@ -15,8 +15,9 @@ name: Governance Layer-Up Auto Triage
 # HITL APPROVAL PHRASES (case-insensitive, any of):
 #   "Layer up approved"
 #   "Layer-up approved"
-#   "Layerup approved"
 #   "Auto layer up approved"
+# NOTE: "Layerup approved" (no separator) is NOT supported — regex requires a space or hyphen
+#       between "layer" and "up": ^(auto )?layer-? ?up approved$
 #
 # AUTHORITY: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5
 #            LAYER_UP_PROTOCOL.md v1.1.0, Section 6 (HITL Close-Loop Automation)
