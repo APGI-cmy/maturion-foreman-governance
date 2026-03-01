@@ -1,0 +1,48 @@
+@copilot — CS2 security fix applied directly to this branch. Please review the change and confirm it is correct before this PR is merged.
+
+## What was fixed — `detect-hitl-approval` step (lines 94–96 → `env:` block)
+
+`COMMENTER` and `COMMENT_BODY` were previously interpolated **inline** inside the `run:` script:
+
+```yaml
+# BEFORE (vulnerable to script injection)
+run: |
+  COMMENTER="${{ github.event.comment.user.login }}"
+  COMMENT_BODY="${{ github.event.comment.body }}"
+```
+
+A comment body containing `$(...)`, backticks, or shell metacharacters could execute arbitrary code in the runner. This is the same injection class fixed in `layer-up-trigger.yml` (PR #698 in maturion-isms).
+
+The fix moves both values to the `env:` block, matching the established pattern:
+
+```yaml
+# AFTER (safe — content passed through environment, not interpolated into script)
+env:
+  CS2_ACTORS: "APGI-cmy johanras maturion-bot"
+  # Security: user-supplied content passed via env: — never inline in run: scripts
+  COMMENTER: ${{ github.event.comment.user.login }}
+  COMMENT_BODY: ${{ github.event.comment.body }}
+run: |
+  echo "commenter=${COMMENTER}" >> $GITHUB_OUTPUT
+  COMMENT_FIRST_LINE=$(echo "${COMMENT_BODY}" | head -1)
+  ...
+```
+
+## Scope
+
+**Only** the `detect-hitl-approval` step was changed. All workflow logic, branch names, labels, job structure, and downstream steps are identical to the previous commit.
+
+## Verification checklist for @copilot
+
+Please verify:
+1. ✅ `COMMENTER` and `COMMENT_BODY` are now in the `env:` block — not interpolated inline in `run:`
+2. ✅ All shell references to `${COMMENTER}` and `${COMMENT_BODY}` in the `run:` script still work correctly as environment variables
+3. ✅ The `CS2_ACTORS` env var is still present and unchanged
+4. ✅ No other injection-vulnerable `${{ github.event.comment.* }}` inline interpolations remain in this file
+5. ✅ All four job branches (Gate 1, Gate 2, Branch A, Branch B, Branch C) are structurally intact
+
+Once verified, this PR is **approved and ready to merge**.
+
+---
+*Security fix applied by CS2 (@APGI-cmy) — 2026-03-01*
+*Authority: Maturion CI security policy | LAYER_UP_PROTOCOL.md v1.1.0*
