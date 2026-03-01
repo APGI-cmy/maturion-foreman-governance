@@ -1,0 +1,539 @@
+name: Governance Layer-Up Auto Triage
+
+# PURPOSE:
+#   Implement Human-In-The-Loop (HITL) close-loop automation for layer-up issues.
+#   When an authorized maintainer or CS2 posts an approval comment on a layer-up issue
+#   (e.g. "Layer up approved"), this workflow:
+#     1. Detects the HITL approval phrase from an authorized actor
+#     2. Parses governance delta metadata from the issue body
+#     3. Evaluates the improvement for conflict vs. additivity
+#     4. If additive → opens a canonization candidate PR (or prepares the branch)
+#     5. If potentially conflicting → escalates to CS2 with reconciliation label
+#     6. If no authorized approval → assigns to governance-repo-admin for manual triage
+#   All automation operations are logged in the workflow step summary.
+#
+# HITL APPROVAL PHRASES (case-insensitive, any of):
+#   "Layer up approved"
+#   "Layer-up approved"
+#   "Layerup approved"
+#   "Auto layer up approved"
+#
+# AUTHORITY: GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5
+#            LAYER_UP_PROTOCOL.md v1.1.0, Section 6 (HITL Close-Loop Automation)
+#            LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.1.0, Section 13
+#
+# TRIGGER:
+#   issue_comment created on a layer-up issue in THIS (governance) repo.
+#   Only processes issues carrying both "layer-up" AND "governance-improvement" labels.
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # GATE 1: Is this a layer-up + governance-improvement issue comment?
+  # ────────────────────────────────────────────────────────────────────────────
+  check-layer-up-issue:
+    name: Gate — Layer-Up + Governance-Improvement Labels
+    runs-on: ubuntu-latest
+    outputs:
+      is_target_issue: ${{ steps.check.outputs.is_target_issue }}
+      issue_number: ${{ steps.check.outputs.issue_number }}
+    steps:
+      - name: Check labels on commented issue
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          echo "issue_number=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
+
+          # Fetch current labels for the issue (comment event labels may be stale)
+          LABELS=$(gh issue view "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --json labels --jq '[.labels[].name] | join(",")' 2>/dev/null || echo "")
+
+          echo "Labels on issue #${ISSUE_NUMBER}: ${LABELS}"
+
+          HAS_LAYER_UP=$(echo "${LABELS}" | grep -c "layer-up" || true)
+          HAS_GOV_IMP=$(echo "${LABELS}" | grep -c "governance-improvement" || true)
+
+          if [ "${HAS_LAYER_UP}" -gt 0 ] && [ "${HAS_GOV_IMP}" -gt 0 ]; then
+            echo "is_target_issue=true" >> $GITHUB_OUTPUT
+            echo "Issue #${ISSUE_NUMBER} qualifies — has layer-up + governance-improvement labels"
+          else
+            echo "is_target_issue=false" >> $GITHUB_OUTPUT
+            echo "Issue #${ISSUE_NUMBER} skipped — missing required labels (layer-up + governance-improvement)"
+          fi
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # GATE 2: Parse comment, detect HITL approval, check actor authorization
+  # ────────────────────────────────────────────────────────────────────────────
+  detect-hitl-approval:
+    name: Detect HITL Approval and Actor Authorization
+    runs-on: ubuntu-latest
+    needs: check-layer-up-issue
+    if: needs.check-layer-up-issue.outputs.is_target_issue == 'true'
+    outputs:
+      hitl_approved: ${{ steps.detect.outputs.hitl_approved }}
+      actor_authorized: ${{ steps.detect.outputs.actor_authorized }}
+      commenter: ${{ steps.detect.outputs.commenter }}
+      comment_body: ${{ steps.detect.outputs.comment_body }}
+    steps:
+      - name: Detect approval and authorization
+        id: detect
+        env:
+          # CS2_ACTORS must stay in sync with agent-contract-audit.yml
+          CS2_ACTORS: "APGI-cmy johanras maturion-bot"
+        run: |
+          COMMENTER="${{ github.event.comment.user.login }}"
+          COMMENT_BODY="${{ github.event.comment.body }}"
+
+          echo "commenter=${COMMENTER}" >> $GITHUB_OUTPUT
+          # Store trimmed comment body (single line for downstream steps)
+          COMMENT_FIRST_LINE=$(echo "${COMMENT_BODY}" | head -1)
+          echo "comment_body=${COMMENT_FIRST_LINE}" >> $GITHUB_OUTPUT
+
+          # --- Check actor authorization ---
+          IS_AUTHORIZED=false
+          for ACTOR in ${CS2_ACTORS}; do
+            if [ "${COMMENTER}" = "${ACTOR}" ]; then
+              IS_AUTHORIZED=true
+              break
+            fi
+          done
+          echo "actor_authorized=${IS_AUTHORIZED}" >> $GITHUB_OUTPUT
+          echo "Actor '${COMMENTER}' authorized: ${IS_AUTHORIZED}"
+
+          # --- Detect HITL approval phrase (case-insensitive) ---
+          # Accepted phrases: "layer up approved", "layer-up approved",
+          #                   "layerup approved", "auto layer up approved"
+          APPROVAL_DETECTED=false
+          if echo "${COMMENT_BODY}" | grep -qiE "(layer[-\s]?up\s+approved|auto\s+layer[-\s]?up\s+approved)"; then
+            APPROVAL_DETECTED=true
+          fi
+          echo "hitl_approved=${APPROVAL_DETECTED}" >> $GITHUB_OUTPUT
+          echo "HITL approval detected: ${APPROVAL_DETECTED}"
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # BRANCH A: HITL approval from authorized actor — evaluate & auto-canonize
+  # ────────────────────────────────────────────────────────────────────────────
+  evaluate-and-canonize:
+    name: Evaluate Governance Delta and Auto-Canonize
+    runs-on: ubuntu-latest
+    needs: [check-layer-up-issue, detect-hitl-approval]
+    if: >
+      needs.detect-hitl-approval.outputs.hitl_approved == 'true' &&
+      needs.detect-hitl-approval.outputs.actor_authorized == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse governance delta from issue body
+        id: parse
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
+
+          ISSUE_BODY=$(gh issue view "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --json body --jq '.body' 2>/dev/null || echo "")
+          ISSUE_TITLE=$(gh issue view "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --json title --jq '.title' 2>/dev/null || echo "Layer-Up #${ISSUE_NUMBER}")
+
+          echo "issue_title=${ISSUE_TITLE}" >> $GITHUB_OUTPUT
+
+          # Extract originating repo/PR reference
+          REFERENCE_LINE=$(echo "${ISSUE_BODY}" | grep -oE 'Reference: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+' | head -1 || echo "")
+          ORIGIN_REPO=$(echo "${REFERENCE_LINE}" | sed 's/Reference: //' | sed 's/#[0-9]*//' || echo "")
+          ORIGIN_ISSUE=$(echo "${REFERENCE_LINE}" | grep -oE '#[0-9]+' | tr -d '#' || echo "")
+          echo "origin_repo=${ORIGIN_REPO}" >> $GITHUB_OUTPUT
+          echo "origin_issue=${ORIGIN_ISSUE}" >> $GITHUB_OUTPUT
+
+          # Extract affected canon files (lines matching "- <FILE>.md" or "**<FILE>**")
+          AFFECTED_FILES=$(echo "${ISSUE_BODY}" | grep -oE '[A-Z_]+\.md' | sort -u | head -10 | tr '\n' ' ' || echo "")
+          echo "affected_files=${AFFECTED_FILES}" >> $GITHUB_OUTPUT
+
+          # Detect urgency / breaking-change signals for conflict detection
+          BREAKING=$(echo "${ISSUE_BODY}" | grep -iE "Breaking Change.*:.*YES|breaking.*:.*true" | head -1 || echo "")
+          CRITICAL=$(echo "${ISSUE_BODY}" | grep -iE "Urgency.*:.*CRITICAL|Priority.*:.*CRITICAL" | head -1 || echo "")
+          CONFLICT_SIGNAL=$(echo "${ISSUE_BODY}" | grep -iE "conflict|contradicts|incompatible|overrides canonical" | head -1 || echo "")
+
+          if [ -n "${BREAKING}" ] || [ -n "${CONFLICT_SIGNAL}" ]; then
+            echo "conflict_detected=true" >> $GITHUB_OUTPUT
+            echo "Conflict/breaking-change signals found — will escalate"
+          else
+            echo "conflict_detected=false" >> $GITHUB_OUTPUT
+            echo "No conflict signals — improvement appears additive"
+          fi
+
+          echo "breaking=${BREAKING}" >> $GITHUB_OUTPUT
+          echo "critical=${CRITICAL}" >> $GITHUB_OUTPUT
+
+      - name: Handle conflicting improvement — escalate to CS2
+        if: steps.parse.outputs.conflict_detected == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
+          COMMENTER="${{ needs.detect-hitl-approval.outputs.commenter }}"
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          # Add escalation label
+          gh label create "layer-up-conflict-escalation" \
+            --repo "${{ github.repository }}" \
+            --color "b60205" \
+            --description "Layer-up with conflict signals escalated for CS2 reconciliation" 2>/dev/null || true
+
+          gh issue edit "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --add-label "layer-up-conflict-escalation" 2>/dev/null || true
+
+          COMMENT="## ⚠️ Layer-Up Auto-Triage — Conflict Detected — CS2 Escalation Required
+
+✅ HITL approval received from @${COMMENTER} at ${TIMESTAMP} — thank you.
+
+However, automated analysis detected **conflict/breaking-change signals** in this layer-up request.
+Per **LAYER_UP_PROTOCOL.md v1.0.0, Section 6.3**, conflicting improvements require CS2 reconciliation
+before canonization can proceed.
+
+### Signals Detected
+- Breaking change marker: \`${{ steps.parse.outputs.breaking }}\`
+- Conflict language: found in issue body
+
+### Action Required: CS2 (Johan Ras)
+
+1. Review the governance improvement described in this issue
+2. Reconcile with existing canonical guidance
+3. If reconcilable, approve with \`Layer up approved\` after resolution
+4. If irreconcilable, close with \`not_planned\` and explain
+
+Label added: \`layer-up-conflict-escalation\`
+
+${ORIGIN_REPO:+**Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE})}
+
+---
+- **Workflow run**: ${RUN_URL}
+- **Auto-triage by**: governance-layer-up-auto-triage.yml
+- **Authority**: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0"
+
+          gh issue comment "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --body "${COMMENT}" \
+            || echo "Could not post conflict escalation comment on issue #${ISSUE_NUMBER}"
+
+          echo "### ⚠️ Conflict Escalation" >> $GITHUB_STEP_SUMMARY
+          echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commenter: @${COMMENTER}" >> $GITHUB_STEP_SUMMARY
+          echo "- Action: Conflict detected — escalated to CS2, label added" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: ${TIMESTAMP}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Handle additive improvement — open canonization candidate PR
+        if: steps.parse.outputs.conflict_detected == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
+          COMMENTER="${{ needs.detect-hitl-approval.outputs.commenter }}"
+          ISSUE_TITLE="${{ steps.parse.outputs.issue_title }}"
+          ORIGIN_REPO="${{ steps.parse.outputs.origin_repo }}"
+          ORIGIN_ISSUE="${{ steps.parse.outputs.origin_issue }}"
+          AFFECTED_FILES="${{ steps.parse.outputs.affected_files }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          DATE=$(date -u +"%Y-%m-%d")
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          # Create canonization candidate label if absent
+          gh label create "layer-up-canonization-candidate" \
+            --repo "${{ github.repository }}" \
+            --color "0075ca" \
+            --description "Layer-up approved as additive; canonization candidate branch/PR ready" 2>/dev/null || true
+
+          # Create canonization tracking branch from main
+          BRANCH_NAME="canonization/layer-up-${ISSUE_NUMBER}-${DATE}"
+          git config user.name "maturion-bot"
+          git config user.email "bot@maturion.io"
+
+          # Create branch only if it doesn't already exist
+          if git ls-remote --exit-code --heads origin "${BRANCH_NAME}" > /dev/null 2>&1; then
+            echo "Branch ${BRANCH_NAME} already exists — reusing"
+            git checkout "${BRANCH_NAME}" 2>/dev/null || git checkout -b "${BRANCH_NAME}" "origin/main"
+          else
+            git checkout -b "${BRANCH_NAME}"
+          fi
+
+          # Create canonization tracking file
+          mkdir -p .agent-admin/governance/layer-up-canonization
+          TRACKING_FILE=".agent-admin/governance/layer-up-canonization/canonization-${ISSUE_NUMBER}-${DATE}.md"
+          cat > "${TRACKING_FILE}" <<TRACKING_EOF
+# Canonization Candidate — Layer-Up #${ISSUE_NUMBER}
+
+## Metadata
+- **Issue**: [#${ISSUE_NUMBER}](https://github.com/${{ github.repository }}/issues/${ISSUE_NUMBER})
+- **Approved By**: @${COMMENTER}
+- **Approved At**: ${TIMESTAMP}
+- **HITL Approval**: YES
+- **Conflict Assessment**: ADDITIVE (no conflict signals detected)
+${ORIGIN_REPO:+- **Originating Repo**: ${ORIGIN_REPO}}
+${ORIGIN_ISSUE:+- **Originating Issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE})}
+- **Affected Canon Files**: ${AFFECTED_FILES:-to be determined}
+
+## Status
+PROPOSED — awaiting CS2 review and merge
+
+## Description
+This canonization candidate was automatically created after HITL approval was received.
+The governance improvement described in [#${ISSUE_NUMBER}](https://github.com/${{ github.repository }}/issues/${ISSUE_NUMBER})
+has been assessed as ADDITIVE (no conflict signals).
+
+## Action Required: governance-repo-administrator + CS2
+1. Review the governance improvement in the originating issue
+2. Apply the necessary changes to the affected canon files (listed above)
+3. CS2 must approve and merge this PR to complete canonization
+4. After merge, close layer-up issue #${ISSUE_NUMBER} to trigger close-loop dispatch
+
+---
+*Auto-generated by governance-layer-up-auto-triage.yml*
+*Authority: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*
+TRACKING_EOF
+
+          git add "${TRACKING_FILE}"
+          git commit -m "chore(governance): open canonization candidate for layer-up #${ISSUE_NUMBER}
+
+HITL approval received from @${COMMENTER} at ${TIMESTAMP}.
+Improvement assessed as additive. Canonization tracking file created.
+Ref: ${{ github.repository }}#${ISSUE_NUMBER}
+"
+          git push origin "${BRANCH_NAME}"
+
+          # Open the canonization candidate PR
+          PR_TITLE="[Canonization Candidate] Layer-Up #${ISSUE_NUMBER} — ${ISSUE_TITLE}"
+          PR_BODY="## Canonization Candidate PR
+
+This PR was automatically created after an authorized HITL approval was received on
+layer-up issue [#${ISSUE_NUMBER}](https://github.com/${{ github.repository }}/issues/${ISSUE_NUMBER}).
+
+### Approval Details
+| Field | Value |
+|-------|-------|
+| **HITL Approval By** | @${COMMENTER} |
+| **Approved At** | ${TIMESTAMP} |
+| **Conflict Assessment** | ADDITIVE |
+| **Affected Files** | ${AFFECTED_FILES:-to be determined} |
+${ORIGIN_REPO:+| **Originating Repo** | ${ORIGIN_REPO} |}
+${ORIGIN_ISSUE:+| **Originating Issue** | [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://github.com/${ORIGIN_REPO}/issues/${ORIGIN_ISSUE}) |}
+
+### Next Steps for governance-repo-administrator + CS2
+1. **Review** the governance improvement described in [#${ISSUE_NUMBER}](https://github.com/${{ github.repository }}/issues/${ISSUE_NUMBER})
+2. **Apply** changes to the affected canon files (see tracking file in this PR)
+3. **CS2 must approve and merge** this PR per GOVERNANCE_LAYER_UP_PROTOCOL.md Section 5.3
+4. **After merge**: close layer-up issue #${ISSUE_NUMBER} to trigger the close-loop dispatch back to the consumer repo
+
+### Resolution Path
+- ✅ HITL approval received
+- ✅ Conflict assessment: ADDITIVE
+- ⏳ Canon changes: PENDING (governance-repo-administrator to apply)
+- ⏳ CS2 approval: PENDING
+- ⏳ Close-loop: PENDING (triggers on issue close)
+
+---
+*Auto-generated by governance-layer-up-auto-triage.yml*
+*Authority: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*
+*Closes #${ISSUE_NUMBER} — DO NOT close manually; close only after canon changes are applied*"
+
+          PR_URL=$(gh pr create \
+            --repo "${{ github.repository }}" \
+            --title "${PR_TITLE}" \
+            --body "${PR_BODY}" \
+            --head "${BRANCH_NAME}" \
+            --base "main" \
+            --label "layer-up-canonization-candidate" \
+            --draft \
+            2>/dev/null || echo "")
+
+          if [ -n "${PR_URL}" ]; then
+            PR_NUMBER=$(echo "${PR_URL}" | grep -oE '[0-9]+$' || echo "")
+            echo "pr_created=true" >> $GITHUB_OUTPUT
+            echo "pr_url=${PR_URL}" >> $GITHUB_OUTPUT
+            echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+
+            # Comment on layer-up issue with PR link
+            COMMENT="## ✅ Layer-Up Auto-Triage — Canonization Candidate Created
+
+✅ HITL approval received from @${COMMENTER} at ${TIMESTAMP}.
+
+Automated analysis found **no conflict signals** — this improvement is assessed as **ADDITIVE**.
+
+A canonization candidate PR has been automatically opened:
+  ${PR_URL}
+
+### What Happens Next
+
+Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Sections 5.2–5.4**:
+
+1. **governance-repo-administrator**: Review the improvement and apply canon changes in the PR above
+2. **CS2 (Johan Ras)**: Review and approve the canonization candidate PR
+3. **After CS2 merges**: Close this issue to trigger the close-loop dispatch back to the originating repo
+
+---
+- **Workflow run**: ${RUN_URL}
+- **Auto-triage by**: governance-layer-up-auto-triage.yml
+- **Authority**: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0"
+
+            gh issue comment "${ISSUE_NUMBER}" \
+              --repo "${{ github.repository }}" \
+              --body "${COMMENT}" \
+              || echo "Could not post canonization candidate comment on issue #${ISSUE_NUMBER}"
+
+            gh issue edit "${ISSUE_NUMBER}" \
+              --repo "${{ github.repository }}" \
+              --add-label "layer-up-canonization-candidate" 2>/dev/null || true
+
+            echo "### ✅ Canonization Candidate PR Created" >> $GITHUB_STEP_SUMMARY
+            echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
+            echo "- PR: ${PR_URL}" >> $GITHUB_STEP_SUMMARY
+            echo "- Commenter: @${COMMENTER}" >> $GITHUB_STEP_SUMMARY
+            echo "- Assessment: ADDITIVE" >> $GITHUB_STEP_SUMMARY
+            echo "- Timestamp: ${TIMESTAMP}" >> $GITHUB_STEP_SUMMARY
+          else
+            # PR creation failed — post manual instructions
+            COMMENT="## ✅ Layer-Up HITL Approved — Manual Canonization Required
+
+✅ HITL approval received from @${COMMENTER} at ${TIMESTAMP}.
+
+Automated analysis found **no conflict signals** — this improvement is assessed as **ADDITIVE**.
+
+However, the canonization candidate PR could not be created automatically (see workflow run for details).
+
+Manual action required:
+1. Create branch: \`canonization/layer-up-${ISSUE_NUMBER}-${DATE}\`
+2. Apply the governance improvement described in this issue to the relevant canon files
+3. Open a PR targeting \`main\` with title: \`[Canonization Candidate] Layer-Up #${ISSUE_NUMBER}\`
+4. CS2 approves and merges
+
+- **Workflow run**: ${RUN_URL}
+- **Auto-triage by**: governance-layer-up-auto-triage.yml"
+
+            gh issue comment "${ISSUE_NUMBER}" \
+              --repo "${{ github.repository }}" \
+              --body "${COMMENT}" \
+              || echo "Could not post fallback comment on issue #${ISSUE_NUMBER}"
+
+            echo "### ⚠️ Canonization Candidate — PR Creation Failed" >> $GITHUB_STEP_SUMMARY
+            echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
+            echo "- Branch: ${BRANCH_NAME}" >> $GITHUB_STEP_SUMMARY
+            echo "- Action: Manual PR creation required" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # BRANCH B: Approval phrase present but actor is NOT authorized
+  # ────────────────────────────────────────────────────────────────────────────
+  reject-unauthorized-approval:
+    name: Reject Unauthorized Approval Attempt
+    runs-on: ubuntu-latest
+    needs: [check-layer-up-issue, detect-hitl-approval]
+    if: >
+      needs.detect-hitl-approval.outputs.hitl_approved == 'true' &&
+      needs.detect-hitl-approval.outputs.actor_authorized == 'false'
+    steps:
+      - name: Post unauthorized notice
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
+          COMMENTER="${{ needs.detect-hitl-approval.outputs.commenter }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          COMMENT="## ⛔ Layer-Up Auto-Triage — Unauthorized Approval Attempt
+
+An approval phrase was detected in the comment from @${COMMENTER}, but this account is **not in
+the list of authorized HITL approvers** (CS2 / governance maintainers).
+
+HITL approval for layer-up canonization requires authorization from:
+- Repository maintainers (CS2 principals)
+
+Per **LAYER_UP_PROTOCOL.md v1.0.0, Section 6.2 (Authorization Requirements)**, only authorized
+principals may trigger automated canonization.
+
+This layer-up issue remains open and assigned for manual review.
+A CS2-authorized principal may post \`Layer up approved\` to proceed with auto-canonization.
+
+---
+- **Timestamp**: ${TIMESTAMP}
+- **Workflow run**: ${RUN_URL}
+- **Auto-triage by**: governance-layer-up-auto-triage.yml"
+
+          gh issue comment "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --body "${COMMENT}" \
+            || echo "Could not post unauthorized notice on issue #${ISSUE_NUMBER}"
+
+          echo "### ⛔ Unauthorized Approval Attempt" >> $GITHUB_STEP_SUMMARY
+          echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commenter: @${COMMENTER} (not authorized)" >> $GITHUB_STEP_SUMMARY
+          echo "- Action: Notice posted; issue remains open for authorized review" >> $GITHUB_STEP_SUMMARY
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # BRANCH C: Comment on layer-up issue but no approval phrase detected
+  #           Assign to governance-repo-admin for manual triage (first comment only)
+  # ────────────────────────────────────────────────────────────────────────────
+  assign-for-manual-triage:
+    name: No Approval Detected — Check Manual Triage Assignment
+    runs-on: ubuntu-latest
+    needs: [check-layer-up-issue, detect-hitl-approval]
+    if: >
+      needs.check-layer-up-issue.outputs.is_target_issue == 'true' &&
+      needs.detect-hitl-approval.outputs.hitl_approved == 'false'
+    steps:
+      - name: Ensure manual triage label and assignee
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+        run: |
+          ISSUE_NUMBER="${{ needs.check-layer-up-issue.outputs.issue_number }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          # Create label if not existing
+          gh label create "layer-up-awaiting-triage" \
+            --repo "${{ github.repository }}" \
+            --color "e99695" \
+            --description "Layer-up awaiting manual triage by governance-repo-administrator" 2>/dev/null || true
+
+          # Only add the label + assignee once (check if already set)
+          CURRENT_LABELS=$(gh issue view "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --json labels --jq '[.labels[].name] | join(",")' 2>/dev/null || echo "")
+
+          ALREADY_TRIAGED=$(echo "${CURRENT_LABELS}" | grep -cE "layer-up-awaiting-triage|layer-up-canonization-candidate|layer-up-conflict-escalation" || true)
+
+          if [ "${ALREADY_TRIAGED}" -eq 0 ]; then
+            gh issue edit "${ISSUE_NUMBER}" \
+              --repo "${{ github.repository }}" \
+              --add-label "layer-up-awaiting-triage" \
+              --add-assignee "APGI-cmy" 2>/dev/null \
+              || echo "Could not add triage label/assignee on issue #${ISSUE_NUMBER} (may already be set)"
+
+            echo "Manual triage label and assignee applied to issue #${ISSUE_NUMBER}"
+            echo "### ℹ️ Manual Triage Assigned" >> $GITHUB_STEP_SUMMARY
+            echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
+            echo "- No approval phrase detected in this comment" >> $GITHUB_STEP_SUMMARY
+            echo "- Label: layer-up-awaiting-triage" >> $GITHUB_STEP_SUMMARY
+            echo "- Assigned to: APGI-cmy (governance-repo-admin)" >> $GITHUB_STEP_SUMMARY
+            echo "- Timestamp: ${TIMESTAMP}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Issue #${ISSUE_NUMBER} already has a triage/status label — skipping reassignment"
+            echo "### ℹ️ Triage Label Already Present — Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
+            echo "- Current labels: ${CURRENT_LABELS}" >> $GITHUB_STEP_SUMMARY
+          fi

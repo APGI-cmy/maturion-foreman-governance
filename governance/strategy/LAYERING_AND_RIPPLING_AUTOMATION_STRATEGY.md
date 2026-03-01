@@ -388,20 +388,123 @@ Search and update references in:
 
 ---
 
-## 12. References
+## 13. HITL Close-Loop Automation for Layer-Up
+
+### 13.1 Purpose
+
+The HITL (Human-In-The-Loop) close-loop automation accelerates the canonization of straightforward,
+additive governance improvements that arrive via layer-up, without requiring full manual triage.
+
+### 13.2 Workflow
+
+```
+consumer repo layer-up issue
+    → governance intake (governance-layer-up-intake.yml)
+    → CS2/maintainer posts "Layer up approved" comment
+    → governance-layer-up-auto-triage.yml fires
+    → conflict/additivity evaluation
+        ├── ADDITIVE → draft canonization candidate PR opened
+        │              governance-repo-admin applies changes
+        │              CS2 approves and merges PR
+        │              layer-up issue closed → close-loop dispatch fires
+        └── CONFLICTING → layer-up-conflict-escalation label
+                          CS2 reconciliation required
+                          CS2 re-approves after reconciliation
+```
+
+### 13.3 HITL Approval Phrase
+
+An authorized principal posts any of:
+- `Layer up approved`
+- `Layer-up approved`
+- `Auto layer up approved`
+
+as a comment on the governance-repo layer-up issue (case-insensitive).
+
+### 13.4 Authorized Principals
+
+Only the following GitHub actors may trigger automated canonization:
+
+| Actor | Role |
+|-------|------|
+| `APGI-cmy` | Repository owner / CS2 |
+| `johanras` | CS2 |
+| `maturion-bot` | Automation principal |
+
+### 13.5 Labels Used by Auto-Triage
+
+| Label | Meaning |
+|-------|---------|
+| `layer-up-awaiting-triage` | Intake received; no HITL approval yet |
+| `layer-up-canonization-candidate` | HITL approved + assessed as additive; PR opened |
+| `layer-up-conflict-escalation` | Conflict signals detected; CS2 reconciliation required |
+
+### 13.6 Automation Operations Logging
+
+All ops are logged in the GitHub Actions workflow step summary for
+`.github/workflows/governance-layer-up-auto-triage.yml`. This provides:
+
+- Traceability for every HITL approval received
+- Audit trail for conflict escalations
+- Full timing and actor records
+
+### 13.7 Manual Triage Fallback
+
+The `governance-layer-up-intake.yml` workflow applies `layer-up-awaiting-triage` and assigns
+`APGI-cmy` to every new layer-up issue. If no HITL approval comment arrives, the standard manual
+triage (Section 6 Phase 2–5 of `LAYER_UP_PROTOCOL.md`) applies.
+
+**Implementation**: `.github/workflows/governance-layer-up-auto-triage.yml`  
+**Protocol Reference**: `LAYER_UP_PROTOCOL.md` v1.1.0, Section 6 Phase 6
+
+---
+
+## 14. Layer-Up Automation — Gap Detection and Loop Closure
+
+### 14.1 Loop Closure Verification
+
+The complete automation round-trip is:
+
+```
+consumer issue opened (layer-up labels)
+    → governance-layer-up-intake.yml (acknowledge + label + assign)
+    → [HITL approval or manual triage]
+    → governance-layer-up-auto-triage.yml (canonization candidate PR or escalation)
+    → CS2 merges canonization PR
+    → layer-up issue closed
+    → governance-layer-up-close-loop.yml (layer-down back to consumer)
+```
+
+### 14.2 Gap Detection Signals
+
+| Signal | Meaning | Action |
+|--------|---------|--------|
+| `layer-up-awaiting-triage` label > 7 days | Loop stalled at triage | Escalate to CS2 |
+| `layer-up-canonization-candidate` label; no PR | Branch creation failed | Manual PR required |
+| `layer-up-conflict-escalation` label > 14 days | Reconciliation stalled | CS2 follow-up |
+| Issue closed but no close-loop issue in consumer | Close-loop dispatch failed | Manual notification |
+
+---
+
+## 15. References
+
 
 - `governance/canon/ECOSYSTEM_VOCABULARY.md` v1.1.0 — Canonical term definitions
 - `governance/canon/CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md` — Layer-down protocol
-- `governance/canon/LAYER_UP_PROTOCOL.md` — Layer-up protocol
+- `governance/canon/LAYER_UP_PROTOCOL.md` — Layer-up protocol (v1.1.0 includes HITL automation)
 - `governance/canon/GOVERNANCE_RIPPLE_MODEL.md` — Bidirectional governance evolution (to be updated)
 - `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md` — Agent contract authority
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md` — Protected file enforcement
 - `.github/workflows/governance-layer-down-dispatch.yml` — Layer-down dispatch workflow (upgraded)
+- `.github/workflows/governance-layer-up-auto-triage.yml` — HITL auto-triage for layer-up issues
+- `.github/workflows/governance-layer-up-intake.yml` — Layer-up intake with awaiting-triage fallback
+- `.github/workflows/governance-layer-up-close-loop.yml` — Close-loop dispatch on issue close
 
 ---
 
 **Authority**: Governance Administrator  
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Effective Date**: 2026-02-21  
+**Updated**: 2026-03-01 — Added Sections 13 (HITL Automation), 14 (Gap Detection), 15 (References)  
 **Layer-Down Status**: PUBLIC_API — layer down to all consumer repos mandatory  
-**Last Updated**: 2026-02-21
+**Last Updated**: 2026-03-01
