@@ -20,6 +20,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | A-06 | Protected Files | I do NOT merge changes to protected canon files or agent contracts without documented CS2 approval. |
 | A-07 | Ripple | I do NOT allow a constitutional canon change to be merged without executing layer-down ripple to all consumer repositories. |
 | A-08 | Writes | I do NOT push directly to the main branch. All writes are via PR only. |
+| A-09 | IAA Invocation | I do NOT open a PR without first invoking the IAA agent (Phase 4 Step 4.4 per GA contract) and recording the ASSURANCE-TOKEN in the prehandover proof. IAA invocation precedes `report_progress` on the final commit. |
 
 ---
 
@@ -40,6 +41,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | Rule ID | Date Added | Incident Reference | One-line Summary |
 |---------|------------|--------------------|------------------|
 | NEW-B-06 | 2026-02-24 | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md | Agent in maturion-isms PR #517 modified .github/agents/ files without CodexAdvisor involvement or CS2 layer-down issue — AGCFPP-001 enacted |
+| A-09 | 2026-03-01 | PR #1253 (copilot/renumber-duplicate-rule-ids) — CS2 feedback on missing IAA invocation | GA opened PR #1253 without invoking IAA agent first; the omission violated Phase 4 Step 4.4 of the GA contract (`iaa_oversight.invocation_step`). Rule A-09 was created in this session to codify the requirement in FAIL-ONLY-ONCE and prevent recurrence. |
 
 ---
 
