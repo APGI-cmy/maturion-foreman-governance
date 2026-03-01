@@ -2,7 +2,16 @@
 # validate-token-usage.sh — REQ-TU-001/REQ-TU-002 gate
 #
 # Scans .github/workflows/*.yml for prohibited GITHUB_TOKEN / github.token usage
-# in write-capable steps. Exits non-zero if any violation is found.
+# in write-capable step positions. Exits non-zero if any violation is found.
+#
+# Detection covers two distinct patterns (each checked separately):
+#   (A) GH_TOKEN env var set to a prohibited token value, e.g.:
+#         GH_TOKEN: ${{ github.token }}
+#         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
+#   (B) action 'with: token:' field set to a prohibited token value, e.g.:
+#         token: ${{ github.token }}
+#         token: ${{ secrets.GITHUB_TOKEN }}
 #
 # Usage: .github/scripts/validate-token-usage.sh [workflow-dir]
 # Default workflow-dir: .github/workflows
@@ -22,56 +31,29 @@ echo ""
 VIOLATIONS=()
 SCANNED=0
 
-# Patterns that indicate a write/mutation operation
-WRITE_STEP_PATTERNS=(
-  "git push"
-  "git commit"
-  "gh pr create"
-  "gh pr merge"
-  "gh issue create"
-  "gh issue edit"
-  "gh api.*-X POST"
-  "gh api.*-X PATCH"
-  "gh api.*-X PUT"
-  "gh api.*-X DELETE"
-  "gh api.*/dispatches"
-  "gh api.*/merges"
-  "gh api.*/pulls"
-  "gh api.*/issues"
-  "gh api.*/labels"
-  "gh api.*/comments"
-  "octokit.*create"
-  "octokit.*update"
-)
-
-# Prohibited token references in any context
-PROHIBITED_TOKEN_PATTERNS=(
-  'github\.token'
-  'secrets\.GITHUB_TOKEN'
-)
-
 for workflow_file in "$WORKFLOW_DIR"/*.yml "$WORKFLOW_DIR"/*.yaml; do
   [ -f "$workflow_file" ] || continue
   SCANNED=$((SCANNED + 1))
   filename=$(basename "$workflow_file")
 
-  # Check for prohibited token patterns inline with write indicators in env blocks
   while IFS= read -r line_num_content; do
     line_num="${line_num_content%%:*}"
     line="${line_num_content#*:}"
 
-    for prohibited in "${PROHIBITED_TOKEN_PATTERNS[@]}"; do
-      if echo "$line" | grep -qE "$prohibited"; then
-        # Check if this is in a GH_TOKEN env assignment or with: token: — these are write contexts
-        if echo "$line" | grep -qE '(GH_TOKEN|GITHUB_TOKEN)\s*:.*\$\{\{|with:\s*token:|token:\s*\$\{\{'; then
-          VIOLATIONS+=("$filename:$line_num: prohibited token in write context: $line")
-        fi
-        # Check if env block sets GH_TOKEN to github.token or GITHUB_TOKEN
-        if echo "$line" | grep -qE 'GH_TOKEN\s*:\s*\$\{\{\s*(github\.token|secrets\.GITHUB_TOKEN)'; then
-          VIOLATIONS+=("$filename:$line_num: GH_TOKEN set to prohibited token: $line")
-        fi
-      fi
-    done
+    # (A) GH_TOKEN env assignment using a prohibited token (including || fallback).
+    #     Matches: GH_TOKEN: ${{ github.token }}, ${{ secrets.GITHUB_TOKEN }},
+    #              or any expression containing github.token / secrets.GITHUB_TOKEN.
+    if echo "$line" | grep -qE 'GH_TOKEN\s*:.*\$\{\{.*(github\.token|secrets\.GITHUB_TOKEN)'; then
+      VIOLATIONS+=("$filename:$line_num: GH_TOKEN set to prohibited token: $line")
+      continue
+    fi
+
+    # (B) action 'with: token:' field using a prohibited token.
+    #     Matches: token: ${{ github.token }}, token: ${{ secrets.GITHUB_TOKEN }}
+    if echo "$line" | grep -qE 'token:\s*\$\{\{.*(github\.token|secrets\.GITHUB_TOKEN)'; then
+      VIOLATIONS+=("$filename:$line_num: action token: field set to prohibited token: $line")
+    fi
+
   done < <(grep -n "" "$workflow_file" || true)
 
 done
