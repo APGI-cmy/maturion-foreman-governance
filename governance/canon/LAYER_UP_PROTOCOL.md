@@ -433,7 +433,7 @@ When conflict signals are detected:
 When no HITL approval is present (either on intake or on any subsequent comment that is
 not an approval phrase):
 
-- The `governance-layer-up-awaiting-triage` label is applied automatically on intake
+- The `layer-up-awaiting-triage` label is applied automatically on intake
 - The issue is assigned to `APGI-cmy` (governance-repo-admin) for manual triage
 - Manual triage follows the standard Phase 2–5 process above
 

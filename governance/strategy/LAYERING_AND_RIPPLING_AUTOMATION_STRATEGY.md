@@ -480,7 +480,7 @@ consumer issue opened (layer-up labels)
 | Signal | Meaning | Action |
 |--------|---------|--------|
 | `layer-up-awaiting-triage` label > 7 days | Loop stalled at triage | Escalate to CS2 |
-| `layer-up-canonization-candidate` label; no PR | Branch creation failed | Manual PR required |
+| `layer-up-canonization-candidate` label > 7 days with open PR | Canonization PR created but stalled | Escalate review to CS2 |
 | `layer-up-conflict-escalation` label > 14 days | Reconciliation stalled | CS2 follow-up |
 | Issue closed but no close-loop issue in consumer | Close-loop dispatch failed | Manual notification |
 

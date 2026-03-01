@@ -55,16 +55,19 @@ jobs:
           echo "issue_number=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
 
           # Fetch current labels for the issue (comment event labels may be stale)
-          LABELS=$(gh issue view "${ISSUE_NUMBER}" \
+          # Use exact membership check to avoid substring matching (e.g. layer-up-intake
+          # would falsely match a grep for "layer-up").
+          HAS_LAYER_UP=$(gh issue view "${ISSUE_NUMBER}" \
             --repo "${{ github.repository }}" \
-            --json labels --jq '[.labels[].name] | join(",")' 2>/dev/null || echo "")
+            --json labels --jq 'any(.labels[].name == "layer-up")' 2>/dev/null || echo "false")
+          HAS_GOV_IMP=$(gh issue view "${ISSUE_NUMBER}" \
+            --repo "${{ github.repository }}" \
+            --json labels --jq 'any(.labels[].name == "governance-improvement")' 2>/dev/null || echo "false")
 
-          echo "Labels on issue #${ISSUE_NUMBER}: ${LABELS}"
+          echo "label layer-up present: ${HAS_LAYER_UP}"
+          echo "label governance-improvement present: ${HAS_GOV_IMP}"
 
-          HAS_LAYER_UP=$(echo "${LABELS}" | grep -c "layer-up" || true)
-          HAS_GOV_IMP=$(echo "${LABELS}" | grep -c "governance-improvement" || true)
-
-          if [ "${HAS_LAYER_UP}" -gt 0 ] && [ "${HAS_GOV_IMP}" -gt 0 ]; then
+          if [ "${HAS_LAYER_UP}" = "true" ] && [ "${HAS_GOV_IMP}" = "true" ]; then
             echo "is_target_issue=true" >> $GITHUB_OUTPUT
             echo "Issue #${ISSUE_NUMBER} qualifies — has layer-up + governance-improvement labels"
           else
@@ -91,10 +94,11 @@ jobs:
         env:
           # CS2_ACTORS must stay in sync with agent-contract-audit.yml
           CS2_ACTORS: "APGI-cmy johanras maturion-bot"
+          # Security: user-supplied content passed via env: — never inline in run: scripts
+          # (prevents script injection via crafted comment bodies containing $(...) or backticks)
+          COMMENTER: ${{ github.event.comment.user.login }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
-          COMMENTER="${{ github.event.comment.user.login }}"
-          COMMENT_BODY="${{ github.event.comment.body }}"
-
           echo "commenter=${COMMENTER}" >> $GITHUB_OUTPUT
           # Store trimmed comment body (single line for downstream steps)
           COMMENT_FIRST_LINE=$(echo "${COMMENT_BODY}" | head -1)
@@ -111,11 +115,12 @@ jobs:
           echo "actor_authorized=${IS_AUTHORIZED}" >> $GITHUB_OUTPUT
           echo "Actor '${COMMENTER}' authorized: ${IS_AUTHORIZED}"
 
-          # --- Detect HITL approval phrase (case-insensitive) ---
-          # Accepted phrases: "layer up approved", "layer-up approved",
-          #                   "layerup approved", "auto layer up approved"
+          # --- Detect HITL approval phrase (case-insensitive, standalone line) ---
+          # Accepted phrases (case-insensitive, must appear on their own line):
+          #   "Layer up approved", "Layer-up approved", "Auto layer up approved"
+          # Anchored to the line start/end to prevent "not layer up approved" matching.
           APPROVAL_DETECTED=false
-          if echo "${COMMENT_BODY}" | grep -qiE "(layer[-\s]?up\s+approved|auto\s+layer[-\s]?up\s+approved)"; then
+          if echo "${COMMENT_BODY}" | grep -qiE "^(auto )?layer-? ?up approved$"; then
             APPROVAL_DETECTED=true
           fi
           echo "hitl_approved=${APPROVAL_DETECTED}" >> $GITHUB_OUTPUT
@@ -134,7 +139,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0
       - name: Parse governance delta from issue body
         id: parse
         env:
@@ -149,7 +155,12 @@ jobs:
             --repo "${{ github.repository }}" \
             --json title --jq '.title' 2>/dev/null || echo "Layer-Up #${ISSUE_NUMBER}")
 
-          echo "issue_title=${ISSUE_TITLE}" >> $GITHUB_OUTPUT
+          # Use multiline output syntax to handle titles containing special characters
+          {
+            echo 'issue_title<<EOF'
+            echo "${ISSUE_TITLE}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
           # Extract originating repo/PR reference
           REFERENCE_LINE=$(echo "${ISSUE_BODY}" | grep -oE 'Reference: [A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+' | head -1 || echo "")
@@ -205,7 +216,7 @@ jobs:
 ✅ HITL approval received from @${COMMENTER} at ${TIMESTAMP} — thank you.
 
 However, automated analysis detected **conflict/breaking-change signals** in this layer-up request.
-Per **LAYER_UP_PROTOCOL.md v1.0.0, Section 6.3**, conflicting improvements require CS2 reconciliation
+Per **LAYER_UP_PROTOCOL.md v1.1.0, Section 6 Phase 6.5**, conflicting improvements require CS2 reconciliation
 before canonization can proceed.
 
 ### Signals Detected
@@ -226,7 +237,7 @@ ${ORIGIN_REPO:+**Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://g
 ---
 - **Workflow run**: ${RUN_URL}
 - **Auto-triage by**: governance-layer-up-auto-triage.yml
-- **Authority**: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0"
+- **Authority**: LAYER_UP_PROTOCOL.md v1.1.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0"
 
           gh issue comment "${ISSUE_NUMBER}" \
             --repo "${{ github.repository }}" \
@@ -265,12 +276,15 @@ ${ORIGIN_REPO:+**Originating issue**: [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https://g
           git config user.name "maturion-bot"
           git config user.email "bot@maturion.io"
 
-          # Create branch only if it doesn't already exist
+          # Create or reuse branch — safe with fetch-depth: 0 (full history available)
           if git ls-remote --exit-code --heads origin "${BRANCH_NAME}" > /dev/null 2>&1; then
-            echo "Branch ${BRANCH_NAME} already exists — reusing"
-            git checkout "${BRANCH_NAME}" 2>/dev/null || git checkout -b "${BRANCH_NAME}" "origin/main"
+            echo "Branch ${BRANCH_NAME} already exists on origin — fetching and checking out"
+            git fetch origin "${BRANCH_NAME}:${BRANCH_NAME}" || true
+            git checkout "${BRANCH_NAME}" 2>/dev/null || git checkout -b "${BRANCH_NAME}" "origin/${BRANCH_NAME}"
           else
-            git checkout -b "${BRANCH_NAME}"
+            echo "Branch ${BRANCH_NAME} does not exist on origin — creating from origin/main"
+            git fetch origin main:main || true
+            git checkout -b "${BRANCH_NAME}" "origin/main"
           fi
 
           # Create canonization tracking file
@@ -305,7 +319,7 @@ has been assessed as ADDITIVE (no conflict signals).
 
 ---
 *Auto-generated by governance-layer-up-auto-triage.yml*
-*Authority: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*
+*Authority: LAYER_UP_PROTOCOL.md v1.1.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*
 TRACKING_EOF
 
           git add "${TRACKING_FILE}"
@@ -317,7 +331,7 @@ Ref: ${{ github.repository }}#${ISSUE_NUMBER}
 "
           git push origin "${BRANCH_NAME}"
 
-          # Open the canonization candidate PR
+          # Open the canonization candidate PR (check for existing PR first to be idempotent)
           PR_TITLE="[Canonization Candidate] Layer-Up #${ISSUE_NUMBER} — ${ISSUE_TITLE}"
           PR_BODY="## Canonization Candidate PR
 
@@ -349,21 +363,46 @@ ${ORIGIN_ISSUE:+| **Originating Issue** | [${ORIGIN_REPO}#${ORIGIN_ISSUE}](https
 
 ---
 *Auto-generated by governance-layer-up-auto-triage.yml*
-*Authority: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*
+*Authority: LAYER_UP_PROTOCOL.md v1.1.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0*
 *Closes #${ISSUE_NUMBER} — DO NOT close manually; close only after canon changes are applied*"
 
-          PR_URL=$(gh pr create \
+          # Check if a PR already exists for this branch to avoid duplicate creation
+          EXISTING_PR_DATA=$(gh pr list \
             --repo "${{ github.repository }}" \
-            --title "${PR_TITLE}" \
-            --body "${PR_BODY}" \
             --head "${BRANCH_NAME}" \
-            --base "main" \
-            --label "layer-up-canonization-candidate" \
-            --draft \
+            --state all \
+            --json number,url \
+            --jq 'if length > 0 then .[0].url + " " + (.[0].number|tostring) else "" end' \
             2>/dev/null || echo "")
 
+          PR_URL=""
+          PR_NUMBER=""
+          PR_REUSED=false
+
+          if [ -n "${EXISTING_PR_DATA}" ]; then
+            # Reuse the existing PR for this branch
+            PR_URL=$(echo "${EXISTING_PR_DATA}" | awk '{print $1}')
+            PR_NUMBER=$(echo "${EXISTING_PR_DATA}" | awk '{print $2}')
+            PR_REUSED=true
+            echo "Reusing existing PR ${PR_URL} for branch ${BRANCH_NAME}"
+          else
+            # No existing PR — create one
+            PR_URL=$(gh pr create \
+              --repo "${{ github.repository }}" \
+              --title "${PR_TITLE}" \
+              --body "${PR_BODY}" \
+              --head "${BRANCH_NAME}" \
+              --base "main" \
+              --label "layer-up-canonization-candidate" \
+              --draft \
+              2>/dev/null || echo "")
+
+            if [ -n "${PR_URL}" ]; then
+              PR_NUMBER=$(echo "${PR_URL}" | grep -oE '[0-9]+$' || echo "")
+            fi
+          fi
+
           if [ -n "${PR_URL}" ]; then
-            PR_NUMBER=$(echo "${PR_URL}" | grep -oE '[0-9]+$' || echo "")
             echo "pr_created=true" >> $GITHUB_OUTPUT
             echo "pr_url=${PR_URL}" >> $GITHUB_OUTPUT
             echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
@@ -389,7 +428,7 @@ Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Sections 5.2–5.4**:
 ---
 - **Workflow run**: ${RUN_URL}
 - **Auto-triage by**: governance-layer-up-auto-triage.yml
-- **Authority**: LAYER_UP_PROTOCOL.md v1.0.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0"
+- **Authority**: LAYER_UP_PROTOCOL.md v1.1.0 | GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0"
 
             gh issue comment "${ISSUE_NUMBER}" \
               --repo "${{ github.repository }}" \
@@ -400,14 +439,18 @@ Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Sections 5.2–5.4**:
               --repo "${{ github.repository }}" \
               --add-label "layer-up-canonization-candidate" 2>/dev/null || true
 
-            echo "### ✅ Canonization Candidate PR Created" >> $GITHUB_STEP_SUMMARY
+            if [ "${PR_REUSED}" = "true" ]; then
+              echo "### ✅ Canonization Candidate PR — Reused Existing" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "### ✅ Canonization Candidate PR Created" >> $GITHUB_STEP_SUMMARY
+            fi
             echo "- Issue: #${ISSUE_NUMBER}" >> $GITHUB_STEP_SUMMARY
             echo "- PR: ${PR_URL}" >> $GITHUB_STEP_SUMMARY
             echo "- Commenter: @${COMMENTER}" >> $GITHUB_STEP_SUMMARY
             echo "- Assessment: ADDITIVE" >> $GITHUB_STEP_SUMMARY
             echo "- Timestamp: ${TIMESTAMP}" >> $GITHUB_STEP_SUMMARY
           else
-            # PR creation failed — post manual instructions
+            # PR creation failed (not a duplicate — no existing PR was found)
             COMMENT="## ✅ Layer-Up HITL Approved — Manual Canonization Required
 
 ✅ HITL approval received from @${COMMENTER} at ${TIMESTAMP}.
@@ -464,7 +507,7 @@ the list of authorized HITL approvers** (CS2 / governance maintainers).
 HITL approval for layer-up canonization requires authorization from:
 - Repository maintainers (CS2 principals)
 
-Per **LAYER_UP_PROTOCOL.md v1.0.0, Section 6.2 (Authorization Requirements)**, only authorized
+Per **LAYER_UP_PROTOCOL.md v1.1.0, Section 6 Phase 6.2 (Authorization Requirements)**, only authorized
 principals may trigger automated canonization.
 
 This layer-up issue remains open and assigned for manual review.

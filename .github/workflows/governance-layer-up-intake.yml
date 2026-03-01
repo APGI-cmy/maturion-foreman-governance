@@ -166,9 +166,12 @@ Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5.3 (CS2 Review)**:
    - For manual layer-ups: log in governance CHANGELOG and take action per LAYER_UP_PROTOCOL.md
 5. **Close this issue** once governance action is complete — the close-loop workflow will automatically notify the originating repo
 
-> **HITL Auto-Triage**: An authorized maintainer (CS2) may post \`Layer up approved\` as a comment
-> on this issue to trigger automated canonization. The \`governance-layer-up-auto-triage\` workflow
-> will evaluate the improvement for conflict/additivity and open a canonization candidate PR.
+> **HITL Auto-Triage**: An authorized maintainer (CS2) may post one of the following case-insensitive approval phrases as a comment on this issue to trigger automated canonization:
+> - \`Layer up approved\`
+> - \`Layer-up approved\`
+> - \`Auto layer up approved\`
+>
+> The \`governance-layer-up-auto-triage\` workflow will evaluate the improvement for conflict/additivity and open a canonization candidate PR.
 
 > When this issue is **closed**, the \`governance-layer-up-close-loop\` workflow will dispatch a layer-down
 > notification back to the originating repo, completing the full round-trip.
