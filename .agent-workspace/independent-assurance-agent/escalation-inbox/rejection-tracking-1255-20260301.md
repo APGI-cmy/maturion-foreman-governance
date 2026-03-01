@@ -59,5 +59,23 @@ After completing all remediation items, re-invoke IAA:
 
 ---
 
+---
+
+## Resubmission Resolution (IAA-20260301-PR1255-R2)
+
+| Action | Status |
+|--------|--------|
+| Resubmission invocation received | ✅ 2026-03-01 |
+| Prior REJECTION-PACKAGE artifact loaded | ✅ rejection-package-1255.md |
+| All 6 blocking items verified | ✅ PASS (see session-004-20260301.md) |
+| Acknowledgement confirmed | ✅ Resubmission invocation constitutes acknowledgement |
+| ASSURANCE-TOKEN issued | ✅ IAA-20260301-PR1255-R2-PASS |
+| Verdict artifact | ✅ .agent-admin/assurance/assurance-token-1255.md |
+
+**Status**: RESOLVED — ASSURANCE-TOKEN issued. Tracking entry closed.
+
+---
+
 **IAA Session**: IAA-20260301-PR1255
+**Resubmission Session**: IAA-20260301-PR1255-R2
 **Date**: 2026-03-01
