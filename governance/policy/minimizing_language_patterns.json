@@ -26,7 +26,11 @@
     {
       "id": "non_blocking",
       "pattern": "\\bnon[- ]?blocking\\b",
-      "description": "Non-blocking phrasing"
+      "description": "Non-blocking phrasing",
+      "file_path_exceptions": [
+        "governance/parking-station/**"
+      ],
+      "file_path_exceptions_rationale": "Parked enhancement proposals under governance/parking-station/ may legitimately describe enhancements as not blocking ongoing work. These files are not canon or policy documents and do not instruct agents. See §3.5 of POLICY-NO-ONLY-LANGUAGE.md."
     },
     {
       "id": "non_critical",
