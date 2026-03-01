@@ -128,7 +128,7 @@ jobs:
             [ -n "$liaison" ] && CREATE_ARGS+=(-f "assignees[]=$liaison")
             gh api repos/$repo/issues -X POST -H "Accept: application/vnd.github+json" "${CREATE_ARGS[@]}" \
               && echo "  Issue created in $repo" \
-              || echo "  Issue creation failed for $repo"
+              || { echo "  Issue creation FAILED for $repo"; echo "issue-create:$repo" >> /tmp/dispatch-failures.txt; }
           done
 
       - name: Dispatch governance_ripple to consumer repos
@@ -160,7 +160,7 @@ jobs:
               -f "client_payload[agent_files_changed]=${AGENT_FILES_CHANGED}" \
               -f "client_payload[commit_message]=${COMMIT_MESSAGE}" \
               && echo "  dispatched to $repo" \
-              || echo "  dispatch failed for $repo"
+              || { echo "  dispatch FAILED for $repo"; echo "ripple-dispatch:$repo" >> /tmp/dispatch-failures.txt; }
           done
 
       - name: Record layer-down dispatch
@@ -174,3 +174,21 @@ jobs:
             "$(jq -c '[.consumers[] | select(.enabled == true) | .repository]' "$GITHUB_WORKSPACE/governance/CONSUMER_REPO_REGISTRY.json")" \
             > ".agent-admin/ripple/layer-down-dispatch-${DATESTAMP}.json"
           echo "Dispatch recorded."
+
+      - name: Upload dispatch failure log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dispatch-failure-log-${{ github.run_number }}
+          path: /tmp/dispatch-failures.txt
+          if-no-files-found: ignore
+
+      - name: Fail job if any dispatches failed
+        if: always()
+        run: |
+          if [ -f /tmp/dispatch-failures.txt ] && [ -s /tmp/dispatch-failures.txt ]; then
+            echo "::error::One or more layer-down dispatch operations failed (see 'dispatch-failure-log-${{ github.run_number }}' artifact):"
+            cat /tmp/dispatch-failures.txt
+            exit 1
+          fi
+          echo "All layer-down dispatch operations completed successfully."
