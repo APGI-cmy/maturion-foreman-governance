@@ -64,6 +64,49 @@ Each entry follows this structure:
 
 ## Change History
 
+### [AAWP-V0.3.0-2026-03-01] - 2026-03-01 - NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-liaison-isms-agent (via governance-repo-administrator, copilot/update-aawp-to-v0-3-0)
+**Approved By**: CS2 (Johan Ras) — issue APGI-cmy/maturion-foreman-governance#1248, wave CL-0-D2
+**Effective Date**: 2026-03-01
+**Layer-Down Status**: NOT_REQUIRED — governance planning artefact; no layer-down ripple needed
+
+**Summary**: Updated `AIMC_AGENT_ASSIGNMENT_WAVE_PLAN.md` (AAWP) from v0.2.0 to v0.3.0.
+Records formal CS2 Wave 9 sign-off and adds a direct reference and cross-link to the AIMC +
+LKIAC Combined Execution Plan (`governance/EXECUTION/AIMC_LKIAC_COMBINED_EXECUTION_PLAN.md`
+v1.1.0). Explains the Combined Plan's precedence over the AAWP's standalone execution sequence
+for all CL-* waves. Resolves governance gap GOV-006.
+
+**Changes Made**:
+1. **(UPDATED)** `governance/aimc/AIMC_AGENT_ASSIGNMENT_WAVE_PLAN.md` v0.2.0 → v0.3.0:
+   - Version bumped to 0.3.0; Effective Date updated to 2026-03-01
+   - Status changed to `ACTIVE — Wave 9 CS2 sign-off recorded; Combined Execution Plan is authoritative`
+   - Combined Execution Plan reference added to frontmatter and §9 References
+   - v0.3.0 amendment paragraph added to §1 explaining Combined Plan precedence
+   - Wave 9 status updated from `PENDING` to `AUTHORIZED — CS2 sign-off recorded 2026-03-01`
+   - Wave 9 CS2 sign-off acceptance criterion marked `[x]` in §10
+   - v0.3.0 acceptance criteria block added to §10 (GOV-006 resolved)
+   - `governance-liaison-isms-agent` assigned as owner in footer
+   - Footer updated with v0.3.0 amendment trail
+
+**Affected Artifacts**:
+- `governance/aimc/AIMC_AGENT_ASSIGNMENT_WAVE_PLAN.md` (v0.2.0 → v0.3.0)
+
+**Migration Required**: NO
+**Migration Guidance**: N/A
+
+**Rationale**: Satisfies governance gap GOV-006. Required entry gate for all subsequent CL-*
+waves in the AIMC + LKIAC Combined Execution Plan. No wave beyond CL-0-D2 may begin until
+this AAWP amendment is merged and CS2 has signed off.
+
+**Impact**: Wave 9 execution now authorised. All builders and governance agents must reference
+the Combined Execution Plan for execution sequencing while treating the AAWP as authoritative
+for wave scope definitions and agent assignments.
+
+**References**: Issue APGI-cmy/maturion-foreman-governance#1248 (CL-0-D2)
+
+---
+
 ### [ZERO-TOLERANCE-FINDING-PROTOCOL-2026-02-27] - 2026-02-27 - NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator
