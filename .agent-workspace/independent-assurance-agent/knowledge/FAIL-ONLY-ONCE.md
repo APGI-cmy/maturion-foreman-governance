@@ -5,7 +5,7 @@
 **Seeded**: 2026-02-26
 **Last Updated**: 2026-03-01
 **Authority**: IAA Canon (INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0) | LIVING_AGENT_SYSTEM.md v6.2.0 | CS2 (Johan Ras)
-**Update Protocol**: After every breach RCA, the IAA appends a new rule + breach log entry. Never remove. Never skip.
+**Update Protocol**: After every breach RCA, the IAA appends a new rule + breach log entry to this registry (append-only; no deletions or gaps). Earlier registry formats/versions are preserved in version control / legacy registry files. Never remove. Never skip.
 **Preflight**: IAA reads this file in full and self-attests against every rule at every session start before any assurance work begins.
 **Policy**: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 
@@ -20,6 +20,33 @@
 ---
 
 ## Rules
+
+### Section A — Always-On Rules
+
+<!-- A-series rules (A-001 onward) are defined below. -->
+
+### Section B — Conditional Rules (Legacy / Deprecated)
+
+> **Status (2026-03-01)** — The IAA no longer maintains active B-series conditional rules.
+> All conditional/branching logic is now embedded directly into the A-series rules and the
+> PREHANDOVER / session-memory templates.
+>
+> - IDs `B-01`–`B-99` remain **reserved** and MUST NOT be reused for any new rules.
+> - When the IAA contract, templates, or historical artifacts reference a B-rule ID
+>   (for example, during Steps 3.2–3.5 of `.github/agents/independent-assurance-agent.md`
+>   or in a session-memory conditional-rule attestation), the agent MUST:
+>   1. Treat the B-ID as a **resolved legacy reference**, not a missing rule.
+>   2. Identify and apply the corresponding conditional checks as specified by the
+>      current A-series rules and PREHANDOVER templates.
+>   3. Record in the assurance log / PREHANDOVER notes which A-series rule(s) were
+>      used to satisfy the legacy B-rule reference.
+> - If no precise mapping exists, the agent MUST escalate the ambiguity as a finding
+>   and document the rationale for the chosen A-series mapping or deviation.
+>
+> The B-series is retained here solely to keep historical IDs resolvable and to avoid
+> breaking preflight/assurance procedures that still mention FAIL-ONLY-ONCE B-rules.
+
+---
 
 ### A-001 — IAA Invocation Evidence Must Be Present for All Agent Contract PRs
 
@@ -372,10 +399,10 @@ All updates to this file must be committed as part of the session bundle for tha
 
 | Version | Date | Change |
 |---------|------|--------|
-| 1.0.0 | 2026-02-26 | Initial seeding — IAA bootstrap (A-01 to A-10, B-01 to B-12, tabular format) |
-| 1.1.0 | 2026-02-27 | Added A-001 through A-006 in narrative format (ISMS-context rules) |
+| 1.0.0 | 2026-02-26 | Initial seeding — IAA bootstrap (A-01 to A-10, B-01 to B-12, tabular format; these legacy IDs were superseded by the A-001+ narrative series in v1.1.0; full legacy rule texts are preserved in the git history of this file prior to v1.1.0). |
+| 1.1.0 | 2026-02-27 | Added A-001 through A-006 in narrative format (ISMS-context rules; replaces legacy tabular A-01 to A-10, B-01 to B-12 identifiers). |
 | 1.2.0 | 2026-02-28 | Added A-015, A-016, A-017 (Tier 2 patch rule, cross-PR token reuse, REJECTION-as-PASS rule) |
-| 1.3.0 | 2026-03-01 | Fixed duplicate IDs: former A-016 (Trigger Table Misapplication) → A-018; former A-004 (Post-Merge Retrospective) → A-019. Added renumbering note and version history. Issue: APGI-cmy/maturion-foreman-governance#1252. |
+| 1.3.0 | 2026-03-01 | Fixed duplicate IDs: former A-016 (Trigger Table Misapplication) → A-018; former A-004 (Post-Merge Retrospective) → A-019. Added renumbering note and version history. Restored deprecated Section B notice for B-rule resolvability. Issue: APGI-cmy/maturion-foreman-governance#1252. |
 
 ---
 
