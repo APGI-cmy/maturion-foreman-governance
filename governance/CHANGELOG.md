@@ -104,6 +104,65 @@ the Combined Execution Plan for execution sequencing while treating the AAWP as 
 for wave scope definitions and agent assignments.
 
 **References**: Issue APGI-cmy/maturion-foreman-governance#1248 (CL-0-D2)
+### [GOVERNANCE-TOKEN-USAGE-ENFORCEMENT-2026-03-01] - 2026-03-01 - NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator  
+**Approved By**: CS2 (Johan Ras) — issue APGI-cmy/maturion-foreman-governance#[token-enforcement-issue]  
+**Effective Date**: 2026-03-01  
+**Layer-Down Status**: PUBLIC_API — Mandatory ripple to all consumer repositories
+
+**Summary**: Established universal enforcement of MATURION_BOT_TOKEN for write-capable workflows
+across all repos. Prohibits github.token / secrets.GITHUB_TOKEN for automated write operations.
+Adds merge gate enforcement job and lint script. Fixes existing violations in governance repo
+layer-up workflows and locked-section-protection-gate.
+
+**Changes Made**:
+1. **(NEW)** Created `governance/canon/GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md` v1.0.0 —
+   canonical policy with REQ-TU-001 through REQ-TU-005 defining prohibited token usage,
+   enforcement scope, and consumer repo obligations
+2. **(NEW)** Created `.github/scripts/validate-token-usage.sh` — enforcement script scanning
+   workflow files for prohibited GH_TOKEN / github.token patterns in write-capable positions
+3. **(UPDATED)** `.github/workflows/merge-gate-interface.yml` — added Job 5
+   `governance/token-usage-check` that runs validate-token-usage.sh on all PRs
+4. **(UPDATED)** `governance/GATE_REQUIREMENTS_INDEX.json` — added `governance_token_usage_gate`
+   enforcement gate entry
+5. **(UPDATED)** `governance/CANON_INVENTORY.json` v188 → v189 — added new entry for
+   `GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md`
+6. **(FIXED)** `.github/workflows/locked-section-protection-gate.yml` — replaced
+   `secrets.GITHUB_TOKEN` with `secrets.MATURION_BOT_TOKEN` (REQ-TU-002 violation)
+7. **(FIXED)** `.github/workflows/governance-layer-up-auto-triage.yml`,
+   `governance-layer-up-intake.yml`, `governance-layer-up-close-loop.yml` — removed
+   `|| github.token` fallback from all write-step GH_TOKEN assignments (REQ-TU-002 violation)
+8. **(UPDATED)** `GOVERNANCE_ARTIFACT_INVENTORY.md` — added entry for new canon file
+
+**Affected Artifacts**:
+- `governance/canon/GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md` (NEW — v1.0.0)
+- `.github/scripts/validate-token-usage.sh` (NEW)
+- `.github/workflows/merge-gate-interface.yml` (Job 5 added)
+- `governance/GATE_REQUIREMENTS_INDEX.json` (new gate entry)
+- `governance/CANON_INVENTORY.json` (total_canons: 188 → 189)
+- `.github/workflows/locked-section-protection-gate.yml` (GITHUB_TOKEN → MATURION_BOT_TOKEN)
+- `.github/workflows/governance-layer-up-auto-triage.yml` (|| github.token removed)
+- `.github/workflows/governance-layer-up-intake.yml` (|| github.token removed)
+- `.github/workflows/governance-layer-up-close-loop.yml` (|| github.token removed)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (new entry)
+
+**Migration Required**: YES  
+**Migration Guidance**: All consumer repositories must:
+1. Ensure `MATURION_BOT_TOKEN` secret is configured
+2. Replace any `github.token` / `secrets.GITHUB_TOKEN` in write steps with `secrets.MATURION_BOT_TOKEN`
+3. Remove `|| github.token` fallback from any GH_TOKEN assignments on write steps
+4. Add token identity evidence step to mutation jobs
+5. Deploy the enforcement workflow template when provided via layer-down issue
+
+**Rationale**: github.token has restricted scope causing CI failures in maturion-isms when
+attempting to push PRs, branches, or perform automated merges. Enforcement was missing despite
+REQ-SS-001 existing in GOVERNANCE_REPO_ADMINISTRATOR_REQUIREMENTS.md.
+
+**Impact**: All repositories using governance workflows; all workflow PRs are now gated.
+
+**References**: APGI-cmy/maturion-foreman-governance issue (token enforcement),
+governance/reports/ripple-malfunction-investigation-2026-02-14.md
 
 ---
 
