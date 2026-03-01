@@ -43,6 +43,9 @@ jobs:
             ["governance-improvement"]="e4e669|Governance improvement proposal for canonical governance"
             ["layer-up-intake"]="d93f0b|Layer-up issue received and being processed by governance-repo-administrator"
             ["layer-up-resolved"]="0e8a16|Layer-up resolved; layer-down close-loop dispatched to originating repo"
+            ["layer-up-awaiting-triage"]="e99695|Layer-up awaiting manual triage by governance-repo-administrator"
+            ["layer-up-canonization-candidate"]="0075ca|Layer-up approved as additive; canonization candidate branch/PR ready"
+            ["layer-up-conflict-escalation"]="b60205|Layer-up with conflict signals escalated for CS2 reconciliation"
           )
           for LABEL_NAME in "${!LABELS[@]}"; do
             IFS='|' read -r COLOR DESCRIPTION <<< "${LABELS[$LABEL_NAME]}"
@@ -111,14 +114,15 @@ jobs:
 
           echo "Parsed reference: repo=$ORIGIN_REPO issue=#$ORIGIN_ISSUE"
 
-      - name: Add layer-up-intake label
+      - name: Add layer-up-intake and awaiting-triage labels; assign governance-repo-admin
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN || github.token }}
         run: |
           gh issue edit "${{ needs.check-layer-up.outputs.issue_number }}" \
             --repo "${{ github.repository }}" \
-            --add-label "layer-up-intake" 2>/dev/null \
-            || echo "Could not add layer-up-intake label (may already exist or missing)"
+            --add-label "layer-up-intake,layer-up-awaiting-triage" \
+            --add-assignee "APGI-cmy" 2>/dev/null \
+            || echo "Could not add labels/assignee (may already exist or missing)"
 
       - name: Post acknowledgment and routing comment
         env:
@@ -161,6 +165,13 @@ Per **GOVERNANCE_LAYER_UP_PROTOCOL.md v1.0.0, Section 5.3 (CS2 Review)**:
    - For local extensions: open a canonization candidate PR per Section 5.2
    - For manual layer-ups: log in governance CHANGELOG and take action per LAYER_UP_PROTOCOL.md
 5. **Close this issue** once governance action is complete — the close-loop workflow will automatically notify the originating repo
+
+> **HITL Auto-Triage**: An authorized maintainer (CS2) may post one of the following case-insensitive approval phrases as a comment on this issue to trigger automated canonization:
+> - \`Layer up approved\`
+> - \`Layer-up approved\`
+> - \`Auto layer up approved\`
+>
+> The \`governance-layer-up-auto-triage\` workflow will evaluate the improvement for conflict/additivity and open a canonization candidate PR.
 
 > When this issue is **closed**, the \`governance-layer-up-close-loop\` workflow will dispatch a layer-down
 > notification back to the originating repo, completing the full round-trip.

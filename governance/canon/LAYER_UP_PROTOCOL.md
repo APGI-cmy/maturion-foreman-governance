@@ -366,6 +366,91 @@ Layer-up MUST be initiated when:
    - All applications benefit from learning
    - Ripple log shows complete bidirectional flow
 
+### Phase 6: HITL Close-Loop Automation (Governance Repository)
+
+**Who**: Authorized maintainer or CS2 (HITL), then `governance-layer-up-auto-triage` workflow  
+**When**: After Phase 2 intake; anytime before Phase 3 manual analysis begins  
+**Where**: Governance repository — issue comment
+
+**Purpose**: Accelerate canonical close-loop for straightforward, additive layer-up improvements
+that do not require deep CS2 analysis, via a Human-In-The-Loop approval comment.
+
+#### 6.1 HITL Approval Phrase
+
+An authorized principal (CS2 or designated maintainer) posts **any** of the following phrases
+as a comment on the governance-repo layer-up issue (case-insensitive):
+
+- `Layer up approved`
+- `Layer-up approved`
+- `Auto layer up approved`
+
+#### 6.2 Authorization Requirements
+
+Only the following GitHub actors are authorized to trigger HITL auto-triage:
+
+- **APGI-cmy** (repository owner / CS2)
+- **johanras** (CS2)
+- **maturion-bot** (automation principal)
+
+Approval phrases posted by unauthorized actors are rejected with a notice; the issue remains
+open for manual triage.
+
+#### 6.3 Conflict vs. Additivity Evaluation
+
+Upon receiving an authorized HITL approval, the `governance-layer-up-auto-triage` workflow
+evaluates the governance delta in the issue body for conflict signals:
+
+| Signal | Evaluation | Action |
+|--------|-----------|--------|
+| No `Breaking Change: YES`, no conflict language | **ADDITIVE** | Open canonization candidate PR (Draft) |
+| `Breaking Change: YES` present | **CONFLICTING** | Add `layer-up-conflict-escalation` label, escalate to CS2 |
+| Conflict/incompatibility language in body | **CONFLICTING** | Add `layer-up-conflict-escalation` label, escalate to CS2 |
+
+#### 6.4 Additive Path — Canonization Candidate PR
+
+When the improvement is assessed as ADDITIVE:
+
+1. Workflow creates branch `canonization/layer-up-<issue>-<date>` from `main`
+2. Workflow creates a tracking file at `.agent-admin/governance/layer-up-canonization/canonization-<issue>-<date>.md`
+3. Workflow opens a **Draft PR** titled `[Canonization Candidate] Layer-Up #<N> — <title>`
+4. Issue is labeled `layer-up-canonization-candidate`
+5. **governance-repo-administrator** must apply the actual canon file changes in the PR
+6. **CS2 must review and approve** the canonization candidate PR per GOVERNANCE_LAYER_UP_PROTOCOL.md §5.3
+7. After CS2 merges, close layer-up issue #N to trigger the close-loop dispatch (Phase 5)
+
+#### 6.5 Conflicting Path — CS2 Escalation
+
+When conflict signals are detected:
+
+1. Issue is labeled `layer-up-conflict-escalation`
+2. A comment explains the conflict signals found
+3. CS2 must review and reconcile the conflict
+4. After reconciliation, CS2 may re-post `Layer up approved` to trigger the additive path
+5. If irreconcilable, CS2 closes with `not_planned`
+
+#### 6.6 Manual Triage Fallback
+
+When no HITL approval is present (either on intake or on any subsequent comment that is
+not an approval phrase):
+
+- The `layer-up-awaiting-triage` label is applied automatically on intake
+- The issue is assigned to `APGI-cmy` (governance-repo-admin) for manual triage
+- Manual triage follows the standard Phase 2–5 process above
+
+#### 6.7 Automation Operations Log
+
+All HITL auto-triage operations are logged in the GitHub Actions step summary for the
+`governance-layer-up-auto-triage` workflow run, including:
+
+- Issue number and HITL approval actor
+- Conflict/additivity assessment result
+- Canonization candidate PR URL (if created)
+- Escalation label (if added)
+- Timestamp of all actions
+
+**Workflow**: `.github/workflows/governance-layer-up-auto-triage.yml`
+**Authority**: LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.1.0, Section 13
+
 ---
 
 ## 7. Integration with Governance Ripple
@@ -587,6 +672,22 @@ All layer-up evidence MUST be preserved:
 - **GOVERNANCE_RIPPLE_CHECKLIST_PROTOCOL.md**: Systematic ripple execution
 - **STOP_AND_FIX_DOCTRINE.md**: Immediate remediation mandate
 - **MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md**: Enhancement capture
+- **GOVERNANCE_LAYER_UP_PROTOCOL.md**: Automated layer-up for local extensions (complement)
+- **LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.1.0**: HITL approval automation strategy
+
+## 13. HITL Close-Loop Automation Summary
+
+| Component | Detail |
+|-----------|--------|
+| **Trigger** | Issue comment on a `layer-up` + `governance-improvement` issue |
+| **Approval phrase** | `Layer up approved` (case-insensitive variants accepted) |
+| **Authorized actors** | APGI-cmy, johanras, maturion-bot |
+| **Additive result** | Draft canonization candidate PR opened automatically |
+| **Conflicting result** | `layer-up-conflict-escalation` label + CS2 escalation comment |
+| **No-approval fallback** | `layer-up-awaiting-triage` label + assignee APGI-cmy |
+| **Ops log** | GitHub Actions step summary for each run |
+| **Workflow file** | `.github/workflows/governance-layer-up-auto-triage.yml` |
+| **Doc reference** | Section 6 Phase 6 (above) |
 
 ---
 
@@ -673,8 +774,9 @@ Title: [Layer-Up] <Brief Description>
 
 ---
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Created**: 2026-02-09  
+**Updated**: 2026-03-01 — Added Section 6 Phase 6 (HITL Close-Loop Automation), Section 13  
 **Authority**: GOVERNANCE_RIPPLE_MODEL.md, Living Agent System v5.0.0, Issue #1047  
 **Owner**: governance-repo-administrator  
 **Purpose**: Enable bidirectional governance evolution through structured layer-up protocol
