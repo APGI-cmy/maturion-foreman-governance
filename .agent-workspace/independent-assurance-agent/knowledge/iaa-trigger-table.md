@@ -1,73 +1,77 @@
-# IAA Trigger Table — Tier-2 Operational Knowledge
-**Agent**: independent-assurance-agent  
-**Version**: 1.0.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
-**Seeded**: 2026-03-02  
-**Purpose**: Operational trigger table for IAA assurance sessions. Load this at session start alongside the core invariants checklist. This file is the canonical operational form of the trigger table defined in `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md §Trigger Table`.
+# IAA Trigger Table
+
+**Agent**: independent-assurance-agent
+**Version**: 2.1.0
+**Status**: ACTIVE
+**Last Updated**: 2026-03-02
+**Authority**: CS2 (Johan Ras / @APGI-cmy)
 
 ---
 
-## How to Use This Table
+## Purpose
 
-At every assurance invocation (Phase 2, Step 2.3):
-1. Load this table as Tier-2 knowledge (do NOT rely solely on memory)
-2. Classify the incoming PR by matching its characteristics against the trigger conditions
-3. Determine: IAA Required (YES/NO) and which overlays (A–G) apply
-4. Record your classification in the session artifact
-5. Apply **Ambiguity Rule** (A-003): if category is unclear, default is MANDATORY INVOCATION
+This table defines when IAA activates and when it is exempt for a given PR.
+IAA uses this table in Phase 2 Step 2.3 for PR category classification.
+
+**AMBIGUITY RULE**: If classification is unclear, IAA IS required (FAIL-ONLY-ONCE A-003).
+Default: MANDATORY INVOCATION when in doubt.
 
 ---
 
 ## Trigger Table
 
-| PR Category | IAA Required | Trigger Condition | Applicable Overlays |
-|-------------|-------------|-------------------|---------------------|
-| AAWP_MAT | YES | PR labelled `aawp-deliverable` or `mat-deliverable`, or files match AAWP/MAT path patterns | C, F |
-| AGENT_CONTRACT | YES | Changes to `.github/agents/`, `governance/contracts/`, or any `*-agent-contract.md` file | B, G, F |
-| CANON_GOVERNANCE | YES | Changes to `governance/canon/` or `governance/CANON_INVENTORY.json` | A, F |
-| AGENT_INTEGRITY | YES | Changes to `governance/quality/agent-integrity/` | B, G, F |
-| CI_WORKFLOW | YES | Changes to `.github/workflows/` or `.github/scripts/` | D, F |
-| ARCHITECTURE | YES | Changes to files matching `*ARCHITECTURE*.md` or `*STRATEGY*.md` in governance | A, F |
-| DOCS_ONLY | NO | Only `*.md` files outside `governance/canon/`; no agent, workflow, or canon changes | E (if triggered) |
-| PARKING_STATION | NO | PR labelled `parking-station` | — |
-| ADMIN | NO | PR labelled `admin` or `housekeeping` | — |
+| PR Category | IAA Required? | Trigger Condition | Notes |
+|-------------|---------------|------------------|-------|
+| AGENT_CONTRACT | YES — MANDATORY | Any `.github/agents/*.md` file created or modified; any `governance/agents/` or `governance/contracts/` file created or modified; any `*-agent-contract.md` file | All agent classes. No exceptions. FAIL-ONLY-ONCE A-002. This includes Foreman, Builder, Overseer, Specialist, and Assurance (IAA self-review → escalate to CS2). |
+| CANON_GOVERNANCE | YES — MANDATORY | Any `governance/canon/` file created or modified; any `governance/CANON_INVENTORY.json` update; any file matching `*ARCHITECTURE*.md` or `*STRATEGY*.md` in governance | Includes CANON_INVENTORY.json updates. Version bump must be present. |
+| CI_WORKFLOW | YES — MANDATORY | Any `.github/workflows/` file created or modified | Includes merge gate workflow, ripple sync workflow, and all governance automation workflows. |
+| AAWP_MAT | YES — MANDATORY | PR labelled `aawp-deliverable` or `mat-deliverable`; files match AAWP/MAT path patterns (`modules/mat/`, `packages/ai-centre/`, AAWP architecture files) | Evidence bundle completeness required. |
+| AGENT_INTEGRITY | YES — MANDATORY | Any `governance/quality/agent-integrity/` file created or modified | CS2-only update authority. Any non-CS2 modification → auto-REJECTION-PACKAGE. |
+| KNOWLEDGE_GOVERNANCE | YES — MANDATORY | Any `.agent-workspace/*/knowledge/` file created or modified; any Tier 2 knowledge index, overlay, trigger table, checklist, or FAIL-ONLY-ONCE registry updated | Covers all IAA and agent Tier 2 knowledge patches. Evidence bundle + PREHANDOVER ceremony required (FAIL-ONLY-ONCE A-015). |
+| MIXED | YES — MANDATORY | PR contains both triggering and non-triggering artifacts | Ambiguity rule applies. Any triggering artifact activates IAA for the whole PR. |
+| EXEMPT | NO — if unambiguously non-triggering | Pure doc-only changes outside governance/canon; parking station updates (labelled `parking-station`); session memory files only; README changes with no agent/governance/CI content; admin/housekeeping (labelled `admin` or `housekeeping`) | Must be unambiguously non-triggering. If any doubt → apply AMBIGUITY RULE. |
+| AMBIGUOUS | YES — MANDATORY | Classification unclear; mixed signals; trigger table file is missing | FAIL-ONLY-ONCE A-003: ambiguity resolves to mandatory invocation. |
 
 ---
 
-## Ambiguity Resolution (A-003)
+## Class-Based Exemption Prohibition
 
-When the PR category cannot be unambiguously determined from the table above:
+No agent class is exempt from the AGENT_CONTRACT trigger. Specifically:
+- **Foreman class**: NOT exempt. Double-layer QA is constitutional. Authority: maturion-isms#523, #528, #531.
+- **Builder class**: NOT exempt.
+- **Overseer class**: NOT exempt (CodexAdvisor, maturion-agent).
+- **Specialist class**: NOT exempt.
+- **Assurance class (IAA itself)**: IAA cannot self-review. If IAA contract changes → escalate to CS2.
 
-1. **Mixed PRs**: If a PR touches files from multiple categories, apply IAA for ALL triggering categories found. Use ALL applicable overlays.
-2. **Unclear category**: Default to MANDATORY INVOCATION. Record the ambiguity in session memory.
-3. **Self-assessed NOT_REQUIRED**: The producing agent may NOT self-assess IAA as NOT_REQUIRED for AGENT_CONTRACT, CANON_GOVERNANCE, CI_WORKFLOW, or AGENT_INTEGRITY categories. Only the IAA may determine EXEMPT. See A-018.
-4. **Missing trigger table**: If this file is missing, apply A-003 directly — MANDATORY INVOCATION until table is restored.
-
----
-
-## Category Definitions
-
-| Category | Defining Characteristics |
-|----------|--------------------------|
-| AAWP_MAT | Labelled `aawp-deliverable` or `mat-deliverable`; AAWP/MAT path files |
-| AGENT_CONTRACT | Any file under `.github/agents/` or `governance/contracts/` |
-| CANON_GOVERNANCE | Any file under `governance/canon/`; `governance/CANON_INVENTORY.json` |
-| AGENT_INTEGRITY | Any file under `governance/quality/agent-integrity/` |
-| CI_WORKFLOW | Any file under `.github/workflows/` or `.github/scripts/` |
-| ARCHITECTURE | Files matching `*ARCHITECTURE*.md`, `*STRATEGY*.md` in governance paths |
-| DOCS_ONLY | Only `*.md` outside triggering paths; no code, workflow, or agent changes |
-| PARKING_STATION | Labelled `parking-station` exclusively |
-| ADMIN | Labelled `admin` or `housekeeping` exclusively |
+Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A-002.
 
 ---
 
-## FAIL-ONLY-ONCE Rules for Trigger Evaluation
+## Classification Decision Flow
 
-| Rule | Summary |
-|------|---------|
-| A-002 | IAA is mandatory for ALL agent contract classes — no class-based exceptions |
-| A-003 | Ambiguity resolves to mandatory invocation |
-| A-018 | Trigger table misapplication (self-assessed NOT_REQUIRED for triggering category) = IAA bypass |
+```
+1. Does PR contain any .github/agents/ or governance/agents/ changes?
+   → YES: Category = AGENT_CONTRACT. IAA = MANDATORY.
+
+2. Does PR contain any governance/canon/ or CANON_INVENTORY.json changes?
+   → YES: Category = CANON_GOVERNANCE. IAA = MANDATORY.
+
+3. Does PR contain any .github/workflows/ changes?
+   → YES: Category = CI_WORKFLOW. IAA = MANDATORY.
+
+4. Does PR contain AAWP/MAT deliverable artifacts?
+   → YES: Category = AAWP_MAT. IAA = MANDATORY.
+
+5. Does PR contain governance/quality/agent-integrity/ changes?
+   → YES: Category = AGENT_INTEGRITY. IAA = MANDATORY.
+
+6. Does PR contain any .agent-workspace/*/knowledge/ file changes?
+   → YES: Category = KNOWLEDGE_GOVERNANCE. IAA = MANDATORY.
+
+7. Is the PR clearly and unambiguously doc-only, parking-station, or admin?
+   → YES: Category = EXEMPT. IAA = NOT REQUIRED.
+   → UNCERTAIN: Apply AMBIGUITY RULE → Category = AMBIGUOUS. IAA = MANDATORY.
+```
 
 ---
 
@@ -75,8 +79,10 @@ When the PR category cannot be unambiguously determined from the table above:
 
 | Version | Date | Change |
 |---------|------|--------|
-| 1.0.0 | 2026-03-02 | Initial creation — extracted from IAA Canon trigger table for Tier-2 operational use. Added mixed-PR handling, ambiguity resolution, FAIL-ONLY-ONCE cross-references, and overlay mapping. Issue: APGI-cmy/maturion-foreman-governance#1257 (GOV-IAA upgrade to v2.0.0). |
+| 1.0.0 | 2026-02-25 | Initial STUB (placeholder from canon) |
+| 2.0.0 | 2026-02-28 | Fully populated from INDEPENDENT_ASSURANCE_AGENT_CANON.md; AGENT_INTEGRITY category added; classification decision flow added; STUB status removed |
+| 2.1.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE trigger category added; classification decision flow updated with step 6 for knowledge governance path (maturion-isms#IAA-TIER2) |
 
 ---
 
-*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0 | CS2 (Johan Ras)*
+**Authority**: CS2 (Johan Ras) | **Living Agent System**: v6.2.0

@@ -1,168 +1,113 @@
-# IAA Category Overlays — Tier-2 Operational Knowledge
-**Agent**: independent-assurance-agent  
-**Version**: 1.3.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.2.0 — Test & Assertion Quality overlay subsection added) | Updated: 2026-03-02 (v1.3.0 — OVD-005/OVL-CI-004 added to Overlay D; new Overlay G — Agent Integrity Deep Checks per ISMS v2.0.0 parity; issue APGI-cmy/maturion-foreman-governance#1257)  
-**Purpose**: Category-specific evaluation overlays for IAA assurance sessions. Overlays refine the core invariant checklist with delivery-type-specific checks. Load alongside `iaa-core-invariants-checklist.md`.
+# IAA Category Overlays
+
+**Agent**: independent-assurance-agent
+**Version**: 2.2.0
+**Status**: ACTIVE
+**Last Updated**: 2026-03-02
+**Authority**: CS2 (Johan Ras / @APGI-cmy)
 
 ---
 
-## How to Use Overlays
+## Purpose
 
-1. Identify the PR category from the Tier-2 trigger table (`.agent-workspace/independent-assurance-agent/knowledge/iaa-trigger-table.md`)
-2. Load the matching overlay(s) for this delivery type
-3. Run overlay checks IN ADDITION TO the core invariants checklist
-4. Record overlay findings in the Phase 5 assurance invocation artifact
+This file defines per-category additional checks that supplement the core invariants checklist.
+IAA loads the overlay for the classified PR category in Phase 2 Step 2.4.
 
-Multiple overlays may apply to a single PR (e.g., a canon update that also modifies an agent contract).
-
----
-
-## OVERLAY A — Canon / Governance PR Overlay
-
-**Applies when**: PR touches `governance/canon/`, `governance/CANON_INVENTORY.json`, or `governance/CHANGELOG.md`
-
-### A.1 Canon Change Quality Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| OVA-001 | Governance proof cites the specific canon file(s) being changed with pre-change and post-change version | Both pre- and post-version numbers cited | Missing version change documentation |
-| OVA-002 | CANON_INVENTORY.json updated with correct SHA256 (64-char hex, not placeholder) | New hash is 64 hex chars; matches `sha256sum` output of the file | Placeholder, truncated, or absent hash |
-| OVA-003 | CHANGELOG.md entry added with change ID, date, type, and rationale | Entry present at top of Change History; follows format `[CHANGE-ID] - YYYY-MM-DD` | Absent or malformed CHANGELOG entry |
-| OVA-004 | Constitutional canon changes (LIVING_AGENT_SYSTEM.md, AGENT_CONTRACT_ARCHITECTURE.md) cite CS2 approval | PR description or governance proof links CS2 issue/approval | Constitutional canon changed without CS2 reference |
-| OVA-005 | Layer-down ripple assessment completed | Working or governance proof states: "Ripple required: YES/NO" with consumer repo list if YES | Ripple assessment absent |
-| **OVA-006** | **Ripple log or tracking entry created atomically with the PR (per REQ-RA-003)** | `.agent-admin/governance/ripple-logs/` or equivalent tracking artifact present if ripple required | **No ripple log despite YES ripple assessment — recurring shortfall: ripple noted but not tracked** |
-| **OVA-007** | **Pre-canon-change layer-up scan performed for drift/pending issues (per REQ-RA-005)** | Working proof or session notes indicate a layer-up scan was run before making the canon change | **Layer-up scan absent — recurring shortfall: canon changes made without checking for pending consumer drift** |
+Core invariants (CORE-001 to CORE-020) apply to ALL categories.
+Overlay checks are ADDITIONAL checks specific to each category.
 
 ---
 
-## OVERLAY B — Agent Contract / Agent File PR Overlay
+## AGENT_CONTRACT Overlay
 
-**Applies when**: PR touches `.github/agents/`, `governance/quality/agent-integrity/`, or any `*-agent-contract.md` file
+Applied when PR category is `AGENT_CONTRACT`.
 
-### B.1 Agent Contract Change Quality Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| OVB-001 | CS2 authorization documented | PR description or governance proof contains explicit CS2 issue number authorizing the change | No CS2 reference |
-| OVB-002 | CodexAdvisor involvement confirmed (per AGCFPP-001) | PR references CodexAdvisor review or CodexAdvisor submitted the PR | No CodexAdvisor involvement |
-| OVB-003 | INTEGRITY_INDEX.md updated with new baseline SHA256 | `governance/quality/agent-integrity/INTEGRITY_INDEX.md` contains updated hash and "Updated By: CS2" | INTEGRITY_INDEX not updated |
-| OVB-004 | Reference copy in `governance/quality/agent-integrity/` updated | Reference copy file hash matches updated `.github/agents/` file | Reference copy diverges from live file |
-| OVB-005 | Agent contract includes FAIL-ONLY-ONCE preflight attestation section (Phase 1) | Agent file Phase 1 contains explicit FAIL-ONLY-ONCE attestation requirement | Missing FAIL-ONLY-ONCE section |
-| OVB-006 | Agent workspace `knowledge/FAIL-ONLY-ONCE.md` exists for the agent | File at `.agent-workspace/<agent>/knowledge/FAIL-ONLY-ONCE.md` exists | FAIL-ONLY-ONCE registry missing |
-| **OVB-007** | **Agent contract file change does not accidentally reduce gate parity check requirements (§4.3 of AGENT_HANDOVER_AUTOMATION.md)** | Phase 4 of modified agent contract still requires all three standard gate checks: merge-gate/verdict, governance/alignment, stop-and-fix/enforcement | **Gate parity check silently removed — recurring shortfall: contract edits inadvertently drop blocking gate requirement** |
-
----
-
-## OVERLAY C — Build / Application Deliverable PR Overlay
-
-**Applies when**: PR is labelled `aawp-deliverable` or `mat-deliverable`, or touches application code
-
-### C.1 Build Deliverable Quality Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| OVC-001 | Wave traceability: parent wave issue cited | Handover or working proof contains wave issue number and wave ID | No wave reference |
-| OVC-002 | All acceptance criteria addressed | Working proof maps each acceptance criterion to a delivered artifact or change | Acceptance criteria items unaddressed |
-| OVC-003 | CI pipeline GREEN at handover | Handover proof references CI run result (URL or job status) confirming pass | CI result absent or shows failures |
-| OVC-004 | Test coverage delta documented (if tests added or removed) | Working proof notes test coverage impact | Test delta undocumented for changes affecting test files |
-| OVC-005 | No test skips or xfails introduced without explicit justification | Handover proof or working proof addresses any skipped/disabled tests | Silent test suppression |
-| **OVC-006** | **YAML frontmatter compliance verified (per BUILDER_AGENT_YAML_FRONTMATTER_COMPLIANCE_SPEC.md)** | For builder agents: YAML frontmatter fields present and compliant | **YAML frontmatter missing or non-compliant — recurring shortfall: builders omit or abbreviate required metadata** |
-| **OVC-007** | **Build effectiveness standard satisfied (per BUILD_EFFECTIVENESS_STANDARD.md)** | Deliverable meets the functional, testable, and deployable standard | **Partially functional deliverable submitted without acknowledgement — recurring shortfall: incomplete builds merged** |
-| **OVC-008** | **Wave closure artifact or wave completion certification exists (per MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md)** | Wave closure certificate present in `.agent-admin/` or equivalent | **Wave completed without closure artifact — recurring shortfall: wave outcomes not formally recorded** |
-
-### C.2 Test & Assertion Quality Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| **OVC-009** | **No provider/model string assertions unless the ticket explicitly requires it** | Test assertions do not hard-code provider names (e.g. `"gpt-4"`, `"claude-3"`, `"openai"`) unless the relevant ticket acceptance criterion explicitly mandates provider-specific verification | Test contains a provider or model string literal that is not justified by a ticket requirement |
-| **OVC-010** | **Tests assert capability routing, not model routing** | Test assertions verify that the correct capability (function/skill) is invoked; model-identity assertions are absent or explicitly justified | Test checks which model handled the request rather than whether the correct capability was exercised |
-| **OVC-011** | **Snapshot updates include rationale and scope documentation** | Any snapshot update commit or PR contains an explanation of why the snapshot changed and which components are affected | Snapshot updated with no rationale (e.g. silent `--updateSnapshot` without description) |
-| **OVC-012** | **Mock contracts match the current adapter response schema** | Mocked response objects in tests reflect the live adapter/API response shape; fields added or removed in the adapter are reflected in mocks | Mock response diverges from the actual adapter schema documented in the working proof or code |
-| **OVC-013** | **Negative-path tests exist for every new error-handling branch** | For each new `catch`, error guard, or fallback path introduced in the PR, at least one test exercises that branch with an invalid/error input | New error-handling code has no corresponding negative-path test |
+| Check ID | Check Name | Description |
+|----------|-----------|-------------|
+| OVL-AC-001 | AGCFPP-001 policy reference | governance.policy_refs includes AGCFPP-001 with canonical path `governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md` and name `Agent Contract File Protection Policy` |
+| OVL-AC-002 | IAA oversight block | iaa_oversight block present (for foreman/builder class agents) OR policy_refs confirms IAA authority |
+| OVL-AC-003 | Four-phase canonical structure | All four phases complete with mandatory evidence output declarations |
+| OVL-AC-004 | Self-modification prohibition | CONSTITUTIONAL enforcement on SELF-MOD prohibition |
+| OVL-AC-005 | No Tier 2 content embedded | No Tier 2 content inlined in the contract body |
+| OVL-AC-006 | PREHANDOVER proof in bundle | PR bundle contains PREHANDOVER proof artifact |
+| OVL-AC-007 | Session memory in bundle | PR bundle contains session memory artifact |
+| OVL-AC-008 | Tier 2 stub present | `.agent-workspace/<agent>/knowledge/index.md` exists |
+| OVL-AC-009 | Character count within limit | Contract body is under 30,000 characters |
+| OVL-AC-010 | No hardcoded version strings | Phase body reads identity from YAML, not hardcoded strings |
+| OVL-AC-011 | Agent file drift check | PREHANDOVER must include before/after character count for every modified agent contract file. If SHA256 hash comparison is available (e.g., from git diff or CANON_INVENTORY), before/after hashes must also be stated. |
+| OVL-AC-012 | Ripple/cross-agent assessment | If the agent contract change triggers governance ripple requirements for other agents (e.g., shared Tier 2 references, cascading policy updates), PREHANDOVER proof must list all affected agents and whether ripple has been initiated or flagged. "No ripple required" is acceptable only when explicitly stated with justification. |
 
 ---
 
-## OVERLAY D — Merge Gate Workflow PR Overlay
+## CANON_GOVERNANCE Overlay
 
-**Applies when**: PR touches `.github/workflows/merge-gate-interface.yml` or any merge-gate-related workflow
+Applied when PR category is `CANON_GOVERNANCE`.
 
-### D.1 Merge Gate Workflow Quality Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| OVD-001 | All three standard gate contexts still present: merge-gate/verdict, governance/alignment, stop-and-fix/enforcement | Workflow YAML contains all three job names unchanged | Any standard gate context renamed or removed |
-| OVD-002 | iaa-assurance-check job still enforces ASSURANCE-TOKEN verification | Workflow YAML contains `iaa-assurance-check` with token validation logic | iaa-assurance-check missing or bypassed |
-| OVD-003 | No `continue-on-error: true` added to blocking gates | Workflow YAML gates do not use `continue-on-error` on blocking steps | Blocking gate made non-blocking |
-| OVD-004 | Branch protection requirements unchanged or updated per CS2 instruction | PR description addresses branch protection context for the workflow change | Branch protection impact unaddressed |
-| **OVD-005 (OVL-CI-004)** | **CI workflow change does not remove or downgrade the `iaa-assurance-check` ASSURANCE-TOKEN verification step** | `iaa-assurance-check` job logic verifies the exact ASSURANCE-TOKEN pattern from `.agent-admin/assurance/assurance-token-<PR#>.md`; any weakening of this check (e.g., changed to advisory, token pattern broadened, check removed) = FAIL | **ASSURANCE-TOKEN check silently weakened in CI workflow — recurring shortfall: workflow edits reduce IAA enforcement without notice** |
-
----
-
-## OVERLAY E — Session Memory / Governance Documentation PR Overlay
-
-**Applies when**: PR primarily updates session memories, governance documentation, or agent workspace files
-
-### E.1 Governance Documentation Quality Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| OVE-001 | Session memory follows the canonical template from `session-memory-template.md` | All required sections present: Task, What I Did, Decisions, Evidence, Ripple Status, Outcome, Lessons | Missing required sections |
-| OVE-002 | Session memory does not contain blank "Lessons" or "Improvement Suggestions" sections | At least one concrete lesson per section | Blank lessons section |
-| **OVE-003** | **Session memory explicitly states FAIL-ONLY-ONCE attestation result (per FAIL-ONLY-ONCE.md requirement)** | Memory file contains "FAIL-ONLY-ONCE: Attested — [result]" or equivalent | **FAIL-ONLY-ONCE attestation result absent from session memory — recurring shortfall: attestation done but not recorded** |
-| **OVE-004** | **Session memory explicitly calls out any recurring shortfall detected and whether it was promoted** | If a pattern was seen twice, memory contains "Recurring shortfall: [X] — [promoted/flagged for promotion]" | **Recurring shortfall observed but promotion not tracked — recurring shortfall: patterns noted informally, not formally promoted** |
-| OVE-005 | Governance documentation PRs have a prehandover proof even if lightweight | Handover proof exists (may be a short PR comment for docs-only PRs that are exempt from IAA) | Major governance docs PR submitted without any handover artifact |
+| Check ID | Check Name | Description |
+|----------|-----------|-------------|
+| OVL-CG-001 | CANON_INVENTORY updated | Changes reflected in CANON_INVENTORY.json with new hashes |
+| OVL-CG-002 | No placeholder hashes | No `null`, `""`, `000000`, or truncated hash values |
+| OVL-CG-003 | Version bump present | Updated document has bumped version number |
+| OVL-CG-004 | Ripple impact assessed | Any impacted agents are flagged for governance ripple update |
+| OVL-CG-005 | Drift/integrity hash check | PREHANDOVER must include for each modified canon file: either (a) SHA256 hash before and after the change, or (b) a git diff excerpt or summary confirming the exact scope of change. Missing or absent drift evidence = REJECTION-PACKAGE. |
+| OVL-CG-006 | CANON_INVENTORY hash update confirmed | Every canon file modified in this PR must have its `file_hash_sha256` field updated in `governance/CANON_INVENTORY.json` to reflect the new file state. Stale or unchanged hashes for modified files = REJECTION-PACKAGE. |
 
 ---
 
-## OVERLAY F — Learning Loop & Self-Improvement Overlay
+## CI_WORKFLOW Overlay
 
-**Applies when**: IAA session is closing; OR when a PR is submitted to update Tier-2 IAA knowledge files
+Applied when PR category is `CI_WORKFLOW`.
 
-*This overlay was added in v1.1.0 as a direct result of the IAA self-improvement initiative.*
-
-### F.1 Learning Loop Enforcement Checks
-
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| **OVF-001** | **IAA session ends with an explicit learning integration step** | Session memory contains "Learning Loop" or "Improvement Suggestions" section with ≥1 concrete, actionable item | No learning integration at session close |
-| **OVF-002** | **Recurring shortfalls detected across ≥2 assurance sessions are promoted to FAIL-ONLY-ONCE.md** | FAIL-ONLY-ONCE.md contains an entry for any shortfall observed in ≥2 sessions | Recurring shortfall not promoted after second observation |
-| **OVF-003** | **Recurring shortfalls detected across ≥3 assurance sessions are escalated for Tier-3 canon review** | Escalation note created for CS2 in `escalation-inbox/` when a shortfall recurs 3+ times | Three-peat shortfall not escalated to governance |
-| **OVF-004** | **New Tier-2 invariant or overlay additions follow the versioned PR process** | Tier-2 file version is bumped, change is committed via PR (not direct push), change is described in session memory | Tier-2 knowledge updated without version bump or evidence |
-| **OVF-005** | **Improvement suggestions from previous session are reviewed at start of next session** | Session memory references whether prior session's improvement suggestions were actioned or deferred | No review of prior improvement suggestions at session start |
-
-### F.2 Self-Improvement Feedback Loop
-
-The following table tracks the categories of recurring improvement suggestions that have been observed. Update this table when a new category is identified.
-
-| Category | First Observed | Times Seen | Tier-2 Status | Tier-3 Candidate? |
-|----------|---------------|------------|---------------|-------------------|
-| Missing merge gate parity check at handover | 2026-02-24 (session bootstrap) | Systemic | ✅ INV-405 added | Consider Tier-3 |
-| Blank or generic session memory lessons | 2026-02-24 (session bootstrap) | Systemic | ✅ INV-602 added | No — Tier-2 sufficient |
-| Ripple assessment absent from governance PRs | 2026-02-24 (session bootstrap) | Systemic | ✅ OVA-005, OVA-006 added | Consider Tier-3 |
-| Inline improvement suggestions (POLC violation) | 2026-02-24 (session bootstrap) | Systemic | ✅ INV-404, A-09 FAIL-ONLY-ONCE | Tier-3 via existing POLC canon |
-| Wave traceability gaps | 2026-02-24 (session bootstrap) | Systemic | ✅ INV-306, INV-701–704 added | Consider Tier-3 |
-| Draft PR submitted for assurance | 2026-02-24 (session bootstrap) | Observed | ✅ INV-409 added | No — Tier-2 sufficient |
-| Session memory FAIL-ONLY-ONCE attestation not recorded | 2026-02-26 | First observation | ✅ OVE-003 added | No — Tier-2 sufficient |
-| Agent integrity check skipped when no agent files in diff | 2026-02-26 | First observation | ✅ INV-504 added | Consider Tier-3 |
+| Check ID | Check Name | Description |
+|----------|-----------|-------------|
+| OVL-CI-001 | Merge gate checks preserved | All required merge_gate_interface checks remain present |
+| OVL-CI-002 | No gate weakening | No check removed, softened, or made non-blocking |
+| OVL-CI-003 | Parity enforcement maintained | parity_required and parity_enforcement remain BLOCKING |
+| OVL-CI-004 | Workflow policy correctness | For any new workflow created or significantly modified: verify the workflow correctly implements its stated policy requirement — not just gate preservation. The workflow logic must match its declared intent (e.g., a "preflight gate" workflow must actually enforce preflight; a "ripple sync" workflow must actually sync ripples). A workflow that preserves the gate structure but inverts or misimplements its policy intent is a failure. |
+| OVL-CI-005 | CI check run result attached | When any `.github/workflows/` or `.github/scripts/` file is modified, PREHANDOVER must include the URL of the resulting CI check run result or a log snippet confirming the workflow executed successfully (no errors/failures). A claim that CI passed without any supporting URL or log reference = REJECTION-PACKAGE. |
+| OVL-CI-006 | Environment parity statement | PREHANDOVER must explicitly address whether the workflow/script change affects dev, staging, and production environments differently and how parity is maintained. An explicit "no environment impact" statement is acceptable when justified. Absent or blank environment parity statement = REJECTION-PACKAGE. |
 
 ---
 
-## OVERLAY G — Agent Integrity Deep Checks
+## AAWP_MAT Overlay
 
-**Applies when**: PR touches `.github/agents/`, `governance/contracts/`, `governance/quality/agent-integrity/`, or any agent contract file. Apply in addition to Overlay B.
+Applied when PR category is `AAWP_MAT`.
 
-*This overlay was added in v1.3.0 to provide deeper agent integrity verification beyond the base invariants. It addresses the AGENT_INTEGRITY trigger category in the trigger table.*
+| Check ID | Check Name | Description |
+|----------|-----------|-------------|
+| OVL-AM-001 | Stub population complete | No stub/TODO content in AAWP/MAT deliverables |
+| OVL-AM-002 | Evidence artifacts present | Required evidence bundle artifacts present |
+| OVL-AM-003 | Governance alignment | Deliverables align with current canon version |
+| OVL-AM-004 | Architecture ripple/impact plan | If any schema, data model, AI model, migration, or critical infrastructure file changes: PREHANDOVER must include (a) a before/after diff summary of the change and (b) an explicit ripple/impact assessment listing downstream components that may be affected. "No downstream impact" is acceptable when explicitly stated with justification. Absent = REJECTION-PACKAGE. |
+| OVL-AM-005 | Wave gap register trace | PREHANDOVER proof or session memory must include a link to the gap register entry for this wave's work, or explicitly state "no gap register entry applicable" with a brief justification. A blank or absent gap register reference = REJECTION-PACKAGE. |
+| OVL-AM-006 | Environment parity validation | PREHANDOVER must explicitly state whether the change affects dev, staging, and production environments differently. Must identify any environment with different post-deployment behavior. An explicit "no environment impact" statement is acceptable when justified. Absent = REJECTION-PACKAGE. |
+| OVL-AM-007 | Session memory learning note coverage | Session memory must contain at least one concrete, non-blank learning note in the `learning_notes` or `suggestions` field. If a repeat failure pattern is identified (same failure as any prior session), the session memory must explicitly reference the prior session ID(s) and flag for root-cause analysis. A blank or placeholder learning note = REJECTION-PACKAGE. |
 
-### G.1 Agent Integrity Deep Verification Checks
+---
 
-| ID | Check | Pass Condition | Fail Trigger |
-|----|-------|---------------|-------------|
-| **OVG-001** | **IAA verifies its own contract hash at session start (self-integrity mandate)** | IAA reads `governance/quality/agent-integrity/INTEGRITY_INDEX.md` and verifies `independent-assurance-agent.md` hash matches the live file; if entry absent, escalates to CS2 | Hash mismatch on IAA own contract — degraded-mode trigger per IAA Canon §Agent Integrity Obligations §4 |
-| **OVG-002** | **Every modified agent contract has a corresponding entry in `governance/quality/agent-integrity/`** | For each `.github/agents/*.md` file changed in the PR: a reference copy exists in `governance/quality/agent-integrity/<filename>` and hash matches | Agent contract file changed but no reference copy in integrity store |
-| **OVG-003** | **INTEGRITY_INDEX.md update is atomic with the agent contract change** | PR diff includes both the `.github/agents/` change AND the corresponding `governance/quality/agent-integrity/INTEGRITY_INDEX.md` hash update in the same PR | INTEGRITY_INDEX.md not updated in the same PR as the agent contract change |
-| **OVG-004** | **Agent integrity update is authorized by CS2 only** | PR description or governance proof explicitly cites CS2 issue/approval for any `governance/quality/agent-integrity/` change | Changes to `governance/quality/agent-integrity/` without explicit CS2 citation |
-| **OVG-005** | **Verify no additional agent contract files were silently changed alongside the declared change** | IAA computes SHA256 for ALL agent contract files (not just those listed in the PR diff) and compares against INTEGRITY_INDEX.md baseline | Any agent contract file hash differs from baseline when it should not — silent/steganographic drift detected |
+## AGENT_INTEGRITY Overlay
+
+Applied when PR category is `AGENT_INTEGRITY`.
+
+| Check ID | Check Name | Description |
+|----------|-----------|-------------|
+| OVL-AI-001 | CS2-only modification | Only CS2 (Johan Ras / @APGI-cmy) may modify `governance/quality/agent-integrity/` files |
+| OVL-AI-002 | Hash update is complete | All updated agent contract hashes reflect the current file state |
+| OVL-AI-003 | No hash deletions | No previously present agent integrity entries deleted without CS2 sign-off |
+
+---
+
+## KNOWLEDGE_GOVERNANCE Overlay
+
+Applied when PR category is `KNOWLEDGE_GOVERNANCE`.
+
+| Check ID | Check Name | Description |
+|----------|-----------|-------------|
+| OVL-KG-001 | PREHANDOVER ceremony complete | PR includes PREHANDOVER proof and session memory; `iaa_audit_token` is non-empty and non-placeholder. Tier 2 knowledge patches are NOT exempt from the PREHANDOVER ceremony (FAIL-ONLY-ONCE A-015). |
+| OVL-KG-002 | Knowledge version bumped | Every modified Tier 2 knowledge file has its version number incremented (patch or minor). A version-unchanged modification = REJECTION-PACKAGE. |
+| OVL-KG-003 | Version history table updated | Every modified Tier 2 knowledge file's version history table includes an entry for the new version with date and change description. Missing or stale version history = REJECTION-PACKAGE. |
+| OVL-KG-004 | Index.md updated | The agent's `knowledge/index.md` reflects updated file versions and new rules or categories introduced. Stale index = REJECTION-PACKAGE. |
+| OVL-KG-005 | Cross-reference consistency | Any rule IDs, check IDs, or category names changed or added are updated consistently across all files that reference them (trigger table, overlays, checklist, index, learning notes). Any dangling or stale cross-reference = REJECTION-PACKAGE. |
 
 ---
 
@@ -170,11 +115,11 @@ The following table tracks the categories of recurring improvement suggestions t
 
 | Version | Date | Change |
 |---------|------|--------|
-| 1.0.0 | 2026-02-24 | Initial seeding — IAA bootstrap with Overlays A–E |
-| 1.1.0 | 2026-02-26 | Added Overlay F (Learning Loop), recurring shortfall items in Overlays A–E, self-improvement feedback table |
-| 1.2.0 | 2026-02-26 | Added Overlay C.2 (Test & Assertion Quality): OVC-009–OVC-013 |
-| 1.3.0 | 2026-03-02 | Added OVD-005 (OVL-CI-004): CI workflow ASSURANCE-TOKEN check enforcement. Added Overlay G (Agent Integrity Deep Checks): OVG-001–OVG-005. ISMS v2.0.0 parity. Issue: APGI-cmy/maturion-foreman-governance#1257. |
+| 1.0.0 | 2026-02-25 | Initial STUB (placeholder from canon) |
+| 2.0.0 | 2026-02-28 | Fully populated from INDEPENDENT_ASSURANCE_AGENT_CANON.md; OVL-CI-004 added (workflow policy correctness check from IAA session-017 suggestion); AGENT_INTEGRITY overlay added; STUB status removed |
+| 2.1.0 | 2026-03-02 | AGENT_CONTRACT: OVL-AC-011 (drift check), OVL-AC-012 (ripple assessment) added; CANON_GOVERNANCE: OVL-CG-005 (drift/integrity hash), OVL-CG-006 (CANON_INVENTORY update confirmed) added; CI_WORKFLOW: OVL-CI-005 (CI check run result), OVL-CI-006 (environment parity) added; AAWP_MAT: OVL-AM-004 (architecture ripple/impact plan), OVL-AM-005 (wave gap trace), OVL-AM-006 (environment parity), OVL-AM-007 (session memory learning notes) added (maturion-isms#IAA-TIER2 Wave 13+) |
+| 2.2.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE overlay added (OVL-KG-001 through OVL-KG-005) — formalises Tier 2 knowledge patch audit requirements (maturion-isms#IAA-TIER2) |
 
 ---
 
-*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0*
+**Authority**: CS2 (Johan Ras) | **Living Agent System**: v6.2.0
