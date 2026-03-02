@@ -13,11 +13,21 @@ Every governed agent must call `agent_bootstrap` as the absolute first action of
 
 ## Setup
 
-Run once before first use (from repo root):
+No manual setup required. The MCP server installs its own dependencies automatically
+on first start via the `prestart` hook.
+
+If you want to run the server manually for debugging:
 
 ```bash
 cd mcp-servers/agent-bootstrap
-npm install
+npm start
+```
+
+Or to run the validation test suite:
+
+```bash
+cd mcp-servers/agent-bootstrap
+npm test
 ```
 
 ## Governed agents in this repository

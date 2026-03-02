@@ -1,15 +1,15 @@
 # IAA Category Overlays — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
-**Version**: 1.2.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.2.0 — Test & Assertion Quality overlay subsection added)  
+**Version**: 1.3.0  
+**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
+**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.2.0 — Test & Assertion Quality overlay subsection added) | Updated: 2026-03-02 (v1.3.0 — OVD-005/OVL-CI-004 added to Overlay D; new Overlay G — Agent Integrity Deep Checks per ISMS v2.0.0 parity; issue APGI-cmy/maturion-foreman-governance#1257)  
 **Purpose**: Category-specific evaluation overlays for IAA assurance sessions. Overlays refine the core invariant checklist with delivery-type-specific checks. Load alongside `iaa-core-invariants-checklist.md`.
 
 ---
 
 ## How to Use Overlays
 
-1. Identify the PR category from the IAA Canon trigger table
+1. Identify the PR category from the Tier-2 trigger table (`.agent-workspace/independent-assurance-agent/knowledge/iaa-trigger-table.md`)
 2. Load the matching overlay(s) for this delivery type
 3. Run overlay checks IN ADDITION TO the core invariants checklist
 4. Record overlay findings in the Phase 5 assurance invocation artifact
@@ -95,6 +95,7 @@ Multiple overlays may apply to a single PR (e.g., a canon update that also modif
 | OVD-002 | iaa-assurance-check job still enforces ASSURANCE-TOKEN verification | Workflow YAML contains `iaa-assurance-check` with token validation logic | iaa-assurance-check missing or bypassed |
 | OVD-003 | No `continue-on-error: true` added to blocking gates | Workflow YAML gates do not use `continue-on-error` on blocking steps | Blocking gate made non-blocking |
 | OVD-004 | Branch protection requirements unchanged or updated per CS2 instruction | PR description addresses branch protection context for the workflow change | Branch protection impact unaddressed |
+| **OVD-005 (OVL-CI-004)** | **CI workflow change does not remove or downgrade the `iaa-assurance-check` ASSURANCE-TOKEN verification step** | `iaa-assurance-check` job logic verifies the exact ASSURANCE-TOKEN pattern from `.agent-admin/assurance/assurance-token-<PR#>.md`; any weakening of this check (e.g., changed to advisory, token pattern broadened, check removed) = FAIL | **ASSURANCE-TOKEN check silently weakened in CI workflow — recurring shortfall: workflow edits reduce IAA enforcement without notice** |
 
 ---
 
@@ -147,6 +148,24 @@ The following table tracks the categories of recurring improvement suggestions t
 
 ---
 
+## OVERLAY G — Agent Integrity Deep Checks
+
+**Applies when**: PR touches `.github/agents/`, `governance/contracts/`, `governance/quality/agent-integrity/`, or any agent contract file. Apply in addition to Overlay B.
+
+*This overlay was added in v1.3.0 to provide deeper agent integrity verification beyond the base invariants. It addresses the AGENT_INTEGRITY trigger category in the trigger table.*
+
+### G.1 Agent Integrity Deep Verification Checks
+
+| ID | Check | Pass Condition | Fail Trigger |
+|----|-------|---------------|-------------|
+| **OVG-001** | **IAA verifies its own contract hash at session start (self-integrity mandate)** | IAA reads `governance/quality/agent-integrity/INTEGRITY_INDEX.md` and verifies `independent-assurance-agent.md` hash matches the live file; if entry absent, escalates to CS2 | Hash mismatch on IAA own contract — degraded-mode trigger per IAA Canon §Agent Integrity Obligations §4 |
+| **OVG-002** | **Every modified agent contract has a corresponding entry in `governance/quality/agent-integrity/`** | For each `.github/agents/*.md` file changed in the PR: a reference copy exists in `governance/quality/agent-integrity/<filename>` and hash matches | Agent contract file changed but no reference copy in integrity store |
+| **OVG-003** | **INTEGRITY_INDEX.md update is atomic with the agent contract change** | PR diff includes both the `.github/agents/` change AND the corresponding `governance/quality/agent-integrity/INTEGRITY_INDEX.md` hash update in the same PR | INTEGRITY_INDEX.md not updated in the same PR as the agent contract change |
+| **OVG-004** | **Agent integrity update is authorized by CS2 only** | PR description or governance proof explicitly cites CS2 issue/approval for any `governance/quality/agent-integrity/` change | Changes to `governance/quality/agent-integrity/` without explicit CS2 citation |
+| **OVG-005** | **Verify no additional agent contract files were silently changed alongside the declared change** | IAA computes SHA256 for ALL agent contract files (not just those listed in the PR diff) and compares against INTEGRITY_INDEX.md baseline | Any agent contract file hash differs from baseline when it should not — silent/steganographic drift detected |
+
+---
+
 ## Version History
 
 | Version | Date | Change |
@@ -154,6 +173,7 @@ The following table tracks the categories of recurring improvement suggestions t
 | 1.0.0 | 2026-02-24 | Initial seeding — IAA bootstrap with Overlays A–E |
 | 1.1.0 | 2026-02-26 | Added Overlay F (Learning Loop), recurring shortfall items in Overlays A–E, self-improvement feedback table |
 | 1.2.0 | 2026-02-26 | Added Overlay C.2 (Test & Assertion Quality): OVC-009–OVC-013 |
+| 1.3.0 | 2026-03-02 | Added OVD-005 (OVL-CI-004): CI workflow ASSURANCE-TOKEN check enforcement. Added Overlay G (Agent Integrity Deep Checks): OVG-001–OVG-005. ISMS v2.0.0 parity. Issue: APGI-cmy/maturion-foreman-governance#1257. |
 
 ---
 
