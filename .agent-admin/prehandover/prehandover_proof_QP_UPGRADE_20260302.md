@@ -5,8 +5,8 @@
 **Date**: 2026-03-02
 **Issue**: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement
 **Branch**: copilot/upgrade-quality-protocol
-**iaa_audit_token**: [BLOCKED — PR is in draft state; `gh pr ready` unavailable in sandbox; CS2 manual un-draft required before ASSURANCE-TOKEN can be issued]
-**iaa_session_r2**: IAA-20260302-PR1273-R2 — REJECTION-PACKAGE — Phase 1/2/3/Agent Integrity: PASS; Phase 4 (Handover): FAIL (INV-409: PR in draft state — tooling limitation)
+**iaa_audit_token**: IAA-20260302-PR1273-R3 — ASSURANCE-TOKEN — MERGE PERMITTED
+**iaa_session_r2**: IAA-20260302-PR1273-R2 — REJECTION-PACKAGE — Phase 1/2/3/Agent Integrity: PASS; Phase 4 (Handover): FAIL (INV-409: PR in draft state — resolved by CS2)
 
 ---
 
