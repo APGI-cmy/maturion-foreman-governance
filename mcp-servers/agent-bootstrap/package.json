@@ -4,7 +4,7 @@
   "description": "MCP server providing the agent_bootstrap tool — enforces constitutional preflight for all governed agents",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install --prefer-offline 2>/dev/null || npm install",
+    "prestart": "npm ci --prefer-offline 2>/dev/null || npm install",
     "start": "node index.js",
     "test": "node test-bootstrap.js"
   },
