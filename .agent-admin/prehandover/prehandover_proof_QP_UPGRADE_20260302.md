@@ -49,7 +49,7 @@ All changes are scoped to this problem. No unrelated changes introduced.
 
 - CANON_INVENTORY modified: YES — one new entry added for `FM_QUALITY_PROTOCOL_ENHANCED_SOP.md`
 - total_canons: 189 → 190
-- New entry hash: `8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a` (real SHA256 — no placeholder)
+- New entry hash: `65ee6752ef458a2c043aa59d20d2b9c6c58830aef56ea5e429d3f1b4f25b900b` (real SHA256 — no placeholder)
 - layer_down_status: `PUBLIC_API`
 - No existing hashes modified
 

@@ -14,7 +14,7 @@
 - **Role**: Governance Repository Administrator
 - **Agent Class**: Administrator
 - **Contract Version**: v2.0.0
-- **Authority Source**: governance/canon/LIVING_AGENT_SYSTEM.md v6.2.0
+- **Authority Source**: governance/canon/LIVING_AGENT_SYSTEM.md v1.1.0
 
 ---
 
@@ -59,7 +59,7 @@ No unrelated changes.
 ## Tier 1 and Tier 2 Knowledge Load
 
 ### Tier 1 (Constitutional Canon)
-- `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 ✅ loaded
+- `governance/canon/LIVING_AGENT_SYSTEM.md` v1.1.0 ✅ loaded
 - `governance/canon/AGENT_CONTRACT_ARCHITECTURE.md` ✅ loaded
 - `governance/CANON_INVENTORY.json` v1.0.0 (last_updated: 2026-03-02) ✅ verified
 - `governance/CONSUMER_REPO_REGISTRY.json` v1.2.0 ✅ verified

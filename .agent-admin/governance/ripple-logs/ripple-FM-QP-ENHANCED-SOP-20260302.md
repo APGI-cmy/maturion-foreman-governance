@@ -12,7 +12,7 @@
 
 | File | Version | Layer-Down Status | SHA256 |
 |------|---------|-------------------|--------|
-| `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` | 1.0.0 | PUBLIC_API | 8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a |
+| `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` | 1.0.0 | PUBLIC_API | 65ee6752ef458a2c043aa59d20d2b9c6c58830aef56ea5e429d3f1b4f25b900b |
 
 ---
 

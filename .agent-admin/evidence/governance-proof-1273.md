@@ -11,7 +11,7 @@
 
 ## Canon Citations (with version numbers)
 
-- `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 — authority for all agent operations
+- `governance/canon/LIVING_AGENT_SYSTEM.md` v1.1.0 — authority for all agent operations
 - `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` — FM supervision authority (new SOP derives from this)
 - `governance/canon/MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md` v1.0.0 — progress recording canon (new SOP implements Section 4)
 - `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.0.0 — referral pattern reference for Section 3 builder referral design
@@ -25,7 +25,7 @@
 ## CANON_INVENTORY Hash Validation
 
 Files touched by this PR:
-1. `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` — NEW file; SHA256: `8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a` (real hash — no placeholder)
+1. `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` — NEW file; SHA256: `65ee6752ef458a2c043aa59d20d2b9c6c58830aef56ea5e429d3f1b4f25b900b` (real hash — no placeholder)
 2. `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md` — NEW Tier 2 knowledge file; not tracked in CANON_INVENTORY
 3. `.agent-workspace/foreman-v2/knowledge/index.md` — Tier 2 index update; not tracked in CANON_INVENTORY
 4. `governance/CANON_INVENTORY.json` — updated with new entry for item 1
@@ -91,4 +91,4 @@ No `.github/workflows/` files modified in this PR — token usage requirements n
 
 ---
 
-*Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Session GA-20260302-QP-UPGRADE | 2026-03-02*
+*Authority: LIVING_AGENT_SYSTEM.md v1.1.0 | Session GA-20260302-QP-UPGRADE | 2026-03-02*

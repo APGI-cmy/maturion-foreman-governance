@@ -33,7 +33,7 @@ These enhancements close two gaps in the existing Quality Professor mode:
 
 This SOP derives authority from and implements:
 
-- **governance/canon/LIVING_AGENT_SYSTEM.md v6.2.0** — Supreme governance authority
+- **governance/canon/LIVING_AGENT_SYSTEM.md v1.1.0** — Supreme governance authority
 - **governance/quality/agent-integrity/foreman-v2.agent.md v2.3.0** — Quality Professor mode (Mode 3), Section 1.7
 - **governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md** — FM supervision authority over builders
 - **governance/canon/MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md** — Progress recording canon
@@ -161,7 +161,7 @@ On builder re-submission:
 2. FM re-activates Quality Professor mode (Mode 3 per foreman-v2.agent.md Section 1.7)
 3. All original failure conditions MUST be re-evaluated
 4. If **PASS**: FM closes the Builder Referral Artifact (records closure date + QP report path), updates REFERRAL_INDEX.md status to CLOSED, and proceeds to merge gate release
-5. If **FAIL again**: FM creates a NEW Builder Referral Artifact (incremented version), updates REFERRAL_INDEX.md, and re-notifies builder. FM MUST NOT accept partial remediation.
+5. If **FAIL again**: FM creates a NEW Builder Referral Artifact with an explicit re-submission suffix (`-r2`, `-r3`, etc.) appended to the filename — e.g., `builder-referral-<YYYYMMDD>-<builder-agent-id>-<issue-ref>-r2.md` for the second referral. FM updates REFERRAL_INDEX.md and re-notifies builder. FM MUST NOT accept partial remediation.
 
 **Partial Remediation**: If builder has addressed only some failure conditions, the re-submission is still FAIL. FM issues a new referral with remaining items. This is not a new job — it is a continuation of the same referral.
 
@@ -246,7 +246,7 @@ This SOP adds:
 - Progress Tracker check as a mandatory QP gate item (QP-FAIL-007)
 - Formal closure protocol when builder re-submission passes
 
-**Agent Contract Immutability**: This SOP is designed to be implemented by foreman agents without requiring any modification to the foreman-v2 agent contract. Foreman agents MUST read this SOP as Tier 2 knowledge (see `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md`).
+**Agent Contract Immutability**: This SOP is designed to be implemented by foreman agents without requiring any modification to the foreman-v2 agent contract. Foreman agents MUST load `FM_QP_ENHANCED_QUICK_REFERENCE.md` as Tier 2 knowledge at induction (see `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md`). This SOP is the Tier-3 canonical authority referenced by that Tier-2 stub.
 
 ---
 
@@ -254,7 +254,7 @@ This SOP adds:
 
 This SOP is `layer_down_status: PUBLIC_API`. Consumer repositories with foreman agents MUST:
 
-1. Ensure foreman agents load this SOP as Tier 2 knowledge during induction
+1. Ensure foreman agents load `FM_QP_ENHANCED_QUICK_REFERENCE.md` as Tier 2 knowledge during induction, with this SOP serving as the Tier-3 canonical authority
 2. Amend local QA checklists to include the Builder Referral and Tracker Enforcement requirements
 3. Verify that `.agent-admin/quality-professor/` directory exists or is created at first QP FAIL
 4. Reference this SOP in any local QP SOP or quality protocol documentation
@@ -310,5 +310,5 @@ Block merge gate
 
 ---
 
-**Authority**: governance/canon/LIVING_AGENT_SYSTEM.md v6.2.0 | FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md | MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md
+**Authority**: governance/canon/LIVING_AGENT_SYSTEM.md v1.1.0 | FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md | MANDATORY_CANONICAL_PROGRESS_RECORDING_AND_WAVE_CLOSURE_CERTIFICATION.md
 **Governance Issue**: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement

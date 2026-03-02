@@ -1053,13 +1053,13 @@
     {
       "filename": "FM_QUALITY_PROTOCOL_ENHANCED_SOP.md",
       "version": "1.0.0",
-      "file_hash": "8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a",
+      "file_hash": "65ee6752ef458a2c043aa59d20d2b9c6c58830aef56ea5e429d3f1b4f25b900b",
       "effective_date": "2026-03-02",
       "description": "Tier-3 governance SOP defining two mandatory enhancements to the Foreman Quality Protocol (QP): (1) formal Builder Referral with trackable artifacts and REFERRAL_INDEX for every QP FAIL verdict, and (2) Progress Tracker Enforcement (QP-FAIL-007) requiring tracker currency before merge gate release. Supplements foreman-v2 Quality Professor mode (Mode 3) without modifying agent contracts.",
       "type": "canon",
       "path": "governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a",
+      "file_hash_sha256": "65ee6752ef458a2c043aa59d20d2b9c6c58830aef56ea5e429d3f1b4f25b900b",
       "canonical_version": "1.0.0",
       "layer_up_status": "NONE"
     },
