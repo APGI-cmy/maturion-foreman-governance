@@ -1,7 +1,7 @@
 # IAA Category Overlays — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
 **Version**: 1.3.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
+**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
 **Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.2.0 — Test & Assertion Quality overlay subsection added) | Updated: 2026-03-02 (v1.3.0 — OVD-005/OVL-CI-004 added to Overlay D; new Overlay G — Agent Integrity Deep Checks per ISMS v2.0.0 parity; issue APGI-cmy/maturion-foreman-governance#1257)  
 **Purpose**: Category-specific evaluation overlays for IAA assurance sessions. Overlays refine the core invariant checklist with delivery-type-specific checks. Load alongside `iaa-core-invariants-checklist.md`.
 
@@ -9,7 +9,7 @@
 
 ## How to Use Overlays
 
-1. Identify the PR category from the IAA Canon trigger table
+1. Identify the PR category from the Tier-2 trigger table (`.agent-workspace/independent-assurance-agent/knowledge/iaa-trigger-table.md`)
 2. Load the matching overlay(s) for this delivery type
 3. Run overlay checks IN ADDITION TO the core invariants checklist
 4. Record overlay findings in the Phase 5 assurance invocation artifact
@@ -150,7 +150,7 @@ The following table tracks the categories of recurring improvement suggestions t
 
 ## OVERLAY G — Agent Integrity Deep Checks
 
-**Applies when**: PR touches `.github/agents/`, `governance/quality/agent-integrity/`, or any agent contract file. Apply in addition to Overlay B.
+**Applies when**: PR touches `.github/agents/`, `governance/contracts/`, `governance/quality/agent-integrity/`, or any agent contract file. Apply in addition to Overlay B.
 
 *This overlay was added in v1.3.0 to provide deeper agent integrity verification beyond the base invariants. It addresses the AGENT_INTEGRITY trigger category in the trigger table.*
 

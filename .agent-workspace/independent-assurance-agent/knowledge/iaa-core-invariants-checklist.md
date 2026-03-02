@@ -1,7 +1,7 @@
 # IAA Core Invariants Checklist — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
 **Version**: 1.3.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
+**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
 **Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue) | Updated: 2026-03-02 (v1.3.0 — INV-608 resubmission protocol invariant; CORE-XXX cross-reference appendix for ISMS v2.0.0 parity per APGI-cmy/maturion-foreman-governance#1257)  
 **Purpose**: Tier-2 operational checklist for IAA assurance sessions. Load this at session start alongside Tier-1 canon.
 

@@ -1,7 +1,7 @@
 # IAA Trigger Table — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
 **Version**: 1.0.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
+**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
 **Seeded**: 2026-03-02  
 **Purpose**: Operational trigger table for IAA assurance sessions. Load this at session start alongside the core invariants checklist. This file is the canonical operational form of the trigger table defined in `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md §Trigger Table`.
 
@@ -23,7 +23,7 @@ At every assurance invocation (Phase 2, Step 2.3):
 | PR Category | IAA Required | Trigger Condition | Applicable Overlays |
 |-------------|-------------|-------------------|---------------------|
 | AAWP_MAT | YES | PR labelled `aawp-deliverable` or `mat-deliverable`, or files match AAWP/MAT path patterns | C, F |
-| AGENT_CONTRACT | YES | Changes to `.github/agents/` or any `*-agent-contract.md` file | B, G, F |
+| AGENT_CONTRACT | YES | Changes to `.github/agents/`, `governance/contracts/`, or any `*-agent-contract.md` file | B, G, F |
 | CANON_GOVERNANCE | YES | Changes to `governance/canon/` or `governance/CANON_INVENTORY.json` | A, F |
 | AGENT_INTEGRITY | YES | Changes to `governance/quality/agent-integrity/` | B, G, F |
 | CI_WORKFLOW | YES | Changes to `.github/workflows/` or `.github/scripts/` | D, F |

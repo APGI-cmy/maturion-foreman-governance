@@ -364,7 +364,7 @@ Output:
 
 > "PR classification: [category from trigger table]
 > IAA required: YES / NO
-> Applicable overlays loaded: [list overlay letters — A, B, C, D, E, F or 'none']
+> Applicable overlays loaded: [list overlay letters — A, B, C, D, E, F, G or 'none']
 > Proceeding to assurance execution."
 
 If IAA NOT required for this category → document in session memory. Do not proceed to Phase 3.

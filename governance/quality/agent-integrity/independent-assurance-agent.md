@@ -20,7 +20,7 @@ governance:
   this_copy: canonical
   execution_identity:
     name: "Maturion Bot"
-    secret: "MATURION_BOT_TOKEN"
+    secret: "REDACTED"
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -364,7 +364,7 @@ Output:
 
 > "PR classification: [category from trigger table]
 > IAA required: YES / NO
-> Applicable overlays loaded: [list overlay letters — A, B, C, D, E, F or 'none']
+> Applicable overlays loaded: [list overlay letters — A, B, C, D, E, F, G or 'none']
 > Proceeding to assurance execution."
 
 If IAA NOT required for this category → document in session memory. Do not proceed to Phase 3.
