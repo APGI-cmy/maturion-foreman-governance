@@ -75,7 +75,7 @@ This canon applies to all Maturion application repositories that produce:
 |----------|---------------------|------|
 | Critical | Fix required OR documented false-positive with CS2 approval | BLOCKING |
 | High | Fix required OR documented false-positive with FM approval | BLOCKING |
-| Medium | Fix required OR documented exception with FM approval within 2 weeks | WARN — CS2 exception required to defer |
+| Medium | Fix required within 2 weeks OR documented exception with FM approval; CS2 exception required to defer beyond 2 weeks | WARN — FM exception required within 2 weeks; CS2 exception required to defer beyond 2 weeks |
 | Low | Logged for backlog; no blocking | PARKING-STATION eligible |
 
 **Evidence Required**: SAST report in CI artifacts; no unaddressed Critical/High findings.

@@ -18,7 +18,7 @@ This document defines the **canonical semantics for human-in-the-loop review** o
 Assisted ripple scanning provides **visibility** through informational reports. This document establishes:
 - Who reviews ripple scan reports
 - What review means in this context
-- That reports are informational only (do not halt execution)
+- That reports are informational only (does not block merge)
 - That reports do not mandate remediation
 - That conscious acceptance of ripples is valid
 

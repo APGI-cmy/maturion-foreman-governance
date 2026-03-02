@@ -101,8 +101,8 @@ When a technical document or agent contract must convey that something **does no
 | Alerts / Warnings in build models | `non-blocking` | `execution-continues notification` or `does not halt execution` |
 | Governance / Ripple evolution invariants | `non-blocking` | `merge-transparent` or `does not block merge` |
 | Watchdog soft-stop / advisory findings | `non-blocking` | `ESCALATE for visibility — does not block merge` or `PARKING-STATION eligible` |
-| SAST / QA severity tables | `NON-BLOCKING` | `WARN — CS2 exception required to defer` (Medium) or `PARKING-STATION eligible` (Low) |
-| Parking-station enhancement proposals | `non-blocking` | Allowed as-is (scanner exception; see `minimizing_language_patterns.json` §`non_blocking`) |
+| SAST / QA severity tables | `NON-BLOCKING` | `WARN — FM exception required within 2 weeks; CS2 exception required to defer beyond 2 weeks` (Medium) or `PARKING-STATION eligible` (Low) |
+| Parking-station enhancement proposals | `non-blocking` | Allowed as-is (current validators scan PR/RCA content, not repo files; parking-station files are not scanned by the automated gate) |
 
 **Rationale**: The word 'non-blocking' is indistinguishable to automated scanners from its prohibited test-dodging use. The approved alternatives are equally precise, context-specific, and scanner-safe.
 
