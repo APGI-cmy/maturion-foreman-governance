@@ -17,7 +17,7 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 | Agent Contract | Authoritative Path | SHA256 (Baseline) | Last Updated | Updated By |
 |---|---|---|---|---|
 | `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `5227cdff9dab03ab801145a5b4cddb9bd8a9b88275953c1ffed0de8a49ec21c4` | 2026-03-02 | CS2 (ESC-002 follow-up — APGI-cmy/maturion-foreman-governance#1261, session-005-20260302) |
-| `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `c4a6711e8a940447e66212b02a49015698984aa670fa094dccc1568e1348b144` | 2026-03-02 | CS2 (contract size reduction — APGI-cmy/maturion-foreman-governance#1280, iaa_oversight added, HALT-001–007 added, Tier 2 extracted) |
+| `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `e180c3e5df2d19012f4b68de816d48d049a3d7f98ac4e45258213c03d1029681` | 2026-03-02 | pending CS2 approval — APGI-cmy/maturion-foreman-governance#1281 |
 | `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `6db19cffb9bc0aff4c548577fd2148dd2c4a3d2e00812a1c8e5e4fa5a8207670` | 2026-03-02 | CS2 (ESC-002 follow-up — APGI-cmy/maturion-foreman-governance#1261, session-005-20260302) |
 | `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `5580e2c4281366f5a4cddeebc9f7a9dbb715b11be8d83664d4d7823301313977` | 2026-03-02 | CS2 (authorized via issue: APGI-cmy/maturion-foreman-governance#1257 — GOV-IAA upgrade to v2.0.0) |
 
