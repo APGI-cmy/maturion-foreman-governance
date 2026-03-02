@@ -114,13 +114,13 @@ jobs:
           echo "✅ All required evidence artifacts present"
 
       - name: Validate no-minimizing language
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           echo "=== Checking for Minimizing Language ==="
           
           # Check PR title for banned phrases per POLICY-NO-ONLY-LANGUAGE.md
           BANNED_PATTERNS=("\\bonly\\b" "\\bjust\\b" "\\bsimply\\b" "\\bmerely\\b" "\\btrivial\\b" "\\bminimal\\b" "\\bsmall\\b")
-          
-          PR_TITLE="${{ github.event.pull_request.title }}"
           
           VIOLATIONS=0
           
