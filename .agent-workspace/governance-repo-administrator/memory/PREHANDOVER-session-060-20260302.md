@@ -24,7 +24,7 @@
 
 | Workflow | Before | After | Justification |
 |----------|--------|-------|---------------|
-| `foreman-governance.yml` | `contents: read`, `issues: write`, `pull-requests: write` | `contents: read`, `issues: write` | PR comments use `issues.createComment` API — only `issues: write` required. `pull-requests: write` was unused over-privilege. |
+| `foreman-governance.yml` | `contents: read`, `issues: write`, `pull-requests: write` | `contents: read`, `issues: write`, `pull-requests: write` | Unchanged — CI confirmed `pull-requests: write` is required alongside `issues: write` when posting PR comments via `issues.createComment`; GitHub API returns `x-accepted-github-permissions: issues=write; pull_requests=write` as a conjunction. |
 | `agent-governance-check.yml` | (none declared) | `contents: read` | Checkout only, YAML validation only. No write operations. Explicit declaration enforces least-privilege. |
 | `fm-effectiveness-validation-gate.yml` | (none declared) | `contents: read` | Reads `effectiveness.md` and `failures/` directory. No write operations. |
 | `fm-failure-enforcement-gate.yml` | (none declared) | `contents: read` | Reads `BUILD_ACTIVE` and `learning.md`. No write operations. |
