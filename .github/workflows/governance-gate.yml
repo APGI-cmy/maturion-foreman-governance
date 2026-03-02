@@ -50,3 +50,24 @@ jobs:
           done
 
           echo "PASS: Governance structure validated."
+
+  workflow-yaml-lint:
+    name: governance/workflow-yaml-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate layer-down dispatch workflow YAML parses without errors
+        run: |
+          python3 - << 'PYEOF'
+          import yaml, sys
+          f = '.github/workflows/governance-layer-down-dispatch.yml'
+          try:
+              yaml.safe_load(open(f))
+              print('PASS:', f)
+          except yaml.YAMLError as e:
+              print('FAIL:', f, '-', str(e), file=sys.stderr)
+              sys.exit(1)
+          PYEOF
+          echo "PASS: governance-layer-down-dispatch.yml is syntactically valid YAML."
