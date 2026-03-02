@@ -1,9 +1,9 @@
 # IAA FAIL-ONLY-ONCE Registry
 
 **Agent**: independent-assurance-agent
-**Version**: 1.3.0
+**Version**: 1.4.0
 **Seeded**: 2026-02-26
-**Last Updated**: 2026-03-01
+**Last Updated**: 2026-03-02
 **Authority**: IAA Canon (INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0) | LIVING_AGENT_SYSTEM.md v6.2.0 | CS2 (Johan Ras)
 **Update Protocol**: After every breach RCA, the IAA appends a new rule + breach log entry to this registry (append-only; no deletions or gaps). Earlier registry formats/versions are preserved in version control / legacy registry files. Never remove. Never skip.
 **Preflight**: IAA reads this file in full and self-attests against every rule at every session start before any assurance work begins.
@@ -382,6 +382,38 @@ SAME session as the audit:
 
 ---
 
+### A-020 — IAA Token Format Must Be `IAA-session-NNN-YYYYMMDD-PASS` — Named Tokens Are Prohibited
+
+**Triggered by**: maturion-isms#779 — session confirmed that named/non-sequential token formats (e.g. `IAA-WAVE13-PLAN-YYYYMMDD-PASS`, `IAA-GOV-PARITY-20260302-PASS`) were appearing in PREHANDOVER proofs. These fabricated formats pass the superficial A-006 first-pass check (they are not bare date strings) but fail the A-016 cross-reference check (no corresponding IAA session memory file exists).
+
+**Incident reference**: maturion-isms#779 — Named token pattern detected in wave-13 planning deliverables.
+
+**Permanent Rule**:
+An IAA ASSURANCE-TOKEN is valid if and only if:
+1. Its format is exactly `IAA-session-NNN-YYYYMMDD-PASS` where NNN is a sequential session number
+2. A corresponding IAA session memory file exists at `.agent-workspace/independent-assurance-agent/memory/session-NNN-YYYYMMDD.md`
+3. That session memory's `pr_reviewed` field matches the current PR/branch under assurance
+
+Any token format that does not follow this exact pattern (including named tokens like `IAA-WAVE13-*`, `IAA-GOV-*`, `IAA-PLAN-*`, etc.) is PROHIBITED and must be rejected as a CORE-016 / A-006 FAIL.
+
+Named tokens are structurally indistinguishable from fabricated tokens: they cannot be cross-referenced against a sequential IAA session memory. The prohibition is absolute — no exceptions for convenience, wave labelling, or descriptive clarity.
+
+**Check in Phase 3 (extends A-006 and A-016)**:
+> FAIL-ONLY-ONCE A-020 (named token prohibition):
+> 1. Locate the `iaa_audit_token` field in the PREHANDOVER proof.
+> 2. If value does NOT match `IAA-session-\d+-\d{8}-PASS` pattern:
+>    a. Check if the value is a bare date string → A-006 applies.
+>    b. Check if the value is a named/descriptive token (non-sequential) → A-020 applies.
+>    c. Finding: "iaa_audit_token format `[value]` is non-standard. Only `IAA-session-NNN-YYYYMMDD-PASS` is valid. Named tokens are prohibited per A-020."
+>    d. Fix: IAA must be invoked and issue a real session token. Update iaa_audit_token to the issued token.
+> 3. If value matches the pattern → proceed with A-016 cross-reference check (verify session memory exists and pr_reviewed matches).
+
+**Exception**: `CS2-SELF-MOD-APPROVAL-YYYYMMDD` tokens are valid ONLY when `iaa_oversight.required: false` applies to the PR (IAA's own contract modification or other CS2-direct-only PRs). These are CS2-authority tokens, not IAA-issued tokens. Do not apply A-020 to CS2-authority tokens — they operate under a different authority pathway.
+
+**Status**: ACTIVE — enforced from session-005 onwards
+
+---
+
 ## Adding New Rules
 
 When a new governance failure pattern is identified during a session (learning_notes in session
@@ -403,6 +435,7 @@ All updates to this file must be committed as part of the session bundle for tha
 | 1.1.0 | 2026-02-27 | Added A-001 through A-006 in narrative format (ISMS-context rules; replaces legacy tabular A-01 to A-10, B-01 to B-12 identifiers). |
 | 1.2.0 | 2026-02-28 | Added A-015, A-016, A-017 (Tier 2 patch rule, cross-PR token reuse, REJECTION-as-PASS rule) |
 | 1.3.0 | 2026-03-01 | Fixed duplicate IDs: former A-016 (Trigger Table Misapplication) → A-018; former A-004 (Post-Merge Retrospective) → A-019. Added renumbering note and version history. Restored deprecated Section B notice for B-rule resolvability. Issue: APGI-cmy/maturion-foreman-governance#1252. |
+| 1.4.0 | 2026-03-02 | Added A-020 (Named token prohibition — `IAA-session-NNN-YYYYMMDD-PASS` format mandatory; named tokens prohibited). Issue: maturion-isms#779. CS2 instruction via APGI-cmy/maturion-foreman-governance#1260. |
 
 ---
 
