@@ -5,7 +5,15 @@
 **Date**: 2026-03-02
 **Issue**: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement
 **Branch**: copilot/upgrade-quality-protocol
-**iaa_audit_token**: [PENDING — IAA invocation required before PR open per Rule A-09]
+**iaa_audit_token**: [PENDING — IAA resubmission in progress]
+
+---
+
+## OPOJD Compliance
+
+OPOJD (One Problem One Job Doctrine): CONFIRMED.
+This session addresses one problem: the foreman Quality Protocol gaps (missing builder referral artifacts and progress tracker enforcement gate).
+All changes are scoped to this problem. No unrelated changes introduced.
 
 ---
 
@@ -99,4 +107,8 @@ The new SOP has `layer_down_status: PUBLIC_API`. Consumer repositories MUST:
 ✅ Pre-handover gate parity check passed (all three gates green)
 ✅ No protected constitutional files modified
 ✅ No .github/agents/ files touched (agent contract immutability preserved)
-✅ Layer-down ripple requirement noted for consumer repos
+✅ Layer-down ripple log created: `.agent-admin/governance/ripple-logs/ripple-FM-QP-ENHANCED-SOP-20260302.md`
+✅ Full evidence bundle created: preflight-proof-1273.md, governance-proof-1273.md, working-proof-1273.md
+✅ Session memory created: `.agent-workspace/governance-repo-administrator/memory/session-060-20260302.md`
+✅ IAA invoked; re-submission pending ASSURANCE-TOKEN
+
