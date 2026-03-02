@@ -1,8 +1,8 @@
 # IAA Core Invariants Checklist — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
-**Version**: 1.2.0  
+**Version**: 1.3.0  
 **Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue)  
+**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue) | Updated: 2026-03-02 (v1.3.0 — INV-608 resubmission protocol invariant; CORE-XXX cross-reference appendix for ISMS v2.0.0 parity per APGI-cmy/maturion-foreman-governance#1257)  
 **Purpose**: Tier-2 operational checklist for IAA assurance sessions. Load this at session start alongside Tier-1 canon.
 
 ---
@@ -109,6 +109,7 @@ At every assurance invocation:
 | **INV-605** | **After issuing a REJECTION-PACKAGE, IAA creates a follow-up tracking note** | An escalation or tracking entry is created in escalation-inbox/ for each REJECTION-PACKAGE issued | Rejection issued but no tracking record created |
 | **INV-606** | **REJECTION-PACKAGE is routed to the submitting agent with explicit remediation guidance and a precise phase/step re-entry point. Acknowledgement from the agent is required.** | Escalation tracking entry confirms: (a) submitting agent notified, (b) re-entry point stated (e.g., "Phase 3, Step 3.2"), (c) acknowledgement received or a follow-up blocker created | REJECTION-PACKAGE filed but not delivered; re-entry point absent; acknowledgement not recorded |
 | **INV-607** | **On subsequent assurance invocation for a PR with a prior REJECTION-PACKAGE, IAA loads the prior rejection, verifies all remediation items are resolved, and blocks assurance if any item is unresolved** | Session memory records: prior REJECTION-PACKAGE ID loaded, each prior remediation item checked with evidence reference, resubmission gate outcome (PASS/BLOCKED) | Subsequent invocation proceeds without verifying prior remediation items; resubmission gate skipped |
+| **INV-608** | **Resubmission Protocol (Phase 4 Step 4.2.1) is followed in full when a prior REJECTION-PACKAGE exists for the PR** | Session memory confirms: (a) prior REJECTION-PACKAGE loaded, (b) every remediation item verified with evidence, (c) submitting agent acknowledgement confirmed, (d) resubmission outcome recorded | Any step of the Resubmission Protocol omitted or silently bypassed — recurring shortfall: resubmission gate entered but not fully executed |
 
 ---
 
@@ -137,8 +138,41 @@ Use this summary table for quick gate tallying in the Phase 5 assurance invocati
 | Phase 3 Working | INV-301 to INV-307 | Any = Phase 3 FAIL |
 | Phase 4 Handover | INV-401 to INV-409 | Any = Phase 4 FAIL |
 | Agent Integrity | INV-501 to INV-504 | Any = Agent Integrity FAIL |
-| Learning Loop | INV-601 to INV-607 | Any = Session INCOMPLETE |
+| Learning Loop | INV-601 to INV-608 | Any = Session INCOMPLETE |
 | Traceability | INV-701 to INV-704 | Any = Phase 3/4 FAIL |
+
+---
+
+## APPENDIX — CORE-XXX Cross-Reference Table (ISMS v2.0.0 Parity)
+
+The ISMS copy of this checklist uses `CORE-XXX` identifiers. The table below maps CORE-XXX to
+the governance repo INV-XXX identifiers for cross-repo traceability. When FAIL-ONLY-ONCE rules,
+session memories, or other artifacts reference a CORE-XXX ID, use this table to resolve the
+corresponding INV-XXX invariant(s).
+
+| CORE-ID (ISMS) | INV-ID (Governance) | Description |
+|----------------|---------------------|-------------|
+| CORE-001 | INV-001 | IAA independence: not the same agent as PR submitter |
+| CORE-002 | INV-002 | IAA loads from own governance context (Tier 1 + Tier 2) |
+| CORE-003 | INV-003 | IAA self-integrity check performed |
+| CORE-004 | INV-004 | Unique session ID |
+| CORE-005 | INV-101 to INV-106 | Phase 1 (Preflight) invariants |
+| CORE-006 | INV-201 to INV-207 | Phase 2 (Governance) invariants |
+| CORE-007 | INV-301 to INV-307 | Phase 3 (Working) invariants |
+| CORE-008 | INV-401 to INV-409 | Phase 4 (Handover) invariants |
+| CORE-009 | INV-501 to INV-504 | Agent Integrity invariants |
+| CORE-010 | INV-601 to INV-605 | Learning Loop invariants (base) |
+| CORE-011 | INV-701 to INV-704 | Delivery Scope & Traceability invariants |
+| CORE-012 | INV-405 | Gate parity check BLOCKING invariant |
+| CORE-013 | INV-401 | PREHANDOVER proof required (ref: A-015) |
+| CORE-014 | INV-501 to INV-503 | Agent contract file change verification |
+| CORE-015 | INV-407 | Session memory artifact required (ref: A-015) |
+| CORE-016 | INV-402 + A-006 | IAA invocation evidence / IAA Agent Response (verbatim) check (ref: A-015, A-016) |
+| CORE-017 | INV-608 | Resubmission Protocol full execution (new in v2.0.0) |
+
+> **Note**: CORE-XXX IDs are canonical ISMS identifiers. INV-XXX IDs are the governance repo
+> equivalents. Both resolve to the same invariant check requirements. Use this table when an
+> ISMS artifact or FAIL-ONLY-ONCE rule references a CORE-XXX ID.
 
 ---
 
@@ -149,6 +183,7 @@ Use this summary table for quick gate tallying in the Phase 5 assurance invocati
 | 1.0.0 | 2026-02-24 | Initial seeding — IAA bootstrap |
 | 1.1.0 | 2026-02-26 | Added recurring shortfall items (INV-106, INV-206, INV-207, INV-306, INV-307, INV-405 to INV-409, INV-504, INV-601 to INV-605, INV-701 to INV-704) per IAA self-improvement issue |
 | 1.2.0 | 2026-02-27 | Added INV-606 (REJECTION-PACKAGE delivery and acknowledgement) and INV-607 (resubmission gate enforcement) per feedback-loop closure issue |
+| 1.3.0 | 2026-03-02 | Added INV-608 (Resubmission Protocol full execution invariant — CORE-017 equivalent). Added CORE-XXX cross-reference appendix for ISMS v2.0.0 parity. Issue: APGI-cmy/maturion-foreman-governance#1257. |
 
 ---
 

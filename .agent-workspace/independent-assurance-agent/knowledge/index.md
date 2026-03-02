@@ -1,7 +1,7 @@
 # IAA Knowledge Index
 **Agent**: independent-assurance-agent  
-**Version**: 1.1.0  
-**Updated**: 2026-02-26
+**Version**: 1.2.0  
+**Updated**: 2026-03-02
 
 ## Tier 1 — Constitutional Knowledge (load and verify SHA256)
 - `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` — Primary IAA canon
@@ -12,9 +12,10 @@
 - `governance/quality/agent-integrity/INTEGRITY_INDEX.md` — Agent integrity baseline
 
 ## Tier 2 — Operational Knowledge (this directory)
-- `iaa-core-invariants-checklist.md` v1.1.0 — Core invariant checklist (all phases)
-- `iaa-category-overlays.md` v1.1.0 — Delivery-type overlays
-- `FAIL-ONLY-ONCE.md` v1.0.0 — Breach prevention registry (read at every session start)
+- `iaa-core-invariants-checklist.md` v1.3.0 — Core invariant checklist (all phases, INV-001–INV-608)
+- `iaa-category-overlays.md` v1.3.0 — Delivery-type overlays (A–G)
+- `iaa-trigger-table.md` v1.0.0 — Operational trigger table (PR category → IAA required, overlays)
+- `FAIL-ONLY-ONCE.md` v1.3.0 — Breach prevention registry (read at every session start)
 
 ## Tier 3 — Session Knowledge (ephemeral)
 - PR context, delegation package, repository state for the specific assurance session
