@@ -1,0 +1,40 @@
+name: Copilot Setup Steps
+
+# Runs during the "Prepare Copilot" phase — BEFORE "Start MCP Servers".
+# Installs agent-bootstrap dependencies and runs the preflight self-test so that
+# missing node_modules (MODULE_NOT_FOUND) surfaces as a clear error
+# rather than the generic "MCP error -32000: Connection closed".
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install agent-bootstrap dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Node: $(node --version)"
+          echo "npm: $(npm --version)"
+          echo "PWD: $(pwd)"
+          cd mcp-servers/agent-bootstrap
+          echo "Installing dependencies..."
+          npm install
+          echo "Dependencies installed successfully."
+
+      - name: Agent-bootstrap MCP preflight self-test (Linux)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Node: $(node --version)"
+          echo "PWD: $(pwd)"
+          cd mcp-servers/agent-bootstrap
+          echo "Running agent-bootstrap validation suite..."
+          npm test
