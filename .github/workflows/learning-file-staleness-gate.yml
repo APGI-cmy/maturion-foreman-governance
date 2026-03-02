@@ -12,9 +12,23 @@ on:
     branches:
       - main
 
+# Permissions: Full write set granted — agents operate autonomously within governance sandboxes.
+# Oversight is enforced at merge time (Foreman QP → IAA → CS2/Copilot review).
+# Authority: CS2 (Johan Ras / @APGI-cmy)
 permissions:
-  contents: read
-  pull-requests: read
+  actions: write
+  contents: write
+  issues: write
+  pull-requests: write
+  checks: write
+  statuses: write
+  deployments: write
+  pages: write
+  packages: write
+  discussions: write
+  id-token: write
+  workflows: write
+  metadata: read   # always read-only — GitHub enforces this
 
 jobs:
   learning-file-staleness-check:
