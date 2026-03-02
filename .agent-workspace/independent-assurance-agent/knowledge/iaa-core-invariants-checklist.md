@@ -1,8 +1,8 @@
 # IAA Core Invariants Checklist — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
-**Version**: 1.3.0  
-**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue) | Updated: 2026-03-02 (v1.3.0 — INV-608 resubmission protocol invariant; CORE-XXX cross-reference appendix for ISMS v2.0.0 parity per APGI-cmy/maturion-foreman-governance#1257)  
+**Version**: 1.4.0  
+**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
+**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue) | Updated: 2026-03-02 (v1.3.0 — INV-608 resubmission protocol invariant; CORE-XXX cross-reference appendix for ISMS v2.0.0 parity per APGI-cmy/maturion-foreman-governance#1257) | Updated: 2026-03-02 (v1.4.0 — INV-801 to INV-803 Zero-Severity-Tolerance invariants; summary table row added)  
 **Purpose**: Tier-2 operational checklist for IAA assurance sessions. Load this at session start alongside Tier-1 canon.
 
 ---
@@ -126,6 +126,18 @@ At every assurance invocation:
 
 ---
 
+## SECTION 9 — Zero-Severity-Tolerance Invariants (New — v1.4.0)
+
+*These invariants were added in v1.4.0 to operationalise the Zero-Severity-Tolerance policy introduced in INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0.*
+
+| ID | Invariant | Check Method | Fail Trigger |
+|----|-----------|-------------|-------------|
+| **INV-801** | **Any finding of any kind — regardless of perceived severity — triggers REJECTION-PACKAGE** | After completing all phase checks, confirm zero findings exist before issuing ASSURANCE-TOKEN | Any finding present when ASSURANCE-TOKEN is being considered |
+| **INV-802** | **Assurance artifact contains no prohibited diminutive language for an open finding** | Scan artifact for prohibited phrases: "minor", "trivial", "cosmetic", "small", "negligible", "low-impact", "not critical", "can be ignored", "does not affect", "soft finding" | Any prohibited phrase applied to a finding that is being passed |
+| **INV-803** | **Zero-Severity-Tolerance policy file loaded** | Confirm `IAA_ZERO_SEVERITY_TOLERANCE.md` was loaded as Tier-2 knowledge at session start | File not loaded or not cited in session memory |
+
+---
+
 ## Checklist Summary Table
 
 Use this summary table for quick gate tallying in the Phase 5 assurance invocation artifact:
@@ -140,6 +152,7 @@ Use this summary table for quick gate tallying in the Phase 5 assurance invocati
 | Agent Integrity | INV-501 to INV-504 | Any = Agent Integrity FAIL |
 | Learning Loop | INV-601 to INV-608 | Any = Session INCOMPLETE |
 | Traceability | INV-701 to INV-704 | Any = Phase 3/4 FAIL |
+| Zero-Severity-Tolerance | INV-801 to INV-803 | Any = REJECTION-PACKAGE |
 
 ---
 
@@ -184,7 +197,8 @@ corresponding INV-XXX invariant(s).
 | 1.1.0 | 2026-02-26 | Added recurring shortfall items (INV-106, INV-206, INV-207, INV-306, INV-307, INV-405 to INV-409, INV-504, INV-601 to INV-605, INV-701 to INV-704) per IAA self-improvement issue |
 | 1.2.0 | 2026-02-27 | Added INV-606 (REJECTION-PACKAGE delivery and acknowledgement) and INV-607 (resubmission gate enforcement) per feedback-loop closure issue |
 | 1.3.0 | 2026-03-02 | Added INV-608 (Resubmission Protocol full execution invariant — CORE-017 equivalent). Added CORE-XXX cross-reference appendix for ISMS v2.0.0 parity. Issue: APGI-cmy/maturion-foreman-governance#1257. |
+| 1.4.0 | 2026-03-02 | Added SECTION 9 — Zero-Severity-Tolerance Invariants (INV-801 to INV-803). Updated authority to INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0. Updated summary table. Issue: Enforce zero-severity-tolerance — any finding triggers rejection. Authority: CS2. |
 
 ---
 
-*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0*
+*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 | LIVING_AGENT_SYSTEM.md v6.2.0*

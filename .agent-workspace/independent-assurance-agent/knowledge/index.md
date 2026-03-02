@@ -1,6 +1,6 @@
 # IAA Knowledge Index
 **Agent**: independent-assurance-agent  
-**Version**: 1.2.0  
+**Version**: 1.3.0  
 **Updated**: 2026-03-02
 
 ## Tier 1 — Constitutional Knowledge (load and verify SHA256)
@@ -16,6 +16,7 @@
 - `iaa-category-overlays.md` v1.3.0 — Delivery-type overlays (A–G)
 - `iaa-trigger-table.md` v1.0.0 — Operational trigger table (PR category → IAA required, overlays)
 - `FAIL-ONLY-ONCE.md` v1.4.0 — Breach prevention registry (read at every session start)
+- `IAA_ZERO_SEVERITY_TOLERANCE.md` v1.0.0 — Zero-Severity-Tolerance policy (any finding triggers REJECTION-PACKAGE; prohibited language table; machine-readable logic)
 
 ## Tier 3 — Session Knowledge (ephemeral)
 - PR context, delegation package, repository state for the specific assurance session

@@ -1360,15 +1360,16 @@
     },
     {
       "filename": "INDEPENDENT_ASSURANCE_AGENT_CANON.md",
-      "version": "1.0.0",
-      "file_hash": "ca381e11b885704ecd01ff0cddae38d092de89de4d1db1a0ea86291aebf15118",
-      "file_hash_sha256": "ca381e11b885704ecd01ff0cddae38d092de89de4d1db1a0ea86291aebf15118",
+      "version": "1.1.0",
+      "file_hash": "f5d95bc3e877c8177e5742a0fd06f298a97db6ee5836bc8edaa0d203d1615f6b",
+      "file_hash_sha256": "f5d95bc3e877c8177e5742a0fd06f298a97db6ee5836bc8edaa0d203d1615f6b",
       "effective_date": "2026-02-24",
-      "description": "Defines the Independent Assurance Agent (IAA) class: role, hard-trigger authority, independence requirements, five-phase delivery proof protocol, binary output (ASSURANCE-TOKEN / REJECTION-PACKAGE), and trigger table.",
+      "amended_date": "2026-03-02",
+      "description": "Defines the Independent Assurance Agent (IAA) class: role, hard-trigger authority, independence requirements, five-phase delivery proof protocol, binary output (ASSURANCE-TOKEN / REJECTION-PACKAGE), and trigger table. v1.1.0: Zero-Severity-Tolerance policy added.",
       "type": "canon",
       "path": "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
       "layer_down_status": "INTERNAL",
-      "provenance": "CS2-authorised via issue: Create Governance Canon: Independent Assurance Agent (IAA)"
+      "provenance": "CS2-authorised via issue: Create Governance Canon: Independent Assurance Agent (IAA); v1.1.0 amendment: Enforce zero-severity-tolerance — any finding triggers rejection"
     },
     {
       "filename": "INITIALIZATION_COMPLETENESS_GATE.md",
