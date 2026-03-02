@@ -14,6 +14,8 @@ on:
       - 'governance/CONSUMER_REPO_REGISTRY.json'
       - 'governance/CONSTITUTION.md'
       - 'BUILD_PHILOSOPHY.md'
+      - '.github/agents/**'
+      - '.github/INTEGRITY_INDEX.md'
       - '.github/workflows/governance-layer-down-dispatch.yml'
 
   workflow_dispatch:
