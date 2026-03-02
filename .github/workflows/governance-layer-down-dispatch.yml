@@ -15,7 +15,7 @@ on:
       - 'governance/CONSTITUTION.md'
       - 'BUILD_PHILOSOPHY.md'
       - '.github/agents/**'
-      - '.github/INTEGRITY_INDEX.md'
+      - 'governance/quality/agent-integrity/**'
       - '.github/workflows/governance-layer-down-dispatch.yml'
 
   workflow_dispatch:
