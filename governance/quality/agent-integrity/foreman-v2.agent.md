@@ -23,7 +23,7 @@ governance:
   degraded_action: escalate_and_block_merge
   execution_identity:
     name: "Maturion Bot"
-    secret: ENV_SECRET_NOT_STORED_IN_REPO
+    secret: "MATURION_BOT_TOKEN"
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -1179,7 +1179,75 @@ echo "🔍 Environment: SAFE_FOR_HANDOVER"
 
 **Commentary**: Automated session closure per Living Agent System protocol.
 
-### 4.3 Builder QA & Compliance Check (FM_H)
+### 4.3 Pre-Handover Merge Gate Parity Check (FM_H — BLOCKING)
+
+**Script**: Run all merge gate checks locally before opening the PR
+
+> **Reference**: See `governance/canon/AGENT_HANDOVER_AUTOMATION.md` §4.3 for the full canonical template and merge gate parity rules.
+
+```bash
+#!/bin/bash
+# FM Handover - Pre-Handover Merge Gate Parity Check
+# Priority: FM_H  — BLOCKING: do NOT open PR until all checks PASS
+
+echo "🔍 PRE-HANDOVER MERGE GATE PARITY CHECK (BLOCKING)"
+
+GATE_FAILURES=()
+
+# merge-gate/verdict — all tests must pass
+echo "  Running: merge-gate/verdict"
+if [ "${FAILED_TESTS:-0}" -gt 0 ]; then
+  GATE_FAILURES+=("merge-gate/verdict: FAIL (${FAILED_TESTS} failing tests)")
+  echo "  ❌ merge-gate/verdict: FAIL"
+else
+  echo "  ✅ merge-gate/verdict: PASS"
+fi
+
+# governance/alignment — validate canon hashes locally
+echo "  Running: governance/alignment"
+if [ -f ".github/scripts/validate-canon-hashes.sh" ]; then
+  bash .github/scripts/validate-canon-hashes.sh > /dev/null 2>&1
+  ALIGNMENT_RESULT=$?
+  if [ "${ALIGNMENT_RESULT}" -ne 0 ]; then
+    GATE_FAILURES+=("governance/alignment: FAIL")
+    echo "  ❌ governance/alignment: FAIL"
+  else
+    echo "  ✅ governance/alignment: PASS"
+  fi
+else
+  echo "  ⚠️  governance/alignment: SKIPPED — .github/scripts/validate-canon-hashes.sh not found"
+  echo "     Confirm whether absence of this script is expected before opening the PR."
+fi
+
+# stop-and-fix/enforcement — verify no open RCA blockers
+echo "  Running: stop-and-fix/enforcement"
+OPEN_BLOCKERS=$(find .agent-workspace -name "blocker-*.md" 2>/dev/null | wc -l)
+if [ "${OPEN_BLOCKERS}" -gt 0 ]; then
+  GATE_FAILURES+=("stop-and-fix/enforcement: FAIL (${OPEN_BLOCKERS} open blocker(s))")
+  echo "  ❌ stop-and-fix/enforcement: FAIL (${OPEN_BLOCKERS} open blocker(s))"
+else
+  echo "  ✅ stop-and-fix/enforcement: PASS"
+fi
+
+if [ ${#GATE_FAILURES[@]} -gt 0 ]; then
+  echo ""
+  echo "❌ [FM_H] PRE-HANDOVER GATE PARITY FAILED — PR MUST NOT BE OPENED"
+  echo "Failing gates:"
+  for f in "${GATE_FAILURES[@]}"; do echo "  - ${f}"; done
+  echo ""
+  echo "ACTION REQUIRED: Fix all failing gates above, then re-run this check from step 1."
+  echo "Opening a PR on a local gate failure is PROHIBITED (same class as pushing to main)."
+  exit 1
+fi
+
+echo ""
+echo "✅ [FM_H] ALL MERGE GATE PARITY CHECKS PASSED"
+echo "✅ [FM_H] Agent is cleared to open the PR"
+```
+
+**Commentary**: This check is **BLOCKING**. If any gate fails the agent **stops, fixes the issue, and re-runs from step 1**. Opening a PR on a local gate failure is PROHIBITED — same class as pushing directly to main.
+
+### 4.4 Builder QA & Compliance Check (FM_H)
 
 **Script**: Verify builder compliance, reassign if needed
 
