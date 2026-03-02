@@ -55,6 +55,7 @@ jobs:
             echo "manual dispatch - all canon eligible" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
             echo "agent_files_changed=false" >> $GITHUB_OUTPUT
+            printf 'agent_files_list<<EOF\nEOF\n' >> $GITHUB_OUTPUT
           else
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
             LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^(governance/(canon|schemas|templates|policy|runbooks|executable)/|governance/(CONSUMER_REPO_REGISTRY\.json|CONSTITUTION\.md)|BUILD_PHILOSOPHY\.md|\.github/agents/)' || true)
@@ -64,8 +65,11 @@ jobs:
             AGENT_FILES=$(echo "$CHANGED_FILES" | grep -E '^\.github/agents/.*\.md$' || true)
             if [ -n "$AGENT_FILES" ]; then
               echo "agent_files_changed=true" >> $GITHUB_OUTPUT
+              AGENT_FILES_LIST=$(echo "$AGENT_FILES" | sed 's/^/  - /')
+              printf 'agent_files_list<<EOF\n%s\nEOF\n' "$AGENT_FILES_LIST" >> $GITHUB_OUTPUT
             else
               echo "agent_files_changed=false" >> $GITHUB_OUTPUT
+              printf 'agent_files_list<<EOF\nEOF\n' >> $GITHUB_OUTPUT
             fi
           fi
 
@@ -116,10 +120,19 @@ jobs:
           done <<< "$CHANGED_FILES"
           [ -z "$FILES_LIST" ] && FILES_LIST="No PUBLIC_API governance files changed in this push."
 
-          AGENT_SECTION=""
-          [ "$AGENT_FILES_CHANGED" = "true" ] && AGENT_SECTION="CS2 APPROVAL REQUIRED: Agent contract files changed. Ripple PR must be DRAFT. Only CS2 may merge."
+          AGENT_FILES_LIST="${{ steps.changes.outputs.agent_files_list }}"
+          if [ -n "$AGENT_FILES_LIST" ]; then
+            AGENT_MANIFEST="<!-- AGENT-FILE-MANIFEST
+agent_files_in_payload:
+${AGENT_FILES_LIST}
+-->"
+          else
+            AGENT_MANIFEST="<!-- AGENT-FILE-MANIFEST
+agent_files_in_payload: []
+-->"
+          fi
 
-          export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_SECTION ISSUE_TEMPLATE
+          export COMMIT_SHA COMMIT_MESSAGE TIMESTAMP SHORT_SHA FILES_LIST AGENT_MANIFEST ISSUE_TEMPLATE
 
           echo "$CONSUMERS" | while IFS=$'\t' read -r repo liaison; do
             [ -z "$repo" ] && continue

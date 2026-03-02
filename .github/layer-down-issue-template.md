@@ -24,7 +24,7 @@ Per **LAYERING_AND_RIPPLING_AUTOMATION_STRATEGY.md v1.0.0 Section 3.2**:
    - **FM / Governance-Liaison** if only non-agent files changed
 6. Merge after approval
 
-{{AGENT_SECTION}}
+{{AGENT_MANIFEST}}
 
 ### Auto-Close Eligibility
 

@@ -13,7 +13,7 @@ replacements = {
     '{{TIMESTAMP}}':      os.environ.get('TIMESTAMP', ''),
     '{{COMMIT_MESSAGE}}': os.environ.get('COMMIT_MESSAGE', ''),
     '{{FILES_LIST}}':     os.environ.get('FILES_LIST', ''),
-    '{{AGENT_SECTION}}':  os.environ.get('AGENT_SECTION', ''),
+    '{{AGENT_MANIFEST}}':  os.environ.get('AGENT_MANIFEST', ''),
 }
 with open(template_path, 'r') as f:
     body = f.read()
