@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-03-01",
-  "total_canons": 189,
+  "last_updated": "2026-03-02",
+  "total_canons": 190,
   "generation_timestamp": "2026-02-21T16:30:00Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
@@ -1049,6 +1049,19 @@
       "path": "governance/canon/FM_PREAUTH_CHECKLIST_CANON.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "6f48a49354822e12cfcfb3c2a9b2fc01db4984efb8a1f3bea6057bf49f5dec17"
+    },
+    {
+      "filename": "FM_QUALITY_PROTOCOL_ENHANCED_SOP.md",
+      "version": "1.0.0",
+      "file_hash": "8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a",
+      "effective_date": "2026-03-02",
+      "description": "Tier-3 governance SOP defining two mandatory enhancements to the Foreman Quality Protocol (QP): (1) formal Builder Referral with trackable artifacts and REFERRAL_INDEX for every QP FAIL verdict, and (2) Progress Tracker Enforcement (QP-FAIL-007) requiring tracker currency before merge gate release. Supplements foreman-v2 Quality Professor mode (Mode 3) without modifying agent contracts.",
+      "type": "canon",
+      "path": "governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "8f39db0e33ac1d7523b9b21bae6a79ca03b9e3f8a7294ce0c5a1c7d18e15c54a",
+      "canonical_version": "1.0.0",
+      "layer_up_status": "NONE"
     },
     {
       "filename": "FM_RUNTIME_ENFORCEMENT_AND_AWARENESS_MODEL.md",

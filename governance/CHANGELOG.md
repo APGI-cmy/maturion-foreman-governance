@@ -64,6 +64,60 @@ Each entry follows this structure:
 
 ## Change History
 
+### [FM-QP-ENHANCED-SOP-2026-03-02] - 2026-03-02 - NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator
+**Approved By**: CS2 (Johan Ras) — issue: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement
+**Effective Date**: 2026-03-02
+**Layer-Down Status**: PUBLIC_API — propagates to all consumer repos with foreman agents
+
+**Summary**: Added enhanced Quality Protocol (QP) governance SOP for foreman-v2, establishing
+(1) formal Builder Referral artifacts with open-referral tracking when Quality Professor
+verdict is FAIL, and (2) mandatory Progress Tracker Enforcement (QP-FAIL-007) gate requiring
+tracker currency before merge gate release. Agent contracts are NOT modified.
+
+**Changes Made**:
+1. **(NEW)** `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` v1.0.0:
+   - Tier-3 governance SOP; layer_down_status: PUBLIC_API
+   - Section 3: Builder Referral Protocol — formal artifact, REFERRAL_INDEX, closure protocol
+   - Section 4: Progress Tracker Enforcement — QP-FAIL-007, gate conditions, enforcement flow
+   - Appendices A and B: quick-reference flow diagrams for both enhancements
+2. **(NEW)** `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md` v1.0.0:
+   - Tier 2 operational quick reference for foreman-v2 agents
+   - Summarises failure codes QP-FAIL-001..007, referral artifacts, tracker enforcement
+3. **(UPDATED)** `.agent-workspace/foreman-v2/knowledge/index.md`:
+   - Registered `FM_QP_ENHANCED_QUICK_REFERENCE.md` as required Tier 2 reading
+4. **(UPDATED)** `governance/CANON_INVENTORY.json`:
+   - Added `FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` entry; total_canons: 189 → 190
+5. **(UPDATED)** `GOVERNANCE_ARTIFACT_INVENTORY.md`:
+   - Added row for new SOP and Tier 2 stub
+
+**Affected Artifacts**:
+- `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` (NEW)
+- `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md` (NEW)
+- `.agent-workspace/foreman-v2/knowledge/index.md` (UPDATED)
+- `governance/CANON_INVENTORY.json` (UPDATED — entry added, total_canons bumped)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED)
+
+**Migration Required**: NO
+**Migration Guidance**: N/A — purely additive. Existing Quality Professor mode continues to
+operate; these enhancements define additional artifact-creation steps and a new failure code
+(QP-FAIL-007) that foreman agents MUST implement on future Quality Professor sessions.
+
+**Rationale**: The existing Quality Professor mode issued remediation orders in script output
+but produced no persistent, trackable governance artifact for rejections. Progress trackers
+were not consistently checked during QP. This SOP closes both gaps with minimal scope change
+(no agent contract modifications required).
+
+**Impact**:
+- Foreman agents: MUST create Builder Referral Artifacts on every QP FAIL; MUST check progress
+  tracker currency as a QP gate item; MUST load `FM_QP_ENHANCED_QUICK_REFERENCE.md` at induction
+- Consumer repos: Layer-down required — local QP SOPs and QA checklists should reference this SOP
+- Builders: No change to submission process; referral artifacts are produced by FM, not builders
+- Merge gates: No workflow changes; enforcement is at FM operational level
+
+**References**: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement
+
 ### [AAWP-V0.3.0-2026-03-01] - 2026-03-01 - NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-liaison-isms-agent (via governance-repo-administrator, copilot/update-aawp-to-v0-3-0)
