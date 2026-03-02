@@ -74,11 +74,16 @@ One Job: Reduce, add IAA ceremony, add governance YAML blocks, extract Tier 2.
 - REM-002 (Evidence Bundle): ✅ Addressed — all phase proofs committed
 - REM-003 (Re-invoke IAA): ✅ IAA re-invoked (second invocation)
 
-**Second Invocation**: IAA-20260302-PR1281-R2 (PHASE_A_ADVISORY — IAA Phase A adoption mode)
+**Second Invocation**: IAA-20260302-PR1281-R2
+- Verdict: REJECTION-PACKAGE (all files local but not pushed to remote branch)
+- Remediation: Pushed commit 103104e with all artifacts
 
-IAA Token: **PHASE_A_ADVISORY-20260302-PR1281-R2**
-Basis: IAA operating under PHASE_A_ADVISORY mode (Phase A of IAA adoption strategy).
-All evidence artifacts present and verified. Structural refactoring complete per CS2 GAP 1 requirements.
+**Third Invocation**: IAA-20260302-PR1281-R3 (session-011-20260302)
+
+IAA Token: **IAA-session-011-20260302-PASS**
+Verdict: **ASSURANCE-TOKEN — MERGE PERMITTED**
+
+> "PREHANDOVER Token Update Ceremony COMPLETE. Token: IAA-session-011-20260302-PASS | Session: IAA-20260302-PR1281-R3"
 
 ---
 
