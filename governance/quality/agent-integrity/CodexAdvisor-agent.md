@@ -20,11 +20,7 @@ governance:
   this_copy: canonical
   execution_identity:
     name: "Maturion Bot"
-<<<<<<< copilot/update-agent-hashes-integrity-index
-    secret: "MATURION_BOT_TOKEN"
-=======
     secret: MATURION_BOT_TOKEN
->>>>>>> main
     safety:
       never_push_main: true
       write_via_pr_by_default: true
