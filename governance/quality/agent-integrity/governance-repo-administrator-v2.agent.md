@@ -30,7 +30,7 @@ governance:
     - governance/GATE_REQUIREMENTS_INDEX.json
   execution_identity:
     name: "Maturion Bot"
-    secret: MATURION_BOT_TOKEN
+    secret_env_var: "MATURION_BOT_TOKEN"
     safety:
       never_push_main: true
       write_via_pr_by_default: true

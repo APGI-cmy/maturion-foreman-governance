@@ -1,9 +1,9 @@
 # IAA FAIL-ONLY-ONCE Registry
 
 **Agent**: independent-assurance-agent
-**Version**: 1.4.0
+**Version**: 1.5.0
 **Seeded**: 2026-02-26
-**Last Updated**: 2026-03-02
+**Last Updated**: 2026-03-03
 **Authority**: IAA Canon (INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0) | LIVING_AGENT_SYSTEM.md v6.2.0 | CS2 (Johan Ras)
 **Update Protocol**: After every breach RCA, the IAA appends a new rule + breach log entry to this registry (append-only; no deletions or gaps). Earlier registry formats/versions are preserved in version control / legacy registry files. Never remove. Never skip.
 **Preflight**: IAA reads this file in full and self-attests against every rule at every session start before any assurance work begins.
@@ -414,7 +414,47 @@ Named tokens are structurally indistinguishable from fabricated tokens: they can
 
 ---
 
-## Adding New Rules
+### A-021 — Secret Field Naming: `secret:` Is Prohibited — Use `secret_env_var:` Only
+
+**Triggered by**: APGI-cmy/maturion-foreman-governance#1290 — Agent contract files in `.github/agents/`
+used `secret: MATURION_BOT_TOKEN` in their `execution_identity` YAML block. Several CI secret scanner
+patterns (e.g., `secret\s*[:=]\s*['\"][^'\"]{16,}['\"]`) flag any `secret:` field whose value is a
+quoted string of 16+ characters — which includes quoted secret variable names. Additionally, using the
+generic `secret:` key rather than `secret_env_var:` violates the convention established in the ISMS
+consumer repo and can cause secret scanner false positives or true positives if a value is accidentally
+inlined.
+
+**Incident reference**: APGI-cmy/maturion-foreman-governance#1290 | job 65529138120
+**Root cause**: Agent contracts used `secret: MATURION_BOT_TOKEN` instead of the safe
+`secret_env_var: "MATURION_BOT_TOKEN"` convention. A `secret:` key whose value is a quoted token name
+of sufficient length triggers GitHub's and other secret scanners.
+
+**Permanent Rule**:
+For every agent contract file (`.github/agents/*.md`) and delivery artifact reviewed by the IAA:
+1. Scan all YAML blocks for any field matching the key `secret:` (case-insensitive).
+2. If found: FAIL. The field name `secret:` is PROHIBITED in agent contracts.
+3. The only permitted field name for referencing a secret variable is `secret_env_var:`.
+4. The value of `secret_env_var:` MUST be the environment variable name (e.g., `"MATURION_BOT_TOKEN"`),
+   never an actual secret value.
+5. If any field in any artifact contains what appears to be an actual secret value (random-looking
+   high-entropy string, API key, token value), FAIL immediately and flag for CS2.
+
+**Check in Phase 3 (applies to all agent contract reviews)**:
+> FAIL-ONLY-ONCE A-021 (secret field naming check):
+> 1. Scan the PR diff and all agent contract files for lines matching `secret\s*:` (YAML key pattern).
+> 2. If any line matches `secret:` as a YAML key (not as part of a prose comment): FAIL.
+>    Finding: "Agent contract uses prohibited `secret:` field. Must use `secret_env_var:` instead."
+>    Fix: Rename `secret:` → `secret_env_var:` in all YAML blocks of all agent contract files.
+>    Update reference copies in `governance/quality/agent-integrity/` and recompute SHA256 hashes.
+> 3. Scan for any high-entropy string values (potential actual secret leak): if found → FAIL immediately.
+>    Finding: "Suspected secret value detected in artifact. Escalate to CS2 immediately."
+> 4. If only `secret_env_var:` is used and values are env-var names → PASS.
+
+**Status**: ACTIVE — enforced on every agent contract and delivery artifact review
+
+---
+
+
 
 When a new governance failure pattern is identified during a session (learning_notes in session
 memory), IAA adds a new entry to this file following the format above. Each new rule:
@@ -436,6 +476,7 @@ All updates to this file must be committed as part of the session bundle for tha
 | 1.2.0 | 2026-02-28 | Added A-015, A-016, A-017 (Tier 2 patch rule, cross-PR token reuse, REJECTION-as-PASS rule) |
 | 1.3.0 | 2026-03-01 | Fixed duplicate IDs: former A-016 (Trigger Table Misapplication) → A-018; former A-004 (Post-Merge Retrospective) → A-019. Added renumbering note and version history. Restored deprecated Section B notice for B-rule resolvability. Issue: APGI-cmy/maturion-foreman-governance#1252. |
 | 1.4.0 | 2026-03-02 | Added A-020 (Named token prohibition — `IAA-session-NNN-YYYYMMDD-PASS` format mandatory; named tokens prohibited). Issue: maturion-isms#779. CS2 instruction via APGI-cmy/maturion-foreman-governance#1260. |
+| 1.5.0 | 2026-03-03 | Added A-021 (Secret field naming — `secret:` prohibited in agent contracts; `secret_env_var:` required). Issue: APGI-cmy/maturion-foreman-governance#1290. |
 
 ---
 

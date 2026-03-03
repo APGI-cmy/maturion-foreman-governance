@@ -20,7 +20,7 @@ governance:
   this_copy: canonical
   execution_identity:
     name: "Maturion Bot"
-    secret: "[REDACTED]"
+    secret_env_var: "MATURION_BOT_TOKEN"
     safety:
       never_push_main: true
       write_via_pr_by_default: true
