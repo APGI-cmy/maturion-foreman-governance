@@ -19,7 +19,7 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 | `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — builder provisions + job_environment propagation) |
 | `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `e601482d5409adaa40416e779bb1dd0214a0904ef826cc9a4c1959d7112dd070` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — builder-class invocation rules + structured halt_conditions) |
 | `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `80579a0ca49164a027ff99408d428c54105a6ba5b847f2514a261dc7189bac12` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — job_environment propagation) |
-| `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `46529935af1543393bba0f71bca85060e2be54ce60a2d6ee6b9cb6db0e298a28` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — job_environment propagation) |
+| `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `dda51f5261dc2021ab4b6b2ff295ff406087aacafbc9c8afe70d505ce63849dc` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — job_environment propagation; secret redacted) |
 
 ---
 
