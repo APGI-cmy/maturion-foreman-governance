@@ -64,6 +64,84 @@ Each entry follows this structure:
 
 ## Change History
 
+## LAYER-DOWN-DEDUP-2026-03-03
+
+**Type**: Governance workflow deduplication  
+**Authority**: CS2 (Johan Ras)  
+**Date**: 2026-03-03  
+**PR**: #1292
+
+### Root Cause
+`governance-layer-down-dispatch.yml` contained two independent notification steps per governance push:
+1. Direct issue creation via `gh api repos/$repo/issues` (Signal 1 — canonical)
+2. `repository_dispatch: governance_ripple` event dispatch (Signal 2 — legacy)
+
+Consumer repos handled both signals, producing 2–3 duplicate layer-down issues and 1–2 PRs per commit.
+
+### Fix
+Removed the `Dispatch governance_ripple to consumer repos` step entirely. Signal 1 (direct issue creation) is the sole, canonical notification mechanism. Signal 2 was a legacy addition that was never retired after the issue-based design superseded the auto-PR pattern.
+
+### Consumer-Side Impact
+- `maturion-isms` `governance-ripple-sync.yml` will no longer receive `repository_dispatch: governance_ripple` events from this repo.
+- The `governance-ripple-sync.yml` workflow in `maturion-isms` can be archived/disabled as a follow-up if no other source dispatches `governance_ripple` events to it.
+- All layer-down notifications now flow exclusively through the issue chain: `[Layer-Down] issue → ripple-integration.yml → PR`.
+
+---
+
+### [FM-QP-ENHANCED-SOP-2026-03-02] - 2026-03-02 - NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator
+**Approved By**: CS2 (Johan Ras) — issue: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement
+**Effective Date**: 2026-03-02
+**Layer-Down Status**: PUBLIC_API — propagates to all consumer repos with foreman agents
+
+**Summary**: Added enhanced Quality Protocol (QP) governance SOP for foreman-v2, establishing
+(1) formal Builder Referral artifacts with open-referral tracking when Quality Professor
+verdict is FAIL, and (2) mandatory Progress Tracker Enforcement (QP-FAIL-007) gate requiring
+tracker currency before merge gate release. Agent contracts are NOT modified.
+
+**Changes Made**:
+1. **(NEW)** `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` v1.0.0:
+   - Tier-3 governance SOP; layer_down_status: PUBLIC_API
+   - Section 3: Builder Referral Protocol — formal artifact, REFERRAL_INDEX, closure protocol
+   - Section 4: Progress Tracker Enforcement — QP-FAIL-007, gate conditions, enforcement flow
+   - Appendices A and B: quick-reference flow diagrams for both enhancements
+2. **(NEW)** `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md` v1.0.0:
+   - Tier 2 operational quick reference for foreman-v2 agents
+   - Summarises failure codes QP-FAIL-001..007, referral artifacts, tracker enforcement
+3. **(UPDATED)** `.agent-workspace/foreman-v2/knowledge/index.md`:
+   - Registered `FM_QP_ENHANCED_QUICK_REFERENCE.md` as required Tier 2 reading
+4. **(UPDATED)** `governance/CANON_INVENTORY.json`:
+   - Added `FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` entry; total_canons: 189 → 190
+5. **(UPDATED)** `GOVERNANCE_ARTIFACT_INVENTORY.md`:
+   - Added row for new SOP and Tier 2 stub
+
+**Affected Artifacts**:
+- `governance/canon/FM_QUALITY_PROTOCOL_ENHANCED_SOP.md` (NEW)
+- `.agent-workspace/foreman-v2/knowledge/FM_QP_ENHANCED_QUICK_REFERENCE.md` (NEW)
+- `.agent-workspace/foreman-v2/knowledge/index.md` (UPDATED)
+- `governance/CANON_INVENTORY.json` (UPDATED — entry added, total_canons bumped)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (UPDATED)
+
+**Migration Required**: NO
+**Migration Guidance**: N/A — purely additive. Existing Quality Professor mode continues to
+operate; these enhancements define additional artifact-creation steps and a new failure code
+(QP-FAIL-007) that foreman agents MUST implement on future Quality Professor sessions.
+
+**Rationale**: The existing Quality Professor mode issued remediation orders in script output
+but produced no persistent, trackable governance artifact for rejections. Progress trackers
+were not consistently checked during QP. This SOP closes both gaps with minimal scope change
+(no agent contract modifications required).
+
+**Impact**:
+- Foreman agents: MUST create Builder Referral Artifacts on every QP FAIL; MUST check progress
+  tracker currency as a QP gate item; MUST load `FM_QP_ENHANCED_QUICK_REFERENCE.md` at induction
+- Consumer repos: Layer-down required — local QP SOPs and QA checklists should reference this SOP
+- Builders: No change to submission process; referral artifacts are produced by FM, not builders
+- Merge gates: No workflow changes; enforcement is at FM operational level
+
+**References**: [Governance] Upgrade foreman quality protocol: builder referral & progress tracker enforcement
+
 ### [AAWP-V0.3.0-2026-03-01] - 2026-03-01 - NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-liaison-isms-agent (via governance-repo-administrator, copilot/update-aawp-to-v0-3-0)

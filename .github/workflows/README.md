@@ -136,3 +136,28 @@ Application repositories with actual code builds should:
 
 ### Templates
 - `qiel-template.yml.example` - QIEL workflow template for downstream projects
+
+---
+
+## Layer-Down Dispatch — Single-Signal Design
+
+**Canonical design** (as of 2026-03-03): Each governance push produces **exactly one notification per consumer repo** — a direct GitHub issue creation via `gh api repos/$repo/issues`.
+
+### Why There Is No `repository_dispatch` Step
+
+A legacy `Dispatch governance_ripple to consumer repos` step was removed (2026-03-03) because:
+1. Consumer repos handled BOTH the direct issue AND the `repository_dispatch` event, producing 2–3 duplicate issues per push.
+2. The issue-based notification is the canonical protocol per `CROSS_REPOSITORY_LAYER_DOWN_PROTOCOL.md`.
+3. The `repository_dispatch` path was never officially retired after the issue-based design was adopted.
+
+**Do not re-add a `repository_dispatch` step to this workflow** without first disabling the `governance-ripple-sync.yml` handler in all consumer repos and auditing for duplicate issue creation.
+
+### Current Flow
+
+```
+governance push to main
+  → governance-layer-down-dispatch.yml fires
+    → Creates [Layer-Down] Propagate Governance Changes issue in each consumer repo
+      → consumer repo: ripple-integration.yml fires (triggered by governance+layer-down labels)
+        → alignment runs → ripple PR created (DRAFT if agent files changed, auto-merge otherwise)
+```

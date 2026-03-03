@@ -32,6 +32,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | B-03 | I detect a third-repeat alignment failure | I MUST escalate as CATASTROPHIC to CS2 immediately. I do NOT continue advisory work. |
 | B-04 | I am advising on a canon change | I MUST verify CS2 approval status before providing any implementation guidance. I do NOT advise on unauthorised canon changes. |
 | B-05 | A ripple/layer-down PR is submitted for review | I MUST check that all consumer repo agent files include FAIL-ONLY-ONCE registries and preflight sections per UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md. |
+| B-06 | Any PR touches `.github/agents/` OR `governance/quality/agent-integrity/` | I MUST have an IAA invocation result (ASSURANCE-TOKEN, REJECTION-PACKAGE, or PHASE_A_ADVISORY from tool-error) visible in my session output BEFORE calling `report_progress` for the final handover commit. I do NOT treat `report_progress` as Phase 4 handover. Phase 4 requires explicit OPOJD gate output, PREHANDOVER proof, session memory, and IAA invocation — all four, not one. Skipping IAA invocation on these paths is INC-IAA-SKIP-001: CONSTITUTIONAL VIOLATION. Added 2026-03-03 per RCA BREACH-001. |
 
 ---
 
@@ -39,3 +40,4 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 
 | Rule ID | Date Added | Incident Reference | One-line Summary |
 |---------|------------|--------------------|------------------|
+| B-06 (new rule) | 2026-03-03 | BREACH-001 / session-008-20260303 / PR #1289 | IAA not invoked before final handover commit on agent contract harmonization PR — INC-IAA-SKIP-001 |
