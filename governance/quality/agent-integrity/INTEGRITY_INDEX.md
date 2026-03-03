@@ -1,7 +1,7 @@
 # Agent Integrity Index
 
 **Status**: CANONICAL | **Authority**: CS2 only  
-**Date**: 2026-03-02  
+**Date**: 2026-03-03  
 **Maintained by**: IAA / CS2
 
 ---
@@ -16,10 +16,10 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 
 | Agent Contract | Authoritative Path | SHA256 (Baseline) | Last Updated | Updated By |
 |---|---|---|---|---|
-| `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `5227cdff9dab03ab801145a5b4cddb9bd8a9b88275953c1ffed0de8a49ec21c4` | 2026-03-02 | CS2 (ESC-002 follow-up — APGI-cmy/maturion-foreman-governance#1261, session-005-20260302) |
-| `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `adf127db3a3e25b9e272eb4615e6d296865a1edaf58b57cabdc255334b7c4468` | 2026-03-02 | CS2 (ESC-002 follow-up — APGI-cmy/maturion-foreman-governance#1261, session-005-20260302) |
-| `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `6db19cffb9bc0aff4c548577fd2148dd2c4a3d2e00812a1c8e5e4fa5a8207670` | 2026-03-02 | CS2 (ESC-002 follow-up — APGI-cmy/maturion-foreman-governance#1261, session-005-20260302) |
-| `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `5580e2c4281366f5a4cddeebc9f7a9dbb715b11be8d83664d4d7823301313977` | 2026-03-02 | CS2 (authorized via issue: APGI-cmy/maturion-foreman-governance#1257 — GOV-IAA upgrade to v2.0.0) |
+| `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — builder provisions + job_environment propagation) |
+| `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `e601482d5409adaa40416e779bb1dd0214a0904ef826cc9a4c1959d7112dd070` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — builder-class invocation rules + structured halt_conditions) |
+| `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `80579a0ca49164a027ff99408d428c54105a6ba5b847f2514a261dc7189bac12` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — job_environment propagation) |
+| `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `dda51f5261dc2021ab4b6b2ff295ff406087aacafbc9c8afe70d505ce63849dc` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — job_environment propagation; secret redacted) |
 
 ---
 
