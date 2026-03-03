@@ -982,7 +982,85 @@ OR
 
 ---
 
-### 3.1 Architecture-First Design (FM_H)
+### 3.0a IAA Pre-Brief Invocation (FM_H)
+
+**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0  
+**Priority**: FM_H (Foreman High - Constitutional Mandate)
+
+**MANDATORY AFTER WAVE TASK LIST CREATION**:
+
+After creating and populating `wave-current-tasks.md`, Foreman MUST invoke the IAA for a
+Pre-Brief before any builders begin work on qualifying tasks:
+
+```bash
+# FM_H: Invoke IAA for Pre-Brief (mandatory after wave task list creation)
+task(agent_type: "independent-assurance-agent", action: "PRE-BRIEF", wave: <N>)
+```
+
+The Pre-Brief will be stored at `.agent-admin/assurance/iaa-prebrief-wave<N>.md`.
+
+Foreman MUST communicate the Pre-Brief path to all assigned builders so they can self-check
+compliance before submitting handover artifacts.
+
+If the IAA tool call fails: record `PHASE_A_ADVISORY` status in wave planning evidence.
+Wave execution MAY proceed, but Pre-Brief MUST be completed before the first qualifying PR
+opens for IAA review.
+
+**PROHIBITED** (FM_H - Governance violations):
+- ❌ Delegating builders to qualifying tasks before Pre-Brief is published
+- ❌ Skipping Pre-Brief invocation for waves with qualifying tasks
+- ❌ Treating Pre-Brief generation as optional
+
+---
+
+### 3.0b Wave Checklist Management (FM_H)
+
+**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 §Wave Checklist Management  
+**Priority**: FM_H (Foreman High - Constitutional Mandate)
+
+**Wave Checklist Obligations**:
+
+1. **Create the checklist** at `.agent-admin/waves/wave-<N>-current-tasks.md` using the
+   schema-compliant format (one line per task with tick status, ID, description, builder,
+   qp_verdict, notes) **before** invoking IAA for Pre-Brief
+
+2. **Tick tasks only after QP PASS**: When a builder returns completed work and Foreman
+   conducts QP evaluation:
+   - If QP verdict is PASS → update task: `[ ]` → `[x]`, `qp_verdict: PENDING` → `qp_verdict: PASS`
+   - Commit with message: `chore(wave-<N>): tick TASK-<N>-<SEQ> — QP PASS`
+   - ❌ PROHIBITED: ticking without QP PASS on record in session memory
+   - ❌ PROHIBITED: batch-ticking multiple tasks in a single commit
+
+3. **Annotate descoped/deferred tasks**: If a task is removed from scope or deferred:
+   - Update tick status to `[~]` and `qp_verdict` to `DESCOPED` or `DEFERRED`
+   - Add mandatory reason in `notes` field
+   - Commit with message: `chore(wave-<N>): descope TASK-<N>-<SEQ> — <reason>`
+   - Request Pre-Brief Amendment if the task had a Pre-Brief entry
+   - ❌ PROHIBITED: silently removing a task line from the checklist
+
+4. **Handle mid-wave task additions**: If a new qualifying task is added after Pre-Brief:
+   - Add task to checklist with tick status `[ ]`
+   - Commit with message: `chore(wave-<N>): add TASK-<N>-<SEQ> to checklist`
+   - Invoke IAA for Pre-Brief Amendment: `task(agent_type: "independent-assurance-agent", action: "PRE-BRIEF-AMEND")`
+   - Update PREHANDOVER proof `iaa_prebrief` reference to point to amendment
+
+**Checklist Schema** (one task entry = one checklist line + indented metadata):
+
+```markdown
+- [ ] TASK-<WAVE>-<SEQ> — <description>
+      builder: <builder-agent-id>
+      qp_verdict: PENDING | PASS | DESCOPED | DEFERRED
+      notes: <optional>
+```
+
+**PROHIBITED** (FM_H - Governance violations):
+- ❌ Removing task lines from the checklist (silent removal = evidence mutation)
+- ❌ Ticking tasks without a QP PASS verdict on record
+- ❌ Batch-ticking multiple tasks in a single commit
+- ❌ Adding qualifying tasks without requesting a Pre-Brief Amendment
+- ❌ Annotating `[~]` without a reason in `notes`
+
+---
 
 **Script**: Not "write code" - Script for "design and delegate"
 
@@ -1191,6 +1269,15 @@ cat > .agent-admin/prehandover/proof-${TIMESTAMP}.md <<EOF
 ✅ Builder supervised to 100% GREEN
 ✅ Zero test debt verified
 ✅ All gates PASS
+
+## Wave Checklist
+
+wave_checklist: .agent-admin/waves/wave-${WAVE_NUMBER}-current-tasks.md
+status: ALL_TICKED
+pending: none
+descoped: none
+iaa_prebrief: .agent-admin/assurance/iaa-prebrief-wave${WAVE_NUMBER}.md
+prebrief_status: ACTIVE
 
 ## Merge Gate Verdict
 **PASS** - All requirements met, merge approved
@@ -1428,6 +1515,7 @@ fi
 - `governance/canon/FOREMAN_MEMORY_PROTOCOL.md` - Memory management
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md` - Contract modification
 - `governance/canon/MERGE_GATE_INTERFACE_STANDARD.md` - Standard gate interface
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 - IAA Pre-Brief Protocol (wave checklist, proactive assurance)
 
 **Reference Canon** (FM_L - consult when relevant):
 - `governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` - Improvement capture

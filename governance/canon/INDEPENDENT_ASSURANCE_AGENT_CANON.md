@@ -302,8 +302,29 @@ The following are merge-blockers for PRs from a wave that has qualifying tasks:
 |-----------|---------|
 | Pre-Brief artifact missing | YES |
 | Pre-Brief not referenced in prehandover proof | YES |
+| `wave-current-tasks.md` checklist absent | YES |
+| Checklist has unticked `[ ]` tasks with no `[~]` annotation | YES |
+| `wave_checklist` block absent from PREHANDOVER proof | YES |
+| `wave_checklist.status` ≠ `ALL_TICKED` | YES |
 | A declared Pre-Brief requirement not met at handover | YES |
 | Pre-Brief marked `SUPERSEDED` without a replacement | YES |
+
+### Wave Checklist Invocation Gate
+
+Before beginning any Phase 3 assurance execution, the IAA MUST apply the Wave Checklist
+Invocation Gate. This is a **hard prerequisite** — each condition independently triggers an
+immediate REJECTION-PACKAGE if failed:
+
+| Gate Code | Condition |
+|-----------|-----------|
+| `CHECKLIST-GATE-001` | `wave-current-tasks.md` checklist is absent |
+| `CHECKLIST-GATE-002` | Checklist has `[ ]` tasks with no `[~]` annotation |
+| `CHECKLIST-GATE-003` | Checklist not referenced in the PREHANDOVER proof |
+| `CHECKLIST-GATE-004` | `wave_checklist.status` in PREHANDOVER proof is not `ALL_TICKED` |
+| `CHECKLIST-GATE-005` | Qualifying task in checklist has no corresponding Pre-Brief entry (and no amendment) |
+
+"Immediate REJECTION-PACKAGE" means the IAA halts all assurance review and issues the verdict
+at this step, before any Phase 1–4 assessment occurs.
 
 ### Full Specification
 
