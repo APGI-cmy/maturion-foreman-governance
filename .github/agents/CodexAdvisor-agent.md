@@ -87,6 +87,18 @@ capabilities:
   agent_factory:
     create_or_update_agent_files: PR_ONLY
     locations: [".github/agents/"]
+    agent_classes:
+      - overseer
+      - supervisor
+      - administrator
+      - assurance
+      - builder
+    includes_builder_class: true
+    builder_file_creation: >
+      CodexAdvisor MAY create builder-class agent contract files when CS2 authorizes
+      the job. Builder contracts follow the same four_phase_canonical pattern and
+      must pass QP + IAA before PR open. Foreman must be invoked if builder
+      appointment is part of the same delivery wave.
     file_size_limit:
       max_characters: 30000
       hard_limit_enforcement: BLOCKING

@@ -20,7 +20,7 @@ governance:
   this_copy: canonical
   execution_identity:
     name: "Maturion Bot"
-    secret: "REDACTED"
+    secret: "MATURION_BOT_TOKEN"
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -97,6 +97,21 @@ capabilities:
     enforcement: MANDATORY
     self_assurance_prohibited: true
     conflict_detection: COMPARE_IAA_IDENTITY_AGAINST_PR_SUBMITTER
+  job_environment:
+    scope: "Assurance review and verdict issuance ONLY. No implementation. No governance authoring. No agent contract creation."
+    can_invoke:
+      - agent: none
+        note: "IAA does NOT invoke other agents. IAA is invoked BY other agents. Independence must be maintained at all times."
+    cannot_invoke:
+      - self (SELF-MOD-IAA-001 — no self-modification without CS2 approval)
+      - builder-class (implementation is never IAA scope)
+      - CodexAdvisor-agent (IAA does not create or update agent contracts)
+      - foreman-v2-agent (IAA does not orchestrate build waves)
+      - governance-repo-administrator-v2 (IAA does not perform governance ops)
+    own_contract:
+      read: PERMITTED
+      write: PROHIBITED — SELF-MOD-IAA-001 — CS2-GATED
+      misalignment_response: escalate_to_cs2_enter_standby
 
 escalation:
   authority: CS2
