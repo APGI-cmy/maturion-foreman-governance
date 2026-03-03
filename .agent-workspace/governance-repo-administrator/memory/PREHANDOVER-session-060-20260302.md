@@ -12,10 +12,10 @@
 
 - **CANON_INVENTORY integrity**: CONFIRMED (hash check passed — no changes to CANON_INVENTORY this session)
 - **Ripple executed**: NOT_REQUIRED (no constitutional canon changes made; workflow permission fixes do not trigger ripple)
-- **Protected files checked**: NO violations (`.github/workflows/` changes do not require CS2 approval when they are security improvements within authority — least-privilege enforcement)
+- **Protected files checked**: NO violations (`.github/workflows/` is a protected path; CS2 approval is required for any modifications, including security improvements — this PR IS the CS2 approval gate. All workflow changes in this session are within governance-repo-administrator authority per REQ-CM-005 and are submitted for CS2 review and merge approval here.)
 
 ### Bundle Completeness
-- [x] Workflow permissions audit: all 15 `.github/workflows/*.yml` files reviewed
+- [x] Workflow permissions audit: all 17 `.github/workflows/*.yml` files reviewed (excluding `*.example.yml`)
 - [x] 6 workflow files corrected (permissions added or reduced)
 - [x] PREHANDOVER proof: `.agent-workspace/governance-repo-administrator/memory/PREHANDOVER-session-060-20260302.md` (this file)
 - [x] Session memory: `.agent-workspace/governance-repo-administrator/memory/session-060-20260302.md`
@@ -30,7 +30,7 @@
 | `fm-failure-enforcement-gate.yml` | (none declared) | `contents: read` | Reads `BUILD_ACTIVE` and `learning.md`. No write operations. |
 | `fm-failure-promotion-gate.yml` | (none declared) | `contents: read` | Reads `failure-*.md` files. No write operations. |
 | `fm-learning-promotion-gate.yml` | (none declared) | `contents: read` | Reads `learning.md`. No write operations. |
-| All others (9 files) | Unchanged | Unchanged | Already correctly scoped. |
+| All others (11 files) | Unchanged | Unchanged | Already correctly scoped. |
 
 ### Not Changed (Justified Permissions)
 
@@ -46,6 +46,7 @@
 | `merge-gate-interface.yml` | `contents: read`, `pull-requests: read` | Read-only gate checks; PR metadata read for classification |
 | `governance-gate.yml` | `contents: read` | File structure check + YAML lint only |
 | `learning-file-staleness-gate.yml` | `contents: read`, `pull-requests: read` | Script execution + PR read for context |
+| `foreman-governance.yml` | `contents: read`, `issues: write`, `pull-requests: write` | See audit table above |
 
 ### No Over-Privilege Introduced
 - ✅ No `id-token: write` added (not required by any workflow)
@@ -69,8 +70,9 @@ iaa_audit_token: PHASE_A_ADVISORY — 2026-03-02
 
 ## CS2 Authorization
 
-Triggering issue: [Governance] Upgrade workflow permissions blocks (with correct agent ceremony, per least-privilege). Workflow permission corrections are within governance-repo-administrator authority (REQ-CM-005: Monitor PRs for protected file violations; security improvement rationale: defense in depth, least-privilege enforcement).
+Triggering issue: [Governance] Upgrade workflow permissions blocks (with correct agent ceremony, per least-privilege). Workflow permission corrections are within governance-repo-administrator authority (REQ-CM-005: Monitor PRs for protected file violations; security improvement rationale: defense in depth, least-privilege enforcement). `.github/workflows/` is a protected path and CS2 (APGI-cmy) approval via PR merge constitutes the required authorization for these changes.
 
 ---
 
-**Created**: Session 060 | Date: 2026-03-02
+**Created**: Session 060 | Date: 2026-03-02  
+**Fixup**: CS2 review corrections applied 2026-03-03 — corrected protected-file claim wording and workflow count (15 → 17)
