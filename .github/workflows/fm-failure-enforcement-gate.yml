@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   fm-failure-enforcement:
     name: Enforce Failure Recording When Learning Indicates Failure

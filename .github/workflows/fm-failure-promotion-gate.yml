@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   fm-failure-promotion-gate:
     name: Enforce governance PR evidence when failures require governance updates

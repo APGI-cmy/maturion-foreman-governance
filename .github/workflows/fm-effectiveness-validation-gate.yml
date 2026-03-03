@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   fm-effectiveness-validation:
     name: Validate effectiveness.md matches failure records
