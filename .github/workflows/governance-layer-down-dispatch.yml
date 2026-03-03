@@ -133,38 +133,6 @@ jobs:
               || { echo "  Issue creation FAILED for $repo"; echo "issue-create:$repo" >> /tmp/dispatch-failures.txt; }
           done
 
-      - name: Dispatch governance_ripple to consumer repos
-        env:
-          GH_TOKEN: ${{ secrets.RIPPLE_DISPATCH_TOKEN || secrets.MATURION_BOT_TOKEN }}
-          CONSUMERS: ${{ steps.registry.outputs.consumers }}
-          AGENT_FILES_CHANGED: ${{ steps.changes.outputs.agent_files_changed }}
-        run: |
-          COMMIT_SHA="${{ github.sha }}"
-          RAW_MSG="${{ github.event.head_commit.message || github.event.inputs.reason || 'manual recovery trigger' }}"
-          COMMIT_MESSAGE=$(python3 -c "
-          import sys, re
-          msg = sys.argv[1].split('\n')[0]
-          print(re.sub(r'[^A-Za-z0-9 ._-]', '-', msg))
-          " "$RAW_MSG")
-          SHORT_SHA="${COMMIT_SHA:0:8}"
-          TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          echo "$CONSUMERS" | while IFS=$'\t' read -r repo liaison; do
-            [ -z "$repo" ] && continue
-            echo "Dispatching governance_ripple to $repo..."
-            gh api "repos/$repo/dispatches" \
-              -X POST \
-              -H "Accept: application/vnd.github+json" \
-              -f "event_type=governance_ripple" \
-              -f "client_payload[source_repo]=${{ github.repository }}" \
-              -f "client_payload[commit_sha]=${COMMIT_SHA}" \
-              -f "client_payload[short_sha]=${SHORT_SHA}" \
-              -f "client_payload[timestamp]=${TIMESTAMP}" \
-              -f "client_payload[agent_files_changed]=${AGENT_FILES_CHANGED}" \
-              -f "client_payload[commit_message]=${COMMIT_MESSAGE}" \
-              && echo "  dispatched to $repo" \
-              || { echo "  dispatch FAILED for $repo"; echo "ripple-dispatch:$repo" >> /tmp/dispatch-failures.txt; }
-          done
-
       - name: Record layer-down dispatch
         run: |
           mkdir -p .agent-admin/ripple
