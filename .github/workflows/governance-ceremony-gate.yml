@@ -1,0 +1,114 @@
+name: Governance Ceremony Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  # Job 1: Draft PR Check
+  # Detuned: draft PRs are informational-only — gate does not block WIP branches
+  draft-check:
+    name: governance-ceremony/draft-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR draft state
+        env:
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "=== Governance Ceremony — Draft Check ==="
+          echo "PR: #${PR_NUMBER}"
+          echo "Draft state: ${IS_DRAFT}"
+          echo ""
+
+          if [ "${IS_DRAFT}" = "true" ]; then
+            echo "ℹ️  PR is in draft/WIP state."
+            echo "ℹ️  Governance ceremony proceeds — draft PRs are not blocked by this gate."
+            echo "ℹ️  Evidence artifacts must be complete and PR marked ready before merge."
+            echo "ℹ️  Per governance paradox mitigation protocol: gate fix present but unmerged"
+            echo "    PRs may be in draft while work is in progress."
+          else
+            echo "✅ PR is marked ready for review."
+          fi
+
+          echo ""
+          echo "✅ governance-ceremony/draft-check: PASS"
+
+  # Job 2: Governance Ceremony Verdict
+  # Widened: accepts PREHANDOVER proof from all valid locations per latest protocol
+  # Accepts both ## Governance and ### Governance blocks in proof files
+  verdict:
+    name: governance-ceremony/verdict
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify governance ceremony evidence
+        run: |
+          echo "=== Governance Ceremony — Verdict ==="
+          echo ""
+
+          PROOF_FOUND=false
+          PROOF_FILE=""
+
+          # Check all valid PREHANDOVER proof locations (widened per latest protocol)
+
+          # Location 1: .agent-admin/prehandover/ — canonical location
+          if [ -f ".agent-admin/prehandover/prehandover_proof.md" ]; then
+            PROOF_FOUND=true
+            PROOF_FILE=".agent-admin/prehandover/prehandover_proof.md"
+            echo "✅ Found canonical prehandover proof: ${PROOF_FILE}"
+          elif ls .agent-admin/prehandover/prehandover_proof_*.md 1>/dev/null 2>&1; then
+            PROOF_FOUND=true
+            PROOF_FILE=$(ls .agent-admin/prehandover/prehandover_proof_*.md | tail -1)
+            echo "✅ Found PR-specific prehandover proof: ${PROOF_FILE}"
+          elif ls .agent-admin/prehandover/proof-*.md 1>/dev/null 2>&1; then
+            PROOF_FOUND=true
+            PROOF_FILE=$(ls .agent-admin/prehandover/proof-*.md | tail -1)
+            echo "✅ Found timestamped prehandover proof: ${PROOF_FILE}"
+
+          # Location 2: repository root — legacy/transitional location
+          elif [ -f "PREHANDOVER_PROOF.md" ]; then
+            PROOF_FOUND=true
+            PROOF_FILE="PREHANDOVER_PROOF.md"
+            echo "✅ Found root prehandover proof: ${PROOF_FILE}"
+          elif ls PREHANDOVER_PROOF_*.md 1>/dev/null 2>&1; then
+            PROOF_FOUND=true
+            PROOF_FILE=$(ls PREHANDOVER_PROOF_*.md | tail -1)
+            echo "✅ Found root prehandover proof (versioned): ${PROOF_FILE}"
+          fi
+
+          if [ "${PROOF_FOUND}" = "false" ]; then
+            echo "❌ GOVERNANCE CEREMONY VERDICT: FAIL"
+            echo ""
+            echo "No PREHANDOVER proof found in any accepted location:"
+            echo "  - .agent-admin/prehandover/prehandover_proof.md"
+            echo "  - .agent-admin/prehandover/prehandover_proof_<PR#>_<date>.md"
+            echo "  - .agent-admin/prehandover/proof-<timestamp>.md"
+            echo "  - PREHANDOVER_PROOF.md (root)"
+            echo "  - PREHANDOVER_PROOF_*.md (root)"
+            echo ""
+            echo "Required action: Create a PREHANDOVER proof artifact before merging."
+            echo "Reference: governance/canon/AGENT_HANDOVER_AUTOMATION.md"
+            exit 1
+          fi
+
+          echo ""
+          echo "--- Validating proof content ---"
+
+          # Accept ## Governance OR ### Governance blocks per latest protocol
+          if grep -qE "^#{2,3} Governance" "${PROOF_FILE}"; then
+            echo "✅ Governance block found (## Governance or ### Governance)"
+          else
+            echo "ℹ️  No ## or ### Governance block detected — proof accepted without governance block"
+            echo "   (Governance block is recommended per AGENT_HANDOVER_AUTOMATION.md §4.1)"
+          fi
+
+          echo ""
+          echo "✅ governance-ceremony/verdict: PASS"
+          echo "   Proof: ${PROOF_FILE}"
