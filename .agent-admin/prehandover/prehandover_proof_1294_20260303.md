@@ -98,12 +98,12 @@ Full rationale: `.agent-admin/evidence/working-proof-1294.md`
 
 | File | Live SHA256 | Integrity Index SHA256 | Match |
 |------|-------------|------------------------|-------|
-| `.github/agents/CodexAdvisor-agent.md` | `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780` | `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780` | ✅ |
+| `.github/agents/CodexAdvisor-agent.md` | `4259292c8ef4feee22d47a21a04cfad5faf3a780f6241c32b591d0ded39e99fb` | `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780` | ⚠️ MISMATCH (noted by IAA) |
 | `.github/agents/foreman-v2.agent.md` | `50cf9dd930d32db503112c1a0ea96d7d055d79675c6fef171ab97207f3a4c920` | `50cf9dd930d32db503112c1a0ea96d7d055d79675c6fef171ab97207f3a4c920` | ✅ (updated this PR) |
 | `.github/agents/governance-repo-administrator-v2.agent.md` | `80579a0ca49164a027ff99408d428c54105a6ba5b847f2514a261dc7189bac12` | `80579a0ca49164a027ff99408d428c54105a6ba5b847f2514a261dc7189bac12` | ✅ |
 | `.github/agents/independent-assurance-agent.md` | `0d414fd2d059fbda8ed8a2bab42fc4698674d893d45ea954d92d0f940165b8ac` | `0d414fd2d059fbda8ed8a2bab42fc4698674d893d45ea954d92d0f940165b8ac` | ✅ (updated this PR) |
 
-**Agent integrity: PASS — all 4/4 SHA256 hashes match INTEGRITY_INDEX.md**
+**Agent integrity: PARTIAL — 3/4 SHA256 hashes match; CodexAdvisor-agent.md has a hash mismatch noted by IAA (live: `4259292c8ef4feee22d47a21a04cfad5faf3a780f6241c32b591d0ded39e99fb`, baseline: `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780`). This appears to be a branch-state issue — CodexAdvisor-agent.md was not modified in this PR; the divergence pre-dates this branch. CS2 must verify at merge time.**
 
 ---
 
@@ -118,16 +118,33 @@ Inline suggestion hygiene confirmed: no improvement suggestions in evidence arti
 
 ## IAA Invocation Record
 
-IAA invocation: PENDING — see IAA verdict update after invocation in this session.
+**Invocation**: IAA-20260303-PR1294  
+**Date**: 2026-03-03  
+**Method**: `task(agent_type: "independent-assurance-agent")`  
+**Verdict**: **REJECTION-PACKAGE** — HALT-004 (SELF-ASSURANCE-001 — Structural Independence Violation)
 
-**Note**: This PR modifies `.github/agents/independent-assurance-agent.md` — the IAA's own
-contract file. Per SELF-ASSURANCE-001 and INDEPENDENT_ASSURANCE_AGENT_CANON.md §Independence
-Requirements rule 4, the IAA CANNOT assure this PR. CS2 is the sole assurance authority.
-Expected outcome: HALT-004 (SELF-ASSURANCE-001 — independence violation), same as PR #1261.
+```
+REJECTION-PACKAGE
+PR: #1294
+Date: 2026-03-03
+IAA Session: IAA-20260303-PR1294
+Phases: NOT ASSESSED — HALT-004 triggered at Step 2.2
+Independence: VIOLATION — PR #1294 modifies .github/agents/independent-assurance-agent.md
+  (the IAA's own contract file)
+Verdict: MERGE BLOCKED (HALT-004 / Structural Independence Prohibition)
+Remediation Required:
+  - CS2 (@APGI-cmy) must review and authorize merge directly
+  - No resubmission loop — HALT-004 routes to CS2 only
+Routed To: CS2 (Johan Ras / @APGI-cmy)
+```
 
-**CS2 assurance path**: CS2 (@APGI-cmy) must review and approve this PR directly.
-The IAA invocation is performed to satisfy the A-09 requirement; the expected HALT-004 response
-is the correct and governance-compliant outcome.
+**Verdict artifact**: `.agent-admin/assurance/rejection-package-1294.md`  
+**Session memory**: `.agent-workspace/independent-assurance-agent/memory/session-011-20260303.md`  
+**Escalation**: `.agent-workspace/independent-assurance-agent/escalation-inbox/halt-004-1294-20260303.md`
+
+**GA Note**: This REJECTION-PACKAGE is structural, not a content quality failure. The IAA
+correctly applied SELF-ASSURANCE-001 — identical to PR #1261 outcome (session-005-20260302).
+CS2 direct review and merge authorization is the required and only merge path for this PR.
 
 ---
 
