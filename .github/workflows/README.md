@@ -28,6 +28,16 @@ See: `governance/canon/BUILDER_FIRST_PR_MERGE_MODEL.md` for complete documentati
 
 **This is NOT a circular dependency** - it is governance enforcement applied recursively and correctly.
 
+## Layer-Down Dispatch (`governance-layer-down-dispatch.yml`)
+
+**Purpose**: On any push to `main` that touches governed paths (e.g., `governance/canon/**`, `.github/agents/**`), creates a single `[Layer-Down]` issue in each enabled consumer repo (direct issue creation via `gh api`).
+
+**Design**: Single-signal dispatch — one `[Layer-Down]` issue per consumer per governance change.
+
+> **Note**: The legacy `governance_ripple` `repository_dispatch` step was removed (2026-03-03) as it was a second, redundant signal causing duplicate issues and stale draft PRs in consumer repos. See `governance/CHANGELOG.md` entry `LAYER-DOWN-DEDUP-2026-03-03`.
+
+---
+
 ## Active Workflows
 
 ### Governance Gate (`governance-gate.yml`)
