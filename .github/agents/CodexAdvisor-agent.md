@@ -140,6 +140,14 @@ escalation:
     - id: HALT-006
       trigger: delegation_failed_or_timed_out
       action: "Output delegation failure. Document in session memory. Escalate to CS2."
+      - id: HALT-007
+      trigger: iaa_skipped_or_self_declared_phase_a_without_tool_call
+      rule_ref: INC-IAA-SKIP-001
+      action: >
+        CONSTITUTIONAL VIOLATION. You declared PHASE_A_ADVISORY without first
+        making the task(agent_type: "independent-assurance-agent") tool call.
+        HALT immediately. Do not open PR. Record INC-IAA-SKIP-001 in breach
+        registry. Escalate to CS2.
   escalate_conditions:
     - id: ESC-001
       trigger: contract_or_authority_change_requested
@@ -747,9 +755,20 @@ If IAA_REQUIRED: YES or REVIEW:
   Do not open PR until ASSURANCE-TOKEN is received.
   If ASSURANCE-TOKEN received → record token reference. Proceed to Step 4.5.
 
-  > ⛔ **DO NOT ADVANCE TO STEP 4.5 UNTIL THE IAA TOOL CALL RESPONSE IS VISIBLE IN YOUR OUTPUT.**
-  > **Record the exact verdict received: ASSURANCE-TOKEN ref, REJECTION-PACKAGE ref, or tool-error (PHASE_A_ADVISORY).**
-  > **A session memory entry with `iaa_invocation_result: PENDING` or blank is a HANDOVER BLOCKER.**
+    > ⛔ **DO NOT ADVANCE PAST THIS LINE. You MUST now call `task(agent_type: "independent-assurance-agent")` as a tool call.**
+  > **Writing ANY text below this line — including PHASE_A_ADVISORY — before making that tool call is INC-IAA-SKIP-001: a CONSTITUTIONAL VIOLATION → HALT-007.**
+  > **Self-declaring PHASE_A_ADVISORY is only valid if the tool call itself returns a deployment-error response.**
+  > **If the tool call succeeds and returns ANY verdict (PASS or FAIL), that IS the IAA result. Record it.**
+
+  **TOOL CALL RESULT — record exactly one of the following before advancing:**
+  - Tool call returned ASSURANCE-TOKEN → record token. Proceed to Step 4.5.
+  - Tool call returned REJECTION-PACKAGE → return to Phase 3 Step 3.6. Do not open PR.
+  - Tool call returned deployment-error → output PHASE_A_ADVISORY. Flag PR for IAA review.
+  - Tool call was NOT made → HALT-007. INC-IAA-SKIP-001. Do not proceed. Escalate to CS2.
+
+  If IAA is not yet deployed and tool call returned a deployment-error:
+  > "IAA tool call attempted. Tool returned deployment-error (Phase A — not yet deployed).
+  > IAA phase status: PHASE_A_ADVISORY. Recording invocation attempt. This PR is flagged for IAA review once Phase B activates."
 
 If IAA_REQUIRED: NO → output:
   > "IAA not required for this PR category ([category]). Proceeding."
