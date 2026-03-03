@@ -166,16 +166,21 @@ All required elements present:
 
 ## IAA Invocation Record
 
-**First invocation**: IAA-20260303-PR1289
-**Verdict**: REJECTION-PACKAGE
-**Items addressed by this proof**:
-- REM-002: ✅ Gate parity results documented above
-- REM-003: ✅ This file (standard location)
-- REM-004: ✅ FAIL-ONLY-ONCE attestation in Phase 1 above
-- REM-005: ✅ See breach-registry.md (updated)
+**First invocation (R1)**: IAA-20260303-PR1289 — REJECTION-PACKAGE (6 items)
+**Second invocation (R2)**: IAA-20260303-PR1289-R2 — **ASSURANCE-TOKEN ISSUED 2026-03-03**
+**Token artifact**: `.agent-admin/assurance/assurance-token-1289.md`
+
+**All 6 remediation items verified by IAA R2**:
+- REM-001: MERGE PREREQUISITE — CS2 must execute `gh pr ready 1289` (platform constraint)
+- REM-002: ✅ Gate parity documented — all 3 standard gates PASS
+- REM-003: ✅ PREHANDOVER at `.agent-admin/prehandover/` standard location
+- REM-004: ✅ FAIL-ONLY-ONCE attestation (retroactive, with breach reference)
+- REM-005: ✅ BREACH-001 CLOSED — `ASSURANCE-TOKEN IAA-20260303-PR1289-R2`
 - REM-006: ✅ CHANGELOG: N/A — no CHANGELOG.md in repository
 
-**Pending CS2 action (REM-001)**: `gh pr ready 1289` — PR must exit DRAFT before re-invocation
+**Agent Integrity**: PASS — 4/4 SHA256 hashes triple-verified by IAA
+
+**Status**: MERGE PERMITTED — subject to CS2 executing `gh pr ready 1289`
 
 ---
 

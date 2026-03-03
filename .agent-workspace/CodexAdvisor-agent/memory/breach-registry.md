@@ -7,15 +7,15 @@
 
 ## Open Breaches
 
-| Breach ID | Gate | Session | Date | Description | Corrective Action | Status |
-|-----------|------|---------|------|-------------|-------------------|--------|
-| BREACH-001 | S6-06 | session-008-20260303 | 2026-03-03 | IAA was not invoked before handover of PR #1289 (agent harmonization). Task proceeded directly from OPOJD gate to report_progress commit without calling `task(agent_type: "independent-assurance-agent")`. Constitutes INC-IAA-SKIP-001. | (1) Register breach ✅; (2) Invoke IAA ✅ — REJECTION-PACKAGE IAA-20260303-PR1289 received; (3) Add B-06 rule to FAIL-ONLY-ONCE ✅; (4) RCA at rca-session-008-20260303.md ✅; (5) Create standard PREHANDOVER proof at .agent-admin/prehandover/ ✅; (6) Address all REM-002→006 ✅; (7) Re-invoke IAA after CS2 marks PR ready (REM-001 pending CS2) | PENDING CS2 — awaiting `gh pr ready 1289` then re-invocation |
+_none_
 
 ---
 
 ## Closed Breaches
 
-_none_
+| Breach ID | Gate | Session | Date | Description | Resolution | Closed By |
+|-----------|------|---------|------|-------------|------------|-----------|
+| BREACH-001 | S6-06 | session-008-20260303 | 2026-03-03 | IAA was not invoked before handover of PR #1289. INC-IAA-SKIP-001. | (1) Breach registered ✅; (2) RCA at rca-session-008-20260303.md ✅; (3) B-06 rule added to FAIL-ONLY-ONCE ✅; (4) IAA invoked (session-009) — REJECTION-PACKAGE IAA-20260303-PR1289 ✅; (5) All REM-002→006 addressed ✅; (6) IAA re-invoked (session-010) — **ASSURANCE-TOKEN IAA-20260303-PR1289-R2 issued 2026-03-03** ✅ | ASSURANCE-TOKEN IAA-20260303-PR1289-R2 | 2026-03-03 |
 
 ---
 
