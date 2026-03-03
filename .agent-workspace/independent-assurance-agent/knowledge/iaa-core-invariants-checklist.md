@@ -1,8 +1,8 @@
 # IAA Core Invariants Checklist — Tier-2 Operational Knowledge
 **Agent**: independent-assurance-agent  
-**Version**: 1.3.0  
+**Version**: 1.4.0  
 **Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0 | LIVING_AGENT_SYSTEM.md v1.1.0  
-**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue) | Updated: 2026-03-02 (v1.3.0 — INV-608 resubmission protocol invariant; CORE-XXX cross-reference appendix for ISMS v2.0.0 parity per APGI-cmy/maturion-foreman-governance#1257)  
+**Seeded**: 2026-02-24 (v1.0.0) | Updated: 2026-02-26 (v1.1.0 — recurring shortfall codification per IAA self-improvement issue) | Updated: 2026-02-27 (v1.2.0 — rejection routing, delivery confirmation, and resubmission enforcement per feedback-loop closure issue) | Updated: 2026-03-02 (v1.3.0 — INV-608 resubmission protocol invariant; CORE-XXX cross-reference appendix for ISMS v2.0.0 parity per APGI-cmy/maturion-foreman-governance#1257) | Updated: 2026-03-03 (v1.4.0 — INV-505 secret field naming check; CORE-018 cross-reference per APGI-cmy/maturion-foreman-governance#1290)  
 **Purpose**: Tier-2 operational checklist for IAA assurance sessions. Load this at session start alongside Tier-1 canon.
 
 ---
@@ -93,6 +93,7 @@ At every assurance invocation:
 | INV-502 | SHA256 of each changed agent contract file matches INTEGRITY_INDEX.md baseline | `sha256sum .github/agents/<file>` vs INTEGRITY_INDEX.md | Hash mismatch |
 | INV-503 | Any agent contract file update cites CS2 approval | PR description or governance proof links to CS2 issue | No CS2 approval cited for agent file change |
 | **INV-504** | **Agent integrity check is performed even when no agent files are changed (confirm no steganographic drift)** | IAA explicitly confirms it checked whether agent files are unchanged, not just that no agent files appear in the diff | **Integrity check skipped when diff has no agent files — recurring shortfall: silent drift goes undetected** |
+| **INV-505** | **All agent contract YAML blocks use `secret_env_var:` — never `secret:` — for execution identity fields** | Scan all agent contract files for `secret\s*:` YAML key pattern; verify only `secret_env_var:` is present; verify no actual secret value is present | **`secret:` field found in agent contract YAML — A-021 violation; or actual secret value detected in any artifact** |
 
 ---
 
@@ -137,7 +138,7 @@ Use this summary table for quick gate tallying in the Phase 5 assurance invocati
 | Phase 2 Governance | INV-201 to INV-207 | Any = Phase 2 FAIL |
 | Phase 3 Working | INV-301 to INV-307 | Any = Phase 3 FAIL |
 | Phase 4 Handover | INV-401 to INV-409 | Any = Phase 4 FAIL |
-| Agent Integrity | INV-501 to INV-504 | Any = Agent Integrity FAIL |
+| Agent Integrity | INV-501 to INV-505 | Any = Agent Integrity FAIL |
 | Learning Loop | INV-601 to INV-608 | Any = Session INCOMPLETE |
 | Traceability | INV-701 to INV-704 | Any = Phase 3/4 FAIL |
 
@@ -169,6 +170,7 @@ corresponding INV-XXX invariant(s).
 | CORE-015 | INV-407 | Session memory artifact required (ref: A-015) |
 | CORE-016 | INV-402 + A-006 | IAA invocation evidence / IAA Agent Response (verbatim) check (ref: A-015, A-016) |
 | CORE-017 | INV-608 | Resubmission Protocol full execution (new in v2.0.0) |
+| CORE-018 | INV-505 | Secret field naming check — `secret:` prohibited, `secret_env_var:` required (ref: A-021) |
 
 > **Note**: CORE-XXX IDs are canonical ISMS identifiers. INV-XXX IDs are the governance repo
 > equivalents. Both resolve to the same invariant check requirements. Use this table when an
@@ -184,6 +186,7 @@ corresponding INV-XXX invariant(s).
 | 1.1.0 | 2026-02-26 | Added recurring shortfall items (INV-106, INV-206, INV-207, INV-306, INV-307, INV-405 to INV-409, INV-504, INV-601 to INV-605, INV-701 to INV-704) per IAA self-improvement issue |
 | 1.2.0 | 2026-02-27 | Added INV-606 (REJECTION-PACKAGE delivery and acknowledgement) and INV-607 (resubmission gate enforcement) per feedback-loop closure issue |
 | 1.3.0 | 2026-03-02 | Added INV-608 (Resubmission Protocol full execution invariant — CORE-017 equivalent). Added CORE-XXX cross-reference appendix for ISMS v2.0.0 parity. Issue: APGI-cmy/maturion-foreman-governance#1257. |
+| 1.4.0 | 2026-03-03 | Added INV-505 (Secret field naming — `secret:` prohibited; `secret_env_var:` required in all agent YAML blocks — CORE-018 equivalent). Added CORE-018 to cross-reference appendix. Issue: APGI-cmy/maturion-foreman-governance#1290. |
 
 ---
 
