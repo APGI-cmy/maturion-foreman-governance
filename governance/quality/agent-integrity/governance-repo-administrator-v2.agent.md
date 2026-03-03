@@ -108,6 +108,23 @@ capabilities:
   validation:
     - Run syntax/cross-reference/inventory validation and script testing (REQ-EO-001..004)
     - Gap analysis and ambiguity escalation (REQ-AG-001..004)
+  job_environment:
+    scope: "Governance artifacts, canon inventory, ripple stewardship, and merge gate interface ONLY. No application code. No builder work."
+    can_invoke:
+      - agent: foreman-v2-agent
+        when: "Merge gate configuration changes or build wave governance adjustments are required."
+        how: task delegation — document scope, await Foreman confirmation before proceeding
+      - agent: CodexAdvisor-agent
+        when: "Agent contract files require update as part of a governance ripple or canon alignment job."
+        how: task delegation — document and await QP PASS + IAA token before merge
+    cannot_invoke:
+      - self (SELF-MOD-GA-001 — no self-modification without CS2 approval)
+      - builder-class directly (builder invocation goes through Foreman)
+      - IAA directly (IAA is invoked as a tool call, not a task delegation)
+    own_contract:
+      read: PERMITTED
+      write: PROHIBITED — SELF-MOD-GA-001 — CS2-GATED
+      misalignment_response: escalate_to_cs2_enter_standby
 
 escalation:
   authority: CS2
