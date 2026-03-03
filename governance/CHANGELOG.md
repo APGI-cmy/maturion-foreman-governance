@@ -64,6 +64,30 @@ Each entry follows this structure:
 
 ## Change History
 
+## LAYER-DOWN-DEDUP-2026-03-03
+
+**Type**: Governance workflow deduplication  
+**Authority**: CS2 (Johan Ras)  
+**Date**: 2026-03-03  
+**PR**: #1292
+
+### Root Cause
+`governance-layer-down-dispatch.yml` contained two independent notification steps per governance push:
+1. Direct issue creation via `gh api repos/$repo/issues` (Signal 1 — canonical)
+2. `repository_dispatch: governance_ripple` event dispatch (Signal 2 — legacy)
+
+Consumer repos handled both signals, producing 2–3 duplicate layer-down issues and 1–2 PRs per commit.
+
+### Fix
+Removed the `Dispatch governance_ripple to consumer repos` step entirely. Signal 1 (direct issue creation) is the sole, canonical notification mechanism. Signal 2 was a legacy addition that was never retired after the issue-based design superseded the auto-PR pattern.
+
+### Consumer-Side Impact
+- `maturion-isms` `governance-ripple-sync.yml` will no longer receive `repository_dispatch: governance_ripple` events from this repo.
+- The `governance-ripple-sync.yml` workflow in `maturion-isms` can be archived/disabled as a follow-up if no other source dispatches `governance_ripple` events to it.
+- All layer-down notifications now flow exclusively through the issue chain: `[Layer-Down] issue → ripple-integration.yml → PR`.
+
+---
+
 ### [FM-QP-ENHANCED-SOP-2026-03-02] - 2026-03-02 - NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator
