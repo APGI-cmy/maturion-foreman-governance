@@ -32,7 +32,7 @@ iaa_oversight:
     - prehandover_proof
     - session_memory
     - agent_contract_bundle
-  invocation_step: "Phase 4 Step 4.4 — IAA Independent Audit"
+  invocation_step: "Phase 4 Step 4.3a (commit) then Step 4.4 (invoke)"
   verdict_handling:
     pass: record_audit_token_and_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3_step3_6
@@ -825,5 +825,5 @@ A PR description missing any of these fields is a non-compliant handover.
 ---
 
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
-**Version**: 6.2.0 | **Contract**: 3.2.0 | **Last Updated**: 2026-02-25
+**Version**: 6.2.0 | **Contract**: 3.3.0 | **Last Updated**: 2026-03-04
 **Self-Modification Lock**: SELF-MOD-001 — ACTIVE — CS2-GATED
