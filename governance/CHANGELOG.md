@@ -64,6 +64,40 @@ Each entry follows this structure:
 
 ## Change History
 
+### [GWDS-CANONISATION-2026-03-04] - 2026-03-04 - NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator  
+**Approved By**: CS2 (Johan Ras) — canonisation issue  
+**Effective Date**: 2026-03-04
+
+**Summary**: Promoted `GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md` (GWDS-001 v1.1.0) to
+`governance/canon/GOVERNANCE_WATCHDOG_CANON.md` following Phase 1 production validation in
+`maturion-isms`. All three gap detectors confirmed firing correctly. No false positives reported.
+
+**Affected Artifacts**:
+- `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` — new canon file (v1.0.0)
+- `governance/CANON_INVENTORY.json` — new entry added; total_canons: 191 → 192
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — §3.12 updated with new entry
+- `maturion/strategy/GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md` — updated to v1.1.0; §9.4 gate PASSED; §11.3 evidence recorded
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A
+
+**Rationale**: Phase 1 validation in `maturion-isms` confirmed the reference implementation fires
+all three governance gaps correctly. CS2 authorised promotion to canon to establish normative
+MUST requirements binding on all consumer repos deploying the Living Agent System.
+
+**Impact**:
+- All consumer repositories: MUST deploy `governance-watchdog.yml` adapted per GOVERNANCE_WATCHDOG_CANON.md requirements (REQ-GWC-001)
+- Governance liaisons: MUST include `governance-watchdog.yml` in layer-down ripple packages
+- Governance Administrator: MUST track layer-down status for this new PUBLIC_API canon
+
+**References**:
+- Source strategy: `maturion/strategy/GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md` v1.1.0
+- Canon: `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` v1.0.0
+
+---
+
 ## LAYER-DOWN-DEDUP-2026-03-03
 
 **Type**: Governance workflow deduplication  
