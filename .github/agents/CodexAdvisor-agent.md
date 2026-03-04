@@ -698,33 +698,6 @@ Output:
 >   No hardcoded version strings in phase body: ✅
 > OPOJD: PASS"
 
-**Step 4.3a — Commit all bundle artifacts before IAA invocation (MANDATORY):**
-
-**[CA_H] DO NOT INVOKE IAA UNTIL ALL ARTIFACTS ARE COMMITTED AND VISIBLE IN THE REPOSITORY.**
-
-The IAA reads evidence from the repository. Artifacts that exist only in session output are invisible
-to the IAA. Invoking IAA before committing is BREACH-001 (see FAIL-ONLY-ONCE B-06).
-
-Call `report_progress` now. Commit message format:
-`chore(codex-session-NNN): commit bundle artifacts — PREHANDOVER + session memory + [agent file if new/updated]`
-
-This call MUST include ALL of the following in the same commit:
-- PREHANDOVER proof (generated in Step 4.2)
-- Session memory (generated in Step 4.3)
-- Agent contract file (if new or updated in Phase 3)
-- Tier 2 knowledge stub (if new or updated in Phase 3)
-
-Output after `report_progress` returns:
-
-> "Bundle commit: COMPLETE.
->   Committed files: [list each file path committed]
->   Commit SHA: [returned by report_progress or read from repo]
->   All artifacts now visible in repository.
->   Proceeding to IAA invocation."
-
-> ⛔ **DO NOT ADVANCE TO STEP 4.4 UNTIL `report_progress` HAS RETURNED AND THE COMMIT IS CONFIRMED.**
-> **If `report_progress` fails → HALT. Do not invoke IAA. Escalate to CS2.**
-
 **Step 4.2 — Generate PREHANDOVER proof:**
 
 Write `.agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-NNN-YYYYMMDD.md`
@@ -766,6 +739,33 @@ Ensure all in-session parking entries from Step 3.5 are present in
 `.agent-workspace/parking-station/suggestions-log-codex-advisor.md`.
 Add any new end-of-session suggestions now.
 Format: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | [DRAFT-PHASE/SESSION-END] | <summary> | <session-file> |`
+
+**Step 4.3a — Commit all bundle artifacts before IAA invocation (MANDATORY):**
+
+**[CA_H] DO NOT INVOKE IAA UNTIL ALL ARTIFACTS ARE COMMITTED AND VISIBLE IN THE REPOSITORY.**
+
+The IAA reads evidence from the repository. Artifacts that exist only in session output are invisible
+to the IAA. Invoking IAA before committing is BREACH-001 (see FAIL-ONLY-ONCE B-06).
+
+Call `report_progress` now. Commit message format:
+`chore(codex-session-NNN): commit bundle artifacts — PREHANDOVER + session memory + [agent file if new/updated]`
+
+This call MUST include ALL of the following in the same commit:
+- PREHANDOVER proof (generated in Step 4.2)
+- Session memory (generated in Step 4.3)
+- Agent contract file (if new or updated in Phase 3)
+- Tier 2 knowledge stub (if new or updated in Phase 3)
+
+Output after `report_progress` returns:
+
+> "Bundle commit: COMPLETE.
+>   Committed files: [list each file path committed]
+>   Commit SHA: [returned by report_progress or read from repo]
+>   All artifacts now visible in repository.
+>   Proceeding to IAA invocation."
+
+> ⛔ **DO NOT ADVANCE TO STEP 4.4 UNTIL `report_progress` HAS RETURNED AND THE COMMIT IS CONFIRMED.**
+> **If `report_progress` fails → HALT. Do not invoke IAA. Escalate to CS2.**
 
 **Step 4.4 — IAA Invocation:**
 
