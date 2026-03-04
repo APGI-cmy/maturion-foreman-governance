@@ -427,4 +427,58 @@ a new per-session file.
 
 ---
 
-*Authority: CS2 (Johan Ras) | Version: 1.2.0 | Effective: 2026-02-24 | Amended: 2026-03-04*
+## CS2 Direct Review Track
+
+**Authority**: CS2 (Johan Ras / @APGI-cmy) only.
+**Version added**: v1.2.1 — 2026-03-04
+
+### Rule
+
+When CS2 personally reviews a PR and posts a **CS2-DIRECT-REVIEW** comment on that PR,
+the review is formally equivalent to an IAA `ASSURANCE-TOKEN`. No separate IAA invocation
+is required before merge.
+
+### CS2-DIRECT-REVIEW Comment Format
+
+CS2 must post a comment on the PR containing exactly this block (populated):
+
+```
+CS2-DIRECT-REVIEW
+PR: #[number]
+Date: YYYY-MM-DD
+Reviewed by: @APGI-cmy
+Content verdict: APPROVED
+IAA ceremony: WAIVED — CS2 direct review
+Merge authority: CS2
+```
+
+### Applicability
+
+This track applies to **all** PR types **except**:
+
+- PRs where `.github/agents/` Tier 1 contract files are modified by an **autonomous agent
+  without CS2 co-authorship** (those still require IAA)
+- PRs created and merged in a **fully autonomous pipeline with no CS2 review** (those still
+  require IAA)
+
+In both exception cases, the standard Five-Phase Delivery Proof Protocol applies in full.
+
+### Effect on Merge Gate
+
+A valid `CS2-DIRECT-REVIEW` comment on a PR is treated as equivalent to a committed
+`ASSURANCE-TOKEN` artifact. The merge gate workflow will recognise the comment as
+satisfying the `iaa-assurance-check` requirement.
+
+### Rationale
+
+The IAA ceremony exists to provide independent assurance in pipelines where **no human is
+reviewing the output**. When CS2 is directly reviewing, CS2 **is** the independent assurance.
+Running the full IAA ceremony in parallel is redundant overhead that delays delivery without
+adding quality.
+
+This rule does not lower the quality bar. It removes the duplicated process where both CS2
+and the IAA independently review identical content under human oversight.
+
+---
+
+*Authority: CS2 (Johan Ras) | Version: 1.1.0 | Effective: 2026-02-24 | Amended: 2026-03-03*

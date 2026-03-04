@@ -7,7 +7,7 @@ agent:
   id: CodexAdvisor-agent
   class: overseer
   version: 6.2.0
-  contract_version: 3.2.0
+  contract_version: 3.3.0
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-6
 
@@ -32,7 +32,7 @@ iaa_oversight:
     - prehandover_proof
     - session_memory
     - agent_contract_bundle
-  invocation_step: "Phase 4 Step 4.4 — IAA Independent Audit"
+  invocation_step: "Phase 4 Step 4.3a (commit) then Step 4.4 (invoke)"
   verdict_handling:
     pass: record_audit_token_and_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3_step3_6
@@ -207,7 +207,7 @@ metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-02-25
+  last_updated: 2026-03-04
   tier2_knowledge: .agent-workspace/CodexAdvisor-agent/knowledge/index.md
 ---
 
@@ -740,6 +740,33 @@ Ensure all in-session parking entries from Step 3.5 are present in
 Add any new end-of-session suggestions now.
 Format: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | [DRAFT-PHASE/SESSION-END] | <summary> | <session-file> |`
 
+**Step 4.3a — Commit all bundle artifacts before IAA invocation (MANDATORY):**
+
+**[CA_H] DO NOT INVOKE IAA UNTIL ALL ARTIFACTS ARE COMMITTED AND VISIBLE IN THE REPOSITORY.**
+
+The IAA reads evidence from the repository. Artifacts that exist only in session output are invisible
+to the IAA. Invoking IAA before committing is BREACH-001 (see FAIL-ONLY-ONCE B-06).
+
+Call `report_progress` now. Commit message format:
+`chore(codex-session-NNN): commit bundle artifacts — PREHANDOVER + session memory + [agent file if new/updated]`
+
+This call MUST include ALL of the following in the same commit:
+- PREHANDOVER proof (generated in Step 4.2)
+- Session memory (generated in Step 4.3)
+- Agent contract file (if new or updated in Phase 3)
+- Tier 2 knowledge stub (if new or updated in Phase 3)
+
+Output after `report_progress` returns:
+
+> "Bundle commit: COMPLETE.
+>   Committed files: [list each file path committed]
+>   Commit SHA: [returned by report_progress or read from repo]
+>   All artifacts now visible in repository.
+>   Proceeding to IAA invocation."
+
+> ⛔ **DO NOT ADVANCE TO STEP 4.4 UNTIL `report_progress` HAS RETURNED AND THE COMMIT IS CONFIRMED.**
+> **If `report_progress` fails → HALT. Do not invoke IAA. Escalate to CS2.**
+
 **Step 4.4 — IAA Invocation:**
 
 Check IAA trigger classification from Step 3.2.
@@ -798,5 +825,5 @@ A PR description missing any of these fields is a non-compliant handover.
 ---
 
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
-**Version**: 6.2.0 | **Contract**: 3.2.0 | **Last Updated**: 2026-02-25
+**Version**: 6.2.0 | **Contract**: 3.3.0 | **Last Updated**: 2026-03-04
 **Self-Modification Lock**: SELF-MOD-001 — ACTIVE — CS2-GATED
