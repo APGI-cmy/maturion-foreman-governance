@@ -1,8 +1,9 @@
 # INDEPENDENT_ASSURANCE_AGENT_CANON
 
-**Status**: CANONICAL | **Version**: 1.1.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.2.0 | **Authority**: CS2  
 **Date**: 2026-03-03  
-**Amended**: 2026-03-03 — v1.1.0: Added §Proactive Assurance — Pre-Brief Protocol
+**Amended**: 2026-03-03 — v1.1.0: Added §Proactive Assurance — Pre-Brief Protocol  
+**Amended**: 2026-03-04 — v1.2.0: Added §Artifact Immutability Rule; amended §Token Ceremony to use dedicated IAA token file; prohibited shared mutable files for all agent classes (CS2 auth: APGI-cmy/maturion-foreman-governance issue — Artifact Immutability &amp; Append-Only Proof Protocols)
 
 ---
 
@@ -334,6 +335,86 @@ template.
 
 ---
 
+## Artifact Immutability Rule
+
+**Authority**: CS2 | **Effective**: 2026-03-04 | **Mandatory for all agent classes**
+
+### Core Prohibition
+
+After initial commit to the branch, **no agent may modify any handover or evidence artifact**
+(including PREHANDOVER proof files) that has already been committed. All post-commit governance
+evidence is **append-only**: new files are created; existing committed files are not mutated.
+
+**Specific prohibitions**:
+
+| Prohibited Action | Permitted Alternative |
+|-------------------|-----------------------|
+| Editing a committed PREHANDOVER proof file | Create a new addendum artifact |
+| Appending a token directly into the PREHANDOVER proof post-commit | Write token to a dedicated IAA token file (see §Token Ceremony) |
+| Appending to a shared parking station log across waves | Create a new per-session file per §Append-Only Session Artifacts |
+| Modifying a FAIL-ONLY-ONCE registry entry that was previously committed | Append a new entry only |
+| Overwriting a REJECTION-PACKAGE or ASSURANCE-TOKEN after issuance | Issue a superseding artifact with an explicit supersession header |
+
+These prohibitions apply to **all agent classes**: Builder, Foreman, Advisor, Governance Administrator,
+and the IAA itself.
+
+### Token Ceremony (Dedicated IAA Token File)
+
+When the IAA issues an `ASSURANCE-TOKEN` or `REJECTION-PACKAGE`, it **MUST**:
+
+1. Write the verdict to a **new, dedicated token file** — never edit the PREHANDOVER proof.
+2. Token file path: `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`  
+   (where NNN is the IAA sequential session number and Y is the wave number or `standalone`)
+3. The PREHANDOVER proof is treated as **read-only** once it has been committed to the branch.
+4. The token file is referenced from the PREHANDOVER proof's `iaa_audit_token` field —
+   the field records the token ID, not the full token text.
+
+**Token file format**:
+
+```markdown
+# IAA Token — session-NNN-waveY-YYYYMMDD
+
+IAA Session: session-NNN-YYYYMMDD
+PR: #<number>
+Wave: <wave-number or standalone>
+Date: YYYY-MM-DD
+
+## Verdict
+
+ASSURANCE-TOKEN   ← (or REJECTION-PACKAGE)
+
+Phases Verified: 1-<PASS|FAIL>, 2-<PASS|FAIL>, 3-<PASS|FAIL>, 4-<PASS|FAIL>
+Agent Integrity: <PASS|FAIL>
+Independence: CONFIRMED
+Verdict: MERGE PERMITTED   ← (or MERGE BLOCKED)
+
+## Remediation Required   ← (REJECTION-PACKAGE only)
+- <specific gap 1>
+- <specific gap 2>
+```
+
+**What this prevents**: concurrent write conflicts in PREHANDOVER proofs when multiple agents
+or automation jobs touch the same branch simultaneously.
+
+### Append-Only Session Artifacts
+
+All per-session governance artifacts produced during or after a wave execution MUST follow
+the append-only pattern:
+
+| Artifact Type | Pattern |
+|---------------|---------|
+| Parking station suggestions | New per-session file: `suggestions-log-<agent>-session-NNN.md` or dedicated per-agent log file (never a shared cross-agent file on a wave branch) |
+| FAIL-ONLY-ONCE registry entries | Append new rule row only; never delete or edit existing rows |
+| Session memories | New file per session; rotate (archive) per LIVING_AGENT_SYSTEM.md |
+| IAA assurance tokens | New dedicated token file per §Token Ceremony |
+| RCA breach log entries | Append-only; never overwrite a prior entry |
+
+**No shared mutable files on wave branches**: Multiple agents operating on the same wave branch
+MUST NOT write to the same shared file. Each agent uses its own dedicated artifact or creates
+a new per-session file.
+
+---
+
 ## References
 
 - `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 — Living Agent framework
@@ -346,4 +427,4 @@ template.
 
 ---
 
-*Authority: CS2 (Johan Ras) | Version: 1.1.0 | Effective: 2026-02-24 | Amended: 2026-03-03*
+*Authority: CS2 (Johan Ras) | Version: 1.2.0 | Effective: 2026-02-24 | Amended: 2026-03-04*

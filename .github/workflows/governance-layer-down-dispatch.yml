@@ -39,6 +39,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.MATURION_BOT_TOKEN }}
+
+      - name: Token identity evidence (REQ-TU-003)
+        run: echo "EXEC_IDENTITY: MATURION_BOT_TOKEN in use for write operations"
 
       - name: Debug working directory
         run: |

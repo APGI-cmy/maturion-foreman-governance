@@ -30,6 +30,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.MATURION_BOT_TOKEN }}
+
+      - name: Token identity evidence (REQ-TU-003)
+        run: echo "EXEC_IDENTITY: MATURION_BOT_TOKEN in use for write operations"
       
       - name: Validate Governance File Structure
         id: file-structure
@@ -131,6 +136,7 @@ jobs:
         if: github.event_name == 'pull_request' && always()
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.MATURION_BOT_TOKEN }}
           script: |
             const fileStructure = '${{ steps.file-structure.outcome }}';
             const secretsCheck = '${{ steps.secrets-check.outcome }}';
