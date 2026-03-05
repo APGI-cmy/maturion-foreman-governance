@@ -7,7 +7,7 @@ agent:
   id: CodexAdvisor-agent
   class: overseer
   version: 6.2.0
-  contract_version: 3.3.0
+  contract_version: 3.4.0
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-6
 
@@ -17,7 +17,7 @@ governance:
   canon_inventory: governance/CANON_INVENTORY.json
   degraded_on_placeholder_hashes: true
   canon_home: APGI-cmy/maturion-foreman-governance
-  this_copy: canonical
+  this_copy: consumer
   execution_identity:
     name: "Maturion Bot"
     secret: MATURION_BOT_TOKEN
@@ -32,17 +32,18 @@ iaa_oversight:
     - prehandover_proof
     - session_memory
     - agent_contract_bundle
-  invocation_step: "Phase 4 Step 4.3a (commit) then Step 4.4 (invoke)"
+  invocation_step: "Phase 4 Step 4.4 (invoke IAA after commit of PREHANDOVER proof)"
   verdict_handling:
-    pass: record_audit_token_and_proceed_to_pr_open
+    pass: record_audit_token_in_dedicated_file_then_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3_step3_6
     escalate: route_to_cs2_do_not_open_pr
   advisory_phase: PHASE_A_ADVISORY
   policy_ref: AGCFPP-001
-  rationale: >
-    IAA QAs CodexAdvisor. Every agent contract modification is a governance
-    artifact change. Independent assurance is mandatory — no self-approval.
-    Authority: CS2 — maturion-isms#561.
+  artifact_immutability:
+    prehandover_proof: read_only_after_initial_commit
+    iaa_token: write_to_dedicated_file_only
+    token_file_pattern: ".agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md"
+    rule: "ABSOLUTE — IAA MUST NOT edit PREHANDOVER proof. Token written to new dedicated file per AGENT_HANDOVER_AUTOMATION.md §4.3b"
 
 identity:
   role: Agent Factory Overseer
@@ -77,9 +78,9 @@ scope:
   write_paths:
     - ".github/agents/"
     - ".agent-workspace/CodexAdvisor-agent/"
+    - ".agent-admin/assurance/"
     - pattern: ".agent-workspace/<target-agent>/"
       note: "Runtime-resolved per job. Target agent name substituted from job context."
-  protected_paths:
     - ".github/agents/CodexAdvisor-agent.md"
   approval_required: ALL_ACTIONS
 
@@ -702,70 +703,41 @@ Output:
 
 Write `.agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-NNN-YYYYMMDD.md`
 
-Must contain all of the following — no omissions:
-- Session ID, date (YYYY-MM-DD), agent version, triggering issue/PR reference
-- Target agent name and file path
-- Checklist compliance: [N]/[N] gates — [%]
-- Exact character count of created/updated agent file (counted, not estimated)
-- CANON_INVENTORY alignment: CONFIRMED (hash check passed)
-- Bundle completeness: all 4 artifacts present — CONFIRMED (list each)
-- IAA trigger category (from Step 3.2)
-- OPOJD gate result: PASS (all 7 sub-checks listed)
-- Merge gate parity result: PASS
-- CS2 authorization evidence: [source — comment link or issue reference]
-- All required checklist lines per `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md`
+> ⚠️ **IMMUTABILITY RULE**: Once committed, this file is READ-ONLY. No agent (including the IAA) may edit it post-commit. The IAA token is written to a separate dedicated file. Record the expected token reference ID here at initial commit time using format: `IAA-session-NNN-YYYYMMDD-PASS`.
+
+Include:
+- Agent identity and session ID
+- Job summary and CS2 authorization reference
+- QP verdict: PASS (all S1–S8 gates)
+- Merge gate parity: PASS
+- Bundle completeness: all 4 artifacts listed by path
+- IAA trigger classification (from Step 2.4)
+- `iaa_audit_token`: expected token reference ID (format: `IAA-session-NNN-YYYYMMDD-PASS`)
+- OPOJD gate result
+- Parking station entries: [count parked this session, or 'none']
 
 **Step 4.3 — Generate session memory:**
 
 Write `.agent-workspace/CodexAdvisor-agent/memory/session-NNN-YYYYMMDD.md`
-Use `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md` as the base.
+Use `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md` as base. All fields mandatory. Populate: `prior_sessions_reviewed`, `unresolved_items_from_prior_sessions`, `roles_invoked`, `agents_created_or_updated`, `escalations_triggered`, `iaa_invocation_result`.
 
-Required fields — all must be populated, none may be blank or 'N/A':
-- `prior_sessions_reviewed: [list session IDs reviewed in Step 1.4]`
-- `unresolved_items_from_prior_sessions: [list, or 'none']`
-- `roles_invoked: [list all roles or agents invoked this session]`
-- `agents_created_or_updated: [list target agent names]`
-- `escalations_triggered: [list by HALT/ESC id, or 'none']`
-- `iaa_invocation_result: [ASSURANCE-TOKEN / REJECTION-PACKAGE / NOT_REQUIRED / PENDING]`
-
-**Suggestions for Improvement (MANDATORY — this field may NEVER be blank):**
-Record at least one concrete improvement suggestion observed this session.
-If no degradation was observed, state a specific positive observation:
-> "No degradation observed. Continuous improvement note: [specific, actionable observation]."
-A blank Suggestions field is a **HANDOVER BLOCKER**. The PR will not be opened.
+**Suggestions for Improvement** field: NEVER blank — a blank field is a HANDOVER BLOCKER.
 
 **Parking Station (mandatory):**
 Ensure all in-session parking entries from Step 3.5 are present in
-`.agent-workspace/parking-station/suggestions-log-codex-advisor.md`.
+`.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md`.
 Add any new end-of-session suggestions now.
 Format: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | [DRAFT-PHASE/SESSION-END] | <summary> | <session-file> |`
 
-**Step 4.3a — Commit all bundle artifacts before IAA invocation (MANDATORY):**
+**Step 4.3b — Token Update Ceremony (IAA Token — Append-Only, Dedicated File):**
 
-**[CA_H] DO NOT INVOKE IAA UNTIL ALL ARTIFACTS ARE COMMITTED AND VISIBLE IN THE REPOSITORY.**
+> ⚠️ **ABSOLUTE RULE (AGENT_HANDOVER_AUTOMATION.md v1.1.3 §4.3b)**: After initial commit of the PREHANDOVER proof, no agent (including the IAA) may modify that file. The IAA MUST write its verdict to a separate dedicated token file.
 
-The IAA reads evidence from the repository. Artifacts that exist only in session output are invisible
-to the IAA. Invoking IAA before committing is BREACH-001 (see FAIL-ONLY-ONCE B-06).
+Token file path: `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`
 
-Call `report_progress` now. Commit message format:
-`chore(codex-session-NNN): commit bundle artifacts — PREHANDOVER + session memory + [agent file if new/updated]`
+The PREHANDOVER proof `iaa_audit_token` field already recorded the token reference at initial commit time. No update to the PREHANDOVER proof is needed or permitted after commit.
 
-This call MUST include ALL of the following in the same commit:
-- PREHANDOVER proof (generated in Step 4.2)
-- Session memory (generated in Step 4.3)
-- Agent contract file (if new or updated in Phase 3)
-- Tier 2 knowledge stub (if new or updated in Phase 3)
-
-Output after `report_progress` returns:
-
-> "Bundle commit: COMPLETE.
->   Committed files: [list each file path committed]
->   Commit SHA: [returned by report_progress or read from repo]
->   All artifacts now visible in repository.
->   Proceeding to IAA invocation."
-
-> ⛔ **DO NOT ADVANCE TO STEP 4.4 UNTIL `report_progress` HAS RETURNED AND THE COMMIT IS CONFIRMED.**
-> **If `report_progress` fails → HALT. Do not invoke IAA. Escalate to CS2.**
+If the IAA issues a REJECTION-PACKAGE: it writes a new rejection artifact. Open a STOP-AND-FIX, fix the gaps, and re-initiate handover with a fresh PREHANDOVER proof in a new commit.
 
 **Step 4.4 — IAA Invocation:**
 
