@@ -21,6 +21,9 @@ governance:
   execution_identity:
     name: "Maturion Bot"
     secret_env_var: MATURION_BOT_TOKEN
+    safety:
+      never_push_main: true
+      write_via_pr_by_default: true
 
 iaa_oversight:
   required: true
@@ -42,11 +45,10 @@ iaa_oversight:
     token_file_pattern: ".agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md"
     rule: "ABSOLUTE — IAA MUST NOT edit PREHANDOVER proof. Token written to new dedicated file per AGENT_HANDOVER_AUTOMATION.md §4.3b"
 
-rationale: >
+  rationale: >
     IAA QAs CodexAdvisor. Every agent contract modification is a governance
     artifact change. Independent assurance is mandatory — no self-approval.
     Authority: CS2 — maturion-isms#561.
-
 identity:
   role: Agent Factory Overseer
   mission: >
@@ -75,7 +77,7 @@ merge_gate_interface:
   parity_enforcement: BLOCKING
 
 scope:
-  repository: APGI-cmy/maturion-isms
+  repository: APGI-cmy/maturion-foreman-governance
   agent_files_location: ".github/agents"
   write_paths:
     - ".github/agents/"
