@@ -30,7 +30,7 @@ governance:
     - governance/GATE_REQUIREMENTS_INDEX.json
   execution_identity:
     name: "Maturion Bot"
-    secret: MATURION_BOT_TOKEN
+    secret_env_var: MATURION_BOT_TOKEN
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -44,11 +44,16 @@ iaa_oversight:
     - agent_contract_bundle
   invocation_step: "Phase 4 Step 4.4 — IAA Independent Audit"
   verdict_handling:
-    pass: record_audit_token_and_proceed_to_pr_open
+    pass: record_audit_token_in_dedicated_file_then_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3
     escalate: route_to_cs2_do_not_open_pr
   advisory_phase: PHASE_A_ADVISORY
   policy_ref: AGCFPP-001
+  artifact_immutability:
+    prehandover_proof: read_only_after_initial_commit
+    iaa_token: write_to_dedicated_file_only
+    token_file_pattern: ".agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md"
+    rule: "ABSOLUTE — IAA MUST NOT edit PREHANDOVER proof. Token written to new dedicated file per AGENT_HANDOVER_AUTOMATION.md §4.3b"
 
 identity:
   role: Governance Repository Administrator
@@ -503,6 +508,30 @@ echo "✅ [GA_H] Agent is cleared to open the PR"
 ```
 
 **Commentary**: This check is **BLOCKING**. If any gate fails the agent **stops, fixes the issue, and re-runs from step 1**. Opening a PR on a local gate failure is PROHIBITED — same class as pushing directly to main.
+
+### 4.3b Token Update Ceremony (GA_H — MANDATORY after IAA PASS)
+
+**Trigger**: IAA has issued a verdict for this PR.
+
+**Protocol**:
+
+1. **Do NOT edit the PREHANDOVER proof.** The PREHANDOVER proof is immutable once committed.
+2. The IAA writes its verdict to a dedicated token file:
+   `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`
+3. The PREHANDOVER proof `iaa_audit_token` field already recorded the token reference at
+   initial commit time (using the expected format `IAA-session-NNN-YYYYMMDD-PASS`).
+   No update to the PREHANDOVER proof is needed or permitted.
+4. The submitting agent (GA) commits the token file as a **new file only** —
+   no amendments to any existing committed artifact.
+5. If the IAA issues a REJECTION-PACKAGE, it similarly writes a new rejection artifact;
+   the GA opens a STOP-AND-FIX, fixes the gaps, and re-initiates handover
+   with a fresh PREHANDOVER proof in a new commit.
+
+> ⚠️ **ABSOLUTE RULE (AGENT_HANDOVER_AUTOMATION.md v1.1.3 §4.3b)**: After initial commit of
+> the PREHANDOVER proof, no agent (including the IAA) may modify that file. The IAA MUST write
+> its verdict to a separate dedicated token file.
+
+**Reference**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md` §4.3b
 
 ### 4.4 Compliance Check (GA_H)
 

@@ -41,3 +41,4 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | Rule ID | Date Added | Incident Reference | One-line Summary |
 |---------|------------|--------------------|------------------|
 | B-06 (new rule) | 2026-03-03 | BREACH-001 / session-008-20260303 / PR #1289 | IAA not invoked before final handover commit on agent contract harmonization PR — INC-IAA-SKIP-001 |
+| B-06 (repeat) | 2026-03-05 | BREACH-002 / session-011-20260305 / PR (align-agent-contracts-with-isms) | B-06 fired again — IAA not invoked before report_progress handover commit on agent contract alignment PR — INC-IAA-SKIP-001 repeat. Corrective action: IAA invoked post-hoc in session-011. |

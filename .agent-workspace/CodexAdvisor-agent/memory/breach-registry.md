@@ -1,5 +1,5 @@
 # FAIL-ONLY-ONCE Breach Registry — CodexAdvisor
-**Authority**: CodexAdvisor Agent Contract v3.2.0 | LIVING_AGENT_SYSTEM.md v6.2.0
+**Authority**: CodexAdvisor Agent Contract v3.4.0 | LIVING_AGENT_SYSTEM.md v6.2.0
 **Update Protocol**: After every breach RCA, append new entry. Never remove. Never skip.
 **Preflight**: Read in full and re-attest every open breach at session start before any work begins.
 
@@ -7,7 +7,9 @@
 
 ## Open Breaches
 
-_none_
+| Breach ID | Gate | Session | Date | Description | Status |
+|-----------|------|---------|------|-------------|--------|
+| BREACH-002 | B-06 / INC-IAA-SKIP-001 | session-011-20260305 | 2026-03-05 | IAA was not invoked before final handover commit on PR (agent contract alignment — `.github/agents/` modified). INC-IAA-SKIP-001 repeat. B-06 rule re-triggered. | CORRECTIVE ACTION COMPLETE — IAA invoked; REJECTION-PACKAGE IAA-20260305-ISMS-ALIGN (HALT-004 SELF-ASSURANCE-001); CS2 direct merge authorization required |
 
 ---
 
@@ -19,4 +21,4 @@ _none_
 
 ---
 
-*CodexAdvisor-agent | Contract v3.2.0 | Created: 2026-03-03*
+*CodexAdvisor-agent | Contract v3.4.0 | Updated: 2026-03-05*
