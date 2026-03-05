@@ -2,8 +2,8 @@
 
 **Agent**: independent-assurance-agent
 **Contract Version**: 2.0.0
-**Knowledge Version**: 1.4.0
-**Last Updated**: 2026-03-02
+**Knowledge Version**: 2.4.0
+**Last Updated**: 2026-03-05
 **Architecture**: `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md`
 
 ---
@@ -12,11 +12,12 @@
 
 | File | Purpose | Version | Status |
 |------|---------|---------|--------|
-| `index.md` (this file) | Knowledge entry point and version reference | 1.4.0 | PRESENT |
-| `FAIL-ONLY-ONCE.md` | Permanent rules recording governance failures IAA must never repeat | 1.3.0 | PRESENT — Rules A-001 through A-019 active (A-018 renumbered from dup A-004; A-019 renumbered from dup A-016) |
-| `iaa-core-invariants-checklist.md` | Core checks applied to every IAA invocation regardless of category | 2.3.0 | ACTIVE — CORE-001 to CORE-020; CORE-007 updated with PENDING carve-out note |
+| `index.md` (this file) | Knowledge entry point and version reference | 2.4.0 | PRESENT |
+| `FAIL-ONLY-ONCE.md` | Permanent rules recording governance failures IAA must never repeat | 2.3.0 | PRESENT — Rules A-001 through A-030 active |
+| `iaa-core-invariants-checklist.md` | Core checks applied to every IAA invocation regardless of category | 2.8.0 | ACTIVE — CORE-001 to CORE-022; §4.3b architecture; Orientation Mandate |
 | `iaa-trigger-table.md` | PR category classification table — when IAA activates and when it is exempt | 2.1.0 | ACTIVE — KNOWLEDGE_GOVERNANCE trigger category added |
-| `iaa-category-overlays.md` | Per-category additional checks (AGENT_CONTRACT, CANON_GOVERNANCE, CI_WORKFLOW, AAWP_MAT, KNOWLEDGE_GOVERNANCE) | 2.2.0 | ACTIVE — OVL-KG-001 through OVL-KG-005 added |
+| `iaa-category-overlays.md` | Per-category additional checks (AGENT_CONTRACT, CANON_GOVERNANCE, CI_WORKFLOW, AAWP_MAT, KNOWLEDGE_GOVERNANCE) | 2.3.0 | ACTIVE — OVL-AM-008 added |
+| `IAA_ZERO_SEVERITY_TOLERANCE.md` | Zero-Severity-Tolerance policy — any finding = REJECTION-PACKAGE; prohibited language table | 1.0.0 | ACTIVE — CORE-021 enforcement reference |
 | `session-memory-template.md` | Standard session memory template for IAA invocations | 1.0.0 | PRESENT |
 
 ---
@@ -63,6 +64,17 @@
 | A-017 | Session memory must not cite a REJECTION-PACKAGE session as PASS | ACTIVE |
 | A-018 | Post-merge retrospective audit findings must be formally recorded — no informal notes | ACTIVE |
 | A-019 | Trigger table misapplication is an IAA bypass — ALL triggering categories require IAA | ACTIVE |
+| A-020 | IAA token format must be `IAA-session-NNN-YYYYMMDD-PASS` — named tokens are prohibited | ACTIVE |
+| A-021 | IAA token must be written to dedicated token file — never into the PREHANDOVER proof | ACTIVE |
+| A-022 | Re-evaluate ALL trigger categories on every IAA invocation — no carry-forward classification | ACTIVE |
+| A-023 | OVL-AC-012 ripple assessment is a standing PREHANDOVER requirement for all AGENT_CONTRACT PRs | ACTIVE |
+| A-024 | `secret:` field prohibited in agent contracts — must use `secret_env_var:` | ACTIVE |
+| A-025 | Ceremony artifacts must use PENDING until post-ASSURANCE-TOKEN ceremony | ACTIVE |
+| A-026 | `SCOPE_DECLARATION.md` must match `git diff --name-only origin/main...HEAD` exactly before IAA invocation | ACTIVE |
+| A-027 | Third-consecutive A-021 failure on same PR/branch = systemic workflow gap | ACTIVE |
+| A-028 | `SCOPE_DECLARATION.md` format compliance — list format required, prior-wave entries must be trimmed | ACTIVE |
+| A-029 | PREHANDOVER proof immutability §4.3b — pre-populate expected reference token at commit time | ACTIVE |
+| A-030 | CORE-019 re-invocation carve-out — correction addendum path for immutable-PREHANDOVER re-invocation scenarios | ACTIVE |
 
 ---
 
@@ -107,6 +119,7 @@ that produced the work under review. Every invocation is logged in session memor
 | 1.2.0 | 2026-02-28 | Fully populated files noted (iaa-core-invariants-checklist, iaa-trigger-table, iaa-category-overlays); AGENT_INTEGRITY category referenced; adoption phase updated |
 | 1.3.0 | 2026-03-01 | FAIL-ONLY-ONCE active rules table updated; OVL-AC/CI/CG/AM additions referenced |
 | 1.4.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE trigger category added to IAA Trigger Summary; session-memory-template.md added to knowledge contents table; FAIL-ONLY-ONCE A-015, A-016, A-017, A-018, A-019 added to active rules table (maturion-isms#IAA-TIER2) |
+| 2.4.0 | 2026-03-05 | Synced to v2.4.0: FAIL-ONLY-ONCE v2.3.0 (A-022 to A-030); iaa-core-invariants-checklist v2.8.0 (§4.3b architecture, Orientation Mandate, CORE-021/022); iaa-category-overlays v2.3.0 (OVL-AM-008); IAA_ZERO_SEVERITY_TOLERANCE.md v1.0.0 created; active rules table updated A-020 to A-030 |
 
 ---
 
