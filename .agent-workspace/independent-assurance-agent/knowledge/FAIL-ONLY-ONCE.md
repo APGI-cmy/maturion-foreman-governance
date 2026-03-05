@@ -1,9 +1,9 @@
 # IAA FAIL-ONLY-ONCE Registry
 
 **Agent**: independent-assurance-agent
-**Version**: 1.5.0
+**Version**: 2.3.0
 **Seeded**: 2026-02-26
-**Last Updated**: 2026-03-04
+**Last Updated**: 2026-03-05
 **Authority**: IAA Canon (INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.2.0) | LIVING_AGENT_SYSTEM.md v6.2.0 | CS2 (Johan Ras)
 **Update Protocol**: After every breach RCA, the IAA appends a new rule + breach log entry to this registry (append-only; no deletions or gaps). Earlier registry formats/versions are preserved in version control / legacy registry files. Never remove. Never skip.
 **Preflight**: IAA reads this file in full and self-attests against every rule at every session start before any assurance work begins.
@@ -458,6 +458,180 @@ cross-agent log file on the same wave branch.
 
 ---
 
+### A-022 — Re-Evaluate ALL Trigger Categories on Every IAA Invocation
+
+**Triggered by**: Pattern of carry-forward category classification across sessions — producing agents reusing the prior session's PREHANDOVER category without re-classifying the current diff.
+
+**Permanent Rule**:
+IAA must re-classify the PR category from the current diff at every Phase 2 Step 2.1 invocation.
+No carry-forward of prior session's category classification is permitted.
+If the current diff introduces a new trigger category not covered in the PREHANDOVER proof, that absence is a finding.
+
+**Check in Phase 2 (Step 2.1)**:
+> FAIL-ONLY-ONCE A-022: Re-classify PR category from current diff. Do not carry forward prior session classification.
+> If new trigger categories appear in diff that are absent from PREHANDOVER proof → Finding: "Trigger category [X] present in diff but absent from PREHANDOVER proof classification."
+> Fix: Producing agent must update PREHANDOVER proof classification to reflect all current diff trigger categories.
+
+**Status**: ACTIVE — enforced every invocation
+
+---
+
+### A-023 — OVL-AC-012 Ripple Assessment is a Standing PREHANDOVER Requirement for All AGENT_CONTRACT PRs
+
+**Triggered by**: Pattern of REJECTION-PACKAGEs in sessions 084–101 — OVL-AC-012 ripple/cross-agent assessment section repeatedly absent from PREHANDOVER proofs for AGENT_CONTRACT PRs.
+
+**Permanent Rule**:
+For every PR classified as AGENT_CONTRACT:
+- PREHANDOVER proof must include an OVL-AC-012 section.
+- The section must either: (a) list all affected agents and confirm ripple has been initiated or flagged, or (b) explicitly state "No ripple required" with brief justification.
+- An absent OVL-AC-012 section = REJECTION-PACKAGE. A blank section = REJECTION-PACKAGE.
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-023: For AGENT_CONTRACT PRs — locate OVL-AC-012 section in PREHANDOVER proof.
+> If absent or blank → FAIL → Finding: "OVL-AC-012 ripple assessment section absent from PREHANDOVER proof."
+> Fix: Add OVL-AC-012 section to PREHANDOVER proof listing affected agents or stating 'No ripple required' with justification.
+
+**Status**: ACTIVE — enforced every AGENT_CONTRACT invocation
+
+---
+
+### A-024 — `secret:` Field Prohibited in Agent Contracts — Must Use `secret_env_var:`
+
+**Triggered by**: CI scanner treating `secret:` as a potential secret leak → blocks all gate checks. Enforces CORE-022.
+
+**Permanent Rule**:
+The field name `secret:` is prohibited in any `.github/agents/*.md` agent contract file.
+The correct field name is `secret_env_var:`.
+IAA must scan the PR diff for `secret: "` in any `.github/agents/*.md` file.
+Any occurrence → REJECTION-PACKAGE.
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-024: Scan PR diff for `secret: "` in `.github/agents/*.md` files.
+> If found → FAIL → Finding: "`secret:` field present in agent contract — prohibited per A-024. Use `secret_env_var:` instead."
+> Fix: Replace `secret:` with `secret_env_var:` in the agent contract YAML block.
+
+**Status**: ACTIVE — enforced every AGENT_CONTRACT invocation
+
+---
+
+### A-025 — Ceremony Artifacts Must Use PENDING Until Post-ASSURANCE-TOKEN Ceremony
+
+**Triggered by**: Pre-fill of anticipated `-PASS` tokens in PREHANDOVER proof before IAA invocation — creates fabricated appearance of completed ceremony.
+
+**Permanent Rule**:
+No pre-fill of anticipated `-PASS` tokens in PREHANDOVER proof.
+Under §4.3b: `iaa_audit_token` field contains the expected reference format as a pre-populated reference — not a claimed result.
+All ceremony artifacts must use `PENDING` (or the §4.3b expected reference format) until Post-ASSURANCE-TOKEN ceremony is complete.
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-025: Check `iaa_audit_token` in PREHANDOVER proof at time of invocation.
+> If value is a completed PASS token but IAA has not yet issued that token → FAIL → Finding: "Pre-filled PASS token detected — A-025 violation. Token must be PENDING or §4.3b expected reference until IAA issues ASSURANCE-TOKEN."
+> Fix: Reset `iaa_audit_token` to PENDING before IAA invocation.
+
+**Status**: ACTIVE — enforced every invocation
+
+---
+
+### A-026 — `SCOPE_DECLARATION.md` Must Match `git diff --name-only origin/main...HEAD` Exactly Before IAA Invocation
+
+**Triggered by**: Stale scope declarations causing BL-027 parity failures and undeclared-scope findings on IAA invocation.
+
+**Permanent Rule**:
+Before IAA invocation, `SCOPE_DECLARATION.md` must exactly match the output of `git diff --name-only origin/main...HEAD`.
+- Stale entries (files declared but not in diff) = BL-027 parity failure → REJECTION-PACKAGE
+- Missing entries (files in diff not declared) = undeclared scope → REJECTION-PACKAGE
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-026: Compare SCOPE_DECLARATION.md entries against current diff file list.
+> Stale declared files → FAIL ("SCOPE_DECLARATION.md contains stale entries not in current diff — BL-027 parity failure.")
+> Undeclared diff files → FAIL ("Files in diff not declared in SCOPE_DECLARATION.md — undeclared scope.")
+> Fix: Producing agent must regenerate SCOPE_DECLARATION.md from `git diff --name-only origin/main...HEAD` immediately before IAA invocation.
+
+**Status**: ACTIVE — enforced every invocation
+
+---
+
+### A-027 — Third-Consecutive A-021 Failure on Same PR/Branch = Systemic Workflow Gap
+
+**Triggered by**: Repeat A-021 failures (PREHANDOVER proof mutation post-commit) indicating that the producing agent's workflow does not have a pre-IAA commit gate.
+
+**Permanent Rule**:
+If the same PR/branch triggers an A-021 failure for the third consecutive time:
+- The producing agent must add a Pre-IAA Commit Gate to their PREHANDOVER template.
+- Evidence in the PREHANDOVER proof must include: `git status` output AND `git log --oneline -3` output, demonstrating the branch is clean and the PREHANDOVER proof was the last commit before IAA invocation.
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-027: On third or subsequent A-021 failure for this PR/branch:
+> FAIL → Finding: "Third-consecutive A-021 failure — systemic workflow gap detected."
+> Fix: Add Pre-IAA Commit Gate to PREHANDOVER template. Include `git status` + `git log --oneline -3` in PREHANDOVER proof on every subsequent invocation.
+
+**Status**: ACTIVE — enforced from third A-021 occurrence onwards
+
+---
+
+### A-028 — `SCOPE_DECLARATION.md` Format Compliance — List Format Required, Prior-Wave Entries Must Be Trimmed
+
+**Triggered by**: Scope declarations using tables, groupings, or commentary instead of plain list format; prior-wave entries left in scope declarations causing stale-entry parity failures.
+
+**Permanent Rule**:
+`SCOPE_DECLARATION.md` must use plain markdown list format ONLY:
+- Each entry on its own line: `- path/to/file`
+- No tables, no groupings, no commentary, no headers per file
+- Prior-wave entries not in the current diff must be removed before IAA invocation
+This rule extends A-026.
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-028: Inspect SCOPE_DECLARATION.md format.
+> If format is not a plain markdown list (`- path/to/file` per line) → FAIL ("SCOPE_DECLARATION.md format non-compliant — tables/groupings/commentary not permitted.")
+> If prior-wave entries present (files not in current diff) → FAIL ("Prior-wave entries present in SCOPE_DECLARATION.md — must be trimmed.")
+> Fix: Reformat SCOPE_DECLARATION.md as plain list. Remove all entries not in current diff.
+
+**Status**: ACTIVE — enforced every invocation
+
+---
+
+### A-029 — PREHANDOVER Proof Immutability §4.3b — Pre-Populate Expected Reference Token at Commit Time
+
+**Triggered by**: CS2 governance amendment — Artifact Immutability & Append-Only Proof Protocols. Effective 2026-03-04.
+
+**Permanent Rule**:
+The PREHANDOVER proof is committed BEFORE IAA invocation and is READ-ONLY thereafter.
+Under §4.3b architecture:
+- `iaa_audit_token` is pre-populated with the expected reference format at commit time (e.g., `IAA-session-NNN-waveY-YYYYMMDD-PASS` as a pre-declared reference, not a claimed result)
+- The IAA verdict (ASSURANCE-TOKEN or REJECTION-PACKAGE) is written to a dedicated token file at: `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`
+- The `## IAA Agent Response (verbatim)` section, when present in legacy PREHANDOVER proofs, now lives in the token file — not in the PREHANDOVER proof
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-029: Verify PREHANDOVER proof was committed before IAA invocation (not modified post-commit).
+> If PREHANDOVER proof was modified after initial commit → FAIL ("PREHANDOVER proof mutated post-commit — violates §4.3b immutability.")
+> Verify IAA verdict is in dedicated token file, not written into PREHANDOVER proof.
+> If IAA verdict injected into PREHANDOVER proof → FAIL ("IAA verdict written into PREHANDOVER proof post-commit — use dedicated token file per A-021/A-029.")
+
+**Status**: ACTIVE — effective 2026-03-04
+
+---
+
+### A-030 — CORE-019 Re-Invocation Carve-Out — Correction Addendum Path for Immutable-PREHANDOVER Re-Invocation Scenarios
+
+**Triggered by**: CORE-019 cross-verification requirement and A-029 immutability creating a circular dependency: after a REJECTION-PACKAGE with immutable PREHANDOVER proof, the producing agent cannot update the PREHANDOVER proof to reflect the corrected IAA token.
+
+**Permanent Rule**:
+When re-invoking IAA after a REJECTION-PACKAGE where the PREHANDOVER proof is immutable (A-029):
+- The producing agent commits a Correction Addendum at: `.agent-admin/assurance/correction-addendum-session-NNN-waveY-YYYYMMDD.md`
+- The Correction Addendum must document: (a) the prior REJECTION-PACKAGE session reference, (b) the changes made to address each rejection finding, and (c) the new session number being requested
+- IAA treats the Correction Addendum as satisfying CORE-019 for re-invocation — the immutable PREHANDOVER proof does NOT need to be updated
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-030: On re-invocation after REJECTION-PACKAGE with immutable PREHANDOVER proof (A-029):
+> Locate Correction Addendum at `.agent-admin/assurance/correction-addendum-session-NNN-waveY-YYYYMMDD.md`.
+> If absent → FAIL ("Correction Addendum missing — required for re-invocation with immutable PREHANDOVER proof per A-030.")
+> If present and addresses all prior rejection findings → treat as satisfying CORE-019. PASS (carve-out applies).
+> Fix: Produce Correction Addendum documenting prior rejection, changes made, and new session reference.
+
+**Status**: ACTIVE — effective 2026-03-04
+
+---
+
 ## Adding New Rules
 
 When a new governance failure pattern is identified during a session (learning_notes in session
@@ -481,6 +655,14 @@ All updates to this file must be committed as part of the session bundle for tha
 | 1.3.0 | 2026-03-01 | Fixed duplicate IDs: former A-016 (Trigger Table Misapplication) → A-018; former A-004 (Post-Merge Retrospective) → A-019. Added renumbering note and version history. Restored deprecated Section B notice for B-rule resolvability. Issue: APGI-cmy/maturion-foreman-governance#1252. |
 | 1.4.0 | 2026-03-02 | Added A-020 (Named token prohibition — `IAA-session-NNN-YYYYMMDD-PASS` format mandatory; named tokens prohibited). Issue: maturion-isms#779. CS2 instruction via APGI-cmy/maturion-foreman-governance#1260. |
 | 1.5.0 | 2026-03-04 | Added A-021 (IAA token must be written to dedicated file; PREHANDOVER proof is immutable post-commit; parking-station suggestions are per-session files). CS2 auth: APGI-cmy/maturion-foreman-governance issue — Artifact Immutability & Append-Only Proof Protocols. |
+| 1.6.0 | 2026-03-03 | Added A-022 (re-evaluate ALL trigger categories every invocation) |
+| 1.7.0 | 2026-03-03 | Added A-023 (OVL-AC-012 ripple assessment is standing PREHANDOVER requirement for all AGENT_CONTRACT PRs) |
+| 1.8.0 | 2026-03-03 | Added A-024 (`secret:` prohibited — must use `secret_env_var:`) |
+| 1.9.0 | 2026-03-03 | Added A-025 (ceremony artifacts must use PENDING until Post-ASSURANCE-TOKEN ceremony) |
+| 2.0.0 | 2026-03-03 | Added A-026 (SCOPE_DECLARATION.md must match diff exactly) |
+| 2.1.0 | 2026-03-03 | Added A-027 (third-consecutive A-021 failure = systemic workflow gap) |
+| 2.2.0 | 2026-03-04 | Added A-028 (SCOPE_DECLARATION format compliance) and A-029 (PREHANDOVER immutability §4.3b) |
+| 2.3.0 | 2026-03-04 | Added A-030 (CORE-019 re-invocation carve-out — correction addendum path) |
 
 ---
 

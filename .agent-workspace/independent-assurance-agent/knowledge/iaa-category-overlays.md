@@ -1,9 +1,9 @@
 # IAA Category Overlays
 
 **Agent**: independent-assurance-agent
-**Version**: 2.2.0
+**Version**: 2.3.0
 **Status**: ACTIVE
-**Last Updated**: 2026-03-02
+**Last Updated**: 2026-03-05
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
 
 ---
@@ -82,6 +82,7 @@ Applied when PR category is `AAWP_MAT`.
 | OVL-AM-005 | Wave gap register trace | PREHANDOVER proof or session memory must include a link to the gap register entry for this wave's work, or explicitly state "no gap register entry applicable" with a brief justification. A blank or absent gap register reference = REJECTION-PACKAGE. |
 | OVL-AM-006 | Environment parity validation | PREHANDOVER must explicitly state whether the change affects dev, staging, and production environments differently. Must identify any environment with different post-deployment behavior. An explicit "no environment impact" statement is acceptable when justified. Absent = REJECTION-PACKAGE. |
 | OVL-AM-007 | Session memory learning note coverage | Session memory must contain at least one concrete, non-blank learning note in the `learning_notes` or `suggestions` field. If a repeat failure pattern is identified (same failure as any prior session), the session memory must explicitly reference the prior session ID(s) and flag for root-cause analysis. A blank or placeholder learning note = REJECTION-PACKAGE. |
+| OVL-AM-008 | End-to-end wiring verification | For any wave that delivers frontend components consuming new backend APIs, new DB migrations, or new RLS policies: PREHANDOVER must confirm end-to-end wiring has been verified — specifically that the frontend hook calls the correct API endpoint, the API endpoint references the correct DB table/column, and the RLS policy permits the required operation for the authenticated user. A claim of "wiring verified" without specific evidence (hook name, endpoint, table/column, RLS policy name) = REJECTION-PACKAGE. |
 
 ---
 
@@ -119,6 +120,7 @@ Applied when PR category is `KNOWLEDGE_GOVERNANCE`.
 | 2.0.0 | 2026-02-28 | Fully populated from INDEPENDENT_ASSURANCE_AGENT_CANON.md; OVL-CI-004 added (workflow policy correctness check from IAA session-017 suggestion); AGENT_INTEGRITY overlay added; STUB status removed |
 | 2.1.0 | 2026-03-02 | AGENT_CONTRACT: OVL-AC-011 (drift check), OVL-AC-012 (ripple assessment) added; CANON_GOVERNANCE: OVL-CG-005 (drift/integrity hash), OVL-CG-006 (CANON_INVENTORY update confirmed) added; CI_WORKFLOW: OVL-CI-005 (CI check run result), OVL-CI-006 (environment parity) added; AAWP_MAT: OVL-AM-004 (architecture ripple/impact plan), OVL-AM-005 (wave gap trace), OVL-AM-006 (environment parity), OVL-AM-007 (session memory learning notes) added (maturion-isms#IAA-TIER2 Wave 13+) |
 | 2.2.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE overlay added (OVL-KG-001 through OVL-KG-005) — formalises Tier 2 knowledge patch audit requirements (maturion-isms#IAA-TIER2) |
+| 2.3.0 | 2026-03-05 | AAWP_MAT: OVL-AM-008 added (end-to-end wiring verification) |
 
 ---
 
