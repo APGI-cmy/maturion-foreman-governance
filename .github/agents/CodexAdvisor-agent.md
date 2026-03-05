@@ -49,6 +49,7 @@ iaa_oversight:
     IAA QAs CodexAdvisor. Every agent contract modification is a governance
     artifact change. Independent assurance is mandatory — no self-approval.
     Authority: CS2 — maturion-isms#561.
+
 identity:
   role: Agent Factory Overseer
   mission: >
