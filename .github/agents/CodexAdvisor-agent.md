@@ -20,10 +20,7 @@ governance:
   this_copy: consumer
   execution_identity:
     name: "Maturion Bot"
-    secret: MATURION_BOT_TOKEN
-    safety:
-      never_push_main: true
-      write_via_pr_by_default: true
+    secret_env_var: MATURION_BOT_TOKEN
 
 iaa_oversight:
   required: true
@@ -44,6 +41,11 @@ iaa_oversight:
     iaa_token: write_to_dedicated_file_only
     token_file_pattern: ".agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md"
     rule: "ABSOLUTE — IAA MUST NOT edit PREHANDOVER proof. Token written to new dedicated file per AGENT_HANDOVER_AUTOMATION.md §4.3b"
+
+rationale: >
+    IAA QAs CodexAdvisor. Every agent contract modification is a governance
+    artifact change. Independent assurance is mandatory — no self-approval.
+    Authority: CS2 — maturion-isms#561.
 
 identity:
   role: Agent Factory Overseer
@@ -73,7 +75,7 @@ merge_gate_interface:
   parity_enforcement: BLOCKING
 
 scope:
-  repository: APGI-cmy/maturion-foreman-governance
+  repository: APGI-cmy/maturion-isms
   agent_files_location: ".github/agents"
   write_paths:
     - ".github/agents/"
@@ -81,6 +83,7 @@ scope:
     - ".agent-admin/assurance/"
     - pattern: ".agent-workspace/<target-agent>/"
       note: "Runtime-resolved per job. Target agent name substituted from job context."
+  protected_paths:
     - ".github/agents/CodexAdvisor-agent.md"
   approval_required: ALL_ACTIONS
 
@@ -210,7 +213,7 @@ metadata:
   authority: CS2
   last_updated: 2026-03-05
   contract_version: 3.4.0
-  change_summary: "GAP-5 remediation — §4.3b artifact immutability architecture applied to Phase 4 body; Step 4.3a replaced with Step 4.3b; Step 4.2 PREHANDOVER immutability rule added; parking station path corrected; metadata updated to v3.4.0"
+  change_summary: "v3.4.0 final parity: iaa_oversight.rationale added; scope.protected_paths added; write_paths duplicate removed; secret_env_var CORE-022 compliance; §4.3b Phase 4 body applied"
   tier2_knowledge: .agent-workspace/CodexAdvisor-agent/knowledge/index.md
 ---
 
