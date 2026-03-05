@@ -206,9 +206,11 @@ tier2_knowledge:
 
 metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
-  this_copy: canonical
+  this_copy: consumer
   authority: CS2
-  last_updated: 2026-03-04
+  last_updated: 2026-03-05
+  contract_version: 3.4.0
+  change_summary: "GAP-5 remediation — §4.3b artifact immutability architecture applied to Phase 4 body; Step 4.3a replaced with Step 4.3b; Step 4.2 PREHANDOVER immutability rule added; parking station path corrected; metadata updated to v3.4.0"
   tier2_knowledge: .agent-workspace/CodexAdvisor-agent/knowledge/index.md
 ---
 
@@ -607,7 +609,7 @@ Count characters before submitting. Do not estimate.
 If during drafting you identify an improvement suggestion for any governance document, canon,
 checklist, or agent file — park it immediately. Do not defer to end of session.
 
-Open `.agent-workspace/parking-station/suggestions-log-codex-advisor.md` (create if absent).
+Open `.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md`. (create if absent).
 Append one line per suggestion: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | DRAFT-PHASE | <summary> | <evidence-file> |`
 
 This prevents suggestions from being lost if the session ends unexpectedly.
@@ -741,7 +743,7 @@ If the IAA issues a REJECTION-PACKAGE: it writes a new rejection artifact. Open 
 
 **Step 4.4 — IAA Invocation:**
 
-Check IAA trigger classification from Step 3.2.
+Check IAA trigger classification from Step 2.4.
 
 If IAA_REQUIRED: YES or REVIEW:
   Invoke the Independent Assurance Agent.
@@ -759,7 +761,7 @@ If IAA_REQUIRED: YES or REVIEW:
   > **If the tool call succeeds and returns ANY verdict (PASS or FAIL), that IS the IAA result. Record it.**
 
   **TOOL CALL RESULT — record exactly one of the following before advancing:**
-  - Tool call returned ASSURANCE-TOKEN → record token. Proceed to Step 4.5.
+  - Tool call returned ASSURANCE-TOKEN → record token reference in dedicated file per Step 4.3b. Proceed to Step 4.5.
   - Tool call returned REJECTION-PACKAGE → return to Phase 3 Step 3.6. Do not open PR.
   - Tool call returned deployment-error → output PHASE_A_ADVISORY. Flag PR for IAA review.
   - Tool call was NOT made → HALT-007. INC-IAA-SKIP-001. Do not proceed. Escalate to CS2.
