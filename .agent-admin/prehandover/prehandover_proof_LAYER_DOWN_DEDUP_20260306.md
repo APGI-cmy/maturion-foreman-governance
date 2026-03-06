@@ -4,7 +4,7 @@
 **Date**: 2026-03-06
 **Issue**: APGI-cmy/maturion-foreman-governance (Duplicate Layer-Down Issues and Ripple PRs — Two Missing Idempotency Guards)
 **Authority**: CS2 (Johan Ras) — raised 2026-03-06
-**iaa_audit_token**: PENDING (IAA invoked; REJECTION-PACKAGE issued on ceremony grounds; code substance approved by IAA)
+**iaa_audit_token**: ASSURANCE-TOKEN — IAA Session IAA-20260306-PR1307-R5 — MERGE PERMITTED (2026-03-06)
 
 ---
 
