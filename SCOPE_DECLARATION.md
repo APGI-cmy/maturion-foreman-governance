@@ -34,14 +34,4 @@ no dedup guard before PR creation. Fixed by adding a `concurrency:` block keyed 
 
 CS2 (Johan Ras) — Issue raised 2026-03-06. Workflow file changes authorized by CS2 issue authority.
 
-**Changes**:
-1. MERGE_GATE_PHILOSOPHY.md v2.0.0 - Added Pre-Handover Gate Duplication Mandate (constitutional)
-2. PREHANDOVER_PROOF_TEMPLATE.md v3.0.0 - Enhanced gate validation protocol (6-step process)
-3. OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md v2.0 - Added gate validation to quality gates checklist
-4. CROSS_AGENT_COORDINATION_PROTOCOL.md v1.1 - Added FM coordination example for gate failures
-
-**Rationale**: Close governance gaps identified in issue - no canonical requirement existed for pre-handover gate duplication, documentation, or escalation protocol.
-
-**Authority**: Constitutional requirement per OPOJD v2.0, AGENT_IGNORANCE_PROHIBITION_DOCTRINE, STOP_AND_FIX_DOCTRINE
-
 ---
