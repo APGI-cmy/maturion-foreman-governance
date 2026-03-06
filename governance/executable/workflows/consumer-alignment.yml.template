@@ -11,6 +11,10 @@ permissions:
   pull-requests: write
   issues: write
 
+concurrency:
+  group: consumer-alignment-${{ github.repository }}
+  cancel-in-progress: false
+
 env:
   GOVERNANCE_SOURCE_REPO: APGI-cmy/maturion-foreman-governance
   CANON_INVENTORY_PATH: governance/CANON_INVENTORY.json
@@ -211,8 +215,27 @@ jobs:
           mkdir -p .agent-admin/governance
           echo "Alignment run: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> .agent-admin/governance/alignment.log
 
-      - name: Create alignment PR
+      - name: Check for existing alignment PR
+        id: dedup
         if: steps.drift.outputs.status == '1'
+        env:
+          GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+        run: |
+          EXISTING_PR=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --state open \
+            --json number,headRefName \
+            --jq ".[] | select(.headRefName | startswith(\"${ALIGNMENT_BRANCH_PREFIX}\")) | .number" \
+            2>/dev/null | head -1 || echo "")
+          if [ -n "$EXISTING_PR" ]; then
+            echo "[SKIP] Open governance alignment PR #${EXISTING_PR} already exists — skipping duplicate"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create alignment PR
+        if: steps.drift.outputs.status == '1' && steps.dedup.outputs.skip != 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.MATURION_BOT_TOKEN }}
