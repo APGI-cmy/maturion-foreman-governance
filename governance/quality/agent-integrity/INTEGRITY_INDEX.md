@@ -16,7 +16,7 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 
 | Agent Contract | Authoritative Path | SHA256 (Baseline) | Last Updated | Updated By |
 |---|---|---|---|---|
-| `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `6dff0aa9b0d4f84a658c343b1e3317585d70f99046756a40389304a0c8590780` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — builder provisions + job_environment propagation) |
+| `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `4302c3cbaf6574b16c5093c21ebd32bf2b9762c799b25673ea5c11e6c39c0ac0` | 2026-03-06 | CS2 (hash-drift fix — ESC-002 — APGI-cmy/maturion-foreman-governance#1316) |
 | `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `50cf9dd930d32db503112c1a0ea96d7d055d79675c6fef171ab97207f3a4c920` | 2026-03-03 | CS2 (IAA Pre-Brief Protocol — APGI-cmy/maturion-foreman-governance#1294 — sections 3.0a/3.0b + wave_checklist PREHANDOVER field) |
 | `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `80579a0ca49164a027ff99408d428c54105a6ba5b847f2514a261dc7189bac12` | 2026-03-03 | CS2 (harmonization — APGI-cmy/maturion-foreman-governance#1288 — job_environment propagation) |
 | `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `0d414fd2d059fbda8ed8a2bab42fc4698674d893d45ea954d92d0f940165b8ac` | 2026-03-03 | CS2 (IAA Pre-Brief Protocol — APGI-cmy/maturion-foreman-governance#1294 — Step 2.4 Wave Checklist Invocation Gate + Step 3.5 Pre-Brief cross-reference) |

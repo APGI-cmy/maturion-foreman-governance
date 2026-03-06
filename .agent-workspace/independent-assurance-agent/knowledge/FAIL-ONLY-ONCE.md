@@ -632,7 +632,28 @@ When re-invoking IAA after a REJECTION-PACKAGE where the PREHANDOVER proof is im
 
 ---
 
-## Adding New Rules
+### A-031 — A-026 Carve-out: IAA-Produced Artifacts Are Excluded from Exact-Match Requirement
+
+**Triggered by**: Structural conflict between A-026 exact-match requirement and IAA-produced artifacts (rejection packages, session memories, escalation inbox entries, assurance tokens) that are committed to the PR branch as part of REJECTION-PACKAGE remediation cycles, making A-026 exact-match unsatisfiable for the submitting agent.
+
+**Permanent Rule**:
+The following directories are **excluded** from the A-026 / A-028 exact-match requirement when their files appear in `git diff --name-only origin/main...HEAD`:
+
+- `.agent-admin/assurance/` — IAA-produced rejection packages, assurance tokens, correction addenda
+- `.agent-workspace/independent-assurance-agent/` — IAA session memories, escalation inbox entries, knowledge patches produced during IAA sessions
+
+Files in these directories that appear in the diff do **not** need to be listed in `SCOPE_DECLARATION.md` by the submitting agent. Their presence in the diff must **not** be counted as an A-026 parity failure or a BL-027 violation.
+
+IAA must silently exclude these paths when computing the expected file list for A-026 comparison.
+
+**Check in Phase 3**:
+> FAIL-ONLY-ONCE A-031: When applying A-026/A-028 diff-vs-scope comparison:
+> Strip all paths under `.agent-admin/assurance/` and `.agent-workspace/independent-assurance-agent/` from `git diff --name-only` before comparing against SCOPE_DECLARATION.md.
+> Do NOT raise BL-027 or A-026 parity failure for missing SCOPE_DECLARATION entries covering these paths.
+
+**Status**: ACTIVE — effective 2026-03-06
+
+---
 
 When a new governance failure pattern is identified during a session (learning_notes in session
 memory), IAA adds a new entry to this file following the format above. Each new rule:
@@ -663,6 +684,7 @@ All updates to this file must be committed as part of the session bundle for tha
 | 2.1.0 | 2026-03-03 | Added A-027 (third-consecutive A-021 failure = systemic workflow gap) |
 | 2.2.0 | 2026-03-04 | Added A-028 (SCOPE_DECLARATION format compliance) and A-029 (PREHANDOVER immutability §4.3b) |
 | 2.3.0 | 2026-03-04 | Added A-030 (CORE-019 re-invocation carve-out — correction addendum path) |
+| 2.4.0 | 2026-03-06 | Added A-031 (A-026 carve-out for IAA-produced artifacts in `.agent-admin/assurance/` and `.agent-workspace/independent-assurance-agent/`). Issue: APGI-cmy/maturion-foreman-governance#1316. |
 
 ---
 

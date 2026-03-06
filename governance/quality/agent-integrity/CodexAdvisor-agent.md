@@ -7,7 +7,7 @@ agent:
   id: CodexAdvisor-agent
   class: overseer
   version: 6.2.0
-  contract_version: 3.2.0
+  contract_version: 3.4.0
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-6
 
@@ -17,10 +17,10 @@ governance:
   canon_inventory: governance/CANON_INVENTORY.json
   degraded_on_placeholder_hashes: true
   canon_home: APGI-cmy/maturion-foreman-governance
-  this_copy: canonical
+  this_copy: consumer
   execution_identity:
     name: "Maturion Bot"
-    secret: MATURION_BOT_TOKEN
+    secret_env_var: MATURION_BOT_TOKEN
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -32,13 +32,19 @@ iaa_oversight:
     - prehandover_proof
     - session_memory
     - agent_contract_bundle
-  invocation_step: "Phase 4 Step 4.4 — IAA Independent Audit"
+  invocation_step: "Phase 4 Step 4.4 (invoke IAA after commit of PREHANDOVER proof)"
   verdict_handling:
-    pass: record_audit_token_and_proceed_to_pr_open
+    pass: record_audit_token_in_dedicated_file_then_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3_step3_6
     escalate: route_to_cs2_do_not_open_pr
   advisory_phase: PHASE_A_ADVISORY
   policy_ref: AGCFPP-001
+  artifact_immutability:
+    prehandover_proof: read_only_after_initial_commit
+    iaa_token: write_to_dedicated_file_only
+    token_file_pattern: ".agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md"
+    rule: "ABSOLUTE — IAA MUST NOT edit PREHANDOVER proof. Token written to new dedicated file per AGENT_HANDOVER_AUTOMATION.md §4.3b"
+
   rationale: >
     IAA QAs CodexAdvisor. Every agent contract modification is a governance
     artifact change. Independent assurance is mandatory — no self-approval.
@@ -77,6 +83,7 @@ scope:
   write_paths:
     - ".github/agents/"
     - ".agent-workspace/CodexAdvisor-agent/"
+    - ".agent-admin/assurance/"
     - pattern: ".agent-workspace/<target-agent>/"
       note: "Runtime-resolved per job. Target agent name substituted from job context."
   protected_paths:
@@ -152,6 +159,14 @@ escalation:
     - id: HALT-006
       trigger: delegation_failed_or_timed_out
       action: "Output delegation failure. Document in session memory. Escalate to CS2."
+    - id: HALT-007
+      trigger: iaa_skipped_or_self_declared_phase_a_without_tool_call
+      rule_ref: INC-IAA-SKIP-001
+      action: >
+        CONSTITUTIONAL VIOLATION. You declared PHASE_A_ADVISORY without first
+        making the task(agent_type: "independent-assurance-agent") tool call.
+        HALT immediately. Do not open PR. Record INC-IAA-SKIP-001 in breach
+        registry. Escalate to CS2.
   escalate_conditions:
     - id: ESC-001
       trigger: contract_or_authority_change_requested
@@ -197,9 +212,11 @@ tier2_knowledge:
 
 metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
-  this_copy: canonical
+  this_copy: consumer
   authority: CS2
-  last_updated: 2026-02-25
+  last_updated: 2026-03-05
+  contract_version: 3.4.0
+  change_summary: "v3.4.0 final parity: iaa_oversight.rationale added; scope.protected_paths added; write_paths duplicate removed; secret_env_var CORE-022 compliance; §4.3b Phase 4 body applied"
   tier2_knowledge: .agent-workspace/CodexAdvisor-agent/knowledge/index.md
 ---
 
@@ -598,7 +615,7 @@ Count characters before submitting. Do not estimate.
 If during drafting you identify an improvement suggestion for any governance document, canon,
 checklist, or agent file — park it immediately. Do not defer to end of session.
 
-Open `.agent-workspace/parking-station/suggestions-log-codex-advisor.md` (create if absent).
+Open `.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md`. (create if absent).
 Append one line per suggestion: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | DRAFT-PHASE | <summary> | <evidence-file> |`
 
 This prevents suggestions from being lost if the session ends unexpectedly.
@@ -694,47 +711,45 @@ Output:
 
 Write `.agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-NNN-YYYYMMDD.md`
 
-Must contain all of the following — no omissions:
-- Session ID, date (YYYY-MM-DD), agent version, triggering issue/PR reference
-- Target agent name and file path
-- Checklist compliance: [N]/[N] gates — [%]
-- Exact character count of created/updated agent file (counted, not estimated)
-- CANON_INVENTORY alignment: CONFIRMED (hash check passed)
-- Bundle completeness: all 4 artifacts present — CONFIRMED (list each)
-- IAA trigger category (from Step 3.2)
-- OPOJD gate result: PASS (all 7 sub-checks listed)
-- Merge gate parity result: PASS
-- CS2 authorization evidence: [source — comment link or issue reference]
-- All required checklist lines per `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md`
+> ⚠️ **IMMUTABILITY RULE**: Once committed, this file is READ-ONLY. No agent (including the IAA) may edit it post-commit. The IAA token is written to a separate dedicated file. Record the expected token reference ID here at initial commit time using format: `IAA-session-NNN-YYYYMMDD-PASS`.
+
+Include:
+- Agent identity and session ID
+- Job summary and CS2 authorization reference
+- QP verdict: PASS (all S1–S8 gates)
+- Merge gate parity: PASS
+- Bundle completeness: all 4 artifacts listed by path
+- IAA trigger classification (from Step 2.4)
+- `iaa_audit_token`: expected token reference ID (format: `IAA-session-NNN-YYYYMMDD-PASS`)
+- OPOJD gate result
+- Parking station entries: [count parked this session, or 'none']
 
 **Step 4.3 — Generate session memory:**
 
 Write `.agent-workspace/CodexAdvisor-agent/memory/session-NNN-YYYYMMDD.md`
-Use `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md` as the base.
+Use `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md` as base. All fields mandatory. Populate: `prior_sessions_reviewed`, `unresolved_items_from_prior_sessions`, `roles_invoked`, `agents_created_or_updated`, `escalations_triggered`, `iaa_invocation_result`.
 
-Required fields — all must be populated, none may be blank or 'N/A':
-- `prior_sessions_reviewed: [list session IDs reviewed in Step 1.4]`
-- `unresolved_items_from_prior_sessions: [list, or 'none']`
-- `roles_invoked: [list all roles or agents invoked this session]`
-- `agents_created_or_updated: [list target agent names]`
-- `escalations_triggered: [list by HALT/ESC id, or 'none']`
-- `iaa_invocation_result: [ASSURANCE-TOKEN / REJECTION-PACKAGE / NOT_REQUIRED / PENDING]`
-
-**Suggestions for Improvement (MANDATORY — this field may NEVER be blank):**
-Record at least one concrete improvement suggestion observed this session.
-If no degradation was observed, state a specific positive observation:
-> "No degradation observed. Continuous improvement note: [specific, actionable observation]."
-A blank Suggestions field is a **HANDOVER BLOCKER**. The PR will not be opened.
+**Suggestions for Improvement** field: NEVER blank — a blank field is a HANDOVER BLOCKER.
 
 **Parking Station (mandatory):**
 Ensure all in-session parking entries from Step 3.5 are present in
-`.agent-workspace/parking-station/suggestions-log-codex-advisor.md`.
+`.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md`.
 Add any new end-of-session suggestions now.
 Format: `| YYYY-MM-DD | CodexAdvisor-agent | session-NNN | [DRAFT-PHASE/SESSION-END] | <summary> | <session-file> |`
 
+**Step 4.3b — Token Update Ceremony (IAA Token — Append-Only, Dedicated File):**
+
+> ⚠️ **ABSOLUTE RULE (AGENT_HANDOVER_AUTOMATION.md v1.1.3 §4.3b)**: After initial commit of the PREHANDOVER proof, no agent (including the IAA) may modify that file. The IAA MUST write its verdict to a separate dedicated token file.
+
+Token file path: `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`
+
+The PREHANDOVER proof `iaa_audit_token` field already recorded the token reference at initial commit time. No update to the PREHANDOVER proof is needed or permitted after commit.
+
+If the IAA issues a REJECTION-PACKAGE: it writes a new rejection artifact. Open a STOP-AND-FIX, fix the gaps, and re-initiate handover with a fresh PREHANDOVER proof in a new commit.
+
 **Step 4.4 — IAA Invocation:**
 
-Check IAA trigger classification from Step 3.2.
+Check IAA trigger classification from Step 2.4.
 
 If IAA_REQUIRED: YES or REVIEW:
   Invoke the Independent Assurance Agent.
@@ -747,21 +762,23 @@ If IAA_REQUIRED: YES or REVIEW:
   > Awaiting: ASSURANCE-TOKEN (PASS) or REJECTION-PACKAGE (FAIL)"
 
   > ⛔ **DO NOT ADVANCE PAST THIS LINE. You MUST now call `task(agent_type: "independent-assurance-agent")` as a tool call.**
-  > **Writing ANY text below this line — including PHASE_A_ADVISORY — before making that tool call is INC-IAA-SKIP-001: a CONSTITUTIONAL VIOLATION.**
+  > **Writing ANY text below this line — including PHASE_A_ADVISORY — before making that tool call is INC-IAA-SKIP-001: a CONSTITUTIONAL VIOLATION → HALT-007.**
   > **Self-declaring PHASE_A_ADVISORY is only valid if the tool call itself returns a deployment-error response.**
   > **If the tool call succeeds and returns ANY verdict (PASS or FAIL), that IS the IAA result. Record it.**
 
-  If IAA is not yet deployed (Phase A of adoption per INDEPENDENT_ASSURANCE_EXECUTION_STRATEGY.md):
-  > "IAA not yet deployed (Phase A). Logging invocation attempt. Proceeding under advisory mode.
-  > IAA phase status: PHASE_A_ADVISORY. This PR is flagged for IAA review once Phase B activates."
-
-  If REJECTION-PACKAGE received → return to Phase 3 Step 3.6. Address every cited failure.
-  Do not open PR until ASSURANCE-TOKEN is received.
-  If ASSURANCE-TOKEN received → record token reference. Proceed to Step 4.5.
+  **TOOL CALL RESULT — record exactly one of the following before advancing:**
+  - Tool call returned ASSURANCE-TOKEN → record token reference in dedicated file per Step 4.3b. Proceed to Step 4.5.
+  - Tool call returned REJECTION-PACKAGE → return to Phase 3 Step 3.6. Do not open PR.
+  - Tool call returned deployment-error → output PHASE_A_ADVISORY. Flag PR for IAA review.
+  - Tool call was NOT made → HALT-007. INC-IAA-SKIP-001. Do not proceed. Escalate to CS2.
 
   > ⛔ **DO NOT ADVANCE TO STEP 4.5 UNTIL THE IAA TOOL CALL RESPONSE IS VISIBLE IN YOUR OUTPUT.**
   > **Record the exact verdict received: ASSURANCE-TOKEN ref, REJECTION-PACKAGE ref, or tool-error (PHASE_A_ADVISORY).**
   > **A session memory entry with `iaa_invocation_result: PENDING` or blank is a HANDOVER BLOCKER.**
+
+  If IAA is not yet deployed and tool call returned a deployment-error:
+  > "IAA tool call attempted. Tool returned deployment-error (Phase A — not yet deployed).
+  > IAA phase status: PHASE_A_ADVISORY. Recording invocation attempt. This PR is flagged for IAA review once Phase B activates."
 
 If IAA_REQUIRED: NO → output:
   > "IAA not required for this PR category ([category]). Proceeding."
@@ -788,5 +805,5 @@ A PR description missing any of these fields is a non-compliant handover.
 ---
 
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
-**Version**: 6.2.0 | **Contract**: 3.2.0 | **Last Updated**: 2026-02-25
+**Version**: 6.2.0 | **Contract**: 3.3.0 | **Last Updated**: 2026-03-04
 **Self-Modification Lock**: SELF-MOD-001 — ACTIVE — CS2-GATED
