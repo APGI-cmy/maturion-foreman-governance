@@ -1,9 +1,9 @@
 # IAA Trigger Table
 
 **Agent**: independent-assurance-agent
-**Version**: 2.1.0
+**Version**: 2.2.0
 **Status**: ACTIVE
-**Last Updated**: 2026-03-02
+**Last Updated**: 2026-03-06
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
 
 ---
@@ -24,7 +24,7 @@ Default: MANDATORY INVOCATION when in doubt.
 |-------------|---------------|------------------|-------|
 | AGENT_CONTRACT | YES — MANDATORY | Any `.github/agents/*.md` file created or modified; any `governance/agents/` or `governance/contracts/` file created or modified; any `*-agent-contract.md` file | All agent classes. No exceptions. FAIL-ONLY-ONCE A-002. This includes Foreman, Builder, Overseer, Specialist, and Assurance (IAA self-review → escalate to CS2). |
 | CANON_GOVERNANCE | YES — MANDATORY | Any `governance/canon/` file created or modified; any `governance/CANON_INVENTORY.json` update; any file matching `*ARCHITECTURE*.md` or `*STRATEGY*.md` in governance | Includes CANON_INVENTORY.json updates. Version bump must be present. |
-| CI_WORKFLOW | YES — MANDATORY | Any `.github/workflows/` file created or modified | Includes merge gate workflow, ripple sync workflow, and all governance automation workflows. |
+| CI_WORKFLOW | NO — IAA NOT required; CS2 Direct Review OR Two-Phase (1, 4) sufficient | Any `.github/workflows/` file created or modified | T4 per IAA canon v1.3.0 Risk-Tiered Table. CS2 review sufficient. AMBIGUITY RULE (A-003) still applies: if PR also touches T1/T2 files, highest tier governs. |
 | AAWP_MAT | YES — MANDATORY | PR labelled `aawp-deliverable` or `mat-deliverable`; files match AAWP/MAT path patterns (`modules/mat/`, `packages/ai-centre/`, AAWP architecture files) | Evidence bundle completeness required. |
 | AGENT_INTEGRITY | YES — MANDATORY | Any `governance/quality/agent-integrity/` file created or modified | CS2-only update authority. Any non-CS2 modification → auto-REJECTION-PACKAGE. |
 | KNOWLEDGE_GOVERNANCE | YES — MANDATORY | Any `.agent-workspace/*/knowledge/` file created or modified; any Tier 2 knowledge index, overlay, trigger table, checklist, or FAIL-ONLY-ONCE registry updated | Covers all IAA and agent Tier 2 knowledge patches. Evidence bundle + PREHANDOVER ceremony required (FAIL-ONLY-ONCE A-015). |
@@ -57,7 +57,8 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
    → YES: Category = CANON_GOVERNANCE. IAA = MANDATORY.
 
 3. Does PR contain any .github/workflows/ changes?
-   → YES: Category = CI_WORKFLOW. IAA = MANDATORY.
+   → YES: Category = CI_WORKFLOW. Tier = T4. IAA = NOT REQUIRED unless higher-tier files are also present.
+   → If PR also contains AGENT_CONTRACT/T1 or build-deliverable/T2 files → highest tier governs.
 
 4. Does PR contain AAWP/MAT deliverable artifacts?
    → YES: Category = AAWP_MAT. IAA = MANDATORY.
@@ -82,6 +83,7 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
 | 1.0.0 | 2026-02-25 | Initial STUB (placeholder from canon) |
 | 2.0.0 | 2026-02-28 | Fully populated from INDEPENDENT_ASSURANCE_AGENT_CANON.md; AGENT_INTEGRITY category added; classification decision flow added; STUB status removed |
 | 2.1.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE trigger category added; classification decision flow updated with step 6 for knowledge governance path (maturion-isms#IAA-TIER2) |
+| 2.2.0 | 2026-03-06 | CI_WORKFLOW row updated to align with IAA canon v1.3.0 T4 classification (IAA NOT required; CS2 Direct Review OR Two-Phase sufficient). Classification Decision Flow step 3 updated accordingly. Resolves OVF-003. Issue: APGI-cmy/maturion-foreman-governance#1316. |
 
 ---
 
