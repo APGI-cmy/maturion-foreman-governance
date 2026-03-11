@@ -2,8 +2,8 @@
 
 **Agent**: independent-assurance-agent
 **Contract Version**: 2.0.0
-**Knowledge Version**: 2.4.0
-**Last Updated**: 2026-03-05
+**Knowledge Version**: 2.5.0
+**Last Updated**: 2026-03-11
 **Architecture**: `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md`
 
 ---
@@ -12,11 +12,11 @@
 
 | File | Purpose | Version | Status |
 |------|---------|---------|--------|
-| `index.md` (this file) | Knowledge entry point and version reference | 2.4.0 | PRESENT |
-| `FAIL-ONLY-ONCE.md` | Permanent rules recording governance failures IAA must never repeat | 2.3.0 | PRESENT — Rules A-001 through A-030 active |
+| `index.md` (this file) | Knowledge entry point and version reference | 2.5.0 | PRESENT |
+| `FAIL-ONLY-ONCE.md` | Permanent rules recording governance failures IAA must never repeat | 2.4.0 | PRESENT — Rules A-001 through A-031 active |
 | `iaa-core-invariants-checklist.md` | Core checks applied to every IAA invocation regardless of category | 2.8.0 | ACTIVE — CORE-001 to CORE-022; §4.3b architecture; Orientation Mandate |
 | `iaa-trigger-table.md` | PR category classification table — when IAA activates and when it is exempt | 2.1.0 | ACTIVE — KNOWLEDGE_GOVERNANCE trigger category added |
-| `iaa-category-overlays.md` | Per-category additional checks (AGENT_CONTRACT, CANON_GOVERNANCE, CI_WORKFLOW, AAWP_MAT, KNOWLEDGE_GOVERNANCE) | 2.3.0 | ACTIVE — OVL-AM-008 added |
+| `iaa-category-overlays.md` | Per-category additional checks (AGENT_CONTRACT, CANON_GOVERNANCE, CI_WORKFLOW, AAWP_MAT, KNOWLEDGE_GOVERNANCE) | 2.4.0 | ACTIVE — OVL-CI-007, OVL-AC-013 added |
 | `IAA_ZERO_SEVERITY_TOLERANCE.md` | Zero-Severity-Tolerance policy — any finding = REJECTION-PACKAGE; prohibited language table | 1.0.0 | ACTIVE — CORE-021 enforcement reference |
 | `session-memory-template.md` | Standard session memory template for IAA invocations | 1.0.0 | PRESENT |
 
@@ -75,6 +75,7 @@
 | A-028 | `SCOPE_DECLARATION.md` format compliance — list format required, prior-wave entries must be trimmed | ACTIVE |
 | A-029 | PREHANDOVER proof immutability §4.3b — pre-populate expected reference token at commit time | ACTIVE |
 | A-030 | CORE-019 re-invocation carve-out — correction addendum path for immutable-PREHANDOVER re-invocation scenarios | ACTIVE |
+| A-031 | CI write operations MUST use `secrets.MATURION_BOT_TOKEN` — `GITHUB_TOKEN` is prohibited for write operations (REQ-TU-001/REQ-TU-002) | CRITICAL — ACTIVE |
 
 ---
 
@@ -120,6 +121,7 @@ that produced the work under review. Every invocation is logged in session memor
 | 1.3.0 | 2026-03-01 | FAIL-ONLY-ONCE active rules table updated; OVL-AC/CI/CG/AM additions referenced |
 | 1.4.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE trigger category added to IAA Trigger Summary; session-memory-template.md added to knowledge contents table; FAIL-ONLY-ONCE A-015, A-016, A-017, A-018, A-019 added to active rules table (maturion-isms#IAA-TIER2) |
 | 2.4.0 | 2026-03-05 | Synced to v2.4.0: FAIL-ONLY-ONCE v2.3.0 (A-022 to A-030); iaa-core-invariants-checklist v2.8.0 (§4.3b architecture, Orientation Mandate, CORE-021/022); iaa-category-overlays v2.3.0 (OVL-AM-008); IAA_ZERO_SEVERITY_TOLERANCE.md v1.0.0 created; active rules table updated A-020 to A-030 |
+| 2.5.0 | 2026-03-11 | Added A-031 (CI write operations MUST use MATURION_BOT_TOKEN; GITHUB_TOKEN prohibited; REQ-TU-001/REQ-TU-002); FAIL-ONLY-ONCE v2.4.0; iaa-category-overlays v2.4.0 (OVL-CI-007, OVL-AC-013). Issue: APGI-cmy/maturion-foreman-governance#1296. |
 
 ---
 
