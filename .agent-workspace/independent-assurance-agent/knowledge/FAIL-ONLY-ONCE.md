@@ -1,9 +1,9 @@
 # IAA FAIL-ONLY-ONCE Registry
 
 **Agent**: independent-assurance-agent
-**Version**: 2.3.0
+**Version**: 2.4.0
 **Seeded**: 2026-02-26
-**Last Updated**: 2026-03-05
+**Last Updated**: 2026-03-11
 **Authority**: IAA Canon (INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.2.0) | LIVING_AGENT_SYSTEM.md v6.2.0 | CS2 (Johan Ras)
 **Update Protocol**: After every breach RCA, the IAA appends a new rule + breach log entry to this registry (append-only; no deletions or gaps). Earlier registry formats/versions are preserved in version control / legacy registry files. Never remove. Never skip.
 **Preflight**: IAA reads this file in full and self-attests against every rule at every session start before any assurance work begins.
@@ -632,6 +632,34 @@ When re-invoking IAA after a REJECTION-PACKAGE where the PREHANDOVER proof is im
 
 ---
 
+### A-031 — CI Write Operations MUST Use `secrets.MATURION_BOT_TOKEN` — `GITHUB_TOKEN` Is Prohibited for Write Operations
+
+**Triggered by**: Repeated CI push failures in `maturion-isms` caused by Copilot agent using `GITHUB_TOKEN` instead of `MATURION_BOT_TOKEN` for write operations. Policy is codified in `governance/canon/GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md` (REQ-TU-001, REQ-TU-002) but lacked enforcement at the IAA audit layer. Reference: APGI-cmy/maturion-foreman-governance#1296.
+
+**Permanent Rule**:
+All automated write operations (git push, PR creation, branch/issue operations, merge, label, repository dispatch) MUST use `secrets.MATURION_BOT_TOKEN` as the execution identity.
+- Using `github.token`, `secrets.GITHUB_TOKEN`, or `GITHUB_TOKEN` in any write-capable step is a CRITICAL policy violation per REQ-TU-001 and REQ-TU-002.
+- Prohibited positions include: `actions/checkout` `token:` field on write jobs, `env: GH_TOKEN:`, `with: token:` on write-capable actions, and all `gh` CLI write commands.
+- Applies to CI workflows (`CI_WORKFLOW` category) and agent contract files that declare workflow integration (`AGENT_CONTRACT` category).
+- Read-only operations (fetch, advisory, PR metadata read) MAY use `GITHUB_TOKEN` only where the step is explicitly named/documented as read-only.
+- Enforcement script: `.github/scripts/validate-token-usage.sh`. Overlay checks: OVL-CI-007, OVL-AC-013.
+
+**Check in Phase 3 (applies to CI_WORKFLOW and AGENT_CONTRACT categories)**:
+> FAIL-ONLY-ONCE A-031: Scan PR diff for prohibited token usage in write operations.
+> For CI_WORKFLOW PRs:
+>   1. Inspect every `.github/workflows/` file added or modified in the diff.
+>   2. Flag any write-capable step that uses `github.token`, `secrets.GITHUB_TOKEN`, or `GITHUB_TOKEN` in: `token:` field of `actions/checkout`, `env: GH_TOKEN:`, `with: token:` on write-capable actions, or any `gh` CLI command that performs a write operation.
+>   3. If found → FAIL → Finding: "Prohibited token `[github.token / GITHUB_TOKEN]` used in write operation — MUST use `secrets.MATURION_BOT_TOKEN` per REQ-TU-001/REQ-TU-002 (A-031)."
+>   4. Fix: Replace prohibited token reference with `secrets.MATURION_BOT_TOKEN` in all write-capable steps.
+> For AGENT_CONTRACT PRs:
+>   1. If the contract references or embeds CI workflow configuration or write-operation snippets, apply the same token scan.
+>   2. If found → FAIL → same finding as above.
+> Read-only steps explicitly documented as read-only are exempt; blanket "all uses are read-only" claims require explicit per-step documentation.
+
+**Status**: CRITICAL — ACTIVE — enforced from this version onward
+
+---
+
 ## Adding New Rules
 
 When a new governance failure pattern is identified during a session (learning_notes in session
@@ -663,6 +691,7 @@ All updates to this file must be committed as part of the session bundle for tha
 | 2.1.0 | 2026-03-03 | Added A-027 (third-consecutive A-021 failure = systemic workflow gap) |
 | 2.2.0 | 2026-03-04 | Added A-028 (SCOPE_DECLARATION format compliance) and A-029 (PREHANDOVER immutability §4.3b) |
 | 2.3.0 | 2026-03-04 | Added A-030 (CORE-019 re-invocation carve-out — correction addendum path) |
+| 2.4.0 | 2026-03-11 | Added A-031 (CI write operations MUST use `secrets.MATURION_BOT_TOKEN`; `GITHUB_TOKEN` prohibited for write operations; REQ-TU-001/REQ-TU-002; applies to CI_WORKFLOW and AGENT_CONTRACT categories). Issue: APGI-cmy/maturion-foreman-governance#1296. |
 
 ---
 

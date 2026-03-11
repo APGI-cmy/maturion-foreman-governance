@@ -1,9 +1,9 @@
 # IAA Category Overlays
 
 **Agent**: independent-assurance-agent
-**Version**: 2.3.0
+**Version**: 2.4.0
 **Status**: ACTIVE
-**Last Updated**: 2026-03-05
+**Last Updated**: 2026-03-11
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
 
 ---
@@ -36,6 +36,7 @@ Applied when PR category is `AGENT_CONTRACT`.
 | OVL-AC-010 | No hardcoded version strings | Phase body reads identity from YAML, not hardcoded strings |
 | OVL-AC-011 | Agent file drift check | PREHANDOVER must include before/after character count for every modified agent contract file. If SHA256 hash comparison is available (e.g., from git diff or CANON_INVENTORY), before/after hashes must also be stated. |
 | OVL-AC-012 | Ripple/cross-agent assessment | If the agent contract change triggers governance ripple requirements for other agents (e.g., shared Tier 2 references, cascading policy updates), PREHANDOVER proof must list all affected agents and whether ripple has been initiated or flagged. "No ripple required" is acceptable only when explicitly stated with justification. |
+| OVL-AC-013 | Token usage enforcement — write operations | If the agent contract file declares, references, or embeds any CI workflow step or write-operation configuration: scan for prohibited token usage. Any occurrence of `github.token`, `secrets.GITHUB_TOKEN`, or `GITHUB_TOKEN` in a write-capable position = REJECTION-PACKAGE. `secrets.MATURION_BOT_TOKEN` is the ONLY permitted token for write operations (REQ-TU-001, REQ-TU-002, FAIL-ONLY-ONCE A-031). |
 
 ---
 
@@ -66,6 +67,7 @@ Applied when PR category is `CI_WORKFLOW`.
 | OVL-CI-004 | Workflow policy correctness | For any new workflow created or significantly modified: verify the workflow correctly implements its stated policy requirement — not just gate preservation. The workflow logic must match its declared intent (e.g., a "preflight gate" workflow must actually enforce preflight; a "ripple sync" workflow must actually sync ripples). A workflow that preserves the gate structure but inverts or misimplements its policy intent is a failure. |
 | OVL-CI-005 | CI check run result attached | When any `.github/workflows/` or `.github/scripts/` file is modified, PREHANDOVER must include the URL of the resulting CI check run result or a log snippet confirming the workflow executed successfully (no errors/failures). A claim that CI passed without any supporting URL or log reference = REJECTION-PACKAGE. |
 | OVL-CI-006 | Environment parity statement | PREHANDOVER must explicitly address whether the workflow/script change affects dev, staging, and production environments differently and how parity is maintained. An explicit "no environment impact" statement is acceptable when justified. Absent or blank environment parity statement = REJECTION-PACKAGE. |
+| OVL-CI-007 | Token usage enforcement — write operations | Scan every `.github/workflows/` file added or modified in the diff for prohibited token usage in write-capable step positions. Any occurrence of `github.token`, `secrets.GITHUB_TOKEN`, or `GITHUB_TOKEN` in `token:` (checkout on write jobs), `env: GH_TOKEN:`, `with: token:` on write-capable actions, or `gh` CLI write commands = REJECTION-PACKAGE. `secrets.MATURION_BOT_TOKEN` is the ONLY permitted token for write operations (REQ-TU-001, REQ-TU-002, FAIL-ONLY-ONCE A-031). Read-only steps explicitly documented as read-only are exempt. |
 
 ---
 
@@ -121,6 +123,7 @@ Applied when PR category is `KNOWLEDGE_GOVERNANCE`.
 | 2.1.0 | 2026-03-02 | AGENT_CONTRACT: OVL-AC-011 (drift check), OVL-AC-012 (ripple assessment) added; CANON_GOVERNANCE: OVL-CG-005 (drift/integrity hash), OVL-CG-006 (CANON_INVENTORY update confirmed) added; CI_WORKFLOW: OVL-CI-005 (CI check run result), OVL-CI-006 (environment parity) added; AAWP_MAT: OVL-AM-004 (architecture ripple/impact plan), OVL-AM-005 (wave gap trace), OVL-AM-006 (environment parity), OVL-AM-007 (session memory learning notes) added (maturion-isms#IAA-TIER2 Wave 13+) |
 | 2.2.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE overlay added (OVL-KG-001 through OVL-KG-005) — formalises Tier 2 knowledge patch audit requirements (maturion-isms#IAA-TIER2) |
 | 2.3.0 | 2026-03-05 | AAWP_MAT: OVL-AM-008 added (end-to-end wiring verification) |
+| 2.4.0 | 2026-03-11 | CI_WORKFLOW: OVL-CI-007 added (token usage enforcement — write operations must use MATURION_BOT_TOKEN; GITHUB_TOKEN prohibited; REQ-TU-001/REQ-TU-002, A-031). AGENT_CONTRACT: OVL-AC-013 added (same token enforcement for contracts referencing write operations). Issue: APGI-cmy/maturion-foreman-governance#1296. |
 
 ---
 
