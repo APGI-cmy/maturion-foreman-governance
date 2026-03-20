@@ -24,6 +24,13 @@ governance/CANON_INVENTORY.json
 governance/scope-declaration.md
 .agent-admin/prehandover/prehandover_proof_GA-063-20260320.md
 .agent-workspace/governance-repo-administrator/memory/session-063-20260320.md
+.agent-admin/assurance/rejection-package-1313.md
+.agent-admin/assurance/rejection-package-1313-r2.md
+.agent-admin/assurance/rejection-package-1313-r3.md
+.agent-admin/assurance/correction-addendum-GA-063-20260320-r3.md
+.agent-workspace/independent-assurance-agent/escalation-inbox/rejection-tracking-1313-20260320.md
+.agent-workspace/independent-assurance-agent/memory/session-016-20260320.md
+.agent-workspace/independent-assurance-agent/memory/session-017-20260320.md
 ```
 
 ## Scope Boundaries
