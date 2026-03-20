@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-03-04",
-  "total_canons": 191,
-  "generation_timestamp": "2026-03-04T07:09:46Z",
+  "last_updated": "2026-03-20",
+  "total_canons": 192,
+  "generation_timestamp": "2026-03-20T14:36:02Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -413,14 +413,14 @@
     },
     {
       "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
-      "version": "1.0",
-      "file_hash": "3e14b061c313aab7b70197846b333f17b7de7db445b6feb9b9cf57afc88b422c",
-      "effective_date": "unknown",
-      "description": "This policy establishes **App Descriptions as mandatory upstream authority artifacts** for all applications in the Maturion ecosystem.",
+      "version": "2.0",
+      "file_hash": "23437e90357a0627f48b674c83751162a8844cc9e0c86d37331d57d2f688a268",
+      "effective_date": "2026-03-20",
+      "description": "Policy establishing App Descriptions as mandatory upstream authority artifacts. v2.0 adds 24 mandatory governance sections (\u00a75.3) derived from MAT module post-mortem analysis (55+ oversights).",
       "type": "policy",
       "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "3e14b061c313aab7b70197846b333f17b7de7db445b6feb9b9cf57afc88b422c"
+      "file_hash_sha256": "23437e90357a0627f48b674c83751162a8844cc9e0c86d37331d57d2f688a268"
     },
     {
       "filename": "APP_STARTUP_REQUIREMENTS_DECLARATION.md",
@@ -1382,7 +1382,7 @@
       "type": "canon",
       "path": "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
       "layer_down_status": "INTERNAL",
-      "provenance": "CS2-authorised via issue: Create Governance Canon: Independent Assurance Agent (IAA); v1.1.0 amendment: Enforce zero-severity-tolerance — any finding triggers rejection"
+      "provenance": "CS2-authorised via issue: Create Governance Canon: Independent Assurance Agent (IAA); v1.1.0 amendment: Enforce zero-severity-tolerance \u2014 any finding triggers rejection"
     },
     {
       "filename": "INITIALIZATION_COMPLETENESS_GATE.md",
@@ -2201,6 +2201,28 @@
       "path": "governance/canon/scope-declaration.template.md",
       "layer_down_status": "INTERNAL",
       "file_hash_sha256": "06e4173ff8485b6a1af86a91d12484856c5c7f4d193f38ae88e79573e646c5ee"
+    },
+    {
+      "filename": "APP_DESCRIPTION_TEMPLATE.md",
+      "version": "1.0",
+      "file_hash": "7fba181082fa86ab52dcf657dae77390b06518685ed26e516cdb3e44aac9802c",
+      "effective_date": "2026-03-20",
+      "description": "Full App Description template incorporating all \u00a75.1 required sections and \u00a75.3 mandatory governance sections (24 sections). Used as starting point for every new module App Description.",
+      "type": "template",
+      "path": "governance/templates/APP_DESCRIPTION_TEMPLATE.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "7fba181082fa86ab52dcf657dae77390b06518685ed26e516cdb3e44aac9802c"
+    },
+    {
+      "filename": "APP_DESCRIPTION_CREATION_CHECKLIST.md",
+      "version": "1.0",
+      "file_hash": "9bba5802c3641c9b6256d2aad56c98783206c892545e3f70d2559919e3894f9f",
+      "effective_date": "2026-03-20",
+      "description": "Executable checklist for App Description completeness validation. Gate artifact for Pre-FRS and Pre-Architecture enforcement. Maps all \u00a75.1 and \u00a75.3 sections to binary pass/fail checks.",
+      "type": "checklist",
+      "path": "governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "9bba5802c3641c9b6256d2aad56c98783206c892545e3f70d2559919e3894f9f"
     }
   ]
 }

@@ -3,99 +3,70 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: copilot/governance-realignment-canonical-agent
-DATE_UTC: 2026-02-17T07:00:00Z
+PR_ID: copilot/add-app-description-template-guidance
+DATE_UTC: 2026-03-20T14:36:02Z
 AGENT_ID: governance-repo-administrator
 RESPONSIBILITY_DOMAIN: Governance Administration
-CHANGE_TYPE: governance_canon_creation
+CHANGE_TYPE: governance_policy_update
+ISSUE: Canon Update: Add App Description Template Guidance for Oversight Prevention
 ---
 ```
 
 ## Executive Summary
-Establish 4-phase canonical agent contract architecture (Preflight, Induction, Build, Handover) to replace flat, unenforceable documentation with executable structure. Create 5 new Tier-0 constitutional governance documents, establish priority system infrastructure, and provide script templates.
+Update `APP_DESCRIPTION_REQUIREMENT_POLICY.md` to v2.0 by adding 24 mandatory governance sections (§5.3), derived from 55+ post-mortem oversights documented in the MAT module BUILD_PROGRESS_TRACKER.md. Create a full App Description template and an executable creation checklist as mandated by the issue acceptance criteria.
 
 ## FILES_CHANGED
 ```
-governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
-governance/canon/AGENT_PREFLIGHT_PATTERN.md
-governance/canon/AGENT_PRIORITY_SYSTEM.md
-governance/canon/AGENT_INDUCTION_PROTOCOL.md
-governance/canon/AGENT_HANDOVER_AUTOMATION.md
+governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md
+governance/templates/APP_DESCRIPTION_TEMPLATE.md
+governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md
 governance/CANON_INVENTORY.json
-governance/priorities/README.md
-governance/priorities/supervisor/level-0-critical.txt
-governance/priorities/supervisor/level-1-high.txt
-governance/priorities/supervisor/level-2-medium.txt
-governance/priorities/supervisor/level-3-low.txt
-governance/priorities/implementer/level-0-critical.txt
-governance/priorities/implementer/level-1-high.txt
-governance/priorities/implementer/level-2-medium.txt
-governance/priorities/implementer/level-3-low.txt
-governance/priorities/administrator/level-0-critical.txt
-governance/priorities/administrator/level-1-high.txt
-governance/priorities/administrator/level-2-medium.txt
-governance/priorities/administrator/level-3-low.txt
-governance/priorities/overseer/level-0-critical.txt
-governance/priorities/overseer/level-1-high.txt
-governance/priorities/overseer/level-2-medium.txt
-governance/priorities/overseer/level-3-low.txt
-governance/priorities/liaison/level-0-critical.txt
-governance/priorities/liaison/level-1-high.txt
-governance/priorities/liaison/level-2-medium.txt
-governance/priorities/liaison/level-3-low.txt
-governance/priorities/overrides/governance-repo-administrator.txt
-governance/templates/scripts/README.md
-governance/templates/scripts/preflight-template.sh
-governance/PREHANDOVER_PROOF.md
-.github/workflows/governance-scope-to-diff-gate.yml
-.github/workflows/locked-section-protection-gate.yml
-.github/workflows/fm-effectiveness-validation-gate.yml
-.agent-workspace/governance-repo-administrator/memory/session-031-20260217.md
+governance/scope-declaration.md
+.agent-admin/prehandover/prehandover_proof_GA-063-20260320.md
+.agent-workspace/governance-repo-administrator/memory/session-063-20260320.md
 ```
 
 ## Scope Boundaries
 
 ### In Scope
-- Creation of 5 canonical governance documents (Tier-0)
-- Establishment of priority system infrastructure
-- Script templates for preflight checks
-- CANON_INVENTORY.json updates with new documents
-- Workflow updates to reference new PREHANDOVER_PROOF location
-- Session memory capture and handover evidence
+- Update of governance policy (APP_DESCRIPTION_REQUIREMENT_POLICY.md v1.0 → v2.0) adding §5.3 (24 mandatory sections), §19, §20
+- Creation of APP_DESCRIPTION_TEMPLATE.md in governance/templates/
+- Creation of APP_DESCRIPTION_CREATION_CHECKLIST.md in governance/checklists/
+- CANON_INVENTORY.json updates: updated policy hash + 2 new entries
 
 ### Out of Scope (Future Work)
-- Migration of existing agent contracts to 4-phase structure
-- Integration with merge gate enforcement for 4-phase compliance
-- CodexAdvisor updates for 4-phase validation
+- Retroactive migration of existing App Descriptions to include all 24 sections
+- Automated gate enforcement of §5.3 sections (future workflow implementation)
 - Consumer repository ripple execution (automatic on merge)
 
 ## Constitutional Alignment
-- LIVING_AGENT_SYSTEM.md v1.0.0
-- AGENT_CONTRACT_PROTECTION_PROTOCOL.md v1.1.0
-- GOVERNANCE_RIPPLE_MODEL.md v1.0.0
-- Issue #1144 - 4-Phase Agent Contract Architecture
+- LIVING_AGENT_SYSTEM.md v6.2.0
+- APP_DESCRIPTION_REQUIREMENT_POLICY.md v1.0 (being updated to v2.0)
+- Issue - Canon Update: Add App Description Template Guidance for Oversight Prevention
 
 ## Ripple Requirements
-- **maturion-isms**: Layer down new canonical documents
-- **maturion-foreman-office-app**: Layer down new canonical documents
-- **PartPulse**: Layer down new canonical documents
-- **R_Roster**: Layer down new canonical documents
+- **maturion-isms**: Layer down updated policy and new template/checklist
+- **maturion-foreman-office-app**: Layer down updated policy and new template/checklist
+- **PartPulse**: Layer down updated policy and new template/checklist
+- **R_Roster**: Layer down updated policy and new template/checklist
 
 ## Scope-to-Diff Attestation
 
 This PR modifies files within the "Governance Administration" responsibility domain. All modified files are within allowed paths per RESPONSIBILITY_DOMAIN_REGISTRY.md:
 
-- `governance/**` (canonical documents, priorities, templates, PREHANDOVER_PROOF)
-- `.github/workflows/**` (workflow updates for PREHANDOVER_PROOF location)
-- `.agent-workspace/**` (session memory)
+- `governance/policy/**` (policy document update)
+- `governance/templates/**` (new template)
+- `governance/checklists/**` (new checklist)
+- `governance/CANON_INVENTORY.json` (inventory update)
+- `governance/scope-declaration.md` (this file)
 
 Manual verification confirms all files match the declared scope.
 
 **Attestation**: Verified by governance-repo-administrator  
-**Date**: 2026-02-17T07:30:00Z  
+**Date**: 2026-03-20T14:36:02Z  
 **Exit Code**: 0
 
 ---
 
-**Timestamp**: 2026-02-17T07:30:00Z  
+**Timestamp**: 2026-03-20T14:36:02Z  
 **Agent**: governance-repo-administrator v2.0.0
