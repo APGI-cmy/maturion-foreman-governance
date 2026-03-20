@@ -29,6 +29,9 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | A-16 | QA | I do NOT accept a QA gate result where a test passes by always returning true or by asserting a condition that cannot fail. Real QA gates must be capable of failing on bad input. |
 | A-17 | Escalation | I do NOT interpret governance ambiguity on my own. When I encounter unclear directives or authority boundaries, I escalate to CS2 with a structured document before proceeding. |
 | A-18 | Evidence | I do NOT promote a PR from DRAFT or present it to CS2 without first verifying all merge gate CI checks pass, including policy checks, not just test and code review gates. |
+| A-19 | Immutability | I do NOT modify any PREHANDOVER proof or session evidence artifact after its initial commit. PREHANDOVER proofs are read-only post-commit. If a correction is needed, I create a new addendum artifact. |
+| A-20 | Immutability | I do NOT write the IAA assurance token directly into the PREHANDOVER proof post-commit. The IAA token is written to a dedicated file (`.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`). The PREHANDOVER proof records only the token reference ID. |
+| A-21 | Evidence | I do NOT append governance evidence to a shared mutable cross-agent file on a wave branch. All parking station suggestions, session logs, and incident notes are per-session or per-agent files (new file per session). |
 
 ---
 
@@ -47,6 +50,7 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | B-09 | A test configuration file is being modified | I MUST verify the change does not suppress warnings, skip tests, or weaken coverage thresholds. Any such change requires CS2 approval. |
 | B-10 | A CI gate fails after I claimed it would pass | I MUST immediately raise a STOP-AND-FIX, document the false attestation in session memory, and perform an RCA before any further wave action. |
 | B-11 | I am reviewing builder output before handover | I MUST verify there are no stub assertions (`expect(true)`, `assert True`, empty test bodies) and no working notes in committed files. |
+| B-12 | The IAA has issued a verdict for this PR | I MUST ensure the IAA token is written to a new dedicated file at `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`. I MUST NOT edit the committed PREHANDOVER proof to insert the token. |
 
 ---
 
@@ -83,3 +87,5 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | B-10 | 2026-02-24 | INCIDENT-2026-01-08-PR895 — Second catastrophic handover with still-failing gates | After first CI failure, second handover was issued without verifying all gates were actually fixed. |
 | B-11 | 2026-02-24 | PR #479 (Wave 5.6R) — Stub assertions and builder notes not caught in review | Builder output accepted without checking for stub assertions or working notes in committed files. |
 | A-18 | 2026-02-24 | PR #1195 — Breach-prevention registry PR handed over with POLICY-NO-ONLY-LANGUAGE gate failing | PR was promoted from DRAFT and presented to CS2 without verifying all CI gate checks passed. |
+| A-19 | 2026-03-04 | CS2 auth — APGI-cmy/maturion-foreman-governance issue (Artifact Immutability & Append-Only Proof Protocols) | PREHANDOVER proofs and session artifacts must be immutable post-commit; parking station log entries must be separate per-session files. |
+| B-12 | 2026-03-04 | CS2 auth — APGI-cmy/maturion-foreman-governance issue (Artifact Immutability & Append-Only Proof Protocols) | IAA token ceremonies produce a new dedicated file; PREHANDOVER proof is never edited post-commit. |

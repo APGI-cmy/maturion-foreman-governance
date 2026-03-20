@@ -4,7 +4,7 @@
 # Scans .github/workflows/*.yml for prohibited GITHUB_TOKEN / github.token usage
 # in write-capable step positions. Exits non-zero if any violation is found.
 #
-# Detection covers two distinct patterns (each checked separately):
+# Detection covers three distinct patterns (each checked separately):
 #   (A) GH_TOKEN env var set to a prohibited token value, e.g.:
 #         GH_TOKEN: ${{ github.token }}
 #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -12,6 +12,9 @@
 #   (B) action 'with: token:' field set to a prohibited token value, e.g.:
 #         token: ${{ github.token }}
 #         token: ${{ secrets.GITHUB_TOKEN }}
+#   (C) actions/github-script 'with: github-token:' field set to a prohibited token, e.g.:
+#         github-token: ${{ github.token }}
+#         github-token: ${{ secrets.GITHUB_TOKEN }}
 #
 # Usage: .github/scripts/validate-token-usage.sh [workflow-dir]
 # Default workflow-dir: .github/workflows
@@ -52,6 +55,14 @@ for workflow_file in "$WORKFLOW_DIR"/*.yml "$WORKFLOW_DIR"/*.yaml; do
     #     Matches: token: ${{ github.token }}, token: ${{ secrets.GITHUB_TOKEN }}
     if echo "$line" | grep -qE 'token:\s*\$\{\{.*(github\.token|secrets\.GITHUB_TOKEN)'; then
       VIOLATIONS+=("$filename:$line_num: action token: field set to prohibited token: $line")
+      continue
+    fi
+
+    # (C) actions/github-script 'github-token:' field using a prohibited token.
+    #     Matches: github-token: ${{ github.token }}, github-token: ${{ secrets.GITHUB_TOKEN }}
+    if echo "$line" | grep -qE 'github-token:\s*\$\{\{.*(github\.token|secrets\.GITHUB_TOKEN)'; then
+      VIOLATIONS+=("$filename:$line_num: github-script github-token: field set to prohibited token: $line")
+      continue
     fi
 
   done < <(grep -n "" "$workflow_file" || true)

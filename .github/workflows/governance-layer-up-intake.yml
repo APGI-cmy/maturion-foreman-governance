@@ -34,6 +34,9 @@ jobs:
     name: Ensure Layer-Up Labels Exist
     runs-on: ubuntu-latest
     steps:
+      - name: Token identity evidence (REQ-TU-003)
+        run: echo "EXEC_IDENTITY: MATURION_BOT_TOKEN in use for write operations"
+
       - name: Bootstrap labels
         env:
           GH_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
