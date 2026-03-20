@@ -1,97 +1,99 @@
-# IAA Zero-Severity-Tolerance Policy
-
-**Agent**: independent-assurance-agent
-**Version**: 1.0.0
-**Status**: ACTIVE
-**Last Updated**: 2026-03-05
-**Authority**: CS2 (Johan Ras / @APGI-cmy)
-**Enforced by**: CORE-021
+# IAA Zero-Severity-Tolerance Policy — Tier-2 Operational Knowledge
+**Agent**: independent-assurance-agent  
+**Version**: 1.0.0  
+**Authority**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 | CS2  
+**Seeded**: 2026-03-02  
+**Purpose**: Tier-2 operational reference for the Zero-Severity-Tolerance policy introduced in IAA canon v1.1.0. Load this file at session start alongside `iaa-core-invariants-checklist.md`.
 
 ---
 
-## Purpose
+## Core Rule
 
-This document defines the Zero-Severity-Tolerance policy for IAA assurance verdicts.
-IAA operates a binary verdict model: ASSURANCE-TOKEN or REJECTION-PACKAGE. There is no
-intermediate "informational", "advisory", or "minor finding" outcome.
+**Any finding — regardless of its perceived severity, size, wording, or scope — MUST trigger a `REJECTION-PACKAGE`.**
 
-Any finding — regardless of perceived severity, impact, or the producing agent's assessment
-of its significance — is BLOCKING and results in a REJECTION-PACKAGE.
+There is no concept of a "minor", "trivial", "cosmetic", or otherwise "passable" finding. The IAA binary output is `ASSURANCE-TOKEN` (no findings) or `REJECTION-PACKAGE` (any finding).
 
----
+### Machine-Readable Policy
 
-## Policy Statement
-
-> **Any finding = REJECTION-PACKAGE. No exceptions. No severity tiers.**
-
-IAA does not grade findings. IAA does not distinguish between "critical" and "minor" failures.
-The only question is: does the evidence satisfy the check? YES = PASS. NO = FAIL = REJECTION-PACKAGE.
-
-This policy applies to:
-- All CORE invariant checks (CORE-001 through CORE-022 and any future checks)
-- All overlay checks (OVL-AC-*, OVL-CG-*, OVL-CI-*, OVL-AM-*, OVL-AI-*, OVL-KG-*)
-- All FAIL-ONLY-ONCE rules (A-001 through A-030 and any future rules)
+```
+IF finding.exists == TRUE
+THEN verdict = REJECTION-PACKAGE
+REGARDLESS OF finding.perceived_severity
+```
 
 ---
 
 ## Prohibited Language Table
 
-The following language is PROHIBITED in IAA verdicts and session memory. Use of any
-prohibited term constitutes a Zero-Severity-Tolerance policy breach.
+The IAA MUST NOT use any of the following phrases to characterise a finding when issuing or considering an `ASSURANCE-TOKEN`. Detection of any prohibited phrase applied to an open finding is itself a policy violation.
 
-| Prohibited Term / Phrase | Why Prohibited | Required Replacement |
-|--------------------------|----------------|----------------------|
-| "minor finding" | Implies findings can be non-blocking | "Finding — REJECTION-PACKAGE required" |
-| "informational only" | Implies a non-blocking outcome exists | Remove — all findings are blocking |
-| "advisory finding" | Implies advisory mode is still active | Remove — Phase B is blocking |
-| "low severity" | Introduces severity grading — not permitted | "Finding" (no severity qualifier) |
-| "medium severity" | Introduces severity grading — not permitted | "Finding" (no severity qualifier) |
-| "high severity" | Introduces severity grading — not permitted | "Finding" (no severity qualifier) |
-| "could be addressed later" | Implies deferral of a blocking finding | Remove — all findings must be resolved before ASSURANCE-TOKEN |
-| "not blocking in this case" | Implies per-instance blocking decisions | Remove — all findings are blocking |
-| "recommend" (in a verdict) | Implies optional action | "Required" — all fixes are required |
-| "suggest" (in a verdict) | Implies optional action | "Required" — all fixes are required |
-| "PHASE_A_ADVISORY" (outside of legitimate Phase A invocation) | Phase A is CLOSED | Remove — Phase B is current; PHASE_A_ADVISORY is only valid when IAA tool itself issued it |
-| "partial pass" | No partial passes exist | Remove — ASSURANCE-TOKEN or REJECTION-PACKAGE only |
-| "conditional pass" | No conditional passes exist | Remove — ASSURANCE-TOKEN or REJECTION-PACKAGE only |
+| Prohibited Phrase  | Reason                                      |
+|--------------------|---------------------------------------------|
+| "minor"            | Implies finding is passable                 |
+| "trivial"          | Implies finding is passable                 |
+| "cosmetic"         | Implies finding is passable                 |
+| "small"            | Implies finding is passable                 |
+| "negligible"       | Implies finding is passable                 |
+| "low-impact"       | Implies finding is passable                 |
+| "not critical"     | Implies finding is passable                 |
+| "can be ignored"   | Explicit bypass attempt                     |
+| "does not affect"  | Implies finding is passable                 |
+| "soft finding"     | Implies finding is passable                 |
+
+> This list is non-exhaustive. Any phrasing that implies a finding is acceptable for merge constitutes a policy violation.
 
 ---
 
-## Application
+## Permitted Language
 
-IAA applies this policy at every invocation:
+When a `REJECTION-PACKAGE` is issued, the IAA MAY note that a finding is **low-complexity to remediate** (to assist the submitting agent) — but this characterisation MUST NOT be used as a reason to issue an `ASSURANCE-TOKEN` instead.
 
-1. **Before drafting a verdict**: scan own draft output for any prohibited language in the table above.
-   Any match → remove and replace per the required replacement.
+Examples of permitted phrasing in a `REJECTION-PACKAGE`:
 
-2. **During Phase 3 review**: if the PREHANDOVER proof or session memory of the producing agent
-   contains prohibited language (e.g., producing agent self-assessed a "minor finding" as non-blocking),
-   this is itself a finding → REJECTION-PACKAGE.
+| Permitted Phrase                       | Context                            |
+|----------------------------------------|------------------------------------|
+| "finding present — simple to resolve" | In REJECTION-PACKAGE remediation guidance only |
+| "low-effort fix required"              | In REJECTION-PACKAGE remediation guidance only |
+| "one-line change needed"               | In REJECTION-PACKAGE remediation guidance only |
 
-3. **In session memory**: the Learning Loop section must not contain prohibited language when
-   describing findings from the current or prior sessions.
+These phrases are **only** permitted inside a `REJECTION-PACKAGE`. They MUST NOT appear in an `ASSURANCE-TOKEN`.
 
 ---
 
-## Relationship to CORE-021
+## Operational Checklist
 
-CORE-021 enforces this policy at the core invariants layer:
+At every assurance invocation, apply the following Zero-Severity-Tolerance gate before issuing any verdict:
 
-> CORE-021: Any finding regardless of severity = REJECTION-PACKAGE. Prohibited language table enforced.
-> See `IAA_ZERO_SEVERITY_TOLERANCE.md`.
+- [ ] **ZST-1**: Did any phase check (1–4) produce a finding? → `REJECTION-PACKAGE` (no exceptions)
+- [ ] **ZST-2**: Does the assurance artifact contain any prohibited language characterising a finding as passable? → Policy violation; rewrite and issue `REJECTION-PACKAGE`
+- [ ] **ZST-3**: Is the verdict clean `ASSURANCE-TOKEN`? → Confirm zero findings across all phases before finalising
 
-CORE-021 is checked on every qualifying PR invocation. A PREHANDOVER proof or session memory
-that uses prohibited severity language = CORE-021 FAIL = REJECTION-PACKAGE.
+This checklist maps to **INV-801–INV-803** in `iaa-core-invariants-checklist.md`.
+
+---
+
+## Rationale
+
+1. **Subjective severity classifications are a bypass vector.** Labelling a finding "minor" is a judgment call that can be gamed or drift over time. Zero-tolerance eliminates the vector entirely.
+2. **Zero Test Debt policy.** The governance framework requires 100% clean builds. Any open finding violates Zero Test Debt.
+3. **Independent assurance credibility.** An IAA that passes PRs with findings — however small — provides false assurance and undermines the independence guarantee.
+
+---
+
+## Canon Reference
+
+This file operationalises the policy stated in:
+
+> `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.1.0 §Zero-Severity-Tolerance Policy
 
 ---
 
 ## Version History
 
-| Version | Date | Change |
-|---------|------|--------|
-| 1.0.0 | 2026-03-05 | Initial creation — Zero-Severity-Tolerance policy formalised; prohibited language table defined; CORE-021 reference added |
+| Version | Date       | Change |
+|---------|------------|--------|
+| 1.0.0   | 2026-03-02 | Initial creation — operationalises INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 §Zero-Severity-Tolerance Policy. Issue: Enforce zero-severity-tolerance — any finding triggers rejection. Authority: CS2. |
 
 ---
 
-**Authority**: CS2 (Johan Ras) | **Living Agent System**: v6.2.0
-**Canonical Source**: `APGI-cmy/maturion-foreman-governance`
+*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 | CS2 (Johan Ras)*

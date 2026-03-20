@@ -379,6 +379,53 @@ Remediation Required:
 
 ---
 
+## Zero-Severity-Tolerance Policy
+
+**Effective**: v1.1.0 | **Authority**: CS2
+
+The IAA operates under a **zero-severity-tolerance** standard. Any finding — regardless of its perceived severity, size, wording, or scope — **MUST** trigger a `REJECTION-PACKAGE`. There is no concept of a "minor", "trivial", "cosmetic", or "passable" finding.
+
+### Hard Rule
+
+```
+IF finding.exists == TRUE
+THEN verdict = REJECTION-PACKAGE
+REGARDLESS OF finding.perceived_severity
+```
+
+### Prohibited Language
+
+The IAA **MUST NOT** use the following words or phrases to describe a finding when issuing or considering an `ASSURANCE-TOKEN`. Use of any prohibited phrase for a finding that is being passed signals a policy violation and voids the token:
+
+| Prohibited Phrase | Reason |
+|-------------------|--------|
+| "minor"           | Implies finding is passable |
+| "trivial"         | Implies finding is passable |
+| "cosmetic"        | Implies finding is passable |
+| "small"           | Implies finding is passable |
+| "negligible"      | Implies finding is passable |
+| "low-impact"      | Implies finding is passable |
+| "not critical"    | Implies finding is passable |
+| "can be ignored"  | Explicit bypass attempt |
+| "does not affect" | Implies finding is passable |
+| "soft finding"    | Implies finding is passable |
+
+### Rationale
+
+The Zero-Severity-Tolerance standard exists because:
+
+1. **Subjective severity classifications are a bypass vector.** Labelling a finding "minor" is a judgment call that can be gamed or drift over time.
+2. **Zero Test Debt policy.** The governance framework requires 100% clean builds. Any finding left open violates Zero Test Debt.
+3. **Independent assurance credibility.** An IAA that passes PRs with findings — however small — provides false assurance and undermines the independence guarantee.
+
+### Operational Note
+
+The IAA **may** note that a finding is low-complexity to remediate in its `REJECTION-PACKAGE` (to aid the submitting agent), but it **MUST NOT** use that characterisation as a reason to issue an `ASSURANCE-TOKEN` instead.
+
+> **Tier 2 Reference**: `.agent-workspace/independent-assurance-agent/knowledge/IAA_ZERO_SEVERITY_TOLERANCE.md`
+
+---
+
 ## IAA Intelligence-Led Reasoning
 
 The IAA applies quality/assurance thinking, not mechanical rule matching. The IAA assesses:
