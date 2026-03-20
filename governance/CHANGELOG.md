@@ -64,28 +64,27 @@ Each entry follows this structure:
 
 ## Change History
 
-### [LAYER-DOWN-DEDUP-2026-03-03] - 2026-03-03 - BUG_FIX
+## LAYER-DOWN-DEDUP-2026-03-03
 
-**Changed By**: governance-repo-administrator
-**Approved By**: CS2 (Johan Ras) — issue: [Governance][Investigation] Diagnose and surgically remove legacy layer-down duplication cascade
-**Effective Date**: 2026-03-03
+**Type**: Governance workflow deduplication  
+**Authority**: CS2 (Johan Ras)  
+**Date**: 2026-03-03  
+**PR**: #1292
 
-**Summary**: Removed the legacy `governance_ripple` `repository_dispatch` step from `governance-layer-down-dispatch.yml`. This step was the second of two consumer-notification signals; consumer repos receiving it triggered their `consumer-alignment.yml.template` (or `governance-layer-down-intake.yml`) to create a second `[Layer-Down]` issue and/or draft PR, resulting in duplicate issues and stale draft PRs per governance change event.
+### Root Cause
+`governance-layer-down-dispatch.yml` contained two independent notification steps per governance push:
+1. Direct issue creation via `gh api repos/$repo/issues` (Signal 1 — canonical)
+2. `repository_dispatch: governance_ripple` event dispatch (Signal 2 — legacy)
 
-**Root Cause**: After the issue-based layer-down design was adopted (Signal 1: direct issue via `gh api`), the `governance_ripple` dispatch step (Signal 2) became redundant. Consumer repos handled both signals independently, producing one issue from the governance repo's direct creation and another from their own dispatch-triggered workflows.
+Consumer repos handled both signals, producing 2–3 duplicate layer-down issues and 1–2 PRs per commit.
 
-**Fix**: Removed lines 136–166 of `.github/workflows/governance-layer-down-dispatch.yml` (the `Dispatch governance_ripple to consumer repos` step). Only the direct issue creation step (Signal 1) remains.
+### Fix
+Removed the `Dispatch governance_ripple to consumer repos` step entirely. Signal 1 (direct issue creation) is the sole, canonical notification mechanism. Signal 2 was a legacy addition that was never retired after the issue-based design superseded the auto-PR pattern.
 
-**Affected Artifacts**:
-- `.github/workflows/governance-layer-down-dispatch.yml` — removed `Dispatch governance_ripple to consumer repos` step
-
-**Migration Requirements**: None. Consumer repos no longer receive the `governance_ripple` dispatch from this workflow. If consumer repos still run a scheduled `consumer-alignment.yml` the hourly schedule trigger continues to function; only the on-push dispatch trigger is removed.
-
-**Approval Authority**: CS2
-
-**References**:
-- Issue: [Governance][Investigation] Diagnose and surgically remove legacy layer-down duplication cascade
-- Investigation: `governance/layer-down/LAYER_DOWN_INVESTIGATION_REPORT_20260227.md`
+### Consumer-Side Impact
+- `maturion-isms` `governance-ripple-sync.yml` will no longer receive `repository_dispatch: governance_ripple` events from this repo.
+- The `governance-ripple-sync.yml` workflow in `maturion-isms` can be archived/disabled as a follow-up if no other source dispatches `governance_ripple` events to it.
+- All layer-down notifications now flow exclusively through the issue chain: `[Layer-Down] issue → ripple-integration.yml → PR`.
 
 ---
 

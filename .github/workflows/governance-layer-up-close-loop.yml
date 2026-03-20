@@ -62,6 +62,9 @@ jobs:
     if: needs.check-layer-up.outputs.is_layer_up == 'true'
 
     steps:
+      - name: Token identity evidence (REQ-TU-003)
+        run: echo "EXEC_IDENTITY: MATURION_BOT_TOKEN in use for write operations"
+
       - name: Parse originating reference from issue body
         id: parse
         env:

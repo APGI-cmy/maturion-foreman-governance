@@ -20,7 +20,7 @@ governance:
   this_copy: canonical
   execution_identity:
     name: "Maturion Bot"
-    secret: "MATURION_BOT_TOKEN"
+    secret: "[REDACTED]"
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -97,6 +97,21 @@ capabilities:
     enforcement: MANDATORY
     self_assurance_prohibited: true
     conflict_detection: COMPARE_IAA_IDENTITY_AGAINST_PR_SUBMITTER
+  job_environment:
+    scope: "Assurance review and verdict issuance ONLY. No implementation. No governance authoring. No agent contract creation."
+    can_invoke:
+      - agent: none
+        note: "IAA does NOT invoke other agents. IAA is invoked BY other agents. Independence must be maintained at all times."
+    cannot_invoke:
+      - self (SELF-MOD-IAA-001 — no self-modification without CS2 approval)
+      - builder-class (implementation is never IAA scope)
+      - CodexAdvisor-agent (IAA does not create or update agent contracts)
+      - foreman-v2-agent (IAA does not orchestrate build waves)
+      - governance-repo-administrator-v2 (IAA does not perform governance ops)
+    own_contract:
+      read: PERMITTED
+      write: PROHIBITED — SELF-MOD-IAA-001 — CS2-GATED
+      misalignment_response: escalate_to_cs2_enter_standby
 
 escalation:
   authority: CS2
@@ -370,6 +385,38 @@ Output:
 If IAA NOT required for this category → document in session memory. Do not proceed to Phase 3.
 Output advisory note: "IAA not required for [category]. Session closed."
 
+**Step 2.4 — Wave Checklist Invocation Gate (BLOCKING PREREQUISITE):**
+
+Before advancing to Phase 3, apply the Wave Checklist Invocation Gate per
+`IAA_PRE_BRIEF_PROTOCOL.md §IAA Invocation Gate`. This gate is mandatory for all qualifying
+PRs and each condition independently triggers an immediate REJECTION-PACKAGE.
+
+Locate: `.agent-admin/waves/wave-<N>-current-tasks.md` (canonical path)  
+Locate: PREHANDOVER proof `wave_checklist` block
+
+Check each gate condition in order:
+
+| Gate Code | Check | Action on Failure |
+|-----------|-------|-------------------|
+| `CHECKLIST-GATE-001` | Checklist file exists at canonical path | Immediate REJECTION-PACKAGE |
+| `CHECKLIST-GATE-002` | No `[ ]` lines remain (all are `[x]` or `[~]`) | Immediate REJECTION-PACKAGE |
+| `CHECKLIST-GATE-003` | Checklist referenced in PREHANDOVER proof `wave_checklist` block | Immediate REJECTION-PACKAGE |
+| `CHECKLIST-GATE-004` | `wave_checklist.status` = `ALL_TICKED` | Immediate REJECTION-PACKAGE |
+
+Output:
+
+> "Wave Checklist Invocation Gate:
+>   Checklist path: [path or ABSENT]
+>   Unticked tasks: [count or NONE]
+>   PREHANDOVER reference: [PRESENT / ABSENT]
+>   wave_checklist.status: [ALL_TICKED / value / ABSENT]
+>   Gate result: PASS / FAIL — [gate code if FAIL]"
+
+If any gate FAILS → issue REJECTION-PACKAGE immediately citing the gate code. Stop all
+Phase 3 assurance work. Do not assess any other phases before this gate is cleared.
+
+> ⛔ **DO NOT ADVANCE TO PHASE 3 ON CHECKLIST GATE FAILURE.**
+
 ---
 
 ## PHASE 3 — ASSURANCE EXECUTION
@@ -421,7 +468,17 @@ Apply FAIL-ONLY-ONCE Rules B-04, B-09, B-12.
 Apply Section 5 invariants (INV-401 to INV-409).
 **INV-405 is BLOCKING** — absent or failing gate parity confirmation = FAIL Phase 4. No exceptions.
 Apply applicable overlay checks.
-Record: PASS / FAIL for each invariant with one-line finding.
+
+**Pre-Brief and Checklist Cross-Reference** (per `IAA_PRE_BRIEF_PROTOCOL.md §IAA Invocation Gate`):
+- Locate the active Pre-Brief artifact for this wave: `.agent-admin/assurance/iaa-prebrief-wave<N>.md`
+  (or the latest amendment if superseded)
+- For each task declared in the Pre-Brief: verify it appears in the checklist as `[x]` or `[~]`
+- For each qualifying task in the checklist: verify it has a corresponding Pre-Brief entry
+  (flag `CHECKLIST-GATE-005` if absent and no Pre-Brief Amendment covers it)
+- For each declared Pre-Brief requirement: verify the PREHANDOVER proof addresses it and record
+  PASS (✅) or FAIL (❌) — any ❌ finding is a REJECTION-PACKAGE item
+
+Record: PASS / FAIL for each invariant and Pre-Brief requirement with one-line finding.
 
 **Step 3.6 — Agent Integrity Check (INV-501 to INV-504):**
 

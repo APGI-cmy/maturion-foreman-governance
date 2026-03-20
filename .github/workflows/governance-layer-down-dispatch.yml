@@ -39,6 +39,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.MATURION_BOT_TOKEN }}
+
+      - name: Token identity evidence (REQ-TU-003)
+        run: 'echo "EXEC_IDENTITY: MATURION_BOT_TOKEN in use for write operations"'
 
       - name: Debug working directory
         run: |
@@ -126,6 +130,19 @@ jobs:
             ISSUE_TITLE="[Layer-Down] Propagate Governance Changes - ${DATE} (${SHORT_SHA})"
             ISSUE_BODY=$(python3 "$GITHUB_WORKSPACE/.github/scripts/fill-layer-down-template.py")
             echo "Creating issue in $repo..."
+
+            # Idempotency guard: skip if a layer-down issue for this commit already exists
+            EXISTING=$(gh api repos/$repo/issues \
+              -X GET \
+              -f labels=layer-down \
+              -f state=open \
+              --jq ".[] | select(.title | test(\"\\\\[Layer-Down\\\\].*$SHORT_SHA\")) | .number" \
+              2>/dev/null | head -1 || echo "")
+            if [ -n "$EXISTING" ]; then
+              echo "  [SKIP] Layer-down issue for $SHORT_SHA already exists in $repo (#$EXISTING) — skipping duplicate creation"
+              continue
+            fi
+
             CREATE_ARGS=(-f "title=$ISSUE_TITLE" -f "body=$ISSUE_BODY" -f "labels[]=governance" -f "labels[]=layer-down" -f "labels[]=high-priority")
             [ -n "$liaison" ] && CREATE_ARGS+=(-f "assignees[]=$liaison")
             gh api repos/$repo/issues -X POST -H "Accept: application/vnd.github+json" "${CREATE_ARGS[@]}" \

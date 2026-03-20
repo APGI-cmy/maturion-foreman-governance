@@ -1,7 +1,10 @@
 # INDEPENDENT_ASSURANCE_AGENT_CANON
 
-**Status**: CANONICAL | **Version**: 1.0.0 | **Authority**: CS2  
-**Date**: 2026-02-24
+**Status**: CANONICAL | **Version**: 1.3.0 | **Authority**: CS2
+**Date**: 2026-03-03
+**Amended**: 2026-03-03 — v1.1.0: Added §Proactive Assurance — Pre-Brief Protocol
+**Amended**: 2026-03-04 — v1.2.1: Added §CS2 Direct Review Track
+**Amended**: 2026-03-04 — v1.3.0: Added §Risk-Tiered Ceremony Table + §Functional Fitness Assessment (FFA)
 
 ---
 
@@ -23,6 +26,7 @@ The following failure modes mandate an independent assurance layer:
 - **Agent file integrity drift**: No mechanism to detect whether canonical agent contracts have been silently modified between sessions
 - **Proof-gap tolerance**: Merge gates accepted artifacts without verifying completeness and truthfulness of phase evidence
 - **No hard-trigger authority**: There was no non-bypassable final gate with independent standing to block merge
+- **Ceremony without substance**: Flat ceremony overhead applied equally to all PR types regardless of risk, causing delivery delays without proportionate quality benefit
 
 ---
 
@@ -72,32 +76,76 @@ The IAA has **non-bypassable merge block authority** for qualifying PRs:
 - The assuring agent is the same agent that submitted the work
 - Handover proof is absent or does not demonstrate GREEN state and OPOJD compliance
 - Agent cites improvement suggestions inline instead of parking them (inline suggestions are a process boundary violation)
+- Any FFA check fails for a Tier 2 (build) PR (see §Functional Fitness Assessment)
+- A Carry-Forward Mandate (CFM) is issued and not resolved before merge
+
+---
+
+## Risk-Tiered Ceremony Table
+
+Not all PRs carry the same risk. Applying the same ceremony to a documentation fix and a
+production schema migration is wasteful and delays delivery without adding quality.
+
+The IAA applies ceremony **proportionate to risk**. The tier of a PR is determined by its
+highest-risk changed file. When files from multiple tiers are present, the highest tier governs.
+
+| Tier | PR Type | Examples | Ceremony Required | IAA Required | FFA Required |
+|------|---------|----------|------------------|-------------|-------------|
+| **T1** | Tier 1 agent contract change (autonomous agent) | `.github/agents/*.md` changed by non-CS2 agent | Full Five-Phase + Agent Integrity check | **YES — mandatory** | FFA-01, FFA-03 |
+| **T2** | Build deliverable — schema, API, frontend hooks | Migrations, Supabase hooks, API endpoints, frontend components | Full Five-Phase + OVL-AM-008 wiring trace | **YES — mandatory** | **FFA-01 through FFA-05 (all)** |
+| **T3** | Governance canon change | `governance/canon/*.md` | CS2 Direct Review **OR** Three-Phase (1, 2, 4) | **NO** — CS2 review sufficient | FFA-01, FFA-03 |
+| **T4** | CI / workflow change | `.github/workflows/*.yml` | CS2 Direct Review **OR** Two-Phase (1, 4) | **NO** — CS2 review sufficient | FFA-02 (trigger wiring only) |
+| **T5** | Tier 2 knowledge patch | `.agent-workspace/*/knowledge/*.md` | Self-attestation + CS2 spot-check | **NO** | None |
+| **T6** | Documentation / admin | `*.md` outside governance/canon, parking station, housekeeping | None — CS2 approval to merge | **NO** | None |
+
+### Tier determination rules
+
+- A PR touching both T2 (migration) and T5 (knowledge patch) files is classified as **T2**.
+- A PR touching both T1 (agent contract) and T3 (canon) files is classified as **T1**.
+- CS2-authored commits (co-authored or direct push) may reduce T1 to T3 ceremony where CS2
+  is the sole author of the agent contract change and posts a CS2-DIRECT-REVIEW comment.
+- When in doubt, apply the higher tier. Downgrade requires CS2 explicit classification comment.
+
+### Ceremony definitions
+
+| Ceremony Level | What it means |
+|---------------|---------------|
+| **Full Five-Phase** | All phases 1–4 by submitting agent(s) + Phase 5 IAA assurance |
+| **Three-Phase (1, 2, 4)** | Preflight + Governance + Handover — no Working Phase Proof required |
+| **Two-Phase (1, 4)** | Preflight + Handover only |
+| **Self-attestation + CS2 spot-check** | Submitting agent attests compliance; CS2 reviews on-demand |
+| **CS2 Direct Review** | CS2 posts CS2-DIRECT-REVIEW comment (see §CS2 Direct Review Track) |
+| **None** | No evidence artifacts required; CS2 approval to merge |
 
 ---
 
 ## Trigger Table
 
-The IAA runs for the following PR categories. For all other categories (docs-only, parking station, admin), IAA assurance is **not required**.
+The IAA runs for Tier 1 and Tier 2 PRs. For all other tiers, IAA assurance is **not required**
+provided the applicable ceremony level is satisfied.
 
-| PR Category | IAA Required | Trigger Condition |
-|-------------|-------------|-------------------|
-| AAWP deliverable | YES | PR labelled `aawp-deliverable` or files match AAWP path patterns |
-| MAT deliverable | YES | PR labelled `mat-deliverable` or files match MAT path patterns |
-| Core agent file update | YES | Changes to `.github/agents/` or `governance/agents/` |
-| Agent contract update | YES | Changes to `governance/contracts/` or `*-agent-contract.md` |
-| Canon file update | YES | Changes to `governance/canon/` |
-| Architecture update | YES | Changes to files matching `*ARCHITECTURE*.md` or `*STRATEGY*.md` in governance |
-| Merge gate workflow update | YES | Changes to `.github/workflows/merge-gate-interface.yml` |
-| Agent-integrity folder update | YES | Changes to `governance/quality/agent-integrity/` |
-| Docs-only PR | NO | Only `*.md` files outside governance/canon, no agent or workflow changes |
-| Parking station update | NO | PR labelled `parking-station` |
-| Admin / housekeeping | NO | PR labelled `admin` or `housekeeping` |
+| PR Category | Tier | IAA Required | Trigger Condition |
+|-------------|------|-------------|-------------------|
+| Core agent file update (autonomous) | T1 | YES | Changes to `.github/agents/` by non-CS2 agent |
+| Build deliverable — schema/API/hooks | T2 | YES | Migrations, hooks, endpoints, frontend components |
+| AAWP deliverable | T2 | YES | PR labelled `aawp-deliverable` or files match AAWP path patterns |
+| MAT deliverable | T2 | YES | PR labelled `mat-deliverable` or files match MAT path patterns |
+| Agent-integrity folder update | T1 | YES | Changes to `governance/quality/agent-integrity/` |
+| Canon file update | T3 | NO | CS2 Direct Review sufficient |
+| Architecture update | T3 | NO | CS2 Direct Review sufficient |
+| Merge gate workflow update | T4 | NO | CS2 Direct Review sufficient |
+| CI workflow change | T4 | NO | CS2 Direct Review sufficient |
+| Tier 2 knowledge patch | T5 | NO | Self-attestation + CS2 spot-check |
+| Docs-only PR | T6 | NO | CS2 approval to merge |
+| Parking station update | T6 | NO | CS2 approval to merge |
+| Admin / housekeeping | T6 | NO | CS2 approval to merge |
 
 ---
 
 ## Five-Phase Delivery Proof Protocol
 
-Every qualifying PR must include protocol-phase proof. The IAA verifies that each of the following phases has been evidenced by the submitting agents.
+Every qualifying PR must include protocol-phase proof at the level required by its tier.
+The IAA verifies that each required phase has been evidenced by the submitting agents.
 
 ### Phase 1 — Preflight Proof
 
@@ -157,15 +205,117 @@ The submitting agent(s) must provide a **Handover Proof** artifact demonstrating
 
 The IAA itself must produce an **Assurance Invocation** artifact as part of its output, demonstrating:
 
-- Which phases (1–4) were reviewed and the finding for each
-- Agent integrity check result (contract file hashes vs reference baseline)
+- Which phases were reviewed (per tier requirement) and the finding for each
+- Agent integrity check result (contract file hashes vs reference baseline) — T1 PRs only
+- FFA assessment results — T2 PRs (see §Functional Fitness Assessment)
 - Independence confirmation (IAA ≠ submitting agent)
 - Binary verdict: `ASSURANCE-TOKEN` or `REJECTION-PACKAGE`
 - For `REJECTION-PACKAGE`: specific proof gaps and/or violations listed with remediation guidance
 
 **Artifact location**: `.agent-admin/assurance/assurance-token-<PR#>.md` (PASS) or `.agent-admin/assurance/rejection-package-<PR#>.md` (FAIL)
 
-**Gate check**: The `iaa-assurance-check` job in the merge gate workflow checks for a valid `ASSURANCE-TOKEN` artifact in `.agent-admin/assurance/` before permitting merge.
+**Gate check**: The `iaa-assurance-check` job in the merge gate workflow checks for a valid `ASSURANCE-TOKEN` artifact or a `CS2-DIRECT-REVIEW` comment before permitting merge.
+
+---
+
+## Functional Fitness Assessment (FFA) — Build Quality Gate
+
+**Applies to**: All Tier 2 PRs (schema migrations, API endpoints, frontend hooks, Supabase
+operations, and any PR delivering executable application behaviour).
+
+### Purpose
+
+The FFA gate ensures that every Tier 2 delivery is **fully functional, correctly wired, and
+integrated end-to-end** — not merely syntactically correct or ceremonially complete.
+
+The IAA is **not limited to reviewing what was explicitly requested** in the PR. The IAA has
+authority to identify and mandate resolution of any broken wire, missing integration, or schema
+gap that this PR exposes — regardless of which prior PR introduced the gap.
+
+**A delivery that depends on a broken prior delivery is not a complete delivery.**
+**A schema migration that does not match the hook that writes to it is not a correct delivery.**
+**A PR that passes ceremony but leaves the app non-functional is a FAIL.**
+
+### FFA-01 — Delivery Completeness
+
+The IAA must confirm:
+- This PR delivers a fully functional unit — no path in the delivered code calls something
+  not yet built
+- No data operation writes to a destination that does not exist
+- No frontend component references an endpoint, table, or column that is absent
+- If any incompleteness exists: it is explicitly tracked, deferred with CS2 sign-off, and
+  guarded in code (try/catch or equivalent) with a tracked issue reference
+
+**FAIL condition**: Unguarded incompleteness with no tracked resolution
+
+### FFA-02 — Wiring Verification
+
+For every Supabase write operation (`.from('table').insert()`, `.upsert()`, `.update()`):
+
+| Check | Required |
+|-------|---------|
+| Table exists in an active migration | YES |
+| Every written column exists in that migration | YES |
+| Column types match written value types | YES |
+| RLS policy consistent with runtime client key (anon vs service role) | YES |
+| FK references resolve at deployment time | YES |
+
+For every API endpoint call from the frontend:
+
+| Check | Required |
+|-------|---------|
+| Endpoint exists in the gateway | YES |
+| Request schema matches what the caller sends | YES |
+| Response schema matches what the caller expects | YES |
+| Auth model is consistent (JWT, service key, anon) | YES |
+
+**FAIL condition**: Any unconfirmed wire. Partial wiring is not acceptable.
+
+### FFA-03 — Cross-Delivery Integration
+
+For any PR that modifies, extends, or depends on a prior delivery:
+- The prior artifact is in the correct state on `main`
+- This PR does not regress any prior delivery
+- No FK, RLS, or schema assumption from a prior PR is invalidated
+
+**FAIL condition**: Regression confirmed, or dependency on a prior broken state confirmed
+
+### FFA-04 — Supabase Alignment
+
+For every table referenced in the PR:
+
+| Check | Required |
+|-------|---------|
+| Schema exists in active migration | YES |
+| All written columns exist | YES |
+| Column types match written values | YES |
+| RLS enabled | YES |
+| Org isolation policy present (multi-tenant tables) | YES |
+| FK chain resolves at deployment time | YES |
+
+**FAIL condition**: Any check fails without explicit CS2-approved deferral with tracking issue
+
+### FFA-05 — Carry-Forward Mandate (CFM)
+
+The IAA has authority to identify and mandate resolution of broken wires, missing integrations,
+or schema gaps introduced by **any prior PR**, if this PR depends on, exposes, or is blocked
+by them.
+
+**CFM issuance**: The IAA states:
+- The specific broken wire or gap found
+- Which prior PR introduced it (if traceable)
+- Whether resolution must be inline in this PR or in a prerequisite PR that merges first
+- The tracking issue number (if one exists) or requirement to create one
+
+**CFM effect**: Merge of the current PR is **BLOCKED** until the CFM is resolved.
+
+**CFM resolution**: The submitting agent fixes the gap (inline or prerequisite PR) and
+re-invokes the IAA. CS2 may grant a CS2-DIRECT-REVIEW waiver if the gap is already tracked
+with a confirmed remediation plan and the current PR does not make the broken state worse.
+
+**CFM is not scope creep.** It is the IAA exercising its functional fitness gate authority.
+The IAA's mandate is a fully functional delivery — not a delivery that passes ceremony while
+leaving the app broken.
 
 ---
 
@@ -192,8 +342,10 @@ ASSURANCE-TOKEN
 PR: #<number>
 Date: YYYY-MM-DD
 IAA Session: <session-id>
-Phases Verified: 1-PASS, 2-PASS, 3-PASS, 4-PASS
-Agent Integrity: PASS
+PR Tier: T<N>
+Phases Verified: <phases per tier, e.g. 1-PASS, 2-PASS, 3-PASS, 4-PASS>
+FFA Assessment: <PASS / NOT-REQUIRED>
+Agent Integrity: <PASS / NOT-REQUIRED>
 Independence: CONFIRMED
 Verdict: MERGE PERMITTED
 ```
@@ -205,12 +357,19 @@ REJECTION-PACKAGE
 PR: #<number>
 Date: YYYY-MM-DD
 IAA Session: <session-id>
+PR Tier: T<N>
 Phases:
   Phase 1 (Preflight): [PASS|FAIL] — <finding>
-  Phase 2 (Governance): [PASS|FAIL] — <finding>
-  Phase 3 (Working): [PASS|FAIL] — <finding>
+  Phase 2 (Governance): [PASS|FAIL|NOT-REQUIRED] — <finding>
+  Phase 3 (Working): [PASS|FAIL|NOT-REQUIRED] — <finding>
   Phase 4 (Handover): [PASS|FAIL] — <finding>
-Agent Integrity: [PASS|FAIL] — <finding>
+FFA Assessment: [PASS|FAIL|NOT-REQUIRED]
+  FFA-01 Delivery Completeness: [PASS|FAIL] — <finding>
+  FFA-02 Wiring Verification: [PASS|FAIL] — <finding>
+  FFA-03 Cross-Delivery Integration: [PASS|FAIL] — <finding>
+  FFA-04 Supabase Alignment: [PASS|FAIL] — <finding>
+  FFA-05 Carry-Forward Mandate: [NONE|ISSUED] — <finding>
+Agent Integrity: [PASS|FAIL|NOT-REQUIRED] — <finding>
 Independence: [CONFIRMED|VIOLATION] — <finding>
 Verdict: MERGE BLOCKED
 Remediation Required:
@@ -220,14 +379,63 @@ Remediation Required:
 
 ---
 
+## Zero-Severity-Tolerance Policy
+
+**Effective**: v1.1.0 | **Authority**: CS2
+
+The IAA operates under a **zero-severity-tolerance** standard. Any finding — regardless of its perceived severity, size, wording, or scope — **MUST** trigger a `REJECTION-PACKAGE`. There is no concept of a "minor", "trivial", "cosmetic", or "passable" finding.
+
+### Hard Rule
+
+```
+IF finding.exists == TRUE
+THEN verdict = REJECTION-PACKAGE
+REGARDLESS OF finding.perceived_severity
+```
+
+### Prohibited Language
+
+The IAA **MUST NOT** use the following words or phrases to describe a finding when issuing or considering an `ASSURANCE-TOKEN`. Use of any prohibited phrase for a finding that is being passed signals a policy violation and voids the token:
+
+| Prohibited Phrase | Reason |
+|-------------------|--------|
+| "minor"           | Implies finding is passable |
+| "trivial"         | Implies finding is passable |
+| "cosmetic"        | Implies finding is passable |
+| "small"           | Implies finding is passable |
+| "negligible"      | Implies finding is passable |
+| "low-impact"      | Implies finding is passable |
+| "not critical"    | Implies finding is passable |
+| "can be ignored"  | Explicit bypass attempt |
+| "does not affect" | Implies finding is passable |
+| "soft finding"    | Implies finding is passable |
+
+### Rationale
+
+The Zero-Severity-Tolerance standard exists because:
+
+1. **Subjective severity classifications are a bypass vector.** Labelling a finding "minor" is a judgment call that can be gamed or drift over time.
+2. **Zero Test Debt policy.** The governance framework requires 100% clean builds. Any finding left open violates Zero Test Debt.
+3. **Independent assurance credibility.** An IAA that passes PRs with findings — however small — provides false assurance and undermines the independence guarantee.
+
+### Operational Note
+
+The IAA **may** note that a finding is low-complexity to remediate in its `REJECTION-PACKAGE` (to aid the submitting agent), but it **MUST NOT** use that characterisation as a reason to issue an `ASSURANCE-TOKEN` instead.
+
+> **Tier 2 Reference**: `.agent-workspace/independent-assurance-agent/knowledge/IAA_ZERO_SEVERITY_TOLERANCE.md`
+
+---
+
 ## IAA Intelligence-Led Reasoning
 
-The IAA applies quality/assurance thinking, not mechanical rule matching. Agents must cite relevant canon and state what they checked for this specific delivery. The IAA assesses:
+The IAA applies quality/assurance thinking, not mechanical rule matching. The IAA assesses:
 
 - **Substance over form**: A proof artifact that exists but contains only boilerplate does not satisfy the requirement.
-- **Delivery-appropriate depth**: A trivial syntax-fix PR needs lighter evidence than a core architectural change. The IAA calibrates expectation to delivery scope.
+- **Delivery-appropriate depth**: The IAA calibrates expectation to delivery scope and tier. A T6 docs fix needs no evidence. A T2 schema migration needs full FFA.
 - **Truthfulness**: If an agent claims a gate passed, the IAA looks for corroborating evidence in the PR artifacts, not just the claim.
+- **Functional fitness over ceremony**: For T2 PRs, a ceremonially complete but functionally broken delivery is a FAIL. The IAA prioritises working software over paperwork.
 - **Improvement suggestion hygiene**: If an agent includes inline improvement suggestions within a delivery artifact (not parked), this is a POLC boundary violation and triggers `REJECTION-PACKAGE`.
+- **Carry-forward authority**: The IAA does not ignore prior broken wires because they are "out of scope." If this PR exposes or depends on a broken state, the IAA mandates resolution.
 
 ---
 
@@ -235,14 +443,155 @@ The IAA applies quality/assurance thinking, not mechanical rule matching. Agents
 
 For each qualifying PR, the following agents must each provide their phase proof for their role:
 
-| Role | Phases Required |
-|------|----------------|
-| **Builder** | Phases 1, 3, 4 (preflight, working, handover) |
-| **QA/Validator** | Phases 1, 2, 4 (preflight, governance, handover) |
-| **Foreman** | Phases 1, 2, 4 (preflight, governance, handover supervision) |
-| **IAA** | Phase 5 (assurance invocation — independent of above) |
+| Role | T1 Phases Required | T2 Phases Required |
+|------|-------------------|-------------------|
+| **Builder** | Phases 1, 3, 4 | Phases 1, 3, 4 + FFA evidence in Phase 3 |
+| **QA/Validator** | Phases 1, 2, 4 | Phases 1, 2, 4 |
+| **Foreman** | Phases 1, 2, 4 | Phases 1, 2, 4 |
+| **IAA** | Phase 5 + Agent Integrity | Phase 5 + FFA-01 to FFA-05 |
 
-If only one agent is involved in a delivery, that agent provides all phases 1–4 and the IAA provides phase 5.
+For T3–T6 PRs: submitting agent provides applicable phases per tier; IAA is not required.
+
+If only one agent is involved in a delivery, that agent provides all required phases and the IAA provides Phase 5 (T1/T2 only).
+
+---
+
+## Proactive Assurance — Pre-Brief Protocol
+
+The IAA operates both **reactively** (final-gate handover assurance) and **proactively**
+(wave-start pre-brief declaration). The Pre-Brief Protocol governs the proactive mode.
+
+### What Is a Pre-Brief
+
+A Pre-Brief is an artifact generated by the IAA at the **start of a wave**, once the Foreman
+has created and populated the wave task list. The Pre-Brief declares, per qualifying task, the
+exact assurance requirements the IAA will check at handover. This shifts assurance left:
+agents build knowing the acceptance bar rather than discovering it during rejection.
+
+### Pre-Brief Trigger
+
+The Foreman invokes the IAA for a Pre-Brief via:
+
+```
+task(agent_type: "independent-assurance-agent", action: "PRE-BRIEF", wave: <N>)
+```
+
+**Trigger conditions** (all must be true):
+1. Foreman has created and populated the wave task list artifact
+2. The wave contains at least one T1 or T2 qualifying task (per §Trigger Table above)
+3. No Pre-Brief already exists for this wave
+
+If IAA is unavailable at wave start, the Foreman records `PHASE_A_ADVISORY` status and
+Pre-Brief generation is deferred. Wave execution may proceed, but the Pre-Brief must be
+completed before the first qualifying PR opens for IAA review.
+
+### Pre-Brief IAA Obligations
+
+The IAA **MUST**:
+
+1. Generate a Pre-Brief artifact at `.agent-admin/assurance/iaa-prebrief-wave<N>.md`
+2. Declare, per task, which proof phases are required, which FFA checks apply, which
+evidence artifacts will be checked, and which overlays apply
+3. Cross-reference the active Pre-Brief at handover and report per-requirement status
+4. Mark the Pre-Brief as `SUPERSEDED` when a valid amendment replaces it
+
+The IAA **MUST NOT**:
+
+- Skip Pre-Brief generation when validly invoked by the Foreman
+- Apply undisclosed requirements at handover without noting them as intelligence-led additions
+- Issue a Pre-Brief for a wave if a valid Pre-Brief already exists (request amendment instead)
+
+### Pre-Brief Merge Gate Enforcement
+
+The following are merge-blockers for PRs from a wave that has T1/T2 qualifying tasks:
+
+| Condition | Blocker |
+|-----------|---------|
+| Pre-Brief artifact missing | YES |
+| Pre-Brief not referenced in prehandover proof | YES |
+| `wave-current-tasks.md` checklist absent | YES |
+| Checklist has unticked `[ ]` tasks with no `[~]` annotation | YES |
+| `wave_checklist` block absent from PREHANDOVER proof | YES |
+| `wave_checklist.status` ≠ `ALL_TICKED` | YES |
+| A declared Pre-Brief requirement not met at handover | YES |
+| Pre-Brief marked `SUPERSEDED` without a replacement | YES |
+
+### Wave Checklist Invocation Gate
+
+Before beginning any Phase 3 assurance execution, the IAA MUST apply the Wave Checklist
+Invocation Gate. This is a **hard prerequisite** — each condition independently triggers an
+immediate REJECTION-PACKAGE if failed:
+
+| Gate Code | Condition |
+|-----------|-----------|
+| `CHECKLIST-GATE-001` | `wave-current-tasks.md` checklist is absent |
+| `CHECKLIST-GATE-002` | Checklist has `[ ]` tasks with no `[~]` annotation |
+| `CHECKLIST-GATE-003` | Checklist not referenced in the PREHANDOVER proof |
+| `CHECKLIST-GATE-004` | `wave_checklist.status` in PREHANDOVER proof is not `ALL_TICKED` |
+| `CHECKLIST-GATE-005` | Qualifying task in checklist has no corresponding Pre-Brief entry (and no amendment) |
+
+"Immediate REJECTION-PACKAGE" means the IAA halts all assurance review and issues the verdict
+at this step, before any Phase 1–4 assessment occurs.
+
+### Full Specification
+
+See `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.0.0 for the complete specification
+including content requirements, amendment protocol, cross-agent interactions, and example
+template.
+
+---
+
+## CS2 Direct Review Track
+
+**Authority**: CS2 (Johan Ras / @APGI-cmy) only.
+**Version added**: v1.2.1 — 2026-03-04
+
+### Rule
+
+When CS2 personally reviews a PR and posts a **CS2-DIRECT-REVIEW** comment on that PR,
+the review is formally equivalent to an IAA `ASSURANCE-TOKEN`. No separate IAA invocation
+is required before merge.
+
+### CS2-DIRECT-REVIEW Comment Format
+
+CS2 must post a comment on the PR containing exactly this block (populated):
+
+```
+CS2-DIRECT-REVIEW
+PR: #[number]
+Date: YYYY-MM-DD
+Reviewed by: @APGI-cmy
+Content verdict: APPROVED
+IAA ceremony: WAIVED — CS2 direct review
+Merge authority: CS2
+```
+
+### Applicability
+
+This track applies to **all** PR types **except**:
+
+- PRs where `.github/agents/` Tier 1 contract files are modified by an **autonomous agent
+without CS2 co-authorship** (those still require IAA)
+- PRs created and merged in a **fully autonomous pipeline with no CS2 review** (those still
+require IAA)
+
+In both exception cases, the standard Five-Phase Delivery Proof Protocol applies in full.
+
+### Effect on Merge Gate
+
+A valid `CS2-DIRECT-REVIEW` comment on a PR is treated as equivalent to a committed
+`ASSURANCE-TOKEN` artifact. The merge gate workflow will recognise the comment as
+satisfying the `iaa-assurance-check` requirement.
+
+### Rationale
+
+The IAA ceremony exists to provide independent assurance in pipelines where **no human is
+reviewing the output**. When CS2 is directly reviewing, CS2 **is** the independent assurance.
+Running the full IAA ceremony in parallel is redundant overhead that delays delivery without
+adding quality.
+
+This rule does not lower the quality bar. It removes the duplicated process where both CS2
+and the IAA independently review identical content under human oversight.
 
 ---
 
@@ -251,10 +600,11 @@ If only one agent is involved in a delivery, that agent provides all phases 1–
 - `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 — Living Agent framework
 - `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` — Knowledge architecture
 - `governance/canon/AGENT_CONTRACT_ARCHITECTURE.md` — Four-phase contract architecture
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.0.0 — IAA Pre-Brief Protocol (proactive assurance)
 - `governance/quality/agent-integrity/` — Agent integrity reference store
 - `governance/CANON_INVENTORY.json` — Canon hash registry
 - `governance/GATE_REQUIREMENTS_INDEX.json` — Gate requirements
 
 ---
 
-*Authority: CS2 (Johan Ras) | Version: 1.0.0 | Effective: 2026-02-24*
+*Authority: CS2 (Johan Ras) | Version: 1.3.0 | Effective: 2026-02-24 | Amended: 2026-03-04*
