@@ -54,7 +54,7 @@ Remediation Required:
     Either path is acceptable. The PREHANDOVER (or addendum) must be explicit.
 
   REM-3 [CORE-021 / Zero-Severity-Tolerance — Trailing Newline]:
-    CS2 (APGI-cmy, 2026-03-20) confirmed missing trailing newline (\\n) at end of
+    CS2 (APGI-cmy, 2026-03-20) confirmed missing trailing newline (\n) at end of
     maturion/strategy/GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md. This is independently
     confirmed by xxd (file ends 0x2e without 0x0a). Fix: add trailing newline and commit.
     This finding is low-complexity to remediate but mandatory per Zero-Severity-Tolerance
