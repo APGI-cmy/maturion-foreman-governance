@@ -104,7 +104,7 @@ If any of the four conditions fails → REJECTION-PACKAGE immediately. Do not co
 
 ## Checklist Summary Table
 
-## CORE-019 Detail — IAA Token Cross-Verification
+Use this summary table for quick gate tallying in the Phase 5 assurance invocation artifact:
 
 | Phase | Invariants | Fail Triggers |
 |-------|-----------|---------------|
@@ -117,6 +117,10 @@ If any of the four conditions fails → REJECTION-PACKAGE immediately. Do not co
 | Learning Loop | INV-601 to INV-608 | Any = Session INCOMPLETE |
 | Traceability | INV-701 to INV-704 | Any = Phase 3/4 FAIL |
 | Zero-Severity-Tolerance | INV-801 to INV-803 | Any = REJECTION-PACKAGE |
+
+---
+
+## CORE-019 Detail — IAA Token Cross-Verification
 
 1. Extract session-NNN and date YYYYMMDD from the token
 2. Open `.agent-workspace/independent-assurance-agent/memory/session-NNN-YYYYMMDD.md`
@@ -144,4 +148,4 @@ This check MUST be run for EVERY non-PENDING token. Cross-referencing the sessio
 
 ---
 
-*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 | LIVING_AGENT_SYSTEM.md v6.2.0*
+*Authority: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0 | LIVING_AGENT_SYSTEM.md v1.1.0*

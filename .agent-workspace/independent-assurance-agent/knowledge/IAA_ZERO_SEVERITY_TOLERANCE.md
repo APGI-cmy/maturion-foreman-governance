@@ -68,7 +68,7 @@ At every assurance invocation, apply the following Zero-Severity-Tolerance gate 
 - [ ] **ZST-2**: Does the assurance artifact contain any prohibited language characterising a finding as passable? → Policy violation; rewrite and issue `REJECTION-PACKAGE`
 - [ ] **ZST-3**: Is the verdict clean `ASSURANCE-TOKEN`? → Confirm zero findings across all phases before finalising
 
-This checklist maps to **INV-801** in `iaa-core-invariants-checklist.md`.
+This checklist maps to **INV-801–INV-803** in `iaa-core-invariants-checklist.md`.
 
 ---
 
