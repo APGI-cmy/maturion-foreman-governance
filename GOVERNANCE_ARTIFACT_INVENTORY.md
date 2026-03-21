@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-03-02 (FM_QUALITY_PROTOCOL_ENHANCED_SOP.md — enhanced QP with builder referral and progress tracker enforcement)
+**Last Updated**: 2026-03-20 (APP_DESCRIPTION_REQUIREMENT_POLICY.md v2.0 + APP_DESCRIPTION_TEMPLATE.md + APP_DESCRIPTION_CREATION_CHECKLIST.md — issue #1312, PR #1313)
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -182,7 +182,9 @@ Policy files define operational governance requirements and protocols.
 
 | File | Purpose | Categories |
 |------|---------|------------|
-| `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | **UPDATED v1.0 (2026-02-13)** - Defines application description requirements with TRS stage added to canonical flow: App Description → FRS → TRS → Architecture → Build Authorization → Implementation. Updated ordering rule to include TRS as mandatory stage. Layer-up from maturion-isms#98 | Readiness, Layer-down |
+| `APP_DESCRIPTION_REQUIREMENT_POLICY.md` | **UPDATED v2.0 (2026-03-20)** - v1.0 → v2.0: Adds §5.3 with 24 mandatory governance sections (§AD-01–§AD-24) derived from 55+ MAT module post-mortem oversights. Adds §19 (template reference) and §20 (checklist reference). All App Descriptions must include all 24 sections before Build Authorization is granted. Issue #1312, PR #1313 | Readiness, Layer-down |
+| `APP_DESCRIPTION_TEMPLATE.md` *(governance/templates/)* | **NEW v1.0 (2026-03-20)** - Full fill-in-the-blanks App Description template covering all 28 sections (§5.1 required + §5.3 mandatory governance sections). Starting point for every new module App Description. Companion to APP_DESCRIPTION_REQUIREMENT_POLICY.md v2.0 | Readiness, Layer-down |
+| `APP_DESCRIPTION_CREATION_CHECKLIST.md` *(governance/checklists/)* | **NEW v1.0 (2026-03-20)** - Binary pass/fail checklist covering all §5.1 required sections (Part A) and all 24 §5.3 mandatory governance sections (Part B), plus approval and readiness (Part C). Gate artifact for Pre-FRS and Pre-Architecture enforcement (§11.1, §11.2). Must be filed before Build Authorization is granted | Readiness, Layer-down, PR-gates |
 | `BUILDER_QA_HANDOVER_POLICY.md` | Defines builder QA requirements before handover | PR-gates, Readiness |
 | `FM_MATURION_DELEGATED_ACTION_POLICY.md` | Defines FM delegated action authority and requirements | Readiness |
 | `minimizing_language_examples.json` | Fixture examples for minimizing-language enforcement | PR-gates, Readiness |
