@@ -87,7 +87,8 @@ TRS: docs/governance/{APP}_TRS.md  v{VERSION}
     ↓ derives
 Architecture: architecture/{APP}_ARCHITECTURE.md  v{VERSION}
     ↓ derives
-Build Authorization: architecture/builds/{BUILD_ID}/build-auth.md
+Build Authorization: architecture/builds/{BUILD_ID}/BUILD_AUTHORIZATION_CERTIFICATE.md
+                    & architecture/builds/{BUILD_ID}/BUILD_AUTHORIZATION_BLOCK.md
 ```
 
 **Cross-linking requirement**: Each downstream artifact must contain an explicit "Derived from: {upstream artifact} v{version}" statement in its header or §0.
@@ -156,7 +157,7 @@ Build Authorization: architecture/builds/{BUILD_ID}/build-auth.md
 > **Rule**: Code-first development is **prohibited**. Every build wave (including remediation waves) MUST be preceded by a QA-to-Red test suite.
 
 - **QA Agent/Role**: {QA agent name or role}
-- **Minimum passing threshold before builder allocation**: {e.g., 100% of QA-to-Red tests failing (confirming tests exist and correctly fail before implementation)}
+- **Expected QA-to-Red state before builder allocation**: {e.g., 100% of QA-to-Red tests red/failing (confirming tests exist and correctly fail before implementation)}
 - **Remediation wave rule**: Remediation waves require a new QA-to-Red suite targeting the defect(s), not just reuse of prior suites.
 
 ---
@@ -354,7 +355,7 @@ Required items per wave:
 
 > **Rule**: BUILD_PROGRESS_TRACKER.md must be updated at every wave PR/merge. Wave closure is prohibited unless tracker is current.
 
-- **Tracker location**: `modules/{app}/BUILD_PROGRESS_TRACKER.md`
+- **Tracker location**: `modules/{APP}/BUILD_PROGRESS_TRACKER.md`
 - **Update gate**: Foreman validates tracker currency before wave closure sign-off
 - **Content required per wave entry**: Wave number | Status | Date | Evidence links | Known issues
 

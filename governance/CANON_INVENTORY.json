@@ -414,13 +414,13 @@
     {
       "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
       "version": "2.0",
-      "file_hash": "dfb4d7db51b01244f7f19a16f9e76352dcc9136fbb9d506aa6f376f0a239669d",
+      "file_hash": "ce73cf29144121602f7e4ec893570430493498e7d962667a963a14720d128255",
       "effective_date": "2026-03-20",
       "description": "Policy establishing App Descriptions as mandatory upstream authority artifacts. v2.0 adds 24 mandatory governance sections (\u00a75.3) derived from MAT module post-mortem analysis (55+ oversights).",
       "type": "policy",
       "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "dfb4d7db51b01244f7f19a16f9e76352dcc9136fbb9d506aa6f376f0a239669d"
+      "file_hash_sha256": "ce73cf29144121602f7e4ec893570430493498e7d962667a963a14720d128255"
     },
     {
       "filename": "APP_STARTUP_REQUIREMENTS_DECLARATION.md",
@@ -2205,13 +2205,13 @@
     {
       "filename": "APP_DESCRIPTION_TEMPLATE.md",
       "version": "1.0",
-      "file_hash": "7fba181082fa86ab52dcf657dae77390b06518685ed26e516cdb3e44aac9802c",
+      "file_hash": "63da7bc543b3d252c55e38b32e0fad63356e2f9da8d233f3b950dde000269be9",
       "effective_date": "2026-03-20",
       "description": "Full App Description template incorporating all \u00a75.1 required sections and \u00a75.3 mandatory governance sections (24 sections). Used as starting point for every new module App Description.",
       "type": "template",
       "path": "governance/templates/APP_DESCRIPTION_TEMPLATE.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "7fba181082fa86ab52dcf657dae77390b06518685ed26e516cdb3e44aac9802c"
+      "file_hash_sha256": "63da7bc543b3d252c55e38b32e0fad63356e2f9da8d233f3b950dde000269be9"
     },
     {
       "filename": "APP_DESCRIPTION_CREATION_CHECKLIST.md",

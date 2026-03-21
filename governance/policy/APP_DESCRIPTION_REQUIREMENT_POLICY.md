@@ -204,7 +204,7 @@ Every App Description **MUST** include the following 24 sections. Omission of an
 
 **Requirement**: The App Description MUST list the authoritative technology stack.
 
-**Content**: All frameworks, languages, databases, infrastructure components, and external services. The TRS is the downstream authoritative source; any discrepancy between App Description and TRS must be resolved before Architecture commences. This section defines the baseline; TRS may add constraints but may not contradict it.
+**Content**: All frameworks, languages, databases, infrastructure components, and external services. This section of the App Description is the **upstream authoritative baseline** for technology choices. The TRS is the **downstream authoritative realization** of that baseline (e.g., specific versions, deployment patterns, and additional constraints) and MUST remain consistent with the App Description. Any discrepancy between App Description and TRS is a **blocking defect** that MUST be resolved (by updating one or both artifacts so they align) **before Architecture commences**; TRS may refine or add constraints but may not contradict the App Description.
 
 **Evidence of Compliance**: TRS and Architecture cross-reference this section; conflicts raise a blocking issue.
 
@@ -406,7 +406,7 @@ Every App Description **MUST** include the following 24 sections. Omission of an
 
 **Content**: The module `BUILD_PROGRESS_TRACKER.md` (or equivalent) must be updated as part of every wave PR/merge. Wave closure is explicitly prohibited unless the tracker reflects the current wave status. The tracker update is not optional — it is a gate condition.
 
-**Evidence of Compliance**: PREHANDOVER proof includes tracker update confirmation for every wave; merge gate validates tracker currency.
+**Evidence of Compliance**: PREHANDOVER proof includes tracker update confirmation for every wave (e.g., checklist items and linked tracker diffs). Future enforcement: repository-level or centralized merge-gate automation (e.g., Foreman / Quality Professor / QP-FAIL-007) SHALL be configured to fail merges when the tracker is stale.
 
 ---
 

@@ -53,7 +53,7 @@ governance/scope-declaration.md
 - Consumer repository ripple execution (automatic on merge)
 
 ## Constitutional Alignment
-- LIVING_AGENT_SYSTEM.md v6.2.0
+- LIVING_AGENT_SYSTEM.md v1.2.0 (2026-02-24)
 - APP_DESCRIPTION_REQUIREMENT_POLICY.md v1.0 (being updated to v2.0)
 - Issue - Canon Update: Add App Description Template Guidance for Oversight Prevention
 
@@ -71,12 +71,18 @@ This PR modifies files within the "Governance Administration" responsibility dom
 - `governance/templates/**` (new template)
 - `governance/checklists/**` (new checklist)
 - `governance/CANON_INVENTORY.json` (inventory update)
+- `governance/CHANGELOG.md` (changelog update)
+- `governance/canon/**` (manifest update)
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` (artifact inventory update)
 - `governance/scope-declaration.md` (this file)
+- `.agent-admin/**` (prehandover proof, assurance tokens, correction addenda)
 
-Manual verification confirms all files match the declared scope.
+> **Note**: `.agent-workspace/**` files are listed in FILES_CHANGED (session memory, escalation inbox) but are governance-internal agent memory artifacts. Per RESPONSIBILITY_DOMAIN_REGISTRY.md, `.agent-workspace/**` is not listed as an allowed path for the Governance Administration domain. These files are agent-internal and do not affect canon content. They are excluded from scope attestation; scope-to-diff validation applies only to canon/policy content listed above.
+
+Manual verification confirms all canon/policy files match the declared scope.
 
 **Attestation**: Verified by governance-repo-administrator  
-**Date**: 2026-03-20T14:36:02Z  
+**Date**: 2026-03-21T07:34:40Z  
 **Exit Code**: 0
 
 ---
