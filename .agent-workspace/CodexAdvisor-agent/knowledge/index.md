@@ -38,3 +38,13 @@ All Tier 2 files reference the following canonical sources (do not embed — ref
 - `governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
 - `governance/CANON_INVENTORY.json`
 
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-26 | Initial creation |
+| 1.1.0 | 2026-02-26 | Minor — compatible with contract v3.2.0 |
+| 1.2.0 | 2026-03-21 | Added `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 to Tier 3 Canon References; updated checklist-registry.md version to 1.1.0; compatible with contract v3.4.0+ |
+

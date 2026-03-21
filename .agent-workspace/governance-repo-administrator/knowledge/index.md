@@ -29,3 +29,13 @@ All Tier 2 files reference the following canonical sources (do not embed — ref
 - `governance/CANON_INVENTORY.json`
 - `governance/CONSUMER_REPO_REGISTRY.json`
 - `governance/GATE_REQUIREMENTS_INDEX.json`
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-24 | Initial creation |
+| 1.1.0 | 2026-02-27 | Added session-memory-template.md reference; updated compatible contract version |
+| 1.2.0 | 2026-03-21 | Added `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 to Tier 3 Canon References; session-memory-template.md bumped to 1.1.0 |

@@ -15,30 +15,45 @@ CHANGE_TYPE: governance_agent_protocol_upgrade
 Apply IAA invocation and pre-brief protocol upgrades to the governance agent system (CodexAdvisor-agent and governance-repo-administrator), aligning them with changes already made to foreman-v2.agent.md in PR #1294. Resolves outdated "interim" IAA classification language in CodexAdvisor, adds Phase 4.5 IAA Invocation step to governance-repo-administrator, updates Tier 2 knowledge indexes with IAA_PRE_BRIEF_PROTOCOL.md references, updates PREHANDOVER proof template with iaa_audit_token field, and syncs integrity store reference copies and hashes.
 
 ## FILES_CHANGED
-```
-.github/agents/CodexAdvisor-agent.md
-.github/agents/governance-repo-administrator-v2.agent.md
-.agent-workspace/CodexAdvisor-agent/knowledge/index.md
-.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md
-.agent-workspace/governance-repo-administrator/knowledge/index.md
-.agent-workspace/governance-repo-administrator/knowledge/session-memory-template.md
-governance/quality/agent-integrity/INTEGRITY_INDEX.md
-governance/quality/agent-integrity/CodexAdvisor-agent.md
-governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
-governance/scope-declaration.md
-```
+
+- .agent-admin/assurance/correction-addendum-session-018-R2-20260321.md
+- .agent-admin/assurance/rejection-package-1315-r2.md
+- .agent-admin/assurance/rejection-package-1315.md
+- .agent-admin/prehandover/prehandover_proof_iaa_upgrades_20260321.md
+- .agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md
+- .agent-workspace/CodexAdvisor-agent/knowledge/index.md
+- .agent-workspace/governance-repo-administrator/knowledge/index.md
+- .agent-workspace/governance-repo-administrator/knowledge/session-memory-template.md
+- .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-018-20260321-integrity-codexadvisor.md
+- .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-019-20260321-PR1315-R2.md
+- .agent-workspace/independent-assurance-agent/memory/.archive/session-006-20260302.md
+- .agent-workspace/independent-assurance-agent/memory/.archive/session-011-20260303.md
+- .agent-workspace/independent-assurance-agent/memory/.archive/session-012-20260306.md
+- .agent-workspace/independent-assurance-agent/memory/.archive/session-013-20260306.md
+- .agent-workspace/independent-assurance-agent/memory/.archive/session-014-20260306.md
+- .agent-workspace/independent-assurance-agent/memory/session-005-20260302.md
+- .agent-workspace/independent-assurance-agent/memory/session-014-20260306.md
+- .agent-workspace/independent-assurance-agent/memory/session-018-20260321.md
+- .agent-workspace/independent-assurance-agent/memory/session-019-20260321.md
+- .github/agents/CodexAdvisor-agent.md
+- .github/agents/governance-repo-administrator-v2.agent.md
+- governance/quality/agent-integrity/CodexAdvisor-agent.md
+- governance/quality/agent-integrity/INTEGRITY_INDEX.md
+- governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
+- governance/scope-declaration.md
 
 ## Scope Boundaries
 
 ### In Scope
 - CodexAdvisor-agent.md: Step 3.2 trigger table reference updated to use live IAA canon
 - CodexAdvisor-agent.md: Contract footer version inconsistency fixed (3.3.0 → 3.4.0)
-- governance-repo-administrator-v2.agent.md: Phase 4.5 IAA Invocation step added
+- governance-repo-administrator-v2.agent.md: Phase 4.5 IAA Invocation step added (after 4.4 Compliance Check)
 - governance-repo-administrator-v2.agent.md: IAA_PRE_BRIEF_PROTOCOL.md added to Operational Canon
-- Tier 2 knowledge index updates: IAA_PRE_BRIEF_PROTOCOL.md Tier 3 reference for both agents
-- CodexAdvisor checklist-registry.md: Interim language removed; IAA canon marked live
-- governance-repo-administrator session-memory-template.md: iaa_audit_token field added to PREHANDOVER template
+- Tier 2 knowledge index updates: IAA_PRE_BRIEF_PROTOCOL.md Tier 3 reference + version history tables added
+- CodexAdvisor checklist-registry.md: Interim language removed; IAA canon marked live; bumped to 1.1.0
+- governance-repo-administrator session-memory-template.md: iaa_audit_token field added; A-006 prohibition note; bumped to 1.1.0
 - Integrity store: Reference copies and SHA256 hashes updated for modified agent contracts
+- IAA session artifacts: rejection packages, correction addendum, session memories, escalation inbox entries, memory archives (IAA ceremony artifacts created during assurance process)
 
 ### Out of Scope
 - No changes to foreman-v2.agent.md (already updated in PR #1294)
@@ -60,7 +75,8 @@ governance/scope-declaration.md
 This PR modifies files within the "Governance Administration" responsibility domain. All modified files are within allowed paths:
 
 - `.github/agents/**` (agent contract updates)
-- `.agent-workspace/**` (Tier 2 knowledge artifacts)
+- `.agent-workspace/**` (Tier 2 knowledge artifacts and IAA session artifacts)
+- `.agent-admin/**` (prehandover proof, rejection packages, and assurance artifacts)
 - `governance/quality/agent-integrity/**` (integrity store — required for agent contract changes)
 - `governance/scope-declaration.md` (this file)
 
