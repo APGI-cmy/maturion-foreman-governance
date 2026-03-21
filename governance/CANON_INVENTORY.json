@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-03-20",
+  "last_updated": "2026-03-21",
   "total_canons": 192,
-  "generation_timestamp": "2026-03-20T14:36:02Z",
+  "generation_timestamp": "2026-03-21T07:15:36Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -414,13 +414,13 @@
     {
       "filename": "APP_DESCRIPTION_REQUIREMENT_POLICY.md",
       "version": "2.0",
-      "file_hash": "23437e90357a0627f48b674c83751162a8844cc9e0c86d37331d57d2f688a268",
+      "file_hash": "dfb4d7db51b01244f7f19a16f9e76352dcc9136fbb9d506aa6f376f0a239669d",
       "effective_date": "2026-03-20",
       "description": "Policy establishing App Descriptions as mandatory upstream authority artifacts. v2.0 adds 24 mandatory governance sections (\u00a75.3) derived from MAT module post-mortem analysis (55+ oversights).",
       "type": "policy",
       "path": "governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "23437e90357a0627f48b674c83751162a8844cc9e0c86d37331d57d2f688a268"
+      "file_hash_sha256": "dfb4d7db51b01244f7f19a16f9e76352dcc9136fbb9d506aa6f376f0a239669d"
     },
     {
       "filename": "APP_STARTUP_REQUIREMENTS_DECLARATION.md",
@@ -1198,13 +1198,13 @@
     {
       "filename": "GOVERNANCE_CANON_MANIFEST.md",
       "version": "1.0.0",
-      "file_hash": "6c874e012d6f0ea32cb6d04e137014ecc052043169bfe060e79e297ae1d74dd0",
+      "file_hash": "c4341a7e91a8299eb0bf8f5766e4b38c036df87d02728bb6f0c9889c59f160c5",
       "effective_date": "2026-01-05",
       "description": "This manifest is the **single authoritative index** of all canonical governance standards in the maturion-foreman-governance repository.",
       "type": "canon",
       "path": "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "6c874e012d6f0ea32cb6d04e137014ecc052043169bfe060e79e297ae1d74dd0"
+      "file_hash_sha256": "c4341a7e91a8299eb0bf8f5766e4b38c036df87d02728bb6f0c9889c59f160c5"
     },
     {
       "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",

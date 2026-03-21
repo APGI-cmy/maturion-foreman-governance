@@ -596,10 +596,12 @@ This policy integrates with:
 ## 13. Explicit Non-Goals
 
 This policy does NOT:
-- Define App Description content format in detail (deferred to template or schema)
+- Define module-specific content within template placeholder fields (module-specific content is authored per-module by the responsible agent/owner, not by this policy)
 - Implement CI workflow changes (structural policy only)
 - Modify runtime behavior
 - Change existing approved App Descriptions retroactively
+
+> **Note**: v1.0 of this policy stated "Define App Description content format in detail (deferred to template or schema)" as a non-goal. v2.0 explicitly supersedes that deferral: §5.3 now defines the 24 mandatory governance sections and §19/§20 reference the canonical template and checklist. The remaining non-goal is that this policy does not prescribe the *module-specific content* within placeholder fields — that is the responsibility of the authoring agent/owner.
 
 ---
 

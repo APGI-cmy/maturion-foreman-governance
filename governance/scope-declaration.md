@@ -21,6 +21,9 @@ governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md
 governance/templates/APP_DESCRIPTION_TEMPLATE.md
 governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md
 governance/CANON_INVENTORY.json
+governance/CHANGELOG.md
+governance/canon/GOVERNANCE_CANON_MANIFEST.md
+GOVERNANCE_ARTIFACT_INVENTORY.md
 governance/scope-declaration.md
 .agent-admin/prehandover/prehandover_proof_GA-063-20260320.md
 .agent-workspace/governance-repo-administrator/memory/session-063-20260320.md
@@ -36,10 +39,13 @@ governance/scope-declaration.md
 ## Scope Boundaries
 
 ### In Scope
-- Update of governance policy (APP_DESCRIPTION_REQUIREMENT_POLICY.md v1.0 → v2.0) adding §5.3 (24 mandatory sections), §19, §20
+- Update of governance policy (APP_DESCRIPTION_REQUIREMENT_POLICY.md v1.0 → v2.0) adding §5.3 (24 mandatory sections), §13 (non-goals clarification), §19, §20
 - Creation of APP_DESCRIPTION_TEMPLATE.md in governance/templates/
 - Creation of APP_DESCRIPTION_CREATION_CHECKLIST.md in governance/checklists/
 - CANON_INVENTORY.json updates: updated policy hash + 2 new entries
+- CHANGELOG.md: new entry APP-DESCRIPTION-TEMPLATE-CANON-2026-03-20
+- GOVERNANCE_CANON_MANIFEST.md: policy entry updated to v2.0, new template and checklist rows added to §3.14, totals updated
+- GOVERNANCE_ARTIFACT_INVENTORY.md: policy entry updated, new template and checklist entries added
 
 ### Out of Scope (Future Work)
 - Retroactive migration of existing App Descriptions to include all 24 sections

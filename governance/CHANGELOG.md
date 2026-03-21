@@ -64,6 +64,33 @@ Each entry follows this structure:
 
 ## Change History
 
+### APP-DESCRIPTION-TEMPLATE-CANON-2026-03-20 — 2026-03-20 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — issue #1312  
+**Effective Date**: 2026-03-20
+
+**Summary**: APP_DESCRIPTION_REQUIREMENT_POLICY.md v1.0 → v2.0; added §5.3 with 24 mandatory governance sections (§AD-01–§AD-24); added governance/templates/APP_DESCRIPTION_TEMPLATE.md and governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md; updated CANON_INVENTORY.json.
+
+**Affected Artifacts**:
+- `governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md` (v1.0 → v2.0)
+- `governance/templates/APP_DESCRIPTION_TEMPLATE.md` (NEW v1.0)
+- `governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md` (NEW v1.0)
+- `governance/CANON_INVENTORY.json` (updated)
+
+**Migration Required**: YES  
+**Migration Guidance**: All consumer repos must update existing App Descriptions to include the 24 new mandatory sections (§AD-01–§AD-24) before the next Build Authorization Gate. The new template at `governance/templates/APP_DESCRIPTION_TEMPLATE.md` provides the canonical structure. The checklist at `governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md` is the gate artifact for Pre-FRS and Pre-Architecture enforcement.
+
+**Rationale**: 55+ governance oversights in the MAT module traced root cause to missing App Description sections (see MAT `modules/mat/BUILD_PROGRESS_TRACKER.md`, 2026-03-09). Canonizing these sections enables auditability, traceability, test-first rigor, and prevents omission or governance boundary violations in successor builds.
+
+**Impact**: All consumer repositories with build pipelines; any module commencing a Build Authorization Gate after 2026-03-20 must comply.
+
+**Layer-Down Status**: PUBLIC_API — mandatory ripple to all consumer repos with build pipelines.
+
+**References**: Issue #1312, PR #1313
+
+---
+
 ## LAYER-DOWN-DEDUP-2026-03-03
 
 **Type**: Governance workflow deduplication  
