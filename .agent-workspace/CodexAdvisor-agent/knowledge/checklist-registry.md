@@ -36,10 +36,10 @@ Used during Phase 3 Step 3.2 to classify IAA requirements for this PR.
 |-------------|-------------|-------|
 | Agent contract creation | YES | Agent contract change — governance artifact modification |
 | Agent contract update | YES | Agent contract change — governance artifact modification |
-| Tier 2 knowledge stub only | REVIEW | Governance change — verify against trigger table when IAA Phase B activates |
+| Tier 2 knowledge stub only | REVIEW | Governance change — verify against trigger table |
 | Documentation / parking station only | NO | Non-governance artifact |
 
-Until IAA canon is fully merged (see `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`), apply interim classification above.
+IAA canon is live at `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`. Apply classification above for all sessions.
 
 ---
 

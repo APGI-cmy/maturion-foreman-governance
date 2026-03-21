@@ -1,7 +1,8 @@
 # Session Memory Template — governance-repo-administrator
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Created**: 2026-02-27  
+**Updated**: 2026-03-21  
 **Authority**: CS2 (Johan Ras)  
 **Canonical Source**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md`
 
@@ -117,6 +118,11 @@ File naming: `.agent-workspace/governance-repo-administrator/memory/PREHANDOVER-
 - No direct main pushes: PASS ✅
 
 **OPOJD: PASS**
+
+## IAA Invocation
+
+- **IAA result**: [ASSURANCE-TOKEN ref / PHASE_A_ADVISORY / NOT_REQUIRED]
+- **iaa_audit_token**: [IAA-session-NNN-YYYYMMDD-PASS / PHASE_A_ADVISORY — YYYY-MM-DD / NOT_REQUIRED]
 ```
 
 ---

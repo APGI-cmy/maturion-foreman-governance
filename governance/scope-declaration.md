@@ -3,99 +3,74 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: copilot/governance-realignment-canonical-agent
-DATE_UTC: 2026-02-17T07:00:00Z
-AGENT_ID: governance-repo-administrator
+PR_ID: copilot/apply-foreman-iaa-upgrades
+DATE_UTC: 2026-03-21T07:49:22Z
+AGENT_ID: copilot
 RESPONSIBILITY_DOMAIN: Governance Administration
-CHANGE_TYPE: governance_canon_creation
+CHANGE_TYPE: governance_agent_protocol_upgrade
 ---
 ```
 
 ## Executive Summary
-Establish 4-phase canonical agent contract architecture (Preflight, Induction, Build, Handover) to replace flat, unenforceable documentation with executable structure. Create 5 new Tier-0 constitutional governance documents, establish priority system infrastructure, and provide script templates.
+Apply IAA invocation and pre-brief protocol upgrades to the governance agent system (CodexAdvisor-agent and governance-repo-administrator), aligning them with changes already made to foreman-v2.agent.md in PR #1294. Resolves outdated "interim" IAA classification language in CodexAdvisor, adds Phase 4.5 IAA Invocation step to governance-repo-administrator, updates Tier 2 knowledge indexes with IAA_PRE_BRIEF_PROTOCOL.md references, updates PREHANDOVER proof template with iaa_audit_token field, and syncs integrity store reference copies and hashes.
 
 ## FILES_CHANGED
 ```
-governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
-governance/canon/AGENT_PREFLIGHT_PATTERN.md
-governance/canon/AGENT_PRIORITY_SYSTEM.md
-governance/canon/AGENT_INDUCTION_PROTOCOL.md
-governance/canon/AGENT_HANDOVER_AUTOMATION.md
-governance/CANON_INVENTORY.json
-governance/priorities/README.md
-governance/priorities/supervisor/level-0-critical.txt
-governance/priorities/supervisor/level-1-high.txt
-governance/priorities/supervisor/level-2-medium.txt
-governance/priorities/supervisor/level-3-low.txt
-governance/priorities/implementer/level-0-critical.txt
-governance/priorities/implementer/level-1-high.txt
-governance/priorities/implementer/level-2-medium.txt
-governance/priorities/implementer/level-3-low.txt
-governance/priorities/administrator/level-0-critical.txt
-governance/priorities/administrator/level-1-high.txt
-governance/priorities/administrator/level-2-medium.txt
-governance/priorities/administrator/level-3-low.txt
-governance/priorities/overseer/level-0-critical.txt
-governance/priorities/overseer/level-1-high.txt
-governance/priorities/overseer/level-2-medium.txt
-governance/priorities/overseer/level-3-low.txt
-governance/priorities/liaison/level-0-critical.txt
-governance/priorities/liaison/level-1-high.txt
-governance/priorities/liaison/level-2-medium.txt
-governance/priorities/liaison/level-3-low.txt
-governance/priorities/overrides/governance-repo-administrator.txt
-governance/templates/scripts/README.md
-governance/templates/scripts/preflight-template.sh
-governance/PREHANDOVER_PROOF.md
-.github/workflows/governance-scope-to-diff-gate.yml
-.github/workflows/locked-section-protection-gate.yml
-.github/workflows/fm-effectiveness-validation-gate.yml
-.agent-workspace/governance-repo-administrator/memory/session-031-20260217.md
+.github/agents/CodexAdvisor-agent.md
+.github/agents/governance-repo-administrator-v2.agent.md
+.agent-workspace/CodexAdvisor-agent/knowledge/index.md
+.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md
+.agent-workspace/governance-repo-administrator/knowledge/index.md
+.agent-workspace/governance-repo-administrator/knowledge/session-memory-template.md
+governance/quality/agent-integrity/INTEGRITY_INDEX.md
+governance/quality/agent-integrity/CodexAdvisor-agent.md
+governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
+governance/scope-declaration.md
 ```
 
 ## Scope Boundaries
 
 ### In Scope
-- Creation of 5 canonical governance documents (Tier-0)
-- Establishment of priority system infrastructure
-- Script templates for preflight checks
-- CANON_INVENTORY.json updates with new documents
-- Workflow updates to reference new PREHANDOVER_PROOF location
-- Session memory capture and handover evidence
+- CodexAdvisor-agent.md: Step 3.2 trigger table reference updated to use live IAA canon
+- CodexAdvisor-agent.md: Contract footer version inconsistency fixed (3.3.0 → 3.4.0)
+- governance-repo-administrator-v2.agent.md: Phase 4.5 IAA Invocation step added
+- governance-repo-administrator-v2.agent.md: IAA_PRE_BRIEF_PROTOCOL.md added to Operational Canon
+- Tier 2 knowledge index updates: IAA_PRE_BRIEF_PROTOCOL.md Tier 3 reference for both agents
+- CodexAdvisor checklist-registry.md: Interim language removed; IAA canon marked live
+- governance-repo-administrator session-memory-template.md: iaa_audit_token field added to PREHANDOVER template
+- Integrity store: Reference copies and SHA256 hashes updated for modified agent contracts
 
-### Out of Scope (Future Work)
-- Migration of existing agent contracts to 4-phase structure
-- Integration with merge gate enforcement for 4-phase compliance
-- CodexAdvisor updates for 4-phase validation
-- Consumer repository ripple execution (automatic on merge)
+### Out of Scope
+- No changes to foreman-v2.agent.md (already updated in PR #1294)
+- No changes to independent-assurance-agent.md
+- No application code changes
+- No workflow changes
 
 ## Constitutional Alignment
-- LIVING_AGENT_SYSTEM.md v1.0.0
-- AGENT_CONTRACT_PROTECTION_PROTOCOL.md v1.1.0
-- GOVERNANCE_RIPPLE_MODEL.md v1.0.0
-- Issue #1144 - 4-Phase Agent Contract Architecture
+- LIVING_AGENT_SYSTEM.md v6.2.0
+- IAA_PRE_BRIEF_PROTOCOL.md v1.1.0
+- INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0+
+- Issue: [Codex Agent Task] Apply Foreman Contract IAA Invocation/Prebrief Protocol Upgrades
 
 ## Ripple Requirements
-- **maturion-isms**: Layer down new canonical documents
-- **maturion-foreman-office-app**: Layer down new canonical documents
-- **PartPulse**: Layer down new canonical documents
-- **R_Roster**: Layer down new canonical documents
+- No constitutional canon changes — no ripple required
 
 ## Scope-to-Diff Attestation
 
-This PR modifies files within the "Governance Administration" responsibility domain. All modified files are within allowed paths per RESPONSIBILITY_DOMAIN_REGISTRY.md:
+This PR modifies files within the "Governance Administration" responsibility domain. All modified files are within allowed paths:
 
-- `governance/**` (canonical documents, priorities, templates, PREHANDOVER_PROOF)
-- `.github/workflows/**` (workflow updates for PREHANDOVER_PROOF location)
-- `.agent-workspace/**` (session memory)
+- `.github/agents/**` (agent contract updates)
+- `.agent-workspace/**` (Tier 2 knowledge artifacts)
+- `governance/quality/agent-integrity/**` (integrity store — required for agent contract changes)
+- `governance/scope-declaration.md` (this file)
 
 Manual verification confirms all files match the declared scope.
 
-**Attestation**: Verified by governance-repo-administrator  
-**Date**: 2026-02-17T07:30:00Z  
+**Attestation**: Verified by copilot  
+**Date**: 2026-03-21T07:49:22Z  
 **Exit Code**: 0
 
 ---
 
-**Timestamp**: 2026-02-17T07:30:00Z  
-**Agent**: governance-repo-administrator v2.0.0
+**Timestamp**: 2026-03-21T07:49:22Z  
+**Agent**: copilot (GitHub Copilot Coding Agent)
