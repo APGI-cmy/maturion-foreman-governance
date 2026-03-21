@@ -75,7 +75,7 @@ Each entry follows this structure:
 `maturion-isms`. All three gap detectors confirmed firing correctly. No false positives reported.
 
 **Affected Artifacts**:
-- `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` — new canon file (v1.0.0)
+- `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` — new canon file (v1.0.1)
 - `governance/CANON_INVENTORY.json` — new entry added; total_canons: 191 → 192
 - `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — §3.12 updated with new entry
 - `maturion/strategy/GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md` — updated to v1.1.0; §9.4 gate PASSED; §11.3 evidence recorded
@@ -96,7 +96,7 @@ MUST requirements binding on all consumer repos deploying the Living Agent Syste
 - Canonisation issue: [Promote Governance Watchdog Deployment Strategy to Canon](https://github.com/APGI-cmy/maturion-foreman-governance/issues) (GWDS-001 canonisation)
 - Canonisation PR: [#1300](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1300)
 - Source strategy: `maturion/strategy/GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md` v1.1.0
-- Canon: `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` v1.0.0
+- Canon: `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` v1.0.1
 
 ---
 
