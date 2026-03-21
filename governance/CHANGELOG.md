@@ -93,6 +93,8 @@ MUST requirements binding on all consumer repos deploying the Living Agent Syste
 - Governance Administrator: MUST track layer-down status for this new PUBLIC_API canon
 
 **References**:
+- Canonisation issue: [Promote Governance Watchdog Deployment Strategy to Canon](https://github.com/APGI-cmy/maturion-foreman-governance/issues) (GWDS-001 canonisation)
+- Canonisation PR: [#1300](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1300)
 - Source strategy: `maturion/strategy/GOVERNANCE_WATCHDOG_DEPLOYMENT_STRATEGY.md` v1.1.0
 - Canon: `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` v1.0.0
 

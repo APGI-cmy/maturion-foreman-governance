@@ -1373,14 +1373,14 @@
         },
         {
             "filename": "GOVERNANCE_WATCHDOG_CANON.md",
-            "version": "1.0.0",
-            "file_hash": "539bf1852cb55fcce3f91f3d96aa8cf36f5192de5676a571373a83e685cd6116",
+            "version": "1.0.1",
+            "file_hash": "0ae44a6fd760740a183a1db0bfb07dc57878b50ac686abb81d6fed0f214ba899",
             "effective_date": "2026-03-04",
             "description": "Canonical requirements for the Governance Watchdog automated gap-detection system. Defines MUST requirements for deploying gap detectors (Gaps 1\u20133), adaptation parameters, deployment prerequisites, and integration requirements with iaa-prebrief-inject.yml and merge-gate-interface.yml.",
             "type": "canon",
             "path": "governance/canon/GOVERNANCE_WATCHDOG_CANON.md",
             "layer_down_status": "PUBLIC_API",
-            "file_hash_sha256": "539bf1852cb55fcce3f91f3d96aa8cf36f5192de5676a571373a83e685cd6116"
+            "file_hash_sha256": "0ae44a6fd760740a183a1db0bfb07dc57878b50ac686abb81d6fed0f214ba899"
         },
         {
             "filename": "INDEPENDENT_ASSURANCE_AGENT_CANON.md",

@@ -1,6 +1,6 @@
 ---
 title: "Governance Watchdog Canon"
-version: 1.0.0
+version: 1.0.1
 status: Canonical
 created: 2026-03-04
 authority: CS2 (Johan Ras)
@@ -23,7 +23,7 @@ related:
 **Canon ID**: GOVERNANCE_WATCHDOG_CANON  
 **Authority**: Johan Ras (CS2)  
 **Status**: Canonical  
-**Version**: 1.0.0  
+**Version**: 1.0.1  
 **Effective Date**: 2026-03-04  
 **Layer-Down Status**: PUBLIC_API  
 **Applies To**: All Maturion repositories under governance  
@@ -126,9 +126,12 @@ has no open pull request targeting the default branch.
 
 ### 4.2 Detection Obligation
 
-**REQ-GWC-102**: When Gap 1 fires, the watchdog MUST post a commit comment on the pushed SHA
+**REQ-GWC-102**: When Gap 1 fires, the watchdog MUST post a non-blocking alert on the pushed
+SHA (via commit status using `statuses: write`, or a check run using `checks: write`)
 instructing the Foreman to open a PR immediately, with the rationale that the IAA pre-brief
-injection (`iaa-prebrief-inject.yml`) cannot post an alert without an associated PR.
+injection (`iaa-prebrief-inject.yml`) cannot post an alert without an associated PR. This
+mechanism MUST be implementable under the least-privilege permissions defined in §7.4 and
+MUST NOT require `contents: write`.
 
 ### 4.3 All-Governance-Files Guard
 
@@ -372,12 +375,19 @@ false positives while preserving detection of the core failure pattern.
 
 ## 11. Operational Constraints
 
-**REQ-GWC-801**: The watchdog MUST use the `GITHUB_TOKEN` provided by the Actions runner. It
-MUST NOT require a PAT or elevated secret.
+**REQ-GWC-801**: The watchdog MUST use `secrets.MATURION_BOT_TOKEN` for all operations that
+mutate GitHub state (including posting PR/issue/commit comments, adding labels, posting check
+runs or commit statuses, and triggering repository dispatch). The `GITHUB_TOKEN` provided by
+the Actions runner MAY be used for read-only API calls only and MUST NOT be used for any write
+or mutation operation. This requirement MUST remain aligned with
+`GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md` (REQ-TU-001/002).
 
 **REQ-GWC-802**: The watchdog MUST declare the minimum required permissions (§7.4) at the
-workflow level. Workflow-level permission declarations MUST NOT grant `contents: write` or
-`actions: write`.
+workflow level. Workflow-level permissions for the default `GITHUB_TOKEN` MUST be read-only
+and MUST NOT grant `contents: write` or `actions: write`. Jobs that post alerts using
+`secrets.MATURION_BOT_TOKEN` MUST declare only the minimum scopes required (e.g.,
+`pull-requests: write`, `statuses: write`, or `checks: write` as applicable) and MUST NOT
+grant scopes beyond what the job requires.
 
 **REQ-GWC-803**: Alert comments posted by the watchdog MUST include the canonical watchdog
 header string to enable idempotency detection (Gap 3 guard). The format MUST be:
@@ -391,11 +401,13 @@ This canon was promoted following completion of Phase 1 validation in `APGI-cmy/
 
 | Metric | Target | Result |
 |---|---|---|
-| Gap 2 confirmed fires | ≥1 production event | ✅ CONFIRMED — all three gaps confirmed firing correctly |
-| Gap 3 confirmed fires | ≥1 production event | ✅ CONFIRMED — alert text validated against Foreman and IAA agent contracts |
-| False positives | 0 blocking | ✅ CONFIRMED — no confirmed false positives blocking agents |
+| Gap 2 confirmed fires | ≥1 production event | ✅ CONFIRMED — all three gaps confirmed firing correctly in `APGI-cmy/maturion-isms` (see canonisation PR [#1300](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1300)) |
+| Gap 3 confirmed fires | ≥1 production event | ✅ CONFIRMED — alert text validated against Foreman and IAA agent contracts; Gap 3 idempotency guard verified (see canonisation PR [#1300](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1300)) |
+| False positives | 0 blocking | ✅ CONFIRMED — no confirmed false positives blocking agents during Phase 1 in `maturion-isms` |
+| Re-invocation cycles reduction | ≥50% over 5 waves | Measurement ongoing post-deployment |
 
 **Validation Authority**: CS2 (Johan Ras)  
+**Authorisation**: Canonisation PR [#1300](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1300) — ASSURANCE-TOKEN IAA-20260320-PR1300-R2  
 **Source**: Strategy §9.1 — "The reference implementation was deployed and validated in `maturion-isms`. All three gaps are confirmed to fire correctly."
 
 ---
@@ -405,6 +417,7 @@ This canon was promoted following completion of Phase 1 validation in `APGI-cmy/
 | Version | Date | Change |
 |---|---|---|
 | 1.0.0 | 2026-03-04 | Initial canon created from validated strategy GWDS-001 v1.1.0. Phase 1 production validation complete. |
+| 1.0.1 | 2026-03-21 | PR review: Fixed REQ-GWC-102 (use commit status/check run instead of commit comment to avoid `contents: write`); aligned REQ-GWC-801/802 with GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md (MATURION_BOT_TOKEN for writes); added traceable production event references and "Re-invocation cycles" metric row in §12. |
 
 ---
 

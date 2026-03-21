@@ -460,6 +460,7 @@ The canon document will specify:
 | Gap 3 confirmed fires | ≥1 production event | ✅ CONFIRMED — all three gaps confirmed to fire correctly; alert text validated against Foreman and IAA agent contracts (§9.1) |
 | False positives | 0 blocking | ✅ CONFIRMED — no confirmed false positives reported during Phase 1 validation |
 | REJECTION-PACKAGE rate reduction (PENDING token) | ≥50% over 5 waves | Measurement ongoing post-deployment |
+| Re-invocation cycles reduction (missing pre-brief) | ≥50% over 5 waves | Measurement ongoing post-deployment |
 
-**Phase 1 Validation Authority**: CS2 (Johan Ras) — confirmed via strategy §9.1 and canonisation issue authorisation.  
+**Phase 1 Validation Authority**: CS2 (Johan Ras) — confirmed via strategy §9.1 and canonisation issue authorisation. Confirmed production events tracked in `APGI-cmy/maturion-foreman-governance` canonisation PR [#1300](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1300).  
 **Canonisation Status**: Promoted to `governance/canon/GOVERNANCE_WATCHDOG_CANON.md` on 2026-03-04.
