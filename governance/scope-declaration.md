@@ -16,14 +16,26 @@ Apply IAA invocation and pre-brief protocol upgrades to the governance agent sys
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/correction-addendum-session-018-R2-20260321.md
-- .agent-admin/assurance/rejection-package-1315-r2.md
-- .agent-admin/assurance/rejection-package-1315.md
-- .agent-admin/prehandover/prehandover_proof_iaa_upgrades_20260321.md
+Primary deliverables (substantive governance changes):
+
+- .github/agents/CodexAdvisor-agent.md
+- .github/agents/governance-repo-administrator-v2.agent.md
 - .agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md
 - .agent-workspace/CodexAdvisor-agent/knowledge/index.md
+- .agent-workspace/CodexAdvisor-agent/memory/session-011-20260321.md
 - .agent-workspace/governance-repo-administrator/knowledge/index.md
 - .agent-workspace/governance-repo-administrator/knowledge/session-memory-template.md
+- governance/quality/agent-integrity/CodexAdvisor-agent.md
+- governance/quality/agent-integrity/INTEGRITY_INDEX.md
+- governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
+
+Ceremony artifacts (assurance process artifacts):
+
+- .agent-admin/assurance/correction-addendum-session-018-R2-20260321.md
+- .agent-admin/assurance/rejection-package-1315-r2.md
+- .agent-admin/assurance/rejection-package-1315-r3.md
+- .agent-admin/assurance/rejection-package-1315.md
+- .agent-admin/prehandover/prehandover_proof_iaa_upgrades_20260321.md
 - .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-018-20260321-integrity-codexadvisor.md
 - .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-019-20260321-PR1315-R2.md
 - .agent-workspace/independent-assurance-agent/memory/.archive/session-006-20260302.md
@@ -32,14 +44,9 @@ Apply IAA invocation and pre-brief protocol upgrades to the governance agent sys
 - .agent-workspace/independent-assurance-agent/memory/.archive/session-013-20260306.md
 - .agent-workspace/independent-assurance-agent/memory/.archive/session-014-20260306.md
 - .agent-workspace/independent-assurance-agent/memory/session-005-20260302.md
-- .agent-workspace/independent-assurance-agent/memory/session-014-20260306.md
 - .agent-workspace/independent-assurance-agent/memory/session-018-20260321.md
 - .agent-workspace/independent-assurance-agent/memory/session-019-20260321.md
-- .github/agents/CodexAdvisor-agent.md
-- .github/agents/governance-repo-administrator-v2.agent.md
-- governance/quality/agent-integrity/CodexAdvisor-agent.md
-- governance/quality/agent-integrity/INTEGRITY_INDEX.md
-- governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
+- .agent-workspace/independent-assurance-agent/memory/session-020-20260321.md
 - governance/scope-declaration.md
 
 ## Scope Boundaries
@@ -52,8 +59,9 @@ Apply IAA invocation and pre-brief protocol upgrades to the governance agent sys
 - Tier 2 knowledge index updates: IAA_PRE_BRIEF_PROTOCOL.md Tier 3 reference + version history tables added
 - CodexAdvisor checklist-registry.md: Interim language removed; IAA canon marked live; bumped to 1.1.0
 - governance-repo-administrator session-memory-template.md: iaa_audit_token field added; A-006 prohibition note; bumped to 1.1.0
+- CodexAdvisor session memory: session-011-20260321.md documents this session (CORE-015 compliance)
 - Integrity store: Reference copies and SHA256 hashes updated for modified agent contracts
-- IAA session artifacts: rejection packages, correction addendum, session memories, escalation inbox entries, memory archives (IAA ceremony artifacts created during assurance process)
+- IAA ceremony artifacts: rejection packages, correction addendum, session memories, escalation inbox entries, memory archives (IAA artifacts created during assurance process)
 
 ### Out of Scope
 - No changes to foreman-v2.agent.md (already updated in PR #1294)
@@ -75,7 +83,7 @@ Apply IAA invocation and pre-brief protocol upgrades to the governance agent sys
 This PR modifies files within the "Governance Administration" responsibility domain. All modified files are within allowed paths:
 
 - `.github/agents/**` (agent contract updates)
-- `.agent-workspace/**` (Tier 2 knowledge artifacts and IAA session artifacts)
+- `.agent-workspace/**` (Tier 2 knowledge artifacts, session memory, and IAA session artifacts)
 - `.agent-admin/**` (prehandover proof, rejection packages, and assurance artifacts)
 - `governance/quality/agent-integrity/**` (integrity store — required for agent contract changes)
 - `governance/scope-declaration.md` (this file)

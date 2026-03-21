@@ -66,6 +66,7 @@ No other agents are affected.
 - **Protected files checked**: .github/agents/ modified (agent contracts); integrity store updated atomically per INTEGRITY_INDEX protocol
 - **Bundle completeness**:
   - [x] PREHANDOVER proof: this file
+  - [x] Session memory: `.agent-workspace/CodexAdvisor-agent/memory/session-011-20260321.md`
   - [x] Modified agent contracts with updated integrity store (atomic operation)
   - [x] Scope declaration updated
 - **Merge gate parity**: PASS (no application code; governance artifacts only)
