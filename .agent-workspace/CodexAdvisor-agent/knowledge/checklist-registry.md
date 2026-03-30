@@ -1,7 +1,8 @@
 # CodexAdvisor Checklist Registry
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Created**: 2026-02-26  
+**Updated**: 2026-03-21  
 **Authority**: CS2 (Johan Ras)  
 **Canonical Source**: `governance/checklists/`
 
@@ -36,12 +37,21 @@ Used during Phase 3 Step 3.2 to classify IAA requirements for this PR.
 |-------------|-------------|-------|
 | Agent contract creation | YES | Agent contract change — governance artifact modification |
 | Agent contract update | YES | Agent contract change — governance artifact modification |
-| Tier 2 knowledge stub only | REVIEW | Governance change — verify against trigger table when IAA Phase B activates |
+| Tier 2 knowledge stub only | REVIEW | Governance change — verify against trigger table |
 | Documentation / parking station only | NO | Non-governance artifact |
 
-Until IAA canon is fully merged (see `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`), apply interim classification above.
+IAA canon is live at `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`. Apply classification above for all sessions.
 
 ---
 
 **Tier-3 Canon Reference**: `governance/checklists/` (all checklist files)  
 **Tier-3 Canon Reference**: `governance/canon/AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md`
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-26 | Initial creation |
+| 1.1.0 | 2026-03-21 | Removed "Until IAA canon is fully merged" interim note; IAA trigger table marked live per INDEPENDENT_ASSURANCE_AGENT_CANON.md |

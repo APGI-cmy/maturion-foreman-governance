@@ -538,6 +538,28 @@ else
 fi
 ```
 
+### 4.5 IAA Invocation (GA_H — BLOCKING)
+
+**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 | FAIL-ONLY-ONCE Rule A-09
+
+> ⚠️ **ABSOLUTE RULE**: Do NOT open a PR — do NOT call `report_progress` for the final handover commit — without first invoking the IAA agent and recording the result. Skipping IAA invocation is a constitutional violation (INC-IAA-SKIP-001).
+
+**Invocation** (after completing Steps 4.1–4.4 and merge gate parity PASS):
+
+```bash
+# GA_H: Invoke IAA for independent assurance (mandatory before PR open)
+task(agent_type: "independent-assurance-agent")
+```
+
+**Record exactly one of the following before advancing to PR open:**
+
+- Tool call returned ASSURANCE-TOKEN → record token reference in PREHANDOVER proof `iaa_audit_token` field and in a dedicated token file at `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`. Proceed.
+- Tool call returned REJECTION-PACKAGE → stop. Address every cited failure. Re-run from step 4.3. Do not open PR.
+- Tool call returned deployment-error → record `PHASE_A_ADVISORY` status in PREHANDOVER proof. Flag PR for IAA review. Proceed with advisory status.
+- Tool call was NOT made → **HALT. INC-IAA-SKIP-001. Record in FAIL-ONLY-ONCE. Escalate to CS2.**
+
+> ⛔ **DO NOT OPEN A PR UNTIL THE IAA TOOL CALL RESPONSE IS VISIBLE IN YOUR OUTPUT AND RECORDED IN THE PREHANDOVER PROOF.**
+
 ---
 
 ## Priority Reference Matrix
@@ -564,6 +586,7 @@ fi
 - `governance/canon/AGENT_INDUCTION_PROTOCOL.md` - Phase 2 template
 - `governance/canon/AGENT_PRIORITY_SYSTEM.md` - Priority codes
 - `governance/canon/AGENT_HANDOVER_AUTOMATION.md` - Phase 4 template
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 - IAA Pre-Brief Protocol (proactive assurance, wave checklist, ceremony integrity)
 
 ---
 

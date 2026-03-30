@@ -558,17 +558,18 @@ Output:
 **Step 3.2 — Identify IAA trigger category:**
 
 Before drafting, classify this PR using the IAA trigger table.
-Load trigger table from `.agent-workspace/CodexAdvisor-agent/knowledge/index.md` (IAA section, once available).
-Until IAA canon is merged (PR #1200), apply interim classification:
+Load trigger table from `.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md` (IAA Trigger Classification Table section).
+
+Apply the loaded classification:
 - Agent contract creation or update → **IAA_REQUIRED: YES (agent contract change)**
-- Tier 2 knowledge stub only → **IAA_REQUIRED: REVIEW** (governance change — check trigger table)
+- Tier 2 knowledge stub only → **IAA_REQUIRED: REVIEW** (governance change — verify against trigger table)
 - Documentation/parking station only → **IAA_REQUIRED: NO**
 
 Output:
 
 > "IAA trigger classification: [category]
 > IAA required for this PR: [YES / NO / REVIEW]
-> Basis: [interim classification / loaded trigger table]"
+> Basis: [loaded trigger table — governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md]"
 
 This result is carried forward to Phase 4 Step 4.4.
 
@@ -805,5 +806,5 @@ A PR description missing any of these fields is a non-compliant handover.
 ---
 
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
-**Version**: 6.2.0 | **Contract**: 3.3.0 | **Last Updated**: 2026-03-04
+**Version**: 6.2.0 | **Contract**: 3.4.0 | **Last Updated**: 2026-03-21
 **Self-Modification Lock**: SELF-MOD-001 — ACTIVE — CS2-GATED

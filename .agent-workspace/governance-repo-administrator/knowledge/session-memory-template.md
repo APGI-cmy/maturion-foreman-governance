@@ -1,7 +1,8 @@
 # Session Memory Template — governance-repo-administrator
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Created**: 2026-02-27  
+**Updated**: 2026-03-21  
 **Authority**: CS2 (Johan Ras)  
 **Canonical Source**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md`
 
@@ -117,6 +118,13 @@ File naming: `.agent-workspace/governance-repo-administrator/memory/PREHANDOVER-
 - No direct main pushes: PASS ✅
 
 **OPOJD: PASS**
+
+## IAA Invocation
+
+- **IAA result**: [ASSURANCE-TOKEN ref / PHASE_A_ADVISORY / NOT_REQUIRED]
+- **iaa_audit_token**: [IAA-session-NNN-YYYYMMDD-PASS / PHASE_A_ADVISORY-IAA-session-NNN-YYYYMMDD / NOT_REQUIRED]
+
+> ⚠️ **A-006 compliance**: `PHASE_A_ADVISORY` must include a session ID suffix (format: `PHASE_A_ADVISORY-IAA-session-NNN-YYYYMMDD`). Bare `PHASE_A_ADVISORY — YYYY-MM-DD` without session ID is PROHIBITED.
 ```
 
 ---
@@ -157,3 +165,12 @@ If more than 5 session files exist in `memory/`:
 
 **Tier-3 Canon Reference**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md`  
 **Tier-3 Canon Reference**: `governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md`
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-27 | Initial creation |
+| 1.1.0 | 2026-03-21 | Added `iaa_audit_token` field and IAA Invocation section to PREHANDOVER proof template; aligned with foreman-v2 PREHANDOVER format |

@@ -15,9 +15,9 @@ CodexAdvisor MUST read all Tier 2 documents during session preflight.
 
 ## Knowledge Version
 
-**Index Version**: 1.1.0  
-**Last Updated**: 2026-02-26  
-**Compatible With**: CodexAdvisor-agent contract v3.2.0, LAS v6.2.0
+**Index Version**: 1.2.0  
+**Last Updated**: 2026-03-21  
+**Compatible With**: CodexAdvisor-agent contract v3.4.0+, LAS v6.2.0
 
 ## IAA Trigger Classification
 
@@ -34,6 +34,17 @@ All Tier 2 files reference the following canonical sources (do not embed — ref
 - `governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md`
 - `governance/canon/AGENT_PREFLIGHT_PATTERN.md`
 - `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0
 - `governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
 - `governance/CANON_INVENTORY.json`
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-26 | Initial creation |
+| 1.1.0 | 2026-02-26 | Minor — compatible with contract v3.2.0 |
+| 1.2.0 | 2026-03-21 | Added `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 to Tier 3 Canon References; updated checklist-registry.md version to 1.1.0; compatible with contract v3.4.0+ |
 
