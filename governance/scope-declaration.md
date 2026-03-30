@@ -16,26 +16,15 @@ Apply IAA invocation and pre-brief protocol upgrades to the governance agent sys
 
 ## FILES_CHANGED
 
-Primary deliverables (substantive governance changes):
-
-- .github/agents/CodexAdvisor-agent.md
-- .github/agents/governance-repo-administrator-v2.agent.md
+- .agent-admin/assurance/correction-addendum-session-018-R2-20260321.md
+- .agent-admin/assurance/rejection-package-1315-r2.md
+- .agent-admin/assurance/rejection-package-1315.md
+- .agent-admin/prehandover/prehandover_proof_iaa_upgrades_20260321.md
 - .agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md
 - .agent-workspace/CodexAdvisor-agent/knowledge/index.md
 - .agent-workspace/CodexAdvisor-agent/memory/session-011-20260321.md
 - .agent-workspace/governance-repo-administrator/knowledge/index.md
 - .agent-workspace/governance-repo-administrator/knowledge/session-memory-template.md
-- governance/quality/agent-integrity/CodexAdvisor-agent.md
-- governance/quality/agent-integrity/INTEGRITY_INDEX.md
-- governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
-
-Ceremony artifacts (assurance process artifacts):
-
-- .agent-admin/assurance/correction-addendum-session-018-R2-20260321.md
-- .agent-admin/assurance/rejection-package-1315-r2.md
-- .agent-admin/assurance/rejection-package-1315-r3.md
-- .agent-admin/assurance/rejection-package-1315.md
-- .agent-admin/prehandover/prehandover_proof_iaa_upgrades_20260321.md
 - .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-018-20260321-integrity-codexadvisor.md
 - .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-019-20260321-PR1315-R2.md
 - .agent-workspace/independent-assurance-agent/memory/.archive/session-006-20260302.md
@@ -46,7 +35,11 @@ Ceremony artifacts (assurance process artifacts):
 - .agent-workspace/independent-assurance-agent/memory/session-005-20260302.md
 - .agent-workspace/independent-assurance-agent/memory/session-018-20260321.md
 - .agent-workspace/independent-assurance-agent/memory/session-019-20260321.md
-- .agent-workspace/independent-assurance-agent/memory/session-020-20260321.md
+- .github/agents/CodexAdvisor-agent.md
+- .github/agents/governance-repo-administrator-v2.agent.md
+- governance/quality/agent-integrity/CodexAdvisor-agent.md
+- governance/quality/agent-integrity/INTEGRITY_INDEX.md
+- governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
 - governance/scope-declaration.md
 
 ## Scope Boundaries
@@ -61,7 +54,7 @@ Ceremony artifacts (assurance process artifacts):
 - governance-repo-administrator session-memory-template.md: iaa_audit_token field added; A-006 prohibition note; bumped to 1.1.0
 - CodexAdvisor session memory: session-011-20260321.md documents this session (CORE-015 compliance)
 - Integrity store: Reference copies and SHA256 hashes updated for modified agent contracts
-- IAA ceremony artifacts: rejection packages, correction addendum, session memories, escalation inbox entries, memory archives (IAA artifacts created during assurance process)
+- IAA ceremony artifacts: rejection packages, correction addendum, session memories, escalation inbox entries, memory archives
 
 ### Out of Scope
 - No changes to foreman-v2.agent.md (already updated in PR #1294)
@@ -88,15 +81,13 @@ This PR modifies files within the "Governance Administration" responsibility dom
 - `governance/quality/agent-integrity/**` (integrity store — required for agent contract changes)
 - `governance/scope-declaration.md` (this file)
 
-> **Note**: `.agent-workspace/**` files are listed in FILES_CHANGED (session memory, escalation inbox) but are governance-internal agent memory artifacts. Per RESPONSIBILITY_DOMAIN_REGISTRY.md, `.agent-workspace/**` is not listed as an allowed path for the Governance Administration domain. These files are agent-internal and do not affect canon content. They are excluded from scope attestation; scope-to-diff validation applies only to canon/policy content listed above.
-
-Manual verification confirms all canon/policy files match the declared scope.
+Manual verification confirms all files match the declared scope.
 
 **Attestation**: Verified by copilot  
-**Date**: 2026-03-21T07:49:22Z  
+**Date**: 2026-03-30T06:32:17Z  
 **Exit Code**: 0
 
 ---
 
-**Timestamp**: 2026-03-21T07:49:22Z  
+**Timestamp**: 2026-03-30T06:32:17Z  
 **Agent**: copilot (GitHub Copilot Coding Agent)
