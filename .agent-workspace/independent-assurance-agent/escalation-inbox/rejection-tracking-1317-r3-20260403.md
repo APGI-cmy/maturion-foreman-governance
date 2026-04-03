@@ -37,4 +37,10 @@ Closed when:
 2. Correction Addendum created and verified
 3. R4 invocation submitted and verified by IAA
 
-*independent-assurance-agent | IAA-20260403-PR1317-R3 | 2026-04-03*
+## CLOSED — R5 ASSURANCE-TOKEN Issued
+
+**Closed**: 2026-04-03  
+**Closing Session**: IAA-20260403-PR1317-R5-PASS  
+**Closure Reason**: R5 ASSURANCE-TOKEN issued. All remediation items resolved. Correction Addendum verified. Scope parity corrected to 19 == 19 per CS2 STOP-AND-FIX directive. Token artifact overwritten in place at `.agent-admin/assurance/assurance-token-1317.md`.
+
+*independent-assurance-agent | IAA-20260403-PR1317-R5-PASS | 2026-04-03*
