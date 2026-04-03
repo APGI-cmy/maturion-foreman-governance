@@ -3,41 +3,23 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: copilot/apply-foreman-iaa-upgrades
-DATE_UTC: 2026-03-21T07:49:22Z
+PR_ID: copilot/update-frs-trs-architecture-templates
+DATE_UTC: 2026-04-03T13:14:33Z
 AGENT_ID: copilot
 RESPONSIBILITY_DOMAIN: Governance Administration
-CHANGE_TYPE: governance_agent_protocol_upgrade
+CHANGE_TYPE: governance_template_canon_update
 ---
 ```
 
 ## Executive Summary
-Apply IAA invocation and pre-brief protocol upgrades to the governance agent system (CodexAdvisor-agent and governance-repo-administrator), aligning them with changes already made to foreman-v2.agent.md in PR #1294. Resolves outdated "interim" IAA classification language in CodexAdvisor, adds Phase 4.5 IAA Invocation step to governance-repo-administrator, updates Tier 2 knowledge indexes with IAA_PRE_BRIEF_PROTOCOL.md references, updates PREHANDOVER proof template with iaa_audit_token field, and syncs integrity store reference copies and hashes.
+Canon update: FRS/TRS/Architecture templates — traceability to APP_DESCRIPTION_REQUIREMENT_POLICY sections. Creates FRS_TEMPLATE.md and TRS_TEMPLATE.md with mandatory §AD traceability sections; updates minimum-architecture-template.md with §AD-10–§AD-16 and §AD-20–§AD-22 coverage checkboxes (new Section 4.14); updates CHANGELOG.md with the canon change entry.
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/correction-addendum-session-018-R2-20260321.md
-- .agent-admin/assurance/rejection-package-1315-r2.md
-- .agent-admin/assurance/rejection-package-1315.md
-- .agent-admin/prehandover/prehandover_proof_iaa_upgrades_20260321.md
-- .agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md
-- .agent-workspace/CodexAdvisor-agent/knowledge/index.md
-- .agent-workspace/CodexAdvisor-agent/memory/session-011-20260321.md
-- .agent-workspace/governance-repo-administrator/knowledge/index.md
-- .agent-workspace/governance-repo-administrator/knowledge/session-memory-template.md
-- .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-018-20260321-integrity-codexadvisor.md
-- .agent-workspace/independent-assurance-agent/escalation-inbox/ESC-019-20260321-PR1315-R2.md
-- .agent-workspace/independent-assurance-agent/memory/.archive/session-006-20260302.md
-- .agent-workspace/independent-assurance-agent/memory/.archive/session-011-20260303.md
-- .agent-workspace/independent-assurance-agent/memory/.archive/session-012-20260306.md
-- .agent-workspace/independent-assurance-agent/memory/.archive/session-013-20260306.md
-- .agent-workspace/independent-assurance-agent/memory/.archive/session-014-20260306.md
-- .agent-workspace/independent-assurance-agent/memory/session-005-20260302.md
-- .agent-workspace/independent-assurance-agent/memory/session-018-20260321.md
-- .agent-workspace/independent-assurance-agent/memory/session-019-20260321.md
-- .github/agents/CodexAdvisor-agent.md
-- .github/agents/governance-repo-administrator-v2.agent.md
-- governance/quality/agent-integrity/CodexAdvisor-agent.md
+- governance/CHANGELOG.md
+- governance/templates/FRS_TEMPLATE.md
+- governance/templates/TRS_TEMPLATE.md
+- governance/templates/minimum-architecture-template.md
 - governance/quality/agent-integrity/INTEGRITY_INDEX.md
 - governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
 - governance/scope-declaration.md
@@ -75,19 +57,16 @@ Apply IAA invocation and pre-brief protocol upgrades to the governance agent sys
 
 This PR modifies files within the "Governance Administration" responsibility domain. All modified files are within allowed paths:
 
-- `.github/agents/**` (agent contract updates)
-- `.agent-workspace/**` (Tier 2 knowledge artifacts, session memory, and IAA session artifacts)
-- `.agent-admin/**` (prehandover proof, rejection packages, and assurance artifacts)
-- `governance/quality/agent-integrity/**` (integrity store — required for agent contract changes)
-- `governance/scope-declaration.md` (this file)
+- `governance/templates/**` (governance template additions and updates)
+- `governance/CHANGELOG.md` (canonical change log)
 
-Manual verification confirms all files match the declared scope.
+Manual verification confirms all 4 files match the declared scope.
 
 **Attestation**: Verified by copilot  
-**Date**: 2026-03-30T06:32:17Z  
+**Date**: 2026-04-03T13:14:33Z  
 **Exit Code**: 0
 
 ---
 
-**Timestamp**: 2026-03-30T06:32:17Z  
+**Timestamp**: 2026-04-03T13:14:33Z  
 **Agent**: copilot (GitHub Copilot Coding Agent)
