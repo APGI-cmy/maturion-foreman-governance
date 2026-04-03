@@ -121,7 +121,7 @@ All 4 tasks in the wave checklist are `[x]` (QP PASS confirmed):
 6. ✅ F6: Created `.agent-admin/evidence/working-proof-1317.md`
 7. ✅ F7: Updated `governance/scope-declaration.md` to match 4 files changed in this PR
 
-**iaa_audit_token**: PENDING — IAA re-invocation required after evidence bundle commit
+**iaa_audit_token**: IAA-20260403-PR1317-R4 — ASSURANCE-TOKEN issued — `.agent-admin/assurance/assurance-token-1317.md`
 
 ---
 
