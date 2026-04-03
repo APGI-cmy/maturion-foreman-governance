@@ -2,10 +2,10 @@
 
 ## Status
 Canonical Governance Template  
-Version: v1.0  
+Version: v1.1  
 Authority: Johan Ras  
 Applies To: All Architecture Documents  
-Required By: Issue - Enforce App Description → FRS Structural Alignment
+Required By: Issue - Enforce App Description → FRS Structural Alignment; APP_DESCRIPTION_REQUIREMENT_POLICY.md v2.0 §AD traceability
 
 ---
 
@@ -408,6 +408,51 @@ For each component, define:
 
 ---
 
+### 4.14 APP_DESCRIPTION_REQUIREMENT_POLICY Coverage (REQUIRED)
+
+> **Policy Reference**: `governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md` v2.0  
+> **Rule**: This architecture MUST explicitly address all applicable §AD sections listed below. Each checkbox confirms that the architecture contains design decisions or referenced artifacts satisfying the corresponding policy requirement. Unchecked items with no justification are **blocking defects** that prevent Architecture approval.
+
+#### §AD-10 through §AD-16 Coverage
+
+| §AD Section | Policy Title | Architecture Coverage | Status |
+|-------------|-------------|----------------------|--------|
+| §AD-10 | Schema-to-Hook Validation | {Architecture section or TRS §4.1 reference} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-11 | Table Pathway Audit | {Architecture section or TRS §4.2 reference} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-12 | RLS Audit Gate | {Architecture section or TRS §4.3 reference} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-13 | Auth Wiring Checklist | {Architecture section — auth component design} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-14 | AI Integration Requirements | {Architecture section — AIMC Gateway routing} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-15 | Edge Function Registry | {Architecture section or TRS §4.4 reference} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-16 | Deployment Wave | {Architecture section — deployment wave plan} | ✅ Covered / ❌ Not Covered / N/A |
+
+#### §AD-20 through §AD-22 Coverage
+
+| §AD Section | Policy Title | Architecture Coverage | Status |
+|-------------|-------------|----------------------|--------|
+| §AD-20 | Shared State Architecture | {Architecture section or TRS §4.6 reference} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-21 | API Authentication | {Architecture section — JWT/auth on all session-scoped endpoints} | ✅ Covered / ❌ Not Covered / N/A |
+| §AD-22 | Audit Log Design | {Architecture section or TRS §4.7 reference} | ✅ Covered / ❌ Not Covered / N/A |
+
+#### §AD Policy Coverage Checkboxes
+
+**§AD-10 through §AD-16**:
+- [ ] **§AD-10 Schema-to-Hook Validation**: Architecture mandates schema-to-hook alignment check for every migration wave
+- [ ] **§AD-11 Table Pathway Audit**: Architecture mandates Table Pathway Audit before closing any database-touching wave
+- [ ] **§AD-12 RLS Audit Gate**: Architecture mandates RLS table-by-table audit before production deployment; production deployment gate references RLS sign-off
+- [ ] **§AD-13 Auth Wiring Checklist**: Architecture includes auth wiring design — AuthProvider, ProtectedRoute/HOC, login/logout flows, and Supabase auth integration are explicitly designed
+- [ ] **§AD-14 AI Integration Requirements**: Architecture confirms all AI/LLM calls route via AIMC Gateway; no direct provider calls — OR — documented as `N/A` (no AI integration): {justification}
+- [ ] **§AD-15 Edge Function Registry**: Architecture mandates Edge Function Registry before PREHANDOVER — OR — documented as `N/A` (no edge functions): {justification}
+- [ ] **§AD-16 Deployment Wave**: Architecture includes an explicit Deployment & Commissioning wave covering production provisioning, configuration injection, CWT execution, production smoke testing, and CWT closure
+
+**§AD-20 through §AD-22**:
+- [ ] **§AD-20 Shared State Architecture**: Architecture explicitly names and designs the state management approach; all global state flows (auth state, user preferences, cross-component data) are described; no ambiguous state ownership
+- [ ] **§AD-21 API Authentication**: Architecture mandates JWT (or equivalent) authentication on all user/session-context API endpoints; unauthenticated access to session-scoped endpoints is explicitly prohibited; PREHANDOVER check for endpoint authentication is required
+- [ ] **§AD-22 Audit Log Design**: Architecture includes audit log schema; logged action types, query/surfacing mechanism, and deduplication strategy are explicitly specified; audit log design is approved before Architecture commences
+
+**Coverage Completion Gate**: All checkboxes above must be checked, or items must be documented as `N/A` with explicit justification. Any unchecked item without justification **blocks Architecture approval**.
+
+---
+
 ## Section 5: QA Strategy (REQUIRED)
 
 ### QA Domains
@@ -496,13 +541,15 @@ For each component, define:
 ### Completeness Validation
 
 **Completeness Checklist** (per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md):
-- [ ] All 13 completeness domains addressed
+- [ ] All 13 completeness domains addressed (Sections 4.1–4.13)
 - [ ] True North derived from App Description
 - [ ] Upstream references complete
 - [ ] Traceability complete
 - [ ] QA strategy complete
 - [ ] Evidence requirements defined
 - [ ] No TODOs or ambiguities
+- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-10–§AD-16 coverage checkboxes complete (Section 4.14)
+- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-20–§AD-22 coverage checkboxes complete (Section 4.14)
 
 ### Architecture Approval
 

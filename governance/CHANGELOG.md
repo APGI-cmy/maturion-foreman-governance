@@ -64,6 +64,32 @@ Each entry follows this structure:
 
 ## Change History
 
+### FRS-TRS-ARCH-TEMPLATE-AD-TRACEABILITY-2026-04-03 — 2026-04-03 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: Governance Liaison — per issue [Governance] Canon update: FRS/TRS/Architecture templates — traceability to APP_DESCRIPTION_REQUIREMENT_POLICY sections  
+**Effective Date**: 2026-04-03
+
+**Summary**: Added FRS template (`FRS_TEMPLATE.md`) with mandatory §AD traceability section per FR; added TRS template (`TRS_TEMPLATE.md`) with dedicated required sections for §AD-03, §AD-10, §AD-11, §AD-12, §AD-15, §AD-17, §AD-20, §AD-22, §AD-24; updated `minimum-architecture-template.md` to add mandatory §AD-10–§AD-16 and §AD-20–§AD-22 coverage checkboxes (new Section 4.14) and corresponding Section 8 completeness checklist entries.
+
+**Affected Artifacts**:
+- `governance/templates/FRS_TEMPLATE.md` (NEW v1.0)
+- `governance/templates/TRS_TEMPLATE.md` (NEW v1.0)
+- `governance/templates/minimum-architecture-template.md` (v1.0 → v1.1 — Section 4.14 added, Section 8 updated)
+
+**Migration Required**: YES  
+**Migration Guidance**: All new FRS documents must use `governance/templates/FRS_TEMPLATE.md` and include a completed §AD traceability table for every FR (Section 2) and a completed FR-to-§AD Coverage Matrix (Section 3). All new TRS documents must use `governance/templates/TRS_TEMPLATE.md` and complete all §AD-aligned sections (§AD-03, §AD-10, §AD-11, §AD-12, §AD-15, §AD-17, §AD-20, §AD-22, §AD-24) or mark each as N/A with explicit justification. All new Architecture documents must complete Section 4.14 (§AD-10–§AD-16 and §AD-20–§AD-22 coverage checkboxes). Existing FRS/TRS/Architecture documents in consumer repos should be updated at the next revision to include the new traceability sections.
+
+**Rationale**: Lack of explicit traceability and requirement alignment in downstream FRS/TRS/Architecture artifacts was identified as a process gap. The new `APP_DESCRIPTION_REQUIREMENT_POLICY.md` v2.0 baseline (layered down via governance ripple 57efff77) mandates that §AD-03 through §AD-24 requirements are explicitly addressed in TRS and Architecture documents. FRS must map every requirement back to its §AD source to enable auditability and prevent omissions.
+
+**Impact**: All consumer repositories with new build pipelines commencing FRS/TRS/Architecture stages after 2026-04-03 must comply. Existing modules in progress must update at next revision.
+
+**Layer-Down Status**: PUBLIC_API — mandatory ripple to all consumer repos with build pipelines.
+
+**References**: Issue — [Governance] Canon update: FRS/TRS/Architecture templates — traceability to APP_DESCRIPTION_REQUIREMENT_POLICY sections; governance ripple 57efff77; APP_DESCRIPTION_REQUIREMENT_POLICY.md v2.0
+
+---
+
 ### APP-DESCRIPTION-TEMPLATE-CANON-2026-03-20 — 2026-03-20 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
