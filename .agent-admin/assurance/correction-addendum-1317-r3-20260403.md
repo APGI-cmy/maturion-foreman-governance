@@ -1,8 +1,8 @@
-# Correction Addendum — IAA Session IAA-20260403-PR1317-R2 — R3 Resubmission
+# Correction Addendum — IAA Session IAA-20260403-PR1317-R2 — R4 Resubmission
 
 **Date**: 2026-04-03  
 **Prior Rejection**: IAA-20260403-PR1317-R2 (REJECTION-PACKAGE)  
-**Resubmission Session**: IAA-20260403-PR1317-R3 (requested)  
+**Resubmission Session**: IAA-20260403-PR1317-R4 (requested)  
 **Submitted By**: copilot-swe-agent[bot] (GitHub Copilot Coding Agent)  
 **PR Branch**: copilot/update-frs-trs-architecture-templates  
 **PR**: #1317
@@ -20,7 +20,7 @@
 
 | # | IAA Finding | Finding Summary | Resolution |
 |---|-------------|-----------------|------------|
-| F7-R2 | A-026 + A-028 | scope-declaration.md phantom entries (2 files from prior PR#1315), 7 undeclared evidence artifact files, stale In Scope content from PR#1315 | `governance/scope-declaration.md` completely regenerated — FILES_CHANGED now lists all 14 files matching `git diff --name-only origin/main...HEAD` exactly; stale In Scope section replaced with PR#1317-specific content; phantom entries removed |
+| F7-R2 | A-026 + A-028 | scope-declaration.md phantom entries (2 files from prior PR#1315), 7 undeclared evidence artifact files, stale In Scope content from PR#1315 | `governance/scope-declaration.md` completely regenerated — FILES_CHANGED now lists all 21 files matching `git diff --name-only origin/main...HEAD` exactly; stale In Scope section replaced with PR#1317-specific content; phantom entries removed |
 
 ---
 
@@ -33,7 +33,7 @@ The following findings from the IAA positive assessment (R2) remain fully applic
 - ✅ **Phase 3 (Working)**: working-proof-1317.md comprehensive; 4 design decisions with full rationale; CORE-007 placeholder carve-out documented
 - ✅ **Phase 4 (Handover)**: PREHANDOVER proof present; wave checklist ALL_TICKED (4/4); gate parity confirmed (3/3 gates)
 - ✅ **Agent Integrity**: all 4 agent contracts verified against INTEGRITY_INDEX baseline (SHA256 exact match; no drift)
-- ✅ **A-026/A-028**: PASS — scope declaration now matches exact diff (14 files declared, 14 files in diff)
+- ✅ **A-026/A-028**: PASS — scope declaration now matches exact diff (21 files declared, 21 files in diff)
 
 ---
 

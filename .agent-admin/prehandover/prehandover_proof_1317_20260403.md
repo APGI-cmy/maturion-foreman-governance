@@ -89,11 +89,28 @@ All 4 tasks in the wave checklist are `[x]` (QP PASS confirmed):
 - **GREEN**: All governance artifacts complete and verified
 - **OPOJD**: One PR addressing one governance issue; no unrelated changes
 - **No test debt**: templates and documentation PR; no executable code changed
-- **Files changed (4)**:
+- **Files changed (21)** — see `governance/scope-declaration.md` FILES_CHANGED for the authoritative list:
   1. `governance/CHANGELOG.md`
   2. `governance/templates/FRS_TEMPLATE.md` (NEW)
   3. `governance/templates/TRS_TEMPLATE.md` (NEW)
   4. `governance/templates/minimum-architecture-template.md`
+  5. `governance/scope-declaration.md`
+  6. `.agent-admin/assurance/assurance-token-1317.md`
+  7. `.agent-admin/assurance/correction-addendum-1317-r3-20260403.md`
+  8. `.agent-admin/assurance/rejection-package-1317-r2.md`
+  9. `.agent-admin/assurance/rejection-package-1317-r3.md`
+  10. `.agent-admin/assurance/rejection-package-1317.md`
+  11. `.agent-admin/evidence/governance-proof-1317.md`
+  12. `.agent-admin/evidence/preflight-proof-1317.md`
+  13. `.agent-admin/evidence/working-proof-1317.md`
+  14. `.agent-admin/prehandover/prehandover_proof_1317_20260403.md`
+  15. `.agent-admin/waves/wave-frs-trs-ad-traceability-current-tasks.md`
+  16. `.agent-workspace/governance-repo-administrator/memory/session-copilot-1317-20260403.md`
+  17. `.agent-workspace/independent-assurance-agent/escalation-inbox/rejection-tracking-1317-r3-20260403.md`
+  18. `.agent-workspace/independent-assurance-agent/memory/session-022-20260403.md`
+  19. `.agent-workspace/independent-assurance-agent/memory/session-023-20260403.md`
+  20. `.agent-workspace/independent-assurance-agent/memory/session-024-20260403.md`
+  21. `.agent-workspace/independent-assurance-agent/memory/session-025-20260403.md`
 
 ### Evidence Bundle
 
@@ -119,7 +136,7 @@ All 4 tasks in the wave checklist are `[x]` (QP PASS confirmed):
 4. ✅ F4: Created `.agent-admin/evidence/preflight-proof-1317.md`
 5. ✅ F5: Created `.agent-admin/evidence/governance-proof-1317.md` with ripple assessment
 6. ✅ F6: Created `.agent-admin/evidence/working-proof-1317.md`
-7. ✅ F7: Updated `governance/scope-declaration.md` to match 4 files changed in this PR
+7. ✅ F7: Updated `governance/scope-declaration.md` to match 21 files changed in this PR
 
 **iaa_audit_token**: IAA-20260403-PR1317-R6-PASS — ASSURANCE-TOKEN issued — `.agent-admin/assurance/assurance-token-1317.md` (R6 overwrites R5 in place; R4/R5 historical artifacts retained within file per CS2 direction)
 

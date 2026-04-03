@@ -1,4 +1,4 @@
-# {APP_NAME} — Functional Requirement Specification (FRS)
+# {APP_NAME} — Functional Requirements Specification (FRS)
 
 ## Status Header
 
@@ -19,7 +19,7 @@
 
 ### Derivation Statement
 
-> This Functional Requirement Specification is derived from `{APP}_APP_DESCRIPTION.md` version {VERSION}, approved {DATE}. All requirements herein implement the application purpose, scope, and success criteria defined in that authoritative document.
+> This Functional Requirements Specification is derived from `{APP}_APP_DESCRIPTION.md` version {VERSION}, approved {DATE}. All requirements herein implement the application purpose, scope, and success criteria defined in that authoritative document.
 
 ### Upstream Authority References
 
