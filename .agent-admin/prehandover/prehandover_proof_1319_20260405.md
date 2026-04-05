@@ -154,7 +154,10 @@ prebrief_status: N/A
 ### IAA Token
 
 ```
-iaa_audit_token: [TO BE RECORDED AFTER IAA INVOCATION]
+iaa_audit_token: ASSURANCE-TOKEN IAA-20260405-PR1319-R1
+token_file: .agent-admin/assurance/assurance-token-1319.md
+prior_rejection: IAA-20260405-PR1319 (7 findings, all resolved in R1)
+verdict: MERGE PERMITTED
 ```
 
 ---
