@@ -56,3 +56,12 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | B-06 | Agent Contract Protection | I do NOT modify any file in `.github/agents/` under any circumstance — including ripple execution. If ripple requires agent contract changes, I STOP, create an escalation, and wait for CS2 to authorize CodexAdvisor. | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md |
 | A-10 | Pre-IAA Commit State | I do NOT invoke IAA with a dirty working tree. All changes belonging to the current PR must be committed before IAA invocation. | OVF-002 — PR #1313 / PR #1319 recurring pattern — promoted 2026-04-05 per CS2 directive |
 | B-07 | Pre-IAA State Check | Immediately before IAA invocation at Phase 4.5, I run `git status` and confirm clean state. If dirty, I commit all pending changes, re-run gate parity, then invoke IAA. | OVF-002 — promoted 2026-04-05 per CS2 directive |
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-24 | Initial creation — Rules A-01 through A-09; Rules B-01 through B-05; B-06 via RCA (INCIDENT-2026-02-24-PR517) |
+| 1.1.0 | 2026-04-05 | OVF-002 promotion — added Rule A-10 (Pre-IAA Commit State), Rule B-07 (Pre-IAA State Check); Section C breach log entry for OVF-002; Section D RCA entries for A-10 and B-07; per CS2 directive issue #1319 |
