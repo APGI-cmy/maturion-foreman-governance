@@ -540,11 +540,28 @@ fi
 
 ### 4.5 IAA Invocation (GA_H — BLOCKING)
 
-**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 | FAIL-ONLY-ONCE Rule A-09
+**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.2.0 | FAIL-ONLY-ONCE Rules A-09, A-10, B-07
 
 > ⚠️ **ABSOLUTE RULE**: Do NOT open a PR — do NOT call `report_progress` for the final handover commit — without first invoking the IAA agent and recording the result. Skipping IAA invocation is a constitutional violation (INC-IAA-SKIP-001).
 
-**Invocation** (after completing Steps 4.1–4.4 and merge gate parity PASS):
+**Step 4.5.0 — Pre-IAA Commit State Check (OVF-002 — BLOCKING)**
+
+> This step is MANDATORY before IAA invocation. It exists because IAA must assess a clean,
+> committed state. Invoking IAA with staged-but-uncommitted changes is a governance hygiene
+> violation (OVF-002 — recorded in FAIL-ONLY-ONCE, promoted 2026-04-05 per CS2 directive).
+
+```bash
+# GA_H: Verify working tree is clean before IAA invocation (OVF-002, Rule A-10, Rule B-07)
+git status
+```
+
+**Evaluate the output**:
+- If working tree is **clean** (no staged, modified, or untracked files belonging to this PR) → proceed to IAA invocation below.
+- If **staged or modified changes exist** that belong to this PR → **STOP. Commit those changes first.** Then re-run the pre-handover gate parity check (§4.3) before invoking IAA.
+- If **untracked files exist** that should be in this PR → **STOP. Stage and commit them.** Then re-run §4.3 before invoking IAA.
+- If changes exist that are intentionally NOT part of this PR (e.g., temp files) → document why they are excluded in the PREHANDOVER proof, then proceed.
+
+**Invocation** (after Step 4.5.0 PASS and Steps 4.1–4.4 complete):
 
 ```bash
 # GA_H: Invoke IAA for independent assurance (mandatory before PR open)
@@ -586,7 +603,7 @@ task(agent_type: "independent-assurance-agent")
 - `governance/canon/AGENT_INDUCTION_PROTOCOL.md` - Phase 2 template
 - `governance/canon/AGENT_PRIORITY_SYSTEM.md` - Priority codes
 - `governance/canon/AGENT_HANDOVER_AUTOMATION.md` - Phase 4 template
-- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 - IAA Pre-Brief Protocol (proactive assurance, wave checklist, ceremony integrity)
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.2.0 - IAA Pre-Brief Protocol (proactive assurance, wave checklist, ceremony integrity; v1.2.0 adds Wave Checklist Gate Applicability Scope)
 
 ---
 

@@ -64,6 +64,82 @@ Each entry follows this structure:
 
 ## Change History
 
+### IAA-PRE-BRIEF-PROTOCOL-V1-2-0-2026-04-05 — 2026-04-05 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — issue #1319 (CS2 guidance on REM-007 Wave Checklist Ambiguity)  
+**Effective Date**: 2026-04-05
+
+**Summary**: `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 → v1.2.0. Added §Wave Checklist Invocation Gate — Applicability Scope clarifying that the Wave Checklist Invocation Gate applies to Foreman-governed wave execution and does not automatically apply to direct-CS2 standalone governance-repo-administrator-v2 canon actions. Added `IAA_PRE_BRIEF_PROTOCOL.md` entry to `CANON_INVENTORY.json` and `GOVERNANCE_CANON_MANIFEST.md` (was previously unregistered).
+
+**Affected Artifacts**:
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.1.0 → v1.2.0)
+- `governance/CANON_INVENTORY.json` (entry added; total_canons updated in same commit to 194)
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (entry added; totals updated)
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — additive scope clarification. Existing Foreman wave governance behaviour is unchanged. governance-repo-administrator-v2 standalone canon actions are now explicitly exempt from the wave checklist gate unless CS2 instructs otherwise.
+
+**Rationale**: CS2 resolved governance ambiguity REM-007: the Wave Checklist Invocation Gate was written for Foreman-governed wave delivery and was not intended to apply to direct-CS2 standalone GA canon actions. Explicit scope clarification prevents misinterpretation in future GA sessions.
+
+**Impact**: IAA agents enforcing the Wave Checklist Invocation Gate must apply the Applicability Scope table — GA standalone canon actions under direct CS2 mandate are exempt from CHECKLIST-GATE-001 through CHECKLIST-GATE-004.
+
+**Layer-Down Status**: PUBLIC_API — mandatory ripple to consumer repos using IAA agent.
+
+**References**: Issue #1319 CS2 guidance on REM-007
+
+---
+
+### OVF-002-FAIL-ONLY-ONCE-PROMOTION-2026-04-05 — 2026-04-05 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — issue #1319 (CS2 directive on recurring uncommitted-changes pattern)  
+**Effective Date**: 2026-04-05
+
+**Summary**: Promoted recurring uncommitted-changes pattern (OVF-002) to active FAIL-ONLY-ONCE governance rule. Added Universal Rule A-10 (Pre-IAA Commit State) and Conditional Rule B-07 (Pre-IAA State Check) to the GA FAIL-ONLY-ONCE registry. Registry version bumped 1.0.0 → 1.1.0. CodexAdvisor agent invoked separately to update `governance-repo-administrator-v2.agent.md` Phase 4.5 with explicit pre-IAA commit check.
+
+**Affected Artifacts**:
+- `.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md` (v1.0.0 → v1.1.0 — rules A-10, B-07, OVF-002 breach log entry added)
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — governance-repo-administrator-v2 agents must self-attest against the updated rules at every session start. No consumer repo changes required.
+
+**Rationale**: Pattern was observed in PR #1313 and PR #1319 where GA invoked IAA with staged-but-uncommitted changes present, creating unauditable session state at assurance time. CS2 directed promotion to active rule. The learning threshold (two occurrences) was exceeded.
+
+**Impact**: governance-repo-administrator-v2 sessions must confirm clean committed working state before invoking IAA at Phase 4.5.
+
+**Layer-Down Status**: INTERNAL — GA agent-workspace knowledge, no consumer repo ripple required.
+
+**References**: Issue #1319 CS2 directive on OVF-002
+
+---
+
+### PRE-BUILD-STAGE-MODEL-CANON-2026-04-05 — 2026-04-05 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — issue #1319  
+**Effective Date**: 2026-04-05
+
+**Summary**: Added `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 — the canonical End-to-End Pre-Build Stage Model for 100% one-time build governance. Formalises the mandatory 12-stage governed pre-build lifecycle and three required supporting controls. Updated GOVERNANCE_CANON_MANIFEST.md and CANON_INVENTORY.json.
+
+**Affected Artifacts**:
+- `governance/canon/PRE_BUILD_STAGE_MODEL_CANON.md` (NEW v1.0.0)
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (entry added; totals updated to 90 canon / 101 combined)
+- `governance/CANON_INVENTORY.json` (entry added; total_canons: 193 → 194)
+
+**Migration Required**: YES  
+**Migration Guidance**: All consumer repos with governed build pipelines must update pre-build stage structures and template sequences to reflect the full 12-stage model. UX Workflow & Wiring Spec, PBFAG, Builder Checklist, and IAA Pre-Brief are now explicitly mandated stages. Change-Propagation Audit, Runtime/Deployment Contract, and Golden Path Verification Pack are required supporting controls that must be filed before the first build wave begins. Follow-on implementation tasks are identified in `PRE_BUILD_STAGE_MODEL_CANON.md §10`.
+
+**Rationale**: Recurring build failure patterns observed in MAT and related governed builds — including missing UX wiring specs, implicit PBFAG gate treatment, late builder readiness checks, and CI-green masking runtime failures — required formal canonization of the complete pre-build lifecycle. This canon operationalises the 100% one-time build philosophy by closing all previously implicit pre-build controls.
+
+**Impact**: All consumer repositories with build pipelines commencing new governed builds after 2026-04-05 must comply. Existing modules in progress should update at their next PBFAG gate.
+
+**Layer-Down Status**: PUBLIC_API — mandatory ripple to all consumer repos with build pipelines.
+
+**References**: Issue #1319 — Canonise End-to-End Pre-Build Stage Model for 100% One-Time Build Governance
+
+---
+
 ### FRS-TRS-ARCH-TEMPLATE-AD-TRACEABILITY-2026-04-03 — 2026-04-03 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  

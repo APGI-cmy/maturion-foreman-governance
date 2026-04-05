@@ -1,10 +1,14 @@
 # IAA PRE-BRIEF PROTOCOL
 
-**Status**: CANONICAL | **Version**: 1.1.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.2.0 | **Authority**: CS2  
 **Date**: 2026-03-03  
 **Amended**: 2026-03-03 — v1.1.0: Added §Wave Checklist Management, §Foreman Handover Gate,
 §IAA Invocation Gate, §Mid-Wave Task Addition, wave_checklist PREHANDOVER field, and commit
-discipline requirements
+discipline requirements  
+**Amended**: 2026-04-05 — v1.2.0: Added §Wave Checklist Invocation Gate — Applicability Scope
+clarifying that the Wave Checklist Invocation Gate applies to Foreman-governed wave execution
+and does not automatically apply to direct-CS2 standalone governance-repo-administrator-v2
+canon actions (CS2 guidance — issue #1319)
 
 ---
 
@@ -384,6 +388,37 @@ The IAA MUST NOT begin assurance execution unless the wave checklist gate is cle
 gate is a **hard prerequisite**, applied as Step 2.4 immediately after PR classification
 (Step 2.3) and before any Phase 3 assurance execution.
 
+### Applicability Scope
+
+> **v1.2.0 Amendment — CS2 guidance issue #1319**
+
+The Wave Checklist Invocation Gate **applies to Foreman-governed wave execution** and **does
+not automatically apply** to direct-CS2 standalone governance-repo-administrator-v2 canon
+actions.
+
+| Execution Context | Wave Checklist Gate Applies? |
+|------------------|------------------------------|
+| Foreman-governed wave execution (any wave, any repo) | **YES — mandatory** |
+| Direct-CS2 standalone governance-repo-administrator-v2 canon action | **NO — exempt by default** |
+| Explicit CS2 instruction to apply checklist gate for a specific GA session | **YES — follows CS2 instruction** |
+
+**Rationale**: The Wave Checklist Invocation Gate is a discipline control for **Foreman-governed
+wave delivery**, where wave checklist management is part of structured, multi-task execution.
+The governance-repo-administrator-v2 performing a **standalone canon/governance action under
+direct CS2 mandate** operates in a different governance context — the canon action itself is
+the CS2-authorized unit of work, not a sub-task within a Foreman wave.
+
+**Important Constraints on the Exemption**:
+- This exemption does **NOT** weaken or bypass IAA assurance invocation at handover (Rule A-09
+  in the GA FAIL-ONLY-ONCE registry still applies)
+- This exemption does **NOT** apply to GA sessions that are operating as builders within a
+  Foreman-governed wave — in those cases, the standard Foreman wave checklist obligations apply
+- CS2 may explicitly invoke the wave checklist gate for any specific GA standalone session by
+  stating so in the CS2 mandate that authorizes the work
+- The exemption applies only to the **wave checklist** gate check; all other IAA invocation
+  requirements (evidence artifacts, prehandover proof, ASSURANCE-TOKEN recording) remain fully
+  mandatory for GA standalone sessions
+
 ### Gate Conditions (each independently triggers REJECTION-PACKAGE if failed)
 
 | Condition | Failure Action |
@@ -577,4 +612,4 @@ IAA's final verdict, which cross-references Phase 0 (Pre-Brief) and the wave che
 
 ---
 
-*Authority: CS2 (Johan Ras) | Version: 1.1.0 | Effective: 2026-03-03*
+*Authority: CS2 (Johan Ras) | Version: 1.2.0 | Effective: 2026-04-05 (v1.2.0) | Original: 2026-03-03 (v1.1.0)*
