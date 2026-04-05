@@ -244,7 +244,9 @@ These policies are located in `governance/policy/` and establish constitutional 
 | `APP_DESCRIPTION_TEMPLATE.md` *(governance/templates/)* | 1.1 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-05 | N/A |
 | `APP_DESCRIPTION_CREATION_CHECKLIST.md` *(governance/checklists/)* | 1.0 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-05 | APP_DESCRIPTION_CREATION_CHECKLIST_V1.0 |
 | `BUILDER_CHECKLIST_TEMPLATE.md` *(governance/templates/)* | 1.0 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-05 | N/A |
+| `BUILD_PROGRESS_TRACKER_TEMPLATE.md` *(governance/templates/)* | 1.1 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-05 | N/A |
 | `FM_MATURION_DELEGATED_ACTION_POLICY.md` | 1.0 | PUBLIC_API | FM App | 2026-01-05 | N/A |
+| `FRS_TEMPLATE.md` *(governance/templates/)* | 1.1 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-05 | N/A |
 | `UX_WORKFLOW_WIRING_SPEC_TEMPLATE.md` *(governance/templates/)* | 1.0 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-05 | N/A |
 
 **Note**: POLICY-NO-ONLY-LANGUAGE is a constitutional policy with Tier-0 authority, banning minimizing language when describing test failures, warnings, or technical debt. It enforces T0-002 (Governance Supremacy Rule) and T0-003 (Zero Test Debt Constitutional Rule). See also: Bootstrap Learning BL-022.
@@ -256,11 +258,11 @@ These policies are located in `governance/policy/` and establish constitutional 
 ## 4. Governance Public API Summary
 
 **Total Canon Files**: 91  
-**Total Policy Files**: 13  
-**Combined Total**: 104  
-**PUBLIC_API**: 75 files (72%)  
+**Total Policy Files**: 15  
+**Combined Total**: 106  
+**PUBLIC_API**: 77 files (73%)  
 **OPTIONAL**: 16 files (15%)  
-**INTERNAL**: 13 files (13%)  
+**INTERNAL**: 13 files (12%)  
 **DEPRECATED**: 0 files (0%)
 
 ### 4.1 Critical Path Canon (Must-Have for Downstream Repos)

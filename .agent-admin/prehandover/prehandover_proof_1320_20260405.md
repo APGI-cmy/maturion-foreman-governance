@@ -112,9 +112,13 @@
 
 ## Phase 4.4 — IAA Invocation Record
 
-**iaa_audit_token**: {TO_BE_RECORDED_AFTER_IAA_INVOCATION}
-
-> Note: IAA agent is invoked as the final step before opening the PR, after all changes are committed. This field will be populated with the ASSURANCE-TOKEN or PHASE_A_ADVISORY status from the IAA tool call response.
+**IAA Session**: IAA-20260405-PR1320  
+**Initial Verdict (R0)**: REJECTION-PACKAGE — 3 findings (F1, F2, F3)  
+**Findings addressed in R1**: F1 (session memory), F2 (FRS_TEMPLATE + BUILD_PROGRESS_TRACKER CANON_INVENTORY registration), F3 (SCOPE_DECLARATION.md regenerated)  
+**Correction Addendum**: `.agent-admin/assurance/correction-addendum-1320-r1-20260405.md`  
+**Rejection Package**: `.agent-admin/assurance/rejection-package-1320.md`  
+**IAA Resubmission**: In progress — R1 commit pending final IAA invocation  
+**iaa_audit_token**: {TO_BE_RECORDED_AFTER_R1_IAA_INVOCATION}
 
 ---
 

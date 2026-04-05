@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "last_updated": "2026-04-05",
-    "total_canons": 196,
+    "total_canons": 198,
     "generation_timestamp": "2026-04-05T07:15:36Z",
     "canon_entry_schema": {
         "description": "Schema for canon entries in CANON_INVENTORY.json",
@@ -629,6 +629,21 @@
             "file_hash_sha256": "9e20439593c57c41ea3772226a0864796bd0438855d5e267a4405c0a399b33ab"
         },
         {
+            "filename": "BUILD_PROGRESS_TRACKER_TEMPLATE.md",
+            "version": "1.1",
+            "file_hash": "6c5a6230075872d8106e6761b4b9be914eec70f7a4ad005059613ad57a7695a1",
+            "effective_date": "2026-04-05",
+            "description": "Build Progress Tracker template. Stage structure updated to canonical 12-stage model per PRE_BUILD_STAGE_MODEL_CANON.md v1.0.0: App Description \u2192 UX Workflow & Wiring Spec \u2192 FRS \u2192 TRS \u2192 Architecture \u2192 QA-to-Red \u2192 PBFAG \u2192 Implementation Plan \u2192 Builder Checklist \u2192 IAA Pre-Brief \u2192 Builder Appointment \u2192 Build.",
+            "type": "template",
+            "path": "governance/templates/BUILD_PROGRESS_TRACKER_TEMPLATE.md",
+            "layer_down_status": "PUBLIC_API",
+            "file_hash_sha256": "6c5a6230075872d8106e6761b4b9be914eec70f7a4ad005059613ad57a7695a1",
+            "canonical_version": "1.1",
+            "local_version": null,
+            "local_extension": false,
+            "layer_up_status": "NONE"
+        },
+        {
             "filename": "BUILD_TREE_EXECUTION_MODEL.md",
             "version": "1.0",
             "file_hash": "01a65186bf0b1bd9b17ef330a554476bffe1764c0350e9f366515d640afcc9bf",
@@ -1145,6 +1160,21 @@
             "file_hash_sha256": "0986945d35500a0986719ab92a4a6baf3e5853698c4c4165b02662be4e19958b"
         },
         {
+            "filename": "FRS_TEMPLATE.md",
+            "version": "1.1",
+            "file_hash": "681ab97d47db18ff6357c34cf267af315ea225947158cc2dcf70284aa29457fd",
+            "effective_date": "2026-04-03",
+            "description": "Full Functional Requirements Specification (FRS) template. Includes mandatory \u00a7AD traceability per FR, FR Traceability Table, FR-to-\u00a7AD Coverage Matrix. Derivation chain updated in v1.1 to include UX Workflow & Wiring Spec as upstream source per PRE_BUILD_STAGE_MODEL_CANON.md v1.0.0.",
+            "type": "template",
+            "path": "governance/templates/FRS_TEMPLATE.md",
+            "layer_down_status": "PUBLIC_API",
+            "file_hash_sha256": "681ab97d47db18ff6357c34cf267af315ea225947158cc2dcf70284aa29457fd",
+            "canonical_version": "1.1",
+            "local_version": null,
+            "local_extension": false,
+            "layer_up_status": "NONE"
+        },
+        {
             "filename": "FULLY_FUNCTIONAL_DELIVERY_STANDARD.md",
             "version": "1.0.0",
             "file_hash": "7a71beefcc7eab51f99cb8d0865585cf4a6450304e9cf1ae07dfa4deb731d69c",
@@ -1213,13 +1243,13 @@
         {
             "filename": "GOVERNANCE_CANON_MANIFEST.md",
             "version": "1.0.0",
-            "file_hash": "88ec03220232b7deca80d98042859b4892fe1e74eb0f0f0789426e7a1335c243",
+            "file_hash": "6abe9914fc9ba4564d8d0f0f906055611448c4518b6db27e651d998312354d68",
             "effective_date": "2026-01-05",
             "description": "This manifest is the **single authoritative index** of all canonical governance standards in the maturion-foreman-governance repository.",
             "type": "canon",
             "path": "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
             "layer_down_status": "INTERNAL",
-            "file_hash_sha256": "88ec03220232b7deca80d98042859b4892fe1e74eb0f0f0789426e7a1335c243"
+            "file_hash_sha256": "6abe9914fc9ba4564d8d0f0f906055611448c4518b6db27e651d998312354d68"
         },
         {
             "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",
