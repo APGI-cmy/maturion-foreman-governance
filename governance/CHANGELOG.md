@@ -74,7 +74,7 @@ Each entry follows this structure:
 
 **Affected Artifacts**:
 - `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.1.0 → v1.2.0)
-- `governance/CANON_INVENTORY.json` (entry added; total_canons: 193 → 194)
+- `governance/CANON_INVENTORY.json` (entry added; total_canons updated in same commit to 194)
 - `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (entry added; totals updated)
 
 **Migration Required**: NO  
@@ -124,8 +124,8 @@ Each entry follows this structure:
 
 **Affected Artifacts**:
 - `governance/canon/PRE_BUILD_STAGE_MODEL_CANON.md` (NEW v1.0.0)
-- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (entry added; totals updated to 89 canon / 100 combined)
-- `governance/CANON_INVENTORY.json` (entry added; total_canons: 192 → 193)
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (entry added; totals updated to 90 canon / 101 combined)
+- `governance/CANON_INVENTORY.json` (entry added; total_canons: 193 → 194)
 
 **Migration Required**: YES  
 **Migration Guidance**: All consumer repos with governed build pipelines must update pre-build stage structures and template sequences to reflect the full 12-stage model. UX Workflow & Wiring Spec, PBFAG, Builder Checklist, and IAA Pre-Brief are now explicitly mandated stages. Change-Propagation Audit, Runtime/Deployment Contract, and Golden Path Verification Pack are required supporting controls that must be filed before the first build wave begins. Follow-on implementation tasks are identified in `PRE_BUILD_STAGE_MODEL_CANON.md §10`.
