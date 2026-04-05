@@ -295,7 +295,7 @@ The following 12 stages form the mandatory governed pre-build lifecycle. No stag
 
 **Enforcement Note**: Skipping IAA Pre-Brief invocation is a constitutional violation (INC-IAA-SKIP-001) per FAIL-ONLY-ONCE Rule A-09.
 
-**Authority Reference**: `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0
+**Authority Reference**: `IAA_PRE_BRIEF_PROTOCOL.md` v1.2.0
 
 ---
 
