@@ -120,12 +120,14 @@ jobs:
           echo "=== Checking for Minimizing Language ==="
           
           # Check PR title for banned phrases per POLICY-NO-ONLY-LANGUAGE.md
-          BANNED_PATTERNS=("\\bonly\\b" "\\bjust\\b" "\\bsimply\\b" "\\bmerely\\b" "\\btrivial\\b" "\\bminimal\\b" "\\bsmall\\b")
+          # Note: \bonly\b uses a negative lookbehind/lookahead for hyphens so that
+          # recognised compound artifact names such as FAIL-ONLY-ONCE are not flagged.
+          BANNED_PATTERNS=("(?<!-)\\bonly\\b(?!-)" "\\bjust\\b" "\\bsimply\\b" "\\bmerely\\b" "\\btrivial\\b" "\\bminimal\\b" "\\bsmall\\b")
           
           VIOLATIONS=0
           
           for pattern in "${BANNED_PATTERNS[@]}"; do
-            if echo "$PR_TITLE" | grep -qiE "$pattern"; then
+            if echo "$PR_TITLE" | grep -qiP "$pattern"; then
               echo "❌ Found minimizing language in PR title: $pattern"
               VIOLATIONS=$((VIOLATIONS + 1))
             fi
