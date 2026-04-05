@@ -114,6 +114,40 @@ Each entry follows this structure:
 
 ---
 
+### PRE-BUILD-STAGE-MODEL-DOCS-2026-04-05 — 2026-04-05 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — issue #1320  
+**Effective Date**: 2026-04-05
+
+**Summary**: Implemented governance-repository documentation changes to formalise the End-to-End Pre-Build Stage Model across canonical governance artifacts. Follow-on to `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 (issue #1319). Updated templates, policy, checklist, and a dependent canon to reflect the canonical 12-stage sequence. Created new Stage 2 (UX Workflow & Wiring Spec) and Stage 9 (Builder Checklist) templates.
+
+**Affected Artifacts**:
+- `governance/templates/APP_DESCRIPTION_TEMPLATE.md` — §5 stage list updated to 12-stage canonical sequence; §6 derivation chain updated to include UX Workflow & Wiring Spec
+- `governance/templates/FRS_TEMPLATE.md` — Section 0 derivation statement and upstream authority table updated to include UX Workflow & Wiring Spec as second upstream source
+- `governance/templates/BUILD_PROGRESS_TRACKER_TEMPLATE.md` — Stage structure updated from 6-stage model to canonical 12-stage model
+- `governance/templates/UX_WORKFLOW_WIRING_SPEC_TEMPLATE.md` (NEW v1.0) — Template for Stage 2: user journey maps, screen interactions, trigger catalogue, data flows, wiring matrix
+- `governance/templates/BUILDER_CHECKLIST_TEMPLATE.md` (NEW v1.0) — Template for Stage 9: agent contract checks, scope comprehension, RED QA comprehension, dependency readiness, protocol compliance, Foreman role-fit
+- `governance/canon/PRE_BUILD_REALITY_CHECK_CANON.md` — v1.0.0 → v1.1.0: §3.2 prerequisites updated to include UX Workflow & Wiring Spec; §1 purpose text and §5.1 log template updated; `PRE_BUILD_STAGE_MODEL_CANON.md` added to §2 constitutional mandate
+- `governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md` — §AD-01 and §AD-02 updated to reference canonical 12-stage sequence and updated derivation chain
+- `governance/checklists/APP_DESCRIPTION_CREATION_CHECKLIST.md` — B1 and B2 checks updated
+- `governance/CANON_INVENTORY.json` — hashes updated for modified files; new template entries added
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — entries added for new templates; totals updated
+- `.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md` (NEW) — Ripple log declaring downstream actions
+
+**Migration Required**: YES  
+**Migration Guidance**: Consumer repositories must (1) update BUILD_PROGRESS_TRACKER stage structures to the 12-stage model, (2) update active App Description documents §5 and §6, (3) update active FRS documents Section 0 derivation chains, (4) create UX Workflow & Wiring Spec artifacts for any module proceeding past Stage 1 without one. New modules must use the updated templates from inception.
+
+**Rationale**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 established the canonical 12-stage sequence but could not be considered operationally complete until the dependent templates, policy, and canon documents reflected the new model. This change closes that gap: the sequence is now consistently represented in all governance source-of-truth documents.
+
+**Impact**: All consumer repos commencing new builds must use the updated templates. Existing modules in pre-build phase should update artifacts at the next gate checkpoint. The derivation chain App Description → UX Workflow & Wiring Spec → FRS → TRS → Architecture is now the canonical reference.
+
+**Layer-Down Status**: PUBLIC_API — consumer repos with build pipelines must align.
+
+**References**: Issue #1320 — Implement Canon Documentation Updates for Mandatory End-to-End Pre-Build Stage Model
+
+---
+
 ### PRE-BUILD-STAGE-MODEL-CANON-2026-04-05 — 2026-04-05 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
