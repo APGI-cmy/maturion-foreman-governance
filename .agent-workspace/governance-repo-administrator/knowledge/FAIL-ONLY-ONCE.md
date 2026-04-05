@@ -1,5 +1,5 @@
 # FAIL-ONLY-ONCE Registry — governance-repo-administrator
-Version: 1.0.0
+Version: 1.1.0
 Seeded: 2026-02-24
 Authority: Governance Repository Administrator Contract v2.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0
 Update Protocol: After every breach RCA, governance-repo-administrator appends new rule + breach log entry. Never remove. Never skip.
@@ -21,6 +21,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | A-07 | Ripple | I do NOT allow a constitutional canon change to be merged without executing layer-down ripple to all consumer repositories. |
 | A-08 | Writes | I do NOT push directly to the main branch. All writes are via PR only. |
 | A-09 | IAA Invocation | I do NOT open a PR without first invoking the IAA agent (Phase 4 Step 4.4 per GA contract) and recording the ASSURANCE-TOKEN in the prehandover proof. IAA invocation precedes `report_progress` on the final commit. |
+| A-10 | Pre-IAA Commit State | I do NOT invoke the IAA agent if there are staged, modified, or unstabilised changes in the working tree that should have been committed before IAA invocation. I MUST confirm a clean and committed working state before invoking IAA. (OVF-002 — promoted 2026-04-05) |
 
 ---
 
@@ -33,6 +34,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | B-03 | A constitutional canon file is updated | I MUST execute layer-down ripple to all consumers in CONSUMER_REPO_REGISTRY.json and record the ripple log entry. |
 | B-04 | I am reviewing a new agent contract | I MUST verify the agent file includes a FAIL-ONLY-ONCE preflight attestation section in Phase 1 and that the registry stub exists. |
 | B-05 | CANON_INVENTORY total_canons is incremented | I MUST verify the new entry has a real SHA256 hash, provenance, and effective_date — not placeholder values. |
+| B-07 | I am about to invoke the IAA agent (Phase 4.5) | I MUST run `git status` and confirm the working tree is clean (no untracked, staged, or modified files that belong in this PR). If any such changes exist, I MUST commit them first, then re-run pre-handover gate parity checks, before invoking IAA. (OVF-002) |
 
 ---
 
@@ -43,6 +45,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | NEW-B-06 | 2026-02-24 | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md | Agent in maturion-isms PR #517 modified .github/agents/ files without CodexAdvisor involvement or CS2 layer-down issue — AGCFPP-001 enacted |
 | A-09 | 2026-03-01 | PR #1253 (copilot/renumber-duplicate-rule-ids) — CS2 feedback on missing IAA invocation | GA opened PR #1253 without invoking IAA agent first; the omission violated Phase 4 Step 4.4 of the GA contract (`iaa_oversight.invocation_step`). Rule A-09 was created in this session to codify the requirement in FAIL-ONLY-ONCE and prevent recurrence. |
 | A-09 | 2026-03-03 | PR #1294 (copilot/create-iaa-pre-brief-protocol) — CS2 feedback: "You cannot hand over without IAA token. Invoke IAA agent now. Record this failure as learning." | GA submitted report_progress commits without invoking IAA agent first; A-09 was in the FAIL-ONLY-ONCE registry but was not applied before the final commit. Evidence artifacts and IAA invocation performed retroactively this session. |
+| OVF-002 | 2026-04-05 | PR #1313 and PR #1319 — recurring pattern: IAA invoked with staged-but-uncommitted changes present | GA invoked IAA agent in PR #1313 and PR #1319 with changes staged but not yet committed to the PR branch, creating unauditable session state at assurance time. CS2 directed promotion to active FAIL-ONLY-ONCE rule. Rules A-10 and B-07 added. |
 
 ---
 
@@ -51,3 +54,5 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | ID | Category | Rule | Added By RCA |
 |----|----------|------|-------------|
 | B-06 | Agent Contract Protection | I do NOT modify any file in `.github/agents/` under any circumstance — including ripple execution. If ripple requires agent contract changes, I STOP, create an escalation, and wait for CS2 to authorize CodexAdvisor. | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md |
+| A-10 | Pre-IAA Commit State | I do NOT invoke IAA with a dirty working tree. All changes belonging to the current PR must be committed before IAA invocation. | OVF-002 — PR #1313 / PR #1319 recurring pattern — promoted 2026-04-05 per CS2 directive |
+| B-07 | Pre-IAA State Check | Immediately before IAA invocation at Phase 4.5, I run `git status` and confirm clean state. If dirty, I commit all pending changes, re-run gate parity, then invoke IAA. | OVF-002 — promoted 2026-04-05 per CS2 directive |
