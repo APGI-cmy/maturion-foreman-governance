@@ -117,8 +117,9 @@
 **Findings addressed in R1**: F1 (session memory), F2 (FRS_TEMPLATE + BUILD_PROGRESS_TRACKER CANON_INVENTORY registration), F3 (SCOPE_DECLARATION.md regenerated)  
 **Correction Addendum**: `.agent-admin/assurance/correction-addendum-1320-r1-20260405.md`  
 **Rejection Package**: `.agent-admin/assurance/rejection-package-1320.md`  
-**IAA Resubmission**: In progress — R1 commit pending final IAA invocation  
-**iaa_audit_token**: {TO_BE_RECORDED_AFTER_R1_IAA_INVOCATION}
+**R1 Verdict**: **ASSURANCE-TOKEN: IAA-20260405-PR1320-R1-PASS** — MERGE PERMITTED  
+**iaa_audit_token**: `IAA-20260405-PR1320-R1-PASS`  
+**Token File**: `.agent-admin/assurance/iaa-token-session-GA-065-r1-20260405.md`
 
 ---
 
