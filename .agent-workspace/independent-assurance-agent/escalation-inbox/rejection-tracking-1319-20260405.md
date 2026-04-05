@@ -10,7 +10,8 @@
 - REJECTION-PACKAGE issued: 2026-04-05
 - Delivered to branch: YES — committed as `.agent-admin/assurance/rejection-package-1319.md`
 - Notified to submitting agent: YES — IAA session response returned to copilot-swe-agent[bot]
-- Acknowledgement received: PENDING
+- Acknowledgement received: CONFIRMED via correction addendum (correction-addendum-1319-r1-20260405.md cites IAA-20260405-PR1319)
+- Resolution Status: RESOLVED — ASSURANCE-TOKEN issued IAA-20260405-PR1319-R1
 
 ## Remediation Items Required
 
@@ -25,7 +26,7 @@
 | F7 | OVL-KG-004 | GRA knowledge index.md not updated to reflect v1.1.0 and IAA_PRE_BRIEF_PROTOCOL.md v1.2.0 |
 
 ## Resolution Status
-All items: UNRESOLVED — awaiting resubmission
+All items: RESOLVED — all 7 findings addressed per correction-addendum-1319-r1-20260405.md
 
 ## Resubmission Requirements (A-030)
 Per A-030, resubmission requires a Correction Addendum at:
