@@ -115,7 +115,7 @@ for Tracks 2, 3, and 4 which require agent contract changes.
 
 **IAA Session**: IAA-20260406-downstream-closure  
 **Status**: Pending — IAA to be invoked after clean working tree confirmed  
-**iaa_audit_token**: TBD (will be updated after IAA response)
+**iaa_audit_token**: PENDING
 
 ---
 
