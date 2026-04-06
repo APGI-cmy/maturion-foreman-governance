@@ -64,6 +64,31 @@ Each entry follows this structure:
 
 ## Change History
 
+### AGENT-HANDOVER-AUTOMATION-PHASE-B-TOKEN-FIELD-2026-04-06 — 2026-04-06 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — canon template patch for `preflight/iaa-token-self-certification` gate compliance  
+**Effective Date**: 2026-04-06
+
+**Summary**: `AGENT_HANDOVER_AUTOMATION.md` §4.3b Token Update Ceremony template updated to include `## PHASE_B_BLOCKING_TOKEN: IAA-${IAA_SESSION}-PASS` field in the IAA PASS token file heredoc. The field must appear between the verdict header and the ASSURANCE-TOKEN block. Without this field every IAA PASS token produced from the canonical template fails the `preflight/iaa-token-self-certification` gate in `maturion-isms` (job `iaa-token-self-cert-check`).
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (§4.3b — token file template heredoc updated; version footer bumped v1.1.3 → v1.1.4)
+- `governance/CANON_INVENTORY.json` (`AGENT_HANDOVER_AUTOMATION.md` entry updated: `sha256`, `version` → 1.1.4, `last_updated` → 2026-04-06)
+
+**Migration Required**: NO  
+**Migration Guidance**: Future IAA PASS token files must include `## PHASE_B_BLOCKING_TOKEN: IAA-<session-id>-PASS` between the verdict header and the ASSURANCE-TOKEN block. Existing token files already issued are not retroactively affected.
+
+**Rationale**: The `preflight/iaa-token-self-certification` gate (maturion-isms CI) enforces that every new `iaa-token-*.md` PASS file contains a non-empty, non-PENDING `PHASE_B_BLOCKING_TOKEN:` field. The canonical §4.3b template did not include this field, causing every future IAA PASS token issued from the template to fail the gate. This change closes the template gap at source.
+
+**Impact**: IAA agents and Foreman/GA agents writing PASS token files must include the `PHASE_B_BLOCKING_TOKEN:` heading in all new token files. The gate in `maturion-isms` will pass for all token files generated from the updated template.
+
+**Layer-Down Status**: PUBLIC_API — mandatory ripple to consumer repos using IAA agent and the `preflight/iaa-token-self-certification` gate.
+
+**References**: maturion-isms PR #1234 — `preflight/iaa-token-self-certification` gate failure diagnosis
+
+---
+
 ### IAA-PRE-BRIEF-PROTOCOL-V1-2-0-2026-04-05 — 2026-04-05 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
