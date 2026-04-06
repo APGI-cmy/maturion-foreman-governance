@@ -574,6 +574,8 @@ Date: $(date +%Y-%m-%d)
 
 ${IAA_VERDICT}
 
+## PHASE_B_BLOCKING_TOKEN: IAA-${IAA_SESSION}-PASS
+
 Phases Verified: 1-${PHASE1}, 2-${PHASE2}, 3-${PHASE3}, 4-${PHASE4}
 Agent Integrity: ${INTEGRITY_RESULT}
 Independence: CONFIRMED
