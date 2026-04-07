@@ -3,12 +3,12 @@
 **Token**: IAA-20260406-PR1324-R2-PASS  
 **IAA Session**: IAA-20260406-PR1324 (R2 resubmission)  
 **Date**: 2026-04-06  
-**PR**: copilot/orchestrate-downstream-closure — Orchestrate downstream closure of 12-stage pre-build governance model  
+**PR**: #1324 — Orchestrate closure of the 12-stage pre-build governance model  
 **Branch**: copilot/orchestrate-downstream-closure  
 **Verdict**: ASSURANCE-TOKEN — MERGE PERMITTED  
 **GA Session**: session-GA-066-20260406
 
-## PHASE_B_BLOCKING_TOKEN: IAA-20260406-PR1324-PASS
+## PHASE_B_BLOCKING_TOKEN: IAA-20260406-PR1324-R2-PASS
 
 ---
 

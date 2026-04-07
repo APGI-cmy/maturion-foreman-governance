@@ -13,6 +13,7 @@
 - .agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md
 - .agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md
 - .agent-admin/prehandover/prehandover_proof_downstream-closure-20260406.md
+- .agent-admin/prehandover/prehandover_proof_downstream-closure-clarification-20260407.md
 - .agent-workspace/governance-repo-administrator/memory/session-GA-066-20260406.md
 - SCOPE_DECLARATION.md
 - governance/CHANGELOG.md

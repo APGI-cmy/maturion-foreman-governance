@@ -5,7 +5,7 @@
 **Created**: 2026-04-06  
 **Owner**: Governance Repository Administrator (GA)  
 **Authority**: CS2 (Johan Ras / Maturion)  
-**Issue Reference**: APGI-cmy/maturion-foreman-governance (copilot/orchestrate-downstream-closure)  
+**Issue Reference**: PR #1324 — APGI-cmy/maturion-foreman-governance  
 **Parent Canon**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 (canonised issue #1319)  
 **Depends On**: `ripple-pre-build-stage-model-docs-20260405.md` (issue #1320 documentation ripple)
 

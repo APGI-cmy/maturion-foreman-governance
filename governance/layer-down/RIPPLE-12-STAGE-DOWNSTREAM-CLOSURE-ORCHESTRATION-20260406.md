@@ -4,7 +4,7 @@
 **Date**: 2026-04-06  
 **Issued By**: Governance Repository Administrator (governance-repo-administrator-v2)  
 **Authority**: CS2 (Johan Ras / Maturion)  
-**Issue Reference**: APGI-cmy/maturion-foreman-governance (copilot/orchestrate-downstream-closure)  
+**Issue Reference**: PR #1324 — APGI-cmy/maturion-foreman-governance  
 **Parent Canon**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 (issue #1319)  
 **Prior Ripple**: `RIPPLE-PRE-BUILD-STAGE-MODEL-DOCS-20260405` (issue #1320)  
 **Layer-Down Status**: PUBLIC_API — consumer repos are obligated to act
