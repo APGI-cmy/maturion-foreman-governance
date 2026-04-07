@@ -64,6 +64,45 @@ Each entry follows this structure:
 
 ## Change History
 
+### PRE-BUILD-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-2026-04-06 — 2026-04-06 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — GA orchestration authority for downstream closure tracking  
+**Effective Date**: 2026-04-06
+
+**Summary**: Created orchestration scaffolding for the downstream closure of the canonical
+12-stage pre-build governance model across all consumer repos and agent layers. Follows
+completion of canon establishment (issue #1319) and governance-repository documentation
+alignment (issue #1320). This change creates 3 new governance artifacts: orchestration
+tracker, layer-down ripple notice, and CS2 escalation for the 3 agent-contract child tracks.
+
+**Affected Artifacts**:
+- `governance/coordination/PRE_BUILD_12_STAGE_DOWNSTREAM_CLOSURE_TRACKER.md` (NEW) — Orchestration tracker with 5 child tracks, status, ownership, authority, and dependency map
+- `governance/layer-down/RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406.md` (NEW) — Layer-down ripple notice to consumer repos with required actions table and completion criteria
+- `.agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md` (NEW) — CS2 escalation for Tracks 2, 3, 4 (agent contract changes requiring CodexAdvisor + CS2 authorization)
+- `.agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md` (NEW) — Ripple log for this orchestration
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO (orchestration scaffolding only; no breaking changes)  
+**Migration Guidance**: N/A
+
+**Rationale**: The 12-stage pre-build model is canonised and documented in this repo, but
+the downstream gap between constitutional governance truth and live consumer repo artifacts /
+agent execution logic has not yet been closed. This orchestration change creates the tracking
+infrastructure and issues the formal layer-down directive to close that gap. Agent contract
+changes (Tracks 2–4) are correctly escalated to CS2 per Rule B-06; GA does not implement those.
+
+**Impact**: Consumer repositories are now formally directed to align to the 12-stage model.
+CS2 receives a structured escalation to authorize agent contract alignment (Tracks 2–4).
+Foreman receives a declared scope for the `app_management_centre` review (Track 5).
+
+**Layer-Down Status**: PUBLIC_API — consumer repos must act on the ripple notice.
+
+**References**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0, issue #1319, issue #1320,
+`.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md`
+
+---
+
 ### AGENT-HANDOVER-AUTOMATION-PHASE-B-TOKEN-FIELD-2026-04-06 — 2026-04-06 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
