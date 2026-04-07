@@ -9,6 +9,7 @@
 ## FILES_CHANGED
 
 - .agent-admin/assurance/correction-addendum-1324-r1-20260406.md
+- .agent-admin/assurance/iaa-token-session-GA-066-r2-20260406.md
 - .agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md
 - .agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md
 - .agent-admin/prehandover/prehandover_proof_downstream-closure-20260406.md
