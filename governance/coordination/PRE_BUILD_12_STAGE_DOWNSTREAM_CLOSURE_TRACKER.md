@@ -7,7 +7,7 @@
 **Authority**: CS2 (Johan Ras / Maturion)  
 **Issue Reference**: PR #1324 — APGI-cmy/maturion-foreman-governance  
 **Parent Canon**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 (canonised issue #1319)  
-**Depends On**: `ripple-pre-build-stage-model-docs-20260405.md` (issue #1320 documentation ripple)
+**Depends On**: [`.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md`](.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md) (issue #1320 documentation ripple)
 
 ---
 

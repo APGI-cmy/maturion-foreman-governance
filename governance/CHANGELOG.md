@@ -99,7 +99,7 @@ Foreman receives a declared scope for the `app_management_centre` review (Track 
 **Layer-Down Status**: PUBLIC_API — consumer repos must act on the ripple notice.
 
 **References**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0, issue #1319, issue #1320,
-`ripple-pre-build-stage-model-docs-20260405.md`
+`.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md`
 
 ---
 

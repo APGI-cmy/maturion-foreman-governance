@@ -49,18 +49,22 @@ the correction chain, satisfying IAA's A-029 audit trail requirement per R1 find
   to FILES_CHANGED list
 - (c) Stale second section (14 files from prior PR #1319) removed entirely
 - Verified: SCOPE_DECLARATION.md FILES_CHANGED list now matches
-  `git diff --name-only origin/main...HEAD` exactly (8 files)
+  `git diff --name-only origin/main...HEAD` exactly (12 files)
 
 **Verification**: SCOPE_DECLARATION.md FILES_CHANGED section lists exactly:
 ```
+.agent-admin/assurance/correction-addendum-1324-r1-20260406.md
+.agent-admin/assurance/iaa-token-session-GA-066-r2-20260406.md
 .agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md
 .agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md
 .agent-admin/prehandover/prehandover_proof_downstream-closure-20260406.md
+.agent-admin/prehandover/prehandover_proof_downstream-closure-clarification-20260407.md
 .agent-workspace/governance-repo-administrator/memory/session-GA-066-20260406.md
 SCOPE_DECLARATION.md
 governance/CHANGELOG.md
 governance/coordination/PRE_BUILD_12_STAGE_DOWNSTREAM_CLOSURE_TRACKER.md
 governance/layer-down/RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406.md
+governance/scope-declaration.md
 ```
 
 ---

@@ -19,6 +19,7 @@
 - governance/CHANGELOG.md
 - governance/coordination/PRE_BUILD_12_STAGE_DOWNSTREAM_CLOSURE_TRACKER.md
 - governance/layer-down/RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406.md
+- governance/scope-declaration.md
 
 ## CHANGE_SUMMARY
 

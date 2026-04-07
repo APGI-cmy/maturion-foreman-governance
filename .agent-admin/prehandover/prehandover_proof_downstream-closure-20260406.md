@@ -23,8 +23,8 @@
 - A-06 (Protected Files): No constitutional canon files modified. No agent contracts modified.  
 - A-07 (Ripple): Ripple log created; layer-down notice issued; downstream actions formally declared.  
 - A-08 (Writes): All writes via PR only; no direct main push.  
-- A-09 (IAA Invocation): IAA invoked before final PR push (see §4.4 below).  
-- A-10 (Pre-IAA Commit State): Working tree confirmed clean before IAA invocation (Rule B-07 check performed).  
+- A-09 (IAA Invocation): Not yet invoked at the time this proof was filed; invocation remains pending as recorded in §4.4 below.  
+- A-10 (Pre-IAA Commit State): Working tree confirmed clean in preparation for IAA invocation (Rule B-07 check performed).  
 
 **Conditional Rules (B-01 through B-07)**:  
 - B-01: No merge of PR touching governance/canon/ — no canon files modified this session. ✅  

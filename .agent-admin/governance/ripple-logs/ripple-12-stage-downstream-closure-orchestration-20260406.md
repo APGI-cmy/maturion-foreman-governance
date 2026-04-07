@@ -3,9 +3,9 @@
 **Ripple ID**: RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406  
 **Date**: 2026-04-06  
 **Initiated By**: Governance Repository Administrator (governance-repo-administrator-v2)  
-**Issue Reference**: APGI-cmy/maturion-foreman-governance (copilot/orchestrate-downstream-closure)  
+**Issue Reference**: PR #1324 — APGI-cmy/maturion-foreman-governance  
 **Parent Canon**: `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0 (canonised in issue #1319)  
-**Prior Ripple Log**: `ripple-pre-build-stage-model-docs-20260405.md` (issue #1320)  
+**Prior Ripple Log**: [`.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md`](.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md) (issue #1320)  
 **Ripple Type**: Downstream closure orchestration — multi-track, multi-repo, multi-agent
 
 ---
@@ -15,7 +15,7 @@
 This ripple log records the governance actions taken to orchestrate the downstream closure
 of the canonical 12-stage pre-build governance model.
 
-The prior ripple (`ripple-pre-build-stage-model-docs-20260405.md`) completed the
+The prior ripple (`.agent-admin/governance/ripple-logs/ripple-pre-build-stage-model-docs-20260405.md`) completed the
 governance-repository documentation alignment and declared downstream actions required.
 This ripple executes on those declarations, creating the orchestration scaffolding
 to drive the 5 child tracks to completion.
