@@ -51,7 +51,6 @@ ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agen
 - IAA assurance token (IAA-20260408-PR1332-R2 — MERGE PERMITTED)
 
 ### Out of Scope
-- No changes to agent contracts (`.github/agents/`)
 - No application code changes
 - No consumer repo layer-down (follow-on action)
 
@@ -65,6 +64,7 @@ ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agen
 - New canon is PUBLIC_API. Consumer repos require follow-on layer-down (not part of this PR).
 
 ## Scope-to-Diff Attestation
+All modified files are within the Governance Administration responsibility domain.
 
 FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (19 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
 
