@@ -3,8 +3,8 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: "copilot/governance-harden-pre-iaa-handover"
-DATE_UTC: 2026-04-08T00:00:00Z
+PR_ID: "copilot/create-canon-execution-ceremony-admin"
+DATE_UTC: 2026-04-08T11:47:00Z
 AGENT_ID: governance-repo-administrator-v2
 RESPONSIBILITY_DOMAIN: Governance Administration
 CHANGE_TYPE: governance_normative_enhancement
@@ -12,60 +12,67 @@ CHANGE_TYPE: governance_normative_enhancement
 ```
 
 ## Executive Summary
-Canonised §4.3c Pre-IAA Commit-State Gate as a mandatory BLOCKING step in Phase 4 Handover for all producing-agent contracts. Updated AGENT_HANDOVER_AUTOMATION.md v1.1.5→v1.2.0. Updated three producing-agent contracts (Foreman, CodexAdvisor, GA) via CodexAdvisor (B-06 compliant). Updated INTEGRITY_INDEX.md. Issued layer-down ripple to consumer repos. Aligned advisory_phase PHASE_A_ADVISORY→PHASE_B_BLOCKING across all three contracts.
+ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agent` role and ripple the new model into all directly related canon. Creates `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.0.0; amends four related canon files; updates CANON_INVENTORY (total_canons 198→199) and GOVERNANCE_CANON_MANIFEST (Canon Files 92→93). Governance package is layer-down-ready. Includes remediation artifacts for REJECTION-PACKAGE IAA-20260408-PR1332 and IAA ASSURANCE-TOKEN (IAA-20260408-PR1332-R2).
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/rejection-package-1330.md
-- .agent-admin/governance/ripple-logs/ripple-pre-iaa-commit-state-gate-20260408.md
-- .agent-admin/prehandover/proof-20260408T095629Z.md
-- .agent-admin/waves/wave-pre-iaa-commit-state-gate-20260408-checklist.md
-- .agent-workspace/governance-repo-administrator/memory/session-20260408.md
-- .github/agents/CodexAdvisor-agent.md
-- .github/agents/foreman-v2.agent.md
-- .github/agents/governance-repo-administrator-v2.agent.md
+- .agent-admin/assurance/iaa-token-session-ECAP-001-20260408.md
+- .agent-admin/assurance/rejection-package-1332.md
+- .agent-admin/escalation-inbox/ovf-003-scope-declaration-recurrence-20260408.md
+- .agent-admin/gates/gate-results-20260408T105848Z.json
+- .agent-admin/prehandover/proof-20260408T105848Z.md
+- .agent-admin/prehandover/proof-20260408T111427Z.md
+- .agent-workspace/governance-repo-administrator/memory/session-ECAP-001-20260408-remediation.md
+- .agent-workspace/governance-repo-administrator/memory/session-ECAP-001-20260408.md
+- .agent-workspace/independent-assurance-agent/escalation-inbox/rejection-tracking-1332-20260408.md
+- .agent-workspace/independent-assurance-agent/memory/session-029-20260408.md
 - governance/CANON_INVENTORY.json
 - governance/CHANGELOG.md
 - governance/canon/AGENT_HANDOVER_AUTOMATION.md
-- governance/layer-down/RIPPLE-PRE-IAA-COMMIT-STATE-GATE-20260408.md
-- governance/quality/agent-integrity/CodexAdvisor-agent.md
-- governance/quality/agent-integrity/INTEGRITY_INDEX.md
-- governance/quality/agent-integrity/foreman-v2.agent.md
-- governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md
+- governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md
+- governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
+- governance/canon/GOVERNANCE_CANON_MANIFEST.md
+- governance/canon/IAA_PRE_BRIEF_PROTOCOL.md
+- governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md
+- governance/scope-declaration.md
 
 ## Scope Boundaries
 
 ### In Scope
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.2.0): §4.3c Pre-IAA Commit-State Gate added
-- `governance/CANON_INVENTORY.json`: SHA256 updated
-- `governance/CHANGELOG.md`: PRE-IAA-COMMIT-STATE-GATE-CANON-2026-04-08 entry
-- `.github/agents/foreman-v2.agent.md`: §4.3a + §4.5; PHASE_B_BLOCKING (via CodexAdvisor)
-- `.github/agents/CodexAdvisor-agent.md`: Step 4.3c; PHASE_B_BLOCKING (via CodexAdvisor)
-- `.github/agents/governance-repo-administrator-v2.agent.md`: PHASE_B_BLOCKING (via CodexAdvisor)
-- `governance/quality/agent-integrity/`: 3 reference copies + INTEGRITY_INDEX.md
-- `governance/layer-down/RIPPLE-PRE-IAA-COMMIT-STATE-GATE-20260408.md`: layer-down ripple
-- Evidence artifacts (PREHANDOVER proof, session memory, wave checklist, ripple log)
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (v1.0.0 NEW) — canonical role definition for execution-ceremony-admin-agent; seven-step handover sequence; three-part readiness model
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.1.0→v1.2.0) — §9.6 + §14.4
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.5→v1.1.6) — ceremony admin integration
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.3.0→v1.4.0) — non-substitution rule
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.2.0→v1.2.1) — reference update
+- `governance/CANON_INVENTORY.json` — new entry + updated hashes; total_canons 198→199
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — §3.3 new entry; totals 92→93
+- `governance/CHANGELOG.md` — ECAP-001 entry
+- Evidence and session artifacts (prehandover proofs, gate results, session memory, rejection tracking)
+- IAA assurance token (IAA-20260408-PR1332-R2 — MERGE PERMITTED)
 
 ### Out of Scope
 - No application code changes
-- No changes to independent-assurance-agent.md
+- No consumer repo layer-down (follow-on action)
 
 ## Constitutional Alignment
-- `AGENT_HANDOVER_AUTOMATION.md` v1.2.0 — parent canon
 - `LIVING_AGENT_SYSTEM.md` v6.2.0 — GA contract authority
-- `FAIL-ONLY-ONCE.md` — Rule B-06 agent contract protection (OVF-002, Rules A-10, B-07)
-- `IAA_PRE_BRIEF_PROTOCOL.md` v1.2.0
+- `FAIL-ONLY-ONCE.md` v1.1.0 — all universal and conditional rules
+- `CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md` — hash integrity
+- CS2-authorised issue: Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down
 
 ## Ripple Requirements
-- CHANGELOG.md entry marks `Layer-Down Status: PUBLIC_API`. Layer-down ripple issued to consumer repos.
+- New canon is PUBLIC_API. Consumer repos require follow-on layer-down (not part of this PR).
 
 ## Scope-to-Diff Attestation
 All modified files are within the Governance Administration responsibility domain.
 
-**IAA Token**: PENDING  
+FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (19 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
+
+**IAA Token**: `IAA-20260408-PR1332-R2` — ASSURANCE-TOKEN — MERGE PERMITTED  
 **Attestation**: governance-repo-administrator-v2  
-**Date**: 2026-04-08T00:00:00Z
+**Date**: 2026-04-08T11:47:00Z
 
 ---
-**Timestamp**: 2026-04-08T00:00:00Z  
+
+**Timestamp**: 2026-04-08T11:47:00Z  
 **Agent**: governance-repo-administrator-v2

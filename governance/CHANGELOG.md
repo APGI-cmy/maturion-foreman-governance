@@ -64,38 +64,43 @@ Each entry follows this structure:
 
 ## Change History
 
-### PRE-IAA-COMMIT-STATE-GATE-CANON-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+### EXECUTION-CEREMONY-ADMINISTRATION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
-**Approved By**: CS2 (Johan Ras) — pre-IAA handover discipline hardening  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down  
 **Effective Date**: 2026-04-08
 
-**Summary**: Canonised the Pre-IAA Commit-State Gate as mandatory §4.3c in the Handover phase (Phase 4) for all producing-agent contracts. This gate sits between §4.3 Merge Gate Parity Check and IAA invocation and blocks handover if the working tree is dirty or any declared deliverable is not committed at HEAD. Adds canonical bash template, required checks, guidance for recording commit-state evidence in PREHANDOVER proof, and PHASE_B_BLOCKING alignment note for IAA deployment phase wording. Also updates producing-agent contracts (Foreman, CodexAdvisor, GA) via CodexAdvisor to include the gate and update `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING` where operationally true.
+**Summary**: Formalises the `execution-ceremony-admin-agent` role and the three-role ceremony model into binding governance canon. Creates `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (ECAP-001), amends four directly related canon files to cross-reference the new protocol and eliminate role-boundary contradictions, and updates the governance inventory and manifest. The new protocol converts the ECAS-001 strategy document into a canonical governance standard that is layer-down-ready for consumer repos.
 
 **Affected Artifacts**:
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (UPDATED) — v1.1.5 → v1.2.0; added §4.3c Pre-IAA Commit-State Gate section; updated Handover Phase Structure index; added Handover Validation Checklist entry; added PHASE_B_BLOCKING alignment note; added commit-state anti-pattern entry
-- `governance/CANON_INVENTORY.json` (UPDATED) — SHA256 + version updated for `AGENT_HANDOVER_AUTOMATION.md`
-- `.github/agents/foreman-v2.agent.md` (UPDATED via CodexAdvisor) — §4.3a Pre-IAA Commit-State Gate added; IAA invocation step added to Phase 4; `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING`
-- `.github/agents/CodexAdvisor-agent.md` (UPDATED via CodexAdvisor) — Pre-IAA Commit-State Gate added before §4.4 IAA Invocation; `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING`
-- `.github/agents/governance-repo-administrator-v2.agent.md` (UPDATED via CodexAdvisor) — `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING` (commit-state gate already present at §4.5.0 from PR #1319)
-- `governance/quality/agent-integrity/` reference copies (UPDATED via CodexAdvisor) — matching reference copies updated for all modified agent contracts
-- `governance/quality/agent-integrity/INTEGRITY_INDEX.md` (UPDATED via CodexAdvisor) — new SHA256 baselines recorded for updated contracts
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (NEW) — Canonical role definition for `execution-ceremony-admin-agent`; seven-step canonical handover sequence; three-part readiness model; authority boundary model; layer-down requirements. PUBLIC_API.
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.1.0→v1.2.0) — Added §9.6 Relationship to execution-ceremony-admin-agent; added §14.4 Updated Handover Sequence with Ceremony Administration
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.5→v1.1.6) — Added §Execution Ceremony Administration Integration; Phase 4 role responsibilities table; bundle-return pattern; invariants section
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.3.0→v1.4.0) — Added §Execution Ceremony Admin Non-Substitution Rule; references updated
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.2.0→v1.2.1) — Reference update: added EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md; Phase 4 prep by ceremony admin clarified; IAA independence unchanged
+- `governance/CANON_INVENTORY.json` — New entry (EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md); hashes updated for all 4 amended files; `total_canons` 198→199; `last_updated` → 2026-04-08
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — New entry in §3.3 Delegation & Execution Models; totals updated (Canon Files 92→93, Combined Total 107→108, PUBLIC_API 78→79); FOREMAN_AUTHORITY and IAA_PRE_BRIEF versions updated
 - `governance/CHANGELOG.md` — This entry
 
-**Migration Required**: YES (producing agents must add §4.3c before next IAA invocation)  
-**Migration Guidance**: All producing agents (Foreman, CodexAdvisor, builder contracts in consumer repos) must include §4.3c Pre-IAA Commit-State Gate before every IAA invocation. The canonical template is in `AGENT_HANDOVER_AUTOMATION.md` §Section 4.3c. Consumer repos receive a layer-down ripple to update their builder agent contracts.
+**Migration Required**: NO (additive governance for new role; existing PREHANDOVER and IAA rules unchanged)  
+**Migration Guidance**: Consumer repos (`APGI-cmy/maturion-isms`, `APGI-cmy/app_management_centre`) should:
+1. Register `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` in their `GOVERNANCE_ALIGNMENT.md`
+2. Update Foreman execution references to reflect the canonical handover sequence (§5.2 of the new protocol)
+3. Confirm existing PREHANDOVER and IAA token rules remain intact (no weakening)
+4. Apply the three-part readiness concept definitions (substantive, administrative, independent assurance verdict)
+This is a follow-on layer-down; consumer repo changes are NOT part of this PR.
 
-**Rationale**: Recurring A-021 failures show that producing agents can satisfy §4.3 local parity checks, generate artifacts, and invoke IAA while still holding uncommitted changes. This creates commit-state / ceremony-state mismatches that IAA cannot detect at invocation time but that cause avoidable REJECTION-PACKAGEs. Shifting this check left — as a canonical BLOCKING gate before every IAA invocation — closes the gap between "local checks pass" and "IAA is reviewing the exact committed state".
+**Rationale**: Recurring failure patterns in recent waves were driven by ceremony-administration defects (stale artifacts, inconsistent evidence bundles, commit-state mismatches) rather than substantive build defects. The Foreman role was carrying both orchestration and ceremony-administration burden. This protocol introduces a dedicated administrator-class role to own ceremony administration, freeing the Foreman for managerial orchestration and preserving IAA independence.
 
-**Impact**: All producing-agent contracts require §4.3c. Builder contracts in consumer repos must be updated via layer-down ripple. The `PHASE_A_ADVISORY` metadata field should be updated to `PHASE_B_BLOCKING` in all producing-agent contracts where IAA is operationally deployed.
+**Impact**: All consumer repositories using Foreman-led execution with IAA assurance must layer down the new protocol. IAA independence and PREHANDOVER immutability rules are unchanged. Foreman accountability is unchanged. The introduction of the `execution-ceremony-admin-agent` is a delegation of administration — not a delegation of accountability.
 
-**Layer-Down Status**: PUBLIC_API — consumer repos must update builder contracts to include §4.3c Pre-IAA Commit-State Gate.
+**Layer-Down Status**: PUBLIC_API — mandatory layer-down for all repos using Foreman-led execution.
 
-**References**: Issue — [Governance] Harden pre-IAA handover discipline: explicit commit-state gate + PHASE_B alignment across producing-agent contracts; OVF-002; FAIL-ONLY-ONCE Rules A-10, B-07; INDEPENDENT_ASSURANCE_AGENT_CANON.md; IAA_PRE_BRIEF_PROTOCOL.md v1.2.0
+**References**: Issue — Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down; `maturion/strategy/Execution_Ceremony_Administration_Strategy.md` (ECAS-001)
 
 ---
 
-
+### COMMENT-ONLY-AGENT-SESSION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
 **Approved By**: CS2 (Johan Ras) — operational governance protocol; additive canon  

@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-04-08T10:58:48Z",
+  "session_id": "session-ECAP-001-20260408",
+  "agent": "governance-repo-administrator-v2",
+  "verdict": "PASS",
+  "gates": {
+    "merge-gate/verdict": {
+      "status": "PASS",
+      "details": {
+        "prehandover_proof_present": true,
+        "proof_path": ".agent-admin/prehandover/proof-*.md"
+      }
+    },
+    "governance/alignment": {
+      "status": "PASS",
+      "canon_state": "ALIGNED",
+      "placeholder_count": 0,
+      "total_entries": 199
+    },
+    "stop-and-fix/enforcement": {
+      "status": "PASS",
+      "open_blockers": 0
+    }
+  }
+}
