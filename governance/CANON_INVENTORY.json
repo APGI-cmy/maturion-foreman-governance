@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "last_updated": "2026-04-08",
   "total_canons": 199,
-  "generation_timestamp": "2026-04-05T07:15:36Z",
+  "generation_timestamp": "2026-04-08T07:15:36Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -760,13 +760,13 @@
     {
       "filename": "COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md",
       "version": "1.0.0",
-      "file_hash": "425cb244c52f8c0b44003cb804af984545bd060c2c4319628fa0ca853534652c",
+      "file_hash": "3b342b6fa746ad418a767f46c38dca5ff19a5e5f4ee72d766645337e5211b29c",
       "effective_date": "2026-04-08",
       "description": "Operational governance protocol canonising the comment-only / non-mutating agent session mode as a first-class governance concept. Defines COMMENT_ONLY and MUTATION_CAPABLE session modes, prohibits hybrid ambiguity, provides consumer repo migration guidance, and recommends lint enforcement for fallback-token ambiguity in declared comment-only sessions.",
       "type": "canon",
       "path": "governance/canon/COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "425cb244c52f8c0b44003cb804af984545bd060c2c4319628fa0ca853534652c"
+      "file_hash_sha256": "3b342b6fa746ad418a767f46c38dca5ff19a5e5f4ee72d766645337e5211b29c"
     },
     {
       "filename": "COMMISSIONING_EVIDENCE_MODEL.md",

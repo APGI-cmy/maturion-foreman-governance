@@ -17,7 +17,7 @@
 
 This protocol canonises the **comment-only / non-mutating agent session mode** as a first-class governance concept.
 
-Governance canon already defines token requirements for write-capable automation (see §7 — Related Canon). However, a distinct operating mode exists in live consumer repos where:
+Governance canon already defines token requirements for write-capable automation (see §8 — Related Canon). However, a distinct operating mode exists in live consumer repos where:
 
 - Copilot or an equivalent agent is **not supposed to push**
 - The push restriction is **intentional**
