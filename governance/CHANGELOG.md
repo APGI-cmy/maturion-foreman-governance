@@ -64,7 +64,39 @@ Each entry follows this structure:
 
 ## Change History
 
-### EXECUTION-CEREMONY-ADMINISTRATION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+### FOREMAN-IAA-REINVOCATION-OWNERSHIP-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: Canonise Foreman-owned IAA re-invocation responsibility and ban misleading "CS2 must re-invoke" wording  
+**Effective Date**: 2026-04-08
+
+**Summary**: Canonises Foreman-owned IAA re-invocation responsibility and prohibits misleading "CS2 must re-invoke IAA" wording in Foreman-led handovers. Amends three canon files to make the Foreman stop-and-fix loop explicit after a `REJECTION-PACKAGE`, define CS2-only exception classes, codify re-invocation token/session naming, and provide a worked example showing rejection → correction → re-invocation → PASS without CS2 relay burden. Amends `INDEPENDENT_ASSURANCE_AGENT_CANON.md` Independence Requirement #3 to correctly reflect that the Foreman is the authorised IAA invoker at Phase 4 handover (not a self-assurance violation).
+
+**Affected Artifacts**:
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.4.0→v1.5.0) — Amended Independence Requirement #3: clarified Foreman is authorised IAA invoker at Phase 4 handover; added §IAA Re-Invocation After Rejection — Foreman Ownership with governing sentence, ownership table, CS2-only exception classes, prohibited wording, canonical re-invocation token/session format, and worked example.
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.2.0→v1.3.0) — Added §14.5 IAA Rejection — Foreman Stop-and-Fix Loop: governing rule, step-by-step Foreman obligations table, what Foreman does NOT do, when CS2 involvement is NOT/IS required, cross-reference to full specification.
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.2.1→v1.2.2) — Added §Re-Invocation After Rejection — Ownership Reference with key rule, allowed wording, and cross-reference; updated References section to v1.5.0/v1.3.0.
+- `governance/CANON_INVENTORY.json` — Hashes and versions updated for all 3 amended files; `last_updated` → 2026-04-08.
+- `governance/CHANGELOG.md` — This entry.
+
+**Migration Required**: NO (clarification and additive canon; no existing PREHANDOVER, IAA token, or assurance rules weakened)  
+**Migration Guidance**: Consumer repos (`APGI-cmy/maturion-isms`, `APGI-cmy/app_management_centre`) should:
+1. Review any existing PREHANDOVER proofs or PR descriptions for prohibited wording ("requires fresh re-invocation by CS2 before merge", "CS2 must re-invoke IAA") and correct to approved wording if found.
+2. Confirm Foreman agents are using the stop-and-fix loop (§4.5 of Foreman contract) and NOT escalating ordinary rejection handling to CS2.
+3. Apply new re-invocation token naming convention (`iaa-token-session-NNN-waveY-YYYYMMDD-rZ.md`) for any future re-invocation token files.
+This is a follow-on clarification; consumer repo changes are NOT required but recommended for compliance hygiene.
+
+**Rationale**: IAA rejection handling was leaking burden upward to CS2 through misleading wording ("requires fresh re-invocation by CS2 before merge") and an outdated Independence Requirement that implied the Foreman cannot invoke IAA. The Foreman contract already requires Phase 4.5 IAA invocation by the Foreman; this amendment makes the re-invocation loop equally clear. CS2 involvement is now reserved for explicitly defined exception classes only.
+
+**Impact**: All Foreman-led handover sessions must use the Foreman-owned stop-and-fix loop after rejection. The IAA hard gate is unchanged. CS2 merge authority is unchanged. Only the ownership of ordinary rejection correction is clarified: it is the Foreman's, unconditionally, for ordinary handovers.
+
+**Layer-Down Status**: PUBLIC_API — recommended layer-down for all repos using Foreman-led execution with IAA assurance.
+
+**References**: Issue — Canonise Foreman-owned IAA re-invocation responsibility and ban misleading "CS2 must re-invoke" wording.
+
+---
+
+
 
 **Changed By**: governance-repo-administrator-v2  
 **Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down  
