@@ -1478,7 +1478,7 @@
       "file_hash": "6c2b4e2b22d8601db26145c0f091b6afe022005305810885a16544ae9743ddd7",
       "file_hash_sha256": "6c2b4e2b22d8601db26145c0f091b6afe022005305810885a16544ae9743ddd7",
       "effective_date": "2026-02-24",
-      "amended_date": "2026-03-02",
+      "amended_date": "2026-04-08",
       "description": "Defines the Independent Assurance Agent (IAA) class: role, hard-trigger authority, independence requirements, five-phase delivery proof protocol, binary output (ASSURANCE-TOKEN / REJECTION-PACKAGE), and trigger table. v1.1.0: Zero-Severity-Tolerance policy added.",
       "type": "canon",
       "path": "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
