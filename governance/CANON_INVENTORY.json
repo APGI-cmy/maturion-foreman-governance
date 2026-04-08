@@ -1280,13 +1280,15 @@
     {
       "filename": "GOVERNANCE_CANON_MANIFEST.md",
       "version": "1.0.0",
-      "file_hash": "6abe9914fc9ba4564d8d0f0f906055611448c4518b6db27e651d998312354d68",
+      "file_hash": "53c8f4d26178cdc49dd9dc9cb9ec17e26ed0c9171b2d23360b96f27c5fdb1814",
       "effective_date": "2026-01-05",
       "description": "This manifest is the **single authoritative index** of all canonical governance standards in the maturion-foreman-governance repository.",
       "type": "canon",
       "path": "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "6abe9914fc9ba4564d8d0f0f906055611448c4518b6db27e651d998312354d68"
+      "file_hash_sha256": "53c8f4d26178cdc49dd9dc9cb9ec17e26ed0c9171b2d23360b96f27c5fdb1814",
+      "last_updated": "2026-04-08",
+      "change_note": "v1.0.0: Entry added for EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md; totals updated (Canon Files 92\u219293, Combined Total 107\u2192108, PUBLIC_API 78\u219279); FOREMAN_AUTHORITY and IAA_PRE_BRIEF versions updated"
     },
     {
       "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",
