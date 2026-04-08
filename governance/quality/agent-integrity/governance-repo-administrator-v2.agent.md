@@ -47,7 +47,7 @@ iaa_oversight:
     pass: record_audit_token_and_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3
     escalate: route_to_cs2_do_not_open_pr
-  advisory_phase: PHASE_A_ADVISORY
+  advisory_phase: PHASE_B_BLOCKING
   policy_ref: AGCFPP-001
 
 identity:

@@ -1,7 +1,7 @@
 # Agent Integrity Index
 
 **Status**: CANONICAL | **Authority**: CS2 only  
-**Date**: 2026-03-21  
+**Date**: 2026-04-08  
 **Maintained by**: IAA / CS2
 
 ---
@@ -16,9 +16,9 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 
 | Agent Contract | Authoritative Path | SHA256 (Baseline) | Last Updated | Updated By |
 |---|---|---|---|---|
-| `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `f928b2a735af4db49e369800cbe21d00362111e6c2f8e38cceddd6be960e5183` | 2026-03-21 | Copilot (IAA pre-brief protocol upgrades — APGI-cmy/maturion-foreman-governance#issue — Step 3.2 trigger table live; IAA_PRE_BRIEF_PROTOCOL.md Tier 2 reference added; contract footer v3.4.0 parity fix) |
-| `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `50cf9dd930d32db503112c1a0ea96d7d055d79675c6fef171ab97207f3a4c920` | 2026-03-03 | CS2 (IAA Pre-Brief Protocol — APGI-cmy/maturion-foreman-governance#1294 — sections 3.0a/3.0b + wave_checklist PREHANDOVER field) |
-| `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `ebb8ce29deea054ee98386850764ae7c89ae5ea20fbbdeac1ee0cae494b60254` | 2026-04-05 | Copilot (OVF-002 pre-IAA commit check — APGI-cmy/maturion-foreman-governance#1319 — Phase 4.5 Step 4.5.0 pre-IAA commit state check added; IAA_PRE_BRIEF_PROTOCOL.md reference updated v1.1.0→v1.2.0; FAIL-ONLY-ONCE Rules A-10, B-07 added) |
+| `CodexAdvisor-agent.md` | `.github/agents/CodexAdvisor-agent.md` | `628850b3cafa24041564c660958f9da288c73c5b4677c5d4d4c692a375ff7aa6` | 2026-04-08 | Copilot (PHASE_B_BLOCKING + Pre-IAA Commit-State Gate §4.3c — Harden pre-IAA handover discipline — Step 4.3c commit-state gate added; advisory_phase PHASE_A_ADVISORY→PHASE_B_BLOCKING) |
+| `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `99e54a5fc3faeee436272e8018ec04142dfc12865f27c21abab1f6f54071ff8b` | 2026-04-08 | Copilot (PHASE_B_BLOCKING + §4.3a Pre-IAA Commit-State Gate + §4.5 IAA Invocation — Harden pre-IAA handover discipline — advisory_phase PHASE_A_ADVISORY→PHASE_B_BLOCKING; §4.3a commit-state gate added; §4.5 IAA invocation added; IAA_PRE_BRIEF_PROTOCOL.md reference v1.1.0→v1.2.0) |
+| `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `55b87adf5794ceba832051caa3113fb01de0ea6ad8e21f8e4d12368ee585b961` | 2026-04-08 | Copilot (PHASE_B_BLOCKING — Harden pre-IAA handover discipline — advisory_phase PHASE_A_ADVISORY→PHASE_B_BLOCKING) |
 | `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `0d414fd2d059fbda8ed8a2bab42fc4698674d893d45ea954d92d0f940165b8ac` | 2026-03-03 | CS2 (IAA Pre-Brief Protocol — APGI-cmy/maturion-foreman-governance#1294 — Step 2.4 Wave Checklist Invocation Gate + Step 3.5 Pre-Brief cross-reference) |
 
 ---

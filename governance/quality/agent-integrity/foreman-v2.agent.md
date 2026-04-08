@@ -43,7 +43,7 @@ iaa_oversight:
     pass: record_audit_token_and_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_build_phase
     escalate: route_to_cs2_do_not_open_pr
-  advisory_phase: PHASE_A_ADVISORY
+  advisory_phase: PHASE_B_BLOCKING
   policy_ref: AGCFPP-001
 
 identity:
@@ -1426,6 +1426,107 @@ echo "✅ [FM_H] Agent is cleared to open the PR"
 
 **Commentary**: This check is **BLOCKING**. If any gate fails the agent **stops, fixes the issue, and re-runs from step 1**. Opening a PR on a local gate failure is PROHIBITED — same class as pushing directly to main.
 
+### 4.3a Pre-IAA Commit-State Gate (FM_H — BLOCKING)
+
+**Authority**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.2.0
+
+> **ABSOLUTE RULE (OVF-002)**: This gate MUST pass before IAA is invoked. A dirty working tree
+> or uncommitted deliverable at IAA invocation time is a handover hygiene violation.
+> FAIL-ONLY-ONCE Rules A-10, B-07.
+
+```bash
+#!/bin/bash
+# FM Handover - Pre-IAA Commit-State Gate
+# Priority: FM_H  — BLOCKING: do NOT invoke IAA until all checks PASS
+
+echo "🔒 PRE-IAA COMMIT-STATE GATE (BLOCKING)"
+
+COMMIT_STATE_FAILURES=()
+
+# Check 1: Working tree must be clean
+echo "  Checking: working tree status"
+DIRTY_FILES=$(git status --porcelain 2>/dev/null)
+if [ -n "${DIRTY_FILES}" ]; then
+  COMMIT_STATE_FAILURES+=("dirty working tree — uncommitted changes present")
+  echo "  ❌ Working tree: DIRTY"
+  git status --porcelain | while read f; do echo "     ${f}"; done
+else
+  echo "  ✅ Working tree: CLEAN"
+fi
+
+# Check 2: No unstaged diffs
+echo "  Checking: unstaged diffs"
+UNSTAGED=$(git diff --name-only 2>/dev/null)
+if [ -n "${UNSTAGED}" ]; then
+  COMMIT_STATE_FAILURES+=("unstaged diffs present: ${UNSTAGED}")
+  echo "  ❌ Unstaged diffs: PRESENT (${UNSTAGED})"
+else
+  echo "  ✅ Unstaged diffs: NONE"
+fi
+
+# Check 3: PREHANDOVER proof committed at HEAD
+echo "  Checking: PREHANDOVER proof at HEAD"
+PROOF_PATH=$(ls .agent-admin/prehandover/proof-*.md 2>/dev/null | head -1)
+if [ -z "${PROOF_PATH}" ]; then
+  COMMIT_STATE_FAILURES+=("PREHANDOVER proof not found")
+  echo "  ❌ PREHANDOVER proof: MISSING"
+elif git ls-files --error-unmatch "${PROOF_PATH}" > /dev/null 2>&1; then
+  echo "  ✅ PREHANDOVER proof: COMMITTED at HEAD (${PROOF_PATH})"
+else
+  COMMIT_STATE_FAILURES+=("PREHANDOVER proof not committed: ${PROOF_PATH}")
+  echo "  ❌ PREHANDOVER proof: NOT COMMITTED (${PROOF_PATH})"
+fi
+
+# Check 4: Session memory committed at HEAD
+echo "  Checking: session memory at HEAD"
+MEMORY_PATH=$(ls .agent-workspace/foreman/memory/session-*.md 2>/dev/null | head -1)
+if [ -z "${MEMORY_PATH}" ]; then
+  COMMIT_STATE_FAILURES+=("session memory not found")
+  echo "  ❌ Session memory: MISSING"
+elif git ls-files --error-unmatch "${MEMORY_PATH}" > /dev/null 2>&1; then
+  echo "  ✅ Session memory: COMMITTED at HEAD (${MEMORY_PATH})"
+else
+  COMMIT_STATE_FAILURES+=("session memory not committed: ${MEMORY_PATH}")
+  echo "  ❌ Session memory: NOT COMMITTED (${MEMORY_PATH})"
+fi
+
+# Check 5: Builder-deliverable evidence committed
+echo "  Checking: builder evidence artifacts at HEAD"
+BUILDER_EVIDENCE=$(find .agent-admin -name "*.md" -newer .agent-workspace/foreman/environment-health.json 2>/dev/null | head -5)
+if [ -n "${BUILDER_EVIDENCE}" ]; then
+  # Verify all newer evidence files are tracked
+  UNTRACKED_EVIDENCE=$(git ls-files --others --exclude-standard .agent-admin/ 2>/dev/null | head -5)
+  if [ -n "${UNTRACKED_EVIDENCE}" ]; then
+    COMMIT_STATE_FAILURES+=("untracked evidence files found: ${UNTRACKED_EVIDENCE}")
+    echo "  ❌ Builder evidence: UNTRACKED FILES (${UNTRACKED_EVIDENCE})"
+  else
+    echo "  ✅ Builder evidence: all tracked"
+  fi
+fi
+
+# Check 6: Show HEAD commit for audit trail
+echo "  HEAD commit:"
+git show --name-only --format="    Commit: %H%n    Date:   %ad%n    Title:  %s" HEAD 2>/dev/null | head -8
+
+# Evaluate
+if [ ${#COMMIT_STATE_FAILURES[@]} -gt 0 ]; then
+  echo ""
+  echo "❌ [FM_H] PRE-IAA COMMIT-STATE GATE FAILED — IAA MUST NOT BE INVOKED"
+  echo "Failures:"
+  for f in "${COMMIT_STATE_FAILURES[@]}"; do echo "  - ${f}"; done
+  echo ""
+  echo "ACTION REQUIRED: Commit all pending changes, re-run §4.3 parity check, then re-run this gate."
+  exit 1
+fi
+
+echo ""
+echo "✅ [FM_H] PRE-IAA COMMIT-STATE GATE PASSED"
+echo "✅ [FM_H] Working tree is clean. All declared deliverables committed at HEAD."
+echo "✅ [FM_H] Agent is cleared to invoke IAA."
+```
+
+**Commentary**: This gate is **BLOCKING**. If any check fails: commit pending changes, re-run §4.3, then re-run this gate. Only then invoke IAA.
+
 ### 4.4 Builder QA & Compliance Check (FM_H)
 
 **Script**: Verify builder compliance, reassign if needed
@@ -1483,6 +1584,26 @@ fi
 
 **Commentary**: Automated compliance checking with reassignment protocol - FM supervises, doesn't implement fixes.
 
+### 4.5 IAA Invocation (FM_H — BLOCKING)
+
+**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.2.0 | FAIL-ONLY-ONCE Rules A-09, A-10, B-07
+
+> ⚠️ **ABSOLUTE RULE**: Do NOT open a PR — do NOT call `report_progress` for the final handover commit — without first invoking the IAA agent and recording the result. Skipping IAA invocation is a constitutional violation (INC-IAA-SKIP-001).
+
+```bash
+# FM_H: Invoke IAA for independent assurance (mandatory before PR open)
+task(agent_type: "independent-assurance-agent")
+```
+
+**Record exactly one of the following before advancing to PR open:**
+
+- Tool call returned ASSURANCE-TOKEN → record token reference in PREHANDOVER proof `iaa_audit_token` field and in a dedicated token file at `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`. Proceed.
+- Tool call returned REJECTION-PACKAGE → stop. Address every cited failure. Re-run from step 4.3. Do not open PR.
+- Tool call returned deployment-error → record `PHASE_B_BLOCKING` status unavailable; output PHASE_A_ADVISORY. Flag PR for IAA review.
+- Tool call was NOT made → **HALT. INC-IAA-SKIP-001. Record in FAIL-ONLY-ONCE. Escalate to CS2.**
+
+> ⛔ **DO NOT OPEN A PR UNTIL THE IAA TOOL CALL RESPONSE IS VISIBLE IN YOUR OUTPUT AND RECORDED IN THE PREHANDOVER PROOF.**
+
 ---
 
 ## Priority Reference Matrix
@@ -1515,7 +1636,7 @@ fi
 - `governance/canon/FOREMAN_MEMORY_PROTOCOL.md` - Memory management
 - `governance/canon/AGENT_CONTRACT_PROTECTION_PROTOCOL.md` - Contract modification
 - `governance/canon/MERGE_GATE_INTERFACE_STANDARD.md` - Standard gate interface
-- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 - IAA Pre-Brief Protocol (wave checklist, proactive assurance)
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.2.0 - IAA Pre-Brief Protocol (wave checklist, proactive assurance; v1.2.0: Wave Checklist Gate Applicability)
 
 **Reference Canon** (FM_L - consult when relevant):
 - `governance/canon/MANDATORY_ENHANCEMENT_CAPTURE_STANDARD.md` - Improvement capture

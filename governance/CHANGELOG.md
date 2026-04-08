@@ -64,7 +64,38 @@ Each entry follows this structure:
 
 ## Change History
 
-### COMMENT-ONLY-AGENT-SESSION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+### PRE-IAA-COMMIT-STATE-GATE-CANON-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — pre-IAA handover discipline hardening  
+**Effective Date**: 2026-04-08
+
+**Summary**: Canonised the Pre-IAA Commit-State Gate as mandatory §4.3c in the Handover phase (Phase 4) for all producing-agent contracts. This gate sits between §4.3 Merge Gate Parity Check and IAA invocation and blocks handover if the working tree is dirty or any declared deliverable is not committed at HEAD. Adds canonical bash template, required checks, guidance for recording commit-state evidence in PREHANDOVER proof, and PHASE_B_BLOCKING alignment note for IAA deployment phase wording. Also updates producing-agent contracts (Foreman, CodexAdvisor, GA) via CodexAdvisor to include the gate and update `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING` where operationally true.
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (UPDATED) — v1.1.5 → v1.2.0; added §4.3c Pre-IAA Commit-State Gate section; updated Handover Phase Structure index; added Handover Validation Checklist entry; added PHASE_B_BLOCKING alignment note; added commit-state anti-pattern entry
+- `governance/CANON_INVENTORY.json` (UPDATED) — SHA256 + version updated for `AGENT_HANDOVER_AUTOMATION.md`
+- `.github/agents/foreman-v2.agent.md` (UPDATED via CodexAdvisor) — §4.3a Pre-IAA Commit-State Gate added; IAA invocation step added to Phase 4; `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING`
+- `.github/agents/CodexAdvisor-agent.md` (UPDATED via CodexAdvisor) — Pre-IAA Commit-State Gate added before §4.4 IAA Invocation; `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING`
+- `.github/agents/governance-repo-administrator-v2.agent.md` (UPDATED via CodexAdvisor) — `advisory_phase: PHASE_A_ADVISORY → PHASE_B_BLOCKING` (commit-state gate already present at §4.5.0 from PR #1319)
+- `governance/quality/agent-integrity/` reference copies (UPDATED via CodexAdvisor) — matching reference copies updated for all modified agent contracts
+- `governance/quality/agent-integrity/INTEGRITY_INDEX.md` (UPDATED via CodexAdvisor) — new SHA256 baselines recorded for updated contracts
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: YES (producing agents must add §4.3c before next IAA invocation)  
+**Migration Guidance**: All producing agents (Foreman, CodexAdvisor, builder contracts in consumer repos) must include §4.3c Pre-IAA Commit-State Gate before every IAA invocation. The canonical template is in `AGENT_HANDOVER_AUTOMATION.md` §Section 4.3c. Consumer repos receive a layer-down ripple to update their builder agent contracts.
+
+**Rationale**: Recurring A-021 failures show that producing agents can satisfy §4.3 local parity checks, generate artifacts, and invoke IAA while still holding uncommitted changes. This creates commit-state / ceremony-state mismatches that IAA cannot detect at invocation time but that cause avoidable REJECTION-PACKAGEs. Shifting this check left — as a canonical BLOCKING gate before every IAA invocation — closes the gap between "local checks pass" and "IAA is reviewing the exact committed state".
+
+**Impact**: All producing-agent contracts require §4.3c. Builder contracts in consumer repos must be updated via layer-down ripple. The `PHASE_A_ADVISORY` metadata field should be updated to `PHASE_B_BLOCKING` in all producing-agent contracts where IAA is operationally deployed.
+
+**Layer-Down Status**: PUBLIC_API — consumer repos must update builder contracts to include §4.3c Pre-IAA Commit-State Gate.
+
+**References**: Issue — [Governance] Harden pre-IAA handover discipline: explicit commit-state gate + PHASE_B alignment across producing-agent contracts; OVF-002; FAIL-ONLY-ONCE Rules A-10, B-07; INDEPENDENT_ASSURANCE_AGENT_CANON.md; IAA_PRE_BRIEF_PROTOCOL.md v1.2.0
+
+---
+
+
 
 **Changed By**: governance-repo-administrator-v2  
 **Approved By**: CS2 (Johan Ras) — operational governance protocol; additive canon  
