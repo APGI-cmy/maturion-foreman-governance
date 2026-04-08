@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-04-08",
-  "total_canons": 199,
-  "generation_timestamp": "2026-04-08T07:15:36Z",
+  "total_canons": 198,
+  "generation_timestamp": "2026-04-05T07:15:36Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -258,20 +258,20 @@
     },
     {
       "filename": "AGENT_HANDOVER_AUTOMATION.md",
-      "version": "1.1.4",
-      "file_hash": "39867b98a8d68ceebc3676b8066070e3b410e6f68a954bfd28089e0ef3d24514",
+      "version": "1.1.5",
+      "file_hash": "cff4158b2646246ea68de535398cc00e60c9c4424cfad7d6e239f51427f01d3c",
       "effective_date": "2026-04-06",
       "description": "Canonical governance document: AGENT_HANDOVER_AUTOMATION",
       "type": "canon",
       "path": "governance/canon/AGENT_HANDOVER_AUTOMATION.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "39867b98a8d68ceebc3676b8066070e3b410e6f68a954bfd28089e0ef3d24514",
+      "file_hash_sha256": "cff4158b2646246ea68de535398cc00e60c9c4424cfad7d6e239f51427f01d3c",
       "ripple_dispatched": "2026-02-24",
       "ripple_log": ".agent-admin/governance/ripple-logs/ripple-agent-handover-parity-20260224.md",
       "ripple_in_repo_status": "COMPLETE",
       "ripple_consumer_status": "PENDING \u2014 layer-down issues to be created in consumer repos",
-      "last_updated": "2026-04-06",
-      "change_note": "v1.1.4: Added PHASE_B_BLOCKING_TOKEN field to \u00a74.3b token file heredoc; updated version footer."
+      "last_updated": "2026-04-08",
+      "change_note": "v1.1.5: Added Phase 4 Terminal State Rule; forbade remaining Phase 4 ceremony language; OPOJD hardening"
     },
     {
       "filename": "AGENT_INDUCTION_PROTOCOL.md",
@@ -758,17 +758,6 @@
       "file_hash_sha256": "d89d6462367cc980a64e835994640028940c7ea752eeff8424726d18fd04e6af"
     },
     {
-      "filename": "COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md",
-      "version": "1.0.0",
-      "file_hash": "3b342b6fa746ad418a767f46c38dca5ff19a5e5f4ee72d766645337e5211b29c",
-      "effective_date": "2026-04-08",
-      "description": "Operational governance protocol canonising the comment-only / non-mutating agent session mode as a first-class governance concept. Defines COMMENT_ONLY and MUTATION_CAPABLE session modes, prohibits hybrid ambiguity, provides consumer repo migration guidance, and recommends lint enforcement for fallback-token ambiguity in declared comment-only sessions.",
-      "type": "canon",
-      "path": "governance/canon/COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md",
-      "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "3b342b6fa746ad418a767f46c38dca5ff19a5e5f4ee72d766645337e5211b29c"
-    },
-    {
       "filename": "COMMISSIONING_EVIDENCE_MODEL.md",
       "version": "1.0",
       "file_hash": "0b0d89ba3faa8b5434876f8ef1c827d4f1bd4a85fad20853ee69e424ec57030f",
@@ -1117,14 +1106,16 @@
     },
     {
       "filename": "FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
-      "version": "1.0.0",
-      "file_hash": "794010b4250c247b2da68b3e6dcc35bb067c3e1f4b18069c26f95b2c0ec85684",
+      "version": "1.1.0",
+      "file_hash": "56c2ea0b5f50b479a75d7f1cb05e601c6f971461e3a9dc2a662b9f09a6e306b8",
       "effective_date": "2025-12-24",
       "description": "This document formally defines the **Foreman (FM)** as a **managerial authority** within the Maturion ecosystem, establishing its supervisory responsibilities over builders and the execution process.",
       "type": "canon",
       "path": "governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "794010b4250c247b2da68b3e6dcc35bb067c3e1f4b18069c26f95b2c0ec85684"
+      "file_hash_sha256": "56c2ea0b5f50b479a75d7f1cb05e601c6f971461e3a9dc2a662b9f09a6e306b8",
+      "last_updated": "2026-04-08",
+      "change_note": "v1.1.0: Added \u00a714.3 Review Layer Role Separation; CS2 role clarification; OPOJD hardening"
     },
     {
       "filename": "FOREMAN_MEMORY_PROTOCOL.md",
@@ -1679,14 +1670,16 @@
     },
     {
       "filename": "MERGE_GATE_PHILOSOPHY.md",
-      "version": "2.0.0",
-      "file_hash": "6278dbbc6d3b136ec4d1a0d7dc368cf0585ea3c916f86f713095bd1818023e64",
+      "version": "2.1.0",
+      "file_hash": "315ee14f3a8abd882f212463983d3115ace9adbb64f3a77f2cbdc47e2bca5774",
       "effective_date": "unknown",
       "description": "Canonical governance document: MERGE_GATE_PHILOSOPHY",
       "type": "canon",
       "path": "governance/canon/MERGE_GATE_PHILOSOPHY.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "6278dbbc6d3b136ec4d1a0d7dc368cf0585ea3c916f86f713095bd1818023e64"
+      "file_hash_sha256": "315ee14f3a8abd882f212463983d3115ace9adbb64f3a77f2cbdc47e2bca5774",
+      "last_updated": "2026-04-08",
+      "change_note": "v2.1.0: Added Phase 4 Completeness Gate section; machine-enforced artifact checklist; OPOJD hardening"
     },
     {
       "filename": "MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md",
@@ -1771,14 +1764,16 @@
     },
     {
       "filename": "POLICY-NO-ONLY-LANGUAGE.md",
-      "version": "v1.0",
-      "file_hash": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253",
+      "version": "v1.2",
+      "file_hash": "6d50f484cf2ab84527a8c940d47138657ce81c71f93f51a76e19a74220f5dc09",
       "effective_date": "2026-01-08",
       "description": "This policy establishes a **zero-tolerance ban on minimizing language** when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
       "type": "policy",
       "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253"
+      "file_hash_sha256": "6d50f484cf2ab84527a8c940d47138657ce81c71f93f51a76e19a74220f5dc09",
+      "last_updated": "2026-04-08",
+      "change_note": "v1.2: Added outstanding to prohibited handover language; \u00a74.5 Outstanding/Deferral section; updated minimizing_language_patterns.json patterns"
     },
     {
       "filename": "POST_MORTEM_PROTOCOL.md",
