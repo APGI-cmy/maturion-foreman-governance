@@ -37,7 +37,7 @@ iaa_oversight:
     pass: record_audit_token_in_dedicated_file_then_proceed_to_pr_open
     stop_and_fix: halt_handover_return_to_phase3_step3_6
     escalate: route_to_cs2_do_not_open_pr
-  advisory_phase: PHASE_A_ADVISORY
+  advisory_phase: PHASE_B_BLOCKING
   policy_ref: AGCFPP-001
   artifact_immutability:
     prehandover_proof: read_only_after_initial_commit
@@ -747,6 +747,91 @@ Token file path: `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md
 The PREHANDOVER proof `iaa_audit_token` field already recorded the token reference at initial commit time. No update to the PREHANDOVER proof is needed or permitted after commit.
 
 If the IAA issues a REJECTION-PACKAGE: it writes a new rejection artifact. Open a STOP-AND-FIX, fix the gaps, and re-initiate handover with a fresh PREHANDOVER proof in a new commit.
+
+**Step 4.3c — Pre-IAA Commit-State Gate (BLOCKING):**
+
+> **ABSOLUTE RULE (OVF-002 — AGENT_HANDOVER_AUTOMATION.md v1.2.0)**: This gate MUST pass before
+> IAA is invoked. A dirty working tree or uncommitted deliverable at IAA invocation time is a
+> handover hygiene violation. FAIL-ONLY-ONCE Rules A-10, B-07.
+
+Run the following verification before proceeding:
+
+```bash
+#!/bin/bash
+# CodexAdvisor Handover - Pre-IAA Commit-State Gate
+# Priority: CA_H  — BLOCKING: do NOT invoke IAA until all checks PASS
+
+echo "🔒 PRE-IAA COMMIT-STATE GATE (BLOCKING)"
+COMMIT_STATE_FAILURES=()
+
+# Check 1: Working tree must be clean
+DIRTY_FILES=$(git status --porcelain 2>/dev/null)
+if [ -n "${DIRTY_FILES}" ]; then
+  COMMIT_STATE_FAILURES+=("dirty working tree")
+  echo "  ❌ Working tree: DIRTY"
+  git status --porcelain | while read f; do echo "     ${f}"; done
+else
+  echo "  ✅ Working tree: CLEAN"
+fi
+
+# Check 2: No unstaged diffs
+UNSTAGED=$(git diff --name-only 2>/dev/null)
+if [ -n "${UNSTAGED}" ]; then
+  COMMIT_STATE_FAILURES+=("unstaged diffs: ${UNSTAGED}")
+  echo "  ❌ Unstaged diffs: PRESENT"
+else
+  echo "  ✅ Unstaged diffs: NONE"
+fi
+
+# Check 3: PREHANDOVER proof committed at HEAD
+PROOF_PATH=$(ls .agent-admin/prehandover/proof-*.md 2>/dev/null | head -1)
+if [ -z "${PROOF_PATH}" ]; then
+  COMMIT_STATE_FAILURES+=("PREHANDOVER proof missing")
+  echo "  ❌ PREHANDOVER proof: MISSING"
+elif git ls-files --error-unmatch "${PROOF_PATH}" > /dev/null 2>&1; then
+  echo "  ✅ PREHANDOVER proof: COMMITTED (${PROOF_PATH})"
+else
+  COMMIT_STATE_FAILURES+=("PREHANDOVER proof not committed: ${PROOF_PATH}")
+  echo "  ❌ PREHANDOVER proof: NOT COMMITTED"
+fi
+
+# Check 4: Session memory committed at HEAD
+MEMORY_PATH=$(ls .agent-workspace/CodexAdvisor-agent/memory/session-*.md 2>/dev/null | head -1)
+if [ -z "${MEMORY_PATH}" ]; then
+  COMMIT_STATE_FAILURES+=("session memory missing")
+  echo "  ❌ Session memory: MISSING"
+elif git ls-files --error-unmatch "${MEMORY_PATH}" > /dev/null 2>&1; then
+  echo "  ✅ Session memory: COMMITTED (${MEMORY_PATH})"
+else
+  COMMIT_STATE_FAILURES+=("session memory not committed: ${MEMORY_PATH}")
+  echo "  ❌ Session memory: NOT COMMITTED"
+fi
+
+# Check 5: Agent contract and Tier 2 stub committed at HEAD
+for f in .github/agents/CodexAdvisor-agent.md .agent-workspace/CodexAdvisor-agent/knowledge/index.md; do
+  if [ -f "${f}" ] && ! git ls-files --error-unmatch "${f}" > /dev/null 2>&1; then
+    COMMIT_STATE_FAILURES+=("uncommitted file: ${f}")
+    echo "  ❌ Not committed: ${f}"
+  fi
+done
+
+# Check 6: Show HEAD commit for audit trail
+echo "  HEAD commit:"
+git show --name-only --format="    Commit: %H%n    Date:   %ad%n    Title:  %s" HEAD 2>/dev/null | head -8
+
+if [ ${#COMMIT_STATE_FAILURES[@]} -gt 0 ]; then
+  echo ""
+  echo "❌ [CA_H] PRE-IAA COMMIT-STATE GATE FAILED — IAA MUST NOT BE INVOKED"
+  for f in "${COMMIT_STATE_FAILURES[@]}"; do echo "  - ${f}"; done
+  echo "ACTION REQUIRED: Commit pending changes, re-run §4.3 parity check, then re-run this gate."
+  exit 1
+fi
+
+echo "✅ [CA_H] PRE-IAA COMMIT-STATE GATE PASSED — cleared to invoke IAA."
+```
+
+If PASS: proceed to Step 4.4 — IAA Invocation.
+If FAIL: commit pending changes, re-run §4.3 parity check, re-run this gate. Do NOT invoke IAA.
 
 **Step 4.4 — IAA Invocation:**
 
