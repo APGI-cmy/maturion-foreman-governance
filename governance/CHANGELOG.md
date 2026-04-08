@@ -64,6 +64,42 @@ Each entry follows this structure:
 
 ## Change History
 
+### EXECUTION-CEREMONY-ADMINISTRATION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down  
+**Effective Date**: 2026-04-08
+
+**Summary**: Formalises the `execution-ceremony-admin-agent` role and the three-role ceremony model into binding governance canon. Creates `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (ECAP-001), amends four directly related canon files to cross-reference the new protocol and eliminate role-boundary contradictions, and updates the governance inventory and manifest. The new protocol converts the ECAS-001 strategy document into a canonical governance standard that is layer-down-ready for consumer repos.
+
+**Affected Artifacts**:
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (NEW) — Canonical role definition for `execution-ceremony-admin-agent`; seven-step canonical handover sequence; three-part readiness model; authority boundary model; layer-down requirements. PUBLIC_API.
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.1.0→v1.2.0) — Added §9.6 Relationship to execution-ceremony-admin-agent; added §14.4 Updated Handover Sequence with Ceremony Administration
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.5→v1.1.6) — Added §Execution Ceremony Administration Integration; Phase 4 role responsibilities table; bundle-return pattern; invariants section
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.3.0→v1.4.0) — Added §Execution Ceremony Admin Non-Substitution Rule; references updated
+- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.2.0→v1.2.1) — Reference update: added EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md; Phase 4 prep by ceremony admin clarified; IAA independence unchanged
+- `governance/CANON_INVENTORY.json` — New entry (EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md); hashes updated for all 4 amended files; `total_canons` 198→199; `last_updated` → 2026-04-08
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — New entry in §3.3 Delegation & Execution Models; totals updated (Canon Files 92→93, Combined Total 107→108, PUBLIC_API 78→79); FOREMAN_AUTHORITY and IAA_PRE_BRIEF versions updated
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO (additive governance for new role; existing PREHANDOVER and IAA rules unchanged)  
+**Migration Guidance**: Consumer repos (`APGI-cmy/maturion-isms`, `APGI-cmy/app_management_centre`) should:
+1. Register `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` in their `GOVERNANCE_ALIGNMENT.md`
+2. Update Foreman execution references to reflect the canonical handover sequence (§5.2 of the new protocol)
+3. Confirm existing PREHANDOVER and IAA token rules remain intact (no weakening)
+4. Apply the three-part readiness concept definitions (substantive, administrative, independent assurance verdict)
+This is a follow-on layer-down; consumer repo changes are NOT part of this PR.
+
+**Rationale**: Recurring failure patterns in recent waves were driven by ceremony-administration defects (stale artifacts, inconsistent evidence bundles, commit-state mismatches) rather than substantive build defects. The Foreman role was carrying both orchestration and ceremony-administration burden. This protocol introduces a dedicated administrator-class role to own ceremony administration, freeing the Foreman for managerial orchestration and preserving IAA independence.
+
+**Impact**: All consumer repositories using Foreman-led execution with IAA assurance must layer down the new protocol. IAA independence and PREHANDOVER immutability rules are unchanged. Foreman accountability is unchanged. The introduction of the `execution-ceremony-admin-agent` is a delegation of administration — not a delegation of accountability.
+
+**Layer-Down Status**: PUBLIC_API — mandatory layer-down for all repos using Foreman-led execution.
+
+**References**: Issue — Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down; `maturion/strategy/Execution_Ceremony_Administration_Strategy.md` (ECAS-001)
+
+---
+
 ### COMMENT-ONLY-AGENT-SESSION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
