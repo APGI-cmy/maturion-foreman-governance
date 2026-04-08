@@ -64,7 +64,63 @@ Each entry follows this structure:
 
 ## Change History
 
-### PRE-BUILD-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-2026-04-06 — 2026-04-06 — NON_BREAKING_ENHANCEMENT
+### OPOJD-OUTSTANDING-LANGUAGE-BAN-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — jobs must not be handed over using "outstanding"  
+**Effective Date**: 2026-04-08
+
+**Summary**: Canonized the prohibition of "outstanding" as handover language. A job described with "outstanding" items is a BLOCKED job — not a complete one. Added to OPOJD §1.3.3 forbidden handover language, POLICY-NO-ONLY-LANGUAGE.md §3 and new §4.5, and machine-readable minimizing_language_patterns.json (2 new patterns).
+
+**Affected Artifacts**:
+- `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` (v2.1 — §1.3.3 extended with "outstanding" rows)
+- `governance/policy/POLICY-NO-ONLY-LANGUAGE.md` (v1.1 → v1.2 — §3 extended; §4.5 Outstanding/Deferral added)
+- `governance/policy/minimizing_language_patterns.json` (2 new patterns: outstanding_handover_context, remain_outstanding)
+- `governance/CANON_INVENTORY.json` — hash updated for POLICY-NO-ONLY-LANGUAGE.md
+- `governance/CHANGELOG.md` — this entry
+
+
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — issue: OPOJD hardening — forbid handover of Phase 4 incomplete jobs  
+**Effective Date**: 2026-04-08
+
+**Summary**: Canonized terminal-state completion semantics in OPOJD and aligned governance stack to
+forbid handover of Phase 4 incomplete jobs. Closes the semantic loophole permitting "work complete,
+remaining Phase 4 ceremony" handover framing. A job is COMPLETE only when all required Phase 1–4
+obligations have been executed and all required artifacts are committed on the branch. Missing Phase 4
+artifacts place the session in BLOCKED / INCOMPLETE state; handover is prohibited. Machine-enforced via
+new `governance-ceremony/phase4-completeness` CI gate.
+
+**Ripple Required**: YES — layer-down to all consumer repos using Foreman / IAA / PREHANDOVER model
+
+**Affected Artifacts**:
+- `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` (v2.0 → v2.1) — Added §1.3 Terminal-State Completion Semantics; forbidden handover language list; Phase 4 required artifact list; role separation table
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.4 → v1.1.5) — Added Phase 4 Terminal State Rule block at Phase 4 structure overview; explicit prohibition on "remaining Phase 4 ceremony"
+- `governance/canon/MERGE_GATE_PHILOSOPHY.md` (v2.0.0 → v2.1.0) — Added §Phase 4 Completeness Gate; machine-enforced artifact checklist; role separation clarification
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.0.0 → v1.1.0) — Added §14.3 Review Layer Role Separation; CS2 role clarification
+- `.github/workflows/governance-ceremony-gate.yml` — Added `governance-ceremony/phase4-completeness` job (session memory presence check + PREHANDOVER proof reinforcement)
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — all changes are additive normative language and a new CI check.
+
+**Rationale**: Repeated recent handovers presented with "remaining Phase 4 ceremony" wording — a pattern
+validated by PREHANDOVER evidence and FAIL-ONLY-ONCE incident records. Phase 4 is not post-job admin;
+it is part of the job. This change restores the intended meaning of the existing layers and removes
+the loophole. No new review layer is added; the intended separation (producer → IAA → CI → CS2) is
+restored.
+
+**Impact**: Strengthens OPOJD without changing the fundamental operating model. Reduces incomplete PR
+handovers to CS2. Preserves separation: Foreman / producer assembles evidence; IAA audits independently;
+CI enforces mechanically; CS2 decides to merge.
+
+**References**:
+- Origin: repeated recent PR handover pattern in consumer repos
+- Issue: OPOJD hardening — forbid handover of Phase 4 incomplete jobs and canonize terminal-state completion semantics
+- PR: copilot/opojd-harden-complete-jobs
+
+
 
 **Changed By**: governance-repo-administrator-v2  
 **Approved By**: CS2 (Johan Ras) — GA orchestration authority for downstream closure tracking  
