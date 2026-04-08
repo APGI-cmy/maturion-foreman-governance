@@ -1465,7 +1465,7 @@
       "path": "governance/canon/IAA_PRE_BRIEF_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "15d220e5bf6167cf8fec640af62db8ec1e67753f00f079028efa48e1ff531a59",
-      "canonical_version": "1.2.0",
+      "canonical_version": "1.2.1",
       "local_version": null,
       "local_extension": false,
       "layer_up_status": "NONE",
