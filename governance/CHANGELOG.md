@@ -64,7 +64,34 @@ Each entry follows this structure:
 
 ## Change History
 
-### PRE-BUILD-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-2026-04-06 — 2026-04-06 — NON_BREAKING_ENHANCEMENT
+### COMMENT-ONLY-AGENT-SESSION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — operational governance protocol; additive canon  
+**Effective Date**: 2026-04-08
+
+**Summary**: Canonised the comment-only / non-mutating agent session mode (`COMMENT_ONLY`) as a first-class governance concept in a new operational governance protocol. Closes the governance gap where Copilot / agent-assisted PR sessions intended to be non-mutating had no explicit, deterministic session mode declaration requirement. Defines `COMMENT_ONLY` and `MUTATION_CAPABLE` modes, prohibits hybrid ambiguity (e.g. fallback token expressions in declared comment-only sessions), documents consumer repo migration guidance, and provides a follow-up enforcement/lint recommendation for fallback-token ambiguity detection.
+
+**Affected Artifacts**:
+- `governance/canon/COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md` (NEW) — New operational governance protocol; 10 requirements (REQ-COS-001 through REQ-COS-010); PUBLIC_API layer-down to all repos
+- `governance/CANON_INVENTORY.json` — New entry added (`COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md`); `total_canons` → 199; `last_updated` → 2026-04-08
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — Entry added to section 3.4 Gate & Enforcement Models; totals updated (Canon Files 91→92, Combined Total 106→107, PUBLIC_API 77→78)
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO (additive governance; no existing workflow is broken)  
+**Migration Guidance**: Consumer repos using Copilot / agent-assisted PR workflows should adopt explicit session mode declarations per REQ-COS-001. The lint check in §6 of the new protocol is advisory until formally promoted to a merge gate. Existing push-intercept safety-net workflows remain valid.
+
+**Rationale**: Session mode was previously ambiguous — governance canon defined token requirements for write-capable (mutation) sessions but did not define non-mutating delivery sessions as a first-class concept. This caused wasted runtime on non-actionable push/token reasoning and interrupted OPOJD delivery in consumer repos. The canonical rule is narrow and durable: session mode must be explicit, deterministic, and non-ambiguous.
+
+**Impact**: All consumer repositories are directed to adopt explicit session mode declarations. The existing `GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md` remains the authoritative canon for `MUTATION_CAPABLE` sessions; the new protocol extends and complements it for `COMMENT_ONLY` sessions.
+
+**Layer-Down Status**: PUBLIC_API — consumer repos must register alignment to this protocol in their `GOVERNANCE_ALIGNMENT.md`.
+
+**References**: Issue — [Governance] Canonise explicit comment-only OPOJD session mode for Copilot / non-mutating agent runs; `GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md`
+
+---
+
+
 
 **Changed By**: governance-repo-administrator-v2  
 **Approved By**: CS2 (Johan Ras) — GA orchestration authority for downstream closure tracking  
