@@ -20,4 +20,5 @@ Phase 3 — Step 3.4 — Working Phase Proof Review
 ## Routing Status
 - Routed to: governance-repo-administrator-v2
 - Delivery method: Response text + rejection-package-1332.md artifact
-- Acknowledgement received: PENDING
+- Acknowledgement received: YES — `.agent-workspace/governance-repo-administrator/memory/session-ECAP-001-20260408-remediation.md`
+- Remediation completed: YES (OVL-CG-006 ✅, OVL-CG-005 ✅, A-026/OVF-003 ✅ per remediation session)
