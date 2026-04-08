@@ -112,3 +112,85 @@ jobs:
           echo ""
           echo "✅ governance-ceremony/verdict: PASS"
           echo "   Proof: ${PROOF_FILE}"
+
+  # Job 3: Phase 4 Completeness Check
+  # Verifies all required Phase 4 artifacts are present per OPOJD v2.1 and MERGE_GATE_PHILOSOPHY v2.1.0
+  phase4-completeness:
+    name: governance-ceremony/phase4-completeness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify Phase 4 artifact completeness
+        run: |
+          echo "=== Governance Ceremony — Phase 4 Completeness Check ==="
+          echo "Authority: governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md v2.1"
+          echo "           governance/canon/MERGE_GATE_PHILOSOPHY.md v2.1.0"
+          echo ""
+
+          MISSING_ARTIFACTS=()
+
+          # ── Check 1: PREHANDOVER proof ──────────────────────────────────────
+          echo "Checking: PREHANDOVER proof..."
+
+          PROOF_FOUND=false
+
+          if ls .agent-admin/prehandover/proof-*.md 1>/dev/null 2>&1; then
+            PROOF_FOUND=true
+          elif ls .agent-admin/prehandover/prehandover_proof*.md 1>/dev/null 2>&1; then
+            PROOF_FOUND=true
+          elif ls PREHANDOVER_PROOF*.md 1>/dev/null 2>&1; then
+            PROOF_FOUND=true
+          fi
+
+          if [ "${PROOF_FOUND}" = "true" ]; then
+            echo "  ✅ PREHANDOVER proof: PRESENT"
+          else
+            echo "  ❌ PREHANDOVER proof: ABSENT"
+            MISSING_ARTIFACTS+=("PREHANDOVER proof (.agent-admin/prehandover/proof-*.md or prehandover_proof*.md)")
+          fi
+
+          # ── Check 2: Session memory ─────────────────────────────────────────
+          echo "Checking: Session memory..."
+
+          MEMORY_FOUND=false
+          if find .agent-workspace -maxdepth 3 -path "*/memory/session-*.md" -type f 2>/dev/null | grep -q .; then
+            MEMORY_FOUND=true
+          fi
+
+          if [ "${MEMORY_FOUND}" = "true" ]; then
+            echo "  ✅ Session memory: PRESENT"
+          else
+            echo "  ❌ Session memory: ABSENT"
+            MISSING_ARTIFACTS+=("Session memory (.agent-workspace/<agent>/memory/session-*.md)")
+          fi
+
+          # ── Evaluate ────────────────────────────────────────────────────────
+          echo ""
+          if [ ${#MISSING_ARTIFACTS[@]} -gt 0 ]; then
+            echo "❌ PHASE 4 COMPLETENESS CHECK FAILED"
+            echo ""
+            echo "Missing required Phase 4 artifacts:"
+            for artifact in "${MISSING_ARTIFACTS[@]}"; do
+              echo "  - ${artifact}"
+            done
+            echo ""
+            echo "Per OPOJD v2.1: A job is COMPLETE only when all required Phase 1–4 obligations"
+            echo "have been executed and all required artifacts are committed on the branch."
+            echo ""
+            echo "Missing Phase 4 artifacts place the session in BLOCKED / INCOMPLETE state."
+            echo "A PR in this state must not be handed over for CS2 merge review."
+            echo ""
+            echo "Required action:"
+            echo "  1. Create the missing artifact(s) listed above"
+            echo "  2. Commit them to this branch"
+            echo "  3. Re-run the pre-handover gate parity check locally"
+            echo ""
+            echo "Reference: governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md v2.1 §1.3"
+            echo "           governance/canon/MERGE_GATE_PHILOSOPHY.md v2.1.0 §Phase 4 Completeness Gate"
+            exit 1
+          fi
+
+          echo "✅ governance-ceremony/phase4-completeness: PASS"
+          echo "   All required Phase 4 artifacts present — job is in COMPLETE state"

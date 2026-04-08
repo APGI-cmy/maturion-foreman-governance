@@ -3,33 +3,34 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: "1324"
-DATE_UTC: 2026-04-06T12:19:22Z
+PR_ID: "OPOJD-PHASE4-HARDENING"
+DATE_UTC: 2026-04-08T00:00:00Z
 AGENT_ID: governance-repo-administrator-v2
 RESPONSIBILITY_DOMAIN: Governance Administration
-CHANGE_TYPE: governance_orchestration
+CHANGE_TYPE: governance_normative_enhancement
 ---
 ```
 
 ## Executive Summary
-Orchestrate downstream closure of the canonical 12-stage pre-build governance model across
-all affected consumer repositories and agent layers. Creates orchestration tracker, layer-down
-ripple notice, CS2 escalation for agent contract tracks, ripple log, session memory, and
-CHANGELOG entry. IAA invoked; ASSURANCE-TOKEN `IAA-20260406-PR1324-R2-PASS` received.
+OPOJD hardening — canonize terminal-state completion semantics and forbid handover of Phase 4
+incomplete jobs. Updates OPOJD doctrine (v2.1), AGENT_HANDOVER_AUTOMATION (v1.1.5),
+MERGE_GATE_PHILOSOPHY (v2.1.0), FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL (v1.1.0).
+Adds machine-enforced `governance-ceremony/phase4-completeness` CI gate.
+Creates ripple log and layer-down notice. CANON_INVENTORY updated with new hashes.
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/correction-addendum-1324-r1-20260406.md
-- .agent-admin/assurance/iaa-token-session-GA-066-r2-20260406.md
-- .agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md
-- .agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md
-- .agent-admin/prehandover/prehandover_proof_downstream-closure-20260406.md
-- .agent-admin/prehandover/prehandover_proof_downstream-closure-clarification-20260407.md
-- .agent-workspace/governance-repo-administrator/memory/session-GA-066-20260406.md
-- SCOPE_DECLARATION.md
+- .agent-admin/governance/ripple-logs/ripple-opojd-phase4-hardening-20260408.md
+- .agent-admin/prehandover/proof-opojd-phase4-hardening-20260408.md
+- .agent-workspace/governance-repo-administrator/memory/session-GA-opojd-hardening-20260408.md
+- .github/workflows/governance-ceremony-gate.yml
+- governance/CANON_INVENTORY.json
 - governance/CHANGELOG.md
-- governance/coordination/PRE_BUILD_12_STAGE_DOWNSTREAM_CLOSURE_TRACKER.md
-- governance/layer-down/RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406.md
+- governance/canon/AGENT_HANDOVER_AUTOMATION.md
+- governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
+- governance/canon/MERGE_GATE_PHILOSOPHY.md
+- governance/layer-down/RIPPLE-OPOJD-PHASE4-HARDENING-20260408.md
+- governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md
 - governance/scope-declaration.md
 
 ## Scope Boundaries
