@@ -4,7 +4,7 @@
 ```yaml
 ---
 PR_ID: "copilot/create-canon-execution-ceremony-admin"
-DATE_UTC: 2026-04-08T11:20:00Z
+DATE_UTC: 2026-04-08T11:47:00Z
 AGENT_ID: governance-repo-administrator-v2
 RESPONSIBILITY_DOMAIN: Governance Administration
 CHANGE_TYPE: governance_normative_enhancement
@@ -12,10 +12,11 @@ CHANGE_TYPE: governance_normative_enhancement
 ```
 
 ## Executive Summary
-ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agent` role and ripple the new model into all directly related canon. Creates `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.0.0; amends four related canon files; updates CANON_INVENTORY (total_canons 198→199) and GOVERNANCE_CANON_MANIFEST (Canon Files 92→93). Governance package is layer-down-ready. Includes remediation artifacts for REJECTION-PACKAGE IAA-20260408-PR1332 (OVL-CG-006, OVL-CG-005, A-026/OVF-003 resolved).
+ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agent` role and ripple the new model into all directly related canon. Creates `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.0.0; amends four related canon files; updates CANON_INVENTORY (total_canons 198→199) and GOVERNANCE_CANON_MANIFEST (Canon Files 92→93). Governance package is layer-down-ready. Includes remediation artifacts for REJECTION-PACKAGE IAA-20260408-PR1332 and IAA ASSURANCE-TOKEN (IAA-20260408-PR1332-R2).
 
 ## FILES_CHANGED
 
+- .agent-admin/assurance/iaa-token-session-ECAP-001-20260408.md
 - .agent-admin/assurance/rejection-package-1332.md
 - .agent-admin/escalation-inbox/ovf-003-scope-declaration-recurrence-20260408.md
 - .agent-admin/gates/gate-results-20260408T105848Z.json
@@ -46,8 +47,8 @@ ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agen
 - `governance/CANON_INVENTORY.json` — new entry + updated hashes; total_canons 198→199
 - `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — §3.3 new entry; totals 92→93
 - `governance/CHANGELOG.md` — ECAP-001 entry
-- Evidence and session artifacts (prehandover proofs, gate results, session memory)
-- Remediation artifacts: acknowledgement, rejection-package, OVF-003 escalation, rejection tracking update
+- Evidence and session artifacts (prehandover proofs, gate results, session memory, rejection tracking)
+- IAA assurance token (IAA-20260408-PR1332-R2 — MERGE PERMITTED)
 
 ### Out of Scope
 - No changes to agent contracts (`.github/agents/`)
@@ -65,13 +66,13 @@ ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agen
 
 ## Scope-to-Diff Attestation
 
-This scope-declaration was generated as the absolute last action before IAA invocation, from `git diff --name-only origin/main...HEAD` (committed) plus staged files. All 18 files listed above match the actual branch diff.
+FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (19 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
 
-**IAA Token**: PENDING — IAA invocation in progress  
+**IAA Token**: `IAA-20260408-PR1332-R2` — ASSURANCE-TOKEN — MERGE PERMITTED  
 **Attestation**: governance-repo-administrator-v2  
-**Date**: 2026-04-08T11:20:00Z
+**Date**: 2026-04-08T11:47:00Z
 
 ---
 
-**Timestamp**: 2026-04-08T11:20:00Z  
+**Timestamp**: 2026-04-08T11:47:00Z  
 **Agent**: governance-repo-administrator-v2
