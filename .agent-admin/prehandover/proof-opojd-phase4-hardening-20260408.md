@@ -32,13 +32,15 @@
 
 | File | Change | Version |
 |------|--------|---------|
-| `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` | v2.0 → v2.1: Added §1.3 Terminal-State Completion Semantics | v2.1 |
-| `governance/canon/AGENT_HANDOVER_AUTOMATION.md` | v1.1.4 → v1.1.5: Added Phase 4 Terminal State Rule | v1.1.5 |
-| `governance/canon/MERGE_GATE_PHILOSOPHY.md` | v2.0.0 → v2.1.0: Added Phase 4 Completeness Gate section | v2.1.0 |
-| `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` | v1.0.0 → v1.1.0: Added §14.3 Review Layer Role Separation | v1.1.0 |
+| `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` | v2.1: §1.3 Terminal-State Semantics; §1.3.3 "outstanding" rows added | v2.1 |
+| `governance/canon/AGENT_HANDOVER_AUTOMATION.md` | v1.1.5: Phase 4 Terminal State Rule block | v1.1.5 |
+| `governance/canon/MERGE_GATE_PHILOSOPHY.md` | v2.1.0: Phase 4 Completeness Gate section | v2.1.0 |
+| `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` | v1.1.0: §14.3 Review Layer Role Separation | v1.1.0 |
 | `.github/workflows/governance-ceremony-gate.yml` | Added `governance-ceremony/phase4-completeness` job | NEW job |
-| `governance/CHANGELOG.md` | Entry OPOJD-PHASE4-HARDENING-2026-04-08 added | — |
-| `governance/CANON_INVENTORY.json` | Hashes/versions updated for 3 canon files | — |
+| `governance/policy/POLICY-NO-ONLY-LANGUAGE.md` | v1.1 → v1.2: §3 "outstanding" added; §4.5 Outstanding/Deferral added | v1.2 |
+| `governance/policy/minimizing_language_patterns.json` | 2 new patterns: outstanding_handover_context, remain_outstanding | — |
+| `governance/CHANGELOG.md` | 2 entries added | — |
+| `governance/CANON_INVENTORY.json` | Hashes updated for POLICY-NO-ONLY-LANGUAGE.md and 3 canon files | — |
 | `.agent-admin/governance/ripple-logs/ripple-opojd-phase4-hardening-20260408.md` | NEW ripple log | — |
 | `governance/layer-down/RIPPLE-OPOJD-PHASE4-HARDENING-20260408.md` | NEW layer-down ripple notice | — |
 

@@ -12,17 +12,17 @@ CHANGE_TYPE: governance_normative_enhancement
 ```
 
 ## Executive Summary
-OPOJD hardening — canonize terminal-state completion semantics and forbid handover of Phase 4
-incomplete jobs. Updates OPOJD doctrine (v2.1), AGENT_HANDOVER_AUTOMATION (v1.1.5),
-MERGE_GATE_PHILOSOPHY (v2.1.0), FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL (v1.1.0).
-Adds machine-enforced `governance-ceremony/phase4-completeness` CI gate.
-Creates ripple log and layer-down notice. CANON_INVENTORY updated with new hashes.
+OPOJD hardening (Phase 1 + Phase 2): Canonize terminal-state completion semantics (Phase 1),
+and add "outstanding" to the canonical prohibited handover language (Phase 2 — this session).
+"Outstanding items" at handover time = BLOCKED state, not COMPLETE. Updates OPOJD doctrine §1.3.3,
+POLICY-NO-ONLY-LANGUAGE.md §3 and §4.5, minimizing_language_patterns.json (2 new patterns).
 
 ## FILES_CHANGED
 
 - .agent-admin/governance/ripple-logs/ripple-opojd-phase4-hardening-20260408.md
 - .agent-admin/prehandover/proof-opojd-phase4-hardening-20260408.md
 - .agent-workspace/governance-repo-administrator/memory/session-GA-opojd-hardening-20260408.md
+- .agent-admin/waves/wave-opojd-phase4-hardening-20260408-checklist.md
 - .github/workflows/governance-ceremony-gate.yml
 - governance/CANON_INVENTORY.json
 - governance/CHANGELOG.md
@@ -31,27 +31,26 @@ Creates ripple log and layer-down notice. CANON_INVENTORY updated with new hashe
 - governance/canon/MERGE_GATE_PHILOSOPHY.md
 - governance/layer-down/RIPPLE-OPOJD-PHASE4-HARDENING-20260408.md
 - governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md
+- governance/policy/POLICY-NO-ONLY-LANGUAGE.md
+- governance/policy/minimizing_language_patterns.json
 - governance/scope-declaration.md
 
 ## Scope Boundaries
 
 ### In Scope
-- `governance/coordination/PRE_BUILD_12_STAGE_DOWNSTREAM_CLOSURE_TRACKER.md` (NEW): 5-track orchestration tracker
-- `governance/layer-down/RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406.md` (NEW): Layer-down ripple notice
-- `.agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md` (NEW): CS2 escalation for Tracks 2, 3, 4
-- `.agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md` (NEW): Ripple log
-- `.agent-admin/prehandover/prehandover_proof_downstream-closure-20260406.md` (NEW): PREHANDOVER proof
-- `.agent-admin/prehandover/prehandover_proof_downstream-closure-clarification-20260407.md` (NEW): Append-only clarification addendum documenting final IAA R2 PASS state
-- `.agent-admin/assurance/iaa-token-session-GA-066-r2-20260406.md` (NEW): IAA assurance token
-- `.agent-admin/assurance/correction-addendum-1324-r1-20260406.md` (NEW): R1 correction addendum (A-030)
-- `.agent-workspace/governance-repo-administrator/memory/session-GA-066-20260406.md` (NEW): Session memory
-- `governance/CHANGELOG.md`: PRE-BUILD-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION entry added
-- `governance/scope-declaration.md`: Updated for this PR
+- `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` (v2.1): Terminal-state semantics; §1.3.3 forbidden language extended with "outstanding" rows
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.5): Phase 4 Terminal State Rule block
+- `governance/canon/MERGE_GATE_PHILOSOPHY.md` (v2.1.0): Phase 4 Completeness Gate section
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.1.0): §14.3 Role Separation
+- `.github/workflows/governance-ceremony-gate.yml`: phase4-completeness CI job
+- `governance/policy/POLICY-NO-ONLY-LANGUAGE.md` (v1.2): §3 "outstanding" added; §4.5 Outstanding/Deferral section
+- `governance/policy/minimizing_language_patterns.json`: 2 new patterns (outstanding_handover_context, remain_outstanding)
+- `governance/CANON_INVENTORY.json`: hashes updated
+- `governance/CHANGELOG.md`: 2 entries added
+- Ripple log and layer-down notice
 
 ### Out of Scope
 - No changes to agent contracts (`.github/agents/`)
-- No changes to `.github/workflows/`)
-- No changes to canon files (`governance/canon/**`)
 - No application code changes
 
 ## Constitutional Alignment

@@ -64,7 +64,22 @@ Each entry follows this structure:
 
 ## Change History
 
-### OPOJD-PHASE4-HARDENING-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+### OPOJD-OUTSTANDING-LANGUAGE-BAN-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — jobs must not be handed over using "outstanding"  
+**Effective Date**: 2026-04-08
+
+**Summary**: Canonized the prohibition of "outstanding" as handover language. A job described with "outstanding" items is a BLOCKED job — not a complete one. Added to OPOJD §1.3.3 forbidden handover language, POLICY-NO-ONLY-LANGUAGE.md §3 and new §4.5, and machine-readable minimizing_language_patterns.json (2 new patterns).
+
+**Affected Artifacts**:
+- `governance/opojd/OPOJD_COMPLETE_JOB_HANDOVER_DOCTRINE.md` (v2.1 — §1.3.3 extended with "outstanding" rows)
+- `governance/policy/POLICY-NO-ONLY-LANGUAGE.md` (v1.1 → v1.2 — §3 extended; §4.5 Outstanding/Deferral added)
+- `governance/policy/minimizing_language_patterns.json` (2 new patterns: outstanding_handover_context, remain_outstanding)
+- `governance/CANON_INVENTORY.json` — hash updated for POLICY-NO-ONLY-LANGUAGE.md
+- `governance/CHANGELOG.md` — this entry
+
+
 
 **Changed By**: governance-repo-administrator-v2  
 **Approved By**: CS2 (Johan Ras) — issue: OPOJD hardening — forbid handover of Phase 4 incomplete jobs  

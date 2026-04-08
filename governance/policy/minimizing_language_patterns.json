@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "updated_at": "2026-02-28",
+  "updated_at": "2026-04-08",
   "source": "governance/policy/minimizing_language_patterns.json",
   "patterns": [
     {
@@ -57,6 +57,20 @@
       "id": "mostly_complete",
       "pattern": "\\bmostly\\b\\s+(complete|done|finished|passing|green)\\b",
       "description": "Mostly complete/passing phrasing"
+    },
+    {
+      "id": "outstanding_handover_context",
+      "pattern": "\\boutstanding\\b[^.\\n]{0,80}\\b(item(?:s)?|work|ceremony|artifact(?:s)?|obligation(?:s)?|action(?:s)?|phase|invocation|pending|remain(?:ing|s)?)\\b",
+      "description": "Outstanding + incomplete-obligation context — presenting a job with outstanding obligations is handing over a BLOCKED job",
+      "allowlist": [
+        "\\boutstanding\\b[^.\\n]{0,40}\\b(performance|result(?:s)?|achievement(?:s)?|quality|contribution(?:s)?)\\b"
+      ],
+      "allowlist_rationale": "Outstanding used as a positive descriptor (e.g., 'outstanding performance') is not minimizing language. The allowlist avoids false positives on complimentary uses."
+    },
+    {
+      "id": "remain_outstanding",
+      "pattern": "\\bremain(?:s|ing)?\\s+outstanding\\b",
+      "description": "Remain(s/ing) outstanding — obligations not fulfilled at handover time"
     }
   ]
 }

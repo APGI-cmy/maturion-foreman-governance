@@ -121,6 +121,14 @@ The following phrases are prohibited in PR descriptions, commit messages, and ha
 | "IAA token still pending but job otherwise complete" | A job missing required IAA assurance is not complete |
 | "handover complete except for evidence artifacts" | Evidence is part of the job; absence = BLOCKED |
 | "work complete; ceremony can follow" | There is no separation between work and ceremony |
+| "outstanding" (items / work / ceremony) | Presenting a job with "outstanding" items is handing over incomplete work — the job is BLOCKED, not COMPLETE |
+| "still outstanding" | Same violation — deferral of incomplete obligations |
+| "the following items remain outstanding" | A job with remaining obligations has not been completed |
+
+**"Outstanding" is prohibited** in any handover communication used to describe obligations not yet fulfilled. A job with outstanding items is a BLOCKED job. It must not be handed over, opened as ready for review, or described as complete. The permitted alternatives are:
+
+- State: **BLOCKED — [specific item] not complete**
+- Or: complete the item first, then hand over with **COMPLETE** status
 
 Acceptable handover states are: **COMPLETE** or **BLOCKED** (with explicit reason and no merge request).
 

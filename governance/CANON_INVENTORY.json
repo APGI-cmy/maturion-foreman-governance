@@ -1764,14 +1764,16 @@
     },
     {
       "filename": "POLICY-NO-ONLY-LANGUAGE.md",
-      "version": "v1.0",
-      "file_hash": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253",
+      "version": "v1.2",
+      "file_hash": "6d50f484cf2ab84527a8c940d47138657ce81c71f93f51a76e19a74220f5dc09",
       "effective_date": "2026-01-08",
       "description": "This policy establishes a **zero-tolerance ban on minimizing language** when describing technical debt, failing tests, or unresolved warnings in PR submissions, QA reports, or completion declarations.",
       "type": "policy",
       "path": "governance/policy/POLICY-NO-ONLY-LANGUAGE.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "88369fb8b764f063f5d67f0ae1c4caed5587b65412ca11ef083ad6b4ab31b253"
+      "file_hash_sha256": "6d50f484cf2ab84527a8c940d47138657ce81c71f93f51a76e19a74220f5dc09",
+      "last_updated": "2026-04-08",
+      "change_note": "v1.2: Added outstanding to prohibited handover language; \u00a74.5 Outstanding/Deferral section; updated minimizing_language_patterns.json patterns"
     },
     {
       "filename": "POST_MORTEM_PROTOCOL.md",
