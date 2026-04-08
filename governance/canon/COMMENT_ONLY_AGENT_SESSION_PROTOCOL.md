@@ -7,7 +7,7 @@
 **Effective Date**: 2026-04-08  
 **Owner**: Governance Administrator  
 **Precedence**: Subordinate to CONSTITUTION.md; Extends GOVERNANCE_TOKEN_USAGE_REQUIREMENTS.md  
-**Layer-Down Status**: PUBLIC_API — Mandatory propagation to all consumer repositories  
+**Layer-Down Status**: PUBLIC_API — Applicable to consumer repositories using Copilot or agent-assisted PR sessions in non-mutating delivery mode  
 **Scope**: Copilot / agent-assisted PR sessions operating in non-mutating delivery mode  
 **Tier**: Operational governance protocol (not a broad constitutional rule)
 

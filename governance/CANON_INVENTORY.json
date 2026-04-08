@@ -760,13 +760,13 @@
     {
       "filename": "COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md",
       "version": "1.0.0",
-      "file_hash": "a4b8b5b66e4ba20c16df64327613e126d628d92d3715189b187c52c8c752658d",
+      "file_hash": "425cb244c52f8c0b44003cb804af984545bd060c2c4319628fa0ca853534652c",
       "effective_date": "2026-04-08",
       "description": "Operational governance protocol canonising the comment-only / non-mutating agent session mode as a first-class governance concept. Defines COMMENT_ONLY and MUTATION_CAPABLE session modes, prohibits hybrid ambiguity, provides consumer repo migration guidance, and recommends lint enforcement for fallback-token ambiguity in declared comment-only sessions.",
       "type": "canon",
       "path": "governance/canon/COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "a4b8b5b66e4ba20c16df64327613e126d628d92d3715189b187c52c8c752658d"
+      "file_hash_sha256": "425cb244c52f8c0b44003cb804af984545bd060c2c4319628fa0ca853534652c"
     },
     {
       "filename": "COMMISSIONING_EVIDENCE_MODEL.md",
