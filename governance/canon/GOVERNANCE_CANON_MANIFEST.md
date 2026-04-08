@@ -113,6 +113,7 @@ It serves to:
 |-----------|---------|-------------------|------------------|--------------|
 | `CASCADING_FAILURE_CIRCUIT_BREAKER.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
 | `CI_CONFIRMATORY_NOT_DIAGNOSTIC.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
+| `COMMENT_ONLY_AGENT_SESSION_PROTOCOL.md` | 1.0.0 | PUBLIC_API | All Repos | 2026-04-08 |
 | `FAILURE_PROMOTION_RULE.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
 | `FM_PREAUTH_CHECKLIST_CANON.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
 | `GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md` | 1.0.0 | OPTIONAL | FM App | 2026-01-05 |
@@ -257,10 +258,10 @@ These policies are located in `governance/policy/` and establish constitutional 
 
 ## 4. Governance Public API Summary
 
-**Total Canon Files**: 91  
+**Total Canon Files**: 92  
 **Total Policy Files**: 15  
-**Combined Total**: 106  
-**PUBLIC_API**: 77 files (73%)  
+**Combined Total**: 107  
+**PUBLIC_API**: 78 files (73%)  
 **OPTIONAL**: 16 files (15%)  
 **INTERNAL**: 13 files (12%)  
 **DEPRECATED**: 0 files (0%)
