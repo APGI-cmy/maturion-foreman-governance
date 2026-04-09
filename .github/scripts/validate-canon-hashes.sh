@@ -4,7 +4,7 @@
 #   - file_hash exactly 64 lowercase hex characters
 #   - file_hash == file_hash_sha256
 #   - version == canonical_version (if canonical_version is present and non-null)
-# Exits non-zero on first failure (fast-fail).
+# Accumulates all validation failures and exits non-zero after checking every entry.
 #
 # Usage: .github/scripts/validate-canon-hashes.sh [path/to/CANON_INVENTORY.json]
 # Default: governance/CANON_INVENTORY.json
