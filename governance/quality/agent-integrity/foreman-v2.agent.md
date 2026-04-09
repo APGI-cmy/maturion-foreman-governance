@@ -555,7 +555,7 @@ Evidence required from builder before QP evaluation:
 Generate before IAA invocation:
 - Gate results: `.agent-admin/gates/gate-results-<TIMESTAMP>.json`
 - Prehandover proof: `.agent-admin/prehandover/proof-<TIMESTAMP>.md` — **immutable after commit**
-- Session memory: `.agent-workspace/foreman-v2/memory/session-<SESSION_ID>.md`
+- Session memory: `.agent-workspace/foreman/memory/session-<SESSION_ID>.md`
 
 Prehandover proof MUST include:
 - Task summary
