@@ -18,6 +18,7 @@ CodexAdvisor session-012: Full review and repair of canonical `foreman-v2.agent.
 
 - .agent-admin/assurance/correction-addendum-session-012-wave1-20260409.md
 - .agent-admin/assurance/iaa-token-session-012-wave1-20260409-r2.md
+- .agent-admin/assurance/iaa-token-session-012-wave1-20260409-r3.md
 - .agent-admin/assurance/iaa-token-session-012-wave1-20260409.md
 - .agent-admin/assurance/rejection-package-1339.md
 - .agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-012-20260409.md
@@ -67,9 +68,9 @@ All modified files are within the Agent Contract Governance responsibility domai
 
 FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR. This scope declaration is the final update to this file; no further artifacts will be added to this PR.
 
-**IAA Token**: `IAA-20260409-PR1339-R2` — ASSURANCE-TOKEN — MERGE PERMITTED  
+**IAA Token**: `IAA-20260409-PR1339-R3` — ASSURANCE-TOKEN — MERGE PERMITTED  
 **Attestation**: CodexAdvisor-agent (session-012-20260409)  
-**Date**: 2026-04-09T09:10:00Z
+**Date**: 2026-04-09T11:07:00Z
 
 ---
 
