@@ -1,5 +1,5 @@
 # FAIL-ONLY-ONCE Registry — governance-repo-administrator
-Version: 1.1.0
+Version: 1.2.0
 Seeded: 2026-02-24
 Authority: Governance Repository Administrator Contract v2.0.0 | LIVING_AGENT_SYSTEM.md v6.2.0
 Update Protocol: After every breach RCA, governance-repo-administrator appends new rule + breach log entry. Never remove. Never skip.

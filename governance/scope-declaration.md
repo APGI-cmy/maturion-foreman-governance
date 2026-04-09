@@ -17,6 +17,7 @@ ECAP-001 follow-up quality closure: implements minimum necessary governance hard
 ## FILES_CHANGED
 
 - .agent-admin/assurance/rejection-package-ECAP-QC-20260409.md
+- .agent-admin/assurance/rejection-package-ECAP-QC-R2-20260409.md
 - .agent-admin/escalation-inbox/inv-504-codexadvisor-drift-20260409.md
 - .agent-admin/gates/gate-results-20260409T071821Z.json
 - .agent-admin/governance/ecap-001-quality-closure-defect-analysis.md
@@ -38,6 +39,7 @@ ECAP-001 follow-up quality closure: implements minimum necessary governance hard
 - .agent-workspace/governance-repo-administrator/memory/.archive/session-ECAP-001-20260408.md
 - .agent-workspace/governance-repo-administrator/memory/.archive/session-GA-064-20260405.md
 - .agent-workspace/governance-repo-administrator/memory/session-GA-067-20260409.md
+- .agent-workspace/independent-assurance-agent/memory/session-030-20260409.md
 - .github/scripts/validate-canon-hashes.sh
 - GOVERNANCE_ARTIFACT_INVENTORY.md
 - governance/CANON_INVENTORY.json
@@ -79,7 +81,7 @@ ECAP-001 follow-up quality closure: implements minimum necessary governance hard
 ## Scope-to-Diff Attestation
 All modified files are within the Governance Administration responsibility domain.
 
-FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (28 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
+FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (30 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
 
 **IAA Token**: PENDING — IAA re-invocation to follow immediately  
 **Attestation**: governance-repo-administrator-v2  

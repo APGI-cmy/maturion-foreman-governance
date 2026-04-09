@@ -745,9 +745,11 @@ This gate catches that mismatch before IAA invocation.
 
 **Effective**: 2026-04-09 | **Authority**: CS2 | **Added**: v1.3.0
 
-**Applicability**: This gate MUST run for any PR that includes `governance/scope-declaration.md`
-in its diff AND is subject to IAA assurance. If `governance/scope-declaration.md` is not being
-modified in the PR, this gate is informational only (no block required).
+**Applicability**: This gate is **BLOCKING** for all governance PRs — defined as any PR that
+modifies at least one file under `governance/`, `.agent-admin/`, `.agent-workspace/`, or `.github/`.
+For such PRs, `governance/scope-declaration.md` MUST be regenerated and committed as the final
+file before IAA invocation regardless of whether it was already in the diff. Non-governance PRs
+(application code, documentation only, no governance-path files) are exempt.
 
 ### Rule
 
@@ -784,10 +786,12 @@ echo "📋 SCOPE-DECLARATION PARITY GATE (BLOCKING — governance PRs)"
 
 SCOPE_FAILURES=()
 
-# Check 1: Verify scope-declaration.md is present
-if [ ! -f "governance/scope-declaration.md" ]; then
-  echo "  ⚠️  governance/scope-declaration.md not found — skipping (not a governance PR)"
-  echo "✅ Scope-Declaration Parity Gate: SKIP (not applicable)"
+# Check 1: Detect whether this is a governance PR
+# A PR is a governance PR if it touches any file under governance/, .agent-admin/, .agent-workspace/, or .github/
+GOVERNANCE_FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(governance/|\.agent-admin/|\.agent-workspace/|\.github/)' | wc -l | tr -d ' ')
+if [ "${GOVERNANCE_FILES}" -eq 0 ]; then
+  echo "  ℹ️  No governance-path files in branch diff — not a governance PR"
+  echo "✅ Scope-Declaration Parity Gate: SKIP (not a governance PR)"
   exit 0
 fi
 
