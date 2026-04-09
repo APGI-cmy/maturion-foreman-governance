@@ -3,8 +3,8 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: "copilot/create-canon-execution-ceremony-admin"
-DATE_UTC: 2026-04-08T11:47:00Z
+PR_ID: "copilot/complete-ecap-001-governance-quality-closure"
+DATE_UTC: 2026-04-09T07:18:21Z
 AGENT_ID: governance-repo-administrator-v2
 RESPONSIBILITY_DOMAIN: Governance Administration
 CHANGE_TYPE: governance_normative_enhancement
@@ -12,67 +12,74 @@ CHANGE_TYPE: governance_normative_enhancement
 ```
 
 ## Executive Summary
-ECAP-001: Create binding governance canon for the `execution-ceremony-admin-agent` role and ripple the new model into all directly related canon. Creates `EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.0.0; amends four related canon files; updates CANON_INVENTORY (total_canons 198→199) and GOVERNANCE_CANON_MANIFEST (Canon Files 92→93). Governance package is layer-down-ready. Includes remediation artifacts for REJECTION-PACKAGE IAA-20260408-PR1332 and IAA ASSURANCE-TOKEN (IAA-20260408-PR1332-R2).
+ECAP-001 follow-up quality closure: implements minimum necessary governance hardening (ECAP-QC-001 through ECAP-QC-004) to prevent the 7 failure modes identified in PR #1332 from recurring. Adds §4.3d Scope-Declaration Parity Gate to `AGENT_HANDOVER_AUTOMATION.md` v1.3.0; extends `validate-canon-hashes.sh` CANON-HASH-001 gate with version/canonical_version check; adds FAIL-ONLY-ONCE Rules B-08, B-09, B-10; creates end-to-end defect classification record for PR #1332.
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/iaa-token-session-ECAP-001-20260408.md
-- .agent-admin/assurance/rejection-package-1332.md
-- .agent-admin/escalation-inbox/ovf-003-scope-declaration-recurrence-20260408.md
-- .agent-admin/gates/gate-results-20260408T105848Z.json
-- .agent-admin/prehandover/proof-20260408T105848Z.md
-- .agent-admin/prehandover/proof-20260408T111427Z.md
-- .agent-workspace/governance-repo-administrator/memory/session-ECAP-001-20260408-remediation.md
-- .agent-workspace/governance-repo-administrator/memory/session-ECAP-001-20260408.md
-- .agent-workspace/independent-assurance-agent/escalation-inbox/rejection-tracking-1332-20260408.md
-- .agent-workspace/independent-assurance-agent/memory/session-029-20260408.md
+- .agent-admin/gates/gate-results-20260409T071821Z.json
+- .agent-admin/governance/ecap-001-quality-closure-defect-analysis.md
+- .agent-admin/prehandover/proof-20260409T071821Z.md
+- .agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-056-20260224.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-057-20260225.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-057-20260226.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-058-20260226.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-059-20260227.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-060-20260302.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-061-20260303.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-062-20260306.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-063-20260304.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-063-20260320.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-20260408.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-ECAP-001-20260408-remediation.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-ECAP-001-20260408.md
+- .agent-workspace/governance-repo-administrator/memory/.archive/session-GA-064-20260405.md
+- .agent-workspace/governance-repo-administrator/memory/session-GA-067-20260409.md
+- .github/scripts/validate-canon-hashes.sh
+- GOVERNANCE_ARTIFACT_INVENTORY.md
 - governance/CANON_INVENTORY.json
 - governance/CHANGELOG.md
 - governance/canon/AGENT_HANDOVER_AUTOMATION.md
-- governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md
-- governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
-- governance/canon/GOVERNANCE_CANON_MANIFEST.md
-- governance/canon/IAA_PRE_BRIEF_PROTOCOL.md
-- governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md
 - governance/scope-declaration.md
 
 ## Scope Boundaries
 
 ### In Scope
-- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (v1.0.0 NEW) — canonical role definition for execution-ceremony-admin-agent; seven-step handover sequence; three-part readiness model
-- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.1.0→v1.2.0) — §9.6 + §14.4
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.5→v1.1.6) — ceremony admin integration
-- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.3.0→v1.4.0) — non-substitution rule
-- `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` (v1.2.0→v1.2.1) — reference update
-- `governance/CANON_INVENTORY.json` — new entry + updated hashes; total_canons 198→199
-- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` — §3.3 new entry; totals 92→93
-- `governance/CHANGELOG.md` — ECAP-001 entry
-- Evidence and session artifacts (prehandover proofs, gate results, session memory, rejection tracking)
-- IAA assurance token (IAA-20260408-PR1332-R2 — MERGE PERMITTED)
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.6→v1.3.0) — §4.3d Scope-Declaration Parity Gate; Administrator evidence checklist ECAP-QC-001–004; Handover Validation Checklist; anti-patterns updated
+- `.github/scripts/validate-canon-hashes.sh` — CANON-HASH-001 gate extended with Check 3: version == canonical_version (ECAP-QC-003)
+- `.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md` (v1.1.0→v1.2.0) — Rules B-08, B-09, B-10; breach log ECAP-QC
+- `governance/CANON_INVENTORY.json` — AGENT_HANDOVER_AUTOMATION.md entry updated (version, hash, amended_date, canonical_version)
+- `governance/CHANGELOG.md` — ECAP-001-QUALITY-CLOSURE-2026-04-09 entry
+- `GOVERNANCE_ARTIFACT_INVENTORY.md` — last_updated refreshed
+- `.agent-admin/governance/ecap-001-quality-closure-defect-analysis.md` (NEW) — end-to-end defect classification for PR #1332
+- Evidence and session artifacts (gate results, prehandover proof, session memory, memory rotation archives)
+- `governance/scope-declaration.md` — this file (regenerated as final pre-IAA action)
 
 ### Out of Scope
 - No application code changes
-- No consumer repo layer-down (follow-on action)
+- Consumer repo layer-down (follow-on action — AGENT_HANDOVER_AUTOMATION.md is PUBLIC_API)
+- No changes to .github/agents/ files (Rule B-06 — never)
 
 ## Constitutional Alignment
 - `LIVING_AGENT_SYSTEM.md` v6.2.0 — GA contract authority
-- `FAIL-ONLY-ONCE.md` v1.1.0 — all universal and conditional rules
+- `FAIL-ONLY-ONCE.md` v1.2.0 — all universal and conditional rules
 - `CANON_INVENTORY_INTEGRITY_REQUIREMENTS.md` — hash integrity
-- CS2-authorised issue: Create canon for Execution Ceremony Administration and ripple related governance canon for consumer layer-down
+- CS2-authorised issue: ECAP-001 follow-up quality closure
 
 ## Ripple Requirements
-- New canon is PUBLIC_API. Consumer repos require follow-on layer-down (not part of this PR).
+- `AGENT_HANDOVER_AUTOMATION.md` is PUBLIC_API. Consumer repos require follow-on layer-down registration (not part of this PR).
 
 ## Scope-to-Diff Attestation
 All modified files are within the Governance Administration responsibility domain.
 
-FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (19 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
+FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR (25 files). This scope declaration is the final update to this file; no further artifacts will be added to this PR.
 
-**IAA Token**: `IAA-20260408-PR1332-R2` — ASSURANCE-TOKEN — MERGE PERMITTED  
+**IAA Token**: PENDING — IAA invocation to follow immediately  
 **Attestation**: governance-repo-administrator-v2  
-**Date**: 2026-04-08T11:47:00Z
+**Date**: 2026-04-09T07:18:21Z
 
 ---
 
-**Timestamp**: 2026-04-08T11:47:00Z  
+**Timestamp**: 2026-04-09T07:18:21Z  
 **Agent**: governance-repo-administrator-v2
+
