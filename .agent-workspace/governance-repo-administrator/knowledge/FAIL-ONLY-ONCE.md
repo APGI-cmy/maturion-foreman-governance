@@ -35,6 +35,9 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | B-04 | I am reviewing a new agent contract | I MUST verify the agent file includes a FAIL-ONLY-ONCE preflight attestation section in Phase 1 and that the registry stub exists. |
 | B-05 | CANON_INVENTORY total_canons is incremented | I MUST verify the new entry has a real SHA256 hash, provenance, and effective_date — not placeholder values. |
 | B-07 | I am about to invoke the IAA agent (Phase 4.5) | I MUST run `git status` and confirm the working tree is clean (no untracked, staged, or modified files that belong in this PR). If any such changes exist, I MUST commit them first, then re-run pre-handover gate parity checks, before invoking IAA. (OVF-002) |
+| B-08 | I am preparing a PREHANDOVER proof for a PR that amends one or more canon files | I MUST include a drift evidence table in the proof with before/after SHA256 for every amended canon file. A proof without per-file drift evidence when canon files were modified is non-compliant (ECAP-QC-001). |
+| B-09 | I am about to invoke IAA on a governance PR (any PR that modifies files under governance/, .agent-admin/, .agent-workspace/, or .github/) | I MUST run the §4.3d scope-declaration parity gate: regenerate `governance/scope-declaration.md` from `git diff --name-only origin/main...HEAD` as the absolute last file committed, verify the FILES_CHANGED count matches, commit it, then and only then invoke IAA. No further file modifications are permitted after scope-declaration regeneration (ECAP-QC-002). |
+| B-10 | I am updating any entry in CANON_INVENTORY.json | I MUST verify: (1) `amended_date` equals today's date for every amended entry; (2) `version == canonical_version` for every entry where `canonical_version` is present and non-null; (3) `file_hash` and `file_hash_sha256` are recomputed from the current file state. Failure to update any of these three fields is a metadata integrity violation (ECAP-QC-003, ECAP-QC-004). |
 
 ---
 
@@ -46,6 +49,7 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | A-09 | 2026-03-01 | PR #1253 (copilot/renumber-duplicate-rule-ids) — CS2 feedback on missing IAA invocation | GA opened PR #1253 without invoking IAA agent first; the omission violated Phase 4 Step 4.4 of the GA contract (`iaa_oversight.invocation_step`). Rule A-09 was created in this session to codify the requirement in FAIL-ONLY-ONCE and prevent recurrence. |
 | A-09 | 2026-03-03 | PR #1294 (copilot/create-iaa-pre-brief-protocol) — CS2 feedback: "You cannot hand over without IAA token. Invoke IAA agent now. Record this failure as learning." | GA submitted report_progress commits without invoking IAA agent first; A-09 was in the FAIL-ONLY-ONCE registry but was not applied before the final commit. Evidence artifacts and IAA invocation performed retroactively this session. |
 | OVF-002 | 2026-04-05 | PR #1313 and PR #1319 — recurring pattern: IAA invoked with staged-but-uncommitted changes present | GA invoked IAA agent in PR #1313 and PR #1319 with changes staged but not yet committed to the PR branch, creating unauditable session state at assurance time. CS2 directed promotion to active FAIL-ONLY-ONCE rule. Rules A-10 and B-07 added. |
+| ECAP-QC | 2026-04-09 | PR #1332 — multiple remediation cycles: OVL-CG-005 (missing drift evidence), OVL-CG-006 (stale hash), A-026×6 (stale scope-declaration), version/canonical_version mismatch, stale amended_date | PR #1332 required IAA rejection + remediation + CS2 post-merge comment fixes before merge. Five distinct failure modes identified. Rules B-08, B-09, B-10 added to prevent recurrence. |
 
 ---
 
@@ -56,6 +60,9 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 | B-06 | Agent Contract Protection | I do NOT modify any file in `.github/agents/` under any circumstance — including ripple execution. If ripple requires agent contract changes, I STOP, create an escalation, and wait for CS2 to authorize CodexAdvisor. | INCIDENT-2026-02-24-PR517-AGENT-CONTRACT-BREACH.md |
 | A-10 | Pre-IAA Commit State | I do NOT invoke IAA with a dirty working tree. All changes belonging to the current PR must be committed before IAA invocation. | OVF-002 — PR #1313 / PR #1319 recurring pattern — promoted 2026-04-05 per CS2 directive |
 | B-07 | Pre-IAA State Check | Immediately before IAA invocation at Phase 4.5, I run `git status` and confirm clean state. If dirty, I commit all pending changes, re-run gate parity, then invoke IAA. | OVF-002 — promoted 2026-04-05 per CS2 directive |
+| B-08 | Drift Evidence | For every PR that amends canon files, the PREHANDOVER proof MUST include a drift evidence table with before/after SHA256 for every amended file. No drift evidence = OVL-CG-005 finding. | ECAP-QC-001 — PR #1332 IAA REJECTION-PACKAGE 2026-04-09 |
+| B-09 | Scope-Declaration Parity | For governance PRs, regenerate `governance/scope-declaration.md` as the absolute last committed file before IAA invocation. Run §4.3d gate to verify FILES_CHANGED count matches `git diff --name-only origin/main...HEAD`. This rule codifies OVF-003 as an active check. | ECAP-QC-002 — PR #1332 A-026 (6th occurrence) + CS2 post-merge feedback 2026-04-09 |
+| B-10 | CANON_INVENTORY Metadata | When updating any CANON_INVENTORY.json entry: (1) set `amended_date` = today; (2) align `canonical_version` = `version`; (3) recompute `file_hash` and `file_hash_sha256` from current file. Failure = OVL-CG-006 or INV-607 or ECAP-QC-003. | ECAP-QC-003/ECAP-QC-004 — PR #1332 amended_date + version mismatch findings 2026-04-09 |
 
 ---
 
@@ -65,3 +72,4 @@ Policy: governance/canon/UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md
 |---------|------|--------|
 | 1.0.0 | 2026-02-24 | Initial creation — Rules A-01 through A-09; Rules B-01 through B-05; B-06 via RCA (INCIDENT-2026-02-24-PR517) |
 | 1.1.0 | 2026-04-05 | OVF-002 promotion — added Rule A-10 (Pre-IAA Commit State), Rule B-07 (Pre-IAA State Check); Section C breach log entry for OVF-002; Section D RCA entries for A-10 and B-07; per CS2 directive issue #1319 |
+| 1.2.0 | 2026-04-09 | ECAP-QC closure — added Rules B-08 (Drift Evidence), B-09 (Scope-Declaration Parity), B-10 (CANON_INVENTORY Metadata); Section C breach log entry for ECAP-QC; Section D RCA entries for B-08/B-09/B-10; per ECAP-001 follow-up quality closure issue |
