@@ -17,6 +17,7 @@ CodexAdvisor session-012: Full review and repair of canonical `foreman-v2.agent.
 ## FILES_CHANGED
 
 - .agent-admin/assurance/correction-addendum-session-012-wave1-20260409.md
+- .agent-admin/assurance/iaa-token-session-012-wave1-20260409.md
 - .agent-admin/assurance/rejection-package-1339.md
 - .agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-012-20260409.md
 - .agent-workspace/CodexAdvisor-agent/memory/foreman-governance-review-20260409.md
