@@ -228,7 +228,7 @@ metadata:
   authority: CS2
   last_updated: 2026-04-09
   contract_version: 3.0.0
-  change_summary: "v3.0.0: Full repair by CodexAdvisor session-012. Size reduced 62KB->~22KB; YAML hardened (secret_env_var, top-level can_invoke/cannot_invoke/own_contract, artifact_immutability, pre_brief, HALT-007/008, ESC-004); IAA pre-brief promoted to Phase 2; 12-stage pre-build model added; parallel-wave constraints explicit; EXPERIMENTAL status removed; contract_version bumped."
+  change_summary: "v3.0.0: Full repair by CodexAdvisor session-012. Size reduced 62KB->~29KB; YAML hardened (secret_env_var, top-level can_invoke/cannot_invoke/own_contract, artifact_immutability, pre_brief, HALT-007/008, ESC-004); IAA pre-brief promoted to Phase 2; 12-stage pre-build model added; parallel-wave constraints explicit; EXPERIMENTAL status removed; contract_version bumped."
   contract_architecture: governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
   preflight_pattern: governance/canon/AGENT_PREFLIGHT_PATTERN.md
   induction_protocol: governance/canon/AGENT_INDUCTION_PROTOCOL.md

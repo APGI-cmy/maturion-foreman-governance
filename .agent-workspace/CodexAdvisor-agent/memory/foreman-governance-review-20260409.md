@@ -91,7 +91,7 @@ Beyond size, the YAML structure deviates from the strengthened pattern in multip
 ## 4. Repair Actions Taken
 
 The repaired contract (D2) addresses all CRITICAL and HIGH deltas:
-- Size reduced from 62,414 to approximately 22,000 characters by removing embedded bash scripts, verbose commentary, and Priority Reference Matrix (all moved to Tier 2 reference)
+- Size reduced from 62,414 to approximately 29,000 characters by removing embedded bash scripts, verbose commentary, and Priority Reference Matrix (all moved to Tier 2 reference)
 - YAML hardened: `name`, top-level `can_invoke`/`cannot_invoke`/`own_contract`, `secret_env_var`, `artifact_immutability`, `pre_brief`, HALT-007, HALT-008, ESC-004
 - 12-stage pre-build model added (stage table with gate descriptions)
 - Parallel-wave constraints explicitly declared
