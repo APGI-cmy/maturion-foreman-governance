@@ -1,0 +1,27 @@
+{
+  "timestamp": "20260409T071821Z",
+  "session_id": "session-GA-067-20260409",
+  "agent": "governance-repo-administrator-v2",
+  "verdict": "PASS",
+  "gates": {
+    "merge-gate/verdict": {
+      "status": "PASS",
+      "details": {
+        "prehandover_proof_count": 8,
+        "proof_path": ".agent-admin/prehandover/proof-20260409T071821Z.md"
+      }
+    },
+    "governance/alignment": {
+      "status": "PASS",
+      "canon_state": "ALIGNED",
+      "placeholder_count": 0,
+      "total_canons": 199,
+      "script": ".github/scripts/validate-canon-hashes.sh",
+      "check_added": "version == canonical_version (ECAP-QC-003)"
+    },
+    "stop-and-fix/enforcement": {
+      "status": "PASS",
+      "open_blockers": 0
+    }
+  }
+}
