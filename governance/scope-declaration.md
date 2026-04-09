@@ -12,7 +12,7 @@ CHANGE_TYPE: agent_contract_repair
 ```
 
 ## Executive Summary
-CodexAdvisor session-012: Full review and repair of canonical `foreman-v2.agent.md` contract. Size reduced from 62,414 to 28,882 characters (was 208% over 30,000-character limit). YAML hardened to strengthened pattern. 12-stage pre-build model added. Parallel-wave constraints added. IAA pre-brief promoted to Phase 2 gate. All 9 critical deltas from D1 review artifact addressed. Includes IAA ceremony artifacts and Correction Addendum for REJECTION-PACKAGE IAA-20260409-PR1339.
+CodexAdvisor session-012: Full review and repair of canonical `foreman-v2.agent.md` contract. Size reduced from 62,414 to 28,894 characters (was 208% over 30,000-character limit). YAML hardened to strengthened pattern. 12-stage pre-build model added. Parallel-wave constraints added. IAA pre-brief promoted to Phase 2 gate. All 9 critical deltas from D1 review artifact addressed. Includes IAA ceremony artifacts and Correction Addendum for REJECTION-PACKAGE IAA-20260409-PR1339.
 
 ## FILES_CHANGED
 
