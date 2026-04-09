@@ -64,6 +64,35 @@ Each entry follows this structure:
 
 ## Change History
 
+### ECAP-001-QUALITY-CLOSURE-2026-04-09 — 2026-04-09 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: ECAP-001 follow-up quality closure  
+**Effective Date**: 2026-04-09
+
+**Summary**: Post-ECAP-001 governance quality closure (ECAP-QC-001 through ECAP-QC-004). Implements minimum necessary hardening to prevent the five failure-mode categories identified in PR #1332 from recurring in future canonical governance PRs. Key changes: new §4.3d Scope-Declaration Parity Gate in `AGENT_HANDOVER_AUTOMATION.md`; mandatory drift evidence and metadata correctness items in Administrator evidence checklist; extended `validate-canon-hashes.sh` to catch `version ≠ canonical_version` mismatches; three new FAIL-ONLY-ONCE rules (B-08, B-09, B-10).
+
+**Affected Artifacts**:
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.1.6→v1.3.0) — New §4.3d Scope-Declaration Parity Gate; updated §4.3 sequencing note; updated Administrator evidence checklist (ECAP-QC-001–004); updated Handover Validation Checklist; four new anti-patterns added
+- `governance/CANON_INVENTORY.json` — AGENT_HANDOVER_AUTOMATION.md entry updated (version 1.1.6→1.3.0, new hash, amended_date 2026-04-09, canonical_version aligned)
+- `.github/scripts/validate-canon-hashes.sh` — Extended CANON-HASH-001 gate: Check 3 added to detect version ≠ canonical_version (ECAP-QC-003)
+- `.agent-workspace/governance-repo-administrator/knowledge/FAIL-ONLY-ONCE.md` — v1.1.0→v1.2.0: Added Rules B-08 (drift evidence), B-09 (scope-declaration parity), B-10 (CANON_INVENTORY metadata); Section C breach log entry for ECAP-QC; Section D RCA entries
+- `.agent-admin/governance/ecap-001-quality-closure-defect-analysis.md` (NEW) — End-to-end defect classification for PR #1332 with corrective action record
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO — all changes are additive requirements applied to the GA workflow; consumer repos do not need to change their own processes  
+**Migration Guidance**: Consumer repos should register `AGENT_HANDOVER_AUTOMATION.md` v1.3.0 in their GOVERNANCE_ALIGNMENT.md at the next ripple cycle.
+
+**Rationale**: PR #1332 required 1 IAA REJECTION-PACKAGE + 3 CS2 post-review comment fixes before merge. Five distinct failure modes were identified: (1) missing drift evidence (template gap), (2) stale scope-declaration (recurring 6th time — process gap), (3) version/canonical_version mismatch (no CI validation), (4) stale amended_date (discipline gap), (5) stale hash in inventory (discipline gap). Each defect mode has now been addressed in the canon/checklist/CI layer to prevent recurrence.
+
+**Impact**: GA and any agent that runs §4.3 pre-handover gate parity checks will now have a scope-declaration parity gate. All agents that maintain CANON_INVENTORY will have explicit checklist requirements for amended_date, version alignment, and drift evidence. The CANON-HASH-001 CI gate now catches version/canonical_version mismatches.
+
+**Layer-Down Status**: PUBLIC_API — AGENT_HANDOVER_AUTOMATION.md is PUBLIC_API; consumer repos should register the v1.3.0 update in their GOVERNANCE_ALIGNMENT.md at next ripple.
+
+**References**: Issue — ECAP-001 follow-up quality closure; PR #1332 (copilot/create-canon-execution-ceremony-admin — MERGED 2026-04-08); REJECTION-PACKAGE IAA-20260408-PR1332; OVF-003 escalation
+
+---
+
 ### EXECUTION-CEREMONY-ADMINISTRATION-PROTOCOL-2026-04-08 — 2026-04-08 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
