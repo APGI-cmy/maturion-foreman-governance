@@ -641,10 +641,10 @@ For **ordinary Foreman-led handovers**, if IAA issues a `REJECTION-PACKAGE`, the
 
 1. **STOPS** — does not open a PR or proceed to merge
 2. **CORRECTS** every failure cited in the `REJECTION-PACKAGE`
-3. **PRODUCES** any new evidence artifacts required
+3. **PRODUCES** any new evidence artifacts required; creates a fresh PREHANDOVER proof in a new commit (the committed proof is immutable — see AGENT_HANDOVER_AUTOMATION.md §4.3b)
 4. **RE-RUNS** the pre-handover gate parity check (§4.3 / §4.3c of the producing-agent contract)
 5. **RE-INVOKES** IAA: `task(agent_type: "independent-assurance-agent")`
-6. **RECORDS** the new outcome in the PREHANDOVER proof's `iaa_audit_token` field
+6. **RECORDS** the new outcome in the new PREHANDOVER proof's `iaa_audit_token` field and in a dedicated token file per §4.3b (append-only; never edits a previously committed proof)
 7. **REPEATS** steps 1–6 until a valid `ASSURANCE-TOKEN` is issued or the PR is
    classified under a canon-defined CS2-only exception path
 
@@ -698,6 +698,14 @@ When Foreman re-invokes IAA after a rejection, the following naming and recordin
 
 #### Token File Naming
 
+The canonical base format is defined in `AGENT_HANDOVER_AUTOMATION.md §4.3b`:
+
+```
+.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md
+```
+
+For re-invocation rounds, an `-rZ` suffix is appended (this naming **supersedes** the base format for round ≥ 1 tokens only; first-invocation tokens omit the suffix):
+
 ```
 .agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD-rZ.md
 ```
@@ -715,26 +723,23 @@ Example: `iaa-token-session-042-wave10-20260408-r1.md`
 - **Prior REJECTION-PACKAGE artifacts MUST be retained** — do not delete or overwrite them
 - Rejected session references are kept in `.agent-admin/assurance/` as historical evidence
 - The `rejection-package-<PR#>.md` file remains at the path it was issued; it is not modified
-- The PREHANDOVER proof's `iaa_audit_token` field is updated to reference the new PASS token
-  once a valid `ASSURANCE-TOKEN` is issued
+- The new PASS token is recorded in the new (re-invocation round) PREHANDOVER proof's `iaa_audit_token` field — **never** by editing any already-committed PREHANDOVER proof (see AGENT_HANDOVER_AUTOMATION.md §4.3b)
 
-#### PREHANDOVER Proof `iaa_audit_token` During Rejection Cycle
+#### PREHANDOVER Proof Handling During Rejection Cycle
 
-While the Foreman is in the stop-and-fix loop (after rejection, before re-invocation pass),
-the PREHANDOVER proof MUST use the following **pending marker** format:
+**ABSOLUTE RULE**: A committed PREHANDOVER proof is immutable. Do **NOT** edit it post-commit (see AGENT_HANDOVER_AUTOMATION.md §4.3b). During a rejection/re-invocation cycle:
+
+- The **rejection** artifact is a new dedicated file (e.g., `rejection-package-<PR#>.md`)
+- The Foreman's corrections are committed as new files in a new commit
+- A **fresh PREHANDOVER proof** is created in that new commit for the re-invocation round
+- The fresh proof's `iaa_audit_token` field records the expected token reference for that round
+- When IAA issues the new ASSURANCE-TOKEN, it is written to a new token file per §4.3b — the fresh PREHANDOVER proof is not edited again
+
+Example `iaa_audit_token` in the fresh PREHANDOVER proof (re-invocation round 1):
 
 ```yaml
-iaa_audit_token: PENDING_REINVOCATION
+iaa_audit_token: IAA-session-NNN-20260408-r1-PASS  # expected reference format
 iaa_rejection_reference: .agent-admin/assurance/rejection-package-<PR#>.md
-iaa_rejection_session: IAA-<YYYYMMDD>-<session-id>
-reinvocation_status: FOREMAN_CORRECTING_CITED_FAILURES
-```
-
-Once a new `ASSURANCE-TOKEN` is issued, update to:
-
-```yaml
-iaa_audit_token: .agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD-r1.md
-iaa_rejection_reference: .agent-admin/assurance/rejection-package-<PR#>.md  # retained for audit trail
 iaa_reinvocation_round: 1
 ```
 
@@ -744,33 +749,35 @@ iaa_reinvocation_round: 1
 Wave 12, Task TASK-12-003 — canon update
 
 ROUND 1 — First invocation:
-  Foreman commits all Phase 4 artifacts.
+  Foreman commits all Phase 4 artifacts (PREHANDOVER proof, session memory).
   Pre-IAA commit-state gate PASSES.
   Foreman invokes: task(agent_type: "independent-assurance-agent")
   IAA result: REJECTION-PACKAGE
   REJECTION: Phase 4 handover proof missing iaa_prebrief reference; CHECKLIST-GATE-003.
-  Token file: rejection-package-1357.md (retained immutably)
-  PREHANDOVER proof iaa_audit_token: PENDING_REINVOCATION (pending marker applied)
+  Rejection artifact created: rejection-package-1357.md (retained immutably).
+  Committed PREHANDOVER proof is NOT edited.
 
 ROUND 2 — Foreman stop-and-fix:
-  Foreman corrects the cited failure: adds iaa_prebrief reference to PREHANDOVER proof.
+  Foreman corrects the cited failure: adds iaa_prebrief reference.
+  Foreman creates a fresh PREHANDOVER proof (new commit) — original proof remains immutable.
+  Fresh PREHANDOVER proof iaa_audit_token: IAA-session-042-20260408-r1-PASS (expected reference)
   Foreman re-runs §4.3 pre-handover gate parity check — PASSES.
   Foreman re-runs §4.3c pre-IAA commit-state gate — PASSES.
   Foreman re-invokes: task(agent_type: "independent-assurance-agent")
   IAA result: ASSURANCE-TOKEN
   IAA session: IAA-20260408-042-R1
-  Token file created: iaa-token-session-042-wave12-20260408-r1.md
-  PREHANDOVER proof iaa_audit_token: updated to new token file path.
+  Token file created: iaa-token-session-042-wave12-20260408-r1.md (new append-only artifact)
 
 OUTCOME:
   Valid ASSURANCE-TOKEN on record.
+  Original REJECTION-PACKAGE retained for audit trail.
   Foreman opens PR.
   No CS2 involvement required in the correction/re-invocation cycle.
 ```
 
 ---
 
-
+## References
 
 - `governance/canon/LIVING_AGENT_SYSTEM.md` v6.2.0 — Living Agent framework
 - `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` — Knowledge architecture

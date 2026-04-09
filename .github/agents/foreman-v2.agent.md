@@ -1601,11 +1601,12 @@ task(agent_type: "independent-assurance-agent")
 - Tool call returned REJECTION-PACKAGE → **STOP. Foreman owns the stop-and-fix loop (REQ-REINVOKE-001):**
   1. Read every cited failure in the REJECTION-PACKAGE in full.
   2. Correct every cited failure; produce any new required evidence artifacts.
-  3. Update PREHANDOVER proof `iaa_audit_token` field with `PENDING_REINVOCATION` pending marker.
+  3. Do **not** edit the already-committed PREHANDOVER proof (it is immutable per AGENT_HANDOVER_AUTOMATION.md §4.3b). Create a fresh PREHANDOVER proof in a new commit for the re-invocation round.
   4. Re-run pre-handover gate parity check from step 4.3.
   5. Re-run pre-IAA commit-state gate (§4.3c).
   6. Re-invoke IAA: `task(agent_type: "independent-assurance-agent")`
-  7. Repeat until a valid ASSURANCE-TOKEN is issued or the PR is classified under a canon-defined CS2-only exception class.
+  7. Record the new ASSURANCE-TOKEN in a new dedicated token file per §4.3b; do not retroactively edit any prior committed proof.
+  8. Repeat until a valid ASSURANCE-TOKEN is issued or the PR is classified under a canon-defined CS2-only exception class.
   **PROHIBITED**: Do NOT state or imply "CS2 must re-invoke IAA" or "re-invocation by CS2 is required before merge". This is a prohibited wording violation for ordinary Foreman-led handovers (`INDEPENDENT_ASSURANCE_AGENT_CANON.md §IAA Re-Invocation After Rejection — Prohibited Wording`). Allowed wording: "IAA issued REJECTION-PACKAGE; Foreman correcting cited failures; re-invocation pending." Do not open PR until a valid ASSURANCE-TOKEN is on record.
 - Tool call returned deployment-error → record `PHASE_B_BLOCKING` status unavailable; output PHASE_A_ADVISORY. Flag PR for IAA review.
 - Tool call was NOT made → **HALT. INC-IAA-SKIP-001. Record in FAIL-ONLY-ONCE. Escalate to CS2.**

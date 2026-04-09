@@ -1268,7 +1268,7 @@ When IAA issues a `REJECTION-PACKAGE` for a Foreman-led handover, the Foreman re
 | 4 | Re-run pre-handover gate parity check (§4.3 of Foreman contract) | Foreman |
 | 5 | Re-run pre-IAA commit-state gate (§4.3c of Foreman contract) | Foreman |
 | 6 | Re-invoke IAA: `task(agent_type: "independent-assurance-agent")` | Foreman |
-| 7 | Record outcome in PREHANDOVER proof `iaa_audit_token` field | Foreman |
+| 7 | Record each outcome via append-only artifacts (new rejection artifact / new token file per §4.3b of AGENT_HANDOVER_AUTOMATION.md). Do **not** edit any already-committed PREHANDOVER proof. If a refreshed PREHANDOVER proof is required for the next round, create a new proof file in a new commit. | Foreman |
 | 8 | Repeat steps 1–7 until `ASSURANCE-TOKEN` issued or CS2-only exception applies | Foreman |
 
 This loop is **Foreman-owned** end-to-end. The Foreman does NOT escalate ordinary rejection
