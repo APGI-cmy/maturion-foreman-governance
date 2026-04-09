@@ -64,6 +64,34 @@ Each entry follows this structure:
 
 ## Change History
 
+### FOREMAN-V2-CONTRACT-REPAIR-2026-04-09 — 2026-04-09 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: CodexAdvisor-agent (session-012-20260409)  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: [Governance] CodexAdvisor review and repair of foreman-v2-agent contract  
+**Effective Date**: 2026-04-09
+
+**Summary**: Full repair of canonical `foreman-v2.agent.md` contract (v2.3.0→v3.0.0). Size reduced from 62,414 to 28,894 characters (was 208% over 30,000-char limit). YAML frontmatter hardened to strengthened pattern. 12-stage pre-build model added. Parallel-wave constraints formalised. IAA pre-brief promoted to mandatory Phase 2 gate. Wake-up protocol argument corrected (`foreman`→`foreman-v2`). EXPERIMENTAL status removed. Three prohibited-behaviour prohibitions added (NO-DELEGATE-EARLY-001, NO-PARALLEL-WAVE-UNAUTH-001, NO-IAA-SKIP-001). IAA ceremony conducted (R1/R2/R3); final token IAA-20260409-PR1339-R3 — MERGE PERMITTED.
+
+**Affected Artifacts**:
+- `.github/agents/foreman-v2.agent.md` (v2.3.0→v3.0.0) — Full contract repair; size reduced; YAML hardened; 12-stage pre-build model; parallel-wave constraints; IAA pre-brief Phase 2 gate; wake-up path corrected; F4/F5 fixes
+- `governance/quality/agent-integrity/foreman-v2.agent.md` — Reference copy re-synced to match live contract
+- `governance/quality/agent-integrity/INTEGRITY_INDEX.md` — SHA256 updated for `foreman-v2.agent.md` and `CodexAdvisor-agent.md`
+- `.agent-workspace/foreman-v2/knowledge/` — Tier 2 stub files created/updated (index, session-memory-template, builder-task-template, pre-build-stage-model-reference)
+- `.agent-admin/assurance/` — IAA ceremony artifacts: rejection package, correction addendum, R1/R2/R3 assurance tokens
+- `governance/scope-declaration.md` — FILES_CHANGED regenerated (20 files); IAA Token updated to R3
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — foreman-v2.agent.md is a non-canonised agent contract file; no consumer repo ripple required.
+
+**Rationale**: PR #1339 required 1 IAA REJECTION-PACKAGE + 3 CS2 post-review comment fixes before merge. Root cause: contract had grown to 62KB (208% over limit) through incremental additions without a full structural review. CodexAdvisor session-012 performed a complete audit and repair against the strengthened Foreman pattern.
+
+**Impact**: Foreman v2 agent will now operate with the correct workspace root (`.agent-workspace/foreman-v2/`), correct BUILD_PHILOSOPHY.md path, and mandatory IAA pre-brief gate before Phase 3.
+
+**References**: PR #1339 | IAA token: IAA-20260409-PR1339-R3
+
+---
+
 ### ECAP-001-QUALITY-CLOSURE-2026-04-09 — 2026-04-09 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
