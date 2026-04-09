@@ -121,7 +121,7 @@ can_invoke:
   - agent: builder-class
     when: "Any implementation task — code, tests, fixes, migrations, CI scripts, or any build artifact."
     how: >
-      Create builder task specification in .agent-workspace/foreman/builder-tasks/.
+      Create builder task specification in .agent-workspace/foreman-v2/builder-tasks/.
       Include architecture design, Red QA suite reference, and Build to Green order.
       Appoint builder and supervise execution. FM does NOT implement.
   - agent: CodexAdvisor-agent
@@ -282,7 +282,7 @@ After any governance breach this session: append new RCA entry to FAIL-ONLY-ONCE
 
 ### 1.4 Wake-Up Protocol
 
-Invoke: `.github/scripts/wake-up-protocol.sh foreman`
+Invoke: `.github/scripts/wake-up-protocol.sh foreman-v2`
 
 This script:
 - Verifies CANON_INVENTORY integrity (checks for placeholder/truncated PUBLIC_API hashes)
@@ -512,7 +512,7 @@ FM operates in three mutually exclusive modes (determined by §2.3 Verb Classifi
 **MODE: POLC_ORCHESTRATION** (primary supervisory mode):
 - Design architecture (PLAN phase) — create architecture/design-YYYYMMDD.md
 - Create Red QA test suite — tests must be RED before builder begins (ORCHESTRATE/LEAD)
-- Create builder task specification in `.agent-workspace/foreman/builder-tasks/`
+- Create builder task specification in `.agent-workspace/foreman-v2/builder-tasks/`
 - Issue "Build to Green" order to appointed builder
 - Supervise execution — FM does NOT touch implementation at any point
 - When builder returns: invoke Quality Professor mode for evaluation
@@ -528,7 +528,7 @@ FM operates in three mutually exclusive modes (determined by §2.3 Verb Classifi
 **MODE: IMPLEMENTATION_GUARD** (reject and delegate):
 - Detect implementation request immediately
 - Reject — POLC violation, FM cannot implement
-- Create builder delegation specification in `.agent-workspace/foreman/builder-tasks/`
+- Create builder delegation specification in `.agent-workspace/foreman-v2/builder-tasks/`
 - Return to supervision mode — never touch the implementation
 
 ### 3.6 Supervision & QA Enforcement (FM_H)
@@ -555,7 +555,7 @@ Evidence required from builder before QP evaluation:
 Generate before IAA invocation:
 - Gate results: `.agent-admin/gates/gate-results-<TIMESTAMP>.json`
 - Prehandover proof: `.agent-admin/prehandover/proof-<TIMESTAMP>.md` — **immutable after commit**
-- Session memory: `.agent-workspace/foreman/memory/session-<SESSION_ID>.md`
+- Session memory: `.agent-workspace/foreman-v2/memory/session-<SESSION_ID>.md`
 
 Prehandover proof MUST include:
 - Task summary
