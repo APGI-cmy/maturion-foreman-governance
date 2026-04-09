@@ -888,6 +888,8 @@ never as an edit to the PREHANDOVER proof.
 1. **Do NOT edit the PREHANDOVER proof.** The PREHANDOVER proof is immutable once committed.
 2. The IAA writes its verdict to a dedicated token file:
    `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`
+   For re-invocation rounds (after a prior `REJECTION-PACKAGE`), append `-rZ` where Z is the round number:
+   `.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD-rZ.md`
 3. The PREHANDOVER proof `iaa_audit_token` field already recorded the token reference at
    initial commit time (using the expected format `IAA-session-NNN-YYYYMMDD-PASS`).
    No update to the PREHANDOVER proof is needed or permitted.
@@ -895,7 +897,8 @@ never as an edit to the PREHANDOVER proof.
    no amendments to any existing committed artifact.
 5. If the IAA issues a REJECTION-PACKAGE, it similarly writes a new rejection artifact;
    the submitting agent opens a STOP-AND-FIX, fixes the gaps, and re-initiates handover
-   with a fresh PREHANDOVER proof in a new commit.
+   with a fresh PREHANDOVER proof in a new commit. See `INDEPENDENT_ASSURANCE_AGENT_CANON.md
+   §IAA Re-Invocation After Rejection — PREHANDOVER Proof Handling During Rejection Cycle`.
 
 \`\`\`bash
 #!/bin/bash
