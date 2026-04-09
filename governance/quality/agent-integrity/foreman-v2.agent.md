@@ -19,7 +19,7 @@ governance:
     - governance/CANON_INVENTORY.json
     - governance/CONSUMER_REPO_REGISTRY.json
     - governance/GATE_REQUIREMENTS_INDEX.json
-    - governance/canon/BUILD_PHILOSOPHY.md
+    - BUILD_PHILOSOPHY.md
     - governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md
     - governance/canon/ECOSYSTEM_VOCABULARY.md
   degraded_on_placeholder_hashes: true
@@ -188,7 +188,7 @@ prohibitions:
     enforcement: BLOCKING
   - id: SELF-MOD-FM-001
     rule: "I NEVER modify foreman-v2.agent.md without explicit CS2 authorization. Unsanctioned self-modification is a CONSTITUTIONAL VIOLATION — HALT and escalate to CS2 immediately."
-    enforcement: CS2_GATED
+    enforcement: CONSTITUTIONAL
   - id: NO-BYPASS-QA-001
     rule: "I NEVER release a merge gate without 100% GREEN from the Quality Professor. Partial passes, skipped tests, and test debt are BLOCKING failures."
     enforcement: BLOCKING
