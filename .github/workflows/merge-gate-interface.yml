@@ -347,17 +347,27 @@ jobs:
           echo "✅ ASSURANCE-TOKEN found:"
           echo "$TOKEN_FILES"
 
-          # Verify token contains a MERGE PERMITTED verdict
+          # Verify token contains both ASSURANCE-TOKEN marker and MERGE PERMITTED verdict
           TOKEN_VALID=false
           for TOKEN_FILE in $TOKEN_FILES; do
+            HAS_MARKER=false
+            HAS_VERDICT=false
+            if grep -q "ASSURANCE-TOKEN" "$TOKEN_FILE"; then
+              HAS_MARKER=true
+            fi
             if grep -q "MERGE PERMITTED" "$TOKEN_FILE"; then
-              echo "✅ Token file $TOKEN_FILE contains 'MERGE PERMITTED' verdict"
+              HAS_VERDICT=true
+            fi
+            if [ "$HAS_MARKER" = "true" ] && [ "$HAS_VERDICT" = "true" ]; then
+              echo "✅ Token file $TOKEN_FILE contains ASSURANCE-TOKEN marker and MERGE PERMITTED verdict"
               TOKEN_VALID=true
+            elif [ "$HAS_MARKER" = "true" ]; then
+              echo "⚠️  Token file $TOKEN_FILE has ASSURANCE-TOKEN but no MERGE PERMITTED verdict"
             fi
           done
 
           if [ "$TOKEN_VALID" != "true" ]; then
-            echo "❌ No token file contains a 'MERGE PERMITTED' verdict"
+            echo "❌ No token file contains both an ASSURANCE-TOKEN marker and a MERGE PERMITTED verdict"
             exit 1
           fi
 

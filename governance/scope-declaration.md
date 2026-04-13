@@ -16,6 +16,7 @@ Harden Foreman handover enforcement so final IAA audit/token is mandatory before
 
 ## FILES_CHANGED
 
+- .agent-admin/assurance/assurance-token-1336.md
 - .agent-admin/governance/foreman-handover-enforcement-analysis-1336.md
 - .agent-admin/prehandover/proof-20260413T070751Z.md
 - .agent-workspace/governance-repo-administrator/memory/session-GA-067-20260413.md
