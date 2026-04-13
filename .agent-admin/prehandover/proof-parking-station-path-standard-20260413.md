@@ -27,9 +27,9 @@
 
 | Canon File | Before SHA256 | After SHA256 | Change |
 |-----------|---------------|--------------|--------|
-| `PARKING_STATION_PATH_STANDARD.md` | _(new file)_ | `eec2a7902abfa1d1620ab6dc8ddd671f5af843b3491abfba8b2c156121ec565b` | NEW — v1.0.0 |
+| `PARKING_STATION_PATH_STANDARD.md` | _(new file)_ | `a0e9a512e08d8e6829dacf4c7195d8911f314d2d9838c59f6730a84585c8b7ad` | NEW — v1.0.0 |
 | `AGENT_CONTRACT_ARCHITECTURE.md` | `7b382a1e2f8654b5511e89906503512877f99226eeaaf73a5ef4506ee578abeb` | `ee253d38fe7ad0688b61ae8accda2e53297d8de43c7a3fd0c387b28951445af2` | Added parking-station to workspace structure |
-| `AGENT_HANDOVER_AUTOMATION.md` | `7992b08f7becad8873f4be72edede311384438da3fd1749888e6d93402573458` | `94df4b99ce3dd8610005175ae84e1906e09049f777a9980b6f359198e002d445` | Updated parking station path reference |
+| `AGENT_HANDOVER_AUTOMATION.md` | `7992b08f7becad8873f4be72edede311384438da3fd1749888e6d93402573458` | `d4860fab5ec320c9ff32bee261e85e7dea756ce7667b9b1c83d195c03134e3be` | Updated parking station path reference |
 | `GOVERNANCE_CANON_MANIFEST.md` | `b740817dd2d0bb0e3cb75612fc2786dbbbaa1bc070837a3a6cc01933057c1f10` | `f3b91126d6aaf1bb86dbd8884d08c21eba3fc2ef644b113e3d773f8b5d2aa80b` | Added PARKING_STATION_PATH_STANDARD entry |
 
 ---
@@ -42,14 +42,18 @@
 | Updated canon | 3 | `AGENT_CONTRACT_ARCHITECTURE.md`, `AGENT_HANDOVER_AUTOMATION.md`, `GOVERNANCE_CANON_MANIFEST.md` |
 | Inventory | 1 | `governance/CANON_INVENTORY.json` |
 | Changelog | 1 | `governance/CHANGELOG.md` |
-| New per-agent files | 3 | `suggestions-log.md` for governance-repo-administrator, foreman-v2, independent-assurance-agent |
+| Per-agent files | 4 | `suggestions-log.md` for governance-repo-administrator, foreman-v2, independent-assurance-agent, CodexAdvisor-agent |
 | Deprecated files | 4 | `suggestions-log-*.md` files in shared directory |
 | Updated docs | 1 | `docs/architecture/per-agent-logging.md` |
 | Updated knowledge | 2 | CodexAdvisor and IAA session-memory-templates |
+| Session memory | 1 | `.agent-workspace/governance-repo-administrator/memory/session-GA-parking-std-20260413.md` |
 | Shared parking README | 1 | `.agent-workspace/parking-station/README.md` |
 | Scope declaration | 1 | `governance/scope-declaration.md` |
 | Prehandover proof | 1 | `.agent-admin/prehandover/proof-parking-station-path-standard-20260413.md` |
-| **Total** | **19** | |
+| IAA assurance token | 1 | `.agent-admin/assurance/assurance-token-PRPARKING.md` |
+| **Total** | **22** | |
+
+> Count aligned with `governance/scope-declaration.md` and `git diff --name-only origin/main...HEAD` (22 files).
 
 ---
 
