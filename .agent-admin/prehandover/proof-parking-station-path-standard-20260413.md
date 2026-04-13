@@ -48,7 +48,8 @@
 | Updated knowledge | 2 | CodexAdvisor and IAA session-memory-templates |
 | Shared parking README | 1 | `.agent-workspace/parking-station/README.md` |
 | Scope declaration | 1 | `governance/scope-declaration.md` |
-| **Total** | **18** | |
+| Prehandover proof | 1 | `.agent-admin/prehandover/proof-parking-station-path-standard-20260413.md` |
+| **Total** | **19** | |
 
 ---
 
