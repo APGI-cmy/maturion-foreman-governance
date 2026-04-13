@@ -194,3 +194,96 @@ jobs:
 
           echo "✅ governance-ceremony/phase4-completeness: PASS"
           echo "   All required Phase 4 artifacts present — job is in COMPLETE state"
+
+  # Job 4: IAA Token Completeness Check
+  # Detects PREHANDOVER proofs with PENDING IAA tokens and no matching token file
+  # Enforcement per Issue #1336: Harden Foreman handover enforcement
+  iaa-token-completeness:
+    name: governance-ceremony/iaa-token-completeness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify IAA token completeness
+        run: |
+          echo "=== Governance Ceremony — IAA Token Completeness Check ==="
+          echo "Authority: Issue #1336 — Foreman handover enforcement hardening"
+          echo "Purpose: Detect PREHANDOVER proofs with PENDING IAA tokens"
+          echo ""
+
+          # Step 1: Find the most recent PREHANDOVER proof
+          PROOF_FILE=""
+
+          if ls .agent-admin/prehandover/proof-*.md 1>/dev/null 2>&1; then
+            PROOF_FILE=$(ls -t .agent-admin/prehandover/proof-*.md | head -1)
+          elif ls .agent-admin/prehandover/prehandover_proof*.md 1>/dev/null 2>&1; then
+            PROOF_FILE=$(ls -t .agent-admin/prehandover/prehandover_proof*.md | head -1)
+          elif ls PREHANDOVER_PROOF*.md 1>/dev/null 2>&1; then
+            PROOF_FILE=$(ls -t PREHANDOVER_PROOF*.md | head -1)
+          fi
+
+          if [ -z "$PROOF_FILE" ]; then
+            echo "ℹ️  No PREHANDOVER proof found — IAA token completeness check not applicable"
+            echo "✅ governance-ceremony/iaa-token-completeness: PASS (no proof to validate)"
+            exit 0
+          fi
+
+          echo "Found PREHANDOVER proof: ${PROOF_FILE}"
+          echo ""
+
+          # Step 2: Check if iaa_audit_token field contains PENDING
+          IAA_TOKEN_VALUE=$(grep -i 'iaa_audit_token:' "$PROOF_FILE" 2>/dev/null || echo "")
+
+          if [ -z "$IAA_TOKEN_VALUE" ]; then
+            echo "ℹ️  No iaa_audit_token field found in proof — skipping token completeness check"
+            echo "✅ governance-ceremony/iaa-token-completeness: PASS (no token field)"
+            exit 0
+          fi
+
+          echo "Token field value: ${IAA_TOKEN_VALUE}"
+          echo ""
+
+          # Step 3: If token field contains PENDING, check for actual token file
+          if echo "$IAA_TOKEN_VALUE" | grep -qi "PENDING"; then
+            echo "⚠️  PREHANDOVER proof has iaa_audit_token: PENDING"
+            echo "Checking for committed IAA token file..."
+            echo ""
+
+            # Look for any valid IAA token file
+            TOKEN_FILES=$(find .agent-admin/assurance/ -maxdepth 1 \( \
+              -name "assurance-token-*.md" -o \
+              -name "iaa-token-session-*.md" -o \
+              -name "iaa-assurance-token-*.md" \
+            \) 2>/dev/null || true)
+
+            if [ -z "$TOKEN_FILES" ]; then
+              echo "❌ GOVERNANCE CEREMONY — IAA TOKEN COMPLETENESS: FAIL"
+              echo ""
+              echo "PREHANDOVER proof exists with iaa_audit_token: PENDING"
+              echo "but NO IAA token file was found in .agent-admin/assurance/"
+              echo ""
+              echo "This indicates the IAA final audit and token ceremony (§4.4/§4.5)"
+              echo "have not been completed. The PR is NOT merge-ready."
+              echo ""
+              echo "Required action:"
+              echo "  1. Invoke IAA agent for final audit: task(agent_type: 'independent-assurance-agent')"
+              echo "  2. On ASSURANCE-TOKEN: commit token file to .agent-admin/assurance/"
+              echo "  3. On REJECTION-PACKAGE: address all findings, re-run handover from §4.3"
+              echo ""
+              echo "Reference: Foreman contract §4.4 (IAA Invocation), §4.5 (Token Ceremony)"
+              echo "           Issue #1336 — Foreman handover enforcement hardening"
+              exit 1
+            fi
+
+            echo "✅ IAA token file found despite PENDING field in proof:"
+            echo "$TOKEN_FILES"
+            echo ""
+            echo "ℹ️  Note: PREHANDOVER proof immutability means the PENDING field may be"
+            echo "   expected — the token file existence is the authoritative signal."
+          else
+            echo "✅ PREHANDOVER proof iaa_audit_token is not PENDING"
+          fi
+
+          echo ""
+          echo "✅ governance-ceremony/iaa-token-completeness: PASS"
