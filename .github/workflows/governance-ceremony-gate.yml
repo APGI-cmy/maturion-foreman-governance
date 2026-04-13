@@ -212,15 +212,15 @@ jobs:
           echo "Purpose: Detect PREHANDOVER proofs with PENDING IAA tokens"
           echo ""
 
-          # Step 1: Find the most recent PREHANDOVER proof
+          # Step 1: Find the deterministically latest PREHANDOVER proof by filename
           PROOF_FILE=""
 
           if ls .agent-admin/prehandover/proof-*.md 1>/dev/null 2>&1; then
-            PROOF_FILE=$(ls -t .agent-admin/prehandover/proof-*.md | head -1)
+            PROOF_FILE=$(ls .agent-admin/prehandover/proof-*.md | sort | tail -1)
           elif ls .agent-admin/prehandover/prehandover_proof*.md 1>/dev/null 2>&1; then
-            PROOF_FILE=$(ls -t .agent-admin/prehandover/prehandover_proof*.md | head -1)
+            PROOF_FILE=$(ls .agent-admin/prehandover/prehandover_proof*.md | sort | tail -1)
           elif ls PREHANDOVER_PROOF*.md 1>/dev/null 2>&1; then
-            PROOF_FILE=$(ls -t PREHANDOVER_PROOF*.md | head -1)
+            PROOF_FILE=$(ls PREHANDOVER_PROOF*.md | sort | tail -1)
           fi
 
           if [ -z "$PROOF_FILE" ]; then
