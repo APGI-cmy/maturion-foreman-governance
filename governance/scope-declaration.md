@@ -19,6 +19,7 @@ New canon `PARKING_STATION_PATH_STANDARD.md` v1.0.0 canonicalises the per-agent 
 - .agent-admin/prehandover/proof-parking-station-path-standard-20260413.md
 - .agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md
 - .agent-workspace/foreman-v2/parking-station/suggestions-log.md
+- .agent-workspace/governance-repo-administrator/memory/session-GA-parking-std-20260413.md
 - .agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md
 - .agent-workspace/independent-assurance-agent/knowledge/session-memory-template.md
 - .agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md
@@ -37,4 +38,4 @@ New canon `PARKING_STATION_PATH_STANDARD.md` v1.0.0 canonicalises the per-agent 
 - governance/scope-declaration.md
 
 ## FILES_CHANGED_COUNT
-19
+20
