@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-04-09",
-  "total_canons": 199,
-  "generation_timestamp": "2026-04-09T07:00:00Z",
+  "last_updated": "2026-04-13",
+  "total_canons": 200,
+  "generation_timestamp": "2026-04-13T07:08:00Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -110,13 +110,16 @@
     {
       "filename": "AGENT_CONTRACT_ARCHITECTURE.md",
       "version": "1.1.0 | **Authority**: CS2",
-      "file_hash": "7b382a1e2f8654b5511e89906503512877f99226eeaaf73a5ef4506ee578abeb",
+      "file_hash": "ee253d38fe7ad0688b61ae8accda2e53297d8de43c7a3fd0c387b28951445af2",
       "effective_date": "unknown",
       "description": "Canonical governance document: AGENT_CONTRACT_ARCHITECTURE",
       "type": "canon",
       "path": "governance/canon/AGENT_CONTRACT_ARCHITECTURE.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "7b382a1e2f8654b5511e89906503512877f99226eeaaf73a5ef4506ee578abeb"
+      "file_hash_sha256": "ee253d38fe7ad0688b61ae8accda2e53297d8de43c7a3fd0c387b28951445af2",
+      "amended_date": "2026-04-13",
+      "last_updated": "2026-04-13",
+      "change_note": "Added parking-station to workspace evidence structure diagram per PARKING_STATION_PATH_STANDARD.md v1.0.0"
     },
     {
       "filename": "AGENT_CONTRACT_FILE_PROTECTION_POLICY.md",
@@ -260,20 +263,20 @@
       "filename": "AGENT_HANDOVER_AUTOMATION.md",
       "version": "1.3.0",
       "canonical_version": "1.3.0",
-      "file_hash": "52c6028add0244a47379d736b80ceafdca93e09f3f8e6688462f3a99cbca76f8",
+      "file_hash": "94df4b99ce3dd8610005175ae84e1906e09049f777a9980b6f359198e002d445",
       "effective_date": "2026-04-06",
-      "amended_date": "2026-04-09",
+      "amended_date": "2026-04-13",
       "description": "Canonical governance document: AGENT_HANDOVER_AUTOMATION",
       "type": "canon",
       "path": "governance/canon/AGENT_HANDOVER_AUTOMATION.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "52c6028add0244a47379d736b80ceafdca93e09f3f8e6688462f3a99cbca76f8",
+      "file_hash_sha256": "94df4b99ce3dd8610005175ae84e1906e09049f777a9980b6f359198e002d445",
       "ripple_dispatched": "2026-02-24",
       "ripple_log": ".agent-admin/governance/ripple-logs/ripple-agent-handover-parity-20260224.md",
       "ripple_in_repo_status": "COMPLETE",
-      "ripple_consumer_status": "PENDING — layer-down issues to be created in consumer repos",
-      "last_updated": "2026-04-09",
-      "change_note": "v1.3.0: ECAP-QC closure — §4.3d scope-declaration parity gate; Administrator evidence checklist drift evidence + metadata requirements; validate-canon-hashes.sh version/canonical_version check"
+      "ripple_consumer_status": "PENDING \u2014 layer-down issues to be created in consumer repos",
+      "last_updated": "2026-04-13",
+      "change_note": "v1.3.0: Updated parking station reference in append-only rules table to canonical path per PARKING_STATION_PATH_STANDARD.md v1.0.0"
     },
     {
       "filename": "AGENT_INDUCTION_PROTOCOL.md",
@@ -1282,15 +1285,16 @@
     {
       "filename": "GOVERNANCE_CANON_MANIFEST.md",
       "version": "1.0.0",
-      "file_hash": "b740817dd2d0bb0e3cb75612fc2786dbbbaa1bc070837a3a6cc01933057c1f10",
+      "file_hash": "f3b91126d6aaf1bb86dbd8884d08c21eba3fc2ef644b113e3d773f8b5d2aa80b",
       "effective_date": "2026-01-05",
       "description": "This manifest is the **single authoritative index** of all canonical governance standards in the maturion-foreman-governance repository.",
       "type": "canon",
       "path": "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "b740817dd2d0bb0e3cb75612fc2786dbbbaa1bc070837a3a6cc01933057c1f10",
-      "last_updated": "2026-04-08",
-      "change_note": "v1.0.0: FOREMAN_AUTHORITY v1.2.0\u2192v1.3.0; IAA_PRE_BRIEF v1.2.1\u2192v1.2.2; Foreman IAA re-invocation ownership canonisation issue"
+      "file_hash_sha256": "f3b91126d6aaf1bb86dbd8884d08c21eba3fc2ef644b113e3d773f8b5d2aa80b",
+      "last_updated": "2026-04-13",
+      "change_note": "Added PARKING_STATION_PATH_STANDARD.md entry to Governance & Layerdown Models section",
+      "amended_date": "2026-04-13"
     },
     {
       "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",
@@ -1745,6 +1749,21 @@
       "path": "governance/canon/ORCHESTRATOR_SPECIALIST_ARCHITECTURE.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "0ff730650dd34742dac3cce642011f48cd9b3efa3864335833db0931d87071b3"
+    },
+    {
+      "filename": "PARKING_STATION_PATH_STANDARD.md",
+      "version": "1.0.0",
+      "canonical_version": "1.0.0",
+      "file_hash": "eec2a7902abfa1d1620ab6dc8ddd671f5af843b3491abfba8b2c156121ec565b",
+      "effective_date": "2026-04-13",
+      "amended_date": "2026-04-13",
+      "description": "Canonical per-agent parking station path specification. Establishes .agent-workspace/<agent-name>/parking-station/suggestions-log.md as the canonical path for agent suggestion logs. Deprecates shared parking station files.",
+      "type": "canon",
+      "path": "governance/canon/PARKING_STATION_PATH_STANDARD.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "eec2a7902abfa1d1620ab6dc8ddd671f5af843b3491abfba8b2c156121ec565b",
+      "last_updated": "2026-04-13",
+      "change_note": "v1.0.0: Initial creation \u2014 canonical per-agent parking station path standard"
     },
     {
       "filename": "PENDING_CANON_REFERENCES_INTERIM_GUIDANCE.md",

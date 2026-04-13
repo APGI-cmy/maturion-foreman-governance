@@ -140,6 +140,7 @@ It serves to:
 | `GOVERNANCE_PURPOSE_AND_SCOPE.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
 | `GOVERNANCE_RIPPLE_MODEL.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
 | `GOVERNANCE_VERSIONING_AND_SYNC_PROTOCOL.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster | 2026-01-05 |
+| `PARKING_STATION_PATH_STANDARD.md` | 1.0.0 | PUBLIC_API | FM App, SlotMaster, All Repos | 2026-04-13 |
 
 ### 3.6 Learning & Improvement Models (PUBLIC_API)
 
