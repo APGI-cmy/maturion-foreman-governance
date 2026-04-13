@@ -113,6 +113,7 @@ The shared `.agent-workspace/parking-station/` directory is retained for its `RE
 1. All existing entries from `.agent-workspace/parking-station/suggestions-log-{agent-id}.md` files have been migrated to the canonical path `.agent-workspace/<agent-name>/parking-station/suggestions-log.md`.
 2. The deprecated per-agent files in the shared directory retain their content as read-only archives with a migration notice header.
 3. The shared `suggestions-log.md` retains its deprecation notice (already in place since 2026-02-27).
+4. **Follow-up required**: Agent contracts (`.github/agents/*.md`) that reference deprecated parking station paths in their §4.2a parking station entry must be updated to the canonical path. Per FAIL-ONLY-ONCE Rule B-06, agent contract modifications require CodexAdvisor and will be completed in a separate PR.
 
 ### 7.2 Consumer Repositories
 

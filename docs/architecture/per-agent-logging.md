@@ -82,11 +82,13 @@ All per-agent log files MUST use exactly these six columns in this order for cle
 
 ## Agent Contract References
 
-Each agent contract references only its own suggestions log at the canonical path:
+Each agent contract should reference only its own suggestions log at the canonical path:
 
 - `CodexAdvisor-agent.md` → references `.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md`
-- `governance-repo-administrator-v2.agent.md` → §4.2a references `.agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md`
+- `governance-repo-administrator-v2.agent.md` → §4.2a currently references the deprecated `.agent-workspace/parking-station/suggestions-log-governance-repo-administrator.md`; requires follow-up update to canonical path (agent contract changes require CodexAdvisor per Rule B-06)
 - Future agent contracts follow the same pattern
+
+> **Follow-up required**: Agent contracts that still reference deprecated parking station paths must be updated by CodexAdvisor in a separate PR per FAIL-ONLY-ONCE Rule B-06.
 
 ---
 
