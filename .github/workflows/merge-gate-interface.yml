@@ -299,7 +299,7 @@ jobs:
         if: steps.iaa_required.outputs.iaa_required == 'true'
         run: |
           echo "=== IAA Assurance Token Check ==="
-          echo "Required by: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0"
+          echo "Required by: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md"
           echo "Hardened by: Issue #1336 — accept all valid token naming patterns"
           echo ""
 
