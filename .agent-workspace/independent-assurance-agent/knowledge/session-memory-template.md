@@ -89,7 +89,7 @@ Replace all `[placeholder]` values — no field may be left blank.
     "No degradation observed. Continuous improvement note: [specific, actionable observation]."]
 
 ## Parking Station
-- parking_entries_added: [YES — entries added to suggestions-log.md / NO — none this session]
+- parking_entries_added: [YES — entries added to .agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md / NO — none this session]
 ```
 
 ---

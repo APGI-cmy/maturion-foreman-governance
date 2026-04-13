@@ -941,7 +941,7 @@ These rules apply to all agent classes:
 |---------------|------|
 | **PREHANDOVER proof** | Read-only after initial commit. Never edited post-commit by any agent. |
 | **IAA assurance token** | Dedicated new file per §Token Ceremony. Never written into PREHANDOVER proof. |
-| **Parking station suggestions** | Per-agent dedicated log file (never a shared cross-agent file on a wave branch). |
+| **Parking station suggestions** | Per-agent dedicated log file at `.agent-workspace/<agent-name>/parking-station/suggestions-log.md` (never a shared cross-agent file). See `PARKING_STATION_PATH_STANDARD.md`. |
 | **Session memories** | New file per session. Rotate per LIVING_AGENT_SYSTEM.md §Rolling Memory. |
 | **FAIL-ONLY-ONCE entries** | Append new rule row only. Never delete or edit prior rows. |
 | **RCA breach log entries** | Append-only. Never overwrite a prior entry. |

@@ -64,6 +64,38 @@ Each entry follows this structure:
 
 ## Change History
 
+### PARKING-STATION-PATH-STANDARD-2026-04-13 — 2026-04-13 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: [Governance Canon] Standardize per-agent parking station file paths and deprecate global suggestions-log.md  
+**Effective Date**: 2026-04-13
+
+**Summary**: New canon `PARKING_STATION_PATH_STANDARD.md` v1.0.0 establishes the canonical per-agent parking station path as `.agent-workspace/<agent-name>/parking-station/suggestions-log.md`. Deprecates the interim per-agent files in the shared `.agent-workspace/parking-station/` directory. Migrates all existing entries to canonical paths. Includes migration plan and layer-down instructions for consumer repos.
+
+**Affected Artifacts**:
+- `governance/canon/PARKING_STATION_PATH_STANDARD.md` (NEW v1.0.0) — Canonical per-agent parking station path specification
+- `governance/canon/AGENT_CONTRACT_ARCHITECTURE.md` (v1.1.0) — Added parking-station to workspace structure diagram
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` — Updated parking station reference in append-only rules table
+- `.agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md` (NEW) — Migrated entries from deprecated file
+- `.agent-workspace/foreman-v2/parking-station/suggestions-log.md` (NEW) — Created per canonical path
+- `.agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md` (NEW) — Created per canonical path
+- `.agent-workspace/parking-station/README.md` (v1.0.0→v2.0.0) — Updated with migration notice and deprecated file index
+- `.agent-workspace/parking-station/suggestions-log-*.md` — All deprecated with migration notices
+- `docs/architecture/per-agent-logging.md` (v1.0.0→v2.0.0) — Updated paths and migration history
+- `.agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md` — Updated parking station path reference
+- `.agent-workspace/independent-assurance-agent/knowledge/session-memory-template.md` — Updated parking station path reference
+
+**Migration Required**: YES  
+**Migration Guidance**: Consumer repos must create per-agent parking station directories and migrate entries per §7.2 of `PARKING_STATION_PATH_STANDARD.md`. Complete within one ripple cycle.
+
+**Rationale**: Standardizes parking station paths to align with the per-agent workspace structure, preventing merge conflicts and establishing a consistent convention.
+
+**Impact**: All agents in governance and consumer repos. Layer-down required.
+
+**References**: Issue: [Governance Canon] Standardize per-agent parking station file paths and deprecate global suggestions-log.md
+
+---
+
 ### FOREMAN-V2-CONTRACT-REPAIR-2026-04-09 — 2026-04-09 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: CodexAdvisor-agent (session-012-20260409)  
