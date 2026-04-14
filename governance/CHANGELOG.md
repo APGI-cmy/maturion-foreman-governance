@@ -64,6 +64,29 @@ Each entry follows this structure:
 
 ## Change History
 
+### IAA-WAKE-UP-EXEMPTION-2026-04-13 — 2026-04-13 — CLARIFICATION
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: [Housekeeping] Document IAA contract as wake_up_protocol: N/A  
+**Effective Date**: 2026-04-13
+
+**Summary**: Documents that the Independent Assurance Agent (IAA) is explicitly exempt from the standard wake-up protocol script (`wake_up_protocol: N/A`). IAA's bootstrap directive within its contract supersedes the script mechanism. New process document created at `governance/process/wake-up-protocol.md`.
+
+**Affected Artifacts**:
+- `governance/process/wake-up-protocol.md` (NEW) — Wake-up protocol agent exemptions; documents IAA exemption with rationale and CS2 reference
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — documentation-only change; no functional impact on any agent or workflow.
+
+**Rationale**: Wake-up protocol script expects `.agent.md` naming convention but IAA uses `independent-assurance-agent.md`. CS2 ruled IAA exempt — its self-contained bootstrap directive is authoritative. Documented per session-005 learning suggestion.
+
+**Impact**: Process clarity only. No agent behaviour changes.
+
+**References**: PR #1261 | session-005-20260302
+
+---
+
 ### PARKING-STATION-PATH-STANDARD-2026-04-13 — 2026-04-13 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator  
