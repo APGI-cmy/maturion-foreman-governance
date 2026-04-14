@@ -35,7 +35,7 @@ convention `<agent-type>.agent.md`, but the IAA contract uses
 false negatives in wake-up checks for the IAA agent. Rather than modifying the script,
 CS2 ruled that IAA's own bootstrap sequence is the canonical startup mechanism.
 
-**CS2 Reference**: Issue [#1261](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1261),
+**CS2 Reference**: PR [#1261](https://github.com/APGI-cmy/maturion-foreman-governance/pull/1261),
 session-005-20260302 learning suggestion.
 
 ---

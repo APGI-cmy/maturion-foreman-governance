@@ -83,7 +83,7 @@ Each entry follows this structure:
 
 **Impact**: Process clarity only. No agent behaviour changes.
 
-**References**: Issue #1261 | session-005-20260302
+**References**: PR #1261 | session-005-20260302
 
 ---
 
