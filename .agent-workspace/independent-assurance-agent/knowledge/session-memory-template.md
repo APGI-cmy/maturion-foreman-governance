@@ -1,8 +1,8 @@
 # IAA Session Memory Template
 
 **Agent**: independent-assurance-agent
-**Version**: 1.0.0
-**Last Updated**: 2026-02-25
+**Version**: 1.0.1
+**Last Updated**: 2026-04-13
 
 ---
 
@@ -89,9 +89,16 @@ Replace all `[placeholder]` values — no field may be left blank.
     "No degradation observed. Continuous improvement note: [specific, actionable observation]."]
 
 ## Parking Station
-- parking_entries_added: [YES — entries added to suggestions-log.md / NO — none this session]
+- parking_entries_added: [YES — entries added to .agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md / NO — none this session]
 ```
 
 ---
 
 **Authority**: CS2 (Johan Ras) | **Living Agent System**: v6.2.0
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-25 | Initial creation |
+| 1.0.1 | 2026-04-13 | Updated parking station path reference to canonical `.agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md` per PARKING_STATION_PATH_STANDARD.md v1.0.0 |

@@ -1,71 +1,56 @@
 # Parking Station — Suggestions Log Convention
 
-This directory contains agent suggestion logs for governance promotion.
-Entries are reviewed periodically by CS2.
+> ⚠️ **PATH CHANGE NOTICE (2026-04-13)**: The canonical per-agent parking station path has changed.
+> Per-agent suggestion logs in this shared directory are **deprecated**.
+> The canonical path is now: `.agent-workspace/<agent-name>/parking-station/suggestions-log.md`
+> See `governance/canon/PARKING_STATION_PATH_STANDARD.md` v1.0.0 for the authoritative specification.
+
+This directory previously contained per-agent suggestion log files. Those files are now
+deprecated historical archives. All new suggestions MUST be written to each agent's own
+workspace parking station at the canonical path above.
 
 ---
 
-## File Naming Convention
+## Current Canonical Paths
 
-Each agent owns **one dedicated suggestions log file**. The naming pattern is:
-
-```
-suggestions-log-{kebab-case-agent-id}.md
-```
-
-| Agent ID | Suggestions Log File |
-|----------|----------------------|
-| `governance-repo-administrator` | `suggestions-log-governance-repo-administrator.md` |
-| `CodexAdvisor-agent` | `suggestions-log-codex-advisor.md` *(agent ID uses CamelCase; filename uses lowercase kebab-case `codex-advisor`)* |
-| `foreman-v2` | `suggestions-log-foreman-v2.md` |
-| `independent-assurance-agent` | `suggestions-log-independent-assurance-agent.md` |
-
-> **Naming rule**: Agent IDs are converted to all-lowercase kebab-case in filenames (e.g. `CodexAdvisor-agent` → `codex-advisor`). All other agent IDs are already kebab-case and map directly.
-
-When a **new agent** is added to the system, create its dedicated suggestions log at the same time as the agent contract (`.github/agents/<agent-id>.md`). Pre-populate it with the standard header only.
+| Agent ID | Canonical Suggestions Log Path |
+|----------|-------------------------------|
+| `governance-repo-administrator` | `.agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md` |
+| `CodexAdvisor-agent` | `.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md` |
+| `foreman-v2` | `.agent-workspace/foreman-v2/parking-station/suggestions-log.md` |
+| `independent-assurance-agent` | `.agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md` |
 
 ---
 
-## Why Per-Agent Files?
+## Deprecated Files in This Directory
 
-Previously all agents appended to a single shared `suggestions-log.md`. When multiple agents worked in parallel on different branches, each append produced a git merge conflict requiring manual resolution.
-
-Per-agent files eliminate this entirely: no two agents ever write to the same file, so parallel agent activity can never produce a conflict in the suggestions log.
-
----
-
-## Writing to Your Log
-
-Each agent MUST append only to **its own** file. Never write to another agent's log.
-
-**Row format** (append one row per suggestion):
-```
-| YYYY-MM-DD | {kebab-case-agent-id} | session-NNN | [PHASE] | <summary> | <evidence-file> |
-```
-
-- **PHASE**: The column is **required in every table header** but its value is optional. Typical values: `DRAFT-PHASE`, `SESSION-END`, or another meaningful label. Leave the cell blank (`|  |`) when no phase applies.
-- **summary**: Plain-language description of the suggestion (1-2 sentences)
-- **evidence-file**: Session memory filename that contains the full suggestion detail
-
-All per-agent log files MUST use exactly these six columns in this order. Rows with a different column count will not aggregate cleanly.
+| File | Status |
+|------|--------|
+| `suggestions-log.md` | RETIRED — read-only archive since 2026-02-27 |
+| `suggestions-log-governance-repo-administrator.md` | DEPRECATED — migrated to canonical path |
+| `suggestions-log-codex-advisor.md` | DEPRECATED — migrated to canonical path |
+| `suggestions-log-foreman-v2.md` | DEPRECATED — migrated to canonical path |
+| `suggestions-log-independent-assurance-agent.md` | DEPRECATED — migrated to canonical path |
 
 ---
 
 ## Aggregate View
 
-To produce a combined view of all suggestions (e.g., for CS2 review), concatenate the per-agent files:
+To produce a combined view of all suggestions across all agents:
 
 ```bash
-cat .agent-workspace/parking-station/suggestions-log-*.md
+find .agent-workspace/*/parking-station -name "suggestions-log.md" -exec cat {} +
 ```
-
-Or use any standard markdown viewer that can merge multiple files.
-
-The old shared `suggestions-log.md` is **deprecated** (see that file for the migration notice).
-All new entries MUST go into the per-agent files.
 
 ---
 
-**Convention Version**: 1.0.0  
-**Effective**: 2026-02-27  
-**Authority**: Living Agent System v6.2.0
+## Migration History
+
+- **2026-02-27**: Original shared `suggestions-log.md` deprecated; per-agent files created in this directory.
+- **2026-04-13**: Per-agent files in this directory deprecated; canonical path moved to `.agent-workspace/<agent-name>/parking-station/suggestions-log.md` per `PARKING_STATION_PATH_STANDARD.md` v1.0.0.
+
+---
+
+**Convention Version**: 2.0.0  
+**Effective**: 2026-04-13  
+**Authority**: CS2 (Johan Ras) | Living Agent System v6.2.0
