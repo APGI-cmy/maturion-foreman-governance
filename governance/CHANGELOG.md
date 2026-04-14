@@ -87,6 +87,31 @@ Each entry follows this structure:
 
 ---
 
+### FOREMAN-HANDOVER-ENFORCEMENT-1336 — 2026-04-13 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue #1336  
+**Effective Date**: 2026-04-13
+
+**Summary**: Harden Foreman handover enforcement so final IAA audit/token is mandatory before PR can be treated as merge-ready. Root cause: token file naming inconsistency in CI check (`assurance-token-*` too narrow — missed `iaa-token-session-*` pattern) and no check for PREHANDOVER proofs with PENDING IAA tokens. Fixed both enforcement gaps with CI workflow changes.
+
+**Affected Artifacts**:
+- `.github/workflows/merge-gate-interface.yml` — `iaa/assurance-check` job widened to accept all valid token naming patterns: `assurance-token-*`, `iaa-token-session-*`, `iaa-assurance-token-*`; token validation simplified to check for `MERGE PERMITTED` verdict
+- `.github/workflows/governance-ceremony-gate.yml` — New Job 4: `governance-ceremony/iaa-token-completeness` added to detect PREHANDOVER proofs with PENDING IAA tokens and fail when no matching token file exists
+- `.agent-admin/governance/foreman-handover-enforcement-analysis-1336.md` (NEW) — Root cause analysis (D1), governance recommendation (D2), enforcement recommendation (D3), implementation recommendation (D4)
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — CI workflow changes are additive enforcement; no consumer repo ripple required.
+
+**Rationale**: Issue #1336 identified a repeatable pattern where Foreman-produced PRs reach review state without final IAA audit and token ceremony completion. The existing CI check used a token file pattern (`assurance-token-*.md`) that did not match the Foreman contract's token naming convention (`iaa-token-session-NNN-waveY-YYYYMMDD.md`), and no check existed to detect PREHANDOVER proofs with PENDING IAA tokens.
+
+**Impact**: All PRs requiring IAA assurance will now be checked against all valid token file naming patterns. PRs with PREHANDOVER proofs that have PENDING IAA tokens and no matching token file will fail the governance ceremony gate.
+
+**References**: Issue #1336
+
+---
+
 ### FOREMAN-V2-CONTRACT-REPAIR-2026-04-09 — 2026-04-09 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: CodexAdvisor-agent (session-012-20260409)  

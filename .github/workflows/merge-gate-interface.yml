@@ -297,33 +297,88 @@ jobs:
 
       - name: Check for ASSURANCE-TOKEN
         if: steps.iaa_required.outputs.iaa_required == 'true'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          echo "=== IAA Assurance Token Check ==="
-          echo "Required by: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.0.0"
+          echo "=== IAA Assurance Token Check (PR-Scoped) ==="
+          echo "Required by: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md"
+          echo "Hardened by: Issue #1336 — PR-scoped token enforcement"
+          echo "Current PR: #${PR_NUMBER}"
           echo ""
 
-          TOKEN_FILES=$(find .agent-admin/assurance/ -maxdepth 1 -name "assurance-token-*.md" 2>/dev/null || true)
+          # -----------------------------------------------------------
+          # Token discovery — scoped to the CURRENT PR only
+          # An unrelated historical token must NOT satisfy this gate.
+          # -----------------------------------------------------------
+          TOKEN_FILES=""
+
+          # Strategy 1: Token filename contains the current PR number
+          TOKEN_FILES=$(find .agent-admin/assurance/ -maxdepth 1 \( \
+            -name "assurance-token-*${PR_NUMBER}*" -o \
+            -name "iaa-token-session-*${PR_NUMBER}*" -o \
+            -name "iaa-assurance-token-*${PR_NUMBER}*" \
+          \) 2>/dev/null || true)
+
+          if [ -n "$TOKEN_FILES" ]; then
+            echo "✅ Token file(s) matched by PR number in filename:"
+            echo "$TOKEN_FILES"
+          fi
+
+          # Strategy 2: Token files added in this PR's diff
+          if [ -z "$TOKEN_FILES" ]; then
+            echo "No filename match for PR #${PR_NUMBER}. Checking git diff for tokens added in this PR..."
+            TOKEN_FILES=$(git diff --name-only --diff-filter=A "origin/${{ github.base_ref }}...HEAD" -- '.agent-admin/assurance/' 2>/dev/null \
+              | grep -E '(assurance-token-|iaa-token-session-|iaa-assurance-token-)' || true)
+            if [ -n "$TOKEN_FILES" ]; then
+              echo "✅ Token file(s) found via PR diff:"
+              echo "$TOKEN_FILES"
+            fi
+          fi
+
+          # Strategy 3: Token file content references current PR number
+          if [ -z "$TOKEN_FILES" ]; then
+            echo "No diff-added tokens found. Checking token content for PR #${PR_NUMBER} reference..."
+            ALL_TOKENS=$(find .agent-admin/assurance/ -maxdepth 1 \( \
+              -name "assurance-token-*.md" -o \
+              -name "iaa-token-session-*.md" -o \
+              -name "iaa-assurance-token-*.md" \
+            \) 2>/dev/null || true)
+            for CANDIDATE in $ALL_TOKENS; do
+              if grep -qE "(^|[^0-9])PR[# :]*${PR_NUMBER}([^0-9]|$)" "$CANDIDATE" 2>/dev/null; then
+                TOKEN_FILES="${TOKEN_FILES:+${TOKEN_FILES} }${CANDIDATE}"
+              fi
+            done
+            if [ -n "$TOKEN_FILES" ]; then
+              echo "✅ Token file(s) matched by PR reference in content:"
+              echo "$TOKEN_FILES"
+            fi
+          fi
 
           if [ -z "$TOKEN_FILES" ]; then
-            echo "❌ MERGE BLOCKED: No ASSURANCE-TOKEN found in .agent-admin/assurance/"
+            echo "❌ MERGE BLOCKED: No ASSURANCE-TOKEN found for PR #${PR_NUMBER}"
             echo ""
             echo "This PR requires Independent Assurance Agent (IAA) sign-off before merge."
+            echo "Token validation is PR-scoped — historical tokens from other PRs do not qualify."
+            echo ""
+            echo "Accepted token file patterns:"
+            echo "  - assurance-token-<PR#>.md"
+            echo "  - iaa-token-session-<session>-<wave>-<date>.md"
+            echo "  - iaa-assurance-token-<id>.md"
             echo ""
             echo "Required action:"
             echo "  1. IAA must review the five-phase delivery proof (Preflight, Governance,"
             echo "     Working, Handover, Assurance Invocation)"
-            echo "  2. If all phases pass and agent integrity is verified, IAA issues:"
-            echo "     .agent-admin/assurance/assurance-token-<PR#>.md"
+            echo "  2. If all phases pass and agent integrity is verified, IAA issues a token file"
             echo "  3. If any phase fails, IAA issues a REJECTION-PACKAGE — resolve all"
             echo "     proof gaps before re-requesting assurance"
             echo ""
             echo "See: governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md"
 
             # Also check for rejection package (informational)
-            REJECTION_FILES=$(find .agent-admin/assurance/ -maxdepth 1 -name "rejection-package-*.md" 2>/dev/null || true)
+            REJECTION_FILES=$(find .agent-admin/assurance/ -maxdepth 1 -name "rejection-package-*${PR_NUMBER}*" 2>/dev/null || true)
             if [ -n "$REJECTION_FILES" ]; then
               echo ""
-              echo "⚠️  REJECTION-PACKAGE found:"
+              echo "⚠️  REJECTION-PACKAGE found for this PR:"
               echo "$REJECTION_FILES"
               echo "Resolve all items in the rejection package before re-requesting assurance."
             fi
@@ -331,22 +386,39 @@ jobs:
             exit 1
           fi
 
-          echo "✅ ASSURANCE-TOKEN found:"
-          echo "$TOKEN_FILES"
+          echo ""
 
-          # Verify token is not empty
+          # -----------------------------------------------------------
+          # Token validation — require ASSURANCE-TOKEN marker + Verdict
+          # The Verdict line must contain MERGE PERMITTED.
+          # Handles markdown emphasis (e.g. **Verdict**: ...) via sed.
+          # -----------------------------------------------------------
+          TOKEN_VALID=false
           for TOKEN_FILE in $TOKEN_FILES; do
-            if ! grep -q "ASSURANCE-TOKEN" "$TOKEN_FILE"; then
-              echo "❌ Token file $TOKEN_FILE does not contain ASSURANCE-TOKEN marker"
-              exit 1
+            HAS_MARKER=false
+            HAS_VERDICT=false
+            if grep -q "ASSURANCE-TOKEN" "$TOKEN_FILE"; then
+              HAS_MARKER=true
             fi
-            if ! grep -q "Verdict: MERGE PERMITTED" "$TOKEN_FILE"; then
-              echo "❌ Token file $TOKEN_FILE does not contain 'Verdict: MERGE PERMITTED'"
-              exit 1
+            # Strip markdown bold/backtick then check for Verdict: ... MERGE PERMITTED
+            if sed 's/\*\*//g; s/`//g' "$TOKEN_FILE" | grep -qi 'Verdict:.*MERGE PERMITTED'; then
+              HAS_VERDICT=true
+            fi
+            if [ "$HAS_MARKER" = "true" ] && [ "$HAS_VERDICT" = "true" ]; then
+              echo "✅ Token $TOKEN_FILE: ASSURANCE-TOKEN marker ✓ | Verdict: MERGE PERMITTED ✓"
+              TOKEN_VALID=true
+            elif [ "$HAS_MARKER" = "true" ]; then
+              echo "⚠️  Token $TOKEN_FILE has ASSURANCE-TOKEN but missing Verdict: MERGE PERMITTED"
             fi
           done
 
-          echo "✅ IAA ASSURANCE-TOKEN validated — merge permitted per IAA"
+          if [ "$TOKEN_VALID" != "true" ]; then
+            echo "❌ No PR-scoped token contains both ASSURANCE-TOKEN marker and a Verdict: MERGE PERMITTED line"
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ IAA ASSURANCE-TOKEN validated for PR #${PR_NUMBER} — merge permitted per IAA"
 
       - name: IAA not required — skip
         if: steps.iaa_required.outputs.iaa_required != 'true'
