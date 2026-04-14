@@ -194,3 +194,178 @@ jobs:
 
           echo "✅ governance-ceremony/phase4-completeness: PASS"
           echo "   All required Phase 4 artifacts present — job is in COMPLETE state"
+
+  # Job 4: IAA Token Completeness Check
+  # Detects PREHANDOVER proofs with PENDING IAA tokens and no matching token file
+  # Enforcement per Issue #1336: Harden Foreman handover enforcement
+  iaa-token-completeness:
+    name: governance-ceremony/iaa-token-completeness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify IAA token completeness
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "=== Governance Ceremony — IAA Token Completeness Check (PR-Scoped) ==="
+          echo "Authority: Issue #1336 — Foreman handover enforcement hardening"
+          echo "Purpose: Detect PREHANDOVER proofs with PENDING IAA tokens"
+          echo "Current PR: #${PR_NUMBER}"
+          echo ""
+
+          # -----------------------------------------------------------
+          # Step 1: Find the PREHANDOVER proof for THIS PR
+          # Primary: proof files changed in this PR's diff
+          # Fallback: proof containing current PR number in content
+          # Last resort: deterministic latest by filename sort
+          # -----------------------------------------------------------
+          PROOF_FILE=""
+
+          # Strategy 1: Proof file added/modified in this PR's diff
+          PR_PROOFS=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- '.agent-admin/prehandover/' 'PREHANDOVER_PROOF*.md' 2>/dev/null \
+            | grep -E '(proof-|prehandover_proof|PREHANDOVER_PROOF)' | sort | tail -1 || true)
+
+          if [ -n "$PR_PROOFS" ] && [ -f "$PR_PROOFS" ]; then
+            PROOF_FILE="$PR_PROOFS"
+            echo "Found PREHANDOVER proof changed in this PR: ${PROOF_FILE}"
+          fi
+
+          # Strategy 2: Proof containing PR number in content
+          if [ -z "$PROOF_FILE" ]; then
+            echo "No proof in PR diff. Searching proof content for PR #${PR_NUMBER}..."
+            for CANDIDATE in .agent-admin/prehandover/proof-*.md .agent-admin/prehandover/prehandover_proof*.md PREHANDOVER_PROOF*.md; do
+              if [ -f "$CANDIDATE" ] && grep -qE "(^|[^0-9])PR[# :]*${PR_NUMBER}([^0-9]|$)" "$CANDIDATE" 2>/dev/null; then
+                PROOF_FILE="$CANDIDATE"
+                echo "Found proof referencing PR #${PR_NUMBER}: ${PROOF_FILE}"
+                break
+              fi
+            done
+          fi
+
+          # Strategy 3: Proof with PR number in filename
+          if [ -z "$PROOF_FILE" ]; then
+            for CANDIDATE in .agent-admin/prehandover/*"${PR_NUMBER}"*.md; do
+              if [ -f "$CANDIDATE" ]; then
+                PROOF_FILE="$CANDIDATE"
+                echo "Found proof with PR number in filename: ${PROOF_FILE}"
+                break
+              fi
+            done
+          fi
+
+          if [ -z "$PROOF_FILE" ]; then
+            echo "ℹ️  No PREHANDOVER proof found for PR #${PR_NUMBER} — IAA token completeness check not applicable"
+            echo "✅ governance-ceremony/iaa-token-completeness: PASS (no proof to validate)"
+            exit 0
+          fi
+
+          echo ""
+
+          # -----------------------------------------------------------
+          # Step 2: Check if iaa_audit_token field contains PENDING
+          # Handle all real-world proof formats:
+          #   iaa_audit_token: PENDING                     — plain YAML-style
+          #   **iaa_audit_token**: PENDING                 — markdown bold
+          #   | iaa_audit_token | PENDING |                — table format
+          #   `iaa_audit_token`: PENDING                   — backtick-formatted
+          #   - **iaa_audit_token**: PENDING               — list-item bold
+          # -----------------------------------------------------------
+          IAA_TOKEN_VALUE=$(sed 's/\*\*//g; s/`//g' "$PROOF_FILE" | grep -i 'iaa_audit_token' | head -1 || echo "")
+
+          if [ -z "$IAA_TOKEN_VALUE" ]; then
+            echo "ℹ️  No iaa_audit_token field found in proof — skipping token completeness check"
+            echo "✅ governance-ceremony/iaa-token-completeness: PASS (no token field)"
+            exit 0
+          fi
+
+          echo "Token field value: ${IAA_TOKEN_VALUE}"
+          echo ""
+
+          # -----------------------------------------------------------
+          # Step 3: If token field contains PENDING, require a PR-scoped token file
+          # -----------------------------------------------------------
+          if echo "$IAA_TOKEN_VALUE" | grep -qi "PENDING"; then
+            echo "⚠️  PREHANDOVER proof has iaa_audit_token: PENDING"
+            echo "Checking for a PR-scoped IAA token file..."
+            echo ""
+
+            MATCHED_TOKEN=""
+
+            # Strategy A: Token filename contains current PR number
+            MATCHED_TOKEN=$(find .agent-admin/assurance/ -maxdepth 1 \( \
+              -name "assurance-token-*${PR_NUMBER}*" -o \
+              -name "iaa-token-session-*${PR_NUMBER}*" -o \
+              -name "iaa-assurance-token-*${PR_NUMBER}*" \
+            \) 2>/dev/null | head -1 || true)
+
+            if [ -n "$MATCHED_TOKEN" ]; then
+              echo "Token matched by PR number in filename: ${MATCHED_TOKEN}"
+            fi
+
+            # Strategy B: Token files added in this PR's diff
+            if [ -z "$MATCHED_TOKEN" ]; then
+              echo "No filename match. Checking git diff for token files added in this PR..."
+              DIFF_TOKENS=$(git diff --name-only --diff-filter=A "origin/${{ github.base_ref }}...HEAD" -- '.agent-admin/assurance/' 2>/dev/null \
+                | grep -E '(assurance-token-|iaa-token-session-|iaa-assurance-token-)' || true)
+              if [ -n "$DIFF_TOKENS" ]; then
+                MATCHED_TOKEN=$(echo "$DIFF_TOKENS" | head -1)
+                echo "Token found via PR diff: ${MATCHED_TOKEN}"
+              fi
+            fi
+
+            # Strategy C: Token content references current PR number
+            if [ -z "$MATCHED_TOKEN" ]; then
+              echo "No diff-added token. Checking token content for PR #${PR_NUMBER}..."
+              ALL_TOKENS=$(find .agent-admin/assurance/ -maxdepth 1 \( \
+                -name "assurance-token-*.md" -o \
+                -name "iaa-token-session-*.md" -o \
+                -name "iaa-assurance-token-*.md" \
+              \) 2>/dev/null || true)
+              for CANDIDATE in $ALL_TOKENS; do
+                if grep -qE "(^|[^0-9])PR[# :]*${PR_NUMBER}([^0-9]|$)" "$CANDIDATE" 2>/dev/null; then
+                  MATCHED_TOKEN="$CANDIDATE"
+                  echo "Token matched by PR reference in content: ${MATCHED_TOKEN}"
+                  break
+                fi
+              done
+            fi
+
+            if [ -z "$MATCHED_TOKEN" ]; then
+              echo "❌ GOVERNANCE CEREMONY — IAA TOKEN COMPLETENESS: FAIL"
+              echo ""
+              echo "PREHANDOVER proof for PR #${PR_NUMBER} has iaa_audit_token: PENDING"
+              echo "but NO correlated IAA token file was found."
+              echo ""
+              echo "Token validation is PR-scoped:"
+              echo "  - Token filename must contain '${PR_NUMBER}', OR"
+              echo "  - Token must be newly added in this PR's diff, OR"
+              echo "  - Token content must reference PR #${PR_NUMBER}"
+              echo ""
+              echo "Historical token files from other PRs do NOT satisfy this check."
+              echo ""
+              echo "Required action:"
+              echo "  1. Invoke IAA agent for final audit: task(agent_type: 'independent-assurance-agent')"
+              echo "  2. On ASSURANCE-TOKEN: commit token file to .agent-admin/assurance/"
+              echo "  3. On REJECTION-PACKAGE: address all findings, re-run handover from §4.3"
+              echo ""
+              echo "Reference: Foreman contract §4.4 (IAA Invocation), §4.5 (Token Ceremony)"
+              echo "           Issue #1336 — Foreman handover enforcement hardening"
+              exit 1
+            fi
+
+            echo ""
+            echo "✅ PR-scoped IAA token file found for PR #${PR_NUMBER}:"
+            echo "   ${MATCHED_TOKEN}"
+            echo ""
+            echo "ℹ️  Note: PREHANDOVER proof immutability means the PENDING field may be"
+            echo "   expected — the PR-scoped token file existence is the authoritative signal."
+          else
+            echo "✅ PREHANDOVER proof iaa_audit_token is not PENDING"
+          fi
+
+          echo ""
+          echo "✅ governance-ceremony/iaa-token-completeness: PASS"
