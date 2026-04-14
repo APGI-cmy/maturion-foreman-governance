@@ -1,6 +1,6 @@
 # Session Memory Template — CodexAdvisor
 
-**Version**: 1.0.0  
+**Version**: 1.0.1  
 **Created**: 2026-02-26  
 **Authority**: CS2 (Johan Ras)  
 **Canonical Source**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md`
@@ -87,7 +87,7 @@ File naming: `.agent-workspace/CodexAdvisor-agent/memory/session-NNN-YYYYMMDD.md
 
 ## Parking Station Entries
 
-[List any entries added to `.agent-workspace/parking-station/suggestions-log-codex-advisor.md` this session, or 'none']
+[List any entries added to `.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md` this session, or 'none']
 
 ---
 
@@ -151,3 +151,10 @@ File naming: `.agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-NNN
 
 **Tier-3 Canon Reference**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md`  
 **Tier-3 Canon Reference**: `governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md`
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0.0 | 2026-02-26 | Initial creation |
+| 1.0.1 | 2026-04-13 | Updated parking station path reference to canonical `.agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md` per PARKING_STATION_PATH_STANDARD.md v1.0.0 |

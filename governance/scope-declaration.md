@@ -3,61 +3,41 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: "copilot/governance-harden-foreman-handover"
-DATE_UTC: 2026-04-13T07:07:51Z
-AGENT_ID: governance-repo-administrator-v2
-RESPONSIBILITY_DOMAIN: Governance Repository Administration
-CHANGE_TYPE: enforcement_hardening
+PR_ID: "copilot/standardize-per-agent-parking-paths"
+DATE_UTC: 2026-04-13T07:08:00Z
+AGENT_ID: governance-repo-administrator
+RESPONSIBILITY_DOMAIN: Governance Canon Administration
+CHANGE_TYPE: non_breaking_enhancement
 ---
 ```
 
 ## Executive Summary
-Harden Foreman handover enforcement so final IAA audit/token is mandatory before PR can be treated as merge-ready. Root cause analysis identified token file naming inconsistency in CI check and missing PREHANDOVER PENDING token detection. Fixed both enforcement gaps with CI workflow changes.
+New canon `PARKING_STATION_PATH_STANDARD.md` v1.0.0 canonicalises the per-agent parking station path as `.agent-workspace/<agent-name>/parking-station/suggestions-log.md`. Deprecates the interim per-agent files in the shared `.agent-workspace/parking-station/` directory. Migrates all existing suggestion entries to canonical paths. Updates architecture docs, handover automation, contract architecture, CANON_INVENTORY, and GOVERNANCE_CANON_MANIFEST. Includes migration plan and layer-down instructions for consumer repos.
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/assurance-token-1336.md
-- .agent-admin/governance/foreman-handover-enforcement-analysis-1336.md
-- .agent-admin/prehandover/proof-20260413T070751Z.md
-- .agent-workspace/governance-repo-administrator/memory/session-GA-067-20260413.md
-- .github/workflows/governance-ceremony-gate.yml
-- .github/workflows/merge-gate-interface.yml
+- .agent-admin/assurance/assurance-token-PRPARKING.md
+- .agent-admin/prehandover/proof-parking-station-path-standard-20260413.md
+- .agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md
+- .agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md
+- .agent-workspace/foreman-v2/parking-station/suggestions-log.md
+- .agent-workspace/governance-repo-administrator/memory/session-GA-parking-std-20260413.md
+- .agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md
+- .agent-workspace/independent-assurance-agent/knowledge/session-memory-template.md
+- .agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md
+- .agent-workspace/parking-station/README.md
+- .agent-workspace/parking-station/suggestions-log-codex-advisor.md
+- .agent-workspace/parking-station/suggestions-log-foreman-v2.md
+- .agent-workspace/parking-station/suggestions-log-governance-repo-administrator.md
+- .agent-workspace/parking-station/suggestions-log-independent-assurance-agent.md
+- docs/architecture/per-agent-logging.md
+- governance/CANON_INVENTORY.json
 - governance/CHANGELOG.md
+- governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
+- governance/canon/AGENT_HANDOVER_AUTOMATION.md
+- governance/canon/GOVERNANCE_CANON_MANIFEST.md
+- governance/canon/PARKING_STATION_PATH_STANDARD.md
 - governance/scope-declaration.md
 
-## Scope Boundaries
-
-### In Scope
-- `.github/workflows/merge-gate-interface.yml` — `iaa/assurance-check` job widened to accept all valid token naming patterns (`assurance-token-*`, `iaa-token-session-*`, `iaa-assurance-token-*`)
-- `.github/workflows/governance-ceremony-gate.yml` — New Job 4: `governance-ceremony/iaa-token-completeness` added to detect PREHANDOVER proofs with PENDING IAA tokens
-- `.agent-admin/governance/foreman-handover-enforcement-analysis-1336.md` — Root cause analysis (D1-D4)
-- `governance/CHANGELOG.md` — Entry for this change
-- `governance/scope-declaration.md` — This file
-
-### Out of Scope
-- No Foreman contract changes (contract wording is sufficient per D2 analysis)
-- No CANON_INVENTORY.json changes (no canon files modified)
-- No consumer repo changes
-
-## Constitutional Alignment
-- `LIVING_AGENT_SYSTEM.md` v6.2.0 — GA contract authority
-- `MERGE_GATE_INTERFACE_STANDARD.md` v1.0.0 — merge gate workflow structure
-- CS2-authorized issue: #1336
-
-## Ripple Requirements
-- No canon files were modified — no ripple propagation required to consumer repos
-- GA contract weaknesses identified (D4) are parking station items only — not in scope for this PR
-
-## Scope-to-Diff Attestation
-All modified files are within the Agent Contract Governance responsibility domain.
-
-FILES_CHANGED above reflects the complete `git diff --name-only origin/main...HEAD` output for this PR. This scope declaration is the final update to this file; no further artifacts will be added to this PR.
-
-**IAA Token**: `IAA-20260409-PR1339-R3` — ASSURANCE-TOKEN — MERGE PERMITTED  
-**Attestation**: CodexAdvisor-agent (session-012-20260409)  
-**Date**: 2026-04-09T11:07:00Z
-
----
-
-**Timestamp**: 2026-04-09T09:10:00Z  
-**Agent**: CodexAdvisor-agent
+## FILES_CHANGED_COUNT
+22
