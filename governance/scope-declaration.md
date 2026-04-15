@@ -3,41 +3,29 @@
 ## Metadata
 ```yaml
 ---
-PR_ID: "copilot/standardize-per-agent-parking-paths"
-DATE_UTC: 2026-04-13T07:08:00Z
-AGENT_ID: governance-repo-administrator
-RESPONSIBILITY_DOMAIN: Governance Canon Administration
+PR_ID: "copilot/fix-253484265-1109729142-e601873f-372d-4a93-9c32-5137b7f9f45d"
+DATE_UTC: 2026-04-15T13:05:00Z
+AGENT_ID: governance-repo-administrator-v2
+RESPONSIBILITY_DOMAIN: Governance Canon Administration — AIMC Specialist Operating Model and MMM Convergence Boundary
 CHANGE_TYPE: non_breaking_enhancement
+ISSUE: "#1343"
 ---
 ```
 
 ## Executive Summary
-New canon `PARKING_STATION_PATH_STANDARD.md` v1.0.0 canonicalises the per-agent parking station path as `.agent-workspace/<agent-name>/parking-station/suggestions-log.md`. Deprecates the interim per-agent files in the shared `.agent-workspace/parking-station/` directory. Migrates all existing suggestion entries to canonical paths. Updates architecture docs, handover automation, contract architecture, CANON_INVENTORY, and GOVERNANCE_CANON_MANIFEST. Includes migration plan and layer-down instructions for consumer repos.
+Canon-alignment wave for issue #1343. Creates two new canonical governance documents governing the hardened orchestrator/specialist operating model for AIMC/MMM convergence: `AIMC_SPECIALIST_OPERATING_MODEL.md` v1.0.0 (knowledge source model, source priority/conflict rules, freshness rules, shared memory boundaries, module-consumer mode, human-in-the-loop boundaries) and `AIMC_MMM_CONVERGENCE_BOUNDARY_CANON.md` v1.0.0 (harvest-map ownership, MMM/AIMC/KUC/PIT boundary definitions, bridge artefact deferrals, forward handoff). Amends `SPECIALIST_KNOWLEDGE_MANAGEMENT.md` to v1.1.0 with source model governance cross-reference. Updates CANON_INVENTORY.json (202 total), GOVERNANCE_CANON_MANIFEST.md, and CHANGELOG.md.
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/assurance-token-PRPARKING.md
-- .agent-admin/prehandover/proof-parking-station-path-standard-20260413.md
-- .agent-workspace/CodexAdvisor-agent/knowledge/session-memory-template.md
-- .agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md
-- .agent-workspace/foreman-v2/parking-station/suggestions-log.md
-- .agent-workspace/governance-repo-administrator/memory/session-GA-parking-std-20260413.md
-- .agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md
-- .agent-workspace/independent-assurance-agent/knowledge/session-memory-template.md
-- .agent-workspace/independent-assurance-agent/parking-station/suggestions-log.md
-- .agent-workspace/parking-station/README.md
-- .agent-workspace/parking-station/suggestions-log-codex-advisor.md
-- .agent-workspace/parking-station/suggestions-log-foreman-v2.md
-- .agent-workspace/parking-station/suggestions-log-governance-repo-administrator.md
-- .agent-workspace/parking-station/suggestions-log-independent-assurance-agent.md
-- docs/architecture/per-agent-logging.md
+- .agent-admin/prehandover/proof-aimc-canon-1343-20260415.md
+- .agent-workspace/governance-repo-administrator/memory/session-GA-068-20260415.md
 - governance/CANON_INVENTORY.json
 - governance/CHANGELOG.md
-- governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
-- governance/canon/AGENT_HANDOVER_AUTOMATION.md
+- governance/canon/AIMC_MMM_CONVERGENCE_BOUNDARY_CANON.md
+- governance/canon/AIMC_SPECIALIST_OPERATING_MODEL.md
 - governance/canon/GOVERNANCE_CANON_MANIFEST.md
-- governance/canon/PARKING_STATION_PATH_STANDARD.md
+- governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md
 - governance/scope-declaration.md
 
 ## FILES_CHANGED_COUNT
-22
+9
