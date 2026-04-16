@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-04-15",
+  "last_updated": "2026-04-16",
   "total_canons": 202,
-  "generation_timestamp": "2026-04-15T00:00:00Z",
+  "generation_timestamp": "2026-04-16T00:00:00Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -1285,16 +1285,16 @@
     {
       "filename": "GOVERNANCE_CANON_MANIFEST.md",
       "version": "1.0.0",
-      "file_hash": "f3b91126d6aaf1bb86dbd8884d08c21eba3fc2ef644b113e3d773f8b5d2aa80b",
+      "file_hash": "4a56c52cf142f2860b27309252fc41764145065fb4df1c0ed6427026d09ac64a",
       "effective_date": "2026-01-05",
       "description": "This manifest is the **single authoritative index** of all canonical governance standards in the maturion-foreman-governance repository.",
       "type": "canon",
       "path": "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "f3b91126d6aaf1bb86dbd8884d08c21eba3fc2ef644b113e3d773f8b5d2aa80b",
-      "last_updated": "2026-04-13",
-      "change_note": "Added PARKING_STATION_PATH_STANDARD.md entry to Governance & Layerdown Models section",
-      "amended_date": "2026-04-13"
+      "file_hash_sha256": "4a56c52cf142f2860b27309252fc41764145065fb4df1c0ed6427026d09ac64a",
+      "last_updated": "2026-04-15",
+      "change_note": "v1.0.0: Added \u00a73.15 AIMC Platform Models (2 new canon files); totals 93\u219295 (issue #1343)",
+      "amended_date": "2026-04-15"
     },
     {
       "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",
@@ -2369,12 +2369,11 @@
       "canonical_version": "1.0.0",
       "file_hash": "50d60061c6dbbfd93cd2a383951cdafac49761f86c964e8a4f2eca0b7a9a03c3",
       "effective_date": "2026-04-15",
-      "description": "Defines the AIMC specialist operating model: knowledge source class taxonomy (Tier 1–4), source trust hierarchy, priority and conflict rules, freshness/currency rules, shared memory boundaries, delegation and module-consumer mode (advisory/operational/gated output classes), and human-in-the-loop boundaries. Governs all AIMC specialist agents.",
+      "description": "Defines the AIMC specialist operating model: knowledge source class taxonomy (Tier 1\u20134), source trust hierarchy, priority and conflict rules, freshness/currency rules, shared memory boundaries, delegation and module-consumer mode (advisory/operational/gated output classes), and human-in-the-loop boundaries. Governs all AIMC specialist agents.",
       "type": "canon",
       "path": "governance/canon/AIMC_SPECIALIST_OPERATING_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "50d60061c6dbbfd93cd2a383951cdafac49761f86c964e8a4f2eca0b7a9a03c3",
-      "canonical_version": "1.0.0",
       "local_version": null,
       "local_extension": false,
       "layer_up_status": "NONE",
@@ -2393,7 +2392,6 @@
       "path": "governance/canon/AIMC_MMM_CONVERGENCE_BOUNDARY_CANON.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "2818c33ebe8e50617592dd5fc830939bc8ee515be6a76f7b2fb27ce3ae5c9824",
-      "canonical_version": "1.0.0",
       "local_version": null,
       "local_extension": false,
       "layer_up_status": "NONE",
