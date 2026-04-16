@@ -12,7 +12,7 @@ CHANGE_TYPE: non_breaking_enhancement
 ```
 
 ## Executive Summary
-Formal governance closure PR for ECAP-001 (Execution Ceremony Administration Protocol). All substantive canon changes were completed in PR #1332 (merged 2026-04-08). This PR adds governance evidence artifacts: PREHANDOVER proof, session memory, and parking station suggestion entry confirming all issue acceptance criteria are met and the governance package is layer-down-ready for consumer repos (`APGI-cmy/maturion-isms`, `APGI-cmy/app_management_centre`).
+Formal governance closure PR for ECAP-001 (Execution Ceremony Administration Protocol). All substantive canon changes were completed in PR #1332 (merged 2026-04-08). This PR adds governance evidence artifacts: PREHANDOVER proof, session memory, parking station suggestion entry, and IAA assurance token — confirming all issue acceptance criteria are met and the governance package is layer-down-ready for consumer repos (`APGI-cmy/maturion-isms`, `APGI-cmy/app_management_centre`).
 
 ## FILES_CHANGED
 
