@@ -16,10 +16,11 @@ Formal governance closure PR for ECAP-001 (Execution Ceremony Administration Pro
 
 ## FILES_CHANGED
 
+- .agent-admin/assurance/iaa-token-session-032-wave1-20260416.md
 - .agent-admin/prehandover/proof-ecap-001-issue-closure-20260416.md
 - .agent-workspace/governance-repo-administrator/memory/session-GA-068-20260416.md
 - .agent-workspace/governance-repo-administrator/parking-station/suggestions-log.md
 - governance/scope-declaration.md
 
 ## FILES_CHANGED_COUNT
-4
+5
