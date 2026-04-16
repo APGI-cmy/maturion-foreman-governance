@@ -17,6 +17,7 @@ Canon-alignment wave for issue #1343. Creates two new canonical governance docum
 
 ## FILES_CHANGED
 
+- .agent-admin/assurance/correction-addendum-session-GA-068-1344-20260415.md
 - .agent-admin/prehandover/proof-aimc-canon-1343-20260415.md
 - .agent-workspace/governance-repo-administrator/memory/session-GA-068-20260415.md
 - governance/CANON_INVENTORY.json
@@ -28,4 +29,4 @@ Canon-alignment wave for issue #1343. Creates two new canonical governance docum
 - governance/scope-declaration.md
 
 ## FILES_CHANGED_COUNT
-9
+10
