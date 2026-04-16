@@ -30,3 +30,4 @@ Canon-alignment wave for issue #1343. Creates two new canonical governance docum
 
 ## FILES_CHANGED_COUNT
 10
+
