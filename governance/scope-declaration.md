@@ -11,13 +11,19 @@
 
 ---
 
-FILES_CHANGED: 20
+FILES_CHANGED: 26
 
 ## Changed Files
 
+.agent-admin/assurance/iaa-token-session-033-wave1-20260417.md
+.agent-admin/assurance/iaa-token-session-GA-069-wave1-20260417.md
 .agent-admin/gates/gate-results-20260417T081712Z.json
+.agent-admin/prehandover/proof-admin-ceremony-compliance-stack-20260417-r1.md
 .agent-admin/prehandover/proof-admin-ceremony-compliance-stack-20260417.md
 .agent-workspace/governance-repo-administrator/memory/session-GA-069-20260417.md
+.agent-workspace/independent-assurance-agent/memory/.archive/session-026-20260405.md
+.agent-workspace/independent-assurance-agent/memory/.archive/session-027-20260405.md
+.agent-workspace/independent-assurance-agent/memory/session-033-20260417.md
 governance/CANON_INVENTORY.json
 governance/CHANGELOG.md
 governance/canon/AGENT_HANDOVER_AUTOMATION.md
@@ -27,6 +33,7 @@ governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md
 governance/checklists/execution-ceremony-admin-anti-patterns.md
 governance/checklists/execution-ceremony-admin-checklist.md
 governance/checklists/execution-ceremony-admin-reconciliation-matrix.md
+governance/scope-declaration.md
 governance/templates/execution-ceremony-admin/CORRECTION_ADDENDUM.template.md
 governance/templates/execution-ceremony-admin/ECAP_RECONCILIATION_SUMMARY.template.md
 governance/templates/execution-ceremony-admin/FOREMAN_ADMIN_READINESS_HANDBACK.template.md
@@ -34,7 +41,6 @@ governance/templates/execution-ceremony-admin/PREHANDOVER.template.md
 governance/templates/execution-ceremony-admin/README.md
 governance/templates/execution-ceremony-admin/SCOPE_DECLARATION.template.md
 governance/templates/execution-ceremony-admin/SESSION_MEMORY.template.md
-governance/scope-declaration.md
 
 ---
 

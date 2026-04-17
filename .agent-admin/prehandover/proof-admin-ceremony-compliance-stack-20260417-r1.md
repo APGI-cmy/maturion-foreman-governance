@@ -22,7 +22,7 @@
 
 | Field | Value |
 |-------|-------|
-| iaa_audit_token | `.agent-admin/assurance/iaa-token-session-GA-069-wave1-20260417.md` |
+| iaa_audit_token | `.agent-admin/assurance/iaa-token-session-033-wave1-20260417.md` |
 | iaa_session_reference | IAA-20260417-PR-canonize-admin-ceremony-compliance-stack (session-033) |
 | iaa_reinvocation_round | 0 (first invocation — PASS on first attempt) |
 | iaa_rejection_reference | none |
