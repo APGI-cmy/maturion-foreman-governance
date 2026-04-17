@@ -74,7 +74,7 @@ Each entry follows this structure:
 
 **Affected Artifacts**:
 - `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (v1.0.0 → v1.1.0) — Added §3.5 Final-State Normalization Duty, §3.6 Ceremony Completeness Invariants (CCI-01–CCI-05), §3.7 Cross-Artifact Reconciliation Duty, §3.8 Commit-State Truth Rule, §3.9 Ripple/Registry Administration Duty, §4.5 Non-Substitution Rule
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.3.0 → v1.4.0) — Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, ECAP jobs); 9 auto-fail anti-patterns (AAP-01–AAP-09); checklist item
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.3.0 → v1.4.1) — Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, ECAP jobs); 9 auto-fail anti-patterns (AAP-01–AAP-09); checklist item; tightened Check C stale-wording scan to final-state artifact set only with superseded-proof exemption (AAP-01 updated)
 - `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.3.0 → v1.4.0) — Added §14.6 Foreman QP Admin-Compliance Checkpoint (required output: administrative_readiness ACCEPTED|REJECTED)
 - `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.5.0 → v1.6.0) — Added §Admin-Ceremony Rejection Triggers (ACR-01 through ACR-08); reinforced non-cleanup-authoring posture
 - `governance/checklists/execution-ceremony-admin-checklist.md` (NEW v1.0.0) — Authoritative 9-section checklist for ceremony completeness

@@ -51,7 +51,7 @@ Verdict: MERGE PERMITTED
 ### CANON_GOVERNANCE Overlay (OVL-CG-001 to OVL-CG-006)
 - OVL-CG-001: CANON_INVENTORY updated — 4 modified canon files have updated entries. PASS
 - OVL-CG-002: No placeholder hashes — 200 entries validated, none null/empty/truncated. PASS
-- OVL-CG-003: Version bumps confirmed — ECAP 1.0.0→1.1.0, AHA 1.3.0→1.4.0, FOREMAN 1.3.0→1.4.0, IAA CANON 1.5.0→1.6.0. PASS
+- OVL-CG-003: Version bumps confirmed — ECAP 1.0.0→1.1.0, AHA 1.3.0→1.4.1, FOREMAN 1.3.0→1.4.0, IAA CANON 1.5.0→1.6.0. PASS
 - OVL-CG-004: Ripple assessed — 3 PUBLIC_API files flagged; INDEPENDENT_ASSURANCE_AGENT_CANON.md INTERNAL (no external ripple). PENDING status is correct for first-submit. PASS
 - OVL-CG-005: Drift/integrity hash evidence in PREHANDOVER proof (before/after first-16-char SHA256 for all 4 files); full SHA256 verified against live files — all 4 MATCH. PASS
 - OVL-CG-006: CANON_INVENTORY hashes confirmed — all 4 modified file hashes match live files exactly (Python sha256 verification). PASS
