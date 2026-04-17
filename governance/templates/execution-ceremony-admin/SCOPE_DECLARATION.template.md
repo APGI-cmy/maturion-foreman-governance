@@ -20,13 +20,14 @@
 
 FILES_CHANGED: <number>
 
-## Changed Files
+## FILES_CHANGED
 
-<!-- One file per line, ordered as output by git diff --name-only origin/main...HEAD -->
-<file-path-1>
-<file-path-2>
-<file-path-3>
-...
+<!-- One file per line as a bullet list (`- <path>`), ordered as output by git diff --name-only origin/main...HEAD -->
+<!-- This format is required by the §4.3d parity-gate parser (awk /^## FILES_CHANGED/ ... /^- /). -->
+- <file-path-1>
+- <file-path-2>
+- <file-path-3>
+- ...
 
 ---
 
@@ -62,9 +63,9 @@ cat > governance/scope-declaration.md <<EOF
 
 FILES_CHANGED: ${COUNT}
 
-## Changed Files
+## FILES_CHANGED
 
-${FILES}
+$(echo "${FILES}" | sed 's/^/- /')
 
 ---
 
