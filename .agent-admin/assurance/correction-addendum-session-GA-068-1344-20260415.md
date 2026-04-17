@@ -2,7 +2,7 @@
 
 **Date**: 2026-04-16
 **Prior Rejection**: IAA-20260415-PR1344-R1 (REJECTION-PACKAGE)
-**Resubmission Session**: IAA-20260415-PR1344-R2 (requested)
+**Resubmission Session**: IAA-20260416-PR1344-R2 (completed)
 **Submitted By**: governance-repo-administrator-v2
 **PR Branch**: copilot/fix-253484265-1109729142-e601873f-372d-4a93-9c32-5137b7f9f45d
 **PR**: #1344
@@ -66,7 +66,7 @@ Confirmed: `governance/CANON_INVENTORY.json` contains the correct, actual commit
 
 ### (d) New Session Reference
 
-This Correction Addendum requests IAA session **IAA-20260415-PR1344-R2** for re-assessment.
+This Correction Addendum records the completed IAA session **IAA-20260416-PR1344-R2** which issued an ASSURANCE-TOKEN (PASS / MERGE PERMITTED) on 2026-04-16.
 
 ---
 
