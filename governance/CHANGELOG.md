@@ -64,6 +64,42 @@ Each entry follows this structure:
 
 ## Change History
 
+### ADMIN-CEREMONY-COMPLIANCE-STACK-2026-04-17 — 2026-04-17 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA  
+**Effective Date**: 2026-04-17
+
+**Summary**: Canonizes the closed 3-layer admin-control stack making administrative ceremony correctness deterministic: (1) ECAP self-normalization, (2) Foreman QP admin-compliance verification, (3) IAA binary rejection on residual ceremony defects. Adds explicit duties, invariants, rejection triggers, a blocking gate, a Foreman QP checkpoint, new Tier 2 checklists, and canonical templates.
+
+**Affected Artifacts**:
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (v1.0.0 → v1.1.0) — Added §3.5 Final-State Normalization Duty, §3.6 Ceremony Completeness Invariants (CCI-01–CCI-05), §3.7 Cross-Artifact Reconciliation Duty, §3.8 Commit-State Truth Rule, §3.9 Ripple/Registry Administration Duty, §4.5 Non-Substitution Rule
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.3.0 → v1.4.0) — Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, ECAP jobs); 9 auto-fail anti-patterns (AAP-01–AAP-09); checklist item
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.3.0 → v1.4.0) — Added §14.6 Foreman QP Admin-Compliance Checkpoint (required output: administrative_readiness ACCEPTED|REJECTED)
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.5.0 → v1.6.0) — Added §Admin-Ceremony Rejection Triggers (ACR-01 through ACR-08); reinforced non-cleanup-authoring posture
+- `governance/checklists/execution-ceremony-admin-checklist.md` (NEW v1.0.0) — Authoritative 9-section checklist for ceremony completeness
+- `governance/checklists/execution-ceremony-admin-reconciliation-matrix.md` (NEW v1.0.0) — 17-row cross-artifact truth dependency matrix
+- `governance/checklists/execution-ceremony-admin-anti-patterns.md` (NEW v1.0.0) — 9 auto-fail anti-patterns (S1) + 5 Foreman QP blockers (S2)
+- `governance/templates/execution-ceremony-admin/PREHANDOVER.template.md` (NEW v1.0.0) — PREHANDOVER proof template
+- `governance/templates/execution-ceremony-admin/SESSION_MEMORY.template.md` (NEW v1.0.0) — Session memory template
+- `governance/templates/execution-ceremony-admin/ECAP_RECONCILIATION_SUMMARY.template.md` (NEW v1.0.0) — Full Tier 3 per-wave proof (C1–C5)
+- `governance/templates/execution-ceremony-admin/SCOPE_DECLARATION.template.md` (NEW v1.0.0) — Scope declaration generation template
+- `governance/templates/execution-ceremony-admin/CORRECTION_ADDENDUM.template.md` (NEW v1.0.0) — Administrative correction addendum
+- `governance/templates/execution-ceremony-admin/FOREMAN_ADMIN_READINESS_HANDBACK.template.md` (NEW v1.0.0) — Foreman QP checkpoint output template
+- `governance/templates/execution-ceremony-admin/README.md` (NEW v1.0.0) — Templates index and usage rules
+- `governance/CANON_INVENTORY.json` — Hashes, versions, amended_dates updated for 4 amended canon files
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — additive canon only. Existing ceremony workflows remain valid; new requirements become effective at next ECAP appointment.
+
+**Rationale**: Recurring admin-ceremony defects (stale wording, mismatched references, incomplete reconciliation, undeclared ripple obligations) caused avoidable IAA REJECTION-PACKAGE cycles. This governance package converts heuristic review into deterministic machine-checkable invariants.
+
+**Impact**: All agents using ECAP ceremony administration. Layer-down required for consumer repos (AGENT_HANDOVER_AUTOMATION.md and FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md are PUBLIC_API).
+
+**References**: Issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA
+
+---
+
 ### IAA-WAKE-UP-EXEMPTION-2026-04-13 — 2026-04-13 — CLARIFICATION
 
 **Changed By**: governance-repo-administrator-v2  
