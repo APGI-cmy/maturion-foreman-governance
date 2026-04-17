@@ -103,12 +103,12 @@ The R1 rejection was a process error (stale hash capture in prehandover before f
 
 ## Wave Checklist Gate
 
-**Status**: EXEMPT — direct-CS2 standalone governance-repo-administrator-v2 canon action (not Foreman-governed wave execution) per `IAA_PRE_BRIEF_PROTOCOL.md` §Applicability Scope v1.2.0.
+**Status**: EXEMPT — direct-CS2 standalone governance-repo-administrator-v2 canon action (not Foreman-governed wave execution) per `IAA_PRE_BRIEF_PROTOCOL.md` §Applicability Scope v1.2.2.
 
 ---
 
 **Verdict**: ASSURANCE-TOKEN — MERGE PERMITTED
 
 **Authority**: independent-assurance-agent | Session 032 | 2026-04-16
-**Canon**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.5.0 | LIVING_AGENT_SYSTEM.md v1.2.0
+**Canon**: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.5.0 | LIVING_AGENT_SYSTEM.md v6.2.0
 **CS2**: @APGI-cmy — Awaiting CS2 review before merge per contract §4.5
