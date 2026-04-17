@@ -64,30 +64,39 @@ Each entry follows this structure:
 
 ## Change History
 
-### AIMC-SPECIALIST-OPERATING-MODEL-1343 — 2026-04-15 — NON_BREAKING_ENHANCEMENT
+### ADMIN-CEREMONY-COMPLIANCE-STACK-2026-04-17 — 2026-04-17 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  
-**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue #1343  
-**Effective Date**: 2026-04-15
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA  
+**Effective Date**: 2026-04-17
 
-**Summary**: Canonised the AIMC specialist operating model and MMM convergence boundary constraints. Created two new canon documents covering specialist knowledge source model, source priority and conflict rules, freshness/currency rules, shared memory boundaries, delegation and module-consumer mode, human-in-the-loop boundaries, and the MMM ↔ AIMC convergence boundary. Added Source Model Governance cross-reference section to SPECIALIST_KNOWLEDGE_MANAGEMENT.md.
+**Summary**: Canonizes the closed 3-layer admin-control stack making administrative ceremony correctness deterministic: (1) ECAP self-normalization, (2) Foreman QP admin-compliance verification, (3) IAA binary rejection on residual ceremony defects. Adds explicit duties, invariants, rejection triggers, a blocking gate, a Foreman QP checkpoint, new Tier 2 checklists, and canonical templates.
 
 **Affected Artifacts**:
-- `governance/canon/AIMC_SPECIALIST_OPERATING_MODEL.md` (NEW) — Specialist operating model: source model (C2), source priority/conflict rules (C3), freshness rules (C4), shared memory boundaries (C5), delegation and module-consumer mode (C6), human-in-the-loop boundaries (C7)
-- `governance/canon/AIMC_MMM_CONVERGENCE_BOUNDARY_CANON.md` (NEW) — MMM ↔ AIMC convergence boundary: harvest-map ownership, MMM/AIMC/KUC/PIT separation, MMM artefacts already defined, AIMC-side only items, bridge artefact deferrals (C8)
-- `governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md` (AMENDED, v1.0.0 → v1.1.0) — Added Source Model Governance section cross-referencing AIMC_SPECIALIST_OPERATING_MODEL.md §3–§4; updated Related Canon; version bumped to v1.1.0 per OVL-CG-003; hash recomputed
-- `governance/CANON_INVENTORY.json` (UPDATED) — Added entries for two new canon files; updated SPECIALIST_KNOWLEDGE_MANAGEMENT.md hash; total_canons 200 → 202
-- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (UPDATED) — Added §3.15 AIMC Platform Models; updated total canon count 93 → 95; combined total 108 → 110
-- `governance/CHANGELOG.md` — This entry
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` (v1.0.0 → v1.1.0) — Added §3.5 Final-State Normalization Duty, §3.6 Ceremony Completeness Invariants (CCI-01–CCI-05), §3.7 Cross-Artifact Reconciliation Duty, §3.8 Commit-State Truth Rule, §3.9 Ripple/Registry Administration Duty, §4.5 Non-Substitution Rule
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` (v1.3.0 → v1.4.1) — Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, ECAP jobs); 9 auto-fail anti-patterns (AAP-01–AAP-09); checklist item; tightened Check C stale-wording scan to final-state artifact set only with superseded-proof exemption (AAP-01 updated)
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.3.0 → v1.4.0) — Added §14.6 Foreman QP Admin-Compliance Checkpoint (required output: administrative_readiness ACCEPTED|REJECTED)
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` (v1.5.0 → v1.6.0) — Added §Admin-Ceremony Rejection Triggers (ACR-01 through ACR-08); reinforced non-cleanup-authoring posture
+- `governance/checklists/execution-ceremony-admin-checklist.md` (NEW v1.0.0) — Authoritative 9-section checklist for ceremony completeness
+- `governance/checklists/execution-ceremony-admin-reconciliation-matrix.md` (NEW v1.0.0) — 17-row cross-artifact truth dependency matrix
+- `governance/checklists/execution-ceremony-admin-anti-patterns.md` (NEW v1.0.0) — 9 auto-fail anti-patterns (S1) + 5 Foreman QP blockers (S2)
+- `governance/templates/execution-ceremony-admin/PREHANDOVER.template.md` (NEW v1.0.0) — PREHANDOVER proof template
+- `governance/templates/execution-ceremony-admin/SESSION_MEMORY.template.md` (NEW v1.0.0) — Session memory template
+- `governance/templates/execution-ceremony-admin/ECAP_RECONCILIATION_SUMMARY.template.md` (NEW v1.0.0) — Full Tier 3 per-wave proof (C1–C5)
+- `governance/templates/execution-ceremony-admin/SCOPE_DECLARATION.template.md` (NEW v1.0.0) — Scope declaration generation template
+- `governance/templates/execution-ceremony-admin/CORRECTION_ADDENDUM.template.md` (NEW v1.0.0) — Administrative correction addendum
+- `governance/templates/execution-ceremony-admin/FOREMAN_ADMIN_READINESS_HANDBACK.template.md` (NEW v1.0.0) — Foreman QP checkpoint output template
+- `governance/templates/execution-ceremony-admin/README.md` (NEW v1.0.0) — Templates index and usage rules
+- `governance/CANON_INVENTORY.json` — Hashes, versions, amended_dates updated for 4 amended canon files
 
 **Migration Required**: NO  
-**Migration Guidance**: N/A — additive canon; no existing behaviour changed. Consumer repos (maturion-isms) should receive layer-down notification per CANON_INVENTORY.json ripple_notice fields.
+**Migration Guidance**: N/A — additive canon only. Existing ceremony workflows remain valid; new requirements become effective at next ECAP appointment.
 
-**Rationale**: Issue #1343 requires translation of the hardened Maturion orchestrator/specialist strategy into aligned, enforceable governance canon. The AIMC specialist model was previously uncanonised for source governance, memory boundaries, output classes, and human-in-the-loop rules. The MMM ↔ AIMC convergence boundary was undefined. These gaps created ambiguity for AIMC implementation waves and MMM integration planning.
+**Rationale**: Recurring admin-ceremony defects (stale wording, mismatched references, incomplete reconciliation, undeclared ripple obligations) caused avoidable IAA REJECTION-PACKAGE cycles. This governance package converts heuristic review into deterministic machine-checkable invariants.
 
-**Impact**: AIMC specialist agents must align to source model and output class rules. MMM build teams must align to convergence boundary constraints before MMM AI integration proceeds.
+**Impact**: All agents using ECAP ceremony administration. Layer-down required for consumer repos (AGENT_HANDOVER_AUTOMATION.md and FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md are PUBLIC_API).
 
-**References**: Issue #1343, PR #1344
+**References**: Issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA
 
 ---
 
