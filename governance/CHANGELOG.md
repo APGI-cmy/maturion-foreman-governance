@@ -64,6 +64,33 @@ Each entry follows this structure:
 
 ## Change History
 
+### AIMC-SPECIALIST-OPERATING-MODEL-1343 — 2026-04-15 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: CS2 (Johan Ras) — CS2-authorised via issue #1343  
+**Effective Date**: 2026-04-15
+
+**Summary**: Canonised the AIMC specialist operating model and MMM convergence boundary constraints. Created two new canon documents covering specialist knowledge source model, source priority and conflict rules, freshness/currency rules, shared memory boundaries, delegation and module-consumer mode, human-in-the-loop boundaries, and the MMM ↔ AIMC convergence boundary. Added Source Model Governance cross-reference section to SPECIALIST_KNOWLEDGE_MANAGEMENT.md.
+
+**Affected Artifacts**:
+- `governance/canon/AIMC_SPECIALIST_OPERATING_MODEL.md` (NEW) — Specialist operating model: source model (C2), source priority/conflict rules (C3), freshness rules (C4), shared memory boundaries (C5), delegation and module-consumer mode (C6), human-in-the-loop boundaries (C7)
+- `governance/canon/AIMC_MMM_CONVERGENCE_BOUNDARY_CANON.md` (NEW) — MMM ↔ AIMC convergence boundary: harvest-map ownership, MMM/AIMC/KUC/PIT separation, MMM artefacts already defined, AIMC-side only items, bridge artefact deferrals (C8)
+- `governance/canon/SPECIALIST_KNOWLEDGE_MANAGEMENT.md` (AMENDED, v1.0.0 → v1.1.0) — Added Source Model Governance section cross-referencing AIMC_SPECIALIST_OPERATING_MODEL.md §3–§4; updated Related Canon; version bumped to v1.1.0 per OVL-CG-003; hash recomputed
+- `governance/CANON_INVENTORY.json` (UPDATED) — Added entries for two new canon files; updated SPECIALIST_KNOWLEDGE_MANAGEMENT.md hash; total_canons 200 → 202
+- `governance/canon/GOVERNANCE_CANON_MANIFEST.md` (UPDATED) — Added §3.15 AIMC Platform Models; updated total canon count 93 → 95; combined total 108 → 110
+- `governance/CHANGELOG.md` — This entry
+
+**Migration Required**: NO  
+**Migration Guidance**: N/A — additive canon; no existing behaviour changed. Consumer repos (maturion-isms) should receive layer-down notification per CANON_INVENTORY.json ripple_notice fields.
+
+**Rationale**: Issue #1343 requires translation of the hardened Maturion orchestrator/specialist strategy into aligned, enforceable governance canon. The AIMC specialist model was previously uncanonised for source governance, memory boundaries, output classes, and human-in-the-loop rules. The MMM ↔ AIMC convergence boundary was undefined. These gaps created ambiguity for AIMC implementation waves and MMM integration planning.
+
+**Impact**: AIMC specialist agents must align to source model and output class rules. MMM build teams must align to convergence boundary constraints before MMM AI integration proceeds.
+
+**References**: Issue #1343, PR #1344
+
+---
+
 ### IAA-WAKE-UP-EXEMPTION-2026-04-13 — 2026-04-13 — CLARIFICATION
 
 **Changed By**: governance-repo-administrator-v2  
