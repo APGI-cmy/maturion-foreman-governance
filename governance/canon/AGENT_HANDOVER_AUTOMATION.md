@@ -1,8 +1,9 @@
 # AGENT_HANDOVER_AUTOMATION
 
-**Status**: CANONICAL | **Version**: 1.4.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.4.1 | **Authority**: CS2  
 **Date**: 2026-02-24  
-**Amended**: 2026-04-17 — v1.4.0: Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, pre-IAA, ECAP-involved jobs); added auto-fail rules table for 9 known admin anti-patterns (AAP-01 through AAP-09); updated Phase 4 structure and sequencing note; updated Handover Validation Checklist with admin-compliance gate item; authority: CS2 — issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA.  
+**Amended**: 2026-04-17 — v1.4.1: Tightened §4.3e Check C stale-wording scan to final-state artifact set only — superseded pre-token proofs retained immutably under the append-only model are now explicitly exempt; updated AAP-01 auto-fail rule to document final-state scope and superseded-proof exemption; authority: CS2 — PR review feedback on §4.3e canon collision with append-only proof retention.  
+**Previous amendment**: 2026-04-17 — v1.4.0: Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, pre-IAA, ECAP-involved jobs); added auto-fail rules table for 9 known admin anti-patterns (AAP-01 through AAP-09); updated Phase 4 structure and sequencing note; updated Handover Validation Checklist with admin-compliance gate item; authority: CS2 — issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA.  
 **Previous amendment**: 2026-04-09 — v1.3.0: Post-ECAP-001 governance quality closure (ECAP-QC-001 through ECAP-QC-004) — added §4.3d Scope-Declaration Parity Gate (blocking, pre-IAA); added mandatory drift evidence and metadata correctness requirements to Administrator evidence checklist; updated validate-canon-hashes.sh to catch version/canonical_version mismatches; codified amended_date and timestamp discipline; authority: CS2 — ECAP-001 follow-up quality closure issue.  
 **Previous amendment**: 2026-04-08 — v1.2.0: Added §4.3c Pre-IAA Commit-State Gate (canonical blocking step) — required immediately before every IAA invocation in all producing-agent contracts; defines mandatory git status / HEAD verification checks; adds guidance for recording commit-state evidence in PREHANDOVER proof; adds §PHASE_B_BLOCKING note for IAA deployment phase; authority: CS2 — pre-IAA handover discipline hardening issue.  
 **Previous amendment**: 2026-04-08 — v1.1.5: Added §Phase 4 Terminal State Rule; explicitly forbade "remaining Phase 4 ceremony" and equivalent deferral language; clarified that `report_progress` for the final handover commit MUST NOT be called until all Phase 4 artifacts are committed (PREHANDOVER proof, session memory, IAA assurance artifact where required); authority: CS2 — OPOJD hardening issue.
@@ -915,17 +916,48 @@ fi
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CHECK C: Status Normalization (ECAP-CCI-03 / ECAP-CCI-04)
+# Scans only FINAL-STATE artifacts — superseded (pre-token) proofs that are
+# retained immutably under the append-only model are excluded from this scan.
+# A proof is superseded when any other committed proof declares it via a
+# "Supersedes: <filename>" line.  Session memories: only the latest per
+# agent workspace is evaluated.
 # ─────────────────────────────────────────────────────────────────────────────
-echo "  [C] Status Normalization — scanning for prohibited provisional wording..."
+echo "  [C] Status Normalization — scanning final-state ceremony artifacts for prohibited provisional wording..."
+
+# Build superseded-file set: collect all basenames declared in "Supersedes:" lines
+SUPERSEDED_SET=()
+for f in $(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null); do
+  while IFS= read -r SUPERSEDES_NAME; do
+    [ -n "${SUPERSEDES_NAME}" ] && SUPERSEDED_SET+=(".agent-admin/prehandover/${SUPERSEDES_NAME}")
+  done < <(grep -oP '(?i)(?<=Supersedes: )\S+' "${f}" 2>/dev/null || true)
+done
 
 STALE_WORDING_FILES=()
-for f in $(git ls-files .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md 2>/dev/null); do
+
+# Scan PREHANDOVER proofs — skip superseded originals
+for f in $(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null); do
+  IS_SUPERSEDED=false
+  for s in "${SUPERSEDED_SET[@]}"; do
+    [ "${f}" = "${s}" ] && IS_SUPERSEDED=true && break
+  done
+  ${IS_SUPERSEDED} && continue
   if grep -qiE "\bTODO\b|\bTBD\b|\bin[ _-]?progress\b|\bPENDING\b" "${f}" 2>/dev/null; then
     STALE_WORDING_FILES+=("${f}")
   fi
 done
+
+# Scan session memories — only the latest file per agent workspace
+for WORKSPACE_DIR in $(git ls-files '.agent-workspace/*/memory/session-*.md' 2>/dev/null | \
+    sed 's|/memory/session-.*||' | sort -u); do
+  LATEST_SESSION=$(git ls-files "${WORKSPACE_DIR}/memory/session-*.md" 2>/dev/null | sort | tail -1)
+  if [ -n "${LATEST_SESSION}" ] && \
+     grep -qiE "\bTODO\b|\bTBD\b|\bin[ _-]?progress\b|\bPENDING\b" "${LATEST_SESSION}" 2>/dev/null; then
+    STALE_WORDING_FILES+=("${LATEST_SESSION}")
+  fi
+done
+
 [ ${#STALE_WORDING_FILES[@]} -gt 0 ] && \
-  ACC_FAILURES+=("C1: Provisional/stale wording found in committed ceremony artifacts: ${STALE_WORDING_FILES[*]} (ECAP-CCI-03)")
+  ACC_FAILURES+=("C1: Provisional/stale wording found in final-state ceremony artifacts: ${STALE_WORDING_FILES[*]} (ECAP-CCI-03)")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CHECK D: Version Normalization (ECAP-CCI-04)
@@ -994,7 +1026,7 @@ The following conditions are **auto-fail** for the §4.3e gate regardless of oth
 
 | ID | Anti-Pattern | Auto-Fail Trigger |
 |----|-------------|-------------------|
-| AAP-01 | Issued token but pending/in-progress wording remains | Any of: `PENDING`, `in progress`, `in-progress` in PREHANDOVER proof or session memory where a PASS/COMPLETE is the required state |
+| AAP-01 | Issued token but pending/in-progress wording remains | Any of: `PENDING`, `in progress`, `in-progress` in the **final-state** PREHANDOVER proof or latest session memory where a PASS/COMPLETE is the required state. Pre-token proofs retained immutably under the append-only model (i.e., superseded by a post-token proof that declares `Supersedes: <filename>`) are **exempt** from this check. |
 | AAP-02 | Mixed internal version labels | Multiple different version strings for the same artifact within a single document (e.g., "v1.2.0" and "v1.3.0" both appear as the current version of the same file) |
 | AAP-03 | Stale artifact path references | A declared path in PREHANDOVER proof or session memory that does not exist as a committed file on the branch |
 | AAP-04 | Stale scope declaration after file changes | `FILES_CHANGED` in scope-declaration.md does not match actual `git diff --name-only origin/main...HEAD` count |
