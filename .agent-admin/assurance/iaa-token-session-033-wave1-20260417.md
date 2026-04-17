@@ -58,9 +58,9 @@ Verdict: MERGE PERMITTED
 
 ### Admin-Ceremony Rejection Triggers (ACR-01 to ACR-08 — IAA CANON v1.6.0)
 - ACR-01 (Missing required artifact): Not an ECAP-appointed job — ECAP reconciliation summary not required for GA standalone action. PREHANDOVER, session memory, gate results all present. PASS
-- ACR-02 (Stale/contradictory wording): All artifacts consistently show COMPLETE/PASS. No contradictions. PASS
+- ACR-02 (Stale/contradictory wording): All artifacts consistently show COMPLETE/PASS. No contradictions. (Note: session memory GA-069 AHA version corrected to v1.4.1 and ACR-04 count updated to 25 in final normalization pass — branch now tells one coherent story.) PASS
 - ACR-03 (Mismatched references): session-GA-069 / copilot/canonize-admin-ceremony-compliance-stack consistent across all 3 artifacts. PASS
-- ACR-04 (Stale scope declaration): FILES_CHANGED: 20 = actual git diff count: 20. MATCH. PASS
+- ACR-04 (Stale scope declaration): FILES_CHANGED: 25 = actual git diff count: 25 (updated from initial review value of 20; branch grew during post-review normalization per IAA session-033 memory). MATCH. PASS
 - ACR-05 (Stale hash/version/amended-date): amended_date: 2026-04-17 for all 4 entries; all version numbers match PR description; all SHA256 hashes verified against live files. PASS
 - ACR-06 (PUBLIC_API ripple omitted): PREHANDOVER Ripple Assessment Summary table explicitly lists all 3 PUBLIC_API files with ripple_status: PENDING. PASS
 - ACR-07 (Artifact coherence): PREHANDOVER, session memory, gate results all reference same session-GA-069 / same branch / consistent IAA pending state. PASS
