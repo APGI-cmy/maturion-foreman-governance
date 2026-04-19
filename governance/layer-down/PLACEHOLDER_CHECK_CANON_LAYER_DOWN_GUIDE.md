@@ -113,7 +113,7 @@ When raising the consumer-side PR for this layer-down, include the following che
 - [ ] All ad hoc phrases without class mapping removed or justified as LOCAL-EXT
 - [ ] True-positive preservation verified (genuine incomplete content still fails)
 - [ ] False-positive reduction verified (governed meta-language no longer flagged)
-- [ ] Canon hash recorded: `5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728`
+- [ ] Canon hash recorded: `f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d`
 - [ ] Layer-down authority issue referenced: APGI-cmy/maturion-foreman-governance#1349
 ```
 
@@ -124,8 +124,8 @@ When raising the consumer-side PR for this layer-down, include the following che
 ```
 File: governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md
 Version: 1.0.0
-SHA256: 5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728
-Source Commit: PR copilot/canonize-placeholder-check-exceptions
+SHA256: f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d
+Source PR: PR copilot/canonize-placeholder-check-exceptions
 ```
 
 ---

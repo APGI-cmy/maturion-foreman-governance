@@ -264,7 +264,7 @@ while IFS= read -r line; do
   # Flag remaining occurrences as unresolved content
   echo "VIOLATION: $line"
   PLACEHOLDER_VIOLATIONS=$((PLACEHOLDER_VIOLATIONS + 1))
-done < <(grep -niE "\bplaceholder\b|\bstub\b|\bTBD\b|\bTODO\b" "$CONTRACT_FILE" || true)
+done < <(grep -niE '(^|[^[:alnum:]_])(placeholder|stub|TBD|TODO)([^[:alnum:]_]|$)' "$CONTRACT_FILE" || true)
 
 if [ "$PLACEHOLDER_VIOLATIONS" -gt 0 ]; then
   echo "❌ $PLACEHOLDER_VIOLATIONS unresolved placeholder(s) in contract"

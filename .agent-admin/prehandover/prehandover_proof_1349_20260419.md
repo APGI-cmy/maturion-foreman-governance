@@ -29,17 +29,17 @@ Files modified relative to `origin/main`:
 
 | File | Before SHA256 | After SHA256 | Change Summary |
 |------|--------------|-------------|----------------|
-| `governance/CANON_INVENTORY.json` | `0f0395ea6adb161c4fdfb568572a425ada40bdc5147b52e82f85a38716508fb4` | `b0bce3a83f175fc935cbff9ff02a4cc715619d1525e14d2e2924df05239c8fc1` | total_canons 200→201; new entry AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md |
+| `governance/CANON_INVENTORY.json` | `0f0395ea6adb161c4fdfb568572a425ada40bdc5147b52e82f85a38716508fb4` | `901b44bcb498bef26c74c6ee4aa70a3e2ea6e83eaa3174db6fd17014cb73b3f0` | total_canons 200→201; new entry AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md; generation_timestamp updated |
 | `GOVERNANCE_ARTIFACT_INVENTORY.md` | `579be8c8b2a4197194319670aca1027e54957a34847fb23dcd78cff4d08b1b3c` | `6a04574f3454630cca83656b6a25f9273350a4d79129faedbac48e12ad25bb0a` | New row for AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md v1.0.0; Last Updated updated |
 
 Files added (new):
 
 | File | SHA256 |
 |------|--------|
-| `governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md` | `5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728` |
-| `governance/layer-down/PLACEHOLDER_CHECK_CANON_LAYER_DOWN_GUIDE.md` | (new file — layer-down guide for consumer repos) |
-| `.agent-admin/ripple/layer-down-placeholder-check-canon-20260419.json` | (new file — ripple record) |
-| `.agent-workspace/governance-repo-administrator/memory/session-GA-1349-placeholder-canon-20260419.md` | (session memory) |
+| `governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md` | `f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d` |
+| `governance/layer-down/PLACEHOLDER_CHECK_CANON_LAYER_DOWN_GUIDE.md` | `25112a53e992f99fda644c930aab9deea33611d969ae6d8897b62b72e362c0d1` |
+| `.agent-admin/ripple/layer-down-placeholder-check-canon-20260419.json` | `ccc1cba463feb631dc2faf11c7a4dd60fc25cb125cd069acb9372fa28e65a71a` |
+| `.agent-workspace/governance-repo-administrator/memory/session-GA-1349-placeholder-canon-20260419.md` | `0e81dec8bd8f5a16ce6dac1ab7acb4a36f35369860c41f3dea8ef8c1eaacd1aa` |
 
 ---
 
@@ -84,7 +84,7 @@ Files added (new):
 
 ## iaa_audit_token
 
-**ASSURANCE-TOKEN** — IAA-20260419-PR1349 (session-034)
+**ASSURANCE-TOKEN** — IAA-20260419-Issue1349 (session-034)
 **Token file**: `.agent-admin/assurance/iaa-token-session-034-wave1-20260419.md`
 **Verdict**: MERGE PERMITTED
 **Phases**: 1-PASS, 2-PASS, 3-PASS, 4-PASS

@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "last_updated": "2026-04-19",
   "total_canons": 201,
-  "generation_timestamp": "2026-04-13T07:08:00Z",
+  "generation_timestamp": "2026-04-19T07:08:00Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -173,8 +173,8 @@
       "filename": "AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md",
       "version": "1.0.0",
       "canonical_version": "1.0.0",
-      "file_hash": "5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728",
-      "file_hash_sha256": "5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728",
+      "file_hash": "f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d",
+      "file_hash_sha256": "f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d",
       "effective_date": "2026-04-19",
       "amended_date": "2026-04-19",
       "description": "Canonical exception-class model for agent-contract placeholder-check validation. Defines five exception classes (EXC-001 to EXC-005) permitting governed meta-language, negative assertions, gate labels, checker output strings, and hash-validation terminology. Defines non-permitted cases and workflow binding rules. Prevents ad hoc exception-phrase accretion in consumer repo CI.",
