@@ -11,13 +11,15 @@
 
 ---
 
-FILES_CHANGED: 8
+FILES_CHANGED: 10
 
 ## FILES_CHANGED
 
+- .agent-admin/assurance/iaa-token-session-034-wave1-20260419.md
 - .agent-admin/prehandover/prehandover_proof_1349_20260419.md
 - .agent-admin/ripple/layer-down-placeholder-check-canon-20260419.json
 - .agent-workspace/governance-repo-administrator/memory/session-GA-1349-placeholder-canon-20260419.md
+- .agent-workspace/independent-assurance-agent/memory/session-034-20260419.md
 - GOVERNANCE_ARTIFACT_INVENTORY.md
 - governance/CANON_INVENTORY.json
 - governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md

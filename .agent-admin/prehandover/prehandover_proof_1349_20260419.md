@@ -73,18 +73,22 @@ Files added (new):
 | A-06 (Protected Files) | ✅ PASS | No .github/agents/ or protected canon modified |
 | A-07 (Ripple) | ✅ PASS | Layer-down record created; guide published |
 | A-08 (Writes) | ✅ PASS | PR-only, no direct main push |
-| A-09 (IAA Invocation) | ⏳ PENDING | IAA invocation to occur at Phase 4.5 |
-| A-10 (Pre-IAA State) | ⏳ PENDING | Working tree to be confirmed clean before IAA |
+| A-09 (IAA Invocation) | ✅ PASS | IAA invoked; ASSURANCE-TOKEN received (session-034) |
+| A-10 (Pre-IAA State) | ✅ PASS | Working tree confirmed clean before IAA invocation |
 | B-05 (New canon entry) | ✅ PASS | Real SHA256, provenance, effective_date present |
 | B-08 (Drift Evidence) | ✅ PASS | Drift table above with before/after SHA256 |
-| B-09 (Scope-Declaration) | ⏳ PENDING | scope-declaration.md regenerated as last committed file |
+| B-09 (Scope-Declaration) | ✅ PASS | scope-declaration.md regenerated as last committed file (FILES_CHANGED: 10) |
 | B-10 (CANON_INVENTORY Metadata) | ✅ PASS | amended_date, canonical_version, file_hash, file_hash_sha256 all set |
 
 ---
 
 ## iaa_audit_token
 
-`PENDING_IAA_INVOCATION` — to be replaced with ASSURANCE-TOKEN after IAA review.
+**ASSURANCE-TOKEN** — IAA-20260419-PR1349 (session-034)
+**Token file**: `.agent-admin/assurance/iaa-token-session-034-wave1-20260419.md`
+**Verdict**: MERGE PERMITTED
+**Phases**: 1-PASS, 2-PASS, 3-PASS, 4-PASS
+**Agent Integrity**: PASS
 
 ---
 
