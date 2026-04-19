@@ -30,3 +30,21 @@ All 4 findings are addressable in a single re-commit. The core substantive work 
 ---
 
 *IAA v6.2.0 | 2026-04-19*
+
+---
+
+## Resolution (Session 035 — 2026-04-19 R2)
+
+- **Status**: RESOLVED
+- **ASSURANCE-TOKEN**: `.agent-admin/assurance/iaa-token-session-013-wave1-20260419.md`
+- **IAA Session**: IAA-20260419-PR-session013-R2 (session-035)
+- **Resolution date**: 2026-04-19
+- **All 4 remediation items**: VERIFIED RESOLVED
+
+| # | Finding | Resolution |
+|---|---------|------------|
+| 1 | `agent.contract_version` frontmatter 3.0.0→3.0.1 | RESOLVED ✅ |
+| 2 | OVL-AC-011 before-state absent | RESOLVED ✅ |
+| 3 | OVL-AC-012 ripple absent | RESOLVED ✅ |
+| 4 | SCOPE_DECLARATION stale | RESOLVED ✅ |
+
