@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "type": "layer_down_record",
+  "canon_file": "governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md",
+  "canon_version": "1.0.0",
+  "canon_hash_sha256": "5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728",
+  "authority_issue": "#1349",
+  "timestamp": "2026-04-19T09:41:18Z",
+  "governance_pr": "copilot/canonize-placeholder-check-exceptions",
+  "consumers": [
+    {
+      "repository": "APGI-cmy/maturion-isms",
+      "layer_down_status": "PENDING",
+      "notes": "Primary consumer — placeholder-check workflow binding required. Consumer must update agent-contract validation to reference EXC-001 through EXC-005 class model. Existing ad hoc phrase exemptions must be mapped to named classes or removed."
+    },
+    {
+      "repository": "APGI-cmy/maturion-foreman-office-app",
+      "layer_down_status": "PENDING",
+      "notes": "Canon available for reference. No workflow changes required unless repo has existing placeholder-check logic."
+    },
+    {
+      "repository": "APGI-cmy/PartPulse",
+      "layer_down_status": "PENDING",
+      "notes": "Canon available for reference. No workflow changes required unless repo has existing placeholder-check logic."
+    },
+    {
+      "repository": "APGI-cmy/R_Roster",
+      "layer_down_status": "PENDING",
+      "notes": "Canon available for reference. No workflow changes required unless repo has existing placeholder-check logic."
+    }
+  ],
+  "layer_down_instructions": "See governance/layer-down/PLACEHOLDER_CHECK_CANON_LAYER_DOWN_GUIDE.md for implementation guidance for maturion-isms.",
+  "ripple_trigger": "new canon AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md v1.0.0 — layer_down_status: LAYER_DOWN"
+}
