@@ -118,10 +118,13 @@ No provisional gate-pass wording confirmed: ✓/✗
 
 ## C7. Template Non-Leakage Confirmation (AAP-17, AAP-21)
 
-Template instruction leakage scan:
+Template instruction leakage scan (active-bundle only — latest non-superseded proof, latest reconciliation, latest session memory):
 ```bash
-grep -rniE "\[fill in\]|\[instruction\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|replace this with|EXAMPLE TEXT" \
-  .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md 2>/dev/null
+ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null | grep -v SUPERSEDED | head -1)
+ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1)
+LATEST_SESSION=$(ls -t .agent-workspace/*/memory/session-*.md 2>/dev/null | head -1)
+grep -niE "\[fill in\]|\[instruction\]|replace this with|EXAMPLE TEXT|\[PLACEHOLDER\]|\[YOUR TEXT HERE\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION" \
+  ${ACTIVE_PROOF} ${ACTIVE_RECON} ${LATEST_SESSION} 2>/dev/null
 ```
 
 Result: `[PASTE ACTUAL OUTPUT — empty = PASS]`

@@ -1009,12 +1009,28 @@ fi
 # ─────────────────────────────────────────────────────────────────────────────
 echo "  [H] Gate evidence inventory and provisional gate-pass wording check..."
 
-# H1: PREHANDOVER proof gate results JSON must have individual gate entries (not just aggregate)
+# H1: Per-gate inventory enforcement — only when gate parity is claimed in the active bundle
+GATE_PARITY_CLAIMED=false
+for f in $(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null); do
+  IS_SUPERSEDED=false
+  for s in "${SUPERSEDED_SET[@]}"; do
+    [ "${f}" = "${s}" ] && IS_SUPERSEDED=true && break
+  done
+  ${IS_SUPERSEDED} && continue
+  if grep -qiE "gate.parity|merge_gate_verdict|all.*gates.*pass" "${f}" 2>/dev/null; then
+    GATE_PARITY_CLAIMED=true
+    break
+  fi
+done
 LATEST_GATE=$(ls -t .agent-admin/gates/gate-results-*.json 2>/dev/null | head -1)
-if [ -n "${LATEST_GATE}" ]; then
-  GATE_COUNT=$(python3 -c "import json,sys; d=json.load(open('${LATEST_GATE}')); print(len(d.get('gates',{})))" 2>/dev/null || echo 0)
-  if [ "${GATE_COUNT}" -eq 0 ]; then
-    ACC_FAILURES+=("H1: Gate results JSON has no individual gate entries — per-gate inventory required when gate parity is claimed (AAP-15)")
+if ${GATE_PARITY_CLAIMED}; then
+  if [ -z "${LATEST_GATE}" ]; then
+    ACC_FAILURES+=("H1: Gate parity claimed in active bundle but no gate-results JSON found (AAP-15)")
+  else
+    GATE_COUNT=$(python3 -c "import json,sys; d=json.load(open('${LATEST_GATE}')); print(len(d.get('gates',{})))" 2>/dev/null || echo 0)
+    if [ "${GATE_COUNT}" -eq 0 ]; then
+      ACC_FAILURES+=("H1: Gate parity claimed but gate results JSON has no individual gate entries — per-gate inventory required (AAP-15)")
+    fi
   fi
 fi
 
@@ -1052,10 +1068,13 @@ for f in $(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null); do
   if grep -qiE "\[fill in\]|\[instruction\]|replace this with|EXAMPLE TEXT|\[PLACEHOLDER\]|\[YOUR TEXT HERE\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION" "${f}" 2>/dev/null; then
     INSTRUCTION_LEAK_FILES+=("${f}")
   fi
-  # I2: Check for blank/placeholder iaa_audit_token while final_state is COMPLETE
-  if grep -q "final_state.*COMPLETE" "${f}" 2>/dev/null; then
+  # I2: Check for blank/placeholder iaa_audit_token or iaa_session_reference while final_state is COMPLETE (AAP-18)
+  if grep -qE "^final_state:[[:space:]]*COMPLETE[[:space:]]*$" "${f}" 2>/dev/null; then
     if grep -qE "iaa_audit_token:[[:space:]]*(none|<[^>]+>|\[.*\]|TBD|PENDING)" "${f}" 2>/dev/null; then
       INSTRUCTION_LEAK_FILES+=("${f} [iaa_audit_token placeholder while final_state=COMPLETE]")
+    fi
+    if grep -qE "iaa_session_reference:[[:space:]]*(none|<[^>]+>|\[.*\]|TBD|PENDING)" "${f}" 2>/dev/null; then
+      INSTRUCTION_LEAK_FILES+=("${f} [iaa_session_reference placeholder while final_state=COMPLETE]")
     fi
   fi
 done
@@ -1086,9 +1105,11 @@ LATEST_RECONCILIATION=$(git ls-files .agent-admin/prehandover/ecap-reconciliatio
 if [ -n "${LATEST_PROOF}" ] && [ -n "${LATEST_RECONCILIATION}" ]; then
   PROOF_FINAL=$(grep -E "^final_state:" "${LATEST_PROOF}" | awk '{print $2}' | head -1)
   RECON_FINAL=$(grep -iE "^\*\*Final State\*\*:|^Final State:" "${LATEST_RECONCILIATION}" | grep -v "^#" | head -1 | sed 's/.*://' | tr -d ' `*')
-  # Only fail if both values exist and conflict — COMPLETE vs non-COMPLETE
+  # Only fail if both values exist and they differ (symmetric comparison)
   if [ -n "${PROOF_FINAL}" ] && [ -n "${RECON_FINAL}" ]; then
-    if [ "${PROOF_FINAL}" = "COMPLETE" ] && echo "${RECON_FINAL}" | grep -qiE "PENDING|in.progress|BLOCKED|DRAFT"; then
+    PROOF_NORM=$(echo "${PROOF_FINAL}" | tr '[:lower:]' '[:upper:]' | tr -d ' ')
+    RECON_NORM=$(echo "${RECON_FINAL}" | tr '[:lower:]' '[:upper:]' | tr -d ' ')
+    if [ "${PROOF_NORM}" != "${RECON_NORM}" ]; then
       ACC_FAILURES+=("J1: Cross-artifact contradiction — PREHANDOVER final_state=${PROOF_FINAL} but ECAP reconciliation says: ${RECON_FINAL} (AAP-19)")
     fi
   fi
@@ -1103,16 +1124,28 @@ fi
 echo "  [K] Carried-forward claim file-existence spot-check..."
 
 UNRESOLVABLE_CF=()
-for f in $(git ls-files .agent-admin/prehandover/proof-*.md .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null); do
+# Active bundle: non-superseded proofs + latest reconciliation (avoids false positives from historical archive)
+CF_SCAN_FILES=()
+for f in $(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null); do
+  IS_SUPERSEDED=false
+  for s in "${SUPERSEDED_SET[@]}"; do
+    [ "${f}" = "${s}" ] && IS_SUPERSEDED=true && break
+  done
+  ${IS_SUPERSEDED} || CF_SCAN_FILES+=("${f}")
+done
+[ -n "${LATEST_RECONCILIATION}" ] && CF_SCAN_FILES+=("${LATEST_RECONCILIATION}")
+
+for f in "${CF_SCAN_FILES[@]}"; do
   while IFS= read -r CF_SOURCE; do
-    CF_SOURCE_CLEAN=$(echo "${CF_SOURCE}" | tr -d '"' | sed 's/^[[:space:]]*//')
+    CF_SOURCE_CLEAN=$(echo "${CF_SOURCE}" | tr -d '"' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
     [ -z "${CF_SOURCE_CLEAN}" ] && continue
     # Only check if it looks like a file path (contains /)
     echo "${CF_SOURCE_CLEAN}" | grep -q "/" || continue
     if ! git ls-files --error-unmatch "${CF_SOURCE_CLEAN}" > /dev/null 2>&1; then
       UNRESOLVABLE_CF+=("${f}: carried forward from '${CF_SOURCE_CLEAN}' — file not found on branch")
     fi
-  done < <(grep -oP '(?i)(?<=carried forward from |verbatim from )\S+' "${f}" 2>/dev/null || true)
+  done < <(grep -iE "carried forward from |verbatim from " "${f}" 2>/dev/null | \
+    sed -E 's/.*(carried forward from|verbatim from)[[:space:]]+([^[:space:],;]+).*/\2/' || true)
 done
 
 [ ${#UNRESOLVABLE_CF[@]} -gt 0 ] && \

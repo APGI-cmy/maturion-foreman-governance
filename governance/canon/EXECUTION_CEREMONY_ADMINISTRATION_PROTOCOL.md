@@ -189,11 +189,18 @@ When any ceremony artifact contains a "carried forward from [source]" or "verbat
 
 **Detection (machine-aided)**:
 ```bash
-# Extract all "carried forward from" / "verbatim from" file references and verify existence
-grep -rohiP '(?<=carried forward from |verbatim from )[^\s,]+' .agent-admin/prehandover/ 2>/dev/null | \
-  sort -u | while read -r CF_SOURCE; do
-    echo "${CF_SOURCE}" | grep -q "/" && git ls-files --error-unmatch "${CF_SOURCE}" 2>/dev/null || \
-      echo "UNRESOLVABLE: ${CF_SOURCE}"
+# Scope to active bundle only — latest non-superseded proof + latest reconciliation
+ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null | grep -v SUPERSEDED | head -1)
+ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1)
+for f in ${ACTIVE_PROOF} ${ACTIVE_RECON}; do
+  [ -f "${f}" ] || continue
+  grep -iE "carried forward from |verbatim from " "${f}" 2>/dev/null | \
+    sed -E 's/.*(carried forward from|verbatim from)[[:space:]]+([^[:space:],;]+).*/\2/' | \
+    while read -r CF_SOURCE; do
+      echo "${CF_SOURCE}" | grep -q "/" && \
+        git ls-files --error-unmatch "${CF_SOURCE}" 2>/dev/null || \
+        echo "UNRESOLVABLE: ${CF_SOURCE}"
+    done
 done
 ```
 

@@ -67,7 +67,14 @@ Verify that no prohibited provisional wording exists in any final-state artifact
 | 3.11 | `iaa_audit_token` field contains an actual token reference, not a template placeholder | | |
 | 3.12 | `iaa_session_reference` field contains an actual IAA session ID, not a template placeholder | | |
 
-**Scan command**: `grep -rniE "\bTODO\b|\bTBD\b|\bin[ _-]?progress\b|\bPENDING\b|\[fill in\]|\[instruction\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT" .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md`
+**Scan command** (active-bundle only — latest non-superseded proof, latest reconciliation, latest session memory; denylist aligned with §4.3e Check I):
+```bash
+ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null | grep -v SUPERSEDED | head -1)
+ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1)
+LATEST_SESSION=$(ls -t .agent-workspace/*/memory/session-*.md 2>/dev/null | head -1)
+grep -niE "\[fill in\]|\[instruction\]|replace this with|EXAMPLE TEXT|\[PLACEHOLDER\]|\[YOUR TEXT HERE\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION" \
+  ${ACTIVE_PROOF} ${ACTIVE_RECON} ${LATEST_SESSION} 2>/dev/null
+```
 
 ---
 
