@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-04-17",
+  "last_updated": "2026-04-19",
   "total_canons": 200,
-  "generation_timestamp": "2026-04-13T07:08:00Z",
+  "generation_timestamp": "2026-04-19T00:00:00Z",
   "canon_entry_schema": {
     "description": "Schema for canon entries in CANON_INVENTORY.json",
     "required_fields": [
@@ -261,16 +261,16 @@
     },
     {
       "filename": "AGENT_HANDOVER_AUTOMATION.md",
-      "version": "1.4.1",
-      "canonical_version": "1.4.1",
-      "file_hash": "55f7f0e4c7f3a3716b6d43fa81679da06350fdd51c943a3cdbb841a01989f113",
+      "version": "1.5.0",
+      "canonical_version": "1.5.0",
+      "file_hash": "dc36b1b3522b775e4277216f559d02cba5ec319ad64929dda491aed0b5929145",
       "effective_date": "2026-04-06",
-      "amended_date": "2026-04-17",
+      "amended_date": "2026-04-19",
       "description": "Canonical governance document: AGENT_HANDOVER_AUTOMATION",
       "type": "canon",
       "path": "governance/canon/AGENT_HANDOVER_AUTOMATION.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "55f7f0e4c7f3a3716b6d43fa81679da06350fdd51c943a3cdbb841a01989f113",
+      "file_hash_sha256": "dc36b1b3522b775e4277216f559d02cba5ec319ad64929dda491aed0b5929145",
       "ripple_dispatched": "2026-02-24",
       "ripple_log": ".agent-admin/governance/ripple-logs/ripple-agent-handover-parity-20260224.md",
       "ripple_in_repo_status": "COMPLETE",
@@ -1032,9 +1032,9 @@
     },
     {
       "filename": "EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md",
-      "version": "1.1.0",
-      "file_hash": "cfb97290bf952b4fc6ffac39c967d87345f3760a6368b692c22144755a05362c",
-      "file_hash_sha256": "cfb97290bf952b4fc6ffac39c967d87345f3760a6368b692c22144755a05362c",
+      "version": "1.2.0",
+      "file_hash": "8cb1078d20afc88e25d93fc7f249b49edc81c938337c84b78f311990829772d1",
+      "file_hash_sha256": "8cb1078d20afc88e25d93fc7f249b49edc81c938337c84b78f311990829772d1",
       "effective_date": "2026-04-08",
       "description": "Canonical protocol for the execution-ceremony-admin-agent role, authority boundaries, the seven-step canonical handover sequence, and three-part readiness model (substantive, administrative, independent assurance verdict). Formalises ECAS-001 strategy into binding governance.",
       "type": "canon",
@@ -1042,8 +1042,8 @@
       "layer_down_status": "PUBLIC_API",
       "last_updated": "2026-04-17",
       "change_note": "v1.1.0: Added \u00a73.5 Final-State Normalization Duty, \u00a73.6 Ceremony Completeness Invariants, \u00a73.7 Cross-Artifact Reconciliation Duty, \u00a73.8 Commit-State Truth Rule, \u00a73.9 Ripple/Registry Administration Duty, \u00a74.5 Non-Substitution Rule (closed 3-layer stack)",
-      "canonical_version": "1.1.0",
-      "amended_date": "2026-04-17"
+      "canonical_version": "1.2.0",
+      "amended_date": "2026-04-19"
     },
     {
       "filename": "FAILURE_PROMOTION_RULE.md",
@@ -1148,18 +1148,18 @@
     },
     {
       "filename": "FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
-      "version": "1.4.0",
-      "file_hash": "3e1c27d6e843d000c46e18b962b548e51b6b5da9b982a1851bfa34a10ee0848e",
+      "version": "1.5.0",
+      "file_hash": "b51220bcd57eac0cd03b8bb117fb9a42f2e2375e9d7b868a3832b81c5cc2b376",
       "effective_date": "2025-12-24",
       "description": "This document formally defines the **Foreman (FM)** as a **managerial authority** within the Maturion ecosystem, establishing its supervisory responsibilities over builders and the execution process.",
       "type": "canon",
       "path": "governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "3e1c27d6e843d000c46e18b962b548e51b6b5da9b982a1851bfa34a10ee0848e",
+      "file_hash_sha256": "b51220bcd57eac0cd03b8bb117fb9a42f2e2375e9d7b868a3832b81c5cc2b376",
       "last_updated": "2026-04-17",
       "change_note": "v1.4.0: Added \u00a714.6 Foreman QP Admin-Compliance Checkpoint \u2014 role boundary, required checkpoint output, rules, cross-references",
-      "canonical_version": "1.4.0",
-      "amended_date": "2026-04-17"
+      "canonical_version": "1.5.0",
+      "amended_date": "2026-04-19"
     },
     {
       "filename": "FOREMAN_MEMORY_PROTOCOL.md",
@@ -1484,11 +1484,11 @@
     },
     {
       "filename": "INDEPENDENT_ASSURANCE_AGENT_CANON.md",
-      "version": "1.6.0",
-      "file_hash": "1d0c37190de3d232495e58d3f1984a1feb042c178227ce46c0229e6fdecc3ae9",
-      "file_hash_sha256": "1d0c37190de3d232495e58d3f1984a1feb042c178227ce46c0229e6fdecc3ae9",
+      "version": "1.7.0",
+      "file_hash": "76d5f54a6cbb4819b2cd03e490033d8a9fffd4e5f2943410e8724bdf8f1a9656",
+      "file_hash_sha256": "76d5f54a6cbb4819b2cd03e490033d8a9fffd4e5f2943410e8724bdf8f1a9656",
       "effective_date": "2026-02-24",
-      "amended_date": "2026-04-17",
+      "amended_date": "2026-04-19",
       "description": "Defines the Independent Assurance Agent (IAA) class: role, hard-trigger authority, independence requirements, five-phase delivery proof protocol, binary output (ASSURANCE-TOKEN / REJECTION-PACKAGE), and trigger table. v1.1.0: Zero-Severity-Tolerance policy added.",
       "type": "canon",
       "path": "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
@@ -1496,7 +1496,7 @@
       "provenance": "CS2-authorised via issue: Create Governance Canon: Independent Assurance Agent (IAA); v1.1.0 amendment: Enforce zero-severity-tolerance \u2014 any finding triggers rejection",
       "last_updated": "2026-04-17",
       "change_note": "v1.6.0: Added \u00a7Admin-Ceremony Rejection Triggers (ACR-01 through ACR-08); reinforced non-cleanup-authoring posture relative to ECAP layer",
-      "canonical_version": "1.6.0"
+      "canonical_version": "1.7.0"
     },
     {
       "filename": "INITIALIZATION_COMPLETENESS_GATE.md",

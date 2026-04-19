@@ -2,9 +2,9 @@
 
 ## Status
 **Type**: Tier 2 Governance Checklist  
-**Authority**: CS2 — EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md v1.1.0  
-**Version**: 1.0.0  
-**Effective Date**: 2026-04-17  
+**Authority**: CS2 — EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md v1.2.0  
+**Version**: 1.1.0  
+**Effective Date**: 2026-04-19  
 **Owner**: execution-ceremony-admin-agent (per-job completion) / Foreman QP (per-job review)  
 **Purpose**: Authoritative checklist for ceremony completeness. Used by the `execution-ceremony-admin-agent` before bundle handback and by the Foreman QP checkpoint before IAA invocation.
 
@@ -61,8 +61,13 @@ Verify that no prohibited provisional wording exists in any final-state artifact
 | 3.5 | All gate checkboxes in PREHANDOVER are definitively marked PASS/FAIL (not "to be confirmed") | | |
 | 3.6 | All status markers across PREHANDOVER proof, session memory, and wave record are consistent | | |
 | 3.7 | Final-state declaration in PREHANDOVER (`final_state`) is `COMPLETE` or equivalent — not a provisional value | | |
+| 3.8 | No template instruction text remaining in final-state artifacts (e.g., `[fill in]`, `[instruction]`, `[PLACEHOLDER]`, `replace this with`, `EXAMPLE TEXT`) | | |
+| 3.9 | No `ASSEMBLY_TIME_ONLY` blocks remaining in committed artifacts (these are template-only directives; must be removed before commit) | | |
+| 3.10 | No `<!-- REMOVE BEFORE COMMIT -->` or `<!-- TEMPLATE INSTRUCTION -->` markers remaining | | |
+| 3.11 | `iaa_audit_token` field contains an actual token reference, not a template placeholder | | |
+| 3.12 | `iaa_session_reference` field contains an actual IAA session ID, not a template placeholder | | |
 
-**Scan command**: `grep -rniE "\bTODO\b|\bTBD\b|\bin[ _-]?progress\b|\bPENDING\b" .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md`
+**Scan command**: `grep -rniE "\bTODO\b|\bTBD\b|\bin[ _-]?progress\b|\bPENDING\b|\[fill in\]|\[instruction\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT" .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md`
 
 ---
 
@@ -158,6 +163,9 @@ Section 5 — Token/Session/Path:      [ ] COMPLETE  [ ] EXCEPTIONS NOTED
 Section 6 — Scope Declaration:       [ ] COMPLETE  [ ] EXCEPTIONS NOTED
 Section 7 — Inventory/Hash/Date:     [ ] COMPLETE  [ ] N/A (no canon changes)
 Section 8 — Ripple/Registry:         [ ] COMPLETE  [ ] N/A (no PUBLIC_API changes)
+Section 10 — Gate Inventory:         [ ] COMPLETE  [ ] EXCEPTIONS NOTED
+Section 11 — Cross-Artifact:         [ ] COMPLETE  [ ] EXCEPTIONS NOTED
+Section 12 — Carried-Forward:        [ ] COMPLETE  [ ] N/A (no carried-forward claims)
 
 Declared Exceptions (if any):
 _______________________________________________
@@ -171,15 +179,66 @@ BUNDLE STATUS: [ ] READY FOR FOREMAN REVIEW  [ ] BLOCKED — REQUIRES: _______
 
 ---
 
-## References
+## Section 10: Gate Inventory Checks (AAP-15, AAP-16, ACR-09, ACR-10)
 
-- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.1.0 — §3.5–§3.9 (duties)
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.4.0 — §4.3e (compliance gate)
-- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` v1.4.0 — §14.6 (QP checkpoint)
-- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.6.0 — §Admin-Ceremony Rejection Triggers
-- `governance/checklists/execution-ceremony-admin-reconciliation-matrix.md` — cross-artifact dependencies
-- `governance/checklists/execution-ceremony-admin-anti-patterns.md` — auto-fail conditions
+Where any gate-parity or gate-status summary is claimed in a final-state artifact, verify that an explicit gate inventory is present and complete.
+
+| # | Check | Verified (✓/✗) | Notes |
+|---|-------|---------------|-------|
+| 10.1 | PREHANDOVER proof gate summary is backed by a per-gate inventory (either in the proof itself or in the gate results JSON) — not just a single summary claim | | |
+| 10.2 | Gate results JSON lists individual gate outcomes, not only an aggregate verdict | | |
+| 10.3 | No provisional gate-pass wording in final-state artifacts (e.g., "expected to pass", "parity to be confirmed", "pending verification") | | |
+| 10.4 | All gate inventory entries declare a definitive PASS or FAIL — no entries left blank or set to provisional values | | |
+| 10.5 | Claimed gate count in PREHANDOVER matches actual gate entries in gate results JSON | | |
+
+**Scan command (provisional gate wording)**:
+```bash
+grep -rniE "expected to pass|parity to be confirmed|pending.*verification|gate.*deferred|to be confirmed" .agent-admin/prehandover/proof-*.md .agent-workspace/*/memory/session-*.md
+```
 
 ---
 
-*Version: 1.0.0 | Effective: 2026-04-17 | Authority: CS2 (Johan Ras)*
+## Section 11: Cross-Artifact Final-State Consistency — Active-Bundle Scoped (AAP-19, AAP-22, ACR-12)
+
+> **Active-Bundle Scope**: These checks apply ONLY to the active final-state bundle for the current job:
+> - Latest (non-superseded) PREHANDOVER proof
+> - Latest session memory per agent workspace
+> - Current ECAP reconciliation summary
+> - Current wave record (if used)
+>
+> Do NOT scan the entire append-only archive (old session memories, superseded pre-token proofs, archived wave records). Historical artifacts outside the active bundle are exempt.
+
+| # | Check | Verified (✓/✗) | Notes |
+|---|-------|---------------|-------|
+| 11.1 | PREHANDOVER proof `final_state` is consistent with ECAP reconciliation summary `Final State` | | |
+| 11.2 | PREHANDOVER proof `administrative_readiness` is consistent with ECAP reconciliation C5 block | | |
+| 11.3 | Session memory final-status fields do not contradict PREHANDOVER proof `final_state` | | |
+| 11.4 | Wave record completion status (if used) is consistent with PREHANDOVER proof | | |
+| 11.5 | Gate results JSON `verdict` is consistent with PREHANDOVER proof `merge_gate_verdict` | | |
+| 11.6 | No artifact in the active bundle declares a status that contradicts any other artifact in the active bundle | | |
+
+---
+
+## Section 12: Carried-Forward / Verbatim Claim Verification (AAP-20, ACR-14)
+
+| # | Check | Verified (✓/✗) | Notes |
+|---|-------|---------------|-------|
+| 12.1 | Every "carried forward from [source]" claim in a final-state artifact has been verified against the named source artifact — the claim appears in the source without modification | | |
+| 12.2 | Every "verbatim from [source]" claim has been verified — the text is actually verbatim from the named source | | |
+| 12.3 | No carried-forward claim silently changes gate authority, gate owner, or approval basis relative to the source | | |
+| 12.4 | All carried-forward governance claims cite the specific artifact and section (not just "prior session") | | |
+
+---
+
+## References
+
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.2.0 — §3.5–§3.9 (duties)
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.5.0 — §4.3e (compliance gate)
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` v1.5.0 — §14.6 (QP checkpoint)
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.7.0 — §Admin-Ceremony Rejection Triggers
+- `governance/checklists/execution-ceremony-admin-reconciliation-matrix.md` — cross-artifact dependencies
+- `governance/checklists/execution-ceremony-admin-anti-patterns.md` — auto-fail conditions (v1.1.0)
+
+---
+
+*Version: 1.1.0 | Effective: 2026-04-19 | Authority: CS2 (Johan Ras)*

@@ -98,4 +98,36 @@
 
 ---
 
-*Template Version: 1.0.0 | Authority: ECAP-001 v1.1.0 | Effective: 2026-04-17*
+## C6. Gate Inventory (AAP-15 — required when gate parity claimed)
+
+> **Active-Bundle Only**: Fill this section based on gate results for the current job only.
+
+| Gate | Individual Outcome | Evidence Source |
+|------|--------------------|----------------|
+| merge-gate/verdict | PASS / FAIL | `.agent-admin/gates/gate-results-<TIMESTAMP>.json` |
+| governance/alignment | PASS / FAIL / DEGRADED | gate results JSON |
+| stop-and-fix/enforcement | PASS / FAIL | gate results JSON |
+| *(add additional gates as applicable)* | | |
+
+**Gate inventory source**: `.agent-admin/gates/gate-results-<TIMESTAMP>.json`  
+**Aggregate verdict**: PASS (all above PASS) / FAIL (at least one FAIL)
+
+No provisional gate-pass wording confirmed: ✓/✗
+
+---
+
+## C7. Template Non-Leakage Confirmation (AAP-17, AAP-21)
+
+Template instruction leakage scan:
+```bash
+grep -rniE "\[fill in\]|\[instruction\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|replace this with|EXAMPLE TEXT" \
+  .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md 2>/dev/null
+```
+
+Result: `[PASTE ACTUAL OUTPUT — empty = PASS]`
+
+Confirmation: No ASSEMBLY_TIME_ONLY blocks, no [fill in] placeholders, no template instruction text in active-bundle artifacts. ✓/✗
+
+---
+
+*Template Version: 1.1.0 | Authority: ECAP-001 v1.2.0 | Effective: 2026-04-19*

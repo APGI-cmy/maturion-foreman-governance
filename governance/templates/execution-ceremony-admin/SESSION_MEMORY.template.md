@@ -68,6 +68,9 @@
 | Cross-artifact reconciliation | COMPLETE |
 | Final-state normalization | COMPLETE |
 | Ripple/registry obligations | COMPLETED / DEFERRED / N/A |
+| Template non-leakage check (AAP-17, AAP-21) | PASS — no instruction text in artifact |
+| Gate inventory present (AAP-15) | PASS — per-gate inventory in gate results JSON |
+| Cross-artifact consistency verified (AAP-19) | PASS — active bundle consistent |
 
 ---
 
@@ -94,4 +97,4 @@
 
 ---
 
-*Template Version: 1.0.0 | Authority: ECAP-001 v1.1.0 | Effective: 2026-04-17*
+*Template Version: 1.1.0 | Authority: ECAP-001 v1.2.0 | Effective: 2026-04-19*

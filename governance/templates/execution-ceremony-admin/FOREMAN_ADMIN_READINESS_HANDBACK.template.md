@@ -37,6 +37,40 @@
 
 ---
 
+## Gate Inventory Verification (Step 4 — v1.5.0)
+
+| Check | Result |
+|-------|--------|
+| Gate results JSON has individual per-gate entries (not only aggregate) | ✓/✗ |
+| No provisional gate-pass wording in PREHANDOVER proof | ✓/✗ |
+| Gate count in PREHANDOVER matches entries in gate results JSON | ✓/✗ |
+
+## Pre-Final Instruction Wording Check (Step 5 — v1.5.0)
+
+Template instruction scan output (must be empty for PASS):
+```
+[paste output of: grep -rniE "\[fill in\]|\[instruction\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT" .agent-admin/prehandover/proof-*.md .agent-workspace/*/memory/session-*.md]
+```
+Result: PASS (no output) | BLOCKED (output exists — return to ECAP)
+
+## Cross-Artifact Consistency (Step 6 — v1.5.0 — Active-Bundle Scoped)
+
+| Dimension | PREHANDOVER Value | ECAP Reconciliation Value | Session Memory Value | Consistent? |
+|-----------|------------------|--------------------------|----------------------|------------|
+| final_state | COMPLETE | COMPLETE | (check latest only) | ✓/✗ |
+| administrative_readiness | ACCEPTED | ACCEPTED | N/A | ✓/✗ |
+| gate_verdict | PASS | PASS | N/A | ✓/✗ |
+
+Active-bundle scope confirmed (historical archive excluded): ✓/✗
+
+## Carried-Forward Claim Spot-Check (Step 7 — v1.5.0)
+
+| Claim | Source File | Source Contains Claim? | Authority Changed? |
+|-------|------------|----------------------|-------------------|
+| [claim text or "None"] | [source path] | ✓/✗/N/A | ✓/✗/N/A |
+
+---
+
 ## Checkpoint Verdict
 
 | Field | Value |
@@ -61,4 +95,4 @@
 
 ---
 
-*Template Version: 1.0.0 | Authority: FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md v1.4.0 §14.6 | Effective: 2026-04-17*
+*Template Version: 1.1.0 | Authority: FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md v1.5.0 §14.6 | Effective: 2026-04-19*
