@@ -3,7 +3,7 @@
   "type": "layer_down_record",
   "canon_file": "governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md",
   "canon_version": "1.0.0",
-  "canon_hash_sha256": "5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728",
+  "canon_hash_sha256": "f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d",
   "authority_issue": "#1349",
   "timestamp": "2026-04-19T09:41:18Z",
   "governance_pr": "copilot/canonize-placeholder-check-exceptions",

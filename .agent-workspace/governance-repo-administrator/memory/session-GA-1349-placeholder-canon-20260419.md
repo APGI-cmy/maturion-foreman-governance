@@ -19,7 +19,7 @@ accumulating ad hoc phrase exemptions without a principled category model.
    - Non-permitted cases table defined
    - Workflow binding model with implementation pattern
    - Proof of operation (true-positive preservation, false-positive reduction, boundary cases)
-   - SHA256: `5621b2525acefc3f92102e6f6c32eda73465bbf38596e9ded1969c6267e9d728`
+   - SHA256: `f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d`
 
 2. **Updated** `GOVERNANCE_ARTIFACT_INVENTORY.md`
    - Added entry for AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md v1.0.0

@@ -37,7 +37,7 @@ Files added (new):
 | File | SHA256 |
 |------|--------|
 | `governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md` | `f5c9d72ebf2584e10ff09f29fdbc90c6f8251b2ebfbce58983c7db0e45dbac1d` |
-| `governance/layer-down/PLACEHOLDER_CHECK_CANON_LAYER_DOWN_GUIDE.md` | `25112a53e992f99fda644c930aab9deea33611d969ae6d8897b62b72e362c0d1` |
+| `governance/layer-down/PLACEHOLDER_CHECK_CANON_LAYER_DOWN_GUIDE.md` | `1f331e8a60d43f4f319b8ee6647a70579b595b4d036b9b5566e37ed23e688d50` |
 | `.agent-admin/ripple/layer-down-placeholder-check-canon-20260419.json` | `ccc1cba463feb631dc2faf11c7a4dd60fc25cb125cd069acb9372fa28e65a71a` |
 | `.agent-workspace/governance-repo-administrator/memory/session-GA-1349-placeholder-canon-20260419.md` | `0e81dec8bd8f5a16ce6dac1ab7acb4a36f35369860c41f3dea8ef8c1eaacd1aa` |
 
