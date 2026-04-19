@@ -7,7 +7,7 @@ agent:
   id: foreman-v2
   class: supervisor
   version: 6.2.0
-  contract_version: 3.0.0
+  contract_version: 3.0.1
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-6
 
@@ -226,14 +226,9 @@ metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-04-09
-  contract_version: 3.0.0
-  change_summary: "v3.0.0: CodexAdvisor session-012 repair. Size 62KB→29KB; YAML hardened; 12-stage pre-build; parallel-wave constraints; IAA pre-brief to Phase 2; EXPERIMENTAL removed."
-  contract_architecture: governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
-  preflight_pattern: governance/canon/AGENT_PREFLIGHT_PATTERN.md
-  induction_protocol: governance/canon/AGENT_INDUCTION_PROTOCOL.md
-  handover_automation: governance/canon/AGENT_HANDOVER_AUTOMATION.md
-  ecosystem_vocabulary: governance/canon/ECOSYSTEM_VOCABULARY.md
+  last_updated: 2026-04-19
+  contract_version: 3.0.1
+  change_summary: "v3.0.1: Remove 5 excess canon-ref entries from metadata (was 11, platform limit is 10). Canon refs available via governance.expected_artifacts."
 ---
 
 # Foreman Agent — Canonical Supervisor Contract

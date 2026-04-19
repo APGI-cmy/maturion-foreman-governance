@@ -1,45 +1,30 @@
 # SCOPE_DECLARATION
 
-**PR_ID**: copilot/orchestrate-downstream-closure
-**DATE_UTC**: 2026-04-06T12:19:22Z  
-**RESPONSIBILITY_DOMAIN**: Governance Administration — 12-Stage Pre-Build Downstream Closure Orchestration  
-**AGENT_ROLE**: governance-repo-administrator-v2  
-**SCOPE**: Orchestrate downstream closure of the 12-stage pre-build governance model; create orchestration tracker, layer-down ripple notice, CS2 escalation for agent contract tracks, ripple log, session memory, CHANGELOG entry
+**PR_ID**: copilot/fix-foreman-v2-agent-metadata-config
+**DATE_UTC**: 2026-04-19T10:21:48Z  
+**RESPONSIBILITY_DOMAIN**: Agent Contract Repair — foreman-v2 metadata compliance  
+**AGENT_ROLE**: CodexAdvisor-agent (session-013; performed by Copilot Coding Agent)  
+**SCOPE**: Fix foreman-v2.agent.md metadata block exceeding 10-entry platform limit. Remove 5 redundant canon-reference entries; sync reference copy; update INTEGRITY_INDEX SHA256; write PREHANDOVER and session memory; invoke IAA.
 
 ## FILES_CHANGED
 
-- .agent-admin/assurance/correction-addendum-1324-r1-20260406.md
-- .agent-admin/assurance/iaa-token-session-GA-066-r2-20260406.md
-- .agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md
-- .agent-admin/governance/ripple-logs/ripple-12-stage-downstream-closure-orchestration-20260406.md
-- .agent-admin/prehandover/prehandover_proof_downstream-closure-20260406.md
-- .agent-admin/prehandover/prehandover_proof_downstream-closure-clarification-20260407.md
-- .agent-workspace/governance-repo-administrator/memory/session-GA-066-20260406.md
+- .agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-013-20260419.md
+- .agent-workspace/CodexAdvisor-agent/memory/session-013-20260419.md
+- .agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md
+- .github/agents/foreman-v2.agent.md
+- governance/quality/agent-integrity/INTEGRITY_INDEX.md
+- governance/quality/agent-integrity/foreman-v2.agent.md
 - SCOPE_DECLARATION.md
-- governance/CHANGELOG.md
-- governance/coordination/PRE_BUILD_12_STAGE_DOWNSTREAM_CLOSURE_TRACKER.md
-- governance/layer-down/RIPPLE-12-STAGE-DOWNSTREAM-CLOSURE-ORCHESTRATION-20260406.md
-- governance/scope-declaration.md
 
 ## CHANGE_SUMMARY
 
-**Purpose**: Create governance orchestration scaffolding for downstream closure of the
-canonical 12-stage pre-build model across consumer repos and agent layers.
+**Purpose**: Fix runtime load failure caused by foreman-v2.agent.md having 11 entries in its `metadata` block, exceeding the platform's 10-entry maximum.
 
-The canonical model is established (issue #1319) and governance-repository documentation
-is aligned (issue #1320). This change creates the tracking and ripple infrastructure
-to drive the remaining downstream closure across 5 parallel child tracks:
+**Error fixed**: `Invalid config: metadata has more than 10 entries`
 
-1. `maturion-isms` consumer-repo artifact alignment (layer-down notice issued)
-2. Foreman contract alignment (CS2 escalation filed — Rule B-06 applies)
-3. Builder contract alignment (CS2 escalation filed — Rule B-06 applies)
-4. IAA Tier 1/2/3 upgrade (CS2 escalation filed — Rule B-06 applies)
-5. `app_management_centre` operational alignment review (declared to Foreman)
+**Root cause**: Session-012 repair introduced 5 canon-reference keys into the `metadata` block (`contract_architecture`, `preflight_pattern`, `induction_protocol`, `handover_automation`, `ecosystem_vocabulary`). These are redundant with `governance.expected_artifacts` and pushed the total entry count to 11.
 
-**Agent Contract Protection (Rule B-06)**: No `.github/agents/` files were modified.
-A CS2 escalation was filed at `.agent-admin/escalation-inbox/escalation-agent-contracts-12-stage-alignment-20260406.md`
-requesting CodexAdvisor authorization for Tracks 2, 3, and 4.
+**Fix**: Removed the 5 redundant canon-reference entries. Metadata reduced from 11 to 6 entries. `agent.contract_version` and `metadata.contract_version` both bumped to 3.0.1. No phase body or behavioral content was modified.
 
-**No CANON_INVENTORY.json updates required**: The new files are operational tracking
-artifacts (coordination, layer-down, escalation, ripple log) — not canonised governance
-files — so no new CANON_INVENTORY entries are needed.
+**Ripple assessment**: No ripple required. This change only affects the YAML `metadata` block (cosmetic platform-compliance fix). The contract's governing behavior, phase structure, POLC rules, IAA requirements, and all operational fields are unchanged. No consumer repos or downstream agents reference the removed entries.
+

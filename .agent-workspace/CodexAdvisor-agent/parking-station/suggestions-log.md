@@ -59,4 +59,30 @@ Per the triggering issue scope boundary: CodexAdvisor was explicitly authorized 
 
 ---
 
-*Recorded by CodexAdvisor-agent | session-012-20260409 | CS2 authorization required before action*
+## Session 013 — 2026-04-19
+
+### Suggestion: Add metadata entry count check to FOREMAN checklist and QP gates
+
+**Session**: session-013-20260419  
+**Triggering Issue**: Fix foreman-v2 agent metadata config exceeding 10 entries  
+**Status**: OUT OF SCOPE (this session) — follow-up update recommended  
+**Priority**: MEDIUM  
+
+#### Observed Gap
+
+The `foreman-v2.agent.md` v3.0.0 (produced in session-012) contained 11 `metadata` entries, exceeding the platform's 10-entry limit. This caused a runtime load failure. The QP gates in `agent-file-non-negotiables-checklist.md` do not currently include an explicit check for metadata entry count.
+
+#### Recommended Action
+
+1. Add a QP gate (S-META or similar) to `agent-file-non-negotiables-checklist.md`: "metadata block MUST contain ≤10 entries"
+2. Update `FOREMAN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` to include: "Count metadata entries — must be ≤10"
+3. Consider adding a CI check or pre-commit hook that parses YAML frontmatter and enforces the 10-entry limit on `metadata`
+
+#### Not in Scope for Session 013
+
+Per the triggering issue scope boundary: this session is authorized for the metadata compliance fix only.
+
+---
+
+*Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-013-20260419 | CS2 authorization required before action*
+
