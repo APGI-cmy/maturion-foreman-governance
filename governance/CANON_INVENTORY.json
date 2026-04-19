@@ -1040,8 +1040,8 @@
       "type": "canon",
       "path": "governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md",
       "layer_down_status": "PUBLIC_API",
-      "last_updated": "2026-04-17",
-      "change_note": "v1.1.0: Added \u00a73.5 Final-State Normalization Duty, \u00a73.6 Ceremony Completeness Invariants, \u00a73.7 Cross-Artifact Reconciliation Duty, \u00a73.8 Commit-State Truth Rule, \u00a73.9 Ripple/Registry Administration Duty, \u00a74.5 Non-Substitution Rule (closed 3-layer stack)",
+      "last_updated": "2026-04-19",
+      "change_note": "v1.2.0: Added \u00a73.5a template non-leakage duty, \u00a73.5b active-bundle scope for status normalization, \u00a73.7a carried-forward claim resolution duty, \u00a73.8a gate evidence inventory duty",
       "canonical_version": "1.2.0",
       "amended_date": "2026-04-19"
     },
@@ -1156,8 +1156,8 @@
       "path": "governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "b51220bcd57eac0cd03b8bb117fb9a42f2e2375e9d7b868a3832b81c5cc2b376",
-      "last_updated": "2026-04-17",
-      "change_note": "v1.4.0: Added \u00a714.6 Foreman QP Admin-Compliance Checkpoint \u2014 role boundary, required checkpoint output, rules, cross-references",
+      "last_updated": "2026-04-19",
+      "change_note": "v1.5.0: Added Steps 4\u20137 to \u00a714.6 QP checkpoint \u2014 gate inventory verification, pre-final instruction wording scan, cross-artifact consistency (active-bundle scoped), carried-forward manual spot-check",
       "canonical_version": "1.5.0",
       "amended_date": "2026-04-19"
     },
@@ -1494,8 +1494,8 @@
       "path": "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
       "layer_down_status": "INTERNAL",
       "provenance": "CS2-authorised via issue: Create Governance Canon: Independent Assurance Agent (IAA); v1.1.0 amendment: Enforce zero-severity-tolerance \u2014 any finding triggers rejection",
-      "last_updated": "2026-04-17",
-      "change_note": "v1.6.0: Added \u00a7Admin-Ceremony Rejection Triggers (ACR-01 through ACR-08); reinforced non-cleanup-authoring posture relative to ECAP layer",
+      "last_updated": "2026-04-19",
+      "change_note": "v1.7.0: Added ACR-09\u201314 (gate inventory, provisional gate-pass wording, template leakage, cross-artifact contradiction, IAA-token placeholder, carried-forward source parity); added explicit Active-Bundle Scope Rule exempting superseded proofs and prior session memories from cross-artifact scans",
       "canonical_version": "1.7.0"
     },
     {
