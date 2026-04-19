@@ -70,9 +70,10 @@ if echo "$line" | grep -qiE "no (placeholder|stub|TBD|TODO) content"; then
   continue
 fi
 # EXC-005: canon hash-validation terminology — only exempts lines where placeholder is the
-# detection subject (e.g. "placeholder hashes trigger gate"), not hash fields containing
-# placeholder values (AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md §5)
-if echo "$line" | grep -qiE "placeholder.*(hash|api)|(hash|api).*placeholder.*(detect|check|valid|verif|trigger|gate|count|select|alignment)"; then
+# detection subject (e.g. "placeholder hashes trigger gate"); the pattern requires placeholder
+# to precede hash/api so that real hash-field assignments like "hash: placeholder" remain
+# blocking (AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md §5)
+if echo "$line" | grep -qiE "placeholder.*(hash|api)"; then
   continue
 fi
 ```
