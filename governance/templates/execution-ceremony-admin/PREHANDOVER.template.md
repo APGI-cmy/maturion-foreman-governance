@@ -29,9 +29,22 @@ pre_iaa_commit_state:   PASS                 # PASS | FAIL
 scope_declaration_parity: PASS              # PASS | FAIL | N/A
 admin_ceremony_compliance: PASS             # PASS | FAIL | N/A (ECAP jobs only)
 
+## Gate Inventory (required when gate parity claimed — AAP-15)
+# List every gate individually. Do NOT leave as placeholder — fill each one.
+# <!-- ASSEMBLY_TIME_ONLY: Remove this comment block. Fill actual gate outcomes. -->
+gate_inventory:
+  merge-gate/verdict:                       PASS   # PASS | FAIL
+  governance/alignment:                     PASS   # PASS | FAIL | DEGRADED
+  stop-and-fix/enforcement:                 PASS   # PASS | FAIL
+  # Add additional gates as applicable:
+  # POLC-boundary/foreman-implementation-check: PASS
+  # POLC-boundary/builder-involvement-check: PASS
+  # POLC-boundary/session-memory-check: PASS
+  # evidence-bundle/prehandover-proof-check: PASS
+
 ## IAA Assurance
-iaa_audit_token:        <token-file-path>    # e.g., .agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md
-iaa_session_reference:  <IAA session ID>     # e.g., IAA-20260417-042 — from token file
+iaa_audit_token:        <token-file-path>    # REQUIRED — fill with actual token file path; must NOT remain as placeholder if final_state: COMPLETE
+iaa_session_reference:  <IAA session ID>     # REQUIRED — fill with actual IAA session ID; must NOT remain as placeholder if final_state: COMPLETE
 iaa_reinvocation_round: 0                   # 0 = first invocation; 1+ = re-invocation round
 iaa_rejection_reference: none               # path to rejection-package file if round >= 1
 
@@ -68,4 +81,4 @@ suggestions:            NONE                 # NONE | see .agent-workspace/<agen
 
 ---
 
-*Template Version: 1.0.0 | Authority: ECAP-001 v1.1.0 | Effective: 2026-04-17*
+*Template Version: 1.1.0 | Authority: ECAP-001 v1.2.0 | Effective: 2026-04-19*

@@ -2,9 +2,9 @@
 
 ## Status
 **Type**: Tier 2 Governance Reference  
-**Authority**: CS2 — EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md v1.1.0  
-**Version**: 1.0.0  
-**Effective Date**: 2026-04-17  
+**Authority**: CS2 — EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md v1.2.0  
+**Version**: 1.1.0  
+**Effective Date**: 2026-04-19  
 **Owner**: execution-ceremony-admin-agent (responsible for reconciliation) / Foreman QP (verification)  
 **Purpose**: Define every cross-artifact truth dependency that ECAP must reconcile before bundle handback. Each row is a binding reconciliation obligation.
 
@@ -44,6 +44,8 @@ Rows marked with `IAA ACR-*` reference the corresponding admin-ceremony rejectio
 | **R15** | **Final-state status coherence** | The actual outcome of the job (COMPLETE / BLOCKED / PASS) | ALL of: PREHANDOVER `final_state`, session memory final status, gate results JSON `verdict`, wave record completion status — must tell one coherent story | ECAP-RCON-015 | ACR-02, ACR-07 |
 | **R16** | **Artifact declared count ↔ actual count** | Actual committed file counts (e.g., number of evidence files, number of changed canon files) | Any declared count in PREHANDOVER proof, session memory, or scope declaration (e.g., "3 canon files amended", "5 artifacts committed") | ECAP-RCON-016 | ACR-07 |
 | **R17** | **IAA session reference (assurance round)** | IAA session ID as issued in the token file (`IAA-YYYYMMDD-NNN-RZ` format) | PREHANDOVER `iaa_session_reference` field; if re-invocation round, `iaa_reinvocation_round` must match the `-rZ` suffix on the token filename | ECAP-RCON-017 | ACR-07 |
+| **R18** | **Gate evidence inventory** | Gate results JSON — individual gate outcomes (per-gate PASS/FAIL) | PREHANDOVER proof gate summary claim; ECAP reconciliation summary gate status — when parity is claimed, individual gate inventory must exist and must match the summary claim | ECAP-RCON-018 | ACR-09 |
+| **R19** | **Carried-forward / verbatim claim canonical source** | Named source artifact for any "carried forward from" or "verbatim from" claim in a final-state artifact | Every such claim in PREHANDOVER proof, session memory, or ECAP reconciliation summary — named source must exist, be committed, and contain the stated claim without modification | ECAP-RCON-019 | ACR-14 |
 
 ---
 
@@ -98,6 +100,8 @@ Rows verified:
 [ ] R15 — Final-state status coherence
 [ ] R16 — Artifact declared count ↔ actual count
 [ ] R17 — IAA session reference (assurance round)
+[ ] R18 — Gate evidence inventory
+[ ] R19 — Carried-forward / verbatim claim canonical source
 
 Mismatches found and corrected: _____________________ (or "None")
 Rows marked N/A: _____________________ (reason: _______)
@@ -109,11 +113,11 @@ RECONCILIATION STATUS: [ ] COMPLETE  [ ] BLOCKED — REASON: _______
 
 ## References
 
-- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.1.0 — §3.7 (reconciliation duty)
-- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.6.0 — §Admin-Ceremony Rejection Triggers
+- `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.2.0 — §3.7 (reconciliation duty)
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.7.0 — §Admin-Ceremony Rejection Triggers
 - `governance/checklists/execution-ceremony-admin-checklist.md` — Section 5 (token/session/path checks)
-- `governance/checklists/execution-ceremony-admin-anti-patterns.md` — auto-fail conditions
+- `governance/checklists/execution-ceremony-admin-anti-patterns.md` — auto-fail conditions (v1.1.0)
 
 ---
 
-*Version: 1.0.0 | Effective: 2026-04-17 | Authority: CS2 (Johan Ras)*
+*Version: 1.1.0 | Effective: 2026-04-19 | Authority: CS2 (Johan Ras)*
