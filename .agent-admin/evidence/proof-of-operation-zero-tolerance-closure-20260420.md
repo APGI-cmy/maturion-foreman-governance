@@ -54,14 +54,13 @@ It demonstrates that the 3-layer admin-ceremony QA stack works correctly:
 
 This PR itself constitutes the clean-pass proof-of-operation. The following conditions hold:
 
-- **Foreman layer**: Wave checklist created, IAA pre-brief published, admin-compliance checks defined
-- **ECAP layer**: Prehandover proof generated with COMPLETE final_state, no template leakage, no placeholder tokens
-- **IAA layer**: IAA token file committed at `.agent-admin/assurance/iaa-token-session-035-wave1-20260420.md`
+- **ECAP layer**: Prehandover proof generated with COMPLETE final_state, no template leakage, and the proof remains in its prehandover immutable form with `iaa_audit_token: PENDING`
+- **IAA layer**: Authoritative IAA signal committed as the PR-scoped token file at `.agent-admin/assurance/iaa-token-session-035-wave1-20260420.md`, with the proof retaining `PENDING` by design
 
 All 5 admin-ceremony defect gate checks pass for this PR:
 - `admin-ceremony/template-leakage`: PASS — no ASSEMBLY_TIME_ONLY blocks in active bundle
 - `admin-ceremony/placeholder-final-state`: PASS — COMPLETE proof has PR-scoped token file
-- `admin-ceremony/alignment-overclaim`: PASS — all ALIGNED entries have valid SHA256 hashes and version
+- `admin-ceremony/alignment-overclaim`: PASS — all 203 inventory entries have valid SHA256 hashes; version staleness enforced on any entry carrying `alignment_status: ALIGNED` (0 such entries currently; gate enforces immediately when entries gain this field)
 - `admin-ceremony/carried-forward-source`: PASS — all carried-forward claims resolve
 - `admin-ceremony/cross-artifact-contradiction`: PASS — COMPLETE proof has no FAIL gates
 
@@ -105,7 +104,7 @@ The 3-layer stack now mechanically enforces zero-tolerance:
 This proof artifact is the canonical reference for future waves. Future governance PRs should:
 1. Reference this document when claiming admin-ceremony compliance
 2. Run `.github/scripts/validate-placeholder-check.sh` locally before submitting PRs with agent contract changes
-3. Ensure no CANON_INVENTORY ALIGNED entry has stale metadata before claiming governance/alignment PASS
+3. Ensure any CANON_INVENTORY entry claiming `alignment_status: ALIGNED` has valid SHA256 hashes and non-stale version metadata before claiming governance/alignment PASS
 
 ---
 

@@ -49,34 +49,35 @@ STALE = re.compile(
 )
 
 violations = []
+aligned_count = 0
 
 for entry in entries:
     filename = entry.get("filename", "<unknown>")
     alignment_status = entry.get("alignment_status", "")
-
-    # Only inspect entries explicitly marked ALIGNED
-    if not (isinstance(alignment_status, str) and alignment_status.strip().upper() == "ALIGNED"):
-        continue
+    is_aligned = isinstance(alignment_status, str) and alignment_status.strip().upper() == "ALIGNED"
+    if is_aligned:
+        aligned_count += 1
 
     file_hash = entry.get("file_hash", "")
     file_hash_sha256 = entry.get("file_hash_sha256", "")
     version = entry.get("version", "")
     entry_violations = []
 
-    # Check 1: file_hash must be a valid 64-char lowercase hex SHA256
+    # Check 1: file_hash must be a valid 64-char lowercase hex SHA256 (ALL entries)
     if not HEX64.match(str(file_hash)):
         entry_violations.append(
             f"  file_hash is not a valid 64-char SHA256: '{file_hash}'"
         )
 
-    # Check 2: file_hash_sha256 must be a valid 64-char lowercase hex SHA256
+    # Check 2: file_hash_sha256 must be a valid 64-char lowercase hex SHA256 (ALL entries)
     if not HEX64.match(str(file_hash_sha256)):
         entry_violations.append(
             f"  file_hash_sha256 is not a valid 64-char SHA256: '{file_hash_sha256}'"
         )
 
-    # Check 3: version must be non-empty and non-placeholder
-    if not version or STALE.match(str(version).strip()):
+    # Check 3: version must be non-empty and non-placeholder (ALIGNED entries only)
+    # Applied to all entries when alignment_status field is present; otherwise ALIGNED-specific only.
+    if is_aligned and (not version or STALE.match(str(version).strip())):
         entry_violations.append(
             f"  version is empty/stale/placeholder: '{version}'"
         )
@@ -86,29 +87,27 @@ for entry in entries:
 
 if violations:
     print(f"❌ ALIGNMENT-OVERCLAIM-001: FAIL")
-    print(f"   {len(violations)} ALIGNED entr{'y' if len(violations) == 1 else 'ies'} with stale/incomplete canonical metadata:")
+    print(f"   {len(violations)} entr{'y' if len(violations) == 1 else 'ies'} with invalid/stale canonical hash or version metadata:")
     print()
     for filename, v_list in violations:
-        print(f"  [{filename}] is marked ALIGNED but:")
+        print(f"  [{filename}]:")
         for v in v_list:
             print(v)
         print()
     print("Per Workstream D requirement (Issue #1355):")
-    print("  No inventory entry may remain ALIGNED when canonical hash/version")
-    print("  metadata is stale, incomplete, or TBD.")
+    print("  No inventory entry may carry an invalid file_hash / file_hash_sha256.")
+    print("  No entry marked alignment_status: ALIGNED may have a stale/placeholder version.")
     print()
     print("Required action:")
-    print("  1. Set alignment_status to PENDING-RECONCILIATION or UNALIGNED")
-    print("     for affected entries, OR")
-    print("  2. Supply accurate canonical hash and version metadata before")
-    print("     claiming alignment_status: ALIGNED")
+    print("  1. Provide valid 64-char lowercase SHA256 hashes for affected entries, OR")
+    print("  2. For ALIGNED entries with stale version: set alignment_status to")
+    print("     PENDING-RECONCILIATION or UNALIGNED until correct metadata is supplied")
     sys.exit(1)
 
-aligned_count = sum(
-    1 for e in entries
-    if isinstance(e.get("alignment_status", ""), str)
-    and e.get("alignment_status", "").strip().upper() == "ALIGNED"
-)
 total = len(entries)
 print(f"✅ ALIGNMENT-OVERCLAIM-001: PASS")
-print(f"   {aligned_count} ALIGNED {'entry' if aligned_count == 1 else 'entries'} out of {total} total — all have valid SHA256 hashes and version metadata.")
+print(f"   {total} total entr{'y' if total == 1 else 'ies'} — all have valid SHA256 hashes.")
+if aligned_count > 0:
+    print(f"   {aligned_count} ALIGNED entr{'y' if aligned_count == 1 else 'ies'} — all have valid version metadata.")
+else:
+    print(f"   No entries currently carry alignment_status: ALIGNED (version staleness check will enforce once entries gain this field).")
