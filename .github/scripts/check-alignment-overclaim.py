@@ -13,8 +13,8 @@ Rule: No inventory entry may remain ALIGNED when canonical hash/version metadata
 
 Exit codes:
   0 = PASS (no overclaim detected)
-  1 = FAIL (overclaim detected — ALIGNED entries with stale metadata)
-  2 = ERROR (file not found or not valid JSON)
+  1 = FAIL (overclaim detected, or inventory file missing)
+  2 = ERROR (file not valid JSON)
 
 Usage: python3 .github/scripts/check-alignment-overclaim.py [path/to/CANON_INVENTORY.json]
        Default: governance/CANON_INVENTORY.json
@@ -29,9 +29,11 @@ try:
     with open(INVENTORY_PATH) as f:
         data = json.load(f)
 except FileNotFoundError:
-    print(f"ℹ️  {INVENTORY_PATH} not found — overclaim check not applicable")
-    print("✅ ALIGNMENT-OVERCLAIM-001: PASS (no inventory)")
-    sys.exit(0)
+    print(f"❌ {INVENTORY_PATH} not found — alignment inventory is required")
+    print("❌ ALIGNMENT-OVERCLAIM-001: FAIL (inventory missing)")
+    print("   governance/CANON_INVENTORY.json must exist for the overclaim gate to enforce.")
+    print("   Deleting or renaming this file is not a valid workaround.")
+    sys.exit(1)
 except json.JSONDecodeError as e:
     print(f"❌ {INVENTORY_PATH} is not valid JSON: {e}")
     sys.exit(2)

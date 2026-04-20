@@ -5,7 +5,7 @@ name: Admin-Ceremony Defect Gate
 # Purpose: Zero-tolerance detection of admin-ceremony defects before CS2 review
 # Defects blocked: template leakage, placeholder tokens in COMPLETE artifacts,
 #   alignment inventory overclaim, carried-forward source failures,
-#   cross-artifact contradiction, version/header/footer inconsistency
+#   cross-artifact contradiction
 
 on:
   pull_request:
