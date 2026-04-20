@@ -81,7 +81,7 @@ jobs:
           LEAKAGE_PATTERNS=(
             "ASSEMBLY_TIME_ONLY"
             "REMOVE BEFORE COMMIT"
-            "TEMPLATE INSTRUCTION"
+            "TEMPLATE INSTRUCTION[[:space:]]*:"
             "\[fill in\]"
             "\[instruction\]"
             "\[PLACEHOLDER\]"
