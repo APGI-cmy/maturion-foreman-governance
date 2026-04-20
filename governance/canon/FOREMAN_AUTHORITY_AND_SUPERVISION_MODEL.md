@@ -1382,17 +1382,29 @@ For each declared exception: assess ACCEPTABLE or UNACCEPTABLE. Any UNACCEPTABLE
 
 Verify that gate parity claims are backed by explicit per-gate evidence:
 - Gate results JSON contains individual gate entries (not only an aggregate verdict)
-- No provisional gate-pass wording in the PREHANDOVER proof (`grep -iE "expected to pass|parity to be confirmed|pending verification"`)
+- No provisional gate-pass wording in active-bundle artifacts (proof + ECAP reconciliation + latest session memory):
+  ```bash
+  ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null | grep -v SUPERSEDED | head -1)
+  ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1)
+  LATEST_SESSION=$(ls -t .agent-workspace/*/memory/session-*.md 2>/dev/null | head -1)
+  grep -lniE "expected to pass|parity to be confirmed|pending.*verification|gate.*deferred|to be confirmed" \
+    ${ACTIVE_PROOF} ${ACTIVE_RECON} ${LATEST_SESSION} 2>/dev/null
+  ```
 - If gate inventory is absent but gate parity is claimed: return bundle to ECAP (AAP-15, AAP-16)
 
 **Step 5: Pre-Final Instruction Wording Check (v1.5.0)**
 
-Verify no template instruction leakage in final-state artifacts:
+Verify no template instruction leakage in active-bundle final-state artifacts:
 ```bash
-grep -rniE "\[fill in\]|\[instruction\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|replace this with|EXAMPLE TEXT" \
-  .agent-admin/prehandover/proof-*.md .agent-workspace/*/memory/session-*.md 2>/dev/null
+ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null | grep -v SUPERSEDED | head -1)
+ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1)
+LATEST_SESSION=$(ls -t .agent-workspace/*/memory/session-*.md 2>/dev/null | head -1)
+grep -lniE "\[fill in\]|\[instruction\]|\[PLACEHOLDER\]|\[YOUR TEXT HERE\]|ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION|replace this with|EXAMPLE TEXT" \
+  ${ACTIVE_PROOF} ${ACTIVE_RECON} ${LATEST_SESSION} 2>/dev/null
 ```
 Zero output = PASS. Any output = BLOCKED — return bundle to ECAP (AAP-17, AAP-21).
+
+**Scope**: Active bundle only — latest non-superseded proof + current ECAP reconciliation + latest session memory. Do NOT scan the full `.agent-admin/prehandover/` directory (includes superseded artifacts).
 
 **Step 6: Cross-Artifact Final-State Consistency Check (v1.5.0) — Active-Bundle Scoped**
 

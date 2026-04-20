@@ -1034,20 +1034,36 @@ if ${GATE_PARITY_CLAIMED}; then
   fi
 fi
 
-# H2: No provisional gate-pass wording in final-state proofs
+# H2: No provisional gate-pass wording in active-bundle final-state artifacts
+# Scope: latest non-superseded proof + current ECAP reconciliation + latest session memories
 PROVISIONAL_GATE_FILES=()
+H2_ACTIVE_BUNDLE=()
+# Add latest non-superseded proof
 for f in $(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null); do
   IS_SUPERSEDED=false
   for s in "${SUPERSEDED_SET[@]}"; do
     [ "${f}" = "${s}" ] && IS_SUPERSEDED=true && break
   done
   ${IS_SUPERSEDED} && continue
+  H2_ACTIVE_BUNDLE+=("${f}")
+done
+# Add current ECAP reconciliation
+LATEST_H2_RECON=$(git ls-files '.agent-admin/prehandover/ecap-reconciliation-*.md' 2>/dev/null | sort | tail -1)
+[ -n "${LATEST_H2_RECON}" ] && H2_ACTIVE_BUNDLE+=("${LATEST_H2_RECON}")
+# Add latest session memory per workspace
+for WDIR in $(git ls-files '.agent-workspace/*/memory/session-*.md' 2>/dev/null | \
+    sed 's|/memory/session-.*||' | sort -u); do
+  LATEST_H2_SM=$(git ls-files "${WDIR}/memory/session-*.md" 2>/dev/null | sort | tail -1)
+  [ -n "${LATEST_H2_SM}" ] && H2_ACTIVE_BUNDLE+=("${LATEST_H2_SM}")
+done
+for f in "${H2_ACTIVE_BUNDLE[@]}"; do
+  [ -f "${f}" ] || continue
   if grep -qiE "expected to pass|parity to be confirmed|pending.*verification|gate.*deferred|to be confirmed" "${f}" 2>/dev/null; then
     PROVISIONAL_GATE_FILES+=("${f}")
   fi
 done
 [ ${#PROVISIONAL_GATE_FILES[@]} -gt 0 ] && \
-  ACC_FAILURES+=("H2: Provisional gate-pass wording found in final-state proofs: ${PROVISIONAL_GATE_FILES[*]} (AAP-16)")
+  ACC_FAILURES+=("H2: Provisional gate-pass wording found in active-bundle artifacts: ${PROVISIONAL_GATE_FILES[*]} (AAP-16)")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CHECK I: Pre-Final Instruction Wording / Template Instruction Leakage (AAP-17, AAP-18, AAP-21)
@@ -1185,7 +1201,7 @@ The following conditions are **auto-fail** for the §4.3e gate regardless of oth
 | AAP-08 | PUBLIC_API ripple obligations omitted or silently skipped | Any changed file with `layer_down_status: PUBLIC_API` in CANON_INVENTORY that has no ripple assessment block in the ECAP reconciliation summary |
 | AAP-09 | Committed truth not matching proof/session memory claims | The branch's actual committed file state contradicts a declared artifact path, hash, or status in a ceremony document |
 | AAP-15 | Gate parity claimed without explicit gate inventory | Gate results JSON has no individual per-gate entries when gate parity is claimed in PREHANDOVER proof |
-| AAP-16 | Stale gate-pass provisional wording | Any of: `expected to pass`, `parity to be confirmed`, `pending verification`, `gate deferred`, `to be confirmed` in final-state proofs where a definitive gate status is required |
+| AAP-16 | Stale gate-pass provisional wording | Any of: `expected to pass`, `parity to be confirmed`, `pending verification`, `gate deferred`, `to be confirmed` in active-bundle final-state artifacts (proof, reconciliation, or latest session memory) where a definitive gate status is required |
 | AAP-17 | Pre-final instruction wording / template instruction leakage | Any of: `[fill in]`, `[instruction]`, `replace this with`, `EXAMPLE TEXT`, `[PLACEHOLDER]`, `[YOUR TEXT HERE]` in committed final-state artifacts |
 | AAP-18 | Verbatim IAA-response section blank or instruction-only | `iaa_audit_token` or `iaa_session_reference` field still contains a template placeholder value (e.g., `<token-file-path>`, `[pending]`) while `final_state: COMPLETE` is declared |
 | AAP-19 | Cross-artifact final-state contradiction | PREHANDOVER `final_state: COMPLETE` but ECAP reconciliation summary or session memory declares a non-final status for the same dimension |

@@ -136,13 +136,17 @@ The `execution-ceremony-admin-agent` MUST verify that no template assembly-time 
 - `[fill in]`, `[instruction]`, `[PLACEHOLDER]`, `[YOUR TEXT HERE]` inline placeholders
 - `replace this with`, `EXAMPLE TEXT`, or any literal instructional directive text clearly intended for template assembly rather than as a value
 
-**Detection**:
+**Detection** (active-bundle scope — latest non-superseded proof + latest session memory + current ECAP reconciliation):
 ```bash
-grep -rniE "ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION|\[fill in\]|\[instruction\]|\[PLACEHOLDER\]|replace this with|EXAMPLE TEXT" .agent-admin/prehandover/ .agent-workspace/*/memory/session-*.md
+ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null | grep -v SUPERSEDED | head -1)
+ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1)
+LATEST_SESSION=$(ls -t .agent-workspace/*/memory/session-*.md 2>/dev/null | head -1)
+grep -lniE "ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION|\[fill in\]|\[instruction\]|\[PLACEHOLDER\]|\[YOUR TEXT HERE\]|replace this with|EXAMPLE TEXT" \
+  ${ACTIVE_PROOF} ${ACTIVE_RECON} ${LATEST_SESSION} 2>/dev/null
 ```
 Zero output = PASS. Any output = template instruction leakage exists → BLOCKED (AAP-17, AAP-21).
 
-**Active-bundle scope**: This scan applies only to the active final-state bundle (current PREHANDOVER proof, latest session memory, current ECAP reconciliation summary). Template source files in `governance/templates/` are not scanned.
+**Active-bundle scope**: This scan applies only to the active final-state bundle (current PREHANDOVER proof, latest session memory, current ECAP reconciliation summary). Template source files in `governance/templates/` and superseded/historical artifacts are not scanned.
 
 #### §3.5b Active-Bundle Scope for Status Normalization (v1.2.0)
 
