@@ -50,9 +50,9 @@ jobs:
 
           # Latest per-workspace session memory files — find all session-*.md files,
           # sort by modification time (newest first), take the most recent one.
-          # Using ls -t for simplicity as session memory files are low-volume.
+          # Use -printf to keep selection deterministic and empty-safe.
           LATEST_SESSION_MEMORY=$(find .agent-workspace -maxdepth 4 -path "*/memory/session-*.md" \
-            -type f 2>/dev/null | xargs ls -t 2>/dev/null | head -1 || true)
+            -type f -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2- || true)
           if [ -n "$LATEST_SESSION_MEMORY" ] && [ -f "$LATEST_SESSION_MEMORY" ]; then
             ACTIVE_FILES+=("$LATEST_SESSION_MEMORY")
             echo "Active session memory: $LATEST_SESSION_MEMORY"
@@ -98,7 +98,7 @@ jobs:
             FILE_VIOLATIONS=0
 
             for pattern in "${LEAKAGE_PATTERNS[@]}"; do
-              MATCHES=$(grep -niE "$pattern" "$f" 2>/dev/null || true)
+              MATCHES=$(grep -niEi "$pattern" "$f" 2>/dev/null || true)
               if [ -n "$MATCHES" ]; then
                 if [ $FILE_VIOLATIONS -eq 0 ]; then
                   echo "❌ Template instruction leakage detected in: $f"
@@ -187,7 +187,7 @@ jobs:
             # Strip markdown formatting (bold, backtick) before checking
             FINAL_STATE=$(sed 's/\*\*//g; s/`//g' "$f" | grep -i 'final_state' | head -1 || echo "")
 
-            if ! echo "$FINAL_STATE" | grep -qi "COMPLETE"; then
+            if ! printf '%s\n' "$FINAL_STATE" | grep -qiE '^[[:space:]]*final_state[[:space:]]*:[[:space:]]*COMPLETE[[:space:]]*$'; then
               # Not a COMPLETE proof — skip
               continue
             fi
@@ -329,7 +329,7 @@ jobs:
           [ -n "$ACTIVE_PROOF" ] && [ -f "$ACTIVE_PROOF" ] && ACTIVE_FILES+=("$ACTIVE_PROOF")
 
           LATEST_SESSION=$(find .agent-workspace -maxdepth 4 -path "*/memory/session-*.md" \
-            -type f 2>/dev/null | xargs ls -t 2>/dev/null | head -1 || true)
+            -type f -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2- || true)
           [ -n "$LATEST_SESSION" ] && [ -f "$LATEST_SESSION" ] && ACTIVE_FILES+=("$LATEST_SESSION")
 
           ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1 || true)
@@ -351,7 +351,7 @@ jobs:
 
             # Extract "carried forward from <path>" and "verbatim from <path>" claims
             # Patterns: "carried forward from", "verbatim from", "copied from [source]"
-            CLAIMS=$(grep -niE "(carried forward from|verbatim from|copied from)\s+['\"\`]?([^\s'\"\`]+\.(md|json|yml|yaml|sh|py))" "$f" 2>/dev/null || true)
+            CLAIMS=$(grep -niE "(carried forward from|verbatim from|copied from)[[:space:]]+['\"\`]?([^[:space:]'\"\`]+\.(md|json|yml|yaml|sh|py))" "$f" 2>/dev/null || true)
 
             if [ -z "$CLAIMS" ]; then
               continue
@@ -437,7 +437,7 @@ jobs:
           # Check if proof declares final_state: COMPLETE
           FINAL_STATE=$(sed 's/\*\*//g; s/`//g' "$ACTIVE_PROOF" | grep -i 'final_state' | head -1 || echo "")
 
-          if ! echo "$FINAL_STATE" | grep -qi "COMPLETE"; then
+          if ! printf '%s\n' "$FINAL_STATE" | grep -qiE '^[[:space:]]*final_state[[:space:]]*:[[:space:]]*COMPLETE[[:space:]]*$'; then
             echo "ℹ️  Proof does not declare final_state: COMPLETE — contradiction check not applicable"
             echo "✅ admin-ceremony/cross-artifact-contradiction: PASS (not COMPLETE)"
             exit 0
@@ -470,7 +470,7 @@ jobs:
           done
 
           # Check gate_inventory for FAIL entries in COMPLETE proof
-          GATE_FAILS=$(grep -iE "^\s+[a-z/.-]+:\s+FAIL" "$ACTIVE_PROOF" 2>/dev/null || true)
+          GATE_FAILS=$(grep -iE "^[[:space:]]+[a-z/.-]+:[[:space:]]+FAIL" "$ACTIVE_PROOF" 2>/dev/null || true)
           if [ -n "$GATE_FAILS" ]; then
             echo "❌ Contradiction: COMPLETE proof contains FAIL gate(s) in gate_inventory:"
             echo "$GATE_FAILS" | while IFS= read -r line; do
