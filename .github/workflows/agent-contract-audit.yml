@@ -273,3 +273,37 @@ ${diffReport}
           echo ""
           echo "NOTE: IAA assurance token still required for merge per"
           echo "  INDEPENDENT_ASSURANCE_AGENT_CANON.md (agent-file-change trigger)."
+
+      - name: Run canonical placeholder check on modified agent contracts
+        if: steps.detect.outputs.files_changed == 'true'
+        run: |
+          echo "=== Canonical Placeholder Check (PLACEHOLDER-CHECK-001) ==="
+          echo "Authority: governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md v1.0.0"
+          echo ""
+          echo "Checking modified agent contract file(s) for unresolved placeholder content..."
+          echo "Exception classes EXC-001 through EXC-005 applied per canon §5."
+          echo ""
+
+          VIOLATIONS=0
+          while IFS= read -r contract_file; do
+            [ -f "$contract_file" ] || continue
+            echo "Checking: $contract_file"
+            if bash .github/scripts/validate-placeholder-check.sh "$contract_file"; then
+              echo "  ✅ PASS: $contract_file"
+            else
+              echo "  ❌ FAIL: $contract_file"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+            echo ""
+          done < /tmp/agent_files_changed.txt
+
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo "❌ PLACEHOLDER-CHECK-001: FAIL — $VIOLATIONS file(s) have unresolved placeholder content"
+            echo ""
+            echo "Agent contract files must not contain unresolved placeholder text."
+            echo "Exception classes are defined in:"
+            echo "  governance/canon/AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md §5"
+            exit 1
+          fi
+
+          echo "✅ PLACEHOLDER-CHECK-001: PASS — all modified agent contracts are placeholder-free"

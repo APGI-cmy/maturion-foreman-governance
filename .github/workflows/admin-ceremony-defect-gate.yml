@@ -1,0 +1,475 @@
+name: Admin-Ceremony Defect Gate
+
+# Authority: governance/canon/AGENT_HANDOVER_AUTOMATION.md v1.5.0 §4.3e
+# Authority: governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md v1.2.0
+# Purpose: Zero-tolerance detection of admin-ceremony defects before CS2 review
+# Defects blocked: template leakage, placeholder tokens in COMPLETE artifacts,
+#   alignment inventory overclaim, carried-forward source failures,
+#   cross-artifact contradiction, version/header/footer inconsistency
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Check A: Template Instruction Leakage
+  # Detects ASSEMBLY_TIME_ONLY, REMOVE BEFORE COMMIT, and equivalent directives
+  # in active-bundle artifacts (latest prehandover proof + latest session memory
+  # + latest ECAP reconciliation).
+  # Authority: ECAP-001 §3.5a (Template Non-Leakage Duty)
+  # Auto-fail: AAP-17, AAP-21
+  # ─────────────────────────────────────────────────────────────────────────────
+  template-leakage-check:
+    name: admin-ceremony/template-leakage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for template instruction leakage in active-bundle artifacts
+        run: |
+          echo "=== Admin-Ceremony Defect Gate — Check A: Template Instruction Leakage ==="
+          echo "Authority: ECAP-001 §3.5a | AAP-17, AAP-21"
+          echo ""
+
+          # Build active-bundle file list (scope: non-SUPERSEDED proof + latest session memory + latest reconciliation)
+          ACTIVE_FILES=()
+
+          # Latest non-superseded PREHANDOVER proof
+          ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null \
+            | grep -vi "SUPERSEDED" | head -1 || true)
+          if [ -n "$ACTIVE_PROOF" ] && [ -f "$ACTIVE_PROOF" ]; then
+            ACTIVE_FILES+=("$ACTIVE_PROOF")
+            echo "Active proof: $ACTIVE_PROOF"
+          fi
+
+          # Latest per-workspace session memory files
+          while IFS= read -r -d '' f; do
+            ACTIVE_FILES+=("$f")
+            echo "Active session memory: $f"
+          done < <(find .agent-workspace -maxdepth 4 -path "*/memory/session-*.md" -type f \
+            -printf '%T@ %p\0' 2>/dev/null | sort -zrn | awk 'NR==1{print $2}' RS='\0' FS=' ' ORS='\0' || true)
+
+          # Latest ECAP reconciliation summary
+          ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1 || true)
+          if [ -n "$ACTIVE_RECON" ] && [ -f "$ACTIVE_RECON" ]; then
+            ACTIVE_FILES+=("$ACTIVE_RECON")
+            echo "Active reconciliation: $ACTIVE_RECON"
+          fi
+
+          if [ ${#ACTIVE_FILES[@]} -eq 0 ]; then
+            echo ""
+            echo "ℹ️  No active-bundle artifacts found — template leakage check not applicable"
+            echo "✅ admin-ceremony/template-leakage: PASS (no active bundle)"
+            exit 0
+          fi
+
+          echo ""
+          echo "Scanning ${#ACTIVE_FILES[@]} active-bundle artifact(s) for template instruction leakage..."
+          echo ""
+
+          # Template instruction leakage patterns (per ECAP-001 §3.5a)
+          # These patterns indicate assembly-time instructions that must be removed before commit
+          LEAKAGE_PATTERNS=(
+            "ASSEMBLY_TIME_ONLY"
+            "REMOVE BEFORE COMMIT"
+            "TEMPLATE INSTRUCTION"
+            "\[fill in\]"
+            "\[instruction\]"
+            "\[PLACEHOLDER\]"
+            "\[YOUR TEXT HERE\]"
+            "replace this with"
+            "EXAMPLE TEXT"
+          )
+
+          VIOLATIONS=0
+          VIOLATION_FILES=()
+
+          for f in "${ACTIVE_FILES[@]}"; do
+            [ -f "$f" ] || continue
+            FILE_VIOLATIONS=0
+
+            for pattern in "${LEAKAGE_PATTERNS[@]}"; do
+              MATCHES=$(grep -niE "$pattern" "$f" 2>/dev/null || true)
+              if [ -n "$MATCHES" ]; then
+                if [ $FILE_VIOLATIONS -eq 0 ]; then
+                  echo "❌ Template instruction leakage detected in: $f"
+                fi
+                echo "$MATCHES" | while IFS= read -r line; do
+                  echo "   Pattern '$pattern' matched: $line"
+                done
+                FILE_VIOLATIONS=$((FILE_VIOLATIONS + 1))
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+            done
+
+            if [ $FILE_VIOLATIONS -gt 0 ]; then
+              VIOLATION_FILES+=("$f")
+            fi
+          done
+
+          echo ""
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo "❌ ADMIN-CEREMONY DEFECT GATE — TEMPLATE LEAKAGE: FAIL"
+            echo ""
+            echo "Template instruction leakage detected in active-bundle artifact(s)."
+            echo "Violations: $VIOLATIONS"
+            echo ""
+            echo "Per ECAP-001 §3.5a (Template Non-Leakage Duty):"
+            echo "  The execution-ceremony-admin-agent MUST verify that no template assembly-time"
+            echo "  instructions remain in any committed final-state artifact."
+            echo ""
+            echo "Required action:"
+            echo "  1. Remove all ASSEMBLY_TIME_ONLY, REMOVE BEFORE COMMIT, and equivalent"
+            echo "     template directive blocks from the listed artifacts."
+            echo "  2. Per PREHANDOVER immutability rules, supersede the affected proof and"
+            echo "     create a corrected artifact."
+            echo "  3. Re-run the admin-ceremony gate locally before resubmitting."
+            echo ""
+            echo "Auto-fail: AAP-17 (template leakage), AAP-21 (pre-final instruction wording)"
+            exit 1
+          fi
+
+          echo "✅ admin-ceremony/template-leakage: PASS"
+          echo "   No template instruction leakage detected in active-bundle artifacts."
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Check B: Placeholder IAA Token/Session in COMPLETE Artifacts
+  # Detects placeholder/PENDING iaa_audit_token or iaa_session_reference in
+  # artifacts that declare final_state: COMPLETE.
+  # Authority: ECAP-001 §3.6 CCI-03 | AGENT_HANDOVER_AUTOMATION.md AAP-01
+  # ─────────────────────────────────────────────────────────────────────────────
+  placeholder-final-state-check:
+    name: admin-ceremony/placeholder-final-state
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for placeholder IAA tokens in COMPLETE artifacts
+        run: |
+          echo "=== Admin-Ceremony Defect Gate — Check B: Placeholder Final-State Fields ==="
+          echo "Authority: ECAP-001 §3.6 CCI-03 | AAP-01"
+          echo ""
+
+          # Scope: all prehandover proofs (not just active-bundle — any COMPLETE proof with a
+          # placeholder token is a ceremony integrity violation)
+          PROOF_FILES=()
+          while IFS= read -r f; do
+            PROOF_FILES+=("$f")
+          done < <(find .agent-admin/prehandover/ -maxdepth 2 \
+            \( -name "proof-*.md" -o -name "prehandover_proof*.md" -o -name "PREHANDOVER_PROOF*.md" \) \
+            -type f 2>/dev/null || true)
+
+          if [ ${#PROOF_FILES[@]} -eq 0 ]; then
+            echo "ℹ️  No prehandover proof files found — check not applicable"
+            echo "✅ admin-ceremony/placeholder-final-state: PASS (no proofs)"
+            exit 0
+          fi
+
+          echo "Checking ${#PROOF_FILES[@]} prehandover proof file(s)..."
+          echo ""
+
+          VIOLATIONS=0
+
+          for f in "${PROOF_FILES[@]}"; do
+            [ -f "$f" ] || continue
+
+            # Check if this proof declares final_state: COMPLETE
+            # Strip markdown formatting (bold, backtick) before checking
+            FINAL_STATE=$(sed 's/\*\*//g; s/`//g' "$f" | grep -i 'final_state' | head -1 || echo "")
+
+            if ! echo "$FINAL_STATE" | grep -qi "COMPLETE"; then
+              # Not a COMPLETE proof — skip
+              continue
+            fi
+
+            echo "Checking COMPLETE proof: $f"
+
+            # Check iaa_audit_token for placeholder/PENDING values
+            IAA_TOKEN=$(sed 's/\*\*//g; s/`//g' "$f" | grep -i 'iaa_audit_token' | head -1 || echo "")
+            IAA_SESSION=$(sed 's/\*\*//g; s/`//g' "$f" | grep -i 'iaa_session_reference' | head -1 || echo "")
+
+            PROOF_VIOLATIONS=0
+
+            if echo "$IAA_TOKEN" | grep -qiE "(PENDING|placeholder|TBD|TODO|\[to be filled\]|<token|<fill|REQUIRED —)"; then
+              # Verify that a PR-scoped token file exists before failing
+              # (Token ceremony: PREHANDOVER is immutable; token file is the authority)
+              # Extract PR number from proof filename or content for scoped check
+              PR_NUM=$(basename "$f" | grep -oE '[0-9]+' | head -1 || true)
+              if [ -n "$PR_NUM" ]; then
+                TOKEN_FILE=$(find .agent-admin/assurance/ -maxdepth 1 \
+                  \( -name "*${PR_NUM}*" \) -type f 2>/dev/null | head -1 || true)
+                if [ -n "$TOKEN_FILE" ]; then
+                  echo "  ✅ iaa_audit_token appears pending but PR-scoped token file exists: $TOKEN_FILE"
+                  echo "     (Token ceremony immutability: proof field PENDING is expected; token file is authoritative)"
+                  continue
+                fi
+              fi
+
+              echo "  ❌ COMPLETE proof has placeholder/PENDING iaa_audit_token: $IAA_TOKEN"
+              PROOF_VIOLATIONS=$((PROOF_VIOLATIONS + 1))
+            fi
+
+            if echo "$IAA_SESSION" | grep -qiE "(PENDING|placeholder|TBD|TODO|\[to be filled\]|<session|<fill)"; then
+              echo "  ❌ COMPLETE proof has placeholder/PENDING iaa_session_reference: $IAA_SESSION"
+              PROOF_VIOLATIONS=$((PROOF_VIOLATIONS + 1))
+            fi
+
+            if [ $PROOF_VIOLATIONS -gt 0 ]; then
+              echo "  File: $f"
+              VIOLATIONS=$((VIOLATIONS + PROOF_VIOLATIONS))
+            else
+              echo "  ✅ IAA token/session fields: OK"
+            fi
+          done
+
+          echo ""
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo "❌ ADMIN-CEREMONY DEFECT GATE — PLACEHOLDER FINAL-STATE: FAIL"
+            echo ""
+            echo "COMPLETE prehandover proof(s) contain placeholder IAA token/session references."
+            echo "Violations: $VIOLATIONS"
+            echo ""
+            echo "Per ECAP-001 §3.6 CCI-03 (No placeholder or stale provisional wording):"
+            echo "  A COMPLETE proof must not contain placeholder/PENDING values in required fields."
+            echo "  The IAA token file (.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md)"
+            echo "  must exist and be PR-scoped."
+            echo ""
+            echo "Required action:"
+            echo "  1. Invoke IAA to obtain a real ASSURANCE-TOKEN"
+            echo "  2. Commit the token to .agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md"
+            echo "  3. The PREHANDOVER proof field may remain PENDING (immutability) — the token file"
+            echo "     is the authoritative signal per A-20 / B-12 (FAIL-ONLY-ONCE)"
+            echo ""
+            echo "Auto-fail: AAP-01 (stale placeholder wording in COMPLETE artifacts)"
+            exit 1
+          fi
+
+          echo "✅ admin-ceremony/placeholder-final-state: PASS"
+          echo "   No COMPLETE proofs with unresolved placeholder IAA fields."
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Check C: Alignment Inventory Overclaim
+  # Detects CANON_INVENTORY.json entries with alignment_status: ALIGNED but
+  # stale/incomplete/TBD canonical metadata (file_hash, version).
+  # Authority: AGENT_HANDOVER_AUTOMATION.md v1.5.0 §4.3e Check G
+  # ─────────────────────────────────────────────────────────────────────────────
+  alignment-overclaim-check:
+    name: admin-ceremony/alignment-overclaim
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check CANON_INVENTORY for alignment overclaim
+        run: |
+          echo "=== Admin-Ceremony Defect Gate — Check C: Alignment Inventory Overclaim ==="
+          echo "Authority: AGENT_HANDOVER_AUTOMATION.md v1.5.0 §4.3e | Workstream D"
+          echo ""
+          python3 .github/scripts/check-alignment-overclaim.py governance/CANON_INVENTORY.json
+          echo ""
+          echo "✅ admin-ceremony/alignment-overclaim: PASS"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Check D: Carried-Forward Source Resolvability
+  # Detects "carried forward from [source]" claims in active-bundle artifacts where
+  # the named source file does not exist as a committed file on the branch.
+  # Authority: ECAP-001 §3.7a (Carried-Forward Claim Resolution Duty)
+  # ─────────────────────────────────────────────────────────────────────────────
+  carried-forward-source-check:
+    name: admin-ceremony/carried-forward-source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check carried-forward source resolvability in active-bundle
+        run: |
+          echo "=== Admin-Ceremony Defect Gate — Check D: Carried-Forward Source Resolvability ==="
+          echo "Authority: ECAP-001 §3.7a | AGENT_HANDOVER_AUTOMATION.md v1.5.0 §4.3e Check K"
+          echo ""
+
+          # Active bundle scope: latest non-SUPERSEDED proof + latest session memory + latest reconciliation
+          ACTIVE_FILES=()
+
+          ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null \
+            | grep -vi "SUPERSEDED" | head -1 || true)
+          [ -n "$ACTIVE_PROOF" ] && [ -f "$ACTIVE_PROOF" ] && ACTIVE_FILES+=("$ACTIVE_PROOF")
+
+          LATEST_SESSION=$(find .agent-workspace -maxdepth 4 -path "*/memory/session-*.md" \
+            -type f 2>/dev/null | xargs ls -t 2>/dev/null | head -1 || true)
+          [ -n "$LATEST_SESSION" ] && [ -f "$LATEST_SESSION" ] && ACTIVE_FILES+=("$LATEST_SESSION")
+
+          ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1 || true)
+          [ -n "$ACTIVE_RECON" ] && [ -f "$ACTIVE_RECON" ] && ACTIVE_FILES+=("$ACTIVE_RECON")
+
+          if [ ${#ACTIVE_FILES[@]} -eq 0 ]; then
+            echo "ℹ️  No active-bundle artifacts found — carried-forward check not applicable"
+            echo "✅ admin-ceremony/carried-forward-source: PASS (no active bundle)"
+            exit 0
+          fi
+
+          echo "Scanning ${#ACTIVE_FILES[@]} active-bundle artifact(s) for carried-forward claims..."
+          echo ""
+
+          VIOLATIONS=0
+
+          for f in "${ACTIVE_FILES[@]}"; do
+            [ -f "$f" ] || continue
+
+            # Extract "carried forward from <path>" and "verbatim from <path>" claims
+            # Patterns: "carried forward from", "verbatim from", "copied from [source]"
+            CLAIMS=$(grep -niE "(carried forward from|verbatim from|copied from)\s+['\"\`]?([^\s'\"\`]+\.(md|json|yml|yaml|sh|py))" "$f" 2>/dev/null || true)
+
+            if [ -z "$CLAIMS" ]; then
+              continue
+            fi
+
+            echo "Checking carried-forward claims in: $f"
+
+            while IFS= read -r claim_line; do
+              # Extract the referenced path
+              SOURCE_PATH=$(echo "$claim_line" | grep -oE "['\"\`]?[a-zA-Z0-9_./-]+\.(md|json|yml|yaml|sh|py)['\"\`]?" \
+                | tr -d "'\"\`" | head -1 || true)
+
+              if [ -z "$SOURCE_PATH" ]; then
+                continue
+              fi
+
+              # Verify source exists as a committed file
+              if git ls-files --error-unmatch "$SOURCE_PATH" 2>/dev/null; then
+                echo "  ✅ Source exists: $SOURCE_PATH"
+              else
+                echo "  ❌ Carried-forward source NOT found: $SOURCE_PATH"
+                echo "     Claim: $claim_line"
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+            done <<< "$CLAIMS"
+          done
+
+          echo ""
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo "❌ ADMIN-CEREMONY DEFECT GATE — CARRIED-FORWARD SOURCE: FAIL"
+            echo ""
+            echo "Carried-forward claims reference non-existent source files."
+            echo "Violations: $VIOLATIONS"
+            echo ""
+            echo "Per ECAP-001 §3.7a (Carried-Forward Claim Resolution Duty):"
+            echo "  When any ceremony artifact contains a 'carried forward from [source]' claim,"
+            echo "  the source artifact MUST exist as a committed file on the branch."
+            echo ""
+            echo "Required action:"
+            echo "  1. Verify the source file path is correct and committed"
+            echo "  2. OR restate the carried-forward claim as explicit (remove the source reference)"
+            echo "  3. Document the correction in the ECAP reconciliation summary"
+            exit 1
+          fi
+
+          echo "✅ admin-ceremony/carried-forward-source: PASS"
+          echo "   All carried-forward claims resolve to committed source files."
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Check E: Cross-Artifact Final-State Contradiction (Active Bundle)
+  # Detects stale provisional wording (PENDING, IN-PROGRESS, TBD, TODO) in
+  # active-bundle artifacts that declare final_state: COMPLETE.
+  # Authority: ECAP-001 §3.5 (Final-State Normalization Duty) | AAP-01
+  # ─────────────────────────────────────────────────────────────────────────────
+  cross-artifact-contradiction-check:
+    name: admin-ceremony/cross-artifact-contradiction
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for cross-artifact final-state contradiction in active bundle
+        run: |
+          echo "=== Admin-Ceremony Defect Gate — Check E: Cross-Artifact Contradiction ==="
+          echo "Authority: ECAP-001 §3.5, §3.6 CCI-04 | AGENT_HANDOVER_AUTOMATION.md AAP-01"
+          echo ""
+
+          # Active bundle: latest non-SUPERSEDED prehandover proof only
+          # (session memory and reconciliation are scanned separately; cross-artifact
+          #  contradiction check focuses on the PREHANDOVER proof's own internal consistency)
+          ACTIVE_PROOF=$(ls -t .agent-admin/prehandover/proof-*.md 2>/dev/null \
+            | grep -vi "SUPERSEDED" | head -1 || true)
+
+          if [ -z "$ACTIVE_PROOF" ] || [ ! -f "$ACTIVE_PROOF" ]; then
+            echo "ℹ️  No active prehandover proof found — contradiction check not applicable"
+            echo "✅ admin-ceremony/cross-artifact-contradiction: PASS (no active proof)"
+            exit 0
+          fi
+
+          echo "Checking active proof for internal contradiction: $ACTIVE_PROOF"
+          echo ""
+
+          # Check if proof declares final_state: COMPLETE
+          FINAL_STATE=$(sed 's/\*\*//g; s/`//g' "$ACTIVE_PROOF" | grep -i 'final_state' | head -1 || echo "")
+
+          if ! echo "$FINAL_STATE" | grep -qi "COMPLETE"; then
+            echo "ℹ️  Proof does not declare final_state: COMPLETE — contradiction check not applicable"
+            echo "✅ admin-ceremony/cross-artifact-contradiction: PASS (not COMPLETE)"
+            exit 0
+          fi
+
+          echo "Proof declares final_state: COMPLETE — checking for stale provisional wording..."
+          echo ""
+
+          VIOLATIONS=0
+
+          # Stale provisional wording patterns that contradict COMPLETE final state
+          # Check gate_inventory, opojd_compliance, merge_gate_verdict fields for FAIL/PENDING/BLOCKED
+          STALE_PATTERNS=(
+            "opojd_compliance:.*VIOLATED"
+            "merge_gate_verdict:.*FAIL"
+            "pre_iaa_commit_state:.*FAIL"
+            "scope_declaration_parity:.*FAIL"
+            "admin_ceremony_compliance:.*FAIL"
+          )
+
+          for pattern in "${STALE_PATTERNS[@]}"; do
+            MATCHES=$(grep -iE "$pattern" "$ACTIVE_PROOF" 2>/dev/null || true)
+            if [ -n "$MATCHES" ]; then
+              echo "❌ Contradiction: COMPLETE proof contains failure state:"
+              echo "$MATCHES" | while IFS= read -r line; do
+                echo "   $line"
+              done
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          done
+
+          # Check gate_inventory for FAIL entries in COMPLETE proof
+          GATE_FAILS=$(grep -iE "^\s+[a-z/.-]+:\s+FAIL" "$ACTIVE_PROOF" 2>/dev/null || true)
+          if [ -n "$GATE_FAILS" ]; then
+            echo "❌ Contradiction: COMPLETE proof contains FAIL gate(s) in gate_inventory:"
+            echo "$GATE_FAILS" | while IFS= read -r line; do
+              echo "   $line"
+            done
+            VIOLATIONS=$((VIOLATIONS + 1))
+          fi
+
+          echo ""
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo "❌ ADMIN-CEREMONY DEFECT GATE — CROSS-ARTIFACT CONTRADICTION: FAIL"
+            echo ""
+            echo "Active COMPLETE prehandover proof contains contradictory failure state."
+            echo "Violations: $VIOLATIONS"
+            echo ""
+            echo "Per ECAP-001 §3.5 (Final-State Normalization Duty):"
+            echo "  All final-state status markers must tell one coherent story."
+            echo "  A COMPLETE proof must not contain FAIL gates or VIOLATED compliance fields."
+            echo ""
+            echo "Required action:"
+            echo "  1. Resolve all gate failures before declaring final_state: COMPLETE"
+            echo "  2. If proof was committed with contradictions, supersede it and create a"
+            echo "     corrected proof per the PREHANDOVER immutability model"
+            exit 1
+          fi
+
+          echo "✅ admin-ceremony/cross-artifact-contradiction: PASS"
+          echo "   No contradictions detected in active COMPLETE prehandover proof."
