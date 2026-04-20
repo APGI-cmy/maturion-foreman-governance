@@ -73,8 +73,8 @@ Canon files amended in this PR — before/after SHA256:
 
 | Field | Value |
 |-------|-------|
-| iaa_audit_token | pending IAA invocation |
-| iaa_session_reference | pending |
+| iaa_audit_token | `.agent-admin/assurance/iaa-token-session-033-wave1-20260417.md` |
+| iaa_session_reference | IAA-20260417-PR-canonize-admin-ceremony-compliance-stack (session-033) |
 | iaa_reinvocation_round | 0 |
 | iaa_rejection_reference | none |
 

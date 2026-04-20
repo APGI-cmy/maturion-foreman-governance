@@ -187,6 +187,16 @@ jobs:
             echo "ℹ️  Governance repos maintain alignment via CANON_INVENTORY.json"
           fi
 
+      - name: Check CANON_INVENTORY alignment overclaim
+        run: |
+          echo "=== Alignment Inventory Truth Check (Workstream D — zero-tolerance closure) ==="
+          echo "Authority: AGENT_HANDOVER_AUTOMATION.md v1.5.0 §4.3e | Issue #1355"
+          echo ""
+          echo "Rule: No inventory entry may remain ALIGNED when canonical hash/version"
+          echo "metadata is stale, incomplete, or TBD."
+          echo ""
+          python3 .github/scripts/check-alignment-overclaim.py governance/CANON_INVENTORY.json
+
   # Job 3: Stop-and-Fix Enforcement
   # Fails if a stop-and-fix condition is unresolved
   stop-and-fix-enforcement:
