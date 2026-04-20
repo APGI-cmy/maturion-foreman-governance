@@ -41,9 +41,10 @@ entries = data.get("canons", [])
 # A valid SHA256 hash: exactly 64 lowercase hex characters
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
-# Stale/placeholder value patterns
+# Stale/placeholder value patterns — matches explicit stale strings.
+# Empty string is handled separately in the version check via `not version`.
 STALE = re.compile(
-    r"^(placeholder|TBD|tbd|TODO|todo|unknown|UNKNOWN|pending|PENDING|N/A|n/a|)$",
+    r"^(placeholder|TBD|tbd|TODO|todo|unknown|UNKNOWN|pending|PENDING|N/A|n/a)$",
     re.IGNORECASE,
 )
 

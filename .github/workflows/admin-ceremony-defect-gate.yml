@@ -48,12 +48,15 @@ jobs:
             echo "Active proof: $ACTIVE_PROOF"
           fi
 
-          # Latest per-workspace session memory files
-          while IFS= read -r -d '' f; do
-            ACTIVE_FILES+=("$f")
-            echo "Active session memory: $f"
-          done < <(find .agent-workspace -maxdepth 4 -path "*/memory/session-*.md" -type f \
-            -printf '%T@ %p\0' 2>/dev/null | sort -zrn | awk 'NR==1{print $2}' RS='\0' FS=' ' ORS='\0' || true)
+          # Latest per-workspace session memory files — find all session-*.md files,
+          # sort by modification time (newest first), take the most recent one.
+          # Using ls -t for simplicity as session memory files are low-volume.
+          LATEST_SESSION_MEMORY=$(find .agent-workspace -maxdepth 4 -path "*/memory/session-*.md" \
+            -type f 2>/dev/null | xargs ls -t 2>/dev/null | head -1 || true)
+          if [ -n "$LATEST_SESSION_MEMORY" ] && [ -f "$LATEST_SESSION_MEMORY" ]; then
+            ACTIVE_FILES+=("$LATEST_SESSION_MEMORY")
+            echo "Active session memory: $LATEST_SESSION_MEMORY"
+          fi
 
           # Latest ECAP reconciliation summary
           ACTIVE_RECON=$(ls -t .agent-admin/prehandover/ecap-reconciliation-*.md 2>/dev/null | head -1 || true)

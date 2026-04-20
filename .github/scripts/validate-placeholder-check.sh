@@ -219,12 +219,13 @@ FILES_WITH_VIOLATIONS=0
 for contract_file in "${FILES_TO_CHECK[@]}"; do
   [ -f "$contract_file" ] || continue
   file_result=$(check_file "$contract_file")
-  # Last line of output from check_file is the violation count
+  # Last line of output from check_file is the violation count (integer)
   file_count=$(echo "$file_result" | tail -1)
   # Print everything except the last line (the count)
   echo "$file_result" | head -n -1
 
-  if [ "$file_count" -gt 0 ] 2>/dev/null; then
+  # Validate that file_count is a non-negative integer before arithmetic comparison
+  if [[ "$file_count" =~ ^[0-9]+$ ]] && [ "$file_count" -gt 0 ]; then
     TOTAL_VIOLATIONS=$((TOTAL_VIOLATIONS + file_count))
     FILES_WITH_VIOLATIONS=$((FILES_WITH_VIOLATIONS + 1))
   fi
