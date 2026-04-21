@@ -1,7 +1,8 @@
 # AGENT_HANDOVER_AUTOMATION
 
-**Status**: CANONICAL | **Version**: 1.5.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.6.0 | **Authority**: CS2  
 **Date**: 2026-02-24  
+**Amended**: 2026-04-21 — v1.6.0: Added §4.3e Check L (active-bundle token/session coherence) — cross-checks declared `iaa_audit_token` reference in PREHANDOVER proof against actual token file on branch; verifies session ID, PR/wave coherence, and `active_bundle_iaa_coherence` field; added AAP-23 and AAP-24 to auto-fail rule table; updated Handover Validation Checklist to include coherence check; aligned with ISMS merged hardening baseline (parity catch-up wave); authority: CS2 — governance-repo ECAP/IAA parity catch-up issue.  
 **Amended**: 2026-04-19 — v1.5.0: Hardened §4.3e Admin Ceremony Compliance Gate with gate-inventory checks (Check H), pre-final instruction wording denylist (Check I), cross-artifact final-state consistency with active-bundle scoping (Check J), and carried-forward claim verification (Check K); updated auto-fail rule table with AAP-15 through AAP-21; active-bundle scoping rule clarified to prevent false positives from historical archive; authority: CS2 — governance-repo hardening wave (gate-inventory + post-token normalization hardening).  
 **Amended**: 2026-04-17 — v1.4.1: Tightened §4.3e Check C stale-wording scan to final-state artifact set only — superseded pre-token proofs retained immutably under the append-only model are now explicitly exempt; updated AAP-01 auto-fail rule to document final-state scope and superseded-proof exemption; authority: CS2 — PR review feedback on §4.3e canon collision with append-only proof retention.  
 **Previous amendment**: 2026-04-17 — v1.4.0: Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, pre-IAA, ECAP-involved jobs); added auto-fail rules table for 9 known admin anti-patterns (AAP-01 through AAP-09); updated Phase 4 structure and sequencing note; updated Handover Validation Checklist with admin-compliance gate item; authority: CS2 — issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA.  
@@ -1168,6 +1169,53 @@ done
   ACC_FAILURES+=("K1: Carried-forward source file(s) not found on branch: ${UNRESOLVABLE_CF[*]} (AAP-20)")
 
 # ─────────────────────────────────────────────────────────────────────────────
+# CHECK L: Active-Bundle Token/Session Coherence (ACR-15, ACR-16, AAP-23, AAP-24)
+# Verifies that the active final-state bundle is mutually coherent:
+#   L1: Wave task-tracker does not contradict the declared job final state (ACR-15, AAP-23)
+#   L2: iaa_audit_token reference resolves to an actual committed token file (ACR-16, AAP-24)
+#   L3: active_bundle_iaa_coherence field is present and set to VERIFIED (ACR-16, AAP-24)
+# ─────────────────────────────────────────────────────────────────────────────
+echo "  [L] Active-bundle token/session coherence check..."
+
+# L1: Wave task-tracker contradiction check
+# If a wave checklist file exists, ensure there are no [ ] open tasks for the current job
+# while the PREHANDOVER proof declares final_state: COMPLETE
+CURRENT_WAVE_TRACKER=$(git ls-files '.agent-admin/waves/wave-*-current-tasks.md' 2>/dev/null | sort | tail -1)
+LATEST_PROOF_L=$(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null | sort | tail -1)
+if [ -n "${CURRENT_WAVE_TRACKER}" ] && [ -n "${LATEST_PROOF_L}" ]; then
+  PROOF_FINAL_L=$(grep -E "^final_state:" "${LATEST_PROOF_L}" | awk '{print $2}' | head -1)
+  if [ "${PROOF_FINAL_L}" = "COMPLETE" ]; then
+    # Check for open [ ] entries not annotated with [~] in wave tracker
+    OPEN_TASKS=$(grep -c "^\- \[ \]" "${CURRENT_WAVE_TRACKER}" 2>/dev/null || echo 0)
+    if [ "${OPEN_TASKS}" -gt 0 ]; then
+      ACC_FAILURES+=("L1: Wave task-tracker '${CURRENT_WAVE_TRACKER}' has ${OPEN_TASKS} open [ ] task(s) while PREHANDOVER declares final_state=COMPLETE — active-bundle contradiction (ACR-15, AAP-23). Tick tasks or annotate with [~] + reason.")
+    fi
+  fi
+fi
+
+# L2: iaa_audit_token must resolve to an actual committed token file (if final_state=COMPLETE)
+if [ -n "${LATEST_PROOF_L}" ]; then
+  PROOF_FINAL_L=$(grep -E "^final_state:" "${LATEST_PROOF_L}" | awk '{print $2}' | head -1)
+  if [ "${PROOF_FINAL_L}" = "COMPLETE" ]; then
+    IAA_TOKEN_REF=$(grep -E "^iaa_audit_token:" "${LATEST_PROOF_L}" | sed 's/iaa_audit_token:[[:space:]]*//' | awk '{print $1}' | head -1)
+    # Check that it's not a placeholder
+    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING)" 2>/dev/null; then
+      ACC_FAILURES+=("L2: PREHANDOVER proof final_state=COMPLETE but iaa_audit_token is a placeholder value '${IAA_TOKEN_REF}' — no actual token reference (ACR-16, AAP-24)")
+    else
+      # Attempt to locate a token file matching the reference pattern
+      TOKEN_FILES=$(git ls-files '.agent-admin/assurance/iaa-token-*.md' 2>/dev/null)
+      if [ -z "${TOKEN_FILES}" ]; then
+        ACC_FAILURES+=("L2: PREHANDOVER proof declares final_state=COMPLETE and iaa_audit_token='${IAA_TOKEN_REF}' but no IAA token file found in .agent-admin/assurance/ (ACR-16, AAP-24)")
+      fi
+    fi
+    # L3: active_bundle_iaa_coherence field must be present and VERIFIED
+    if ! grep -qE "^active_bundle_iaa_coherence:[[:space:]]*VERIFIED" "${LATEST_PROOF_L}" 2>/dev/null; then
+      ACC_FAILURES+=("L3: PREHANDOVER proof final_state=COMPLETE but active_bundle_iaa_coherence field is absent, blank, or not set to VERIFIED (ACR-16, AAP-24). Add 'active_bundle_iaa_coherence: VERIFIED' after performing L1 and L2 checks.")
+    fi
+  fi
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
 # GATE RESULT
 # ─────────────────────────────────────────────────────────────────────────────
 if [ ${#ACC_FAILURES[@]} -gt 0 ]; then
@@ -1207,12 +1255,14 @@ The following conditions are **auto-fail** for the §4.3e gate regardless of oth
 | AAP-19 | Cross-artifact final-state contradiction | PREHANDOVER `final_state: COMPLETE` but ECAP reconciliation summary or session memory declares a non-final status for the same dimension |
 | AAP-20 | Carried-forward claim silently changes ownership or gate authority | A "carried forward from" claim in a final-state artifact references a source that does not contain the stated claim, or the carried-forward text modifies gate authority/ownership |
 | AAP-21 | ASSEMBLY_TIME_ONLY block not removed | A block explicitly marked `ASSEMBLY_TIME_ONLY`, `REMOVE BEFORE COMMIT`, or `TEMPLATE INSTRUCTION` remains in a committed output artifact |
+| AAP-23 | Active-wave/task-tracker contradiction | Wave task-tracker (`.agent-admin/waves/wave-N-current-tasks.md`) has open `[ ]` task entries for the current job while PREHANDOVER proof declares `final_state: COMPLETE`; or the task's `qp_verdict` field in the wave record contradicts the declared final state |
+| AAP-24 | Active token/session incoherence | PREHANDOVER proof declares `final_state: COMPLETE` but: (a) `iaa_audit_token` field is a placeholder, (b) no IAA token file exists in `.agent-admin/assurance/`, or (c) `active_bundle_iaa_coherence` field is absent, blank, or not set to `VERIFIED` |
 
 ### Admin Ceremony Compliance Gate in the Handover Validation Checklist
 
 The following item is added to the handover checklist when an ECAP job is involved:
 
-> - [ ] **Admin Ceremony Compliance Gate PASSED** (ECAP jobs): §4.3e gate run — 0 auto-fail conditions (AAP-15 through AAP-21 auto-fail conditions included); ECAP reconciliation summary present; admin-compliance readiness accepted by Foreman QP checkpoint (BLOCKING — IAA must not be invoked until this is ✅) (IAA Token — Append-Only, Dedicated File)
+> - [ ] **Admin Ceremony Compliance Gate PASSED** (ECAP jobs): §4.3e gate run — 0 auto-fail conditions (AAP-01 through AAP-21, AAP-23, AAP-24 auto-fail conditions included); ECAP reconciliation summary present; admin-compliance readiness accepted by Foreman QP checkpoint; active-bundle token/session coherence verified (Check L) (BLOCKING — IAA must not be invoked until this is ✅)
 
 **Purpose**: Govern how the IAA writes its assurance verdict. The PREHANDOVER proof is
 **read-only** once committed. The IAA token is written to a new, dedicated artifact file —
@@ -1552,7 +1602,7 @@ Before session ends, verify:
 - [ ] **Pre-handover merge gate parity check PASSED**: All merge gate checks pass locally (BLOCKING — PR must not be opened until this is ✅)
 - [ ] **Pre-IAA commit-state gate PASSED**: Working tree clean, all deliverables committed at HEAD, PREHANDOVER proof and session memory committed (BLOCKING — IAA must not be invoked until this is ✅)
 - [ ] **Scope-declaration parity gate PASSED** (governance PRs only): `governance/scope-declaration.md` file count matches `git diff --name-only origin/main...HEAD` count; scope-declaration committed and not dirty (BLOCKING — IAA must not be invoked until this is ✅)  (ECAP-QC-002)
-- [ ] **Admin Ceremony Compliance Gate PASSED** (ECAP jobs only): §4.3e gate run — 0 auto-fail conditions (AAP-01 through AAP-09); ECAP reconciliation summary present; Foreman QP admin-compliance checkpoint explicitly accepted (BLOCKING — IAA must not be invoked until this is ✅)
+- [ ] **Admin Ceremony Compliance Gate PASSED** (ECAP jobs only): §4.3e gate run — 0 auto-fail conditions (AAP-01 through AAP-09, AAP-15 through AAP-21, AAP-23, AAP-24 included); ECAP reconciliation summary present; Foreman QP admin-compliance checkpoint explicitly accepted; active-bundle token/session coherence verified (Check L) (BLOCKING — IAA must not be invoked until this is ✅)
 - [ ] **Drift evidence present** (governance/canon PRs): PREHANDOVER proof includes before/after SHA256 for every amended canon file (ECAP-QC-001)
 - [ ] **Metadata correctness**: `version == canonical_version` and `amended_date == today` for all amended CANON_INVENTORY entries (ECAP-QC-003, ECAP-QC-004)
 - [ ] **Compliance checked**: Agent-specific requirements verified; ALL issues fixed before proceeding
@@ -1576,6 +1626,8 @@ Before session ends, verify:
 | **Missing drift evidence in proof** | IAA OVL-CG-005 finding; REJECTION-PACKAGE | Include before/after SHA256 for every amended canon file in PREHANDOVER proof (ECAP-QC-001) |
 | **version ≠ canonical_version in CANON_INVENTORY** | Downstream version-guard tooling reads the canon as drifted | Run `validate-canon-hashes.sh` which checks consistency; align fields before committing (ECAP-QC-003) |
 | **Wrong amended_date or stale hash in CANON_INVENTORY** | Inventory integrity failure; OVL-CG-006 | Set amended_date to today; re-run sha256sum and update file_hash after every file modification (ECAP-QC-004) |
+| **Wave task-tracker left with open tasks at handover** | ACR-15 / AAP-23 rejection at §4.3e and IAA | Tick wave task entries (or annotate `[~]` with reason) before running §4.3e; do not submit with open `[ ]` tasks when declaring `final_state: COMPLETE` |
+| **active_bundle_iaa_coherence field absent or not VERIFIED** | ACR-16 / AAP-24 rejection at §4.3e and IAA | Perform Check L coherence verification; set `active_bundle_iaa_coherence: VERIFIED` in PREHANDOVER proof only after L1, L2, L3 all pass |
 
 ## Enforcement & Compliance
 
@@ -1669,7 +1721,7 @@ When the `execution-ceremony-admin-agent` returns the ceremony bundle to the For
 
 ---
 
-**Version**: 1.4.0  
-**Last Updated**: 2026-04-17  
+**Version**: 1.6.0  
+**Last Updated**: 2026-04-21  
 **Authority**: CS2 (Johan Ras)  
 **Living Agent System**: v6.2.0
