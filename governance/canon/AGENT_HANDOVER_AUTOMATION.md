@@ -1178,8 +1178,9 @@ done
 echo "  [L] Active-bundle token/session coherence check..."
 
 # L1: Wave task-tracker contradiction check
-# If a wave checklist file exists, ensure there are no [ ] open tasks for the current job
-# while the PREHANDOVER proof declares final_state: COMPLETE
+# Convention: wave tracker files follow naming `.agent-admin/waves/wave-<ID>-current-tasks.md`
+# When multiple wave files exist (parallel waves), the most recent (sort tail) is the active one.
+# Only the current wave's tracker is in active-bundle scope; prior wave trackers are historical.
 CURRENT_WAVE_TRACKER=$(git ls-files '.agent-admin/waves/wave-*-current-tasks.md' 2>/dev/null | sort | tail -1)
 LATEST_PROOF_L=$(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null | sort | tail -1)
 if [ -n "${CURRENT_WAVE_TRACKER}" ] && [ -n "${LATEST_PROOF_L}" ]; then
@@ -1198,8 +1199,8 @@ if [ -n "${LATEST_PROOF_L}" ]; then
   PROOF_FINAL_L=$(grep -E "^final_state:" "${LATEST_PROOF_L}" | awk '{print $2}' | head -1)
   if [ "${PROOF_FINAL_L}" = "COMPLETE" ]; then
     IAA_TOKEN_REF=$(grep -E "^iaa_audit_token:" "${LATEST_PROOF_L}" | sed 's/iaa_audit_token:[[:space:]]*//' | awk '{print $1}' | head -1)
-    # Check that it's not a placeholder
-    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING)" 2>/dev/null; then
+    # Check that it's not a placeholder (all known placeholder patterns)
+    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING|TODO|N/A|null|\"\")" 2>/dev/null || [ -z "${IAA_TOKEN_REF}" ]; then
       ACC_FAILURES+=("L2: PREHANDOVER proof final_state=COMPLETE but iaa_audit_token is a placeholder value '${IAA_TOKEN_REF}' — no actual token reference (ACR-16, AAP-24)")
     else
       # Attempt to locate a token file matching the reference pattern
