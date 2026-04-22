@@ -2,7 +2,7 @@
 
 **Status**: CANONICAL | **Version**: 1.6.0 | **Authority**: CS2  
 **Date**: 2026-02-24  
-**Amended**: 2026-04-21 — v1.6.0: Added §4.3e Check L (active-bundle token/session coherence) — cross-checks declared `iaa_audit_token` reference in PREHANDOVER proof against actual token file on branch; verifies session ID, PR/wave coherence, and `active_bundle_iaa_coherence` field; added AAP-23 and AAP-24 to auto-fail rule table; updated Handover Validation Checklist to include coherence check; aligned with ISMS merged hardening baseline (parity catch-up wave); authority: CS2 — governance-repo ECAP/IAA parity catch-up issue.  
+**Amended**: 2026-04-21 — v1.6.0: Added §4.3e Check L (active-bundle token/session coherence) — scopes wave-tracker contradiction check to the wave declared in the PREHANDOVER proof (L1); validates that `iaa_audit_token` is not a placeholder and that the exact referenced token file is committed to the branch with a matching PR reference (L2); verifies `active_bundle_iaa_coherence` field (L3); added AAP-23 and AAP-24 to auto-fail rule table; updated Handover Validation Checklist to include coherence check; aligned with ISMS merged hardening baseline (parity catch-up wave); authority: CS2 — governance-repo ECAP/IAA parity catch-up issue.  
 **Amended**: 2026-04-19 — v1.5.0: Hardened §4.3e Admin Ceremony Compliance Gate with gate-inventory checks (Check H), pre-final instruction wording denylist (Check I), cross-artifact final-state consistency with active-bundle scoping (Check J), and carried-forward claim verification (Check K); updated auto-fail rule table with AAP-15 through AAP-21; active-bundle scoping rule clarified to prevent false positives from historical archive; authority: CS2 — governance-repo hardening wave (gate-inventory + post-token normalization hardening).  
 **Amended**: 2026-04-17 — v1.4.1: Tightened §4.3e Check C stale-wording scan to final-state artifact set only — superseded pre-token proofs retained immutably under the append-only model are now explicitly exempt; updated AAP-01 auto-fail rule to document final-state scope and superseded-proof exemption; authority: CS2 — PR review feedback on §4.3e canon collision with append-only proof retention.  
 **Previous amendment**: 2026-04-17 — v1.4.0: Added §4.3e Admin Ceremony Compliance Gate (BLOCKING, pre-IAA, ECAP-involved jobs); added auto-fail rules table for 9 known admin anti-patterns (AAP-01 through AAP-09); updated Phase 4 structure and sequencing note; updated Handover Validation Checklist with admin-compliance gate item; authority: CS2 — issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA.  
@@ -1179,17 +1179,29 @@ echo "  [L] Active-bundle token/session coherence check..."
 
 # L1: Wave task-tracker contradiction check
 # Convention: wave tracker files follow naming `.agent-admin/waves/wave-<ID>-current-tasks.md`
-# When multiple wave files exist (parallel waves), the most recent (sort tail) is the active one.
-# Only the current wave's tracker is in active-bundle scope; prior wave trackers are historical.
-CURRENT_WAVE_TRACKER=$(git ls-files '.agent-admin/waves/wave-*-current-tasks.md' 2>/dev/null | sort | tail -1)
+# Scoped to the wave declared in the PREHANDOVER proof — tasks for other jobs/PRs in different
+# waves are not in active-bundle scope and must not cause false-positive failures.
 LATEST_PROOF_L=$(git ls-files .agent-admin/prehandover/proof-*.md 2>/dev/null | sort | tail -1)
-if [ -n "${CURRENT_WAVE_TRACKER}" ] && [ -n "${LATEST_PROOF_L}" ]; then
+if [ -n "${LATEST_PROOF_L}" ]; then
   PROOF_FINAL_L=$(grep -E "^final_state:" "${LATEST_PROOF_L}" | awk '{print $2}' | head -1)
   if [ "${PROOF_FINAL_L}" = "COMPLETE" ]; then
-    # Check for open [ ] entries not annotated with [~] in wave tracker
-    OPEN_TASKS=$(grep -c "^\- \[ \]" "${CURRENT_WAVE_TRACKER}" 2>/dev/null || echo 0)
-    if [ "${OPEN_TASKS}" -gt 0 ]; then
-      ACC_FAILURES+=("L1: Wave task-tracker '${CURRENT_WAVE_TRACKER}' has ${OPEN_TASKS} open [ ] task(s) while PREHANDOVER declares final_state=COMPLETE — active-bundle contradiction (ACR-15, AAP-23). Tick tasks or annotate with [~] + reason.")
+    # Extract wave ID from proof to scope the tracker lookup to this job's wave
+    WAVE_ID=$(grep -E "^wave:" "${LATEST_PROOF_L}" | sed 's/wave:[[:space:]]*//' | awk '{print $1}' | head -1)
+    JOB_WAVE_TRACKER=""
+    if [ -n "${WAVE_ID}" ]; then
+      # Look for the tracker file matching this job's wave ID exactly
+      JOB_WAVE_TRACKER=$(git ls-files ".agent-admin/waves/wave-${WAVE_ID}-current-tasks.md" 2>/dev/null | head -1)
+    fi
+    # Fall back to alphabetically-last tracker only when no wave-scoped match is found
+    if [ -z "${JOB_WAVE_TRACKER}" ]; then
+      JOB_WAVE_TRACKER=$(git ls-files '.agent-admin/waves/wave-*-current-tasks.md' 2>/dev/null | sort | tail -1)
+    fi
+    if [ -n "${JOB_WAVE_TRACKER}" ]; then
+      # Check for open [ ] entries not annotated with [~] in the job-scoped wave tracker
+      OPEN_TASKS=$(grep -c "^\- \[ \]" "${JOB_WAVE_TRACKER}" 2>/dev/null || echo 0)
+      if [ "${OPEN_TASKS}" -gt 0 ]; then
+        ACC_FAILURES+=("L1: Wave task-tracker '${JOB_WAVE_TRACKER}' has ${OPEN_TASKS} open [ ] task(s) while PREHANDOVER declares final_state=COMPLETE — active-bundle contradiction (ACR-15, AAP-23). Tick tasks or annotate with [~] + reason.")
+      fi
     fi
   fi
 fi
@@ -1198,15 +1210,39 @@ fi
 if [ -n "${LATEST_PROOF_L}" ]; then
   PROOF_FINAL_L=$(grep -E "^final_state:" "${LATEST_PROOF_L}" | awk '{print $2}' | head -1)
   if [ "${PROOF_FINAL_L}" = "COMPLETE" ]; then
-    IAA_TOKEN_REF=$(grep -E "^iaa_audit_token:" "${LATEST_PROOF_L}" | sed 's/iaa_audit_token:[[:space:]]*//' | awk '{print $1}' | head -1)
+    IAA_TOKEN_REF=$(grep -E "^iaa_audit_token:" "${LATEST_PROOF_L}" | sed 's/iaa_audit_token:[[:space:]]*//' | sed 's/^[[:space:]]*//' | head -1)
     # Check that it's not a placeholder (all known placeholder patterns)
-    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING|TODO|N/A|null|\"\")" 2>/dev/null || [ -z "${IAA_TOKEN_REF}" ]; then
+    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING|TODO|N/A|null|\"|$)" 2>/dev/null || [ -z "${IAA_TOKEN_REF}" ]; then
       ACC_FAILURES+=("L2: PREHANDOVER proof final_state=COMPLETE but iaa_audit_token is a placeholder value '${IAA_TOKEN_REF}' — no actual token reference (ACR-16, AAP-24)")
     else
-      # Attempt to locate a token file matching the reference pattern
-      TOKEN_FILES=$(git ls-files '.agent-admin/assurance/iaa-token-*.md' 2>/dev/null)
-      if [ -z "${TOKEN_FILES}" ]; then
-        ACC_FAILURES+=("L2: PREHANDOVER proof declares final_state=COMPLETE and iaa_audit_token='${IAA_TOKEN_REF}' but no IAA token file found in .agent-admin/assurance/ (ACR-16, AAP-24)")
+      # Determine whether the reference is a file path or a token ID string
+      RESOLVED_TOKEN_FILE=""
+      if echo "${IAA_TOKEN_REF}" | grep -qE "^\.agent-admin/|^agent-admin/|\.md$" 2>/dev/null; then
+        # Reference looks like a file path — validate the exact file is committed
+        if git ls-files --error-unmatch "${IAA_TOKEN_REF}" >/dev/null 2>&1; then
+          RESOLVED_TOKEN_FILE="${IAA_TOKEN_REF}"
+        else
+          ACC_FAILURES+=("L2: PREHANDOVER proof declares iaa_audit_token='${IAA_TOKEN_REF}' but this exact file path is not committed to the branch (ACR-16, AAP-24)")
+        fi
+      else
+        # Reference is a token ID — locate a committed token file that contains it
+        RESOLVED_TOKEN_FILE=$(git ls-files '.agent-admin/assurance/iaa-token-*.md' 2>/dev/null \
+          | while IFS= read -r candidate; do
+              if grep -qF "${IAA_TOKEN_REF}" "${candidate}" 2>/dev/null; then
+                echo "${candidate}"
+                break
+              fi
+            done || true)
+        if [ -z "${RESOLVED_TOKEN_FILE}" ]; then
+          ACC_FAILURES+=("L2: PREHANDOVER proof declares iaa_audit_token='${IAA_TOKEN_REF}' but no committed token file in .agent-admin/assurance/ contains this token ID (ACR-16, AAP-24)")
+        fi
+      fi
+      # Cross-check: token file must reference the same PR declared in the PREHANDOVER proof
+      if [ -n "${RESOLVED_TOKEN_FILE}" ]; then
+        PROOF_PR=$(grep -E "^pr:" "${LATEST_PROOF_L}" | awk '{print $2}' | grep -oE '[0-9]+' | head -1)
+        if [ -n "${PROOF_PR}" ] && ! grep -qiE "(^|[^0-9])(PR|pull.request)[[:space:]#:-]*${PROOF_PR}([^0-9]|$)" "${RESOLVED_TOKEN_FILE}" 2>/dev/null; then
+          ACC_FAILURES+=("L2: Token file '${RESOLVED_TOKEN_FILE}' does not reference PR #${PROOF_PR} declared in the PREHANDOVER proof — token/proof PR mismatch (ACR-16, AAP-24)")
+        fi
       fi
     fi
     # L3: active_bundle_iaa_coherence field must be present and VERIFIED
