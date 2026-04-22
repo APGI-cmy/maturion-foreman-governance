@@ -1210,9 +1210,9 @@ fi
 if [ -n "${LATEST_PROOF_L}" ]; then
   PROOF_FINAL_L=$(grep -E "^final_state:" "${LATEST_PROOF_L}" | awk '{print $2}' | head -1)
   if [ "${PROOF_FINAL_L}" = "COMPLETE" ]; then
-    IAA_TOKEN_REF=$(grep -E "^iaa_audit_token:" "${LATEST_PROOF_L}" | sed 's/iaa_audit_token:[[:space:]]*//' | sed 's/^[[:space:]]*//' | head -1)
+    IAA_TOKEN_REF=$(grep -E "^iaa_audit_token:" "${LATEST_PROOF_L}" | sed 's/iaa_audit_token:[[:space:]]*//; s/^[[:space:]]*//' | head -1)
     # Check that it's not a placeholder (all known placeholder patterns)
-    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING|TODO|N/A|null|\"|$)" 2>/dev/null || [ -z "${IAA_TOKEN_REF}" ]; then
+    if echo "${IAA_TOKEN_REF}" | grep -qE "^(<|none|\[|TBD|PENDING|TODO|N/A|null|\")" 2>/dev/null || [ -z "${IAA_TOKEN_REF}" ]; then
       ACC_FAILURES+=("L2: PREHANDOVER proof final_state=COMPLETE but iaa_audit_token is a placeholder value '${IAA_TOKEN_REF}' — no actual token reference (ACR-16, AAP-24)")
     else
       # Determine whether the reference is a file path or a token ID string
@@ -1226,13 +1226,7 @@ if [ -n "${LATEST_PROOF_L}" ]; then
         fi
       else
         # Reference is a token ID — locate a committed token file that contains it
-        RESOLVED_TOKEN_FILE=$(git ls-files '.agent-admin/assurance/iaa-token-*.md' 2>/dev/null \
-          | while IFS= read -r candidate; do
-              if grep -qF "${IAA_TOKEN_REF}" "${candidate}" 2>/dev/null; then
-                echo "${candidate}"
-                break
-              fi
-            done || true)
+        RESOLVED_TOKEN_FILE=$(grep -rlF "${IAA_TOKEN_REF}" .agent-admin/assurance/iaa-token-*.md 2>/dev/null | head -1 || true)
         if [ -z "${RESOLVED_TOKEN_FILE}" ]; then
           ACC_FAILURES+=("L2: PREHANDOVER proof declares iaa_audit_token='${IAA_TOKEN_REF}' but no committed token file in .agent-admin/assurance/ contains this token ID (ACR-16, AAP-24)")
         fi
@@ -1240,7 +1234,7 @@ if [ -n "${LATEST_PROOF_L}" ]; then
       # Cross-check: token file must reference the same PR declared in the PREHANDOVER proof
       if [ -n "${RESOLVED_TOKEN_FILE}" ]; then
         PROOF_PR=$(grep -E "^pr:" "${LATEST_PROOF_L}" | awk '{print $2}' | grep -oE '[0-9]+' | head -1)
-        if [ -n "${PROOF_PR}" ] && ! grep -qiE "(^|[^0-9])(PR|pull.request)[[:space:]#:-]*${PROOF_PR}([^0-9]|$)" "${RESOLVED_TOKEN_FILE}" 2>/dev/null; then
+        if [ -n "${PROOF_PR}" ] && ! grep -qiE "(^|[^0-9])(PR|pull[[:space:]]request)[[:space:]#:-]*${PROOF_PR}([^0-9]|$)" "${RESOLVED_TOKEN_FILE}" 2>/dev/null; then
           ACC_FAILURES+=("L2: Token file '${RESOLVED_TOKEN_FILE}' does not reference PR #${PROOF_PR} declared in the PREHANDOVER proof — token/proof PR mismatch (ACR-16, AAP-24)")
         fi
       fi
