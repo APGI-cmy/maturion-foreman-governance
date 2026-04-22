@@ -3,8 +3,8 @@
 ## Status
 **Type**: Tier 2 Governance Reference  
 **Authority**: CS2 — EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md v1.2.0  
-**Version**: 1.1.0  
-**Effective Date**: 2026-04-19  
+**Version**: 1.2.0  
+**Effective Date**: 2026-04-21  
 **Owner**: execution-ceremony-admin-agent / Foreman QP / IAA  
 **Purpose**: Canonized list of admin-ceremony defects that are auto-fail at the §4.3e Admin Ceremony Compliance Gate and/or trigger an IAA REJECTION-PACKAGE. Every entry is a known recurring failure mode derived from operational evidence.
 
@@ -41,6 +41,8 @@ The `execution-ceremony-admin-agent` MUST scan for every anti-pattern before ret
 | **AAP-19** | **Cross-artifact contradiction — PASS in one, non-final in another** | One ceremony artifact (e.g., PREHANDOVER proof) declares `final_state: COMPLETE` or `administrative_readiness: ACCEPTED` while another artifact for the same job (e.g., ECAP reconciliation summary, session memory) still contains `PENDING`, `Phase 4`, `in progress`, or equivalent non-final status for the same dimension. The bundle tells two conflicting stories about the same fact. | Cross-check `final_state` in PREHANDOVER against `Final State` in ECAP reconciliation summary and final-status fields in session memory | §4.3e Check J | ACR-12 |
 | **AAP-20** | **Carried-forward claim silently changes ownership or gate authority** | A final-state ceremony artifact states that a governance claim was "carried forward from" or is "verbatim from" a prior session/artifact, but the referenced source does not contain the stated claim, or the carried-forward text has been silently modified to change the gate authority, gate owner, or approval basis — creating a false impression that the claim was already validated in the prior session. | Manual cross-check of carried-forward claims against the named source artifact | §4.3e Check K (manual) | ACR-14 |
 | **AAP-21** | **ASSEMBLY_TIME_ONLY block not removed before commit** | A committed artifact contains a block explicitly marked `ASSEMBLY_TIME_ONLY` (or equivalent directive markers such as `<!-- REMOVE BEFORE COMMIT -->`, `<!-- TEMPLATE INSTRUCTION -->`, `[REMOVE THIS]`) that was not removed before the file was committed. These blocks are valid in template source files but must not appear in any committed instance/output artifact. | `grep -niE "ASSEMBLY_TIME_ONLY|REMOVE BEFORE COMMIT|TEMPLATE INSTRUCTION" .agent-admin/ .agent-workspace/*/memory/session-*.md` | §4.3e Check I | ACR-11 |
+| **AAP-23** | **Active-wave/task-tracker contradiction** | The wave task-tracker artifact (`.agent-admin/waves/wave-N-current-tasks.md`) for the wave containing this job has one or more `[ ]` (open, un-ticked) task entries for the current job while the PREHANDOVER proof or session memory declares `final_state: COMPLETE`; or the task's `qp_verdict` field in the wave record is `PENDING` while the PREHANDOVER proof declares completion. The wave tracker and the final-state proof must agree. | Check for `[ ]` entries in the current wave tracker corresponding to the current job when `final_state: COMPLETE` is declared in the PREHANDOVER proof | §4.3e Check L1 | ACR-15 |
+| **AAP-24** | **Active token/session incoherence in final-state bundle** | The PREHANDOVER proof declares `final_state: COMPLETE` but one or more of the following is true: (a) the `iaa_audit_token` field is still a placeholder value (e.g., `<token-file-path>`, `[pending]`, `TBD`, `none`), (b) no actual IAA token file exists in `.agent-admin/assurance/` on the branch, or (c) the `active_bundle_iaa_coherence` field is absent, blank, or not explicitly set to `VERIFIED`. A COMPLETE proof must reference a real issued token and must have the coherence field confirmed. | `grep -E "iaa_audit_token:|active_bundle_iaa_coherence:" .agent-admin/prehandover/proof-*.md` and verify token file exists at declared path | §4.3e Check L2, Check L3 | ACR-16 |
 
 ---
 
@@ -63,7 +65,7 @@ The following are not machine-detectable by §4.3e but must be caught by the For
 
 | Severity | Definition | Examples |
 |----------|-----------|---------|
-| **S1 — Auto-Fail** | Immediately fails §4.3e gate and triggers IAA rejection. No discretion. | AAP-01 through AAP-21 |
+| **S1 — Auto-Fail** | Immediately fails §4.3e gate and triggers IAA rejection. No discretion. | AAP-01 through AAP-21, AAP-23, AAP-24 |
 | **S2 — Foreman QP Blocker** | Must be resolved at Foreman QP checkpoint before IAA invocation. Discretion allowed only if explicitly documented. | AAP-22 |
 
 ---
@@ -88,18 +90,20 @@ The following are not machine-detectable by §4.3e but must be caught by the For
 | AAP-19 | Identify the authoritative final-state value; update all ceremony artifacts to declare that same value consistently. Do not edit committed PREHANDOVER proofs — create new ones for subsequent rounds. |
 | AAP-20 | For each carried-forward claim: verify the named source artifact contains the stated claim without modification. If the claim differs, restate it explicitly as a new claim (not carried forward). |
 | AAP-21 | Remove the ASSEMBLY_TIME_ONLY block from the output artifact. These blocks must only appear in template source files, never in committed instance/output artifacts. |
+| AAP-23 | Open the wave task-tracker; tick the task entry (change `[ ]` to `[x]`) or annotate with `[~]` plus a documented reason. Re-run §4.3e Check L1 after updating the tracker. |
+| AAP-24 | Perform Check L2 and L3: verify the actual IAA token file exists at the path implied by the `iaa_audit_token` reference; then set `active_bundle_iaa_coherence: VERIFIED` in the PREHANDOVER proof. If no token exists, the job has not been assured — return to the IAA invocation step. |
 
 ---
 
 ## References
 
 - `governance/canon/EXECUTION_CEREMONY_ADMINISTRATION_PROTOCOL.md` v1.2.0 — §3.5–§3.9
-- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.5.0 — §4.3e + Auto-Fail Rules
-- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.7.0 — §Admin-Ceremony Rejection Triggers
+- `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.6.0 — §4.3e + Auto-Fail Rules (including Check L)
+- `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md` v1.8.0 — §Admin-Ceremony Rejection Triggers (ACR-01..ACR-16)
 - `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` v1.5.0 — §14.6
 - `governance/checklists/execution-ceremony-admin-checklist.md` — verification checklist
 - `governance/checklists/execution-ceremony-admin-reconciliation-matrix.md` — dependency matrix
 
 ---
 
-*Version: 1.1.0 | Effective: 2026-04-19 | Authority: CS2 (Johan Ras)*
+*Version: 1.2.0 | Effective: 2026-04-21 | Authority: CS2 (Johan Ras)*
