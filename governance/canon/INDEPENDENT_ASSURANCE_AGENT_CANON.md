@@ -1,6 +1,6 @@
 # INDEPENDENT_ASSURANCE_AGENT_CANON
 
-**Status**: CANONICAL | **Version**: 1.7.0 | **Authority**: CS2
+**Status**: CANONICAL | **Version**: 1.8.0 | **Authority**: CS2
 **Date**: 2026-03-03
 **Amended**: 2026-03-03 — v1.1.0: Added §Proactive Assurance — Pre-Brief Protocol
 **Amended**: 2026-03-04 — v1.2.1: Added §CS2 Direct Review Track
@@ -9,6 +9,7 @@
 **Amended**: 2026-04-08 — v1.5.0: Amended §Independence Requirements rule 3 — clarified that Foreman is the authorised IAA invoker at Phase 4 handover (not a self-assurance violation); added §IAA Re-Invocation After Rejection — Foreman Ownership defining Foreman-owned stop-and-fix loop, CS2-only exception classes, canonical re-invocation token/session format, prohibited misleading wording, and worked example; authority: CS2 — Foreman IAA re-invocation ownership canonisation issue.
 **Amended**: 2026-04-17 — v1.6.0: Added §Admin-Ceremony Rejection Triggers — explicit rejection conditions for ceremony-integrity defects (ACR-01 through ACR-08); reinforced non-cleanup-authoring posture relative to ECAP layer; cross-references §4.3e Admin Ceremony Compliance Gate; authority: CS2 — issue: Canonize a 3-layer admin ceremony compliance stack for ECAP, Foreman QP, and IAA.
 **Amended**: 2026-04-19 — v1.7.0: Added ACR-09 through ACR-14 (gate-inventory hardening, post-token normalization, cross-artifact contradiction, carried-forward canonical source parity); added active-bundle scope rule for ACR checks; aligned with governance-repo hardening wave outcomes; authority: CS2 — governance-repo hardening wave.
+**Amended**: 2026-04-21 — v1.8.0: Added ACR-15 (active-wave/task-tracker contradiction) and ACR-16 (active final-state token/session incoherence); extended active-bundle scope rule to include wave task-tracker in bundle definition; aligned with ISMS merged hardening baseline (parity catch-up wave); authority: CS2 — governance-repo ECAP/IAA parity catch-up issue.
 
 ---
 
@@ -804,21 +805,23 @@ When a job has involved the `execution-ceremony-admin-agent` (ECAP), the IAA MUS
 | ACR-12 | **Cross-artifact final-state contradiction (active-bundle scoped)** — within the active final-state bundle (current PREHANDOVER proof, current session memory, current ECAP reconciliation summary, current wave record), one artifact declares `COMPLETE` / `PASS` / `ACCEPTED` while another artifact declares `PENDING`, `Phase 4`, `in progress`, `BLOCKED`, or any equivalent non-final status for the same dimension. Historical artifacts outside the active bundle (superseded proofs, prior session memories) are **exempt** from this check. | AGENT_HANDOVER_AUTOMATION.md §4.3e Check J; AAP-19 |
 | ACR-13 | **Verbatim IAA-response section blank or instruction-only** — the `iaa_audit_token` or `iaa_session_reference` field in the PREHANDOVER proof is still set to a template placeholder (`<token-file-path>`, `<IAA session ID>`, `[pending]`, `TBD`, `none`) while the proof declares `final_state: COMPLETE`. A COMPLETE final-state proof must reference an actual issued IAA token. | AGENT_HANDOVER_AUTOMATION.md §4.3e Check I; AAP-18 |
 | ACR-14 | **Carried-forward claim with no resolvable canonical source** — a final-state ceremony artifact states that a governance claim was "carried forward from" or is "verbatim from" a named source artifact, but: (a) the named source artifact does not exist as a committed file on the branch, or (b) the source exists but does not contain the stated claim, or (c) the carried-forward text has been modified to change gate authority, gate owner, or approval basis relative to the source | AGENT_HANDOVER_AUTOMATION.md §4.3e Check K; AAP-20 |
+| ACR-15 | **Active-wave/task-tracker contradiction** — the wave task-tracker artifact (`.agent-admin/waves/wave-N-current-tasks.md`) for the wave that includes this job contains one or more `[ ]` (open, un-ticked) task entries for tasks that the PREHANDOVER proof or session memory declares as complete; or the wave record status field for this specific task contradicts the declared final state of the job (e.g., wave record shows `qp_verdict: PENDING` while PREHANDOVER declares `final_state: COMPLETE`) | AGENT_HANDOVER_AUTOMATION.md §4.3e Check L; AAP-23 |
+| ACR-16 | **Active final-state token/session incoherence** — within the active final-state bundle, the IAA token reference declared in the PREHANDOVER proof's `iaa_audit_token` field does not correspond to an actual token file on the branch; or the token file exists but its declared session ID, PR number, or wave number does not match the corresponding fields in the PREHANDOVER proof; or the `active_bundle_iaa_coherence` field in the PREHANDOVER proof is absent, blank, or set to a non-VERIFIED value while `final_state: COMPLETE` is declared | AGENT_HANDOVER_AUTOMATION.md §4.3e Check L; AAP-24 |
 
-### Active-Bundle Scope Rule for ACR Checks (v1.7.0)
+### Active-Bundle Scope Rule for ACR Checks (v1.8.0)
 
-When applying ACR triggers ACR-02, ACR-07, ACR-12, and any other cross-artifact consistency check, the IAA MUST scope the scan to the **active final-state bundle** for the current job only. The active bundle is defined as:
+When applying ACR triggers ACR-02, ACR-07, ACR-12, ACR-15, ACR-16, and any other cross-artifact consistency check, the IAA MUST scope the scan to the **active final-state bundle** for the current job only. The active bundle is defined as:
 
 1. **PREHANDOVER proof**: The current (non-superseded) proof — the most recent proof, or the proof not declared as superseded by a later proof
 2. **Session memory**: The latest session memory per agent workspace directory (most recent by filename sort order)
 3. **ECAP reconciliation summary**: The most recent reconciliation artifact for this PR/job
-4. **Wave record**: The current wave record for this job (if used)
+4. **Wave record**: The current wave task-tracker (`.agent-admin/waves/wave-N-current-tasks.md`) for the wave that includes this job — specifically the task entry for this job
 5. **Token file**: The current IAA token file for this job
 
 **Explicitly excluded from active-bundle scans**:
 - Superseded PREHANDOVER proofs (i.e., proofs for which a later proof declares `Supersedes: <filename>`)
 - Prior session memories (all except the latest per workspace)
-- Historical/archived wave records from prior waves
+- Historical/archived wave records from prior waves (only the current wave's task entry for this job is in scope)
 - Rejection-package artifacts from prior rounds (these are retained as immutable historical evidence and are expected to contain non-final wording from the round they document)
 
 **Rationale**: The append-only governance model deliberately retains historical artifacts. Scanning historical artifacts for provisional wording creates false positives and would incorrectly block legitimate final-state bundles. The hardened discipline applies only to artifacts that form the current final-state bundle.
@@ -854,4 +857,4 @@ The §4.3e gate (defined in `AGENT_HANDOVER_AUTOMATION.md`) is the **ECAP + Fore
 
 ---
 
-*Authority: CS2 (Johan Ras) | Version: 1.7.0 | Effective: 2026-02-24 | Amended: 2026-04-19 (v1.7.0) | Previous: 2026-04-17 (v1.6.0)*
+*Authority: CS2 (Johan Ras) | Version: 1.8.0 | Effective: 2026-02-24 | Amended: 2026-04-21 (v1.8.0) | Previous: 2026-04-19 (v1.7.0)*
