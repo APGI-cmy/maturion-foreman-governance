@@ -771,7 +771,8 @@ documentation only, no governance-path files) are exempt.
 | Check | Command | PASS condition |
 |-------|---------|----------------|
 | scope-declaration present | `ls .agent-admin/scope-declarations/pr-${PR_NUMBER}.md` | File exists |
-| file count match | compare `git diff --name-only origin/main...HEAD \| wc -l` vs FILES_CHANGED count in per-PR scope file | Counts equal |
+| diff count vs bullet count | compare `git diff --name-only origin/main...HEAD \| wc -l` vs count of `- ` bullet entries under `## FILES_CHANGED` | Counts equal |
+| numeric field integrity | compare `FILES_CHANGED: N` value vs count of `- ` bullet entries | Values equal |
 | no pending changes after generation | `git status --porcelain .agent-admin/scope-declarations/pr-${PR_NUMBER}.md` | Output is empty (file committed) |
 | correct PR number in path | file path contains current PR number | Path matches `pr-${PR_NUMBER}.md` |
 
@@ -828,19 +829,31 @@ fi
 DIFF_COUNT=$(git diff --name-only origin/main...HEAD | wc -l | tr -d ' ')
 echo "  Branch diff file count: ${DIFF_COUNT}"
 
-# Check 4: Count files listed in per-PR scope file FILES_CHANGED section
+# Check 4: Count files listed in per-PR scope file FILES_CHANGED section (bullet entries)
 if [ -f "${SCOPE_FILE}" ]; then
   SCOPE_COUNT=$(awk '/^## FILES_CHANGED/{found=1; next} found && /^- /{count++} found && /^##/{if(!/FILES_CHANGED/)found=0} END{print count+0}' "${SCOPE_FILE}")
-  echo "  ${SCOPE_FILE} FILES_CHANGED count: ${SCOPE_COUNT}"
+  echo "  ${SCOPE_FILE} bullet entry count: ${SCOPE_COUNT}"
 
   if [ "${DIFF_COUNT}" -ne "${SCOPE_COUNT}" ]; then
-    SCOPE_FAILURES+=("file count mismatch: diff has ${DIFF_COUNT} files, scope-declaration lists ${SCOPE_COUNT}")
-    echo "  ❌ File count: MISMATCH (${DIFF_COUNT} in diff vs ${SCOPE_COUNT} in scope-declaration)"
+    SCOPE_FAILURES+=("file count mismatch: diff has ${DIFF_COUNT} files, scope-declaration lists ${SCOPE_COUNT} bullets")
+    echo "  ❌ Diff count: MISMATCH (${DIFF_COUNT} in diff vs ${SCOPE_COUNT} bullets in scope-declaration)"
     echo "     ACTION: Update ${SCOPE_FILE} from:"
     echo "             git diff --name-only origin/main...HEAD"
     echo "     Then commit it and re-run §4.3c + §4.3d before invoking IAA."
   else
-    echo "  ✅ File count: MATCH (${DIFF_COUNT})"
+    echo "  ✅ Diff count: MATCH (${DIFF_COUNT})"
+  fi
+
+  # Check 4b: Validate numeric FILES_CHANGED: N field matches bullet count
+  NUMERIC_FIELD=$(grep -E "^FILES_CHANGED:" "${SCOPE_FILE}" | awk '{print $2}' | tr -d ' ')
+  if [ -z "${NUMERIC_FIELD}" ]; then
+    SCOPE_FAILURES+=("FILES_CHANGED: N field missing from ## FILES_CHANGED section")
+    echo "  ❌ Numeric field: FILES_CHANGED: N not found in ${SCOPE_FILE}"
+  elif [ "${NUMERIC_FIELD}" != "${SCOPE_COUNT}" ]; then
+    SCOPE_FAILURES+=("numeric field mismatch: FILES_CHANGED: ${NUMERIC_FIELD} does not match bullet count ${SCOPE_COUNT}")
+    echo "  ❌ Numeric field: FILES_CHANGED: ${NUMERIC_FIELD} ≠ bullet count ${SCOPE_COUNT}"
+  else
+    echo "  ✅ Numeric field: FILES_CHANGED: ${NUMERIC_FIELD} matches bullet count"
   fi
 
   # Check 5: Per-PR scope file must be committed (not dirty)
@@ -930,15 +943,31 @@ GATE_RESULTS_COUNT=$(git ls-files --error-unmatch .agent-admin/gates/gate-result
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CHECK B: Scope Declaration Parity (ECAP-CCI-05 — no stale counts)
+# Uses per-PR immutable scope file (issue #1359 — global governance/scope-declaration.md abolished)
+# PR_NUMBER must be set in the environment (export from CI context or §4.3d invocation)
 # ─────────────────────────────────────────────────────────────────────────────
 echo "  [B] Scope Declaration Parity..."
 
-if [ -f "governance/scope-declaration.md" ]; then
-  DECLARED_COUNT=$(grep -E "^FILES_CHANGED:" governance/scope-declaration.md | awk '{print $2}')
+PER_PR_SCOPE_FILE=""
+if [ -n "${PR_NUMBER:-}" ]; then
+  PER_PR_SCOPE_FILE=".agent-admin/scope-declarations/pr-${PR_NUMBER}.md"
+else
+  # Fallback: discover from committed files when PR_NUMBER is unavailable
+  PER_PR_SCOPE_FILE=$(git ls-files '.agent-admin/scope-declarations/pr-*.md' 2>/dev/null | sort -V | tail -1 || echo "")
+fi
+
+if [ -n "${PER_PR_SCOPE_FILE}" ] && [ -f "${PER_PR_SCOPE_FILE}" ]; then
+  DECLARED_COUNT=$(grep -E "^FILES_CHANGED:" "${PER_PR_SCOPE_FILE}" | awk '{print $2}')
+  BULLET_COUNT=$(awk '/^## FILES_CHANGED/{found=1; next} found && /^- /{count++} found && /^##/{if(!/FILES_CHANGED/)found=0} END{print count+0}' "${PER_PR_SCOPE_FILE}")
   ACTUAL_COUNT=$(git diff --name-only origin/main...HEAD | wc -l | tr -d ' ')
   if [ -n "${DECLARED_COUNT}" ] && [ "${DECLARED_COUNT}" != "${ACTUAL_COUNT}" ]; then
     ACC_FAILURES+=("B1: Scope declaration FILES_CHANGED=${DECLARED_COUNT} but actual changed files=${ACTUAL_COUNT} (ECAP-CCI-05)")
   fi
+  if [ -n "${DECLARED_COUNT}" ] && [ "${DECLARED_COUNT}" != "${BULLET_COUNT}" ]; then
+    ACC_FAILURES+=("B2: Scope declaration FILES_CHANGED: ${DECLARED_COUNT} numeric field does not match bullet entry count ${BULLET_COUNT} (ECAP-CCI-05)")
+  fi
+else
+  ACC_FAILURES+=("B1: Per-PR scope declaration not found — expected at .agent-admin/scope-declarations/pr-${PR_NUMBER:-<PR_NUMBER>}.md (ECAP-CCI-05)")
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1298,7 +1327,7 @@ The following conditions are **auto-fail** for the §4.3e gate regardless of oth
 | AAP-01 | Issued token but pending/in-progress wording remains | Any of: `PENDING`, `in progress`, `in-progress` in the **final-state** PREHANDOVER proof or latest session memory where a PASS/COMPLETE is the required state. Pre-token proofs retained immutably under the append-only model (i.e., superseded by a post-token proof that declares `Supersedes: <filename>`) are **exempt** from this check. |
 | AAP-02 | Mixed internal version labels | Multiple different version strings for the same artifact within a single document (e.g., "v1.2.0" and "v1.3.0" both appear as the current version of the same file) |
 | AAP-03 | Stale artifact path references | A declared path in PREHANDOVER proof or session memory that does not exist as a committed file on the branch |
-| AAP-04 | Stale scope declaration after file changes | `FILES_CHANGED` in scope-declaration.md does not match actual `git diff --name-only origin/main...HEAD` count |
+| AAP-04 | Stale scope declaration after file changes | `FILES_CHANGED: N` in `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` does not match actual `git diff --name-only origin/main...HEAD` count, or numeric field does not match bullet entry count |
 | AAP-05 | Stale hash after file finalization | A declared SHA256 hash in PREHANDOVER proof or CANON_INVENTORY for a file that was modified after the hash was recorded |
 | AAP-06 | Requested vs completed assurance session mismatch | PREHANDOVER proof cites a specific IAA session ID that does not match the IAA session that issued the token in the token file |
 | AAP-07 | Declared file/artifact count mismatch | A declared count of files, artifacts, or changed items in any ceremony artifact does not match the actual count |

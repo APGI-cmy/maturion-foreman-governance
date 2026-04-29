@@ -124,7 +124,7 @@ fi
 # Validate: all changed files are declared
 UNDECLARED=()
 while IFS= read -r file; do
-    if ! echo "$DECLARED_FILES" | grep -qF "$file"; then
+    if ! echo "$DECLARED_FILES" | grep -qxF "$file"; then
         UNDECLARED+=("$file")
     fi
 done <<< "$CHANGED_FILES"
@@ -133,7 +133,7 @@ done <<< "$CHANGED_FILES"
 EXTRA_DECLARED=()
 while IFS= read -r file; do
     [ -z "$file" ] && continue
-    if ! echo "$CHANGED_FILES" | grep -qF "$file"; then
+    if ! echo "$CHANGED_FILES" | grep -qxF "$file"; then
         EXTRA_DECLARED+=("$file")
     fi
 done <<< "$DECLARED_FILES"

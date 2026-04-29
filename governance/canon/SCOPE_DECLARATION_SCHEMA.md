@@ -68,14 +68,17 @@ A valid Scope Declaration MUST contain the following sections **in order**:
 4. Explicitly Out of Scope
 5. Expected Verification Signal
 6. Scope Freeze Declaration
+7. Files Changed
 
 ---
 
 ## 5. Required Fields (Exact Markers)
 
 ### 5.1 Header
-- `SCOPE_SCHEMA_VERSION: v1`
-- `PR_ID:` (PR number or placeholder)
+- `SCOPE_SCHEMA_VERSION: v2`
+- `PR_NUMBER:` (PR number)
+- `ISSUE:` (issue number — issue title)
+- `BRANCH:` (branch name)
 - `OWNER:` (Builder or Agent)
 - `DATE_UTC:`
 
@@ -128,6 +131,15 @@ If scope changes, the PR must be closed.
 
 ---
 
+### 5.7 Files Changed
+- `## FILES_CHANGED` section header
+- `FILES_CHANGED: N` (numeric count of changed files — must equal the count of bullet entries and `git diff --name-only origin/main...HEAD | wc -l`)
+- One `- <path>` bullet entry per changed file
+
+All three values MUST be consistent: the numeric `FILES_CHANGED: N` field, the count of bullet entries, and the actual git diff count.
+
+---
+
 ## 6. Validity Rules
 
 A Scope Declaration is INVALID if:
@@ -135,6 +147,8 @@ A Scope Declaration is INVALID if:
 - More than one responsibility domain is declared
 - OUT_OF_SCOPE does not include required exclusions
 - SCOPE_FROZEN is not YES
+- `FILES_CHANGED: N` does not match the count of bullet entries under `## FILES_CHANGED`
+- `FILES_CHANGED: N` does not match `git diff --name-only origin/main...HEAD | wc -l`
 
 ---
 

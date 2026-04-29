@@ -118,7 +118,7 @@ jobs:
           # Validate: all changed files are declared
           UNDECLARED=()
           while IFS= read -r file; do
-            if ! echo "$DECLARED_FILES" | grep -qF "$file"; then
+            if ! echo "$DECLARED_FILES" | grep -qxF "$file"; then
               UNDECLARED+=("$file")
             fi
           done <<< "$FILES"
@@ -127,7 +127,7 @@ jobs:
           EXTRA_DECLARED=()
           while IFS= read -r file; do
             [ -z "$file" ] && continue
-            if ! echo "$FILES" | grep -qF "$file"; then
+            if ! echo "$FILES" | grep -qxF "$file"; then
               EXTRA_DECLARED+=("$file")
             fi
           done <<< "$DECLARED_FILES"
