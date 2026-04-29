@@ -1,5 +1,6 @@
 # Scope Declaration — PR #<PR_NUMBER>
 
+<!-- Version: v2.0.0 | Amended: 2026-04-29 — per-PR immutable scope declaration format; authority: CS2 — issue #1359 -->
 SCOPE_SCHEMA_VERSION: v2
 PR_NUMBER: <PR_NUMBER>
 ISSUE: #<ISSUE_NUMBER> — <issue title>

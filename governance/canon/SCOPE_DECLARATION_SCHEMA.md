@@ -2,8 +2,9 @@
 
 ## Status
 Canonical Governance Specification  
-Version: v1  
+Version: v2.0.0  
 Authority: Governance  
+Amended: 2026-04-29 — v2.0.0: Updated §3 artifact location to per-PR path (.agent-admin/scope-declarations/pr-<PR_NUMBER>.md); §4 required sections updated to include Files Changed (section 7); §5.1 header fields updated from v1 to v2 (PR_NUMBER, ISSUE, BRANCH); §5.7 Files Changed subsection added with three-way consistency rule; §6 Validity Rules extended with numeric field checks; authority: CS2 — issue #1359 (per-PR immutable scope declaration model).  
 Applies To: All PRs, All Builders, All Repositories
 
 ---
