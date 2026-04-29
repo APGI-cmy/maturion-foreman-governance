@@ -85,9 +85,9 @@ fi
 echo "✓ Per-PR scope declaration found: $SCOPE_FILE"
 echo ""
 
-# Get actual changed files from git diff
+# Get actual changed files from git diff (PR diff basis: merge-base of origin/$BASE_REF and HEAD)
 echo "Comparing against base ref: $BASE_REF"
-CHANGED_FILES=$(git diff --name-only "$BASE_REF" 2>/dev/null || git diff --name-only HEAD 2>/dev/null || echo "")
+CHANGED_FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" 2>/dev/null || git diff --name-only HEAD 2>/dev/null || echo "")
 
 if [ -z "$CHANGED_FILES" ]; then
     echo -e "${YELLOW}⚠️  WARNING: No changed files detected in git diff${NC}"
@@ -164,7 +164,7 @@ else
     fi
     
     echo "Fix: Update $SCOPE_FILE to match actual git diff"
-    echo "     Run: git diff --name-only $BASE_REF"
+    echo "     Run: git diff --name-only origin/$BASE_REF...HEAD"
     echo ""
     exit 1
 fi

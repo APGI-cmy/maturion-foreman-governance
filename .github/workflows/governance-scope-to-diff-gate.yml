@@ -89,10 +89,10 @@ jobs:
 
           # Determine base branch
           BASE_REF="${{ github.base_ref }}"
-          git fetch origin $BASE_REF --depth=1
+          git fetch origin $BASE_REF
 
-          # Get actual changed files
-          FILES=$(git diff --name-only origin/$BASE_REF)
+          # Get actual changed files (PR diff basis: merge-base of origin/$BASE_REF and HEAD)
+          FILES=$(git diff --name-only origin/$BASE_REF...HEAD)
 
           if [ -z "$FILES" ]; then
             echo "⚠️ No changed files detected — skipping file-list validation"
