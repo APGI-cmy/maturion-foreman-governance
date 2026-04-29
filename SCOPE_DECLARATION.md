@@ -1,30 +1,35 @@
-# SCOPE_DECLARATION
+# SCOPE_DECLARATION — Static Documentation
 
-**PR_ID**: copilot/fix-foreman-v2-agent-metadata-config
-**DATE_UTC**: 2026-04-19T10:21:48Z  
-**RESPONSIBILITY_DOMAIN**: Agent Contract Repair — foreman-v2 metadata compliance  
-**AGENT_ROLE**: CodexAdvisor-agent (session-013; performed by Copilot Coding Agent)  
-**SCOPE**: Fix foreman-v2.agent.md metadata block exceeding 10-entry platform limit. Remove 5 redundant canon-reference entries; sync reference copy; update INTEGRITY_INDEX SHA256; write PREHANDOVER and session memory; invoke IAA.
+> ⚠️ **This file is no longer the authoritative per-PR scope evidence artifact.**
+>
+> As of issue #1359, this repository uses **per-PR immutable scope declarations** instead of
+> this single shared file. Editing this file as PR scope evidence is no longer permitted.
 
-## FILES_CHANGED
+## New Canonical Model
 
-- .agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-013-20260419.md
-- .agent-workspace/CodexAdvisor-agent/memory/session-013-20260419.md
-- .agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md
-- .github/agents/foreman-v2.agent.md
-- governance/quality/agent-integrity/INTEGRITY_INDEX.md
-- governance/quality/agent-integrity/foreman-v2.agent.md
-- SCOPE_DECLARATION.md
+Each PR must introduce its own scope declaration file at:
 
-## CHANGE_SUMMARY
+```
+.agent-admin/scope-declarations/pr-<PR_NUMBER>.md
+```
 
-**Purpose**: Fix runtime load failure caused by foreman-v2.agent.md having 11 entries in its `metadata` block, exceeding the platform's 10-entry maximum.
+Examples:
 
-**Error fixed**: `Invalid config: metadata has more than 10 entries`
+```
+.agent-admin/scope-declarations/pr-1360.md
+.agent-admin/scope-declarations/pr-1361.md
+.agent-admin/scope-declarations/pr-1362.md
+```
 
-**Root cause**: Session-012 repair introduced 5 canon-reference keys into the `metadata` block (`contract_architecture`, `preflight_pattern`, `induction_protocol`, `handover_automation`, `ecosystem_vocabulary`). These are redundant with `governance.expected_artifacts` and pushed the total entry count to 11.
+See `.agent-admin/scope-declarations/README.md` for the required format and validation rules.
 
-**Fix**: Removed the 5 redundant canon-reference entries. Metadata reduced from 11 to 6 entries. `agent.contract_version` and `metadata.contract_version` both bumped to 3.0.1. No phase body or behavioral content was modified.
+## Why This Changed
 
-**Ripple assessment**: No ripple required. This change only affects the YAML `metadata` block (cosmetic platform-compliance fix). The contract's governing behavior, phase structure, POLC rules, IAA requirements, and all operational fields are unchanged. No consumer repos or downstream agents reference the removed entries.
+The previous model stored all PR scope evidence in one shared file. When multiple PRs were open
+concurrently, they all modified the same file, causing repeated merge conflicts and stale-evidence
+failures (PATH-MISMATCH, ISSUE-MISMATCH). Per-PR immutable files eliminate this structural defect.
+
+## Authority
+
+Issue #1359 | `governance/canon/SCOPE_DECLARATION_SCHEMA.md` v2 | `governance/canon/AGENT_HANDOVER_AUTOMATION.md` §4.3d v1.6.0
 

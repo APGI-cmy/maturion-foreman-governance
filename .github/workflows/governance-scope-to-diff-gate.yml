@@ -1,9 +1,6 @@
 name: Governance Scope-to-Diff Enforcement
 
 on:
-  push:
-    branches-ignore:
-      - main
   pull_request:
     branches:
       - main
@@ -14,7 +11,7 @@ permissions:
 
 jobs:
   scope-to-diff-validation:
-    name: Validate Scope Declaration Matches Diff
+    name: Validate Per-PR Scope Declaration Matches Diff
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +23,20 @@ jobs:
 
       - name: Token identity evidence (REQ-TU-003)
         run: echo "EXEC_IDENTITY: MATURION_BOT_TOKEN in use for write operations"
+
+      - name: Resolve PR number and per-PR scope file path
+        id: resolve_scope
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          if [ -z "${PR_NUMBER}" ]; then
+            echo "❌ PR number is not available — this workflow must run on pull_request events"
+            exit 1
+          fi
+          SCOPE_FILE=".agent-admin/scope-declarations/pr-${PR_NUMBER}.md"
+          echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+          echo "scope_file=${SCOPE_FILE}" >> $GITHUB_OUTPUT
+          echo "PR Number: ${PR_NUMBER}"
+          echo "Per-PR scope file: ${SCOPE_FILE}"
 
       - name: Check for PREHANDOVER_PROOF evidence-based validation
         id: check_evidence
@@ -58,62 +69,85 @@ jobs:
             echo "⚠️ PREHANDOVER_PROOF.md not found in governance directory"
           fi
 
-      - name: Enforce scope-to-diff via registry (script execution path)
+      - name: Enforce per-PR scope-to-diff (script execution path)
         id: script_validation
         continue-on-error: true
+        env:
+          PR_NUMBER: ${{ steps.resolve_scope.outputs.pr_number }}
         run: |
-          DOMAIN=$(grep "RESPONSIBILITY_DOMAIN:" governance/scope-declaration.md | cut -d':' -f2 | xargs)
+          SCOPE_FILE="${{ steps.resolve_scope.outputs.scope_file }}"
 
-          REGISTRY="governance/canon/RESPONSIBILITY_DOMAIN_REGISTRY.md"
-          if ! grep -q "### DOMAIN: $DOMAIN" "$REGISTRY"; then
-            echo "❌ GOVERNANCE BLOCK: Responsibility domain '$DOMAIN' is not registered."
+          # Per-PR scope model: validate .agent-admin/scope-declarations/pr-${PR_NUMBER}.md
+          if [ ! -f "${SCOPE_FILE}" ]; then
+            echo "❌ Per-PR scope declaration not found: ${SCOPE_FILE}"
+            echo "   Each PR must create its own scope declaration at this path."
+            echo "   See .agent-admin/scope-declarations/README.md for instructions."
             exit 1
           fi
 
-          echo "Using responsibility domain: $DOMAIN"
+          echo "✓ Per-PR scope declaration found: ${SCOPE_FILE}"
 
-          ALLOWED=$(awk "/### DOMAIN: $DOMAIN/{flag=1} /Allowed Paths/{getline; while (\$0 ~ /^-/) {print \$2; getline}} flag && /Forbidden Paths/{exit}" "$REGISTRY")
-          FORBIDDEN=$(awk "/### DOMAIN: $DOMAIN/{flag=1} /Forbidden Paths/{getline; while (\$0 ~ /^-/) {print \$2; getline}} flag && /Typical Failure/{exit}" "$REGISTRY")
+          # Determine base branch
+          BASE_REF="${{ github.base_ref }}"
+          git fetch origin $BASE_REF
 
-          # Determine base branch based on event type
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE_REF="${{ github.base_ref }}"
-          else
-            BASE_REF="main"
+          # Get actual changed files (PR diff basis: merge-base of origin/$BASE_REF and HEAD)
+          FILES=$(git diff --name-only origin/$BASE_REF...HEAD)
+
+          if [ -z "$FILES" ]; then
+            echo "⚠️ No changed files detected — skipping file-list validation"
+            echo "script_passed=true" >> $GITHUB_OUTPUT
+            exit 0
           fi
 
-          git fetch origin $BASE_REF --depth=1
-          FILES=$(git diff --name-only origin/$BASE_REF)
+          echo "Changed files in diff:"
+          echo "$FILES" | while read -r f; do echo "  - $f"; done
 
-          for FILE in $FILES; do
-            for BAD in $FORBIDDEN; do
-              # Strip backticks and handle /** pattern
-              BAD_CLEAN=$(echo "$BAD" | tr -d '`')
-              BAD_CLEAN="${BAD_CLEAN%/**}"
-              if [[ "$FILE" == $BAD_CLEAN* ]]; then
-                echo "❌ SCOPE VIOLATION: $FILE forbidden for domain $DOMAIN"
-                exit 1
-              fi
-            done
+          # Extract declared files from per-PR scope declaration (## FILES_CHANGED section)
+          DECLARED_FILES=$(awk '/^## FILES_CHANGED/{found=1; next} found && /^- /{print substr($0,3)} found && /^##/{if(!/FILES_CHANGED/)found=0}' "${SCOPE_FILE}" || echo "")
 
-            MATCHED=false
-            for OK in $ALLOWED; do
-              # Strip backticks and handle /** pattern
-              OK_CLEAN=$(echo "$OK" | tr -d '`')
-              OK_CLEAN="${OK_CLEAN%/**}"
-              if [[ "$FILE" == $OK_CLEAN* ]]; then
-                MATCHED=true
-              fi
-            done
+          if [ -z "$DECLARED_FILES" ]; then
+            echo "⚠️ No file changes declared in ${SCOPE_FILE}"
+            echo "   Add a ## FILES_CHANGED section listing all changed files."
+            exit 1
+          fi
 
-            if [ "$MATCHED" = false ]; then
-              echo "❌ SCOPE VIOLATION: $FILE not allowed for domain $DOMAIN"
-              exit 1
+          echo "Declared files in scope:"
+          echo "$DECLARED_FILES" | while read -r f; do echo "  - $f"; done
+
+          # Validate: all changed files are declared
+          UNDECLARED=()
+          while IFS= read -r file; do
+            if ! echo "$DECLARED_FILES" | grep -qxF "$file"; then
+              UNDECLARED+=("$file")
             fi
-          done
+          done <<< "$FILES"
 
-          echo "✅ Scope-to-diff enforcement passed via registry"
-          echo "script_passed=true" >> $GITHUB_OUTPUT
+          # Validate: all declared files are changed
+          EXTRA_DECLARED=()
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            if ! echo "$FILES" | grep -qxF "$file"; then
+              EXTRA_DECLARED+=("$file")
+            fi
+          done <<< "$DECLARED_FILES"
+
+          if [ ${#UNDECLARED[@]} -eq 0 ] && [ ${#EXTRA_DECLARED[@]} -eq 0 ]; then
+            echo "✅ Scope-to-diff enforcement passed for pr-${PR_NUMBER}.md"
+            echo "script_passed=true" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "❌ Scope declaration does not match diff"
+            if [ ${#UNDECLARED[@]} -gt 0 ]; then
+              echo "Files changed but NOT declared:"
+              for f in "${UNDECLARED[@]}"; do echo "  - $f"; done
+            fi
+            if [ ${#EXTRA_DECLARED[@]} -gt 0 ]; then
+              echo "Files declared but NOT changed:"
+              for f in "${EXTRA_DECLARED[@]}"; do echo "  - $f"; done
+            fi
+            exit 1
+          fi
 
       - name: Determine validation result
         id: determine_result
@@ -122,9 +156,13 @@ jobs:
           EVIDENCE_EXISTS="${{ steps.check_evidence.outputs.evidence_file_exists }}"
           EVIDENCE_FOUND="${{ steps.check_evidence.outputs.evidence_found }}"
           ATTESTATION_FOUND="${{ steps.check_evidence.outputs.attestation_found }}"
+          PR_NUMBER="${{ steps.resolve_scope.outputs.pr_number }}"
+          SCOPE_FILE="${{ steps.resolve_scope.outputs.scope_file }}"
           
           echo "==================================="
-          echo "Scope-to-Diff Validation Results"
+          echo "Per-PR Scope-to-Diff Validation Results"
+          echo "PR: #${PR_NUMBER}"
+          echo "Scope file: ${SCOPE_FILE}"
           echo "==================================="
           echo ""
           echo "Script execution path: $SCRIPT_PASSED"
@@ -159,8 +197,8 @@ jobs:
           echo ""
           echo "BL-027 requires scope-to-diff validation via ONE of these paths:"
           echo ""
-          echo "PATH 1: Script Execution (Preferred)"
-          echo "  - Scope declaration exists: $([[ -f governance/scope-declaration.md ]] && echo '✅' || echo '❌')"
+          echo "PATH 1: Per-PR Scope Declaration (Preferred)"
+          echo "  - Per-PR scope file exists: $([[ -f "${SCOPE_FILE}" ]] && echo '✅' || echo '❌')"
           echo "  - Script validation passed: $([[ $SCRIPT_PASSED = 'success' ]] && echo '✅' || echo '❌')"
           echo ""
           echo "PATH 2: Evidence-Based Validation (Agent Environments)"
@@ -168,7 +206,7 @@ jobs:
           echo "  - Contains scope validation: $([[ $EVIDENCE_FOUND = 'true' ]] && echo '✅' || echo '❌')"
           echo "  - Contains attestation: $([[ $ATTESTATION_FOUND = 'true' ]] && echo '✅' || echo '❌')"
           echo ""
-          echo "See .github/scripts/README.md for detailed examples of both paths"
+          echo "See .agent-admin/scope-declarations/README.md for the required per-PR format"
           echo ""
           exit 1
 
@@ -180,9 +218,12 @@ jobs:
           script: |
             const result = '${{ steps.determine_result.outputs.result }}';
             const method = '${{ steps.determine_result.outputs.method }}';
-            const scriptPassed = '${{ steps.script_validation.outcome }}' === 'success';
+            const prNumber = '${{ steps.resolve_scope.outputs.pr_number }}';
+            const scopeFile = '${{ steps.resolve_scope.outputs.scope_file }}';
             
             let comment = '## 🎯 Scope-to-Diff Validation (BL-027)\n\n';
+            comment += `**PR**: #${prNumber}\n`;
+            comment += `**Per-PR scope file**: \`${scopeFile}\`\n\n`;
             
             if (result === 'pass') {
               comment += `**Status**: ✅ PASSED\n`;
@@ -198,21 +239,22 @@ jobs:
             } else {
               comment += `**Status**: ❌ FAILED\n\n`;
               comment += '**Required**: BL-027 mandates scope-to-diff validation via ONE of these paths:\n\n';
-              comment += '### Path 1: Script Execution (Preferred)\n';
+              comment += `### Path 1: Per-PR Scope Declaration (Preferred)\n`;
+              comment += `Create \`${scopeFile}\` listing all changed files.\n\n`;
               comment += '```bash\n';
-              comment += './.github/scripts/validate-scope-to-diff.sh main\n';
-              comment += '# Exit code must be 0\n';
+              comment += `# Generate the file list:\n`;
+              comment += 'git diff --name-only origin/main...HEAD\n';
               comment += '```\n\n';
+              comment += 'See `.agent-admin/scope-declarations/README.md` for the required format.\n\n';
               comment += '### Path 2: Evidence-Based Validation (Agent Environments)\n';
               comment += '- Create `governance/PREHANDOVER_PROOF.md` in governance directory\n';
               comment += '- Document manual scope-to-diff comparison\n';
               comment += '- Include attestation that all files match\n';
               comment += '- Sign with agent name and timestamp\n\n';
-              comment += '**Example**: See `.github/scripts/README.md` for detailed examples\n\n';
             }
             
             comment += '---\n';
-            comment += '*Authority: BL-027 (Scope Declaration Mandatory Before PR Handover)*\n';
+            comment += '*Authority: BL-027 (Scope Declaration Mandatory Before PR Handover) | Issue #1359 (Per-PR Immutable Scope Model)*\n';
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,

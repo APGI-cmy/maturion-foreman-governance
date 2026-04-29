@@ -243,8 +243,16 @@ jobs:
             fi
 
             if echo "$IAA_SESSION" | grep -qiE "(PENDING|placeholder|TBD|TODO|\[to be filled\]|<session|<fill)"; then
-              echo "  ❌ COMPLETE proof has placeholder/PENDING iaa_session_reference: $IAA_SESSION"
-              PROOF_VIOLATIONS=$((PROOF_VIOLATIONS + 1))
+              # Apply same token-file bypass as iaa_audit_token.
+              # When both fields are PENDING and a PR-scoped token file exists, the token
+              # file is authoritative for both fields (proof immutability: PENDING is expected).
+              if [ -n "$TOKEN_FILE" ]; then
+                echo "  ✅ iaa_session_reference appears pending but PR-scoped token file exists: $TOKEN_FILE"
+                echo "     (Token ceremony immutability: proof field PENDING is expected; token file is authoritative)"
+              else
+                echo "  ❌ COMPLETE proof has placeholder/PENDING iaa_session_reference: $IAA_SESSION"
+                PROOF_VIOLATIONS=$((PROOF_VIOLATIONS + 1))
+              fi
             fi
 
             if [ $PROOF_VIOLATIONS -gt 0 ]; then

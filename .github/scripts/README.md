@@ -14,28 +14,32 @@ These scripts implement governance requirements defined in:
 
 ### `validate-scope-to-diff.sh`
 
-**Purpose**: Validate that `SCOPE_DECLARATION.md` accurately reflects actual git diff changes.
+**Purpose**: Validate that the per-PR scope declaration at `.agent-admin/scope-declarations/pr-<PR_NUMBER>.md` accurately reflects actual git diff changes.
 
-**Authority**: BL-027 (Scope Declaration Mandatory Before PR Handover)
+**Authority**: BL-027 (Scope Declaration Mandatory Before PR Handover) | Issue #1359 (Per-PR Immutable Scope Model)
 
 **Usage**:
 ```bash
-./.github/scripts/validate-scope-to-diff.sh [base-ref]
+./.github/scripts/validate-scope-to-diff.sh <pr-number> [base-ref]
 
 # Examples
-./.github/scripts/validate-scope-to-diff.sh main
-./.github/scripts/validate-scope-to-diff.sh origin/main
+./.github/scripts/validate-scope-to-diff.sh 1360
+./.github/scripts/validate-scope-to-diff.sh 1360 origin/main
 ```
 
 **Exit Codes**:
-- `0` = PASS (scope declaration matches diff)
+- `0` = PASS (per-PR scope declaration matches diff)
 - `1` = FAIL (scope declaration missing or doesn't match diff)
-- `2` = FAIL (invalid usage)
+- `2` = FAIL (invalid usage — PR number required)
 
 **Requirements**:
-- `governance/scope-declaration.md` must exist
-- All files in git diff must be declared in scope
+- `.agent-admin/scope-declarations/pr-<PR_NUMBER>.md` must exist
+- All files in git diff must be declared in scope under `## FILES_CHANGED`
 - All declared files must be in git diff
+
+**Deprecated**:
+- The old `governance/scope-declaration.md` global model is abolished (issue #1359).
+  Do NOT use the global file as the per-PR scope evidence artifact.
 
 ---
 
@@ -172,8 +176,8 @@ Per BL-027/028, there are **two equally compliant validation paths**:
 
 **Example**:
 ```bash
-# Run scope-to-diff validation
-./.github/scripts/validate-scope-to-diff.sh main
+# Run per-PR scope-to-diff validation (PR number required)
+./.github/scripts/validate-scope-to-diff.sh 1360 main
 # Exit code: 0 ✅
 
 # Run YAML frontmatter validation
@@ -203,7 +207,7 @@ Per BL-027/028, there are **two equally compliant validation paths**:
 **Requirements for Evidence-Based Validation**:
 
 #### For Scope-to-Diff (BL-027):
-- Create `governance/scope-declaration.md` listing all changed files
+- Create `.agent-admin/scope-declarations/pr-<PR_NUMBER>.md` listing all changed files
 - Manually compare declared files against `git diff` output
 - Document comparison in PREHANDOVER_PROOF
 - Attest that all files match
@@ -213,21 +217,21 @@ Per BL-027/028, there are **two equally compliant validation paths**:
 #### Scope-to-Diff Validation (BL-027)
 **Method**: Evidence-Based (script execution not available in agent environment)
 
-**Scope Declaration Created**: ✅ `governance/scope-declaration.md`
+**Per-PR Scope Declaration Created**: ✅ `.agent-admin/scope-declarations/pr-1360.md`
 
 **Git Diff Files**:
-- M .github/workflows/governance-gate.yml
-- M governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md
-- A .github/scripts/validate-scope-to-diff.sh
+- .github/workflows/governance-scope-to-diff-gate.yml
+- .github/scripts/validate-scope-to-diff.sh
+- governance/scope-declaration.md
 
-**Declared Files in scope-declaration.md**:
-- M .github/workflows/governance-gate.yml
-- M governance/canon/BOOTSTRAP_EXECUTION_LEARNINGS.md
-- A .github/scripts/validate-scope-to-diff.sh
+**Declared Files in pr-1360.md**:
+- .github/workflows/governance-scope-to-diff-gate.yml
+- .github/scripts/validate-scope-to-diff.sh
+- governance/scope-declaration.md
 
 **Comparison Result**: ✅ MATCH (all files in diff are declared, all declared files are in diff)
 
-**Attestation**: I manually verified that the scope declaration accurately reflects the git diff. All changed files are declared, and no extra files are declared. This validation is equivalent to running `.github/scripts/validate-scope-to-diff.sh` with exit code 0.
+**Attestation**: I manually verified that the per-PR scope declaration accurately reflects the git diff. All changed files are declared, and no extra files are declared. This validation is equivalent to running `.github/scripts/validate-scope-to-diff.sh 1360` with exit code 0.
 
 **Signature**: [Agent Name] - [Date/Time UTC]
 ```

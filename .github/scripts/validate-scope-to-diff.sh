@@ -1,29 +1,32 @@
 #!/bin/bash
 # validate-scope-to-diff.sh
 # 
-# Purpose: Validate that SCOPE_DECLARATION.md accurately reflects actual git diff
+# Purpose: Validate that the per-PR scope declaration accurately reflects actual git diff
 # Authority: BL-027 (Scope Declaration Mandatory Before PR Handover)
+#            Issue #1359 (Per-PR Immutable Scope Declaration Model)
 # Exit Codes:
-#   0 = PASS (scope declaration matches diff)
+#   0 = PASS (per-PR scope declaration matches diff)
 #   1 = FAIL (scope declaration missing or doesn't match diff)
 #   2 = FAIL (invalid usage)
 #
 # Usage:
-#   ./validate-scope-to-diff.sh [base-ref]
+#   ./validate-scope-to-diff.sh <pr-number> [base-ref]
 #
 # Arguments:
-#   base-ref: Git ref to compare against (default: main)
+#   pr-number: The PR number (required) — used to locate the scope file
+#   base-ref:  Git ref to compare against (default: main)
 #
-# Requirements:
-#   - SCOPE_DECLARATION.md must exist in governance/scope-declaration.md
-#   - File must contain file change declarations
-#   - All files in git diff must be declared in scope
-#   - All declared files must be in git diff
+# Per-PR scope file location:
+#   .agent-admin/scope-declarations/pr-<pr-number>.md
 #
 # Notes:
 #   - This script is OPTIONAL in agent environments where bash cannot execute before PR
 #   - Agents may instead provide evidence-based validation in PREHANDOVER_PROOF
 #   - Evidence-based validation requires: manual diff comparison, signature, attestation
+#
+# Deprecated:
+#   The old global governance/scope-declaration.md model is abolished (issue #1359).
+#   Do NOT use governance/scope-declaration.md as the per-PR scope evidence artifact.
 
 set -euo pipefail
 
@@ -34,36 +37,57 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Arguments
-BASE_REF="${1:-main}"
-SCOPE_FILE="governance/scope-declaration.md"
+if [ $# -lt 1 ]; then
+    echo -e "${RED}❌ FAIL: PR number required${NC}"
+    echo ""
+    echo "Usage: $0 <pr-number> [base-ref]"
+    echo ""
+    echo "Example: $0 1360 main"
+    echo ""
+    exit 2
+fi
+
+PR_NUMBER="${1}"
+BASE_REF="${2:-main}"
+SCOPE_FILE=".agent-admin/scope-declarations/pr-${PR_NUMBER}.md"
 
 echo "==================================="
-echo "Scope-to-Diff Validation"
+echo "Per-PR Scope-to-Diff Validation"
+echo "PR: #${PR_NUMBER}"
 echo "==================================="
 echo ""
 
-# Check if scope declaration exists
+# Check if per-PR scope declaration exists
 if [ ! -f "$SCOPE_FILE" ]; then
     echo -e "${RED}❌ FAIL: $SCOPE_FILE not found${NC}"
     echo ""
-    echo "BL-027 requires SCOPE_DECLARATION.md before PR creation."
+    echo "BL-027 requires a per-PR scope declaration before PR handover."
     echo ""
-    echo "Expected location: governance/scope-declaration.md"
+    echo "Expected location: ${SCOPE_FILE}"
+    echo ""
+    echo "Create the file using the template at:"
+    echo "  governance/canon/scope-declaration.template.md"
+    echo ""
+    echo "Required format (## FILES_CHANGED section):"
+    echo "  ## FILES_CHANGED"
+    echo "  FILES_CHANGED: N"
+    echo "  - path/to/file1"
+    echo "  - path/to/file2"
     echo ""
     echo "In agent environments where this script cannot run:"
-    echo "  - Create SCOPE_DECLARATION.md manually"
+    echo "  - Create the per-PR scope declaration manually"
     echo "  - Document evidence-based validation in PREHANDOVER_PROOF"
     echo "  - Include manual diff comparison and attestation"
     echo ""
     exit 1
 fi
 
-echo "✓ Scope declaration file found: $SCOPE_FILE"
+echo "✓ Per-PR scope declaration found: $SCOPE_FILE"
 echo ""
 
-# Get actual changed files from git diff
+# Get actual changed files from git diff (PR diff basis: merge-base of origin/$BASE_REF and HEAD)
 echo "Comparing against base ref: $BASE_REF"
-CHANGED_FILES=$(git diff --name-only "$BASE_REF" 2>/dev/null || git diff --name-only HEAD 2>/dev/null || echo "")
+CHANGED_FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" 2>/dev/null || git diff --name-only HEAD 2>/dev/null || echo "")
 
 if [ -z "$CHANGED_FILES" ]; then
     echo -e "${YELLOW}⚠️  WARNING: No changed files detected in git diff${NC}"
@@ -82,24 +106,25 @@ echo "$CHANGED_FILES" | while read -r file; do
 done
 echo ""
 
-# Extract file declarations from scope declaration
-# Look for patterns like "M path/to/file" or "A path/to/file" or "D path/to/file"
-DECLARED_FILES=$(grep -E "^[MAD] " "$SCOPE_FILE" | awk '{print $2}' || echo "")
+# Extract file declarations from per-PR scope declaration
+# Look for files listed under ## FILES_CHANGED section (lines starting with '- ')
+DECLARED_FILES=$(awk '/^## FILES_CHANGED/{found=1; next} found && /^- /{print substr($0,3)} found && /^##/{if(!/FILES_CHANGED/)found=0}' "$SCOPE_FILE" || echo "")
 
 if [ -z "$DECLARED_FILES" ]; then
     echo -e "${YELLOW}⚠️  WARNING: No file changes declared in $SCOPE_FILE${NC}"
     echo ""
-    echo "Scope declaration should list changed files with format:"
-    echo "  M path/to/modified/file"
-    echo "  A path/to/added/file"
-    echo "  D path/to/deleted/file"
+    echo "Scope declaration should list changed files under ## FILES_CHANGED:"
+    echo "  ## FILES_CHANGED"
+    echo "  FILES_CHANGED: N"
+    echo "  - path/to/file1"
+    echo "  - path/to/file2"
     echo ""
 fi
 
 # Validate: all changed files are declared
 UNDECLARED=()
 while IFS= read -r file; do
-    if ! echo "$DECLARED_FILES" | grep -qF "$file"; then
+    if ! echo "$DECLARED_FILES" | grep -qxF "$file"; then
         UNDECLARED+=("$file")
     fi
 done <<< "$CHANGED_FILES"
@@ -108,18 +133,18 @@ done <<< "$CHANGED_FILES"
 EXTRA_DECLARED=()
 while IFS= read -r file; do
     [ -z "$file" ] && continue
-    if ! echo "$CHANGED_FILES" | grep -qF "$file"; then
+    if ! echo "$CHANGED_FILES" | grep -qxF "$file"; then
         EXTRA_DECLARED+=("$file")
     fi
 done <<< "$DECLARED_FILES"
 
 # Report results
 if [ ${#UNDECLARED[@]} -eq 0 ] && [ ${#EXTRA_DECLARED[@]} -eq 0 ]; then
-    echo -e "${GREEN}✅ PASS: Scope declaration matches git diff${NC}"
+    echo -e "${GREEN}✅ PASS: Per-PR scope declaration matches git diff${NC}"
     echo ""
     exit 0
 else
-    echo -e "${RED}❌ FAIL: Scope declaration does not match git diff${NC}"
+    echo -e "${RED}❌ FAIL: Per-PR scope declaration does not match git diff${NC}"
     echo ""
     
     if [ ${#UNDECLARED[@]} -gt 0 ]; then
@@ -139,6 +164,8 @@ else
     fi
     
     echo "Fix: Update $SCOPE_FILE to match actual git diff"
+    echo "     Run: git diff --name-only origin/$BASE_REF...HEAD"
     echo ""
     exit 1
 fi
+
