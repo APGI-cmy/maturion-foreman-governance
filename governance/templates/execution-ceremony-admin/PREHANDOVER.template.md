@@ -47,6 +47,7 @@ iaa_audit_token:        <token-file-path>    # REQUIRED — fill with actual tok
 iaa_session_reference:  <IAA session ID>     # REQUIRED — fill with actual IAA session ID; must NOT remain as placeholder if final_state: COMPLETE
 iaa_reinvocation_round: 0                   # 0 = first invocation; 1+ = re-invocation round
 iaa_rejection_reference: none               # path to rejection-package file if round >= 1
+active_bundle_iaa_coherence: <VERIFIED|NOT-APPLICABLE>  # ALWAYS REQUIRED — must never be blank or a placeholder if final_state: COMPLETE; set to VERIFIED after §4.3e Check L passes; set to NOT-APPLICABLE only for non-ECAP jobs where IAA assurance was not invoked (e.g., T6 docs-only, CS2-direct-review track)
 
 ## Artifacts Committed
 prehandover_proof:      .agent-admin/prehandover/proof-<PR#>.md
@@ -75,10 +76,37 @@ suggestions:            NONE                 # NONE | see .agent-workspace/<agen
 
 ---
 
-## Embedded ECAP Reconciliation Summary (if not separate file)
+## Ripple / Cross-Agent Assessment
+
+<!-- ASSEMBLY_TIME_ONLY: Complete this section for every ECAP job. Do NOT leave blank. -->
+
+> **Mandatory**: Every ECAP bundle MUST include a Ripple / Cross-Agent Assessment. This section
+> demonstrates that the producing agent assessed downstream impacts of changes in this PR.
+
+### Ripple Obligations
+
+| File Changed | `layer_down_status` in CANON_INVENTORY | Ripple Required? | Status |
+|-------------|----------------------------------------|-----------------|--------|
+| *[file 1]* | *[PUBLIC_API | INTERNAL | NONE]* | *[YES | NO]* | *[COMPLETED | DEFERRED | NOT-APPLICABLE]* |
+
+*Add one row per changed file with a CANON_INVENTORY entry. Files not in CANON_INVENTORY: mark NOT-APPLICABLE.*
+
+### Cross-Agent Impact
+
+| Agent / Consumer | Impact of This PR | Assessment |
+|-----------------|------------------|-----------|
+| *[agent or consumer]* | *[description]* | *[NO-IMPACT | IMPACTED — see ripple log]* |
+
+### Assessment Verdict
+
+- **Ripple obligations**: *[NONE — no PUBLIC_API files changed | COMPLETED — all ripple dispatched | DEFERRED — see notes below]*
+- **Cross-agent impact**: *[NONE | ASSESSED — impacted parties documented above]*
+- **Deferred ripple notes** (if any): *[none | description of deferred items and tracking reference]*
+
+---
 
 > Copy the ECAP Reconciliation Summary template here if embedding rather than using a separate file.
 
 ---
 
-*Template Version: 1.1.0 | Authority: ECAP-001 v1.2.0 | Effective: 2026-04-19*
+*Template Version: 1.2.0 | Authority: ECAP-001 v1.2.0 + AGENT_HANDOVER_AUTOMATION.md v1.6.0 | Effective: 2026-04-21*
