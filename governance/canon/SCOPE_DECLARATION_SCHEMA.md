@@ -29,6 +29,7 @@ A PR may not exist without a valid Scope Declaration.
 3. Anything not explicitly in scope is OUT of scope.
 4. Scope may not expand after PR creation.
 5. If scope must expand, the PR MUST be closed and restarted.
+6. Each PR MUST own its own immutable scope declaration file — the global shared model is abolished.
 
 ---
 
@@ -36,12 +37,24 @@ A PR may not exist without a valid Scope Declaration.
 
 A valid Scope Declaration MUST be located at:
 
-governance/scope-declaration.md
+```
+.agent-admin/scope-declarations/pr-<PR_NUMBER>.md
+```
 
-yaml
-Copy code
+Examples:
 
-No other filename or location is permitted.
+```
+.agent-admin/scope-declarations/pr-1360.md
+.agent-admin/scope-declarations/pr-1361.md
+```
+
+No other filename or location is permitted as the authoritative per-PR scope artifact.
+
+> **Deprecated path**: `governance/scope-declaration.md` (global shared file) — no longer permitted
+> as the per-PR scope evidence source. See `governance/scope-declaration.md` for the migration notice.
+
+Each PR must introduce or update **exactly one** scope declaration file matching its own PR number.
+The file is immutable once committed — it is not overwritten by subsequent PRs.
 
 ---
 

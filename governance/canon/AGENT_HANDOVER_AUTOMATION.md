@@ -64,7 +64,7 @@ Phase 4 consists of five mandatory sections:
 ### 4.4 Compliance Check & Escalation (if needed)
 ```
 
-> **Sequencing note**: §4.3c Pre-IAA Commit-State Gate MUST run immediately before IAA invocation (which each producing-agent contract places after §4.3c). §4.3d Scope-Declaration Parity Gate runs after §4.3c and before IAA invocation for all PRs that include `governance/scope-declaration.md`. **§4.3e Admin Ceremony Compliance Gate runs after §4.3d and before IAA invocation for all jobs where an `execution-ceremony-admin-agent` was appointed.** §4.3b Token Update Ceremony runs after IAA has returned a verdict. The canonical ordering is: §4.3 → §4.3c → §4.3d (if governance PR) → §4.3e (if ECAP job) → IAA invocation → §4.3b → §4.4.
+> **Sequencing note**: §4.3c Pre-IAA Commit-State Gate MUST run immediately before IAA invocation (which each producing-agent contract places after §4.3c). §4.3d Scope-Declaration Parity Gate runs after §4.3c and before IAA invocation for all governance PRs (i.e., any PR modifying files under `governance/`, `.agent-admin/`, `.agent-workspace/`, or `.github/`). **§4.3e Admin Ceremony Compliance Gate runs after §4.3d and before IAA invocation for all jobs where an `execution-ceremony-admin-agent` was appointed.** §4.3b Token Update Ceremony runs after IAA has returned a verdict. The canonical ordering is: §4.3 → §4.3c → §4.3d (if governance PR) → §4.3e (if ECAP job) → IAA invocation → §4.3b → §4.4.
 
 ## Section 4.1: Evidence Artifact Generation
 
@@ -223,7 +223,7 @@ echo "✅ [<Agent>_H] Evidence artifacts generated"
 ✅ CHANGELOG updated (if governance changes)
 ✅ Inventory synchronized
 ✅ Drift evidence: for each amended canon file, before/after SHA256 recorded in PREHANDOVER proof (ECAP-QC-001)
-✅ scope-declaration.md regenerated from `git diff --name-only origin/main...HEAD` as final pre-IAA action (ECAP-QC-002)
+✅ `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` created/updated from `git diff --name-only origin/main...HEAD` as final pre-IAA action (ECAP-QC-002)
 ✅ version and canonical_version aligned for all amended CANON_INVENTORY entries (ECAP-QC-003)
 ✅ amended_date set to today's date for all amended CANON_INVENTORY entries (ECAP-QC-004)
 ```
@@ -735,49 +735,55 @@ the tool call.
 
 ## Section 4.3d: Scope-Declaration Parity Gate (mandatory for governance PRs, BLOCKING)
 
-**Purpose**: Guarantee that `governance/scope-declaration.md` exactly reflects the actual
-branch diff at the moment IAA is invoked. The scope declaration is a binding attestation —
-if it lists the wrong files or an incorrect count, it is a false representation of PR scope
-and causes avoidable REJECTION-PACKAGEs.
+**Purpose**: Guarantee that the per-PR scope declaration at `.agent-admin/scope-declarations/pr-<PR_NUMBER>.md`
+exactly reflects the actual branch diff at the moment IAA is invoked. The scope declaration is a
+binding attestation — if it lists the wrong files or an incorrect count, it is a false representation
+of PR scope and causes avoidable REJECTION-PACKAGEs.
 
 **Problem This Solves**: The stale scope-declaration pattern (A-026) recurred 6 consecutive times
 (PRs #1315, #1317, #1319, #1320, #1332, and the follow-up remediation of #1332). Each occurrence
-had the same root cause: scope-declaration.md was regenerated at some earlier point during the
-session, and then additional artifacts were added afterwards, creating a file-count mismatch
-between the scope declaration and the actual `git diff --name-only origin/main...HEAD` output.
-This gate catches that mismatch before IAA invocation.
+had the same root cause: the global `governance/scope-declaration.md` was regenerated at some earlier
+point during the session, and then additional artifacts were added afterwards, creating a file-count
+mismatch. Additionally, concurrent PRs repeatedly conflicted on the same shared file.
+This gate, combined with the per-PR immutable model, eliminates both failure classes.
 
-**Effective**: 2026-04-09 | **Authority**: CS2 | **Added**: v1.3.0
+**Effective**: 2026-04-09 | **Authority**: CS2 | **Added**: v1.3.0 | **Amended**: v1.6.0 (issue #1359 — per-PR immutable model)
 
 **Applicability**: This gate is **BLOCKING** for all governance PRs — defined as any PR that
 modifies at least one file under `governance/`, `.agent-admin/`, `.agent-workspace/`, or `.github/`.
-For such PRs, `governance/scope-declaration.md` MUST be regenerated and committed as the final
-file before IAA invocation regardless of whether it was already in the diff. Non-governance PRs
-(application code, documentation only, no governance-path files) are exempt.
+For such PRs, `.agent-admin/scope-declarations/pr-<PR_NUMBER>.md` MUST be created/updated and
+committed as the final file before IAA invocation. Non-governance PRs (application code,
+documentation only, no governance-path files) are exempt.
+
+> **Deprecated**: The global `governance/scope-declaration.md` is no longer the per-PR scope
+> evidence artifact. Agents MUST NOT write per-PR scope evidence to that shared file.
 
 ### Rule
 
-> **ABSOLUTE RULE (ECAP-QC-002)**: `governance/scope-declaration.md` MUST be the final file
-> committed to the PR branch before IAA invocation. Its FILES_CHANGED list MUST exactly match
-> `git diff --name-only origin/main...HEAD`. Any mismatch is a blocking handover failure.
+> **ABSOLUTE RULE (ECAP-QC-002)**: `.agent-admin/scope-declarations/pr-<PR_NUMBER>.md` MUST be
+> the final file committed to the PR branch before IAA invocation. Its FILES_CHANGED list MUST
+> exactly match `git diff --name-only origin/main...HEAD`. Any mismatch is a blocking handover
+> failure. Only one per-PR scope declaration file must exist for each PR number.
 
 ### Required Checks
 
 | Check | Command | PASS condition |
 |-------|---------|----------------|
-| scope-declaration present | `ls governance/scope-declaration.md` | File exists |
-| file count match | compare `git diff --name-only origin/main...HEAD \| wc -l` vs FILES_CHANGED count in scope-declaration.md | Counts equal |
-| no pending changes after generation | `git status --porcelain governance/scope-declaration.md` | Output is empty (file committed) |
+| scope-declaration present | `ls .agent-admin/scope-declarations/pr-${PR_NUMBER}.md` | File exists |
+| file count match | compare `git diff --name-only origin/main...HEAD \| wc -l` vs FILES_CHANGED count in per-PR scope file | Counts equal |
+| no pending changes after generation | `git status --porcelain .agent-admin/scope-declarations/pr-${PR_NUMBER}.md` | Output is empty (file committed) |
+| correct PR number in path | file path contains current PR number | Path matches `pr-${PR_NUMBER}.md` |
 
 ### Template
 
 ```markdown
 ### 4.3d Scope-Declaration Parity Gate (<Agent>_H — BLOCKING for governance PRs)
 
-**Authority**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.3.0
+**Authority**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md` v1.6.0
 
-> **ABSOLUTE RULE (ECAP-QC-002)**: scope-declaration.md must be the final committed file
-> before IAA invocation. Its FILES_CHANGED count must match `git diff --name-only origin/main...HEAD`.
+> **ABSOLUTE RULE (ECAP-QC-002)**: `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` must be
+> the final committed file before IAA invocation. Its FILES_CHANGED count must match
+> `git diff --name-only origin/main...HEAD`.
 
 > **Consumer note**: The closing fence of the bash block below uses escaped backticks (`` \`\`\` ``) to prevent Markdown fence collision inside this outer code block. When copying this template into an agent contract or script, replace every `` \`\`\` `` (backslash + three backticks) with ` ``` ` (three plain backticks).
 
@@ -790,6 +796,16 @@ echo "📋 SCOPE-DECLARATION PARITY GATE (BLOCKING — governance PRs)"
 
 SCOPE_FAILURES=()
 
+# Require PR_NUMBER to be set (export from environment or CI context)
+# In CI: export PR_NUMBER="${{ github.event.pull_request.number }}" before calling this gate.
+# Locally: export PR_NUMBER=1360 && bash handover-gate.sh
+if [ -z "${PR_NUMBER}" ]; then
+  echo "  ❌ PR_NUMBER environment variable not set — cannot locate per-PR scope file"
+  exit 1
+fi
+
+SCOPE_FILE=".agent-admin/scope-declarations/pr-${PR_NUMBER}.md"
+
 # Check 1: Detect whether this is a governance PR
 # A PR is a governance PR if it touches any file under governance/, .agent-admin/, .agent-workspace/, or .github/
 GOVERNANCE_FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(governance/|\.agent-admin/|\.agent-workspace/|\.github/)' | wc -l | tr -d ' ')
@@ -799,32 +815,41 @@ if [ "${GOVERNANCE_FILES}" -eq 0 ]; then
   exit 0
 fi
 
-# Check 2: Count files in actual branch diff
+# Check 2: Per-PR scope file must exist
+if [ ! -f "${SCOPE_FILE}" ]; then
+  SCOPE_FAILURES+=("per-PR scope declaration missing: ${SCOPE_FILE}")
+  echo "  ❌ Per-PR scope file NOT FOUND: ${SCOPE_FILE}"
+  echo "     ACTION: Create .agent-admin/scope-declarations/pr-${PR_NUMBER}.md"
+  echo "             listing all files from: git diff --name-only origin/main...HEAD"
+fi
+
+# Check 3: Count files in actual branch diff
 DIFF_COUNT=$(git diff --name-only origin/main...HEAD | wc -l | tr -d ' ')
 echo "  Branch diff file count: ${DIFF_COUNT}"
 
-# Check 3: Count files listed in scope-declaration.md FILES_CHANGED section
-# Counts lines that start with '- ' after the ## FILES_CHANGED header
-SCOPE_COUNT=$(awk '/^## FILES_CHANGED/{found=1; next} found && /^- /{count++} found && /^##/{if(!/FILES_CHANGED/)found=0} END{print count+0}' governance/scope-declaration.md)
-echo "  scope-declaration.md FILES_CHANGED count: ${SCOPE_COUNT}"
+# Check 4: Count files listed in per-PR scope file FILES_CHANGED section
+if [ -f "${SCOPE_FILE}" ]; then
+  SCOPE_COUNT=$(awk '/^## FILES_CHANGED/{found=1; next} found && /^- /{count++} found && /^##/{if(!/FILES_CHANGED/)found=0} END{print count+0}' "${SCOPE_FILE}")
+  echo "  ${SCOPE_FILE} FILES_CHANGED count: ${SCOPE_COUNT}"
 
-if [ "${DIFF_COUNT}" -ne "${SCOPE_COUNT}" ]; then
-  SCOPE_FAILURES+=("file count mismatch: diff has ${DIFF_COUNT} files, scope-declaration lists ${SCOPE_COUNT}")
-  echo "  ❌ File count: MISMATCH (${DIFF_COUNT} in diff vs ${SCOPE_COUNT} in scope-declaration)"
-  echo "     ACTION: Regenerate governance/scope-declaration.md from:"
-  echo "             git diff --name-only origin/main...HEAD"
-  echo "     Then commit it and re-run §4.3c + §4.3d before invoking IAA."
-else
-  echo "  ✅ File count: MATCH (${DIFF_COUNT})"
-fi
+  if [ "${DIFF_COUNT}" -ne "${SCOPE_COUNT}" ]; then
+    SCOPE_FAILURES+=("file count mismatch: diff has ${DIFF_COUNT} files, scope-declaration lists ${SCOPE_COUNT}")
+    echo "  ❌ File count: MISMATCH (${DIFF_COUNT} in diff vs ${SCOPE_COUNT} in scope-declaration)"
+    echo "     ACTION: Update ${SCOPE_FILE} from:"
+    echo "             git diff --name-only origin/main...HEAD"
+    echo "     Then commit it and re-run §4.3c + §4.3d before invoking IAA."
+  else
+    echo "  ✅ File count: MATCH (${DIFF_COUNT})"
+  fi
 
-# Check 4: scope-declaration.md must be committed (not dirty)
-SCOPE_DIRTY=$(git status --porcelain governance/scope-declaration.md 2>/dev/null)
-if [ -n "${SCOPE_DIRTY}" ]; then
-  SCOPE_FAILURES+=("governance/scope-declaration.md has uncommitted changes — commit it first")
-  echo "  ❌ scope-declaration.md: UNCOMMITTED CHANGES (${SCOPE_DIRTY})"
-else
-  echo "  ✅ scope-declaration.md: COMMITTED"
+  # Check 5: Per-PR scope file must be committed (not dirty)
+  SCOPE_DIRTY=$(git status --porcelain "${SCOPE_FILE}" 2>/dev/null)
+  if [ -n "${SCOPE_DIRTY}" ]; then
+    SCOPE_FAILURES+=("${SCOPE_FILE} has uncommitted changes — commit it first")
+    echo "  ❌ Per-PR scope file: UNCOMMITTED CHANGES (${SCOPE_DIRTY})"
+  else
+    echo "  ✅ Per-PR scope file: COMMITTED"
+  fi
 fi
 
 # Evaluate
@@ -834,21 +859,21 @@ if [ ${#SCOPE_FAILURES[@]} -gt 0 ]; then
   echo "Failures:"
   for f in "${SCOPE_FAILURES[@]}"; do echo "  - ${f}"; done
   echo ""
-  echo "ACTION: Regenerate governance/scope-declaration.md as the ABSOLUTE LAST action before IAA."
-  echo "        No further file changes permitted after regeneration."
-  echo "        Commit the regenerated file, then re-run §4.3c, then re-run §4.3d, then invoke IAA."
+  echo "ACTION: Create/update .agent-admin/scope-declarations/pr-${PR_NUMBER}.md as the ABSOLUTE LAST action before IAA."
+  echo "        No further file changes permitted after creation/update."
+  echo "        Commit the file, then re-run §4.3c, then re-run §4.3d, then invoke IAA."
   exit 1
 fi
 
 echo ""
 echo "✅ [<Agent>_H] SCOPE-DECLARATION PARITY GATE PASSED"
-echo "✅ [<Agent>_H] scope-declaration.md is committed and matches branch diff."
+echo "✅ [<Agent>_H] .agent-admin/scope-declarations/pr-${PR_NUMBER}.md is committed and matches branch diff."
 echo "✅ [<Agent>_H] Agent is cleared to invoke IAA."
 \`\`\`
 
 **Commentary**: This gate is **BLOCKING** for governance PRs. If it fails:
-1. Regenerate `governance/scope-declaration.md` from `git diff --name-only origin/main...HEAD`.
-2. Commit the regenerated file (no other changes).
+1. Create/update `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` from `git diff --name-only origin/main...HEAD`.
+2. Commit the file (no other changes).
 3. Re-run §4.3c Pre-IAA Commit-State Gate.
 4. Re-run §4.3d Scope-Declaration Parity Gate.
 5. Only then invoke IAA.
@@ -1551,7 +1576,7 @@ Before session ends, verify:
 - [ ] **Environment health set**: Status = `SAFE_FOR_HANDOVER`
 - [ ] **Pre-handover merge gate parity check PASSED**: All merge gate checks pass locally (BLOCKING — PR must not be opened until this is ✅)
 - [ ] **Pre-IAA commit-state gate PASSED**: Working tree clean, all deliverables committed at HEAD, PREHANDOVER proof and session memory committed (BLOCKING — IAA must not be invoked until this is ✅)
-- [ ] **Scope-declaration parity gate PASSED** (governance PRs only): `governance/scope-declaration.md` file count matches `git diff --name-only origin/main...HEAD` count; scope-declaration committed and not dirty (BLOCKING — IAA must not be invoked until this is ✅)  (ECAP-QC-002)
+- [ ] **Scope-declaration parity gate PASSED** (governance PRs only): `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` file count matches `git diff --name-only origin/main...HEAD` count; per-PR scope file committed and not dirty (BLOCKING — IAA must not be invoked until this is ✅)  (ECAP-QC-002)
 - [ ] **Admin Ceremony Compliance Gate PASSED** (ECAP jobs only): §4.3e gate run — 0 auto-fail conditions (AAP-01 through AAP-09); ECAP reconciliation summary present; Foreman QP admin-compliance checkpoint explicitly accepted (BLOCKING — IAA must not be invoked until this is ✅)
 - [ ] **Drift evidence present** (governance/canon PRs): PREHANDOVER proof includes before/after SHA256 for every amended canon file (ECAP-QC-001)
 - [ ] **Metadata correctness**: `version == canonical_version` and `amended_date == today` for all amended CANON_INVENTORY entries (ECAP-QC-003, ECAP-QC-004)
@@ -1572,7 +1597,8 @@ Before session ends, verify:
 | **No escalation creation** | Ambiguous blockers undocumented | Auto-generate escalation document when a blocker truly cannot be resolved within authority |
 | **Vague session memory** | No actionable context for next session | Use structured template |
 | **No environment health** | Unknown state at handover | Always record health status |
-| **Stale scope-declaration.md** | IAA A-026 finding; REJECTION-PACKAGE | Regenerate scope-declaration.md as the absolute last file committed before IAA; run §4.3d parity gate (ECAP-QC-002) |
+| **Stale per-PR scope-declaration** | IAA A-026 finding; REJECTION-PACKAGE | Create/update `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` as the absolute last file committed before IAA; run §4.3d parity gate (ECAP-QC-002) |
+| **Writing scope to global governance/scope-declaration.md** | Merge conflicts on concurrent PRs; stale evidence | Use per-PR path `.agent-admin/scope-declarations/pr-${PR_NUMBER}.md` only |
 | **Missing drift evidence in proof** | IAA OVL-CG-005 finding; REJECTION-PACKAGE | Include before/after SHA256 for every amended canon file in PREHANDOVER proof (ECAP-QC-001) |
 | **version ≠ canonical_version in CANON_INVENTORY** | Downstream version-guard tooling reads the canon as drifted | Run `validate-canon-hashes.sh` which checks consistency; align fields before committing (ECAP-QC-003) |
 | **Wrong amended_date or stale hash in CANON_INVENTORY** | Inventory integrity failure; OVL-CG-006 | Set amended_date to today; re-run sha256sum and update file_hash after every file modification (ECAP-QC-004) |
