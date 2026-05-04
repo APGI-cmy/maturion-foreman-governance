@@ -303,9 +303,9 @@ else
         fi
     else
         # Derive from git diff
-        if git rev-parse --git-dir &>/dev/null 2>&1; then
+        if git rev-parse --git-dir &>/dev/null; then
             # Verify the base ref is reachable before diffing
-            if ! git rev-parse "${BASE_REF}" &>/dev/null 2>&1; then
+            if ! git rev-parse "${BASE_REF}" &>/dev/null; then
                 warn "Base ref '${BASE_REF}' not found — skipping changed-files-in-scope check"
                 info "Fetch the base branch first, or pass --changed-files <file> or --skip-diff"
                 CHANGED_FILES=""
