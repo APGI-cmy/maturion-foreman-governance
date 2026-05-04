@@ -30,7 +30,7 @@
 
 set -euo pipefail
 
-# ── Colour helpers ────────────────────────────────────────────────────────────
+# ── Color helpers ─────────────────────────────────────────────────────────────
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -253,7 +253,7 @@ GOVERNANCE_CONTROL_FOUND=false
 GOVERNANCE_CONTROL_FILE=""
 while IFS= read -r scope_file; do
     for pattern in "${GOVERNANCE_CONTROL_PATTERNS[@]}"; do
-        if echo "$scope_file" | grep -qE "$pattern"; then
+        if [[ "$scope_file" =~ $pattern ]]; then
             GOVERNANCE_CONTROL_FOUND=true
             GOVERNANCE_CONTROL_FILE="$scope_file"
             break
@@ -304,10 +304,20 @@ else
     else
         # Derive from git diff
         if git rev-parse --git-dir &>/dev/null 2>&1; then
-            CHANGED_FILES=$(git diff --name-only "${BASE_REF}...HEAD" 2>/dev/null || true)
-            if [[ -z "$CHANGED_FILES" ]]; then
-                warn "No changed files found in git diff (base: ${BASE_REF})"
-                info "If this is expected, use --skip-diff"
+            # Verify the base ref is reachable before diffing
+            if ! git rev-parse "${BASE_REF}" &>/dev/null 2>&1; then
+                warn "Base ref '${BASE_REF}' not found — skipping changed-files-in-scope check"
+                info "Fetch the base branch first, or pass --changed-files <file> or --skip-diff"
+                CHANGED_FILES=""
+            else
+                CHANGED_FILES=$(git diff --name-only "${BASE_REF}...HEAD" 2>&1) || {
+                    warn "git diff failed for base ref '${BASE_REF}' — skipping changed-files-in-scope check"
+                    CHANGED_FILES=""
+                }
+                if [[ -z "$CHANGED_FILES" ]]; then
+                    warn "No changed files found in git diff (base: ${BASE_REF})"
+                    info "If this is expected, use --skip-diff"
+                fi
             fi
         else
             warn "Not a git repository — skipping changed-files-in-scope check"

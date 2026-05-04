@@ -47,7 +47,11 @@ jobs:
           echo "=== Preflight — Validating .admin/pr.json ==="
           echo ""
 
-          git fetch origin "${BASE_REF}" 2>/dev/null || true
+          if git fetch origin "${BASE_REF}" 2>/dev/null; then
+            echo "✅ Fetched base ref: ${BASE_REF}"
+          else
+            echo "⚠️  Could not fetch base ref '${BASE_REF}' — changed-files-in-scope check will be skipped"
+          fi
 
           bash .github/scripts/validate-simple-pr-admin.sh \
             --manifest .admin/pr.json \
