@@ -24,6 +24,7 @@
 #   Files matching these patterns trigger requires_iaa/requires_ecap enforcement:
 #     .github/workflows/
 #     .github/scripts/
+#     .github/agents/
 #     governance/canon/
 #     governance/policies/
 #     .agent.md files (agent contracts)
@@ -239,6 +240,7 @@ echo ""
 GOVERNANCE_CONTROL_PATTERNS=(
     "^\.github/workflows/"
     "^\.github/scripts/"
+    "^\.github/agents/"
     "^governance/canon/"
     "^governance/policies/"
     "\.agent\.md$"
