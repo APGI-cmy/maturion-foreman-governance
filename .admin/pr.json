@@ -15,7 +15,8 @@
     ".github/scripts/validate-simple-pr-admin.sh",
     ".github/workflows/preflight-evidence-gate.yml",
     "governance/CANON_INVENTORY.json",
-    "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md"
+    "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
+    "scripts/regenerate_canon_inventory.py"
   ],
   "risk": "high",
   "requires_iaa": true,
