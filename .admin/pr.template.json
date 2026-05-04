@@ -1,0 +1,12 @@
+{
+  "pr": 0,
+  "issue": 0,
+  "type": "product-fix",
+  "owner": "",
+  "scope": [],
+  "risk": "medium",
+  "requires_iaa": false,
+  "requires_ecap": false,
+  "evidence_required": [],
+  "merge_authority": "CS2"
+}

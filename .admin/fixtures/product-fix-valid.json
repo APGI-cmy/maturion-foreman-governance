@@ -1,0 +1,19 @@
+{
+  "pr": 1525,
+  "issue": 1519,
+  "type": "product-fix",
+  "owner": "Copilot",
+  "scope": [
+    "apps/mmm/src/pages/DashboardPage.tsx",
+    "modules/MMM/tests/B6-findings/b6-findings.test.ts"
+  ],
+  "risk": "medium",
+  "requires_iaa": false,
+  "requires_ecap": false,
+  "evidence_required": [
+    "tests pass",
+    "screenshot or DOM proof of dashboard empty state",
+    "route works after login"
+  ],
+  "merge_authority": "CS2"
+}
