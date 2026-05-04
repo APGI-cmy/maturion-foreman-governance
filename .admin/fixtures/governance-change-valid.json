@@ -1,0 +1,18 @@
+{
+  "pr": 1526,
+  "issue": 1523,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": [
+    ".github/scripts/validate-mmm-ui-evidence-pack.sh",
+    ".github/workflows/preflight-evidence-gate.yml"
+  ],
+  "risk": "high",
+  "requires_iaa": true,
+  "requires_ecap": true,
+  "evidence_required": [
+    "negative tests fail without evidence pack",
+    "positive fixture passes with valid evidence pack"
+  ],
+  "merge_authority": "CS2"
+}

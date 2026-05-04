@@ -1,0 +1,63 @@
+name: Preflight Evidence Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  # Validate the .admin/pr.json PR admin manifest
+  # Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md
+  # APGI-cmy/maturion-foreman-governance#1361 — Simplify MMM governance
+  validate-pr-admin-manifest:
+    name: preflight/validate-pr-admin-manifest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for .admin/pr.json
+        id: manifest_check
+        run: |
+          echo "=== Preflight — PR Admin Manifest Check ==="
+          echo "Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md"
+          echo ""
+
+          if [ -f ".admin/pr.json" ]; then
+            echo "manifest_present=true" >> "$GITHUB_OUTPUT"
+            echo "✅ .admin/pr.json found"
+          else
+            echo "manifest_present=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  .admin/pr.json not present — manifest validation skipped for this PR"
+            echo ""
+            echo "If this is a governed MMM PR, create .admin/pr.json using .admin/pr.template.json"
+            echo "See: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md"
+          fi
+
+      - name: Validate manifest
+        if: steps.manifest_check.outputs.manifest_present == 'true'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          echo "=== Preflight — Validating .admin/pr.json ==="
+          echo ""
+
+          if git fetch origin "${BASE_REF}" 2>/dev/null; then
+            echo "✅ Fetched base ref: ${BASE_REF}"
+          else
+            echo "⚠️  Could not fetch base ref '${BASE_REF}' — changed-files-in-scope check will be skipped"
+          fi
+
+          bash .github/scripts/validate-simple-pr-admin.sh \
+            --manifest .admin/pr.json \
+            --base-ref "origin/${BASE_REF}"
+
+      - name: Pass — manifest not present
+        if: steps.manifest_check.outputs.manifest_present != 'true'
+        run: |
+          echo "✅ preflight/validate-pr-admin-manifest: PASS (manifest not present — not a governed MMM PR)"

@@ -128,7 +128,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
             canon_entry = {
                 "filename": filename,
                 "version": metadata["version"],
-                "file_hash": truncated_hash,
+                "file_hash": full_hash,
                 "effective_date": metadata["effective_date"],
                 "description": metadata["description"] or f"Canonical governance document: {filename.replace('.md', '')}",
                 "type": "canon",
@@ -167,7 +167,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
             canon_entry = {
                 "filename": filename,
                 "version": metadata["version"],
-                "file_hash": truncated_hash,
+                "file_hash": full_hash,
                 "effective_date": metadata["effective_date"],
                 "description": metadata["description"] or f"Canonical governance document: {filename.replace('.md', '')}",
                 "type": "policy",

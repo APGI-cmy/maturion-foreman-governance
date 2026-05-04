@@ -1,0 +1,32 @@
+{
+  "pr": 1362,
+  "issue": 1361,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": [
+    ".admin/pr.json",
+    ".admin/pr.template.json",
+    ".admin/fixtures/product-fix-valid.json",
+    ".admin/fixtures/governance-change-valid.json",
+    ".admin/fixtures/governance-change-missing-iaa.json",
+    ".agent-admin/assurance/assurance-token-1362.md",
+    ".agent-admin/assurance/iaa-token-session-042-wave-mmm-governance-20260504.md",
+    ".agent-workspace/independent-assurance-agent/memory/session-042-20260504.md",
+    ".github/scripts/validate-simple-pr-admin.sh",
+    ".github/workflows/preflight-evidence-gate.yml",
+    "governance/CANON_INVENTORY.json",
+    "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
+    "scripts/regenerate_canon_inventory.py"
+  ],
+  "risk": "high",
+  "requires_iaa": true,
+  "requires_ecap": true,
+  "evidence_required": [
+    "validator runs on this PR manifest",
+    "product-fix fixture passes without IAA/ECAP",
+    "governance-change fixture passes with IAA/ECAP true",
+    "governance-change fixture missing IAA/ECAP fails",
+    "changed-file outside manifest scope fails"
+  ],
+  "merge_authority": "CS2"
+}
