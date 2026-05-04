@@ -1,7 +1,7 @@
 # MMM Simple PR Admin Model
 
 **Version**: 1.0.0  
-**Authority**: Issue #1519 — Simplify MMM governance: replace legacy ceremony with single PR admin manifest  
+**Authority**: APGI-cmy/maturion-foreman-governance#1361 — Simplify MMM governance: replace legacy ceremony with single PR admin manifest  
 **Status**: ACTIVE  
 **Effective Date**: 2026-05-04  
 **Reference Failure Case**: `maturion-isms` PR #1515 — closed unmerged after a fix/fail governance loop
@@ -108,7 +108,7 @@ Every governed PR in the MMM context MUST have exactly one admin manifest at `.a
 ```json
 {
   "pr": 1525,
-  "issue": 1519,
+  "issue": 1361,
   "type": "product-fix",
   "owner": "Copilot",
   "scope": [
@@ -235,4 +235,4 @@ This model intentionally does NOT add:
 
 ---
 
-*Authority: Issue #1519 | Reference failure: PR #1515 (maturion-isms)*
+*Authority: APGI-cmy/maturion-foreman-governance#1361 | Reference failure: PR #1515 (maturion-isms)*

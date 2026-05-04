@@ -3,7 +3,7 @@
 #
 # Purpose: Validate the .admin/pr.json PR admin manifest
 # Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md
-#            Issue #1519 — Simplify MMM governance
+#            APGI-cmy/maturion-foreman-governance#1361 — Simplify MMM governance
 #
 # Exit Codes:
 #   0 = PASS — manifest is valid and all checks pass

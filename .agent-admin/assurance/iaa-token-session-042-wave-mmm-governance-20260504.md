@@ -15,7 +15,7 @@
 | PR Number | #1362 |
 | Branch | copilot/simplify-mmm-governance |
 | Base | origin/main |
-| Issue | #1519 |
+| Issue | APGI-cmy/maturion-foreman-governance#1361 |
 | Submitting Agent | GitHub Copilot coding agent (builder-tool class) |
 | Round | 1 |
 
@@ -34,7 +34,7 @@ for bootstrap CS2-direct Copilot submission.
 
 | Phase | Result | Notes |
 |-------|--------|-------|
-| Phase 1 — Preflight | N/A (bootstrap) | No Foreman-wave PREHANDOVER; CS2 direct authorization via Issue #1519 |
+| Phase 1 — Preflight | N/A (bootstrap) | No Foreman-wave PREHANDOVER; CS2 direct authorization via APGI-cmy/maturion-foreman-governance#1361 |
 | Phase 2 — Governance | N/A (bootstrap) | No CANON_INVENTORY update required at merge for new additions (post-merge action) |
 | Phase 3 — Working | PASS | Validator: 3/3 fixtures correct; CI workflow correct; canon doc v1.0.0 well-structured |
 | Phase 4 — Handover | N/A (bootstrap) | Bootstrap PR; CANON_INVENTORY entry for MMM_SIMPLE_PR_ADMIN_MODEL.md flagged as post-merge |

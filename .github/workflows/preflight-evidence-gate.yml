@@ -11,7 +11,7 @@ permissions:
 jobs:
   # Validate the .admin/pr.json PR admin manifest
   # Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md
-  # Issue #1519 — Simplify MMM governance
+  # APGI-cmy/maturion-foreman-governance#1361 — Simplify MMM governance
   validate-pr-admin-manifest:
     name: preflight/validate-pr-admin-manifest
     runs-on: ubuntu-latest

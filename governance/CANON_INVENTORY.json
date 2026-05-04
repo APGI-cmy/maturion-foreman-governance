@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "last_updated": "2026-05-04",
   "total_canons": 200,
-  "generation_timestamp": "2026-05-04T14:27:59Z",
+  "generation_timestamp": "2026-05-04T14:44:51Z",
   "canons": [
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
@@ -1481,13 +1481,13 @@
     {
       "filename": "MMM_SIMPLE_PR_ADMIN_MODEL.md",
       "version": "1.0.0",
-      "file_hash": "d4b20c0ae5f8",
+      "file_hash": "39d1ee7b51f8",
       "effective_date": "2026-05-04",
       "description": "Canonical governance document: MMM_SIMPLE_PR_ADMIN_MODEL",
       "type": "canon",
       "path": "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "d4b20c0ae5f8c6501dcfc0e9ef2321745394a17816912dac3c53ed8bf99f1657"
+      "file_hash_sha256": "39d1ee7b51f8d797e163fafe45d29f1a17eb59d2b3655f0c28020225af9cf976"
     },
     {
       "filename": "MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md",

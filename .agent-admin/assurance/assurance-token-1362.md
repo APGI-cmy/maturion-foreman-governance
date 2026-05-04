@@ -14,7 +14,7 @@ Verdict: MERGE PERMITTED
 ## Summary
 
 CS2-authorized bootstrap PR introducing the MMM Simple PR Admin Model
-(`governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md`). Authorized via Issue #1519.
+(`governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md`). Authorized via APGI-cmy/maturion-foreman-governance#1361.
 
 CS2 direct invocation of IAA constitutes the governance ceremony for this
 bootstrap PR. Legacy PREHANDOVER / session-memory / ECAP ceremony does not
@@ -24,7 +24,7 @@ apply to a CS2-direct Copilot submission that is itself replacing that ceremony.
 
 | Artifact | Finding |
 |----------|---------|
-| `governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md` | Canon v1.0.0; clear authority chain (Issue #1519); correct schema; appropriate scope boundaries |
+| `governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md` | Canon v1.0.0; clear authority chain (APGI-cmy/maturion-foreman-governance#1361); correct schema; appropriate scope boundaries |
 | `.github/scripts/validate-simple-pr-admin.sh` | Validator tested against all 3 fixtures — PASS |
 | `.github/workflows/preflight-evidence-gate.yml` | CI workflow correct; skips non-MMM PRs gracefully |
 | `.admin/pr.template.json` | Valid intentionally-blank template |
