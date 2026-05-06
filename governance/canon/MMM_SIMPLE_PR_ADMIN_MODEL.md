@@ -4,7 +4,7 @@
 **Authority**: APGI-cmy/maturion-foreman-governance#1361 — Simplify MMM governance: replace legacy ceremony with single PR admin manifest  
 **Status**: ACTIVE  
 **Effective Date**: 2026-05-04  
-**Amended**: 2026-05-06 — v1.1.0: Added `execution_model` field to schema and Check 13 enforcement per POLC_EXECUTION_MODEL_CANON.md; authority: CS2 — Canon alignment: require explicit execution_model for implementation PRs.  
+**Amended**: 2026-05-06—v1.1.0: Added `execution_model` field to schema and Check 13 enforcement per POLC_EXECUTION_MODEL_CANON.md; authority: CS2 — Canon alignment: require explicit execution_model for implementation PRs.  
 **Reference Failure Case**: `maturion-isms` PR #1515 — closed unmerged after a fix/fail governance loop
 
 ---

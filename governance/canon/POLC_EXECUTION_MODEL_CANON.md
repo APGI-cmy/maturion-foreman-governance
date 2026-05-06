@@ -163,7 +163,7 @@ This canon intentionally does NOT:
 
 - Reintroduce heavy PREHANDOVER / LUIEP ceremony for ordinary product-fix PRs.
 - Weaken POLC role separation.
-- Allow Foreman to implement production code directly.
+- MUST NOT allow Foreman to implement production code directly.
 - Make labels the primary role authority.
 - Rely on shared Copilot runtime identity to classify governed role.
 

@@ -1481,13 +1481,13 @@
     {
       "filename": "MMM_SIMPLE_PR_ADMIN_MODEL.md",
       "version": "1.1.0",
-      "file_hash": "5cf3ec03d46516dce07ad5c4153f4dda8eeab02e655b33223331f39c1db8818d",
+      "file_hash": "4620b6d57d93fed8467772ac0d40c5f1663c42c190b6035c089b747689b7c251",
       "effective_date": "2026-05-04",
       "description": "Canonical governance document: MMM_SIMPLE_PR_ADMIN_MODEL \u2014 defines .admin/pr.json schema including execution_model requirement for implementation PRs",
       "type": "canon",
       "path": "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "5cf3ec03d46516dce07ad5c4153f4dda8eeab02e655b33223331f39c1db8818d"
+      "file_hash_sha256": "4620b6d57d93fed8467772ac0d40c5f1663c42c190b6035c089b747689b7c251"
     },
     {
       "filename": "MULTI_EMBODIMENT_ORCHESTRATION_MODEL.md",
@@ -1569,13 +1569,13 @@
     {
       "filename": "POLC_EXECUTION_MODEL_CANON.md",
       "version": "1.0.0",
-      "file_hash": "14e69c3b4b11e9b8c7d3b857473fd230112e36bd2324c667b0c5a193e90d3580",
+      "file_hash": "3e4294c8549d814a51f4b35e6d85a3f1bf588b82d2c44a333547a55f01bf5db6",
       "effective_date": "2026-05-06",
       "description": "Canonical requirement that any PR changing implementation files must declare an explicit execution_model (builder-governed, foreman-orchestrated, or cs2-hotfix-override) to remove POLC role ambiguity.",
       "type": "canon",
       "path": "governance/canon/POLC_EXECUTION_MODEL_CANON.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "14e69c3b4b11e9b8c7d3b857473fd230112e36bd2324c667b0c5a193e90d3580"
+      "file_hash_sha256": "3e4294c8549d814a51f4b35e6d85a3f1bf588b82d2c44a333547a55f01bf5db6"
     },
     {
       "filename": "POST_MORTEM_PROTOCOL.md",
