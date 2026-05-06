@@ -1,9 +1,10 @@
 # MMM Simple PR Admin Model
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Authority**: APGI-cmy/maturion-foreman-governance#1361 — Simplify MMM governance: replace legacy ceremony with single PR admin manifest  
 **Status**: ACTIVE  
 **Effective Date**: 2026-05-04  
+**Amended**: 2026-05-06 — v1.1.0: Added `execution_model` field to schema and Check 13 enforcement per POLC_EXECUTION_MODEL_CANON.md; authority: CS2 — Canon alignment: require explicit execution_model for implementation PRs.  
 **Reference Failure Case**: `maturion-isms` PR #1515 — closed unmerged after a fix/fail governance loop
 
 ---
@@ -69,9 +70,13 @@ Every governed PR in the MMM context MUST have exactly one admin manifest at `.a
   "requires_iaa": <boolean>,
   "requires_ecap": <boolean>,
   "evidence_required": ["<evidence-item>", ...],
-  "merge_authority": "CS2"
+  "merge_authority": "CS2",
+  "execution_model": "<execution-model>",
+  "implementing_agent": "<agent-id>"
 }
 ```
+
+> **Note**: `execution_model` (and its required companion fields) are **mandatory** whenever the PR changes implementation files. See §Execution Model below and `governance/canon/POLC_EXECUTION_MODEL_CANON.md` for the full specification.
 
 ### Field definitions
 
@@ -87,6 +92,10 @@ Every governed PR in the MMM context MUST have exactly one admin manifest at `.a
 | `requires_ecap` | boolean | yes | Whether ECAP bundle is required |
 | `evidence_required` | string[] | yes | Non-empty list of evidence items proving the PR works |
 | `merge_authority` | string | yes | Must be `CS2` for all MMM governance/product recovery work |
+| `execution_model` | string | conditional | Required when implementation files are in scope. One of `builder-governed`, `foreman-orchestrated`, `cs2-hotfix-override`. |
+| `implementing_agent` | string | conditional | Required when `execution_model` is `builder-governed` or `foreman-orchestrated`. The agent ID of the builder executing the implementation. |
+| `orchestrating_agent` | string | conditional | Required when `execution_model` is `foreman-orchestrated`. The Foreman agent ID (e.g. `foreman-v2`). |
+| `cs2_justification` | string | conditional | Required when `execution_model` is `cs2-hotfix-override`. Non-empty justification text or issue/PR reference. |
 
 ### Accepted PR types
 
@@ -123,7 +132,9 @@ Every governed PR in the MMM context MUST have exactly one admin manifest at `.a
     "screenshot or DOM proof of dashboard empty state",
     "route works after login"
   ],
-  "merge_authority": "CS2"
+  "merge_authority": "CS2",
+  "execution_model": "builder-governed",
+  "implementing_agent": "ui-builder"
 }
 ```
 
@@ -152,6 +163,34 @@ Every governed PR in the MMM context MUST have exactly one admin manifest at `.a
 
 ---
 
+## Execution Model
+
+**Authority**: `governance/canon/POLC_EXECUTION_MODEL_CANON.md`
+
+Any PR whose `scope` contains implementation files MUST include an `execution_model` field. The validator enforces this as Check 13.
+
+| Model | When to use | Required companion fields |
+|---|---|---|
+| `builder-governed` | PR is directly owned by an authorised builder agent | `implementing_agent` |
+| `foreman-orchestrated` | Foreman scopes work and delegates to a builder | `orchestrating_agent`, `implementing_agent` |
+| `cs2-hotfix-override` | Scoped CS2-approved emergency exception | `cs2_justification` |
+
+**Implementation file patterns** (triggers execution_model enforcement):
+
+```
+apps/
+src/
+modules/
+lib/
+packages/
+```
+
+PRs that only change governance-control paths (`.github/`, `governance/`, `*.agent.md`) do not require `execution_model`.
+
+See `governance/canon/POLC_EXECUTION_MODEL_CANON.md` for full semantics.
+
+---
+
 ## Policy decisions
 
 ### 1. Single source of truth
@@ -166,6 +205,7 @@ Every governed PR in the MMM context MUST have exactly one admin manifest at `.a
 - IAA/ECAP requirement
 - Evidence required
 - Merge authority
+- Execution model (when implementation files are in scope)
 
 **No required gate may derive these facts from the PR body prose.**
 
@@ -205,6 +245,11 @@ The validator script `.github/scripts/validate-simple-pr-admin.sh`:
 - Validates `risk` is one of `low`, `medium`, `high`
 - Fails if governance-control files are changed and `requires_iaa`/`requires_ecap` are not `true`
 - Fails if `merge_authority` is missing or not `CS2`
+- **Fails if implementation files are in scope and `execution_model` is missing** (Check 13)
+- Fails if `execution_model` is present but is not one of the accepted values
+- Fails if `execution_model = builder-governed` and `implementing_agent` is missing or empty
+- Fails if `execution_model = foreman-orchestrated` and `orchestrating_agent` or `implementing_agent` is missing or empty
+- Fails if `execution_model = cs2-hotfix-override` and `cs2_justification` is missing or empty
 
 The validator does **not**:
 - Parse PR body prose
