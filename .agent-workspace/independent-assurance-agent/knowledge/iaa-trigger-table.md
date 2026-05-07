@@ -1,9 +1,9 @@
 # IAA Trigger Table
 
 **Agent**: independent-assurance-agent
-**Version**: 2.1.0
+**Version**: 2.2.0
 **Status**: ACTIVE
-**Last Updated**: 2026-03-02
+**Last Updated**: 2026-05-07
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
 
 ---
@@ -25,11 +25,13 @@ Default: MANDATORY INVOCATION when in doubt.
 | AGENT_CONTRACT | YES — MANDATORY | Any `.github/agents/*.md` file created or modified; any `governance/agents/` or `governance/contracts/` file created or modified; any `*-agent-contract.md` file | All agent classes. No exceptions. FAIL-ONLY-ONCE A-002. This includes Foreman, Builder, Overseer, Specialist, and Assurance (IAA self-review → escalate to CS2). |
 | CANON_GOVERNANCE | YES — MANDATORY | Any `governance/canon/` file created or modified; any `governance/CANON_INVENTORY.json` update; any file matching `*ARCHITECTURE*.md` or `*STRATEGY*.md` in governance | Includes CANON_INVENTORY.json updates. Version bump must be present. |
 | CI_WORKFLOW | YES — MANDATORY | Any `.github/workflows/` file created or modified | Includes merge gate workflow, ripple sync workflow, and all governance automation workflows. |
+| CI_SCRIPT | YES — MANDATORY | Any `.github/scripts/` file created or modified | Governance-control path; scripts underpin CI gate enforcement. Aligned with validate-simple-pr-admin.sh Check 11 and MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0. |
+| AGENT_ADMIN_ARTIFACT | YES — MANDATORY | Any `.agent-admin/` file created or modified other than session memory and parking station files | Governance-control path; includes prehandover proofs, gate results, assurance tokens, scope declarations, and wave checklists. Aligned with MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0. |
 | AAWP_MAT | YES — MANDATORY | PR labelled `aawp-deliverable` or `mat-deliverable`; files match AAWP/MAT path patterns (`modules/mat/`, `packages/ai-centre/`, AAWP architecture files) | Evidence bundle completeness required. |
 | AGENT_INTEGRITY | YES — MANDATORY | Any `governance/quality/agent-integrity/` file created or modified | CS2-only update authority. Any non-CS2 modification → auto-REJECTION-PACKAGE. |
 | KNOWLEDGE_GOVERNANCE | YES — MANDATORY | Any `.agent-workspace/*/knowledge/` file created or modified; any Tier 2 knowledge index, overlay, trigger table, checklist, or FAIL-ONLY-ONCE registry updated | Covers all IAA and agent Tier 2 knowledge patches. Evidence bundle + PREHANDOVER ceremony required (FAIL-ONLY-ONCE A-015). |
 | MIXED | YES — MANDATORY | PR contains both triggering and non-triggering artifacts | Ambiguity rule applies. Any triggering artifact activates IAA for the whole PR. |
-| EXEMPT | NO — if unambiguously non-triggering | Pure doc-only changes outside governance/canon; parking station updates (labelled `parking-station`); session memory files only; README changes with no agent/governance/CI content; admin/housekeeping (labelled `admin` or `housekeeping`) | Must be unambiguously non-triggering. If any doubt → apply AMBIGUITY RULE. |
+| EXEMPT | NO — if unambiguously non-triggering | Pure doc-only changes outside governance/canon; parking station updates (labelled `parking-station`); session memory files only; README changes with no agent/governance/CI content; admin/housekeeping (labelled `admin` or `housekeeping`); MMM `product-fix` PRs with `requires_iaa=false` in `.admin/pr.json` and no governance-control paths in scope | Must be unambiguously non-triggering. If any doubt → apply AMBIGUITY RULE. For MMM product-fix PRs: manifest `requires_iaa=false` AND no governance-control paths in scope both required for EXEMPT classification. |
 | AMBIGUOUS | YES — MANDATORY | Classification unclear; mixed signals; trigger table file is missing | FAIL-ONLY-ONCE A-003: ambiguity resolves to mandatory invocation. |
 
 ---
@@ -59,6 +61,9 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
 3. Does PR contain any .github/workflows/ changes?
    → YES: Category = CI_WORKFLOW. IAA = MANDATORY.
 
+3a. Does PR contain any .github/scripts/ changes?
+    → YES: Category = CI_SCRIPT. IAA = MANDATORY.
+
 4. Does PR contain AAWP/MAT deliverable artifacts?
    → YES: Category = AAWP_MAT. IAA = MANDATORY.
 
@@ -68,7 +73,14 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
 6. Does PR contain any .agent-workspace/*/knowledge/ file changes?
    → YES: Category = KNOWLEDGE_GOVERNANCE. IAA = MANDATORY.
 
-7. Is the PR clearly and unambiguously doc-only, parking-station, or admin?
+6a. Does PR contain any .agent-admin/ file changes (other than session memory / parking station)?
+    → YES: Category = AGENT_ADMIN_ARTIFACT. IAA = MANDATORY.
+
+7. Check MMM manifest (.admin/pr.json): is requires_iaa=false AND no governance-control paths in scope?
+   → YES: Category = EXEMPT per manifest. IAA = NOT REQUIRED.
+   → NO or MISSING: continue to step 8.
+
+8. Is the PR clearly and unambiguously doc-only, parking-station, or admin?
    → YES: Category = EXEMPT. IAA = NOT REQUIRED.
    → UNCERTAIN: Apply AMBIGUITY RULE → Category = AMBIGUOUS. IAA = MANDATORY.
 ```
@@ -82,6 +94,7 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
 | 1.0.0 | 2026-02-25 | Initial STUB (placeholder from canon) |
 | 2.0.0 | 2026-02-28 | Fully populated from INDEPENDENT_ASSURANCE_AGENT_CANON.md; AGENT_INTEGRITY category added; classification decision flow added; STUB status removed |
 | 2.1.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE trigger category added; classification decision flow updated with step 6 for knowledge governance path (maturion-isms#IAA-TIER2) |
+| 2.2.0 | 2026-05-07 | CI_SCRIPT and AGENT_ADMIN_ARTIFACT trigger categories added; EXEMPT updated to include MMM manifest-era product-fix condition; classification flow updated with steps 3a, 6a, and manifest step 7; aligned with MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0 and ISMS-side validator parity (PR #1529) |
 
 ---
 

@@ -1,30 +1,32 @@
 {
-  "pr": 1364,
-  "issue": 1361,
+  "pr": 1366,
+  "issue": 1365,
   "type": "governance-change",
   "owner": "Copilot",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-session-043-wave-canon-20260507.md",
-    ".agent-admin/prehandover/prehandover_proof_1364_20260507.md",
-    ".agent-workspace/independent-assurance-agent/memory/session-043-20260507.md",
+    ".agent-workspace/foreman-v2/knowledge/session-memory-template.md",
+    ".agent-workspace/independent-assurance-agent/knowledge/index.md",
+    ".agent-workspace/independent-assurance-agent/knowledge/iaa-trigger-table.md",
     ".github/scripts/tests/test-validate-simple-pr-admin.sh",
     ".github/scripts/validate-simple-pr-admin.sh",
-    ".github/workflows/governance-gate.yml",
     "governance/CANON_INVENTORY.json",
     "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
-    "governance/canon/POLC_EXECUTION_MODEL_CANON.md",
-    "governance/layer-down/RIPPLE-EXECUTION-MODEL-CANON-20260506.md"
+    "governance/templates/execution-ceremony-admin/PREHANDOVER.template.md",
+    "governance/templates/execution-ceremony-admin/README.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "POLC_EXECUTION_MODEL_CANON.md introduces explicit execution_model gate",
-    "MMM_SIMPLE_PR_ADMIN_MODEL.md updated to v1.1.0 with execution_model schema",
-    "validate-simple-pr-admin.sh Check 13 rejects implementation PRs missing execution_model",
-    "test-validate-simple-pr-admin.sh: all 24 Check 13 assertions pass",
-    "governance-gate.yml CI job runs regression tests on every PR and push"
+    "validate-simple-pr-admin.sh: Check 11 now enforces requires_iaa/requires_ecap for governance/** and .agent-admin/** paths (ISMS-side parity)",
+    "test-validate-simple-pr-admin.sh: all 36 tests pass (24 existing Check 13 + 12 new Check 11 tests)",
+    "MMM_SIMPLE_PR_ADMIN_MODEL.md updated to v1.2.0 with governance-control path expansion and Tier 1/2 alignment policy",
+    "PREHANDOVER.template.md updated to v1.3.0 with PR type routing note (low-ceremony vs full-ceremony)",
+    "execution-ceremony-admin/README.md updated to v1.1.0 with manifest-era routing table and scope declaration deprecation note",
+    "foreman-v2 session-memory-template.md updated to v1.1.0 with manifest-era ceremony routing fields",
+    "iaa-trigger-table.md updated to v2.2.0 with CI_SCRIPT and AGENT_ADMIN_ARTIFACT trigger categories",
+    "CANON_INVENTORY.json regenerated with updated MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0 hash"
   ],
   "merge_authority": "CS2"
 }

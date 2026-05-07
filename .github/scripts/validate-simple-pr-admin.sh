@@ -25,9 +25,12 @@
 #     .github/workflows/
 #     .github/scripts/
 #     .github/agents/
-#     governance/canon/
-#     governance/policies/
+#     governance/           (all of governance/, including canon/, policies/, templates/, etc.)
+#     .agent-admin/
 #     .agent.md files (agent contracts)
+#
+# Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0
+#            ISMS-side parity: APGI-cmy/maturion-foreman-governance#1529
 
 set -euo pipefail
 
@@ -241,8 +244,8 @@ GOVERNANCE_CONTROL_PATTERNS=(
     "^\.github/workflows/"
     "^\.github/scripts/"
     "^\.github/agents/"
-    "^governance/canon/"
-    "^governance/policies/"
+    "^governance/"
+    "^\.agent-admin/"
     "\.agent\.md$"
 )
 
