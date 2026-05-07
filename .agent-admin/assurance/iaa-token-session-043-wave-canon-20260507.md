@@ -43,7 +43,7 @@ Verdict: MERGE PERMITTED
 | Phase 1 — Preflight | PASS | `.admin/pr.json` validates cleanly (all 13 checks pass); CS2 direct authorization via issue #1361; MMM bootstrap model applies per session-042 precedent |
 | Phase 2 — Governance | PASS | CANON_INVENTORY updated: POLC entry new (`3e4294c8...`), MMM updated (`4620b6d5...`); both hashes independently verified; ripple notice issued; version bumps present |
 | Phase 3 — Working | PASS | All 24 regression tests pass; Check 13 implementation correct; layer-down complete; non-goals documented |
-| Phase 4 — Handover | PASS | Preflight Evidence Gate and Governance Gate PASS at HEAD e2257e39; admin-ceremony failure is pre-existing bypass-eligible; iaa/assurance-check resolved by this token |
+| Phase 4 — Handover | PASS | Preflight Evidence Gate and Governance Gate PASS at HEAD bff6beb8; admin-ceremony failure is pre-existing bypass-eligible; iaa/assurance-check resolved by this token |
 
 ---
 
