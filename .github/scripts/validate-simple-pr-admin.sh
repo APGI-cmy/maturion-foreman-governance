@@ -30,7 +30,7 @@
 #     .agent.md files (agent contracts)
 #
 # Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0
-#            ISMS-side parity: APGI-cmy/maturion-foreman-governance#1529
+#            ISMS-side parity: APGI-cmy/maturion-isms#1529
 
 set -euo pipefail
 
