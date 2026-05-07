@@ -823,7 +823,7 @@ VERDICT: FULL_FUNCTIONAL_DELIVERY | PARTIAL_FUNCTIONAL_DELIVERY | ADMIN_ONLY | F
 
 #### When Each Verdict Applies
 
-**`FULL_FUNCTIONAL_DELIVERY`**: All admin/ceremony requirements are satisfied AND the requested user-facing workflow works end-to-end per the FULL_FUNCTIONAL_DELIVERY definition in §9.2. This is the only verdict that may unconditionally close a functional product issue.
+**`FULL_FUNCTIONAL_DELIVERY`**: All admin/ceremony requirements are satisfied AND the requested user-facing workflow works end-to-end per the FULL_FUNCTIONAL_DELIVERY definition in §12.2. This is the only verdict that may unconditionally close a functional product issue.
 
 **`PARTIAL_FUNCTIONAL_DELIVERY`**: Admin requirements may be satisfied, and some product behaviour exists (e.g., components render, some flows work), but the requested functional workflow is not complete. IAA must identify exactly what is missing. Cannot close a functional product issue unless CS2 explicitly accepts the partial scope.
 
@@ -890,7 +890,7 @@ The following downstream artifacts must absorb this canon change in subsequent p
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0.0 | 2026-02-16 | CS2 (Johan Ras) | Initial standard creation addressing critical governance gap: missing frontend deliverable despite requirements |
-| 2.0.0 | 2026-05-07 | CS2 (Johan Ras) | Added §9 Delivery Verdict Taxonomy: FULL_FUNCTIONAL_DELIVERY, PARTIAL_FUNCTIONAL_DELIVERY, UI_SHELL_ONLY, ADMIN_PASS, FUNCTIONAL_PASS definitions; IAA split verdict model for product-facing PRs; governing principle (admin admissibility vs functional acceptability); APGI-cmy/maturion-isms#1553 calibration example; prohibited failure modes; downstream layer-down implications. Authority: CS2 — Canon alignment issue: require full functional delivery for product build PASS. |
+| 2.0.0 | 2026-05-07 | CS2 (Johan Ras) | Added §12 Delivery Verdict Taxonomy: FULL_FUNCTIONAL_DELIVERY, PARTIAL_FUNCTIONAL_DELIVERY, UI_SHELL_ONLY, ADMIN_PASS, FUNCTIONAL_PASS definitions; IAA split verdict model for product-facing PRs; governing principle (admin admissibility vs functional acceptability); APGI-cmy/maturion-isms#1553 calibration example; prohibited failure modes; downstream layer-down implications. Authority: CS2 — Canon alignment issue: require full functional delivery for product build PASS. |
 
 ---
 
