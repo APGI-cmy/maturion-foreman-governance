@@ -1,39 +1,28 @@
 {
-  "pr": 1366,
-  "issue": 1365,
+  "pr": 1368,
+  "issue": 1367,
   "type": "governance-change",
   "owner": "Copilot",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/correction-addendum-pr1366-20260507.md",
-    ".agent-admin/assurance/iaa-token-session-044-wave1-20260507.md",
-    ".agent-admin/assurance/rejection-package-1366.md",
-    ".agent-admin/prehandover/prehandover_proof_1366_20260507.md",
-    ".agent-admin/scope-declarations/pr-1366.md",
-    ".agent-workspace/foreman-v2/knowledge/session-memory-template.md",
-    ".agent-workspace/independent-assurance-agent/escalation-inbox/rejection-tracking-1366-20260507.md",
-    ".agent-workspace/independent-assurance-agent/knowledge/index.md",
-    ".agent-workspace/independent-assurance-agent/knowledge/iaa-trigger-table.md",
+    ".agent-admin/assurance/iaa-token-session-044-wave-canon-20260507.md",
+    ".agent-admin/prehandover/prehandover_proof_1368_20260507.md",
     ".agent-workspace/independent-assurance-agent/memory/session-044-20260507.md",
-    ".github/scripts/tests/test-validate-simple-pr-admin.sh",
-    ".github/scripts/validate-simple-pr-admin.sh",
     "governance/CANON_INVENTORY.json",
-    "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
-    "governance/templates/execution-ceremony-admin/PREHANDOVER.template.md",
-    "governance/templates/execution-ceremony-admin/README.md"
+    "governance/canon/FULLY_FUNCTIONAL_DELIVERY_STANDARD.md",
+    "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
+    "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "validate-simple-pr-admin.sh: Check 11 now enforces requires_iaa/requires_ecap for governance/** and .agent-admin/** paths (ISMS-side parity)",
-    "test-validate-simple-pr-admin.sh: all 36 tests pass (24 existing Check 13 + 12 new Check 11 tests)",
-    "MMM_SIMPLE_PR_ADMIN_MODEL.md updated to v1.2.0 with governance-control path expansion and Tier 1/2 alignment policy",
-    "PREHANDOVER.template.md updated to v1.3.0 with PR type routing note (low-ceremony vs full-ceremony)",
-    "execution-ceremony-admin/README.md updated to v1.1.0 with manifest-era routing table and scope declaration deprecation note",
-    "foreman-v2 session-memory-template.md updated to v1.1.0 with manifest-era ceremony routing fields",
-    "iaa-trigger-table.md updated to v2.2.0 with CI_SCRIPT and AGENT_ADMIN_ARTIFACT trigger categories",
-    "CANON_INVENTORY.json regenerated with updated MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0 hash"
+    "FULLY_FUNCTIONAL_DELIVERY_STANDARD.md v2.0.0 adds §12 Delivery Verdict Taxonomy with normative definitions: FULL_FUNCTIONAL_DELIVERY, PARTIAL_FUNCTIONAL_DELIVERY, UI_SHELL_ONLY, ADMIN_PASS, FUNCTIONAL_PASS",
+    "INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.9.0 adds §Product-Facing PR Split Verdict Model requiring ADMIN_PASS/FUNCTIONAL_PASS/VERDICT split for product-facing T2 PRs",
+    "GOVERNANCE_CANON_MANIFEST.md manifest reconciliation: FFDS and IAA canon were absent from manifest (but present in CANON_INVENTORY); both added; count 95→97 canon",
+    "CANON_INVENTORY.json regenerated with updated SHA256 hashes for both amended canon files",
+    "Cross-reference corrections: §9.1/§9.4 → §12.1/§12.4 in FFDS calibration example",
+    "IAA session-044-20260507: ASSURANCE-TOKEN issued for PR #1368 — MERGE PERMITTED"
   ],
   "merge_authority": "CS2"
 }
