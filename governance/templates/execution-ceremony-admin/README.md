@@ -31,7 +31,7 @@ Starting with the MMM simplified governance model, PRs use `.admin/pr.json` as t
 |---------|---------------|----------------|------------------|
 | `product-fix` / `test-only` | `false` | `false` | **None** — legacy ceremony frozen. Use `.admin/pr.json` only. |
 | `product-fix` crossing governance-control paths | auto-`true` | auto-`true` | **Full ceremony** — governance-control scope overrides type default. |
-| `deployment-change` | depends on manifest | no | Partial — per manifest `evidence_required`. |
+| `deployment-change` | depends on manifest | `false` | Partial — per manifest `evidence_required`. |
 | `governance-change` / `agent-contract-change` | `true` | `true` | **Full ceremony** — all templates apply. |
 
 **Governance-control paths** (any PR touching these requires full ceremony regardless of `type`):
