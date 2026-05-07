@@ -1,7 +1,8 @@
 # Session Memory Template — Foreman v2
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Created**: 2026-04-09  
+**Updated**: 2026-05-07 — aligned with MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0 manifest-era model  
 **Authority**: CS2 (Johan Ras)  
 **Canonical Source**: `governance/canon/AGENT_HANDOVER_AUTOMATION.md`
 
@@ -53,6 +54,9 @@ File naming: `.agent-workspace/foreman-v2/memory/session-<SESSION_ID>.md`
 **stages_completed**: [list of stages 1-10 completed this session, or 'N/A']
 **builder_agents_delegated**: [list builder agents appointed, or 'none']
 **qp_evaluations_performed**: [N — list task IDs, or 'none']
+**governance_control_paths_in_scope**: [YES — classify as full-ceremony | NO — product-fix may be low-ceremony]
+**manifest_pr_type**: [product-fix | test-only | deployment-change | database-migration | governance-change | agent-contract-change]
+**ceremony_path**: [low-ceremony (manifest only) | full-ceremony (IAA + ECAP required)]
 
 ---
 
@@ -90,6 +94,10 @@ File naming: `.agent-workspace/foreman-v2/memory/session-<SESSION_ID>.md`
 ## Prehandover Proof Template
 
 File naming: `.agent-admin/prehandover/proof-<TIMESTAMP>.md`
+
+> **PR type routing** (check `.admin/pr.json` before generating):
+> - `requires_iaa=false` and `requires_ecap=false` (low-ceremony product-fix): **do NOT generate this proof**. Manifest is the sole source of truth.
+> - `requires_iaa=true` or governance-control paths in scope: **generate this proof** using full template below.
 
 ```markdown
 # Prehandover Proof — <TIMESTAMP>

@@ -1,6 +1,11 @@
 # ECAP PREHANDOVER Proof Template
 
 > **Usage**: Copy this template to `.agent-admin/prehandover/proof-<PR#>.md`. Fill every field. Do NOT leave placeholder values. Once committed, this document is immutable — create a new proof file for any subsequent round.
+>
+> **PR type routing** (from `.admin/pr.json`):
+> - `product-fix` / `test-only` with `requires_iaa=false` and `requires_ecap=false`: **low-ceremony path** — legacy ceremony artifacts (IAA wave records, ECAP bundles, PREHANDOVER proofs) are **frozen** and not required for merge. Use `.admin/pr.json` as the single source of truth. Do NOT generate this template for these PRs.
+> - `governance-change` / `agent-contract-change` or any PR with `requires_iaa=true`: **full-ceremony path** — this template applies. All fields below are mandatory.
+> - Any PR whose scope crosses governance-control paths (`.github/workflows/**`, `.github/scripts/**`, `.github/agents/**`, `governance/**`, `.agent-admin/**`) is automatically full-ceremony regardless of declared type.
 
 ---
 
@@ -57,7 +62,7 @@ ecap_reconciliation:    .agent-admin/prehandover/ecap-reconciliation-<PR#>.md  #
 
 ## Scope
 files_changed:          <number>             # must match git diff --name-only origin/main...HEAD | wc -l
-scope_declaration:      governance/scope-declaration.md
+scope_declaration:      .agent-admin/scope-declarations/pr-<PR_NUMBER>.md   # per-PR immutable scope declaration (global governance/scope-declaration.md is deprecated)
 
 ## Drift Evidence (for canon/governance PRs — ECAP-QC-001)
 # Add one row per amended canon file:
@@ -109,4 +114,4 @@ suggestions:            NONE                 # NONE | see .agent-workspace/<agen
 
 ---
 
-*Template Version: 1.2.0 | Authority: ECAP-001 v1.2.0 + AGENT_HANDOVER_AUTOMATION.md v1.6.0 | Effective: 2026-04-21*
+*Template Version: 1.3.0 | Authority: ECAP-001 v1.2.0 + AGENT_HANDOVER_AUTOMATION.md v1.6.0 + MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0 | Effective: 2026-05-07*
