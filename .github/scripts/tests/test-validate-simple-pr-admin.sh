@@ -2,10 +2,11 @@
 # test-validate-simple-pr-admin.sh
 #
 # Regression tests for .github/scripts/validate-simple-pr-admin.sh
-# Specifically covers Check 13: execution_model enforcement for implementation PRs.
+# Covers Check 11 (governance-control path enforcement) and
+# Check 13 (execution_model enforcement for implementation PRs).
 #
-# Authority: governance/canon/POLC_EXECUTION_MODEL_CANON.md
-#            governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md
+# Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0
+#            governance/canon/POLC_EXECUTION_MODEL_CANON.md
 #
 # Usage:
 #   bash .github/scripts/tests/test-validate-simple-pr-admin.sh
@@ -15,6 +16,15 @@
 #   1 = one or more tests failed
 #
 # Test coverage:
+#   Check 11 — Governance-control path enforcement (requires_iaa/requires_ecap):
+#   14. .agent-admin/ path in scope with requires_iaa=false → FAIL
+#   15. .agent-admin/ path in scope with requires_iaa=true and requires_ecap=true → PASS
+#   16. governance/ non-canon path in scope with requires_iaa=false → FAIL
+#   17. governance/ non-canon path in scope with requires_iaa=true and requires_ecap=true → PASS
+#   18. governance/canon/ path (existing pattern, now subsumed by governance/) → PASS (IAA enforced)
+#   19. Product-fix scope without governance-control paths → PASS without IAA/ECAP enforcement
+#
+#   Check 13 — execution_model enforcement:
 #   1.  Implementation files in scope + missing execution_model → FAIL
 #   2.  Invalid execution_model value → FAIL
 #   3.  builder-governed without implementing_agent → FAIL
@@ -118,8 +128,8 @@ GOVERNANCE_ONLY_MANIFEST='{
 }'
 
 echo "======================================================="
-echo "  validate-simple-pr-admin.sh — Check 13 Tests"
-echo "  Authority: governance/canon/POLC_EXECUTION_MODEL_CANON.md"
+echo "  validate-simple-pr-admin.sh — Check 11 + Check 13 Tests"
+echo "  Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0"
 echo "======================================================="
 echo ""
 
@@ -319,6 +329,146 @@ d['implementing_agent'] = 'ui-builder'
 print(json.dumps(d, indent=2))
 ")"
 assert_exit 0 "Test 13 — exit code 0" "${M}"
+echo ""
+
+# ── Check 11 Tests: Governance-control path enforcement ──────────────────────
+echo "======================================================="
+echo "  Check 11 — Governance-control path enforcement tests"
+echo "======================================================="
+echo ""
+
+# Base manifest templates for Check 11 tests
+AGENT_ADMIN_MANIFEST='{
+  "pr": 1602,
+  "issue": 1365,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": [".agent-admin/prehandover/proof-1602.md"],
+  "risk": "high",
+  "requires_iaa": false,
+  "requires_ecap": false,
+  "evidence_required": ["tests pass"],
+  "merge_authority": "CS2"
+}'
+
+AGENT_ADMIN_MANIFEST_IAA='{
+  "pr": 1602,
+  "issue": 1365,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": [".agent-admin/prehandover/proof-1602.md"],
+  "risk": "high",
+  "requires_iaa": true,
+  "requires_ecap": true,
+  "evidence_required": ["tests pass"],
+  "merge_authority": "CS2"
+}'
+
+GOVERNANCE_TEMPLATES_MANIFEST='{
+  "pr": 1603,
+  "issue": 1365,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": ["governance/templates/execution-ceremony-admin/README.md"],
+  "risk": "high",
+  "requires_iaa": false,
+  "requires_ecap": false,
+  "evidence_required": ["tests pass"],
+  "merge_authority": "CS2"
+}'
+
+GOVERNANCE_TEMPLATES_MANIFEST_IAA='{
+  "pr": 1603,
+  "issue": 1365,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": ["governance/templates/execution-ceremony-admin/README.md"],
+  "risk": "high",
+  "requires_iaa": true,
+  "requires_ecap": true,
+  "evidence_required": ["tests pass"],
+  "merge_authority": "CS2"
+}'
+
+PURE_PRODUCT_FIX_MANIFEST='{
+  "pr": 1604,
+  "issue": 1365,
+  "type": "product-fix",
+  "owner": "Copilot",
+  "scope": ["apps/mmm/src/pages/DashboardPage.tsx"],
+  "risk": "low",
+  "requires_iaa": false,
+  "requires_ecap": false,
+  "evidence_required": ["tests pass", "screenshot proof"],
+  "merge_authority": "CS2",
+  "execution_model": "builder-governed",
+  "implementing_agent": "ui-builder"
+}'
+
+# ── Test 14: .agent-admin/ path in scope, requires_iaa=false → FAIL ──────────
+echo "Test 14: .agent-admin/ path in scope, requires_iaa=false → FAIL (Check 11)"
+M="${WORK_DIR}/t14.json"
+write_manifest "${M}" "${AGENT_ADMIN_MANIFEST}"
+assert_exit 1 "Test 14 — exit code 1" "${M}"
+assert_output_contains \
+    "Test 14 — error message" \
+    "${M}" \
+    "Governance-control file in scope but requires_iaa is not true"
+echo ""
+
+# ── Test 15: .agent-admin/ path in scope, requires_iaa/ecap=true → PASS ──────
+echo "Test 15: .agent-admin/ path in scope, requires_iaa=true + requires_ecap=true → PASS (Check 11)"
+M="${WORK_DIR}/t15.json"
+write_manifest "${M}" "${AGENT_ADMIN_MANIFEST_IAA}"
+assert_exit 0 "Test 15 — exit code 0" "${M}"
+assert_output_contains \
+    "Test 15 — governance-control enforcement confirmed" \
+    "${M}" \
+    "requires_iaa=true and requires_ecap=true"
+echo ""
+
+# ── Test 16: governance/templates/ path in scope, requires_iaa=false → FAIL ──
+echo "Test 16: governance/templates/ path in scope, requires_iaa=false → FAIL (Check 11)"
+M="${WORK_DIR}/t16.json"
+write_manifest "${M}" "${GOVERNANCE_TEMPLATES_MANIFEST}"
+assert_exit 1 "Test 16 — exit code 1" "${M}"
+assert_output_contains \
+    "Test 16 — error message" \
+    "${M}" \
+    "Governance-control file in scope but requires_iaa is not true"
+echo ""
+
+# ── Test 17: governance/templates/ path in scope, requires_iaa/ecap=true → PASS
+echo "Test 17: governance/templates/ path in scope, requires_iaa=true + requires_ecap=true → PASS (Check 11)"
+M="${WORK_DIR}/t17.json"
+write_manifest "${M}" "${GOVERNANCE_TEMPLATES_MANIFEST_IAA}"
+assert_exit 0 "Test 17 — exit code 0" "${M}"
+assert_output_contains \
+    "Test 17 — governance-control enforcement confirmed" \
+    "${M}" \
+    "requires_iaa=true and requires_ecap=true"
+echo ""
+
+# ── Test 18: governance/canon/ path — still enforced by broader governance/ pattern → PASS (IAA enforced)
+echo "Test 18: governance/canon/ path with requires_iaa=true → PASS (subsumed by broader governance/ pattern)"
+M="${WORK_DIR}/t18.json"
+write_manifest "${M}" "${GOVERNANCE_ONLY_MANIFEST}"
+assert_exit 0 "Test 18 — exit code 0" "${M}"
+assert_output_contains \
+    "Test 18 — governance-control enforcement confirmed" \
+    "${M}" \
+    "requires_iaa=true and requires_ecap=true"
+echo ""
+
+# ── Test 19: pure product-fix scope, no governance-control paths → PASS without IAA enforcement
+echo "Test 19: product-fix with app-only scope, no governance-control enforcement → PASS"
+M="${WORK_DIR}/t19.json"
+write_manifest "${M}" "${PURE_PRODUCT_FIX_MANIFEST}"
+assert_exit 0 "Test 19 — exit code 0" "${M}"
+assert_output_contains \
+    "Test 19 — no governance-control enforcement" \
+    "${M}" \
+    "No governance-control files in scope"
 echo ""
 
 # ── Summary ───────────────────────────────────────────────────────────────────
