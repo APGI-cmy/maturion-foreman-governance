@@ -23,7 +23,7 @@ opojd_compliance:       CONFIRMED
 merge_gate_verdict:     PASS
 pre_iaa_commit_state:   PASS
 scope_declaration_parity: PASS
-admin_ceremony_compliance: PENDING (iaa/assurance-check: awaiting IAA sign-off)
+admin_ceremony_compliance: PASS
 
 ## Gate Inventory
 gate_inventory:
@@ -33,15 +33,15 @@ gate_inventory:
   stop-and-fix/enforcement:                    PASS
   merge-gate/verdict:                          PASS
   admin-ceremony/template-leakage:             PASS
-  admin-ceremony/placeholder-final-state:      PENDING (pre-existing PENDING values from PRs 1356 and 1360 — bypass requires iaa-token-session-*.md added in this PR diff)
-  iaa/assurance-check:                         PENDING (awaiting IAA sign-off — canon files changed: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md)
+  admin-ceremony/placeholder-final-state:      PASS (bypass: iaa-token-session-044-wave1-20260507.md added in this PR diff)
+  iaa/assurance-check:                         PASS (IAA-20260507-PR1366-R2 ASSURANCE-TOKEN issued)
 
 ## IAA Assurance
-iaa_audit_token:        PENDING
-iaa_session_reference:  PENDING
-iaa_reinvocation_round: 0
-iaa_rejection_reference: none
-active_bundle_iaa_coherence: PENDING (awaiting IAA invocation)
+iaa_audit_token:        .agent-admin/assurance/iaa-token-session-044-wave1-20260507.md
+iaa_session_reference:  IAA-20260507-PR1366-R2
+iaa_reinvocation_round: 1
+iaa_rejection_reference: .agent-admin/assurance/rejection-package-1366.md
+active_bundle_iaa_coherence: VERIFIED
 
 ## Artifacts Committed
 prehandover_proof:      .agent-admin/prehandover/prehandover_proof_1366_20260507.md
@@ -49,9 +49,14 @@ session_memory:         N/A (copilot coding agent)
 gate_results:           N/A (see gate_inventory above)
 ecap_reconciliation:    embedded below
 scope_declaration:      .agent-admin/scope-declarations/pr-1366.md
+correction_addendum:    .agent-admin/assurance/correction-addendum-pr1366-20260507.md
+iaa_token:              .agent-admin/assurance/iaa-token-session-044-wave1-20260507.md
+rejection_package:      .agent-admin/assurance/rejection-package-1366.md
+iaa_session_memory:     .agent-workspace/independent-assurance-agent/memory/session-044-20260507.md
+iaa_escalation_inbox:   .agent-workspace/independent-assurance-agent/escalation-inbox/rejection-tracking-1366-20260507.md
 
 ## Scope
-files_changed:          10
+files_changed:          17
 scope_declaration:      .agent-admin/scope-declarations/pr-1366.md
 
 ## Drift Evidence (ECAP-QC-001 — canon file amended)
