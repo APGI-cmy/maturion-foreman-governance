@@ -7,6 +7,7 @@
     ".admin/pr.json",
     ".agent-admin/assurance/iaa-token-session-044-wave-canon-20260507.md",
     ".agent-admin/prehandover/prehandover_proof_1368_20260507.md",
+    ".agent-workspace/independent-assurance-agent/memory/session-044-20260507.md",
     "governance/CANON_INVENTORY.json",
     "governance/canon/FULLY_FUNCTIONAL_DELIVERY_STANDARD.md",
     "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
@@ -20,7 +21,8 @@
     "INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.9.0 adds §Product-Facing PR Split Verdict Model requiring ADMIN_PASS/FUNCTIONAL_PASS/VERDICT split for product-facing T2 PRs",
     "GOVERNANCE_CANON_MANIFEST.md manifest reconciliation: FFDS and IAA canon were absent from manifest (but present in CANON_INVENTORY); both added; count 95→97 canon",
     "CANON_INVENTORY.json regenerated with updated SHA256 hashes for both amended canon files",
-    "Cross-reference corrections: §9.1/§9.4 → §12.1/§12.4 in FFDS calibration example"
+    "Cross-reference corrections: §9.1/§9.4 → §12.1/§12.4 in FFDS calibration example",
+    "IAA session-044-20260507: ASSURANCE-TOKEN issued for PR #1368 — MERGE PERMITTED"
   ],
   "merge_authority": "CS2"
 }
