@@ -356,7 +356,7 @@ When a breaking change is required:
 | 2026-04-05 | Added PRE_BUILD_STAGE_MODEL_CANON.md v1.0.0 to §3.2; updated totals (99→101) | governance-repo-administrator-v2 (issue #1319) |
 | 2026-04-05 | Canon documentation updates for 12-stage pre-build model: APP_DESCRIPTION_TEMPLATE.md v1.0→v1.1; PRE_BUILD_REALITY_CHECK_CANON.md v1.0.0→v1.1.0 added to §3.4; new UX_WORKFLOW_WIRING_SPEC_TEMPLATE.md v1.0 and BUILDER_CHECKLIST_TEMPLATE.md v1.0 added to §3.14; APP_DESCRIPTION_CREATION_CHECKLIST.md date updated; totals updated (101→104) | governance-repo-administrator-v2 (issue #1320) |
 | 2026-04-15 | Added §3.15 AIMC Platform Models (7 files); updated totals 93→95 canon files, combined 108→110; SPECIALIST_KNOWLEDGE_MANAGEMENT.md amended with Source Model Governance cross-reference | governance-repo-administrator-v2 (issue #1343) |
-| 2026-05-07 | Added FULLY_FUNCTIONAL_DELIVERY_STANDARD.md v2.0.0 to §3.2; added INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.9.0 to §3.4; updated totals 95→97 canon, combined 110→112, PUBLIC_API 81→82, INTERNAL 13→14 | copilot (canon alignment issue: require full functional delivery for product build PASS) |
+| 2026-05-07 | Added FULLY_FUNCTIONAL_DELIVERY_STANDARD.md v2.0.0 to §3.2; added INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.9.0 to §3.4; updated totals 95→97 canon, combined 110→112, PUBLIC_API 81→82, INTERNAL 13→14. **Manifest reconciliation**: both files existed in CANON_INVENTORY.json (at v1.0.0 and v1.8.0 respectively) but were absent from this manifest — this entry corrects that omission while simultaneously version-bumping both files. | copilot (issue #1367 — canon alignment: require full functional delivery for product build PASS) |
 
 ### 7.2 Layer-Down Completion Tracking
 

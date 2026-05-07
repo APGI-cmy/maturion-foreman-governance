@@ -864,7 +864,7 @@ VERDICT: PARTIAL_FUNCTIONAL_DELIVERY
 
 **Reason**: The UI shell rendered. Routes and components existed. Admin artifacts were correct. However, upload, generation, onboarding, and dashboard workflows were not wired as complete product workflows. No end-to-end user journey could be completed. No live or preview evidence existed for the functional workflows.
 
-**Governance failure**: The single generic PASS treated admin correctness as equivalent to functional delivery. This closed a functional product issue without functional delivery evidence — a violation of §9.1 and §9.4.
+**Governance failure**: The single generic PASS treated admin correctness as equivalent to functional delivery. This closed a functional product issue without functional delivery evidence — a violation of §12.1 and §12.4.
 
 **Learning captured**: A ceremonially complete, visually rendered, admin-correct delivery that does not work as a user-facing product workflow is not a `FULL_FUNCTIONAL_DELIVERY`. It is at best a `PARTIAL_FUNCTIONAL_DELIVERY`, and it cannot close a functional product issue without CS2 written acceptance of the partial scope.
 

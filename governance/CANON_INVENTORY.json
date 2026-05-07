@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "last_updated": "2026-05-07",
   "total_canons": 201,
-  "generation_timestamp": "2026-05-07T12:15:48Z",
+  "generation_timestamp": "2026-05-07T12:34:45Z",
   "canons": [
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
@@ -975,13 +975,13 @@
     {
       "filename": "FULLY_FUNCTIONAL_DELIVERY_STANDARD.md",
       "version": "2.0.0",
-      "file_hash": "bd25acb1007ab6b160e4512f5ce4f6d8dfb1bc84bda6557253f995f9e4ff9def",
+      "file_hash": "019fbac7587291d8827b3cc1bdf409cfcb1e23ab69c314ff6ada4ca11145c871",
       "effective_date": "2026-05-07",
       "description": "This standard establishes explicit definitions and enforcement mechanisms for \"fully functional\" delivery across design, implementation, and deployment phases.",
       "type": "canon",
       "path": "governance/canon/FULLY_FUNCTIONAL_DELIVERY_STANDARD.md",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "bd25acb1007ab6b160e4512f5ce4f6d8dfb1bc84bda6557253f995f9e4ff9def"
+      "file_hash_sha256": "019fbac7587291d8827b3cc1bdf409cfcb1e23ab69c314ff6ada4ca11145c871"
     },
     {
       "filename": "GATE_PREDICTIVE_COMPLIANCE_ANALYSIS.md",
@@ -1041,13 +1041,13 @@
     {
       "filename": "GOVERNANCE_CANON_MANIFEST.md",
       "version": "1.0.0",
-      "file_hash": "ec153f82deaf69c02af0ff72084f1b05a148c2b4ebe30188f5b5954d1a45cf92",
+      "file_hash": "457bfdf4aac5ba88e1e5df57d5c4e4eb8292473d356fea71b27ff4ed365cacae",
       "effective_date": "2026-01-05",
       "description": "This manifest is the **single authoritative index** of all canonical governance standards in the maturion-foreman-governance repository.",
       "type": "canon",
       "path": "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "ec153f82deaf69c02af0ff72084f1b05a148c2b4ebe30188f5b5954d1a45cf92"
+      "file_hash_sha256": "457bfdf4aac5ba88e1e5df57d5c4e4eb8292473d356fea71b27ff4ed365cacae"
     },
     {
       "filename": "GOVERNANCE_COMPLETENESS_MODEL.md",
