@@ -1,7 +1,7 @@
 # IAA Trigger Table
 
 **Agent**: independent-assurance-agent
-**Version**: 2.2.0
+**Version**: 2.2.1
 **Status**: ACTIVE
 **Last Updated**: 2026-05-07
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
@@ -73,7 +73,7 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
 6. Does PR contain any .agent-workspace/*/knowledge/ file changes?
    → YES: Category = KNOWLEDGE_GOVERNANCE. IAA = MANDATORY.
 
-6a. Does PR contain any .agent-admin/ file changes (other than session memory / parking station)?
+6a. Does PR contain any .agent-admin/ file changes?
     → YES: Category = AGENT_ADMIN_ARTIFACT. IAA = MANDATORY.
 
 7. Check MMM manifest (.admin/pr.json): is requires_iaa=false AND no governance-control paths in scope?
@@ -95,6 +95,7 @@ Any agent claiming class exemption → REJECTION-PACKAGE citing FAIL-ONLY-ONCE A
 | 2.0.0 | 2026-02-28 | Fully populated from INDEPENDENT_ASSURANCE_AGENT_CANON.md; AGENT_INTEGRITY category added; classification decision flow added; STUB status removed |
 | 2.1.0 | 2026-03-02 | KNOWLEDGE_GOVERNANCE trigger category added; classification decision flow updated with step 6 for knowledge governance path (maturion-isms#IAA-TIER2) |
 | 2.2.0 | 2026-05-07 | CI_SCRIPT and AGENT_ADMIN_ARTIFACT trigger categories added; EXEMPT updated to include MMM manifest-era product-fix condition; classification flow updated with steps 3a, 6a, and manifest step 7; aligned with MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0 and ISMS-side validator parity (PR #1529) |
+| 2.2.1 | 2026-05-07 | Drop ambiguous "(other than session memory / parking station)" carve-out from decision flow step 6a; session memory and parking station artifacts are not under .agent-admin/ so the exclusion was incorrect |
 
 ---
 
