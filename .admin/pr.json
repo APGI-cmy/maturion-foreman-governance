@@ -1,32 +1,30 @@
 {
-  "pr": 1362,
+  "pr": 1364,
   "issue": 1361,
   "type": "governance-change",
   "owner": "Copilot",
   "scope": [
     ".admin/pr.json",
-    ".admin/pr.template.json",
-    ".admin/fixtures/product-fix-valid.json",
-    ".admin/fixtures/governance-change-valid.json",
-    ".admin/fixtures/governance-change-missing-iaa.json",
-    ".agent-admin/assurance/assurance-token-1362.md",
-    ".agent-admin/assurance/iaa-token-session-042-wave-mmm-governance-20260504.md",
-    ".agent-workspace/independent-assurance-agent/memory/session-042-20260504.md",
+    ".agent-admin/assurance/iaa-token-session-043-wave-canon-20260507.md",
+    ".agent-admin/prehandover/prehandover_proof_1364_20260507.md",
+    ".agent-workspace/independent-assurance-agent/memory/session-043-20260507.md",
+    ".github/scripts/tests/test-validate-simple-pr-admin.sh",
     ".github/scripts/validate-simple-pr-admin.sh",
-    ".github/workflows/preflight-evidence-gate.yml",
+    ".github/workflows/governance-gate.yml",
     "governance/CANON_INVENTORY.json",
     "governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md",
-    "scripts/regenerate_canon_inventory.py"
+    "governance/canon/POLC_EXECUTION_MODEL_CANON.md",
+    "governance/layer-down/RIPPLE-EXECUTION-MODEL-CANON-20260506.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "validator runs on this PR manifest",
-    "product-fix fixture passes without IAA/ECAP",
-    "governance-change fixture passes with IAA/ECAP true",
-    "governance-change fixture missing IAA/ECAP fails",
-    "changed-file outside manifest scope fails"
+    "POLC_EXECUTION_MODEL_CANON.md introduces explicit execution_model gate",
+    "MMM_SIMPLE_PR_ADMIN_MODEL.md updated to v1.1.0 with execution_model schema",
+    "validate-simple-pr-admin.sh Check 13 rejects implementation PRs missing execution_model",
+    "test-validate-simple-pr-admin.sh: all 24 Check 13 assertions pass",
+    "governance-gate.yml CI job runs regression tests on every PR and push"
   ],
   "merge_authority": "CS2"
 }

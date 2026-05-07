@@ -71,3 +71,14 @@ jobs:
               sys.exit(1)
           PYEOF
           echo "PASS: governance-layer-down-dispatch.yml is syntactically valid YAML."
+
+  validate-simple-pr-admin-tests:
+    name: governance/validate-simple-pr-admin-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run validate-simple-pr-admin.sh regression tests
+        run: |
+          bash .github/scripts/tests/test-validate-simple-pr-admin.sh

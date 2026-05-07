@@ -362,6 +362,104 @@ else
     echo ""
 fi
 
+# ── Check 13: execution_model for implementation PRs ─────────────────────────
+#
+# Implementation file patterns — changes to these trigger execution_model enforcement
+# Authority: governance/canon/POLC_EXECUTION_MODEL_CANON.md
+IMPLEMENTATION_PATTERNS=(
+    "^apps/"
+    "^src/"
+    "^modules/"
+    "^lib/"
+    "^packages/"
+)
+
+echo "--- Check 13: execution_model required for implementation PRs ---"
+EXECUTION_MODEL=$(jq -r '.execution_model // empty' "${MANIFEST}" 2>/dev/null || true)
+
+# Check scope entries against implementation patterns
+IMPL_FILE_FOUND=false
+IMPL_FILE_EXAMPLE=""
+while IFS= read -r scope_file; do
+    for pattern in "${IMPLEMENTATION_PATTERNS[@]}"; do
+        if [[ "$scope_file" =~ $pattern ]]; then
+            IMPL_FILE_FOUND=true
+            IMPL_FILE_EXAMPLE="$scope_file"
+            break
+        fi
+    done
+    [[ "$IMPL_FILE_FOUND" == "true" ]] && break
+done < <(jq -r '.scope[]' "${MANIFEST}" 2>/dev/null || true)
+
+if [[ "$IMPL_FILE_FOUND" == "true" ]]; then
+    info "Implementation file in scope: ${IMPL_FILE_EXAMPLE}"
+    if [[ -z "$EXECUTION_MODEL" ]]; then
+        fail "Implementation files changed, but execution_model is missing."
+        info "  Declare one of: builder-governed, foreman-orchestrated, cs2-hotfix-override"
+        info "  Authority: governance/canon/POLC_EXECUTION_MODEL_CANON.md"
+        FAILURES=$((FAILURES + 1))
+    else
+        ACCEPTED_MODELS=("builder-governed" "foreman-orchestrated" "cs2-hotfix-override")
+        MODEL_VALID=false
+        for m in "${ACCEPTED_MODELS[@]}"; do
+            if [[ "$EXECUTION_MODEL" == "$m" ]]; then
+                MODEL_VALID=true
+                break
+            fi
+        done
+        if [[ "$MODEL_VALID" == "false" ]]; then
+            fail "execution_model '${EXECUTION_MODEL}' is not accepted"
+            info "  Accepted values: ${ACCEPTED_MODELS[*]}"
+            FAILURES=$((FAILURES + 1))
+        else
+            pass "execution_model: ${EXECUTION_MODEL}"
+            # Validate required companion fields
+            case "$EXECUTION_MODEL" in
+                builder-governed)
+                    IMPLEMENTING_AGENT=$(jq -r '.implementing_agent // empty' "${MANIFEST}" 2>/dev/null || true)
+                    if [[ -z "$IMPLEMENTING_AGENT" ]]; then
+                        fail "execution_model=builder-governed requires implementing_agent"
+                        FAILURES=$((FAILURES + 1))
+                    else
+                        pass "implementing_agent: ${IMPLEMENTING_AGENT}"
+                    fi
+                    ;;
+                foreman-orchestrated)
+                    ORCHESTRATING_AGENT=$(jq -r '.orchestrating_agent // empty' "${MANIFEST}" 2>/dev/null || true)
+                    IMPLEMENTING_AGENT=$(jq -r '.implementing_agent // empty' "${MANIFEST}" 2>/dev/null || true)
+                    if [[ -z "$ORCHESTRATING_AGENT" ]]; then
+                        fail "execution_model=foreman-orchestrated requires orchestrating_agent"
+                        FAILURES=$((FAILURES + 1))
+                    else
+                        pass "orchestrating_agent: ${ORCHESTRATING_AGENT}"
+                    fi
+                    if [[ -z "$IMPLEMENTING_AGENT" ]]; then
+                        fail "execution_model=foreman-orchestrated requires implementing_agent"
+                        FAILURES=$((FAILURES + 1))
+                    else
+                        pass "implementing_agent: ${IMPLEMENTING_AGENT}"
+                    fi
+                    ;;
+                cs2-hotfix-override)
+                    CS2_JUSTIFICATION=$(jq -r '.cs2_justification // empty' "${MANIFEST}" 2>/dev/null || true)
+                    if [[ -z "$CS2_JUSTIFICATION" ]]; then
+                        fail "execution_model=cs2-hotfix-override requires cs2_justification"
+                        FAILURES=$((FAILURES + 1))
+                    else
+                        pass "cs2_justification: present"
+                    fi
+                    ;;
+            esac
+        fi
+    fi
+elif [[ -n "$EXECUTION_MODEL" ]]; then
+    # execution_model is present even though no implementation files detected — that's fine, accept it
+    pass "execution_model declared (no implementation file pattern matched in scope): ${EXECUTION_MODEL}"
+else
+    pass "No implementation files in scope — execution_model not required"
+fi
+echo ""
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo "======================================================="
 if [[ $FAILURES -eq 0 ]]; then
