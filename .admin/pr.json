@@ -16,11 +16,11 @@
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "FULLY_FUNCTIONAL_DELIVERY_STANDARD.md v2.0.0 adds §12 Delivery Verdict Taxonomy with normative definitions: FULL_FUNCTIONAL_DELIVERY, PARTIAL_FUNCTIONAL_DELIVERY, UI_SHELL_ONLY, ADMIN_PASS, FUNCTIONAL_PASS",
-    "INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.9.0 adds §Product-Facing PR Split Verdict Model requiring ADMIN_PASS/FUNCTIONAL_PASS/VERDICT split for product-facing T2 PRs",
-    "GOVERNANCE_CANON_MANIFEST.md manifest reconciliation: FFDS and IAA canon were absent from manifest (but present in CANON_INVENTORY); both added; count 95→97 canon",
-    "CANON_INVENTORY.json regenerated with updated SHA256 hashes for both amended canon files",
-    "Cross-reference corrections: §9.1/§9.4 → §12.1/§12.4 in FFDS calibration example",
+    "ROOT_CAUSE_CORRECTIVE_ACTION_AGENT_STRATEGY.md introduced with Strategy-first rollout policy: purpose, trigger philosophy, role boundaries, anti-burden constraints, and phased activation posture",
+    "ROOT_CAUSE_CORRECTIVE_ACTION_AGENT_CANON.md introduced with mandatory/optional/non-trigger rules, RCA assessment schema, failure taxonomy, IAA RCA_REVIEW PASS/REFER_BACK authority, and activation phases",
+    "GOVERNANCE_CANON_MANIFEST.md updated to register the RCA canon artifact and align manifest metadata with this RCA rollout",
+    "CANON_INVENTORY.json regenerated with full SHA256 hashes and metadata entries for the new RCA strategy/canon governance artifacts",
+    "GOVERNANCE_ARTIFACT_INVENTORY.md updated to register RCA strategy/canon additions and associated governance inventory tracking",
     "IAA session-045-20260508: ASSURANCE-TOKEN issued for PR #1370 — MERGE PERMITTED"
   ],
   "merge_authority": "CS2"
