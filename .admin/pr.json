@@ -19,7 +19,7 @@
     "ROOT_CAUSE_CORRECTIVE_ACTION_AGENT_STRATEGY.md introduced with Strategy-first rollout policy: purpose, trigger philosophy, role boundaries, anti-burden constraints, and phased activation posture",
     "ROOT_CAUSE_CORRECTIVE_ACTION_AGENT_CANON.md introduced with mandatory/optional/non-trigger rules, RCA assessment schema, failure taxonomy, IAA RCA_REVIEW PASS/REFER_BACK authority, and activation phases",
     "GOVERNANCE_CANON_MANIFEST.md updated to register the RCA canon artifact and align manifest metadata with this RCA rollout",
-    "CANON_INVENTORY.json regenerated with full SHA256 hashes and metadata entries for the new RCA strategy/canon governance artifacts",
+    "CANON_INVENTORY.json regenerated with full SHA256 hashes and canon metadata for the new RCA canon entry (strategy artifact tracking remains in GOVERNANCE_ARTIFACT_INVENTORY.md)",
     "GOVERNANCE_ARTIFACT_INVENTORY.md updated to register RCA strategy/canon additions and associated governance inventory tracking",
     "IAA session-045-20260508: ASSURANCE-TOKEN issued for PR #1370 — MERGE PERMITTED"
   ],
