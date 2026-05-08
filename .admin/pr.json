@@ -1,17 +1,16 @@
 {
-  "pr": 1368,
+  "pr": 1370,
   "issue": 1367,
   "type": "governance-change",
   "owner": "Copilot",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-session-044-wave-canon-20260507.md",
-    ".agent-admin/prehandover/prehandover_proof_1368_20260507.md",
-    ".agent-workspace/independent-assurance-agent/memory/session-044-20260507.md",
+    ".agent-admin/assurance/iaa-token-session-045-pr1370-wave-canon-20260508.md",
+    "GOVERNANCE_ARTIFACT_INVENTORY.md",
     "governance/CANON_INVENTORY.json",
-    "governance/canon/FULLY_FUNCTIONAL_DELIVERY_STANDARD.md",
     "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
-    "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md"
+    "governance/canon/ROOT_CAUSE_CORRECTIVE_ACTION_AGENT_CANON.md",
+    "governance/strategy/ROOT_CAUSE_CORRECTIVE_ACTION_AGENT_STRATEGY.md"
   ],
   "risk": "high",
   "requires_iaa": true,
@@ -22,7 +21,7 @@
     "GOVERNANCE_CANON_MANIFEST.md manifest reconciliation: FFDS and IAA canon were absent from manifest (but present in CANON_INVENTORY); both added; count 95→97 canon",
     "CANON_INVENTORY.json regenerated with updated SHA256 hashes for both amended canon files",
     "Cross-reference corrections: §9.1/§9.4 → §12.1/§12.4 in FFDS calibration example",
-    "IAA session-044-20260507: ASSURANCE-TOKEN issued for PR #1368 — MERGE PERMITTED"
+    "IAA session-045-20260508: ASSURANCE-TOKEN issued for PR #1370 — MERGE PERMITTED"
   ],
   "merge_authority": "CS2"
 }
