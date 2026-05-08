@@ -37,7 +37,7 @@ The RCA Agent MUST be invoked when any of the following occur:
 6. IAA issues `FAIL`, `ADMIN_ONLY`, or `PARTIAL_FUNCTIONAL_DELIVERY` on a product PR intended as full delivery.
 7. ECAP detects stale evidence after final push or handover claim.
 8. A gate is found stale, over-broad, paradoxical, or under-enforcing.
-9. CS2 explicitly comments `RCA_REQUIRED` or `CONTINUOUS_IMPROVEMENT_REQUIRED`.
+9. CS2 explicitly comments `RCA_REQUIRED`, `ROOT_CAUSE_REQUIRED`, or `CONTINUOUS_IMPROVEMENT_REQUIRED`.
 
 ### 2.2 Non-Trigger Conditions
 
@@ -223,7 +223,7 @@ When layered down to `maturion-isms`, implementation issue MUST direct creation/
 3. RCA assessment template.
 4. IAA RCA-review checklist/template.
 5. Foreman routing guidance.
-6. Optional label/comment-trigger workflow for `RCA_REQUIRED` / `CONTINUOUS_IMPROVEMENT_REQUIRED`.
+6. Optional label/comment-trigger workflow for `RCA_REQUIRED` / `ROOT_CAUSE_REQUIRED` / `CONTINUOUS_IMPROVEMENT_REQUIRED`.
 7. Soft automation first; hard gate only with CS2 approval after observing signal quality.
 8. Agent contract impact assessment.
 9. No `.github/agents/*.md` edits unless Foreman routes through Codex Advisor with CS2 approval.
