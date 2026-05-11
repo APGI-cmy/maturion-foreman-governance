@@ -52,4 +52,12 @@ Keep this PR unmerged until the matrix is added/updated and reviewed.
 
 ---
 
-**Status**: DECLARED (ready to post to target PR thread)
+## Posting attempt log
+
+- Attempted direct comment post via `gh pr comment 1612 --repo APGI-cmy/maturion-isms`
+- Result: `GraphQL: Resource not accessible by integration (addComment)`
+- Required follow-up: comment must be posted by an identity with write permission to `APGI-cmy/maturion-isms` PR threads.
+
+---
+
+**Status**: DECLARED; DIRECT POST BLOCKED BY PERMISSION — COMMENT TEXT PROVIDED ABOVE FOR MANUAL POSTING
