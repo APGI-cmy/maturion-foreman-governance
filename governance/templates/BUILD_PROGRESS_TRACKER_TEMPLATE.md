@@ -254,6 +254,6 @@ Track the progression through the canonical module lifecycle stages per `PRE_BUI
 
 ---
 
-**Template Version**: 1.2 (includes Stage 5 §AD-01–§AD-24 matrix gate)  
+**Template Version**: 1.2.0 (includes Stage 5 §AD-01–§AD-24 matrix gate)  
 **Template Authority**: MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md  
 **Last Template Update**: 2026-05-11
