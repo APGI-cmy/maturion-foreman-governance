@@ -2,7 +2,7 @@
 
 ## Status
 Canonical Governance Template  
-Version: v1.1  
+Version: v1.2  
 Authority: Johan Ras  
 Applies To: All Architecture Documents  
 Required By: Issue - Enforce App Description → FRS Structural Alignment; APP_DESCRIPTION_REQUIREMENT_POLICY.md v2.0 §AD traceability
@@ -157,7 +157,7 @@ For each component, define:
 
 ## Section 4: Completeness Domains (REQUIRED)
 
-**This section addresses all 13 mandatory completeness domains per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md.**
+**This section addresses all mandatory completeness domains per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md v1.4 (§3.1–§3.17).**
 
 ### 4.1 Deployment Target Declaration
 
@@ -408,48 +408,99 @@ For each component, define:
 
 ---
 
-### 4.14 APP_DESCRIPTION_REQUIREMENT_POLICY Coverage (REQUIRED)
+### 4.14 Frontend Application Scaffolding and UI Wiring (MANDATORY)
+
+**Frontend Scaffold and Wiring Baseline**:
+- Frontend scaffold and framework baseline defined
+- Routing and navigation wiring defined (if multi-page)
+- UI state ownership and update pathways defined
+- API client integration and request/response contract mapping defined
+- Authentication token/credential propagation path defined
+
+**Completeness Validation**:
+- [ ] Frontend can be scaffolded without assumptions
+- [ ] Primary UI→API wiring paths are explicitly defined
+- [ ] Auth and state wiring points are documented
+
+### 4.15 Infrastructure Deployment and Provisioning (MANDATORY)
+
+**Deployment/Provisioning Obligations**:
+- Deployment targets for frontend and backend
+- Provisioning sequence for runtime, network, and storage dependencies
+- Environment variable provisioning and validation checkpoints
+- Health check and readiness verification requirements
+- Rollback or redeploy strategy for failed provisioning
+
+**Completeness Validation**:
+- [ ] Frontend/backend deployment targets explicitly named
+- [ ] Infrastructure can be provisioned without external discovery
+- [ ] Post-provisioning verification steps are defined
+
+### 4.16 End-to-End Integration and Deployment Evidence (MANDATORY)
+
+**Minimum Integrated Evidence Package**:
+- At least one complete end-to-end workflow path definition
+- Evidence requirements (URLs, test logs, screenshots/video, persistence checks)
+- Integration gate criteria for deployment readiness
+- Explicit prohibition on "deploy later" closure without evidence
+
+**Completeness Validation**:
+- [ ] At least one full workflow traced from UI to persisted data and back
+- [ ] Evidence artifacts are required and explicitly listed
+- [ ] Deployment readiness is blocked when evidence is missing
+
+### 4.17 QA Catalog Alignment and Validation (MANDATORY)
+
+> **Canon Reference**: `governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` §3.17  
+> **Rule**: Architecture MUST be aligned with QA Catalog and QA-to-Red before wave planning, subwave assignment, or builder appointment.
+
+**Mandatory Validation Gate (QA-CATALOG-ALIGNMENT-GATE)**:
+- [ ] All assigned QA ranges verified in QA_CATALOG.md
+- [ ] All QA definitions match wave/subwave feature intent
+- [ ] No QA ID collisions with existing allocations
+- [ ] Architecture sections exist and are frozen for all features
+- [ ] QA-to-Red tests exist for all assigned QA ranges
+- [ ] QA-to-Red precondition satisfied (all tests RED)
+- [ ] Validation script executed (if available) with exit 0
+
+### 4.18 APP_DESCRIPTION_REQUIREMENT_POLICY Coverage Matrix (REQUIRED)
 
 > **Policy Reference**: `governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md` v2.0  
-> **Rule**: This architecture MUST explicitly address all applicable §AD sections listed below. Each checkbox confirms that the architecture contains design decisions or referenced artifacts satisfying the corresponding policy requirement. Unchecked items with no justification are **blocking defects** that prevent Architecture approval.
+> **Rule**: This architecture MUST include a complete §AD-01 through §AD-24 mapping matrix.  
+> **Allowed Status Values**: `COVERED` | `NOT_APPLICABLE_WITH_JUSTIFICATION` | `BLOCKING_GAP`
 
-#### §AD-10 through §AD-16 Coverage
+| §AD ID | App Description requirement | Architecture coverage section/artifact | Status | Notes / N/A justification |
+|--------|-----------------------------|----------------------------------------|--------|---------------------------|
+| §AD-01 | Build Lifecycle Stages | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-02 | Requirements Derivation Chain | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-03 | Technology Stack | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-04 | Deliverable Artifacts | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-05 | Component Definition of Done | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-06 | Test-First Guarantee | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-07 | Physical Verification Gate | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-08 | PBFAG Checklist | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-09 | Agent Authority Chain | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-10 | Schema-to-Hook Validation | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-11 | Table Pathway Audit | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-12 | RLS Audit Gate | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-13 | Auth Wiring Checklist | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-14 | AI Integration Requirements | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-15 | Edge Function Registry | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-16 | Deployment Wave | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-17 | Secret Naming Convention | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-18 | Deployment Runbook | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-19 | Notification/UX Patterns | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-20 | Shared State Architecture | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-21 | API Authentication | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-22 | Audit Log Design | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-23 | Tracker Update Requirement | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
+| §AD-24 | State Persistence Specification | {section/artifact reference} | {COVERED/NOT_APPLICABLE_WITH_JUSTIFICATION/BLOCKING_GAP} | {notes} |
 
-| §AD Section | Policy Title | Architecture Coverage | Status |
-|-------------|-------------|----------------------|--------|
-| §AD-10 | Schema-to-Hook Validation | {Architecture section or TRS §4.1 reference} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-11 | Table Pathway Audit | {Architecture section or TRS §4.2 reference} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-12 | RLS Audit Gate | {Architecture section or TRS §4.3 reference} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-13 | Auth Wiring Checklist | {Architecture section — auth component design} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-14 | AI Integration Requirements | {Architecture section — AIMC Gateway routing} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-15 | Edge Function Registry | {Architecture section or TRS §4.4 reference} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-16 | Deployment Wave | {Architecture section — deployment wave plan} | ✅ Covered / ❌ Not Covered / N/A |
-
-#### §AD-20 through §AD-22 Coverage
-
-| §AD Section | Policy Title | Architecture Coverage | Status |
-|-------------|-------------|----------------------|--------|
-| §AD-20 | Shared State Architecture | {Architecture section or TRS §4.6 reference} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-21 | API Authentication | {Architecture section — JWT/auth on all session-scoped endpoints} | ✅ Covered / ❌ Not Covered / N/A |
-| §AD-22 | Audit Log Design | {Architecture section or TRS §4.7 reference} | ✅ Covered / ❌ Not Covered / N/A |
-
-#### §AD Policy Coverage Checkboxes
-
-**§AD-10 through §AD-16**:
-- [ ] **§AD-10 Schema-to-Hook Validation**: Architecture mandates schema-to-hook alignment check for every migration wave
-- [ ] **§AD-11 Table Pathway Audit**: Architecture mandates Table Pathway Audit before closing any database-touching wave
-- [ ] **§AD-12 RLS Audit Gate**: Architecture mandates RLS table-by-table audit before production deployment; production deployment gate references RLS sign-off
-- [ ] **§AD-13 Auth Wiring Checklist**: Architecture includes auth wiring design — AuthProvider, ProtectedRoute/HOC, login/logout flows, and Supabase auth integration are explicitly designed
-- [ ] **§AD-14 AI Integration Requirements**: Architecture confirms all AI/LLM calls route via AIMC Gateway; no direct provider calls — OR — documented as `N/A` (no AI integration): {justification}
-- [ ] **§AD-15 Edge Function Registry**: Architecture mandates Edge Function Registry before PREHANDOVER — OR — documented as `N/A` (no edge functions): {justification}
-- [ ] **§AD-16 Deployment Wave**: Architecture includes an explicit Deployment & Commissioning wave covering production provisioning, configuration injection, CWT execution, production smoke testing, and CWT closure
-
-**§AD-20 through §AD-22**:
-- [ ] **§AD-20 Shared State Architecture**: Architecture explicitly names and designs the state management approach; all global state flows (auth state, user preferences, cross-component data) are described; no ambiguous state ownership
-- [ ] **§AD-21 API Authentication**: Architecture mandates JWT (or equivalent) authentication on all user/session-context API endpoints; unauthenticated access to session-scoped endpoints is explicitly prohibited; PREHANDOVER check for endpoint authentication is required
-- [ ] **§AD-22 Audit Log Design**: Architecture includes audit log schema; logged action types, query/surfacing mechanism, and deduplication strategy are explicitly specified; audit log design is approved before Architecture commences
-
-**Coverage Completion Gate**: All checkboxes above must be checked, or items must be documented as `N/A` with explicit justification. Any unchecked item without justification **blocks Architecture approval**.
+**Coverage Completion Gate**:
+- Every §AD-01 through §AD-24 row MUST be present. Missing rows are blocking defects.
+- Any `BLOCKING_GAP` row blocks Stage 5 Architecture approval.
+- `NOT_APPLICABLE_WITH_JUSTIFICATION` is allowed only with explicit rationale in Notes.
+- Stage 5 approval is prohibited until all rows are either `COVERED` or justified `NOT_APPLICABLE_WITH_JUSTIFICATION`.
 
 ---
 
@@ -541,15 +592,15 @@ For each component, define:
 ### Completeness Validation
 
 **Completeness Checklist** (per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md):
-- [ ] All 13 completeness domains addressed (Sections 4.1–4.13)
 - [ ] True North derived from App Description
 - [ ] Upstream references complete
 - [ ] Traceability complete
 - [ ] QA strategy complete
 - [ ] Evidence requirements defined
 - [ ] No TODOs or ambiguities
-- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-10–§AD-16 coverage checkboxes complete (Section 4.14)
-- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-20–§AD-22 coverage checkboxes complete (Section 4.14)
+- [ ] All completeness domains addressed (Sections 4.1–4.17)
+- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-01–§AD-24 matrix complete (Section 4.18)
+- [ ] No missing §AD rows in Section 4.18 and no `BLOCKING_GAP` status rows
 
 ### Architecture Approval
 

@@ -9,7 +9,7 @@
 
 ## Module Lifecycle Progress
 
-Track the progression through the canonical module lifecycle stages per `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0.
+Track the progression through the canonical module lifecycle stages per `PRE_BUILD_STAGE_MODEL_CANON.md` v1.1.0.
 
 ### Stage 1: App Description
 **Status**: [ ] NOT_STARTED | [ ] IN_PROGRESS | [ ] COMPLETE  
@@ -73,6 +73,8 @@ Track the progression through the canonical module lifecycle stages per `PRE_BUI
 **Key Artifacts**:
 - [ ] `architecture.md` - Structures and decisions that satisfy FRS and TRS
 - [ ] All TRS requirements traceable to architecture components
+- [ ] Complete §AD-01–§AD-24 App Description → Architecture coverage matrix present (`§AD ID | App Description requirement | Architecture coverage section/artifact | Status | Notes / N/A justification`)
+- [ ] No missing §AD rows and no `BLOCKING_GAP` status rows in the Stage 5 matrix
 - [ ] Architecture completeness checklist per `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` PASS
 - [ ] Architecture approved by designated authority
 
@@ -252,6 +254,6 @@ Track the progression through the canonical module lifecycle stages per `PRE_BUI
 
 ---
 
-**Template Version**: 1.0.0 (includes TRS stage)  
+**Template Version**: 1.2.0 (includes Stage 5 §AD-01–§AD-24 matrix gate)  
 **Template Authority**: MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md  
-**Last Template Update**: 2026-02-13
+**Last Template Update**: 2026-05-11
