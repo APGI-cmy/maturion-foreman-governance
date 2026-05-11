@@ -73,6 +73,8 @@ Track the progression through the canonical module lifecycle stages per `PRE_BUI
 **Key Artifacts**:
 - [ ] `architecture.md` - Structures and decisions that satisfy FRS and TRS
 - [ ] All TRS requirements traceable to architecture components
+- [ ] Complete §AD-01–§AD-24 App Description → Architecture coverage matrix present (`§AD ID | App Description requirement | Architecture coverage section/artifact | Status | Notes / N/A justification`)
+- [ ] No missing §AD rows and no `BLOCKING_GAP` status rows in the Stage 5 matrix
 - [ ] Architecture completeness checklist per `ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` PASS
 - [ ] Architecture approved by designated authority
 
