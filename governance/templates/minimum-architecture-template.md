@@ -157,7 +157,7 @@ For each component, define:
 
 ## Section 4: Completeness Domains (REQUIRED)
 
-**This section addresses all 16 mandatory completeness domains per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md v1.4.**
+**This section addresses all mandatory completeness domains per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md v1.4 (§3.1–§3.17).**
 
 ### 4.1 Deployment Target Declaration
 
@@ -408,19 +408,62 @@ For each component, define:
 
 ---
 
-### 4.14 QA Catalog Alignment and Validation (MANDATORY)
+### 4.14 Frontend Application Scaffolding and UI Wiring (MANDATORY)
+
+**Frontend Scaffold and Wiring Baseline**:
+- Frontend scaffold and framework baseline defined
+- Routing and navigation wiring defined (if multi-page)
+- UI state ownership and update pathways defined
+- API client integration and request/response contract mapping defined
+- Authentication token/credential propagation path defined
+
+**Completeness Validation**:
+- [ ] Frontend can be scaffolded without assumptions
+- [ ] Primary UI→API wiring paths are explicitly defined
+- [ ] Auth and state wiring points are documented
+
+### 4.15 Infrastructure Deployment and Provisioning (MANDATORY)
+
+**Deployment/Provisioning Obligations**:
+- Deployment targets for frontend and backend
+- Provisioning sequence for runtime, network, and storage dependencies
+- Environment variable provisioning and validation checkpoints
+- Health check and readiness verification requirements
+- Rollback or redeploy strategy for failed provisioning
+
+**Completeness Validation**:
+- [ ] Frontend/backend deployment targets explicitly named
+- [ ] Infrastructure can be provisioned without external discovery
+- [ ] Post-provisioning verification steps are defined
+
+### 4.16 End-to-End Integration and Deployment Evidence (MANDATORY)
+
+**Minimum Integrated Evidence Package**:
+- At least one complete end-to-end workflow path definition
+- Evidence requirements (URLs, test logs, screenshots/video, persistence checks)
+- Integration gate criteria for deployment readiness
+- Explicit prohibition on "deploy later" closure without evidence
+
+**Completeness Validation**:
+- [ ] At least one full workflow traced from UI to persisted data and back
+- [ ] Evidence artifacts are required and explicitly listed
+- [ ] Deployment readiness is blocked when evidence is missing
+
+### 4.17 QA Catalog Alignment and Validation (MANDATORY)
 
 > **Canon Reference**: `governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md` §3.17  
-> **Rule**: Architecture MUST be aligned with QA Catalog and QA-to-Red before wave planning or builder appointment.
+> **Rule**: Architecture MUST be aligned with QA Catalog and QA-to-Red before wave planning, subwave assignment, or builder appointment.
 
 **Mandatory Validation Gate (QA-CATALOG-ALIGNMENT-GATE)**:
 - [ ] All assigned QA ranges verified in QA_CATALOG.md
-- [ ] QA component definitions semantically match architecture feature intent
-- [ ] No QA ID collisions
-- [ ] Architecture sections for planned features are complete/frozen before allocation
-- [ ] QA-to-Red tests exist for all assigned ranges and are RED before planning
+- [ ] All QA definitions match wave/subwave feature intent
+- [ ] No QA ID collisions with existing allocations
+- [ ] Architecture sections exist and are frozen for all features
+- [ ] QA-to-Red tests exist for all assigned QA ranges
+- [ ] QA-to-Red precondition satisfied (all tests RED)
+- [ ] Validation script executed (if available) with exit 0
 
-### 4.15 APP_DESCRIPTION_REQUIREMENT_POLICY Coverage Matrix (REQUIRED)
+### 4.18 APP_DESCRIPTION_REQUIREMENT_POLICY Coverage Matrix (REQUIRED)
 
 > **Policy Reference**: `governance/policy/APP_DESCRIPTION_REQUIREMENT_POLICY.md` v2.0  
 > **Rule**: This architecture MUST include a complete §AD-01 through §AD-24 mapping matrix.  
@@ -549,15 +592,15 @@ For each component, define:
 ### Completeness Validation
 
 **Completeness Checklist** (per ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md):
-- [ ] All 16 completeness domains addressed (Sections 4.1–4.14)
 - [ ] True North derived from App Description
 - [ ] Upstream references complete
 - [ ] Traceability complete
 - [ ] QA strategy complete
 - [ ] Evidence requirements defined
 - [ ] No TODOs or ambiguities
-- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-01–§AD-24 matrix complete (Section 4.15)
-- [ ] No missing §AD rows in Section 4.15 and no `BLOCKING_GAP` status rows
+- [ ] All completeness domains addressed (Sections 4.1–4.17)
+- [ ] APP_DESCRIPTION_REQUIREMENT_POLICY §AD-01–§AD-24 matrix complete (Section 4.18)
+- [ ] No missing §AD rows in Section 4.18 and no `BLOCKING_GAP` status rows
 
 ### Architecture Approval
 

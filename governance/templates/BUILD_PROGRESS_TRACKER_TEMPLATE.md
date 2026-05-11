@@ -9,7 +9,7 @@
 
 ## Module Lifecycle Progress
 
-Track the progression through the canonical module lifecycle stages per `PRE_BUILD_STAGE_MODEL_CANON.md` v1.0.0.
+Track the progression through the canonical module lifecycle stages per `PRE_BUILD_STAGE_MODEL_CANON.md` v1.1.0.
 
 ### Stage 1: App Description
 **Status**: [ ] NOT_STARTED | [ ] IN_PROGRESS | [ ] COMPLETE  
@@ -254,6 +254,6 @@ Track the progression through the canonical module lifecycle stages per `PRE_BUI
 
 ---
 
-**Template Version**: 1.0.0 (includes TRS stage)  
+**Template Version**: 1.2 (includes Stage 5 §AD-01–§AD-24 matrix gate)  
 **Template Authority**: MODULE_LIFECYCLE_AND_REPO_STRUCTURE_STRATEGY.md  
-**Last Template Update**: 2026-02-13
+**Last Template Update**: 2026-05-11
