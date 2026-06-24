@@ -1,3 +1,17 @@
+---
+id: iaa-preflight-brief-protocol
+artifact_type: governance-control-protocol
+agent_contract: false
+description: Canonical IAA preflight brief control protocol for governed assurance waves.
+governance:
+  authority: CS2
+  repository: APGI-cmy/maturion-foreman-governance
+  path: .agent-admin/control/protocols/IAA_PREFLIGHT_BRIEF_PROTOCOL.md
+metadata:
+  version: 1.0.0
+  pr: 1373
+---
+
 # IAA_PREFLIGHT_BRIEF Protocol
 
 **Status**: Active control protocol  
@@ -61,4 +75,4 @@ The pre-brief must not:
 
 For PR #1373, the `IAA_PREFLIGHT_BRIEF` control confirms that the assurance question is limited to governance-canon creation and ripple evidence for the Maturion agent-network organigram.
 
-It does not activate APW-specialist, Maturion-as-CS2, public chat retrieval, or runtime registry changes.
+It does not activate APW specialist, Maturion-as-CS2, public chat retrieval, or runtime registry changes.
