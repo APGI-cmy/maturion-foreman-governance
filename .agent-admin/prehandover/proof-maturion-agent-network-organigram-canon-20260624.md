@@ -1,3 +1,17 @@
+---
+id: proof-maturion-agent-network-organigram-canon-20260624
+artifact_type: governance-prehandover-proof
+agent_contract: false
+description: Prehandover proof for PR 1373 Maturion agent network organigram canon wave.
+governance:
+  authority: CS2
+  repository: APGI-cmy/maturion-foreman-governance
+  path: .agent-admin/prehandover/proof-maturion-agent-network-organigram-canon-20260624.md
+metadata:
+  version: 1.0.0
+  pr: 1373
+---
+
 # Pre-Handover Proof: Maturion Agent Network Organigram Canon
 
 **Proof ID**: proof-maturion-agent-network-organigram-canon-20260624  
@@ -44,7 +58,7 @@ governance/ripple/RIPPLE-MATURION-AGENT-NETWORK-ORGANIGRAM-20260624.md
 | Ripple targets identified | PASS | ripple record added |
 | Runtime/build-time distinction preserved | PASS | canon Sections 3, 12, 16 |
 | Maturion-as-CS2 not activated | PASS | canon Sections 6 and 16 |
-| APW-specialist not activated | PASS | canon Sections 8 and 16 |
+| APW specialist not activated | PASS | canon Sections 8 and 16 |
 | Public APW retrieval not enabled | PASS | canon Sections 8, 11 and 16 |
 
 ---
@@ -68,7 +82,7 @@ Required inventory entry after final text is accepted:
   "version": "1.0.0 | **Authority**: CS2",
   "file_hash": "702a6dc272c02b6741ada74e28ccfa05924c78b19465b6ac3dc9e42b13a83b92",
   "effective_date": "2026-06-24",
-  "description": "Canonical governance document: MATURION_AGENT_NETWORK_ORGANIGRAM. Defines the required separation between build/governance agents and runtime/onboard app agents, Maturion as the single user-facing AI interface, runtime specialist categories, APW-specialist boundary, Maturion-as-CS2 authority maturity levels, runtime context envelope expectations, and ripple requirements.",
+  "description": "Canonical governance document: MATURION_AGENT_NETWORK_ORGANIGRAM. Defines the required separation between build/governance agents and runtime/onboard app agents, Maturion as the single user-facing AI interface, runtime specialist categories, APW specialist boundary, Maturion-as-CS2 authority maturity levels, runtime context envelope expectations, and ripple requirements.",
   "type": "canon",
   "path": "governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md",
   "layer_down_status": "PUBLIC_API",
