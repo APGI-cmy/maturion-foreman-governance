@@ -1,3 +1,17 @@
+---
+id: wave1-iaa-preflight-brief-contract-addendum
+artifact_type: governance-control-overlay
+agent_contract: false
+description: Transitional overlay for IAA_PREFLIGHT_BRIEF contract alignment in governed waves.
+governance:
+  authority: CS2
+  repository: APGI-cmy/maturion-foreman-governance
+  path: .agent-admin/control/overlays/WAVE1_IAA_PREFLIGHT_BRIEF_CONTRACT_ADDENDUM.md
+metadata:
+  version: 1.0.0
+  pr: 1373
+---
+
 # WAVE1 IAA_PREFLIGHT_BRIEF Contract Addendum
 
 **Status**: Active overlay  
@@ -35,7 +49,7 @@ IAA review must focus on:
 
 1. whether the build/runtime agent split is clear;
 2. whether Maturion-as-CS2 authority is staged and not prematurely granted;
-3. whether APW-specialist remains recommended but not active;
+3. whether APW specialist remains recommended but not active;
 4. whether public APW retrieval is constrained to approved, public-safe, non-tenant knowledge;
 5. whether inventory alignment is honestly disclosed as pending.
 
