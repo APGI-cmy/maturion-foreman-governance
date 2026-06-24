@@ -1,29 +1,28 @@
 {
-  "pr": 1372,
-  "issue": 1606,
+  "pr": 1373,
+  "issue": 1373,
   "type": "governance-change",
-  "owner": "Copilot",
+  "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-session-046-pr1372-wave-canon-20260511.md",
-    ".agent-admin/governance/ripple-logs/ripple-stage5-architecture-ad-matrix-20260511.md",
-    "governance/CANON_INVENTORY.json",
-    "governance/canon/ARCHITECTURE_COMPLETENESS_REQUIREMENTS.md",
-    "governance/canon/GOVERNANCE_CANON_MANIFEST.md",
-    "governance/canon/PRE_BUILD_STAGE_MODEL_CANON.md",
-    "governance/templates/BUILD_PROGRESS_TRACKER_TEMPLATE.md",
-    "governance/templates/minimum-architecture-template.md"
+    ".agent-admin/assurance/iaa-token-session-1373-maturion-agent-network-organigram-20260624.md",
+    ".agent-admin/control/overlays/WAVE1_IAA_PREFLIGHT_BRIEF_CONTRACT_ADDENDUM.md",
+    ".agent-admin/control/protocols/IAA_PREFLIGHT_BRIEF_PROTOCOL.md",
+    ".agent-admin/control/schemas/iaa-preflight-brief.schema.json",
+    ".agent-admin/prehandover/proof-maturion-agent-network-organigram-canon-20260624.md",
+    "governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md",
+    "governance/ripple/RIPPLE-MATURION-AGENT-NETWORK-ORGANIGRAM-20260624.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "PRE_BUILD_STAGE_MODEL_CANON Stage 5 Architecture gate now requires AD-01 through AD-24 matrix coverage with explicit status semantics and no BLOCKING_GAP entries",
-    "minimum-architecture-template updated to align architecture completeness with ARCHITECTURE_COMPLETENESS_REQUIREMENTS v1.4 and include explicit 3.14 through 3.17 domains before AD matrix",
-    "BUILD_PROGRESS_TRACKER_TEMPLATE metadata/version references updated to remove contradictions and align with current canon references",
-    "ARCHITECTURE_COMPLETENESS_REQUIREMENTS and GOVERNANCE_CANON_MANIFEST updated to reflect completeness canon v1.4 structure and registration",
-    "CANON_INVENTORY regenerated with full SHA256 hashes after governance template/canon edits",
-    "IAA session-046-20260511: ASSURANCE-TOKEN for PR #1372 with Verdict: MERGE PERMITTED"
+    "New Maturion agent-network organigram canon is added",
+    "Ripple record identifies affected consumer repositories",
+    "Prehandover proof records governance administrator evidence and inventory alignment limitation",
+    "IAA preflight control files are present for contract alignment",
+    "PR-scoped IAA assurance token is present for PR 1373",
+    "This PR does not activate runtime specialists or Maturion CS2 authority"
   ],
   "merge_authority": "CS2"
 }
