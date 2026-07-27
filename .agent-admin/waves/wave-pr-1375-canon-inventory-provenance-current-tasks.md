@@ -4,7 +4,7 @@
 **Issue**: #1374  
 **PR**: #1375  
 **Foreman**: foreman-v2 under direct CS2 authorization  
-**IAA Pre-Brief**: PENDING — independent IAA authorship required after this task set commit  
+**IAA Pre-Brief**: `.agent-admin/assurance/iaa-prebrief-pr-1375-canon-inventory-provenance.md` — ACTIVE
 **Governance Administrator Appointment**: PENDING — must follow the IAA pre-brief commit  
 **Status**: PLANNED — IMPLEMENTATION NOT STARTED  
 **Authority**: CS2 Johan Ras, 2026-07-27; `IAA_PRE_BRIEF_PROTOCOL.md` v1.2.2

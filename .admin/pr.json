@@ -5,6 +5,7 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/assurance/iaa-prebrief-pr-1375-canon-inventory-provenance.md",
     ".agent-admin/evidence/issue-1374-canon-inventory-provenance-authority.md",
     ".agent-admin/scope-declarations/pr-1375.md",
     ".agent-admin/waves/wave-pr-1375-canon-inventory-provenance-current-tasks.md"
@@ -16,6 +17,7 @@
     "Public CS2 authorization and the 203-entry canonical provenance blocker are recorded",
     "PR-scoped scope evidence exactly matches the current draft diff",
     "The populated PR-scoped task set is committed before the independent IAA pre-brief and administrator appointment",
+    "The independent IAA pre-brief classifies every task and is committed before administrator appointment",
     "No generator, validator, inventory, regression test, canon, policy, agent contract, MMM, Supabase, runtime, or deployment file is changed at this checkpoint",
     "Independent IAA pre-brief is obtained before governance-repo-administrator-v2 appointment",
     "Final independent IAA PASS is required before merge readiness",
