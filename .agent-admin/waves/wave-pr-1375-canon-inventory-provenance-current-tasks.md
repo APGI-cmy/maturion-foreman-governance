@@ -51,9 +51,9 @@
       qp_verdict: PASS
       notes: No semantic canon or policy content bytes may change.
 
-- [ ] TASK-1375-009 — Prove deterministic Green results, complete scope parity, and zero unauthorized paths
+- [x] TASK-1375-009 — Prove deterministic Green results, complete scope parity, and zero unauthorized paths
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Include repeat generation, per-entry commit/path/hash validation, negative fixtures, and repository gate evidence.
 
 - [ ] TASK-1375-010 — Perform Foreman Quality Professor review on one exact implementation head
