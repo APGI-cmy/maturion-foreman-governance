@@ -46,9 +46,9 @@
       qp_verdict: PASS
       notes: Reject missing, malformed, non-resolving, path-mismatched, and content-stale provenance.
 
-- [ ] TASK-1375-008 — Regenerate the existing 203-entry CANON inventory with verifiable 40-hex commit provenance
+- [x] TASK-1375-008 — Regenerate the existing 203-entry CANON inventory with verifiable 40-hex commit provenance
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: No semantic canon or policy content bytes may change.
 
 - [ ] TASK-1375-009 — Prove deterministic Green results, complete scope parity, and zero unauthorized paths
