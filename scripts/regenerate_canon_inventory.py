@@ -12,9 +12,13 @@ Usage:
 import hashlib
 import json
 import re
-from datetime import datetime
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
+
+
+HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
 
 def calculate_sha256(file_path: Path, truncate: int = 12) -> tuple[str, str]:
@@ -25,6 +29,73 @@ def calculate_sha256(file_path: Path, truncate: int = 12) -> tuple[str, str]:
             sha256_hash.update(byte_block)
     full_hash = sha256_hash.hexdigest()
     return full_hash[:truncate], full_hash
+
+
+def git_output(base_path: Path, *args: str) -> str:
+    """Run a read-only Git command and return stripped text output."""
+    try:
+        return subprocess.check_output(
+            ["git", "-C", str(base_path), *args],
+            text=True,
+            stderr=subprocess.PIPE,
+        ).strip()
+    except subprocess.CalledProcessError as exc:
+        detail = exc.stderr.strip() if exc.stderr else str(exc)
+        raise RuntimeError(f"git {' '.join(args)} failed: {detail}") from exc
+
+
+def blob_sha256_at_commit(base_path: Path, commit: str, rel_path: Path) -> Optional[str]:
+    """Return the SHA256 of a path's bytes at a commit, or None when absent."""
+    result = subprocess.run(
+        ["git", "-C", str(base_path), "show", f"{commit}:{rel_path.as_posix()}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
+def find_content_commit(base_path: Path, rel_path: Path, full_hash: str) -> str:
+    """Find the latest commit that changed rel_path to the declared bytes."""
+    history = git_output(
+        base_path,
+        "log",
+        "--format=%H",
+        "--",
+        rel_path.as_posix(),
+    ).splitlines()
+    for commit in history:
+        if blob_sha256_at_commit(base_path, commit, rel_path) == full_hash:
+            return commit
+    raise RuntimeError(
+        f"No canonical Git commit contains {rel_path.as_posix()} with SHA256 {full_hash}"
+    )
+
+
+def resolve_canonical_commit(
+    base_path: Path,
+    rel_path: Path,
+    full_hash: str,
+    existing_entry: Optional[Dict],
+) -> str:
+    """Preserve verified provenance or reconstruct it from path-specific history."""
+    resolved = find_content_commit(base_path, rel_path, full_hash)
+    existing = (existing_entry or {}).get("canonical_commit", "")
+    if isinstance(existing, str) and HEX40.fullmatch(existing) and existing == resolved:
+        return existing
+    return resolved
+
+
+def deterministic_generation_time(base_path: Path, canons: List[Dict]) -> datetime:
+    """Derive a stable timestamp from the newest content-producing commit."""
+    commit_times = [
+        int(git_output(base_path, "show", "-s", "--format=%ct", entry["canonical_commit"]))
+        for entry in canons
+    ]
+    timestamp = max(commit_times, default=0)
+    return datetime.fromtimestamp(timestamp, tz=timezone.utc)
 
 
 def extract_metadata(file_path: Path) -> Dict:
@@ -99,6 +170,8 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
         for canon in existing_inventory.get("canons", []):
             key = canon.get("path", "")
             existing_map[key] = canon
+    registered_paths = set(existing_map) if existing_inventory is not None else None
+    discovered_paths = set()
     
     # Scan governance/canon directory
     canon_dir = base_path / "governance" / "canon"
@@ -109,6 +182,9 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 
             rel_path = file_path.relative_to(base_path)
             filename = file_path.name
+            if registered_paths is not None and str(rel_path) not in registered_paths:
+                continue
+            discovered_paths.add(str(rel_path))
             
             print(f"  Processing: {rel_path}")
             
@@ -124,18 +200,32 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 layer_down_status = existing_entry.get("layer_down_status", metadata["layer_down_status"])
             else:
                 layer_down_status = metadata["layer_down_status"]
+
+            canonical_commit = resolve_canonical_commit(
+                base_path,
+                rel_path,
+                full_hash,
+                existing_entry,
+            )
             
-            canon_entry = {
+            canon_entry = dict(existing_entry) if existing_entry else {
                 "filename": filename,
                 "version": metadata["version"],
-                "file_hash": full_hash,
                 "effective_date": metadata["effective_date"],
                 "description": metadata["description"] or f"Canonical governance document: {filename.replace('.md', '')}",
                 "type": "canon",
                 "path": str(rel_path),
                 "layer_down_status": layer_down_status,
-                "file_hash_sha256": full_hash,
             }
+            canon_entry.update({
+                "filename": filename,
+                "file_hash": full_hash,
+                "type": "canon",
+                "path": str(rel_path),
+                "canonical_commit": canonical_commit,
+                "layer_down_status": layer_down_status,
+                "file_hash_sha256": full_hash,
+            })
             
             canons.append(canon_entry)
     
@@ -148,6 +238,9 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 
             rel_path = file_path.relative_to(base_path)
             filename = file_path.name
+            if registered_paths is not None and str(rel_path) not in registered_paths:
+                continue
+            discovered_paths.add(str(rel_path))
             
             print(f"  Processing: {rel_path}")
             
@@ -163,20 +256,42 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 layer_down_status = existing_entry.get("layer_down_status", metadata["layer_down_status"])
             else:
                 layer_down_status = metadata["layer_down_status"]
+
+            canonical_commit = resolve_canonical_commit(
+                base_path,
+                rel_path,
+                full_hash,
+                existing_entry,
+            )
             
-            canon_entry = {
+            canon_entry = dict(existing_entry) if existing_entry else {
                 "filename": filename,
                 "version": metadata["version"],
-                "file_hash": full_hash,
                 "effective_date": metadata["effective_date"],
                 "description": metadata["description"] or f"Canonical governance document: {filename.replace('.md', '')}",
                 "type": "policy",
                 "path": str(rel_path),
                 "layer_down_status": layer_down_status,
-                "file_hash_sha256": full_hash,
             }
+            canon_entry.update({
+                "filename": filename,
+                "file_hash": full_hash,
+                "type": "policy",
+                "path": str(rel_path),
+                "canonical_commit": canonical_commit,
+                "layer_down_status": layer_down_status,
+                "file_hash_sha256": full_hash,
+            })
             
             canons.append(canon_entry)
+
+    if registered_paths is not None:
+        missing_paths = sorted(registered_paths - discovered_paths)
+        if missing_paths:
+            raise RuntimeError(
+                "Registered inventory paths are missing from governance/canon or "
+                f"governance/policy: {', '.join(missing_paths)}"
+            )
     
     return canons
 
@@ -204,14 +319,14 @@ def generate_inventory(base_path: Path) -> Dict:
     print("\nScanning governance directory for canon files...")
     canons = scan_governance_directory(base_path, existing_inventory)
     
-    # Use consistent date format - last_updated is date-only for human readability
-    # generation_timestamp is full ISO 8601 for precise tracking
-    now = datetime.now()
+    # Derive timestamps from canonical content history so fixed repository state
+    # always produces byte-identical output.
+    generated_at = deterministic_generation_time(base_path, canons)
     inventory = {
         "version": "1.0.0",
-        "last_updated": now.strftime("%Y-%m-%d"),  # Date-only for readability
+        "last_updated": generated_at.strftime("%Y-%m-%d"),
         "total_canons": len(canons),
-        "generation_timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ"),  # Full ISO 8601 for precision
+        "generation_timestamp": generated_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "canons": canons,
     }
     
