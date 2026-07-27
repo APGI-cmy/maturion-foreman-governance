@@ -1,28 +1,23 @@
 {
-  "pr": 1373,
-  "issue": 1373,
+  "pr": 1375,
+  "issue": 1374,
   "type": "governance-change",
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-session-1373-maturion-agent-network-organigram-20260624.md",
-    ".agent-admin/control/overlays/WAVE1_IAA_PREFLIGHT_BRIEF_CONTRACT_ADDENDUM.md",
-    ".agent-admin/control/protocols/IAA_PREFLIGHT_BRIEF_PROTOCOL.md",
-    ".agent-admin/control/schemas/iaa-preflight-brief.schema.json",
-    ".agent-admin/prehandover/proof-maturion-agent-network-organigram-canon-20260624.md",
-    "governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md",
-    "governance/ripple/RIPPLE-MATURION-AGENT-NETWORK-ORGANIGRAM-20260624.md"
+    ".agent-admin/evidence/issue-1374-canon-inventory-provenance-authority.md",
+    ".agent-admin/scope-declarations/pr-1375.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "New Maturion agent-network organigram canon is added",
-    "Ripple record identifies affected consumer repositories",
-    "Prehandover proof records governance administrator evidence and inventory alignment limitation",
-    "IAA preflight control files are present for contract alignment",
-    "PR-scoped IAA assurance token is present for PR 1373",
-    "This PR does not activate runtime specialists or Maturion CS2 authority"
+    "Public CS2 authorization and the 203-entry canonical provenance blocker are recorded",
+    "PR-scoped scope evidence exactly matches the current draft diff",
+    "No generator, validator, inventory, regression test, canon, policy, agent contract, MMM, Supabase, runtime, or deployment file is changed at this checkpoint",
+    "Independent IAA pre-brief is obtained before governance-repo-administrator-v2 appointment",
+    "Final independent IAA PASS is required before merge readiness",
+    "ISMS PR 1973 remains blocked until canonical merge, verification, and governed layer-down"
   ],
   "merge_authority": "CS2"
 }
