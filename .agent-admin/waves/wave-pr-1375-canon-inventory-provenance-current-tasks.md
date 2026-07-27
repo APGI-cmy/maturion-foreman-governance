@@ -31,9 +31,9 @@
       qp_verdict: PASS
       notes: Read-only repository verification first; degraded provenance is the authorized repair target, not a waiver.
 
-- [ ] TASK-1375-005 — Add QA-to-Red regression fixtures for reconstruction, preservation, and every fail-closed boundary
+- [x] TASK-1375-005 — Add QA-to-Red regression fixtures for reconstruction, preservation, and every fail-closed boundary
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Tests must precede implementation in a distinct commit and cover missing, malformed, unknown, path-mismatched, content-stale, and synthetic-HEAD reuse cases.
 
 - [ ] TASK-1375-006 — Implement deterministic provenance-aware inventory generation and preservation
