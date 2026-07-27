@@ -26,9 +26,9 @@
       qp_verdict: PASS
       notes: Appointment must prohibit tests or implementation before its own commit and prohibit direct main pushes, semantic canon edits, agent-contract edits, and live/consumer mutations.
 
-- [ ] TASK-1375-004 — Execute governance-administrator wake-up and frozen-contract preflight
+- [x] TASK-1375-004 — Execute governance-administrator wake-up and frozen-contract preflight
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Read-only repository verification first; degraded provenance is the authorized repair target, not a waiver.
 
 - [ ] TASK-1375-005 — Add QA-to-Red regression fixtures for reconstruction, preservation, and every fail-closed boundary
