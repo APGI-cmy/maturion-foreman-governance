@@ -36,9 +36,9 @@
       qp_verdict: PASS
       notes: Tests must precede implementation in a distinct commit and cover missing, malformed, unknown, path-mismatched, content-stale, and synthetic-HEAD reuse cases.
 
-- [ ] TASK-1375-006 — Implement deterministic provenance-aware inventory generation and preservation
+- [x] TASK-1375-006 — Implement deterministic provenance-aware inventory generation and preservation
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Resolve canonical Git history per path/content; preserve only independently verifiable existing values.
 
 - [ ] TASK-1375-007 — Implement fail-closed provenance validation without weakening degraded-mode enforcement
