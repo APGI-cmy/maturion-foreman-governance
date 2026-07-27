@@ -5,13 +5,16 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".github/scripts/tests/test-canon-inventory-provenance.sh",
     ".agent-admin/appointments/pr-1375-governance-repo-administrator-v2.md",
     ".agent-admin/assurance/iaa-prebrief-pr-1375-canon-inventory-provenance.md",
     ".agent-admin/evidence/pr-1375-administrator-wakeup-preflight-20260727.md",
+    ".agent-admin/evidence/pr-1375-qa-to-red-20260727.md",
     ".agent-admin/evidence/issue-1374-canon-inventory-provenance-authority.md",
     ".agent-admin/scope-declarations/pr-1375.md",
     ".agent-admin/waves/wave-pr-1375-canon-inventory-provenance-current-tasks.md",
-    ".agent-workspace/governance-repo-administrator/memory/session-GA-1375-20260727-wakeup.md"
+    ".agent-workspace/governance-repo-administrator/memory/session-GA-1375-20260727-wakeup.md",
+    "scripts/tests/test_regenerate_canon_inventory.py"
   ],
   "risk": "high",
   "requires_iaa": true,
@@ -23,6 +26,8 @@
     "The independent IAA pre-brief classifies every task and is committed before administrator appointment",
     "A bounded governance-repo-administrator-v2 appointment is committed after the independent IAA pre-brief and before QA or implementation",
     "The appointed administrator completes contract-first wake-up and frozen-contract preflight before QA-to-Red",
+    "Executable QA-to-Red fixtures cover deterministic reconstruction, preservation, and fail-closed provenance boundaries before implementation",
+    "QA-to-Red evidence records the expected producer failures without modifying generator, validator, or inventory implementation",
     "No generator, validator, inventory, regression test, canon, policy, agent contract, MMM, Supabase, runtime, or deployment file is changed at this checkpoint",
     "Independent IAA pre-brief is obtained before governance-repo-administrator-v2 appointment",
     "Final independent IAA PASS is required before merge readiness",
