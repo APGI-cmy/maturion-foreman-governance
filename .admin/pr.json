@@ -5,6 +5,7 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/appointments/pr-1375-governance-repo-administrator-v2.md",
     ".agent-admin/assurance/iaa-prebrief-pr-1375-canon-inventory-provenance.md",
     ".agent-admin/evidence/issue-1374-canon-inventory-provenance-authority.md",
     ".agent-admin/scope-declarations/pr-1375.md",
@@ -18,6 +19,7 @@
     "PR-scoped scope evidence exactly matches the current draft diff",
     "The populated PR-scoped task set is committed before the independent IAA pre-brief and administrator appointment",
     "The independent IAA pre-brief classifies every task and is committed before administrator appointment",
+    "A bounded governance-repo-administrator-v2 appointment is committed after the independent IAA pre-brief and before QA or implementation",
     "No generator, validator, inventory, regression test, canon, policy, agent contract, MMM, Supabase, runtime, or deployment file is changed at this checkpoint",
     "Independent IAA pre-brief is obtained before governance-repo-administrator-v2 appointment",
     "Final independent IAA PASS is required before merge readiness",
