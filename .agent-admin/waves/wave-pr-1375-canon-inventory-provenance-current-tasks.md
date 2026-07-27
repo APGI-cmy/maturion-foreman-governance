@@ -16,9 +16,9 @@
       qp_verdict: PASS
       notes: Governance-only preflight. The inherited historical-placeholder failure is evidence, not repair scope.
 
-- [ ] TASK-1375-002 — Obtain an independent IAA pre-brief covering every qualifying task before appointment
+- [x] TASK-1375-002 — Obtain an independent IAA pre-brief covering every qualifying task before appointment
       builder: independent-assurance-agent
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: PRE-BRIEF action only; no final verdict, implementation, appointment, or token authority.
 
 - [ ] TASK-1375-003 — Record a bounded governance-repo-administrator-v2 appointment after the pre-brief commit
