@@ -41,9 +41,9 @@
       qp_verdict: PASS
       notes: Resolve canonical Git history per path/content; preserve only independently verifiable existing values.
 
-- [ ] TASK-1375-007 — Implement fail-closed provenance validation without weakening degraded-mode enforcement
+- [x] TASK-1375-007 — Implement fail-closed provenance validation without weakening degraded-mode enforcement
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Reject missing, malformed, non-resolving, path-mismatched, and content-stale provenance.
 
 - [ ] TASK-1375-008 — Regenerate the existing 203-entry CANON inventory with verifiable 40-hex commit provenance
