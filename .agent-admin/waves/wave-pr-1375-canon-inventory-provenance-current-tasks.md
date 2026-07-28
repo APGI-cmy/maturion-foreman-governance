@@ -76,10 +76,10 @@
       qp_verdict: DEFERRED
       notes: DEFERRED — external final IAA action. Not descoped, waived, complete, or pre-approved. Re-entry: invoke final IAA after Amendment 01 and all four deferments are committed with TASK-1375-001 through -012 PASS and exact 28/28 parity.
 
-- [ ] TASK-1375-014 — Obtain CS2 merge disposition, merge via PR only, and verify canonical main
+- [~] TASK-1375-014 — Obtain CS2 merge disposition, merge via PR only, and verify canonical main
       builder: foreman-v2
-      qp_verdict: PENDING
-      notes: No merge before final IAA PASS and required hosted checks; no direct push to main.
+      qp_verdict: DEFERRED
+      notes: DEFERRED — merge/main verification is blocked until TASK-1375-013 produces a genuine independent ASSURANCE-TOKEN, the token and post-assurance state are committed, and every hosted gate is Green. Not descoped, waived, complete, or pre-approved.
 
 - [ ] TASK-1375-015 — Layer the assured canonical inventory down to maturion-isms and re-run schema-builder wake-up
       builder: governance-repo-administrator-v2
