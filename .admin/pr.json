@@ -8,8 +8,10 @@
     ".agent-admin/appointments/pr-1377-governance-repo-administrator-v2.md",
     ".agent-admin/assurance/iaa-prebrief-pr-1377-admin-ceremony-token-resolution.md",
     ".agent-admin/evidence/issue-1376-admin-ceremony-token-resolution-authority.md",
+    ".agent-admin/evidence/pr-1377-administrator-wakeup-preflight-20260728.md",
     ".agent-admin/scope-declarations/pr-1377.md",
-    ".agent-admin/waves/wave-pr-1377-admin-ceremony-token-resolution-current-tasks.md"
+    ".agent-admin/waves/wave-pr-1377-admin-ceremony-token-resolution-current-tasks.md",
+    ".agent-workspace/governance-repo-administrator/memory/session-GA-1377-20260728-wakeup.md"
   ],
   "risk": "high",
   "requires_iaa": true,
