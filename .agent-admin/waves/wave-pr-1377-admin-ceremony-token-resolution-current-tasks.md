@@ -61,10 +61,10 @@
       qp_verdict: PASS
       notes: Administrative reconciliation only; every hosted gate must be Green.
 
-- [~] TASK-1377-011 — Obtain independent final IAA verdict on the frozen fully evidenced head
+- [x] TASK-1377-011 — Obtain independent final IAA verdict on the frozen fully evidenced head
       builder: independent-assurance-agent
-      qp_verdict: DEFERRED
-      notes: DEFERRED — external independent-assurance action that begins only after the pre-IAA checklist is cleared. Not descoped, waived, complete, or pre-approved. Re-entry: re-invoke final IAA after Amendment 01 and all four deferments are committed with exact scope parity.
+      qp_verdict: PASS
+      notes: Independent IAA PASS issued as IAA-20260728-PR1377-FINAL-R1 and committed in dedicated token commit 58976cbb4facb742714d780715173ddd81f7b09b.
 
 - [~] TASK-1377-012 — Merge under recorded CS2 authority and verify canonical main
       builder: foreman-v2
