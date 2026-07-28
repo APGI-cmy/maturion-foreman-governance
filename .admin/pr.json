@@ -1,28 +1,26 @@
 {
-  "pr": 1373,
-  "issue": 1373,
+  "pr": 1377,
+  "issue": 1376,
   "type": "governance-change",
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-session-1373-maturion-agent-network-organigram-20260624.md",
-    ".agent-admin/control/overlays/WAVE1_IAA_PREFLIGHT_BRIEF_CONTRACT_ADDENDUM.md",
-    ".agent-admin/control/protocols/IAA_PREFLIGHT_BRIEF_PROTOCOL.md",
-    ".agent-admin/control/schemas/iaa-preflight-brief.schema.json",
-    ".agent-admin/prehandover/proof-maturion-agent-network-organigram-canon-20260624.md",
-    "governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md",
-    "governance/ripple/RIPPLE-MATURION-AGENT-NETWORK-ORGANIGRAM-20260624.md"
+    ".agent-admin/evidence/issue-1376-admin-ceremony-token-resolution-authority.md",
+    ".agent-admin/scope-declarations/pr-1377.md",
+    ".agent-admin/waves/wave-pr-1377-admin-ceremony-token-resolution-current-tasks.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "New Maturion agent-network organigram canon is added",
-    "Ripple record identifies affected consumer repositories",
-    "Prehandover proof records governance administrator evidence and inventory alignment limitation",
-    "IAA preflight control files are present for contract alignment",
-    "PR-scoped IAA assurance token is present for PR 1373",
-    "This PR does not activate runtime specialists or Maturion CS2 authority"
+    "CS2 authority and the historical token-resolution defect are recorded",
+    "PR-scoped scope evidence exactly matches the current draft diff",
+    "The populated task set precedes independent IAA pre-brief and administrator appointment",
+    "QA-to-Red fixtures precede workflow implementation",
+    "Historical PREHANDOVER proofs and IAA token files remain byte-identical",
+    "Missing, malformed, ambiguous, and cross-PR token evidence fails closed",
+    "Foreman QP, ECAP, and independent final IAA PASS are required before merge",
+    "PR 1375 re-entry occurs only after repair merge and canonical main verification"
   ],
   "merge_authority": "CS2"
 }
