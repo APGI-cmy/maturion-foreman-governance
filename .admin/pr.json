@@ -5,6 +5,7 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/appointments/pr-1377-governance-repo-administrator-v2.md",
     ".agent-admin/assurance/iaa-prebrief-pr-1377-admin-ceremony-token-resolution.md",
     ".agent-admin/evidence/issue-1376-admin-ceremony-token-resolution-authority.md",
     ".agent-admin/scope-declarations/pr-1377.md",
