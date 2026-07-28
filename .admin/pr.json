@@ -10,6 +10,7 @@
     ".github/workflows/admin-ceremony-defect-gate.yml",
     ".agent-admin/appointments/pr-1377-governance-repo-administrator-v2.md",
     ".agent-admin/appointments/pr-1377-execution-ceremony-admin-agent.md",
+    ".agent-admin/assurance/iaa-prebrief-pr-1377-admin-ceremony-token-resolution-amend01.md",
     ".agent-admin/assurance/iaa-prebrief-pr-1377-admin-ceremony-token-resolution.md",
     ".agent-admin/evidence/issue-1376-admin-ceremony-token-resolution-authority.md",
     ".agent-admin/evidence/pr-1377-administrator-wakeup-preflight-20260728.md",
