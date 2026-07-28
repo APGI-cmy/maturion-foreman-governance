@@ -36,9 +36,9 @@
       qp_verdict: PASS
       notes: Cover PR #1356, #1360, #1368, absent identity, malformed identity, ambiguity, missing token, and cross-PR token cases.
 
-- [ ] TASK-1377-006 — Implement deterministic proof-specific PR identity and dedicated-token resolution
+- [x] TASK-1377-006 — Implement deterministic proof-specific PR identity and dedicated-token resolution
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: No allowlist or current-PR fallback may substitute for proof identity.
 
 - [ ] TASK-1377-007 — Build all committed fixtures and the complete Admin-Ceremony workflow to Green
