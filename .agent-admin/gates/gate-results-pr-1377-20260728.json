@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1376,
+  "pr": 1377,
+  "branch": "repair/admin-ceremony-token-resolution-1376",
+  "reviewed_head": "3d45a31ef971f65fba26c76844c332fbe352138f",
+  "date": "2026-07-28",
+  "verdict": "PASS",
+  "gates": {
+    "Admin-Ceremony Defect Gate": {"outcome": "PASS", "run_id": 30338034012},
+    "Preflight Evidence Gate": {"outcome": "PASS", "run_id": 30338035939},
+    "Governance Gate": {"outcome": "PASS", "run_id": 30338033958},
+    "Governance Ceremony Gate": {"outcome": "PASS", "run_id": 30338034068},
+    "Merge Gate Interface": {"outcome": "PASS", "run_id": 30338034293},
+    "IAA Pre-Brief Contract Alignment": {"outcome": "PASS", "run_id": 30338036022},
+    "Agent Governance Validation": {"outcome": "PASS", "run_id": 30338034084},
+    "Learning File Staleness Gate": {"outcome": "PASS", "run_id": 30338034004},
+    "FM Effectiveness Validation Gate": {"outcome": "PASS", "run_id": 30338035893},
+    "FM Failure Enforcement Gate (Learning → Failure)": {"outcome": "PASS", "run_id": 30338036025},
+    "FM Learning Promotion Gate (Governance Required)": {"outcome": "PASS", "run_id": 30338034035},
+    "FM Failure Promotion Gate (Governance Required)": {"outcome": "PASS", "run_id": 30338034020}
+  },
+  "aggregate": {"passed": 12, "failed": 0, "total": 12}
+}
