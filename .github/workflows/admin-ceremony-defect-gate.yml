@@ -201,36 +201,12 @@ jobs:
             PROOF_VIOLATIONS=0
 
             if echo "$IAA_TOKEN" | grep -qiE "(PENDING|placeholder|TBD|TODO|\[to be filled\]|<token|<fill|REQUIRED —)"; then
-              # Verify that a PR-scoped token file exists before failing.
-              # (Token ceremony: PREHANDOVER is immutable; token file is the authority)
-              # Accept either:
-              #   1) a token file added in this PR diff, or
-              #   2) a token file whose content references this PR number.
-              PR_NUM="${{ github.event.pull_request.number }}"
-              if [ -z "$PR_NUM" ]; then
-                PR_NUM=$(basename "$f" | grep -oE '[0-9]+' | head -1 || true)
-              fi
-
+              # Resolve exactly one genuine dedicated token from this proof's own PR
+              # identity. Active-PR fallback, added-token shortcuts, multi-PR bridge
+              # tokens, cross-PR tokens, and ambiguous matches all fail closed.
               TOKEN_FILE=""
-              ADDED_TOKEN_FILE=$(git diff --name-status \
-                "${{ github.event.pull_request.base.sha }}" \
-                "${{ github.event.pull_request.head.sha }}" 2>/dev/null \
-                | awk '$1 == "A" && $2 ~ /^\.agent-admin\/assurance\/iaa-token-session-.*\.md$/ { print $2; exit }' \
-                || true)
-
-              if [ -n "$ADDED_TOKEN_FILE" ]; then
-                TOKEN_FILE="$ADDED_TOKEN_FILE"
-              elif [ -n "$PR_NUM" ]; then
-                TOKEN_FILE=$(find .agent-admin/assurance/ -maxdepth 1 \
-                  -type f -name 'iaa-token-session-*.md' -print 2>/dev/null \
-                  | while IFS= read -r candidate; do
-                      if grep -qiE "(^|[^0-9])(PR|pull request)[[:space:]#:-]*${PR_NUM}([^0-9]|$)" \
-                           "$candidate" 2>/dev/null; then
-                        echo "$candidate"
-                        break
-                      fi
-                    done || true)
-              fi
+              TOKEN_FILE=$(bash .github/scripts/validate-admin-ceremony-final-state.sh \
+                --resolve-token "$f" .agent-admin/assurance 2>/dev/null || true)
 
               if [ -n "$TOKEN_FILE" ]; then
                 echo "  ✅ iaa_audit_token appears pending but PR-scoped token file exists: $TOKEN_FILE"
