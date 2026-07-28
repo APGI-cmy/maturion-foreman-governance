@@ -61,10 +61,10 @@
       qp_verdict: PASS
       notes: QP must independently challenge evidence and return PASS before checklist ticks or administrative closure.
 
-- [ ] TASK-1375-011 — Perform ECAP administrative reconciliation for protected governance paths
+- [x] TASK-1375-011 — Perform ECAP administrative reconciliation for protected governance paths
       builder: execution-ceremony-admin-agent
-      qp_verdict: PENDING
-      notes: Administrative validation only; no implementation, QP, or assurance authority.
+      qp_verdict: PASS
+      notes: ECAP re-entry ACCEPTED after canonical repair merge 3e37fe454b68ee352146fdad070e898123196215; seven of seven applicable hosted gates passed on synchronized head dd9ef6140e7997109e8d2ea53247a2cf00a76d73.
 
 - [ ] TASK-1375-012 — Freeze PREHANDOVER proof and producer session memory on the exact reviewed head
       builder: foreman-v2
