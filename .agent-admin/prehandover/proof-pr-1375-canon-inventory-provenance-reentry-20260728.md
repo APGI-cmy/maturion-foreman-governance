@@ -10,7 +10,7 @@ issue:                  1374
 pr:                     1375
 wave:                   PR-1375-CANON-INVENTORY-PROVENANCE
 
-final_state:            READY_FOR_IAA
+final_state:            COMPLETE
 opojd_compliance:       CONFIRMED
 
 merge_gate_verdict:     PASS
@@ -18,9 +18,9 @@ pre_iaa_commit_state:   PASS
 scope_declaration_parity: PASS
 admin_ceremony_compliance: PASS
 
-iaa_audit_token:        PENDING
-iaa_session_reference:  PENDING
-iaa_reinvocation_round: 0
+iaa_audit_token:        IAA-20260728-PR1375-FINAL
+iaa_session_reference:  .agent-admin/assurance/iaa-token-session-1375-canon-inventory-provenance-20260728.md
+iaa_reinvocation_round: 1
 iaa_rejection_reference: none
 
 reviewed_implementation_head: 5e8896f782870e492f779d8fad0a194ef1c11fea
@@ -38,5 +38,5 @@ prehandover_proof:      .agent-admin/prehandover/proof-pr-1375-canon-inventory-p
 
 ## Handover Status
 
-`READY_FOR_IAA`. The prior ECAP blocker is resolved by the separately assured and merged canonical
-repair. This candidate grants no assurance or merge authority.
+`COMPLETE`. Independent IAA issued `IAA-20260728-PR1375-FINAL`; the dedicated token is the
+authoritative assurance evidence. CS2 retains merge-disposition authority.
