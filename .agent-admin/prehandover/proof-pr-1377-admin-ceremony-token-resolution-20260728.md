@@ -10,7 +10,7 @@ issue:                  1376
 pr:                     1377
 wave:                   PR-1377-ADMIN-CEREMONY-TOKEN-RESOLUTION
 
-final_state:            READY_FOR_IAA
+final_state:            COMPLETE
 opojd_compliance:       CONFIRMED
 
 merge_gate_verdict:     PASS
@@ -18,10 +18,10 @@ pre_iaa_commit_state:   PASS
 scope_declaration_parity: PASS
 admin_ceremony_compliance: PASS
 
-iaa_audit_token:        PENDING
-iaa_session_reference:  PENDING
-iaa_reinvocation_round: 0
-iaa_rejection_reference: none
+iaa_audit_token:        IAA-20260728-PR1377-FINAL-R1
+iaa_session_reference:  .agent-admin/assurance/iaa-token-session-1377-admin-ceremony-token-resolution-20260728.md
+iaa_reinvocation_round: 1
+iaa_rejection_reference: CHECKLIST-GATE-002 — resolved by Amendment 01 and four discrete deferment commits
 
 reviewed_implementation_head: 2899cb775289c0341de65bc808530ff92a1fba3d
 reviewed_qp_head:        9c5a10ff85a5bc78f9aad5388139208739807343
@@ -32,7 +32,7 @@ historical_hashes:      6/6 UNCHANGED
 fixture_suite:          10/10 PASS
 
 prehandover_proof:      .agent-admin/prehandover/proof-pr-1377-admin-ceremony-token-resolution-20260728.md
-finalization_rule:      Independent IAA PASS must authorize one atomic proof-finalization and dedicated-token commit
+finalization_rule:      SATISFIED — independent IAA PASS authorized this proof-finalization and dedicated-token commit
 ```
 
 ## Scope and Evidence
@@ -44,4 +44,5 @@ consumer, deployment, and live-environment state unchanged.
 
 ## Handover Status
 
-`READY_FOR_IAA`. This candidate is not a final assurance token and does not grant merge authority.
+`COMPLETE`. Independent IAA issued `IAA-20260728-PR1377-FINAL-R1`; the dedicated token is the
+authoritative merge-permission evidence. CS2 remains merge authority.
