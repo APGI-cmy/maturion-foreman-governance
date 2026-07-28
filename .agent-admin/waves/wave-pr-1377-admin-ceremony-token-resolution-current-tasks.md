@@ -26,9 +26,9 @@
       qp_verdict: PASS
       notes: Appointment must freeze exact workflow, test, and PR-scoped evidence paths.
 
-- [ ] TASK-1377-004 — Execute administrator contract-first wake-up and frozen-contract preflight
+- [x] TASK-1377-004 — Execute administrator contract-first wake-up and frozen-contract preflight
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Verify authority, scope, historical proof/token hashes, and workflow baseline before QA.
 
 - [ ] TASK-1377-005 — Commit executable QA-to-Red fixtures before workflow implementation
