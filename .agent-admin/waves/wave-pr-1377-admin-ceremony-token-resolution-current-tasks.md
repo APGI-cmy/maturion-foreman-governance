@@ -4,7 +4,7 @@
 **Issue**: #1376  
 **PR**: #1377  
 **Foreman**: foreman-v2 under direct CS2 authorization  
-**IAA Pre-Brief**: PENDING  
+**IAA Pre-Brief**: `.agent-admin/assurance/iaa-prebrief-pr-1377-admin-ceremony-token-resolution.md` — ACTIVE  
 **Governance Administrator Appointment**: PENDING  
 **Status**: TASK SET FROZEN — IMPLEMENTATION NOT STARTED  
 **Authority**: CS2 Johan Ras, 2026-07-28; `IAA_PRE_BRIEF_PROTOCOL.md` v1.2.2
