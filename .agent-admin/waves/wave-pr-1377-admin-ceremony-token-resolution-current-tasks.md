@@ -76,10 +76,10 @@
       qp_verdict: DEFERRED
       notes: DEFERRED — successor action blocked until TASK-1377-012 records verified PR #1377 merge and canonical-main confirmation. Not descoped, waived, complete, or pre-approved.
 
-- [ ] TASK-1377-014 — Obtain independent final IAA for PR #1375 on its refreshed frozen head
+- [~] TASK-1377-014 — Obtain independent final IAA for PR #1375 on its refreshed frozen head
       builder: independent-assurance-agent
-      qp_verdict: PENDING
-      notes: Successor action only after PR #1375 ECAP returns ACCEPTED.
+      qp_verdict: DEFERRED
+      notes: DEFERRED — successor assurance action blocked until TASK-1377-013 records ECAP ACCEPTED for PR #1375 on a refreshed frozen head. Not descoped, waived, complete, or pre-approved.
 
 ---
 
