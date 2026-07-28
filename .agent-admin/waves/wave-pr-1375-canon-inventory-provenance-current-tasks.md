@@ -71,10 +71,10 @@
       qp_verdict: PASS
       notes: PREHANDOVER candidate and fresh ECAP session memory frozen in commit 31ada50684615350a646ae375c6aaf56fdc9dad0 with exact 27/27 scope parity.
 
-- [~] TASK-1375-013 — Obtain independent final IAA binary verdict on the frozen fully evidenced head
+- [x] TASK-1375-013 — Obtain independent final IAA binary verdict on the frozen fully evidenced head
       builder: independent-assurance-agent
-      qp_verdict: DEFERRED
-      notes: DEFERRED — external final IAA action. Not descoped, waived, complete, or pre-approved. Re-entry: invoke final IAA after Amendment 01 and all four deferments are committed with TASK-1375-001 through -012 PASS and exact 28/28 parity.
+      qp_verdict: PASS
+      notes: Independent IAA issued IAA-20260728-PR1375-FINAL at reviewed head fea60b89ee04870c9671104adb8c2f51ac852041; dedicated token committed at 1104cf5448539f8fbb7d23a8537e55c27af41515.
 
 - [~] TASK-1375-014 — Obtain CS2 merge disposition, merge via PR only, and verify canonical main
       builder: foreman-v2
