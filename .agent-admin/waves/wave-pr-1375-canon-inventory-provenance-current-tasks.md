@@ -86,10 +86,10 @@
       qp_verdict: DEFERRED
       notes: DEFERRED — ISMS layer-down and schema wake-up are blocked until verified PR #1375 merge and canonical-main confirmation. No live Supabase deployment or database mutation is authorized. Not descoped, waived, complete, or pre-approved.
 
-- [ ] TASK-1375-016 — Resume ISMS PR #1973 only after successful governed layer-down
+- [~] TASK-1375-016 — Resume ISMS PR #1973 only after successful governed layer-down
       builder: foreman-v2
-      qp_verdict: PENDING
-      notes: Resume with Supabase CLI preflight, then migration/tests under the existing bounded schema-builder authority; no live deployment.
+      qp_verdict: DEFERRED
+      notes: DEFERRED — ISMS PR #1973 resumption is blocked until successful layer-down, consumer validation, and a CLEAR schema-builder wake-up under the existing appointment and frozen contract. Not descoped, waived, complete, or pre-approved.
 
 ---
 
