@@ -71,10 +71,10 @@
       qp_verdict: DEFERRED
       notes: DEFERRED — causally blocked until TASK-1377-011 produces a genuine independent ASSURANCE-TOKEN, the token is committed, and every required hosted gate is Green. Not descoped, waived, complete, or pre-approved.
 
-- [ ] TASK-1377-013 — Re-run ECAP for PR #1375 after verified canonical repair merge
+- [~] TASK-1377-013 — Re-run ECAP for PR #1375 after verified canonical repair merge
       builder: execution-ceremony-admin-agent
-      qp_verdict: PENDING
-      notes: Successor action; do not alter PR #1375 implementation.
+      qp_verdict: DEFERRED
+      notes: DEFERRED — successor action blocked until TASK-1377-012 records verified PR #1377 merge and canonical-main confirmation. Not descoped, waived, complete, or pre-approved.
 
 - [ ] TASK-1377-014 — Obtain independent final IAA for PR #1375 on its refreshed frozen head
       builder: independent-assurance-agent
