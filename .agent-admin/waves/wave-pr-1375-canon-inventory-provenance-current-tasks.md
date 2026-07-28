@@ -81,10 +81,10 @@
       qp_verdict: DEFERRED
       notes: DEFERRED — merge/main verification is blocked until TASK-1375-013 produces a genuine independent ASSURANCE-TOKEN, the token and post-assurance state are committed, and every hosted gate is Green. Not descoped, waived, complete, or pre-approved.
 
-- [ ] TASK-1375-015 — Layer the assured canonical inventory down to maturion-isms and re-run schema-builder wake-up
+- [~] TASK-1375-015 — Layer the assured canonical inventory down to maturion-isms and re-run schema-builder wake-up
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
-      notes: Successor work only after canonical merge and post-merge verification; preserve consumer evidence and provenance.
+      qp_verdict: DEFERRED
+      notes: DEFERRED — ISMS layer-down and schema wake-up are blocked until verified PR #1375 merge and canonical-main confirmation. No live Supabase deployment or database mutation is authorized. Not descoped, waived, complete, or pre-approved.
 
 - [ ] TASK-1375-016 — Resume ISMS PR #1973 only after successful governed layer-down
       builder: foreman-v2
