@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1374,
+  "pr": 1375,
+  "branch": "repair/canon-inventory-provenance-1374",
+  "reviewed_head": "dd9ef6140e7997109e8d2ea53247a2cf00a76d73",
+  "canonical_repair_merge": "3e37fe454b68ee352146fdad070e898123196215",
+  "date": "2026-07-28",
+  "verdict": "PASS",
+  "gates": {
+    "Admin-Ceremony Defect Gate": {"outcome": "PASS", "run_id": 30340099416},
+    "Preflight Evidence Gate": {"outcome": "PASS", "run_id": 30340097551},
+    "Governance Gate": {"outcome": "PASS", "run_id": 30340098919},
+    "Governance Ceremony Gate": {"outcome": "PASS", "run_id": 30340097651},
+    "Merge Gate Interface": {"outcome": "PASS", "run_id": 30340097607},
+    "IAA Pre-Brief Contract Alignment": {"outcome": "PASS", "run_id": 30340098574},
+    "Learning File Staleness Gate": {"outcome": "PASS", "run_id": 30340098520}
+  },
+  "aggregate": {"passed": 7, "failed": 0, "total": 7}
+}
