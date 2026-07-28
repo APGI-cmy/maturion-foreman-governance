@@ -66,10 +66,10 @@
       qp_verdict: DEFERRED
       notes: DEFERRED — external independent-assurance action that begins only after the pre-IAA checklist is cleared. Not descoped, waived, complete, or pre-approved. Re-entry: re-invoke final IAA after Amendment 01 and all four deferments are committed with exact scope parity.
 
-- [ ] TASK-1377-012 — Merge under recorded CS2 authority and verify canonical main
+- [~] TASK-1377-012 — Merge under recorded CS2 authority and verify canonical main
       builder: foreman-v2
-      qp_verdict: PENDING
-      notes: Merge only after final IAA PASS and all required hosted checks are Green.
+      qp_verdict: DEFERRED
+      notes: DEFERRED — causally blocked until TASK-1377-011 produces a genuine independent ASSURANCE-TOKEN, the token is committed, and every required hosted gate is Green. Not descoped, waived, complete, or pre-approved.
 
 - [ ] TASK-1377-013 — Re-run ECAP for PR #1375 after verified canonical repair merge
       builder: execution-ceremony-admin-agent
