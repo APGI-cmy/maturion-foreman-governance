@@ -21,9 +21,9 @@
       qp_verdict: PASS
       notes: PRE-BRIEF only; no appointment, implementation, final verdict, or token authority.
 
-- [ ] TASK-1377-003 — Record a bounded governance-repo-administrator-v2 appointment after the pre-brief commit
+- [x] TASK-1377-003 — Record a bounded governance-repo-administrator-v2 appointment after the pre-brief commit
       builder: foreman-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Appointment must freeze exact workflow, test, and PR-scoped evidence paths.
 
 - [ ] TASK-1377-004 — Execute administrator contract-first wake-up and frozen-contract preflight
