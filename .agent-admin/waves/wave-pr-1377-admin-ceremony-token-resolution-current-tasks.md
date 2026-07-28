@@ -46,9 +46,9 @@
       qp_verdict: PASS
       notes: Preserve all historical proofs and token files byte-for-byte; zero skipped tests.
 
-- [ ] TASK-1377-008 — Record exact Green evidence, scope parity, and unchanged historical evidence hashes
+- [x] TASK-1377-008 — Record exact Green evidence, scope parity, and unchanged historical evidence hashes
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Evidence must come from current-session execution.
 
 - [ ] TASK-1377-009 — Perform Foreman Quality Professor review on the frozen implementation head
