@@ -16,9 +16,9 @@
       qp_verdict: PASS
       notes: Reproduce the defect without mutating any historical evidence.
 
-- [ ] TASK-1377-002 — Obtain an independent IAA pre-brief covering every qualifying task before appointment
+- [x] TASK-1377-002 — Obtain an independent IAA pre-brief covering every qualifying task before appointment
       builder: independent-assurance-agent
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: PRE-BRIEF only; no appointment, implementation, final verdict, or token authority.
 
 - [ ] TASK-1377-003 — Record a bounded governance-repo-administrator-v2 appointment after the pre-brief commit
