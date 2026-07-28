@@ -31,9 +31,9 @@
       qp_verdict: PASS
       notes: Verify authority, scope, historical proof/token hashes, and workflow baseline before QA.
 
-- [ ] TASK-1377-005 — Commit executable QA-to-Red fixtures before workflow implementation
+- [x] TASK-1377-005 — Commit executable QA-to-Red fixtures before workflow implementation
       builder: governance-repo-administrator-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Cover PR #1356, #1360, #1368, absent identity, malformed identity, ambiguity, missing token, and cross-PR token cases.
 
 - [ ] TASK-1377-006 — Implement deterministic proof-specific PR identity and dedicated-token resolution
