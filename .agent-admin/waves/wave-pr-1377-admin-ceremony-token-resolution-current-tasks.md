@@ -11,9 +11,9 @@
 
 ---
 
-- [ ] TASK-1377-001 — Confirm issue, PR, base/head lineage, three affected historical proofs, and existing genuine dedicated tokens
+- [x] TASK-1377-001 — Confirm issue, PR, base/head lineage, three affected historical proofs, and existing genuine dedicated tokens
       builder: foreman-v2
-      qp_verdict: PENDING
+      qp_verdict: PASS
       notes: Reproduce the defect without mutating any historical evidence.
 
 - [ ] TASK-1377-002 — Obtain an independent IAA pre-brief covering every qualifying task before appointment
