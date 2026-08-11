@@ -549,7 +549,7 @@ The following documents constitute the pilot governance baseline:
 
 ### 14.3 Decision Log
 
-CS2 decisions (phase progression, charter amendments, emergency overrides) shall be documented in a **PILOT_DECISION_LOG.md** file in this repo:
+CS2 decisions (phase progression, charter amendments, emergency overrides) shall be documented in `governance/MMM_PILOT_DECISION_LOG.md` in this repo:
 
 ```
 # MMM Interim CS2 Pilot Decision Log
