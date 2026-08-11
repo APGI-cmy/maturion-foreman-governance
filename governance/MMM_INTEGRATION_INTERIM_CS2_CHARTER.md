@@ -371,7 +371,7 @@ Pilot shall be paused and reviewed if:
 - ✅ Interim CS2 reports are >95% accurate vs. independent human review (spot-check 5+ reports)
 - ✅ All pilot constraints followed consistently
 - ✅ No false-positive blocks of legitimate work
-- ✅ ≥1 governance learning promoted to canvas
+- ✅ ≥1 governance learning promoted to canon
 - ✅ Foreman trust in interim CS2 reports increasing (anecdotal feedback)
 
 **Exit Decision**: Proceed to Phase 3 if acceptance criteria met; extend Phase 2 or pause if not
