@@ -5,7 +5,7 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-pr-1378-interim-cs2-charter-20260811.md",
+    ".agent-admin/assurance/assurance-token-1378-interim-cs2-charter.md",
     ".github/scripts/tests/test-canon-inventory-provenance.sh",
     ".agent-admin/appointments/pr-1375-governance-repo-administrator-v2.md",
     ".agent-admin/appointments/pr-1375-execution-ceremony-admin-agent.md",
