@@ -1,4 +1,4 @@
-# IAA ASSURANCE TOKEN — PR #1378
+# ASSURANCE-TOKEN — PR #1378
 
 **PR**: #1378  
 **Issue**: MMM #2004  
@@ -10,6 +10,7 @@
 **FFA Assessment**: NOT-REQUIRED  
 **Agent Integrity**: PASS  
 **Independence**: CONFIRMED  
+**Marker**: ASSURANCE-TOKEN
 
 ## Assurance Results
 
