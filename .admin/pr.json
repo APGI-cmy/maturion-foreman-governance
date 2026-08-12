@@ -5,6 +5,7 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/assurance/assurance-token-1378-interim-cs2-charter.md",
     ".github/scripts/tests/test-canon-inventory-provenance.sh",
     ".agent-admin/appointments/pr-1375-governance-repo-administrator-v2.md",
     ".agent-admin/appointments/pr-1375-execution-ceremony-admin-agent.md",
@@ -30,6 +31,9 @@
     ".agent-workspace/execution-ceremony-admin-agent/memory/session-ecap-pr-1375-20260727.md",
     ".agent-workspace/execution-ceremony-admin-agent/memory/session-ecap-pr-1375-reentry-20260728.md",
     "governance/CANON_INVENTORY.json",
+    "governance/MMM_INTEGRATION_INTERIM_CS2_CHARTER.md",
+    "governance/MMM_PILOT_DECISION_LOG.md",
+    "governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md",
     "scripts/regenerate_canon_inventory.py",
     "scripts/tests/test_regenerate_canon_inventory.py",
     ".github/scripts/validate-canon-hashes.sh"
