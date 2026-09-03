@@ -12,8 +12,8 @@
     ".agent-workspace/CodexAdvisor-agent/memory/session-017-20260903.md",
     ".agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md",
     ".github/agents/foreman-v2.agent.md",
-    "governance/quality/agent-integrity/foreman-v2.agent.md",
-    "governance/quality/agent-integrity/INTEGRITY_INDEX.md"
+    "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
+    "governance/quality/agent-integrity/foreman-v2.agent.md"
   ],
   "risk": "high",
   "requires_iaa": true,
