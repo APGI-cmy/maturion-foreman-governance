@@ -32,7 +32,7 @@ import sys
 inventory_path = sys.argv[1]
 
 inventory_file = Path(inventory_path).resolve()
-with open(inventory_file, "r") as f:
+with open(inventory_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 entries = data.get("canons", [])
