@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1390,
+  "pr": 1391,
+  "branch": "apgi-cmy-iaa-tier-2-recovery",
+  "base_branch": "apgi-cmy-foreman-iaa-remediation",
+  "implementation_commit": "35abf783",
+  "date": "2026-09-03",
+  "verdict": "DRAFT_NOT_MERGE_READY",
+  "gates": {
+    "CS2 authorization": {
+      "outcome": "PASS",
+      "detail": "Issue #1390 explicitly authorizes this IAA Tier 2 preflight-prerequisite recovery."
+    },
+    "IAA Tier 2 completeness": {
+      "outcome": "PASS",
+      "detail": "All 8 indexed operational prerequisites exist and are declared by the recovered index."
+    },
+    "Verified source blobs": {
+      "outcome": "PASS",
+      "detail": "The three restored files match the verified APGI-cmy/maturion-isms source blobs."
+    },
+    "Canonical recovery parity": {
+      "outcome": "PASS",
+      "detail": "Restored files and index match commits aa014e26 and 27b81620 exactly."
+    },
+    "IAA Tier 1 boundary": {
+      "outcome": "PASS",
+      "detail": "No .github/agents/independent-assurance-agent.md change exists in the PR scope."
+    },
+    "Whitespace": {
+      "outcome": "PASS",
+      "command": "git diff --check apgi-cmy-foreman-iaa-remediation...HEAD"
+    },
+    "PR manifest": {
+      "outcome": "PASS",
+      "detail": "UTF-8 JSON parsing, required-field, enum, and exact changed-file scope checks passed against apgi-cmy-foreman-iaa-remediation."
+    },
+    "Independent bootstrap-path review": {
+      "outcome": "PENDING",
+      "detail": "No IAA verdict or token is issued by this recovery."
+    },
+    "ECAP for PR #1389": {
+      "outcome": "PENDING",
+      "detail": "The existing Foreman-contract PR requirement is unchanged."
+    }
+  },
+  "aggregate": {
+    "passed": 7,
+    "pending": 2,
+    "failed": 0,
+    "total": 9
+  },
+  "merge_authority": "CS2"
+}

@@ -1,28 +1,27 @@
 {
-  "pr": 1389,
-  "issue": 1388,
-  "type": "agent-contract-change",
+  "pr": 1391,
+  "issue": 1390,
+  "type": "governance-change",
   "owner": "CodexAdvisor-agent",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/gates/gate-results-issue-1388-foreman-iaa-rejection-20260903.json",
-    ".agent-admin/governance/agent-contract-diffs/diff-20260903-foreman-v2-issue-1388.md",
-    ".agent-admin/prehandover/proof-issue-1388-foreman-iaa-rejection-20260903.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-017-20260903.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/session-017-20260903.md",
+    ".agent-admin/evidence/issue-1390-iaa-tier2-provenance.md",
+    ".agent-admin/gates/gate-results-issue-1390-iaa-tier2-recovery-20260903.json",
     ".agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md",
-    ".github/agents/foreman-v2.agent.md",
-    "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
-    "governance/quality/agent-integrity/foreman-v2.agent.md"
+    ".agent-workspace/CodexAdvisor-agent/memory/session-018-20260903.md",
+    ".agent-workspace/independent-assurance-agent/knowledge/FUNCTIONAL-BEHAVIOUR-REGISTRY.md",
+    ".agent-workspace/independent-assurance-agent/knowledge/IAA_AGENT_CONTRACT_AUDIT_STANDARD.md",
+    ".agent-workspace/independent-assurance-agent/knowledge/iaa-high-frequency-checks.md",
+    ".agent-workspace/independent-assurance-agent/knowledge/index.md"
   ],
-  "risk": "high",
+  "risk": "medium",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "Issue #1388 authorizes the final-IAA rejection handling repair",
-    "Live Foreman contract, integrity reference, and SHA256 index remain synchronized",
-    "QP, canonical integrity, semantic, placeholder, and whitespace checks pass",
-    "Final IAA and ECAP remain pending; draft PR is not merge-ready"
+    "Issue #1390 authorizes restoration of the IAA Phase 1 Tier 2 prerequisites",
+    "Each restored knowledge file matches its verified APGI-cmy/maturion-isms source blob",
+    "The IAA Tier 2 index declares all restored prerequisites and the preflight load set is complete",
+    "Independent bootstrap-path review remains pending; no IAA token, assurance claim, or merge-ready claim is made"
   ],
   "merge_authority": "CS2"
 }

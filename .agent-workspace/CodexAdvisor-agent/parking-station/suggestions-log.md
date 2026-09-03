@@ -88,6 +88,23 @@ Per the triggering issue scope boundary: this session is authorized for the meta
 
 ---
 
+## Session 018 - 2026-09-03
+
+### Suggestion: validate IAA knowledge index source currency
+
+**Session**: session-018-20260903
+**Triggering Issue**: #1390
+**Status**: OUT OF SCOPE - CS2 authorization required
+**Priority**: HIGH
+
+The IAA knowledge index should retain verified source-blob provenance for every
+mandatory operational prerequisite, with a lightweight validation that detects a
+missing indexed file before a final IAA invocation. This recovery established that
+three valid upstream source blobs existed while the canonical IAA workspace lacked
+the corresponding files.
+
+---
+
 ## Session 014 - 2026-09-03
 
 ### Suggestion: make CANON-HASH-001 explicitly UTF-8 and reconcile interim-CS2 provenance
