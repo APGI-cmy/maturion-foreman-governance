@@ -128,3 +128,19 @@ without changing any validation decisions.
 ---
 
 *Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-015-20260903 | CS2 authorization required before action*
+
+---
+
+## Session 017 - 2026-09-03
+
+### Suggestion: recover Foreman contract size headroom
+
+**Session**: session-017-20260903
+**Triggering Issue**: #1388
+**Status**: OUT OF SCOPE - CS2 authorization required
+**Priority**: MEDIUM
+
+The Foreman contract reached 29,998 of its 30,000-character hard limit after the
+required final-IAA rejection controls were added. A future authorized contract
+reduction should move duplicated operational wording to Tier 2 so future
+mandatory controls do not force last-character compaction.

@@ -1,0 +1,27 @@
+{
+  "issue": 1388,
+  "date": "2026-09-03",
+  "scope": [
+    ".github/agents/foreman-v2.agent.md",
+    "governance/quality/agent-integrity/foreman-v2.agent.md",
+    "governance/quality/agent-integrity/INTEGRITY_INDEX.md"
+  ],
+  "contract_version": "3.0.2",
+  "checks": {
+    "yaml_frontmatter": "PASS",
+    "yaml_lint_warnings": 0,
+    "placeholder_check": "PASS",
+    "canonical_hashes": "PASS (204/204)",
+    "alignment_overclaim": "PASS (204 entries)",
+    "integrity_reference_copy": "PASS",
+    "integrity_index_hash": "PASS",
+    "character_limit": "PASS (29998/30000)",
+    "targeted_iaa_rejection_semantics": "PASS",
+    "quality_professor": "PASS (11/11)",
+    "whitespace": "PASS"
+  },
+  "merge_gate_parity": "PASS",
+  "final_iaa": "PENDING - required before merge readiness",
+  "ecap": "PENDING - required before merge readiness",
+  "merge_authority": "CS2"
+}
