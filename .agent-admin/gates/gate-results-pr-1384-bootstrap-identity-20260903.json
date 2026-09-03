@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1382,
+  "pr": 1384,
+  "branch": "apgi-cmy-administrator-bootstrap-recovery",
+  "implementation_commits": [
+    "e2039914eb365678d726be1bda872410216572bd",
+    "db654275c4c08628c892ee9f3fb6e5cfe2e880e4"
+  ],
+  "date": "2026-09-03",
+  "verdict": "DRAFT_NOT_MERGE_READY",
+  "gates": {
+    "Canonical administrator alias": {
+      "outcome": "PASS",
+      "detail": "governance-repo-administrator-v2 and governance-repo-administrator-v2.agent resolve .github/agents/governance-repo-administrator-v2.agent.md"
+    },
+    "Bootstrap package suite": {
+      "outcome": "PASS",
+      "command": "npm test",
+      "detail": "Includes focused coverage for both administrator identities."
+    },
+    "JavaScript syntax": {
+      "outcome": "PASS",
+      "command": "node --check index.js && node --check agent-ids.js && node --check test-bootstrap.js"
+    },
+    "Manifest JSON": {
+      "outcome": "PASS",
+      "detail": ".admin/pr.json parses as UTF-8 JSON."
+    },
+    "PR manifest": {
+      "outcome": "PASS",
+      "command": ".github/scripts/validate-simple-pr-admin.sh --base-ref apgi-cmy-canonical-hash-recovery"
+    },
+    "Whitespace": {
+      "outcome": "PASS",
+      "command": "git diff --check apgi-cmy-canonical-hash-recovery...HEAD"
+    },
+    "Active runtime registration": {
+      "outcome": "DEFERRED",
+      "detail": "The user-level runtime remains configured outside this worktree and must not reference an unmerged branch."
+    },
+    "ECAP": {
+      "outcome": "DEFERRED",
+      "detail": "No independent ECAP invocation or PASS is claimed."
+    },
+    "IAA": {
+      "outcome": "DEFERRED",
+      "detail": "No independent IAA invocation or PASS is claimed."
+    }
+  },
+  "aggregate": {
+    "passed": 6,
+    "deferred": 3,
+    "failed": 0,
+    "total": 9
+  }
+}
