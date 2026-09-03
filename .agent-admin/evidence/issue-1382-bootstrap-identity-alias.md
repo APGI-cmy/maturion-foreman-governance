@@ -1,8 +1,8 @@
 # Issue #1382 Bootstrap Identity Alias Evidence
 
-**Date**: 2026-09-03  
-**Issue**: [#1382](https://github.com/APGI-cmy/maturion-foreman-governance/issues/1382)  
-**Branch**: `apgi-cmy-administrator-bootstrap-recovery`  
+**Date**: 2026-09-03
+**Issue**: [#1382](https://github.com/APGI-cmy/maturion-foreman-governance/issues/1382)
+**Branch**: `apgi-cmy-administrator-bootstrap-recovery`
 **Authorization**: CS2 authorization in Issue #1382, refined by the controlling CS2 session.
 
 ## Authorized Change
