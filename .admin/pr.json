@@ -5,13 +5,10 @@
   "owner": "CodexAdvisor-agent",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/assurance/iaa-token-session-015-pr-1383-20260903.md",
     ".agent-admin/evidence/issue-1380-canon-hash-recovery-authority.md",
     ".agent-admin/evidence/pr-1383-canon-hash-recovery-validation.md",
     ".agent-admin/gates/gate-results-pr-1383-canon-hash-recovery-20260903.json",
     ".agent-admin/prehandover/ecap-reconciliation-pr-1383-20260903.md",
-    ".agent-admin/prehandover/proof-pr-1383-canon-hash-recovery-20260903.md",
-    ".agent-admin/scope-declarations/pr-1383.md",
     ".agent-workspace/CodexAdvisor-agent/memory/session-015-20260903.md",
     ".agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md",
     ".github/scripts/validate-canon-hashes.sh",
@@ -25,7 +22,8 @@
     "Current canonical bytes, declared commit, and path-creation commit are recorded",
     "CANON-HASH-001 passes all 204 entries after the inventory correction",
     "Shell syntax, UTF-8 JSON parsing, whitespace, and provenance boundary validation are recorded",
-    "Independent ECAP reconciliation and final IAA verdict are required before merge readiness"
+    "Independent ECAP reconciliation and final IAA verdict are required before merge readiness",
+    "ECAP bootstrap failure is recorded and blocks final assurance and merge readiness"
   ],
   "merge_authority": "CS2"
 }

@@ -6,7 +6,7 @@
   "branch": "apgi-cmy-canonical-hash-recovery",
   "implementation_commit": "69255f592ef7bea553cf597734a908298b9a200f",
   "date": "2026-09-03",
-  "verdict": "PENDING_INDEPENDENT_ASSURANCE",
+  "verdict": "BLOCKED_ECAP_BOOTSTRAP",
   "gates": {
     "CANON-HASH-001": {
       "outcome": "PASS",
@@ -31,16 +31,18 @@
       "command": "git diff --check"
     },
     "ECAP": {
-      "outcome": "PENDING"
+      "outcome": "BLOCKED",
+      "detail": "Independent governance-repo-administrator-v2 session could not bootstrap: the runtime rejected governance-repo-administrator as an unrecognized identity."
     },
     "IAA": {
-      "outcome": "PENDING"
+      "outcome": "NOT_INVOKED",
+      "detail": "Blocked pending independent ECAP reconciliation."
     }
   },
   "aggregate": {
     "passed": 5,
-    "pending": 2,
-    "failed": 0,
+    "pending": 0,
+    "failed": 1,
     "total": 7
   }
 }
