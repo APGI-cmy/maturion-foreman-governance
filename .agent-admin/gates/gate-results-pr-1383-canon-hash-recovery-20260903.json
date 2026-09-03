@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1380,
+  "pr": 1383,
+  "branch": "apgi-cmy-canonical-hash-recovery",
+  "implementation_commit": "69255f592ef7bea553cf597734a908298b9a200f",
+  "date": "2026-09-03",
+  "verdict": "PENDING_INDEPENDENT_ASSURANCE",
+  "gates": {
+    "CANON-HASH-001": {
+      "outcome": "PASS",
+      "command": "PYTHONIOENCODING=utf-8 bash .github/scripts/validate-canon-hashes.sh",
+      "detail": "204/204 entries valid"
+    },
+    "Shell syntax": {
+      "outcome": "PASS",
+      "command": "bash -n .github/scripts/validate-canon-hashes.sh"
+    },
+    "UTF-8 JSON": {
+      "outcome": "PASS",
+      "detail": "Inventory parsed with UTF-8 and target provenance is 5a38f26bdd706829b0bfcaba0790c1b866cfcd14"
+    },
+    "Provenance boundary suite": {
+      "outcome": "PASS",
+      "command": "PYTHONIOENCODING=utf-8 bash .github/scripts/tests/test-canon-inventory-provenance.sh",
+      "detail": "Valid control plus six fail-closed cases"
+    },
+    "Whitespace": {
+      "outcome": "PASS",
+      "command": "git diff --check"
+    },
+    "ECAP": {
+      "outcome": "PENDING"
+    },
+    "IAA": {
+      "outcome": "PENDING"
+    }
+  },
+  "aggregate": {
+    "passed": 5,
+    "pending": 2,
+    "failed": 0,
+    "total": 7
+  }
+}

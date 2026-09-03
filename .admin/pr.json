@@ -1,28 +1,31 @@
 {
-  "pr": 1381,
-  "issue": 1379,
+  "pr": 1383,
+  "issue": 1380,
   "type": "governance-change",
   "owner": "CodexAdvisor-agent",
   "scope": [
     ".admin/pr.json",
-    ".agent-workspace/CodexAdvisor-agent/knowledge/index.md",
-    ".agent-workspace/CodexAdvisor-agent/knowledge/runtime-specialist-bundle-process.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/session-014-20260903.md",
+    ".agent-admin/assurance/iaa-token-session-015-pr-1383-20260903.md",
+    ".agent-admin/evidence/issue-1380-canon-hash-recovery-authority.md",
+    ".agent-admin/evidence/pr-1383-canon-hash-recovery-validation.md",
+    ".agent-admin/gates/gate-results-pr-1383-canon-hash-recovery-20260903.json",
+    ".agent-admin/prehandover/ecap-reconciliation-pr-1383-20260903.md",
+    ".agent-admin/prehandover/proof-pr-1383-canon-hash-recovery-20260903.md",
+    ".agent-admin/scope-declarations/pr-1383.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/session-015-20260903.md",
     ".agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md",
-    ".github/scripts/wake-up-protocol.sh"
+    ".github/scripts/validate-canon-hashes.sh",
+    "governance/CANON_INVENTORY.json"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "Issue #1379 contains explicit CS2 authorization and exact scope",
-    "CodexAdvisor wake-up succeeds against the canonical .github/agents/CodexAdvisor-agent.md contract",
-    "Wake-up protocol shell syntax and git whitespace checks pass",
-    "Strict BL-028 YAML frontmatter validation passes with no warnings or errors",
-    "Agent-contract placeholder validation passes",
-    "The restored Tier 2 method is present and its substantive content matches the verified ISMS donor",
-    "CANON-HASH-001 is clean before PREHANDOVER, final IAA, non-draft posture, or merge",
-    "Final independent IAA PASS and ECAP completion are required before merge readiness"
+    "Issue #1380 and CS2 bootstrap-remediation waiver authorize the two remediation paths",
+    "Current canonical bytes, declared commit, and path-creation commit are recorded",
+    "CANON-HASH-001 passes all 204 entries after the inventory correction",
+    "Shell syntax, UTF-8 JSON parsing, whitespace, and provenance boundary validation are recorded",
+    "Independent ECAP reconciliation and final IAA verdict are required before merge readiness"
   ],
   "merge_authority": "CS2"
 }

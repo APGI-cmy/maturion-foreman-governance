@@ -107,3 +107,24 @@ authorized canonical-governance change. Neither change is part of #1379.
 ---
 
 *Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-014-20260903 | CS2 authorization required before action*
+
+---
+
+## Session 015 - 2026-09-03
+
+### Suggestion: make validator status output locale-independent
+
+**Session**: session-015-20260903
+**Triggering Issue**: #1380 - CANON-HASH-001 UTF-8 and provenance recovery
+**Status**: OUT OF SCOPE - follow-up authorization required
+**Priority**: LOW
+
+The validator now explicitly opens the JSON inventory as UTF-8. Its existing
+Unicode status markers still require UTF-8 Python process output on CP1252
+Windows consoles. A separately authorized portability follow-up could use an
+ASCII-safe status output policy or explicitly configure Python output encoding
+without changing any validation decisions.
+
+---
+
+*Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-015-20260903 | CS2 authorization required before action*
