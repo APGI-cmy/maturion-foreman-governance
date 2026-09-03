@@ -21,7 +21,7 @@
     "whitespace": "PASS"
   },
   "merge_gate_parity": "PASS",
-  "final_iaa": "PENDING - required before merge readiness",
-  "ecap": "PENDING - required before merge readiness",
+  "final_iaa": "BLOCKED - IAA HALT-002 before audit verdict: stale Tier 2 index omits FUNCTIONAL-BEHAVIOUR-REGISTRY.md, IAA_AGENT_CONTRACT_AUDIT_STANDARD.md, and iaa-high-frequency-checks.md; no token or rejection package issued",
+  "ecap": "PENDING - required before merge readiness; no result claimed",
   "merge_authority": "CS2"
 }
