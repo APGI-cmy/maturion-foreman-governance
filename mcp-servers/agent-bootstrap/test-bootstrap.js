@@ -15,7 +15,11 @@
 const fs   = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
-const { REQUIRED_AGENT_IDS } = require("./agent-ids.js");
+const {
+  CANONICAL_AGENT_ID_ALIASES,
+  REQUIRED_AGENT_IDS,
+  registerCanonicalAgentIds,
+} = require("./agent-ids.js");
 
 let failures = 0;
 
@@ -68,10 +72,11 @@ async function main() {
   // ── 4. Tool logic: contract lookup ─────────────────────────────────────────
   console.log("\n4. Tool invocation logic");
 
-  const AGENT_CONTRACT_PATHS = agentIds.reduce((map, id) => {
+  const discoveredContractPaths = agentIds.reduce((map, id) => {
     map[id] = `.github/agents/${id}.md`;
     return map;
   }, {});
+  const AGENT_CONTRACT_PATHS = registerCanonicalAgentIds(discoveredContractPaths);
 
   // 4a. Valid agent_id returns readable contract
   if (agentIds.length > 0) {
@@ -105,6 +110,28 @@ async function main() {
     ok(`agent_id="list" returns ${ids.length} valid IDs`);
   } catch (e) {
     fail(`agent_id="list" path`, e);
+  }
+
+  // 4d. Canonical administrator identity resolves the existing filename contract.
+  try {
+    const canonicalId = "governance-repo-administrator-v2";
+    const filenameId = CANONICAL_AGENT_ID_ALIASES[canonicalId];
+    const expectedPath = `.github/agents/${filenameId}.md`;
+    if (
+      AGENT_CONTRACT_PATHS[canonicalId] !== expectedPath ||
+      AGENT_CONTRACT_PATHS[filenameId] !== expectedPath
+    ) {
+      throw new Error(
+        `expected both administrator identities to resolve ${expectedPath}`
+      );
+    }
+    const content = fs.readFileSync(path.join(REPO_ROOT, expectedPath), "utf8");
+    if (!content.includes("id: governance-repo-administrator-v2")) {
+      throw new Error(`resolved contract has an unexpected YAML identity: ${expectedPath}`);
+    }
+    ok(`administrator aliases resolve ${expectedPath}`);
+  } catch (e) {
+    fail("canonical governance administrator identity resolution", e);
   }
 
   // ── 5. Required agent IDs present ──────────────────────────────────────────

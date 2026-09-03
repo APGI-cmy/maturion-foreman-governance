@@ -20,18 +20,22 @@ const path = require("path");
 const { z } = require("zod");
 const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
 const { StdioServerTransport } = require("@modelcontextprotocol/sdk/server/stdio.js");
-const { REQUIRED_AGENT_IDS } = require("./agent-ids.js");
+const {
+  CANONICAL_AGENT_ID_ALIASES,
+  REQUIRED_AGENT_IDS,
+  registerCanonicalAgentIds,
+} = require("./agent-ids.js");
 
 // Resolve repo root: two levels up from mcp-servers/agent-bootstrap/
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 
 const AGENTS_DIR = path.join(REPO_ROOT, ".github", "agents");
 
-// Dynamically discover all agent contracts at startup — no manual update needed when agents are added
-// Safe fallback: if the directory is unreadable, server still starts (tool returns empty valid IDs list)
+// Discover filename identities and register canonical runtime aliases at startup.
+// Safe fallback: if the directory is unreadable, server still starts (tool returns empty valid IDs list).
 let AGENT_CONTRACT_PATHS = {};
 try {
-  AGENT_CONTRACT_PATHS = fs
+  const discoveredContractPaths = fs
     .readdirSync(AGENTS_DIR)
     .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
     .reduce((map, filename) => {
@@ -39,6 +43,17 @@ try {
       map[agentId] = `.github/agents/${filename}`;
       return map;
     }, {});
+
+  AGENT_CONTRACT_PATHS = registerCanonicalAgentIds(discoveredContractPaths);
+
+  const missingAliasTargets = Object.entries(CANONICAL_AGENT_ID_ALIASES)
+    .filter(([, contractId]) => !discoveredContractPaths[contractId])
+    .map(([canonicalId, contractId]) => `${canonicalId} -> ${contractId}`);
+  if (missingAliasTargets.length > 0) {
+    process.stderr.write(
+      `agent-bootstrap: WARNING — canonical agent alias target(s) not found: ${missingAliasTargets.join(", ")}\n`
+    );
+  }
 } catch (err) {
   process.stderr.write(
     `agent-bootstrap: WARNING — could not scan ${AGENTS_DIR}: ${err.message}\n`
@@ -76,7 +91,7 @@ server.tool(
       .string()
       .describe(
         "Your agent identifier (e.g. 'foreman-v2.agent', 'CodexAdvisor-agent', " +
-        "'governance-repo-administrator-v2.agent', 'independent-assurance-agent'). " +
+        "'governance-repo-administrator-v2', 'independent-assurance-agent'). " +
         "Pass 'list' to enumerate all valid IDs."
       ),
   },

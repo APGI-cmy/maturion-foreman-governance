@@ -1,29 +1,26 @@
 {
-  "pr": 1383,
-  "issue": 1380,
+  "pr": 0,
+  "issue": 1382,
   "type": "governance-change",
   "owner": "CodexAdvisor-agent",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/evidence/issue-1380-canon-hash-recovery-authority.md",
-    ".agent-admin/evidence/pr-1383-canon-hash-recovery-validation.md",
-    ".agent-admin/gates/gate-results-pr-1383-canon-hash-recovery-20260903.json",
-    ".agent-admin/prehandover/ecap-reconciliation-pr-1383-20260903.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/session-015-20260903.md",
-    ".agent-workspace/CodexAdvisor-agent/parking-station/suggestions-log.md",
-    ".github/scripts/validate-canon-hashes.sh",
-    "governance/CANON_INVENTORY.json"
+    ".agent-admin/evidence/issue-1382-bootstrap-identity-alias.md",
+    ".agent-admin/gates/gate-results-pr-1384-bootstrap-identity-20260903.json",
+    ".agent-admin/scope-declarations/pr-1384.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/session-016-20260903.md",
+    "mcp-servers/agent-bootstrap/agent-ids.js",
+    "mcp-servers/agent-bootstrap/index.js",
+    "mcp-servers/agent-bootstrap/test-bootstrap.js"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
   "evidence_required": [
-    "Issue #1380 and CS2 bootstrap-remediation waiver authorize the two remediation paths",
-    "Current canonical bytes, declared commit, and path-creation commit are recorded",
-    "CANON-HASH-001 passes all 204 entries after the inventory correction",
-    "Shell syntax, UTF-8 JSON parsing, whitespace, and provenance boundary validation are recorded",
-    "Independent ECAP reconciliation and final IAA verdict are required before merge readiness",
-    "ECAP bootstrap failure is recorded and blocks final assurance and merge readiness"
+    "Issue #1382 authorizes the canonical administrator YAML identity alias only",
+    "Both canonical and filename identities resolve the existing administrator contract",
+    "Focused bootstrap tests and syntax checks pass",
+    "Active runtime registration, ECAP, IAA, PREHANDOVER, merge readiness, and merge remain deferred"
   ],
   "merge_authority": "CS2"
 }
