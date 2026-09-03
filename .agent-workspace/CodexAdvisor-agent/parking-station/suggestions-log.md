@@ -86,3 +86,24 @@ Per the triggering issue scope boundary: this session is authorized for the meta
 
 *Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-013-20260419 | CS2 authorization required before action*
 
+---
+
+## Session 014 - 2026-09-03
+
+### Suggestion: make CANON-HASH-001 explicitly UTF-8 and reconcile interim-CS2 provenance
+
+**Session**: session-014-20260903
+**Triggering Issue**: #1379 - CS2-authorized: restore controller assurance preflight prerequisites
+**Status**: OUT OF SCOPE (this session) - separate CS2 authorization required
+**Priority**: HIGH
+
+`validate-canon-hashes.sh` required UTF-8 mode on Windows to read
+`CANON_INVENTORY.json`, then reported that
+`INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md` records stale
+`canonical_commit` provenance. The validator should explicitly open the inventory
+as UTF-8, and the inventory provenance must be reconciled in a separately
+authorized canonical-governance change. Neither change is part of #1379.
+
+---
+
+*Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-014-20260903 | CS2 authorization required before action*
