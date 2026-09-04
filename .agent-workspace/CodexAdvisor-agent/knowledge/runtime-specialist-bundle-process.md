@@ -1,8 +1,8 @@
 # CodexAdvisor — Runtime-Specialist Bundle Process
 
-**Version**: 1.0.0  
-**Date**: 2026-09-04  
-**Authority**: CS2 Issue #1400  
+**Version**: 1.0.0
+**Date**: 2026-09-04
+**Authority**: CS2 Issue #1400
 **Applies to**: Orchestrator and specialist contract bundles for other agents only
 
 This method covers agent-file-system design only. It supplements the applicable canonical role checklist and does not implement, deploy, register, route, activate, or operate a specialist.
