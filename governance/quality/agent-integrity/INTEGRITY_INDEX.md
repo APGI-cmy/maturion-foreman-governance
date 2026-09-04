@@ -20,6 +20,7 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 | `foreman-v2.agent.md` | `.github/agents/foreman-v2.agent.md` | `232a5d39dd9a7f01e35a3ba71b3dbea4de42fa58808c8e2e44201f2bd6339126` | 2026-09-03 | CodexAdvisor session-017 / Issue #1388 (v3.0.2: final IAA rejection branch requires sandbox classification, Foreman stop-and-fix, and final IAA PASS before progression.) |
 | `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `55b87adf5794ceba832051caa3113fb01de0ea6ad8e21f8e4d12368ee585b961` | 2026-04-08 | Copilot (PHASE_B_BLOCKING — Harden pre-IAA handover discipline — advisory_phase PHASE_A_ADVISORY→PHASE_B_BLOCKING) |
 | `independent-assurance-agent.md` | `.github/agents/independent-assurance-agent.md` | `0d414fd2d059fbda8ed8a2bab42fc4698674d893d45ea954d92d0f940165b8ac` | 2026-03-03 | CS2 (IAA Pre-Brief Protocol — APGI-cmy/maturion-foreman-governance#1294 — Step 2.4 Wave Checklist Invocation Gate + Step 3.5 Pre-Brief cross-reference) |
+| `execution-ceremony-admin-agent.md` | `.github/agents/execution-ceremony-admin-agent.md` | `d6614f8adadc8ab20bce88d719d48e92b0982d16d322815ad6341f7797445383` | 2026-09-04 | CodexAdvisor-agent (CS2 Issue #1396; static administrative foundation) |
 
 ---
 

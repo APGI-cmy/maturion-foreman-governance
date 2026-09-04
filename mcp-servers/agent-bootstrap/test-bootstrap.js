@@ -134,6 +134,22 @@ async function main() {
     fail("canonical governance administrator identity resolution", e);
   }
 
+  // 4e. ECAP's canonical identity resolves its exact contract.
+  try {
+    const canonicalId = "execution-ceremony-admin-agent";
+    const expectedPath = `.github/agents/${canonicalId}.md`;
+    if (AGENT_CONTRACT_PATHS[canonicalId] !== expectedPath) {
+      throw new Error(`expected ${canonicalId} to resolve ${expectedPath}`);
+    }
+    const content = fs.readFileSync(path.join(REPO_ROOT, expectedPath), "utf8");
+    if (!content.includes(`id: ${canonicalId}`)) {
+      throw new Error(`resolved contract has an unexpected YAML identity: ${expectedPath}`);
+    }
+    ok(`ECAP identity resolves ${expectedPath}`);
+  } catch (e) {
+    fail("ECAP canonical identity resolution", e);
+  }
+
   // ── 5. Required agent IDs present ──────────────────────────────────────────
   console.log("\n5. Required agent IDs");
   const missing = REQUIRED_AGENT_IDS.filter((id) => !AGENT_CONTRACT_PATHS[id]);
