@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1392,
+  "pr": 1393,
+  "branch": "apgi-cmy-restore-foreman-baseline",
+  "base_branch": "apgi-cmy-iaa-tier-2-recovery",
+  "implementation_commit": "846c19a7a41b9f74761f723bfd4b69f2a5751f98",
+  "date": "2026-09-03",
+  "verdict": "DRAFT_RECOVERY_VALIDATED",
+  "gates": {
+    "CS2 authorization": {
+      "outcome": "PASS",
+      "detail": "Issue #1392 explicitly authorizes the stated canonical Foreman Tier 2/control recovery."
+    },
+    "Canonical inventory": {
+      "outcome": "PASS",
+      "detail": "validate-canon-hashes.sh passed all 204 entries with UTF-8 process output."
+    },
+    "Source provenance": {
+      "outcome": "PASS",
+      "detail": "The donor is APGI-cmy/maturion-isms main at 13c41f2545ceb0a0cd5507ebf4224f26e6d0ff43; the provenance record lists each pinned donor blob."
+    },
+    "Restored Git blobs": {
+      "outcome": "PASS",
+      "detail": "git hash-object for all 11 restored files equals the corresponding verified donor blob."
+    },
+    "Foreman declared load set": {
+      "outcome": "PASS",
+      "detail": "All four restored knowledge files exist and are declared by the updated Foreman Tier 2 index; the control manifest parses as JSON."
+    },
+    "Foreman bootstrap": {
+      "outcome": "PASS",
+      "detail": "wake-up-protocol.sh foreman-v2 completed after the declared load set was restored."
+    },
+    "Scope and boundaries": {
+      "outcome": "PASS",
+      "detail": "No agent Tier 1 contract, ECAP activation, IAA invocation, assurance artifact, layer-down action, MMM work, or merge action is in scope."
+    },
+    "Donor whitespace": {
+      "outcome": "SOURCE_PRESERVED",
+      "detail": "git diff --check identifies Markdown hard-break trailing spaces already present in the pinned donor blobs. They remain unchanged to preserve exact Git-blob parity."
+    },
+    "Independent review": {
+      "outcome": "DEFERRED",
+      "detail": "The PR manifest records required IAA and ECAP governance-control review, but Issue #1392 expressly prohibits invoking or activating either during this recovery."
+    }
+  },
+  "aggregate": {
+    "passed": 7,
+    "source_preserved": 1,
+    "deferred": 1,
+    "failed": 0,
+    "total": 9
+  },
+  "merge_authority": "CS2"
+}
