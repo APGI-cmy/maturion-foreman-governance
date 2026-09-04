@@ -3,6 +3,12 @@
 **Version**: 1.0.0
 **Authority**: CS2 Issue #1394
 
+## Version History
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0.0 | 2026-09-04 | Initial canonical ECAP knowledge artifact. |
+
 ## Inputs
 
 - A current Foreman PR-scoped appointment conforming to `foreman-pr-scoped-appointment-template.md`

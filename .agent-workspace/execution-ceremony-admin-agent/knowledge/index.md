@@ -4,6 +4,12 @@
 **Authority**: CS2 Issue #1394
 **Scope**: Canonical repository administrative-evidence capability
 
+## Version History
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0.0 | 2026-09-04 | Initial canonical ECAP knowledge index. |
+
 ## Required Preflight Load
 
 The agent must read every file below before processing an appointment.
