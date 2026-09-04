@@ -29,6 +29,7 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 ```bash
 # Verify all agent contract files against this index
 sha256sum .github/agents/CodexAdvisor-agent.md \
+          .github/agents/execution-ceremony-admin-agent.md \
           .github/agents/foreman-v2.agent.md \
           .github/agents/governance-repo-administrator-v2.agent.md \
           .github/agents/independent-assurance-agent.md
