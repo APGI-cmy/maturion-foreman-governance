@@ -1,36 +1,34 @@
 {
-  "pr": 1393,
-  "issue": 1392,
-  "type": "governance-change",
+  "pr": null,
+  "issue": 1396,
+  "type": "agent-contract-foundation",
   "owner": "CodexAdvisor-agent",
+  "head": "apgi-cmy-minimal-ecap-foundation",
+  "status": "DRAFT_PENDING_IAA",
+  "objective": "Minimal static, administrative-only bootstrap foundation for execution-ceremony-admin-agent.",
   "scope": [
+    ".github/agents/execution-ceremony-admin-agent.md",
+    ".agent-workspace/execution-ceremony-admin-agent/knowledge/index.md",
+    ".agent-workspace/execution-ceremony-admin-agent/knowledge/FAIL-ONLY-ONCE.md",
+    ".agent-workspace/execution-ceremony-admin-agent/knowledge/administrative-evidence-protocol.md",
+    ".agent-workspace/execution-ceremony-admin-agent/knowledge/administrative-output-contract.md",
+    "mcp-servers/agent-bootstrap/agent-ids.js",
+    "mcp-servers/agent-bootstrap/test-bootstrap.js",
+    "governance/quality/agent-integrity/execution-ceremony-admin-agent.md",
+    "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
     ".admin/pr.json",
-    ".agent-admin/control/merge-gate-required-checks.json",
-    ".agent-admin/control/overlays/WAVE2_PREHANDOVER_LANE_GATE.md",
-    ".agent-admin/control/overlays/WAVE3_DELEGATION_ORDER_GATE.md",
-    ".agent-admin/control/overlays/WAVE4_ECAP_ADMIN_BOUNDARY.md",
-    ".agent-admin/control/overlays/WAVE5_FOREMAN_TIER1_SIMPLIFICATION.md",
-    ".agent-admin/control/overlays/WAVE6_MERGE_GATE_REQUIRED_CHECKS_ALIGNMENT.md",
-    ".agent-admin/control/wave-reviews/outstanding-transition-limitations.md",
-    ".agent-admin/evidence/issue-1392-foreman-control-baseline-provenance.md",
-    ".agent-admin/gates/gate-results-issue-1392-foreman-control-baseline-20260903.json",
-    ".agent-admin/scope-declarations/pr-1393.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/session-019-20260903.md",
-    ".agent-workspace/CodexAdvisor-agent/parking-station/suggestion-session-019-20260903.md",
-    ".agent-workspace/foreman-v2/knowledge/domain-flag-index.md",
-    ".agent-workspace/foreman-v2/knowledge/foreman-control-relocation-map.md",
-    ".agent-workspace/foreman-v2/knowledge/foreman-tier2-operating-protocol.md",
-    ".agent-workspace/foreman-v2/knowledge/index.md",
-    ".agent-workspace/foreman-v2/knowledge/specialist-registry.md"
+    ".agent-admin/evidence/issue-1396-current-head-eligibility.md",
+    ".agent-admin/gates/gate-results-issue-1396-ecap-foundation.json",
+    ".agent-admin/prehandover/prehandover-proof-1396.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/session-020-20260904.md"
   ],
   "risk": "high",
   "requires_iaa": true,
-  "requires_ecap": true,
-  "evidence_required": [
-    "Issue #1392 authorizes restoration of the declared canonical Foreman Tier 2 and control baseline",
-    "Each of the 11 restored artifacts matches its verified APGI-cmy/maturion-isms donor Git blob",
-    "The Foreman Tier 2 index declares the four restored knowledge artifacts and the declared preflight load set is present",
-    "IAA and ECAP remain deferred; this draft does not make an assurance, readiness, activation, layer-down, or merge claim"
-  ],
-  "merge_authority": "CS2"
+  "merge_authority": "CS2",
+  "exclusions": [
+    "No reusable Foreman appointment path or template.",
+    "No runtime, controller, workflow, canon, consumer, ISMS, product, or MMM change.",
+    "No #1395-derived proof, token, correction, or success claim.",
+    "No ECAP availability, readiness, assurance, handover, activation, or merge permission claim."
+  ]
 }
