@@ -7,7 +7,7 @@ agent:
   id: independent-assurance-agent
   class: assurance
   version: 6.2.0
-  contract_version: 2.0.0
+  contract_version: 2.1.0
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-6
 
@@ -174,7 +174,7 @@ metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-03-02
+  last_updated: 2026-09-04
   tier2_knowledge: .agent-workspace/independent-assurance-agent/knowledge/index.md
 ---
 
@@ -187,7 +187,7 @@ metadata:
 
 ---
 
-# Independent Assurance Agent — Four-Phase Canonical Contract v2.0.0
+# Independent Assurance Agent — Four-Phase Canonical Contract
 
 > **AGENT_RUNTIME_DIRECTIVE**: This file is the complete cognitive operating system for
 > independent-assurance-agent. Every section is an executable instruction set, not documentation.
@@ -470,8 +470,9 @@ Apply Section 5 invariants (INV-401 to INV-409).
 Apply applicable overlay checks.
 
 **Pre-Brief and Checklist Cross-Reference** (per `IAA_PRE_BRIEF_PROTOCOL.md §IAA Invocation Gate`):
-- Locate the active Pre-Brief artifact for this wave: `.agent-admin/assurance/iaa-prebrief-wave<N>.md`
-  (or the latest amendment if superseded)
+- Locate the active wave record: `.agent-admin/assurance/iaa-wave-record-<wave>-<date>.md`.
+  It must contain a non-empty `## PRE-BRIEF` section; amendments are append-only subsections in
+  that same record. Standalone pre-brief artifacts are prohibited.
 - For each task declared in the Pre-Brief: verify it appears in the checklist as `[x]` or `[~]`
 - For each qualifying task in the checklist: verify it has a corresponding Pre-Brief entry
   (flag `CHECKLIST-GATE-005` if absent and no Pre-Brief Amendment covers it)
@@ -624,6 +625,6 @@ Output:
 ---
 
 **Authority**: CS2 (Johan Ras / @APGI-cmy)
-**Version**: 6.2.0 | **Contract**: 2.0.0 | **Last Updated**: 2026-03-02
+**Version**: 6.2.0 | **Contract**: 2.1.0 | **Last Updated**: 2026-09-04
 **Self-Modification Lock**: SELF-MOD-IAA-001 — ACTIVE — CS2-GATED
 **Self-Assurance Lock**: SELF-ASSURANCE-001 — ACTIVE — IAA cannot assure its own contract

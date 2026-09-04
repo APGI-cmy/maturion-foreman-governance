@@ -1,0 +1,25 @@
+{
+  "issue": 1399,
+  "wave": 1399,
+  "base": "41a7eeafa58317c76d33499ef2f2d0c438ca3072",
+  "carrier": ".agent-admin/assurance/iaa-wave-record-<wave>-<date>.md",
+  "prebrief_heading": "## PRE-BRIEF",
+  "checks": {
+    "contract_yaml_parse": "PASS",
+    "standalone_carrier_instruction_inventory": "PASS",
+    "wave_record_carrier_inventory": "PASS",
+    "integrity_copy_byte_identity": "PASS",
+    "integrity_index_sha256": "PASS",
+    "canon_inventory_json_parse": "PASS",
+    "canon_inventory_target_hashes": "PASS",
+    "current_head_scope_exactness": "PASS",
+    "diff_whitespace": "PASS"
+  },
+  "hashes": {
+    ".github/agents/independent-assurance-agent.md": "ed4b301bcdcafc015bd2e61be25920ed7e4eb64d516cadd537e29337bb710642",
+    "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md": "a981e920d17c5a2c9cf5308fca149d92ddde952651d9c3a51fd86cd25f00e546",
+    "governance/canon/IAA_PRE_BRIEF_PROTOCOL.md": "ea6ae4ed1cc28933ef90dea21a16e936af67844018492723b9e0915e2ca4b36f",
+    "governance/canon/GOVERNANCE_WATCHDOG_CANON.md": "fdb3e83bb6e6e44b264e2af480e1dea478f05fb3172c71707612ecffff6b15a6"
+  },
+  "review_status": "PENDING_FOREMAN_QP_AND_CS2_DIRECT_REVIEW"
+}
