@@ -11,13 +11,46 @@
     "INDEPENDENT_ASSURANCE_AGENT_CANON.md": "ad9761c43efe2026e8a12849754a7d9fd260dfdd"
   },
   "validation": {
-    "canonical_hash_validation": "PENDING",
-    "canonical_provenance_fixture_suite": "PENDING",
-    "manifest_validation": "PENDING",
-    "scope_to_diff_validation": "PENDING",
-    "local_gate_validation": "PENDING",
-    "json_validation": "PENDING",
-    "diff_check": "PENDING"
+    "canonical_hash_validation": {
+      "command": "bash .github/scripts/validate-canon-hashes.sh",
+      "exit_code": 0,
+      "outcome": "PASS - all 204 entries have valid hashes, current bytes, versions, and path-specific canonical commit provenance"
+    },
+    "canonical_provenance_fixture_suite": {
+      "command": "bash .github/scripts/tests/test-canon-inventory-provenance.sh",
+      "exit_code": 0,
+      "outcome": "PASS - valid fixture accepted and six invalid provenance fixtures rejected"
+    },
+    "manifest_validation": {
+      "command": "bash .github/scripts/validate-simple-pr-admin.sh --base-ref origin/main",
+      "exit_code": 0,
+      "outcome": "PASS - all 13 checks passed; scope contains 7 files"
+    },
+    "scope_to_diff_validation": {
+      "command": "bash .github/scripts/validate-scope-to-diff.sh 1405 main",
+      "exit_code": 0,
+      "outcome": "PASS - scope declaration matches the 7-file branch diff"
+    },
+    "local_gate_validation": {
+      "command": "bash .github/scripts/validate-gates-locally.sh",
+      "exit_code": 0,
+      "outcome": "PASS - merge-gate/verdict, governance/alignment, and stop-and-fix/enforcement will pass"
+    },
+    "json_validation": {
+      "command": "python3 -m json.tool governance/CANON_INVENTORY.json; python3 -m json.tool .admin/pr.json; python3 -m json.tool .agent-admin/gates/gate-results-pr-1405-canonical-provenance.json",
+      "exit_code": 0,
+      "outcome": "PASS"
+    },
+    "inventory_preservation": {
+      "command": "git diff --unified=0 origin/main...HEAD -- governance/CANON_INVENTORY.json",
+      "exit_code": 0,
+      "outcome": "PASS - exactly 3 records changed, each only at canonical_commit; 201 other inventory records and all non-target fields are unchanged"
+    },
+    "diff_check": {
+      "command": "git diff --check origin/main...HEAD",
+      "exit_code": 0,
+      "outcome": "PASS"
+    }
   },
   "constraints": {
     "pr_created": false,

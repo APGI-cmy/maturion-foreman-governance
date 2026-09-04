@@ -1,8 +1,8 @@
 # Producer Handover — Issue #1405 Canonical Provenance Repair
 
-**Authorization**: CS2 issue #1405  
-**Base**: `ad9761c43efe2026e8a12849754a7d9fd260dfdd`  
-**Reviewed implementation head**: `3a86a1cece23f49f3458dcda7811b072bfcab011`  
+**Authorization**: CS2 issue #1405
+**Base**: `ad9761c43efe2026e8a12849754a7d9fd260dfdd`
+**Reviewed implementation head**: `3a86a1cece23f49f3458dcda7811b072bfcab011`
 **Status**: `HANDOFF_PENDING_CS2_REVIEW_NO_PR_CREATED`
 
 ## Delivered Repair

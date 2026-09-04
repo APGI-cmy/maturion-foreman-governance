@@ -1,7 +1,7 @@
 # Canonical Provenance and Validation Evidence — Issue #1405
 
-**Base**: `ad9761c43efe2026e8a12849754a7d9fd260dfdd` (`origin/main`)  
-**Reviewed implementation head**: `3a86a1cece23f49f3458dcda7811b072bfcab011`  
+**Base**: `ad9761c43efe2026e8a12849754a7d9fd260dfdd` (`origin/main`)
+**Reviewed implementation head**: `3a86a1cece23f49f3458dcda7811b072bfcab011`
 **Scope**: Only three `canonical_commit` fields in `governance/CANON_INVENTORY.json`
 
 ## Reproducible Provenance Method
