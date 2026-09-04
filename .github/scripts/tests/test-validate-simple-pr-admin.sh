@@ -75,6 +75,20 @@ assert_exit() {
     fi
 }
 
+assert_changed_files_exit() {
+    local expected="$1"
+    local label="$2"
+    local manifest="$3"
+    local changed_files="$4"
+    local actual=0
+    bash "${VALIDATOR}" --manifest "${manifest}" --changed-files "${changed_files}" > /dev/null 2>&1 || actual=$?
+    if [[ "$actual" == "$expected" ]]; then
+        pass "${label}"
+    else
+        fail "${label} — expected exit ${expected}, got ${actual}"
+    fi
+}
+
 # Check that validator output contains a specific substring.
 # Usage: assert_output_contains <label> <manifest_path> <substring>
 assert_output_contains() {
@@ -469,6 +483,24 @@ assert_output_contains \
     "Test 19 — no governance-control enforcement" \
     "${M}" \
     "No governance-control files in scope"
+echo ""
+
+# ── Test 20: CRLF-delimited changed-file input matches exact manifest scope ───
+echo "Test 20: CRLF-delimited changed-file input matches exact manifest scope → PASS"
+M="${WORK_DIR}/t20.json"
+CHANGED="${WORK_DIR}/t20-changed-files.txt"
+write_manifest "${M}" "${GOVERNANCE_ONLY_MANIFEST}"
+printf '.github/workflows/some-gate.yml\r\n' > "${CHANGED}"
+assert_changed_files_exit 0 "Test 20 — CRLF exact path accepted" "${M}" "${CHANGED}"
+echo ""
+
+# ── Test 21: CRLF normalization preserves mismatch rejection ─────────────────
+echo "Test 21: CRLF-delimited changed-file mismatch → FAIL"
+M="${WORK_DIR}/t21.json"
+CHANGED="${WORK_DIR}/t21-changed-files.txt"
+write_manifest "${M}" "${GOVERNANCE_ONLY_MANIFEST}"
+printf '.github/workflows/other-gate.yml\r\n' > "${CHANGED}"
+assert_changed_files_exit 1 "Test 21 — CRLF mismatched path rejected" "${M}" "${CHANGED}"
 echo ""
 
 # ── Summary ───────────────────────────────────────────────────────────────────

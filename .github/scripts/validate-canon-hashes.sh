@@ -32,7 +32,7 @@ import sys
 inventory_path = sys.argv[1]
 
 inventory_file = Path(inventory_path).resolve()
-with open(inventory_file, "r") as f:
+with open(inventory_file, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 entries = data.get("canons", [])
@@ -63,7 +63,7 @@ root_result = subprocess.run(
 )
 if root_result.returncode != 0:
     print(
-        "❌ [CANON-HASH-001] FAILED — inventory is not inside a Git repository: "
+        "[CANON-HASH-001] FAILED — inventory is not inside a Git repository: "
         f"{root_result.stderr.strip()}"
     )
     sys.exit(1)
@@ -191,13 +191,13 @@ for i, entry in enumerate(entries):
         )
 
 if errors:
-    print(f"❌ [CANON-HASH-001] FAILED — {len(errors)} invalid entries out of {total}:")
+    print(f"[CANON-HASH-001] FAILED — {len(errors)} invalid entries out of {total}:")
     for err in errors:
         print(err)
     sys.exit(1)
 else:
     print(
-        f"✅ [CANON-HASH-001] PASSED — all {total} entries have valid hashes, "
+        f"[CANON-HASH-001] PASSED — all {total} entries have valid hashes, "
         "current bytes, versions, and path-specific canonical commit provenance"
     )
 PYEOF

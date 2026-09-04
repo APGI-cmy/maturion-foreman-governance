@@ -1,0 +1,10 @@
+# Foreman Quality Professor Intake — Issue #1400 Bootstrap Root
+
+**Status**: `PENDING_FRESH_FOREMAN_QP`
+**Producer submission head**: `80531e800316aa39deed9aecd02787510d09329c`
+**Superseded producer head**: `15df76d64ef2c71a4b67d6f631412c0b30ebfe2f` — `NOT_REVIEWED`
+**Superseded producer head**: `ce33820d456cc10a6356e80ac0658dddf78823d9` — `NOT_QP_APPROVED`
+
+This is an intake record, not a Quality Professor verdict. Foreman stopped review of the first producer head after host-default inventory decoding failed and did not approve the second producer head after Windows CRLF scope comparison failed. Foreman must independently evaluate the new fixed producer submission, including the limited fourteen-path diff, default-host manifest validation, CRLF regression coverage, default-host-encoding and UTF-8 hash validation, the two-run clean-worktree wake-up proof, and the corrected path-specific provenance.
+
+No readiness, activation, assurance, approval, or merge conclusion is recorded here.

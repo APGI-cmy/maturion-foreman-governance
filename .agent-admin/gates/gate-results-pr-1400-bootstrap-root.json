@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1400,
+  "producer_submission_head": "80531e800316aa39deed9aecd02787510d09329c",
+  "superseded_producer_heads": [
+    {
+      "head": "15df76d64ef2c71a4b67d6f631412c0b30ebfe2f",
+      "review_state": "NOT_REVIEWED",
+      "reason": "Host-default Windows Python could not decode the inventory before the UTF-8 reader correction."
+    },
+    {
+      "head": "ce33820d456cc10a6356e80ac0658dddf78823d9",
+      "review_state": "NOT_QP_APPROVED",
+      "reason": "Default Windows manifest validation falsely rejected CRLF-tainted exact scope paths before comparison normalization."
+    }
+  ],
+  "posture": "BOOTSTRAP_ROOT_PENDING_CS2_REVIEW",
+  "local_validation": {
+    "shell_syntax": "PASS",
+    "wake_up_contract_resolution": "PASS",
+    "wake_up_repository_status_stable_over_two_runs": "PASS",
+    "wake_up_watched_repository_artifacts_stable_over_two_runs": "PASS",
+    "wake_up_external_state_persistence": "PASS",
+    "canon_inventory_default_host_encoding_hash_validation": "PASS",
+    "canon_inventory_utf8_hash_validation": "PASS",
+    "manifest_validator_default_windows": "PASS",
+    "manifest_validator_crlf_regression": "PASS",
+    "canon_inventory_provenance_fixture_suite": "PASS",
+    "json_yaml_parsing": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "provenance_repair": {
+    "path": "governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md",
+    "canonical_commit": "5a38f26bdd706829b0bfcaba0790c1b866cfcd14",
+    "basis": "The commit is the sole path history entry that produces the declared canonical bytes."
+  },
+  "foreman_qp": "PENDING_FRESH_REVIEW",
+  "direct_cs2_review": "PENDING",
+  "ecap_administrative_validation": "NOT_PERFORMED_ROOT_EXCEPTION",
+  "iaa_final_assurance": "NOT_PERFORMED_ROOT_EXCEPTION"
+}
