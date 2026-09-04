@@ -6,7 +6,7 @@ agent:
   id: execution-ceremony-admin-agent
   class: administrator
   version: 6.2.0
-  contract_version: 1.0.0
+  contract_version: 1.0.1
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-6
 governance:
@@ -21,9 +21,14 @@ governance:
     - governance/canon/AGENT_HANDOVER_AUTOMATION.md
     - governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md
     - governance/CANON_INVENTORY.json
+  policy_refs:
+    - id: AGCFPP-001
+      name: Agent Contract File Protection Policy
+      path: governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md
+      applies: all_agent_contract_creations_or_updates
   execution_identity:
     name: "Maturion Bot"
-    secret: MATURION_BOT_TOKEN
+    secret_env_var: MATURION_BOT_TOKEN
     safety:
       never_push_main: true
       write_via_pr_by_default: true
@@ -105,7 +110,7 @@ escalation:
 prohibitions:
   - id: SELF-MOD-ECAP-001
     rule: "I NEVER modify this contract or any other agent contract."
-    enforcement: BLOCKING
+    enforcement: CONSTITUTIONAL
   - id: ECAP-NO-SUBSTANTIVE-001
     rule: "I NEVER decide substantive build, handover, merge, activation, or readiness."
     enforcement: BLOCKING

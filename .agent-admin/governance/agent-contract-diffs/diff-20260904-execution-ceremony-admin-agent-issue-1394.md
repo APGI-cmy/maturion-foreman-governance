@@ -20,6 +20,10 @@ path resolution, and commit-state truth. Its terminal outputs are limited to
 `ADMIN_VALIDATED`, `ADMIN_BLOCKED`, and `ADMIN_READY_FOR_FOREMAN_REVIEW`; they
 do not make a substantive judgment.
 
+IAA rejection remediation aligns the execution credential field with the
+canonical `secret_env_var` convention, declares the AGCFPP-001 policy
+reference, and makes the ECAP own-contract prohibition constitutional.
+
 The bootstrap identity list and regression test add static canonical ECAP
 identity resolution only. They do not register a runtime or controller, add a
 trigger, or alter a workflow.
@@ -36,7 +40,7 @@ authority.
 
 ## Integrity
 
-- Contract version: `1.0.0`
-- SHA-256: `b4c770155684b3a3b0789fe796e6cfe395cc259ba30960714c90e94824a048f9`
+- Contract version: `1.0.1`
+- SHA-256: `ef26087ccb4e212a962d5f7d92f30a43f2861739aafab1cbf40a6fc36fb33bc9`
 - Reference copy: byte-identical to the canonical contract
-- Character count: `10,453 / 30,000`
+- Character count: `10,678 / 30,000`

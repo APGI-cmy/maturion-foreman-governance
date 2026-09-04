@@ -8,10 +8,14 @@
     ".agent-admin/gates/gate-results-issue-1394-ecap-capability-20260904.json",
     ".agent-admin/governance/agent-contract-diffs/diff-20260904-execution-ceremony-admin-agent-issue-1394.md",
     ".agent-admin/prehandover/proof-issue-1394-ecap-capability-20260904.md",
+    ".agent-admin/prehandover/proof-issue-1394-ecap-capability-reentry-20260904.md",
     ".agent-admin/scope-declarations/pr-1395.md",
     ".agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-020-20260904.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/PREHANDOVER-session-021-20260904.md",
     ".agent-workspace/CodexAdvisor-agent/memory/session-020-20260904.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/session-021-20260904.md",
     ".agent-workspace/CodexAdvisor-agent/parking-station/suggestion-session-020-20260904.md",
+    ".agent-workspace/CodexAdvisor-agent/parking-station/suggestion-session-021-20260904.md",
     ".agent-workspace/execution-ceremony-admin-agent/knowledge/FAIL-ONLY-ONCE.md",
     ".agent-workspace/execution-ceremony-admin-agent/knowledge/administrative-evidence-protocol.md",
     ".agent-workspace/execution-ceremony-admin-agent/knowledge/administrative-output-contract.md",
@@ -31,6 +35,7 @@
     "Issue #1394 authorizes only the bounded canonical ECAP contract, Tier 2 bundle, static bootstrap identity, integrity baseline, and PR-administration evidence",
     "The canonical ECAP contract and integrity reference copy are byte-identical and the index records their SHA-256",
     "The ECAP Tier 2 index contains every required operating artifact and the bootstrap suite resolves the static canonical identity",
+    "IAA-20260904-PR1395 rejection remediation updates the contract credential field, AGCFPP policy reference, constitutional own-contract guard, and rejected-head administrative record",
     "This draft records pre-IAA administrative evidence only; no substantive determination is made"
   ],
   "merge_authority": "CS2"
