@@ -13,6 +13,7 @@
     ".agent-workspace/CodexAdvisor-agent/memory/session-014-20260904-bootstrap-root.md",
     ".agent-workspace/CodexAdvisor-agent/knowledge/index.md",
     ".agent-workspace/CodexAdvisor-agent/knowledge/runtime-specialist-bundle-process.md",
+    ".github/scripts/validate-canon-hashes.sh",
     ".github/scripts/wake-up-protocol.sh",
     "governance/CANON_INVENTORY.json"
   ],
@@ -22,7 +23,7 @@
   "evidence_required": [
     "Issue #1400 direct-CS2 root-bootstrap authority and pending review posture",
     "Two successful wake-up invocations with byte-identical repository status and watched artifact inventories",
-    "UTF-8 canonical-hash validation and exact path-specific provenance repair",
+    "Default-host-encoding UTF-8 canonical-hash validation and exact path-specific provenance repair",
     "Exact scope-to-diff equality at handover"
   ],
   "merge_authority": "CS2",

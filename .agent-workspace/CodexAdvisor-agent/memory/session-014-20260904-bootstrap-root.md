@@ -3,6 +3,8 @@
 **Date**: 2026-09-04
 **Session ID**: session-014-20260904-bootstrap-root
 **Triggering Issue**: #1400
+**Superseded producer head**: `15df76d64ef2c71a4b67d6f631412c0b30ebfe2f` — NOT_REVIEWED
+**Current producer head**: `ce33820d456cc10a6356e80ac0658dddf78823d9`
 
 ## Session Summary
 
@@ -24,6 +26,8 @@
 - Updated the wake-up protocol to resolve `.agent.md`, `.md`, and v2 filename variants, while reading repository context and writing generated state only to external storage.
 - Corrected the interim CS2/AMC canon entry to its path-specific content-producing commit `5a38f26bdd706829b0bfcaba0790c1b866cfcd14`.
 - Verified two successful wake-up invocations with byte-identical `git status --short` and watched repository artifact inventories.
+- Applied CS2 proxy root-scope amendment 01 to make the production canonical-hash validator explicitly read the inventory as UTF-8 and use host-safe result markers.
+- Re-ran the canonical-hash validator under the host-default Python encoding successfully; the prior producer head is superseded and was not reviewed.
 
 ## Boundary and Assurance Posture
 
@@ -32,7 +36,7 @@
 **out-of-scope branches and issues touched**: None.
 **ECAP administrative validation**: Not performed under the one-time Issue #1400 root route.
 **IAA final assurance**: Not requested or performed under the one-time Issue #1400 root route.
-**Foreman QP**: Pending independent review.
+**Foreman QP**: Pending fresh independent review.
 **direct CS2 review**: Pending.
 **merge authority**: CS2 only.
 
