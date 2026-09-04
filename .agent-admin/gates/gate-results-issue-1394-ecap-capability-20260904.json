@@ -6,6 +6,7 @@
   "core_bundle_head": "326df4c36a6040443f7b1c39d0a42933dfad1c7f",
   "iaa_rejection_audited_head": "9f97cfeede5778bdac3b4195018ad6aa990ca45c",
   "iaa_reentry_rejection_audited_head": "1b99bdaaa3a76dbd87b79ac9776c8d2141e6d7ba",
+  "iaa_checklist_rejection_audited_head": "60197662063891ce7938fc049d9e9980f494eb1f",
   "contract_version": "1.0.1",
   "scope": [
     ".github/agents/execution-ceremony-admin-agent.md",
@@ -33,7 +34,7 @@
   },
   "merge_gate_parity": "PASS",
   "pre_iaa_state": "SUPERSEDED - this record applies to two rejected audit heads; the current re-entry bundle has its own immutable proof",
-  "final_iaa": "REJECTION-PACKAGE - fresh IAA re-entry requires a pending token reference, correction addendum, and aligned contract metadata",
+  "final_iaa": "REJECTION-PACKAGE - CHECKLIST-GATE-001 requires the PR #1394 task checklist and re-entry proof checklist block",
   "ecap": "NOT EXECUTED - this change establishes static canonical capability only",
   "merge_authority": "CS2"
 }
