@@ -21,8 +21,8 @@
     "governance/quality/agent-integrity/independent-assurance-agent.md"
   ],
   "risk": "high",
-  "requires_iaa": false,
-  "requires_ecap": false,
+  "requires_iaa": true,
+  "requires_ecap": true,
   "review_route": [
     "deterministic validation",
     "Foreman QP",
@@ -37,5 +37,5 @@
   ],
   "merge_authority": "CS2",
   "posture": "DRAFT_PENDING_FOREMAN_QP_AND_CS2_DIRECT_REVIEW",
-  "self_contract_rule": "The IAA governing-contract change has no IAA token route. Foreman QP and CS2 direct review remain required."
+  "self_contract_rule": "The required IAA PRE-BRIEF is carried in the Wave 1399 record. A final IAA invocation and token are prohibited for this IAA governing-contract change; deterministic validation, Foreman QP, and CS2 direct review remain required."
 }
