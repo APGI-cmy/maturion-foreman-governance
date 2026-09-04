@@ -1,41 +1,41 @@
 {
-  "pr": 0,
-  "issue": 1400,
+  "pr": 1403,
+  "issue": 1399,
   "type": "governance-change",
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
-    ".agent-admin/evidence/pr-1400-bootstrap-root-current-head.md",
-    ".agent-admin/evidence/pr-1400-cs2-review-posture.md",
-    ".agent-admin/gates/gate-results-pr-1400-bootstrap-root.json",
-    ".agent-admin/quality-professor/qp-verdict-pr-1400-bootstrap-root.md",
-    ".agent-admin/scope-declarations/pr-1400.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/session-014-20260904-bootstrap-root.md",
-    ".agent-workspace/CodexAdvisor-agent/knowledge/index.md",
-    ".agent-workspace/CodexAdvisor-agent/knowledge/runtime-specialist-bundle-process.md",
-    ".github/scripts/validate-canon-hashes.sh",
-    ".github/scripts/tests/test-validate-simple-pr-admin.sh",
-    ".github/scripts/validate-simple-pr-admin.sh",
-    ".github/scripts/wake-up-protocol.sh",
-    "governance/CANON_INVENTORY.json"
+    ".agent-admin/assurance/iaa-wave-record-1399-20260904.md",
+    ".agent-admin/evidence/pr-1399-cs2-direct-review-posture.md",
+    ".agent-admin/evidence/pr-1399-iaa-carrier-current-head.md",
+    ".agent-admin/gates/gate-results-pr-1399-iaa-carrier.json",
+    ".agent-admin/scope-declarations/pr-1399.md",
+    ".agent-admin/waves/wave-1399-current-tasks.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/session-015-20260904-iaa-carrier-alignment.md",
+    ".github/agents/independent-assurance-agent.md",
+    "governance/CANON_INVENTORY.json",
+    "governance/canon/GOVERNANCE_WATCHDOG_CANON.md",
+    "governance/canon/IAA_PRE_BRIEF_PROTOCOL.md",
+    "governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md",
+    "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
+    "governance/quality/agent-integrity/independent-assurance-agent.md"
   ],
   "risk": "high",
   "requires_iaa": true,
   "requires_ecap": true,
+  "review_route": [
+    "deterministic validation",
+    "Foreman QP",
+    "CS2 direct review"
+  ],
   "evidence_required": [
-    "Issue #1400 direct-CS2 root-bootstrap authority and pending review posture",
-    "Two successful wake-up invocations with byte-identical repository status and watched artifact inventories",
-    "Default-host-encoding UTF-8 canonical-hash validation and exact path-specific provenance repair",
-    "Default-host manifest validation with CRLF-safe exact scope matching and regression coverage",
-    "Exact scope-to-diff equality at handover"
+    "Wave 1399 checklist and wave-record PRE-BRIEF",
+    "Exact scope-to-current-head equality",
+    "Direct-source carrier inventory",
+    "Contract YAML, integrity-copy, and CANON_INVENTORY validation",
+    "Pending Foreman QP and CS2 direct-review posture"
   ],
   "merge_authority": "CS2",
-  "posture": "BOOTSTRAP_ROOT_PENDING_CS2_REVIEW",
-  "root_exception": {
-    "authority": "CS2 Issue #1400",
-    "scope": "One fresh draft bootstrap PR from main",
-    "ecap_administrative_validation": "Not performed for this root route",
-    "iaa_final_assurance": "Not performed for this root route",
-    "successor_rule": "Ordinary ECAP and independent IAA requirements resume after CS2 merges this root PR"
-  }
+  "posture": "DRAFT_PENDING_FOREMAN_QP_AND_CS2_DIRECT_REVIEW",
+  "self_contract_rule": "The required IAA PRE-BRIEF is carried in the Wave 1399 record. A final IAA invocation and token are prohibited for this IAA governing-contract change; deterministic validation, Foreman QP, and CS2 direct review remain required."
 }
