@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1405,
+  "reviewed_implementation_head": "3a86a1cece23f49f3458dcda7811b072bfcab011",
+  "base": "ad9761c43efe2026e8a12849754a7d9fd260dfdd",
+  "posture": "HANDOFF_PENDING_CS2_REVIEW_NO_PR_CREATED",
+  "canonical_commit_repair": {
+    "GOVERNANCE_WATCHDOG_CANON.md": "ad9761c43efe2026e8a12849754a7d9fd260dfdd",
+    "IAA_PRE_BRIEF_PROTOCOL.md": "ad9761c43efe2026e8a12849754a7d9fd260dfdd",
+    "INDEPENDENT_ASSURANCE_AGENT_CANON.md": "ad9761c43efe2026e8a12849754a7d9fd260dfdd"
+  },
+  "validation": {
+    "canonical_hash_validation": "PENDING",
+    "canonical_provenance_fixture_suite": "PENDING",
+    "manifest_validation": "PENDING",
+    "scope_to_diff_validation": "PENDING",
+    "local_gate_validation": "PENDING",
+    "json_validation": "PENDING",
+    "diff_check": "PENDING"
+  },
+  "constraints": {
+    "pr_created": false,
+    "iaa_invoked": false,
+    "iaa_token_or_verdict_created": false,
+    "ecap_status_claimed": false,
+    "wave_1404_resumed": false
+  }
+}
