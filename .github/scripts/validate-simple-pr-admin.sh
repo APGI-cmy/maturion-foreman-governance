@@ -45,6 +45,10 @@ fail()  { echo -e "${RED}❌ $*${NC}"; }
 warn()  { echo -e "${YELLOW}⚠️  $*${NC}"; }
 info()  { echo "   $*"; }
 
+strip_trailing_cr() {
+    printf '%s' "${1%$'\r'}"
+}
+
 # ── Defaults ──────────────────────────────────────────────────────────────────
 MANIFEST=".admin/pr.json"
 CHANGED_FILES_INPUT=""
@@ -336,9 +340,11 @@ else
 
         OUT_OF_SCOPE=()
         while IFS= read -r changed_file; do
+            changed_file="$(strip_trailing_cr "$changed_file")"
             [[ -z "$changed_file" ]] && continue
             IN_SCOPE=false
             while IFS= read -r scope_file; do
+                scope_file="$(strip_trailing_cr "$scope_file")"
                 [[ -z "$scope_file" ]] && continue
                 if [[ "$changed_file" == "$scope_file" ]]; then
                     IN_SCOPE=true
