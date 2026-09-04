@@ -1,0 +1,36 @@
+{
+  "issue": 1394,
+  "pr": 1395,
+  "date": "2026-09-04",
+  "base_branch": "apgi-cmy-restore-foreman-baseline",
+  "core_bundle_head": "326df4c36a6040443f7b1c39d0a42933dfad1c7f",
+  "scope": [
+    ".github/agents/execution-ceremony-admin-agent.md",
+    "governance/quality/agent-integrity/execution-ceremony-admin-agent.md",
+    "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
+    ".agent-workspace/execution-ceremony-admin-agent/knowledge/",
+    "mcp-servers/agent-bootstrap/agent-ids.js",
+    "mcp-servers/agent-bootstrap/test-bootstrap.js",
+    "mcp-servers/agent-bootstrap/README.md"
+  ],
+  "checks": {
+    "yaml_frontmatter": "PASS",
+    "required_top_level_yaml_sections": "PASS",
+    "four_phase_structure": "PASS",
+    "placeholder_check": "PASS",
+    "tier2_required_load_set": "PASS",
+    "canonical_hashes": "PASS (204/204)",
+    "integrity_reference_copy": "PASS",
+    "integrity_index_hash": "PASS",
+    "character_limit": "PASS (10453/30000)",
+    "bootstrap_syntax": "PASS",
+    "bootstrap_identity_test": "PASS",
+    "quality_professor": "PASS (11/11)",
+    "whitespace": "PASS"
+  },
+  "merge_gate_parity": "PASS",
+  "pre_iaa_state": "COMPLETE - PR-specific administrative records are committed before independent IAA invocation",
+  "final_iaa": "PENDING - no IAA result, token, or rejection package is created by CodexAdvisor",
+  "ecap": "NOT EXECUTED - this change establishes static canonical capability only",
+  "merge_authority": "CS2"
+}
