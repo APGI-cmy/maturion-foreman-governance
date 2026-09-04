@@ -4,7 +4,8 @@
 **Session ID**: session-014-20260904-bootstrap-root
 **Triggering Issue**: #1400
 **Superseded producer head**: `15df76d64ef2c71a4b67d6f631412c0b30ebfe2f` — NOT_REVIEWED
-**Current producer head**: `ce33820d456cc10a6356e80ac0658dddf78823d9`
+**Superseded producer head**: `ce33820d456cc10a6356e80ac0658dddf78823d9` — NOT_QP_APPROVED
+**Current producer head**: `80531e800316aa39deed9aecd02787510d09329c`
 
 ## Session Summary
 
@@ -28,6 +29,8 @@
 - Verified two successful wake-up invocations with byte-identical `git status --short` and watched repository artifact inventories.
 - Applied CS2 proxy root-scope amendment 01 to make the production canonical-hash validator explicitly read the inventory as UTF-8 and use host-safe result markers.
 - Re-ran the canonical-hash validator under the host-default Python encoding successfully; the prior producer head is superseded and was not reviewed.
+- Applied CS2 proxy root-scope amendment 02 to normalize trailing CR only from scope and changed-file records before exact comparison.
+- Added deterministic CRLF exact-match and mismatch regression coverage. The second producer head is superseded and not QP-approved.
 
 ## Boundary and Assurance Posture
 
