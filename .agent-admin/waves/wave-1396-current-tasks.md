@@ -11,7 +11,7 @@ Closed PR #1395 and its evidence are historical context and are not active proof
 
 ---
 
-- [ ] TASK-1396-001 - Establish the minimal static, administrative-only ECAP foundation within the fixed issue #1396 scope.
+- [x] TASK-1396-001 - Establish the minimal static, administrative-only ECAP foundation within the fixed issue #1396 scope.
       builder: CodexAdvisor-agent
       qp_verdict: PENDING
       notes: Contract, four minimum Tier 2 knowledge files, static bootstrap registration and regression coverage, integrity baseline, and .admin/pr.json only. No reusable appointment path, recovery-stack progression, or runtime/consumer changes.
