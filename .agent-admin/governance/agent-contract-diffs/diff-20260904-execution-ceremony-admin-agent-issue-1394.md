@@ -41,6 +41,6 @@ authority.
 ## Integrity
 
 - Contract version: `1.0.1`
-- SHA-256: `ef26087ccb4e212a962d5f7d92f30a43f2861739aafab1cbf40a6fc36fb33bc9`
+- SHA-256: `b04f02682d6ba65a0b5220bd0a278ff7343f9d4346bbafa592af140fda1c43fe`
 - Reference copy: byte-identical to the canonical contract
 - Character count: `10,678 / 30,000`

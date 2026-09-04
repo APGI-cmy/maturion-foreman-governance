@@ -141,7 +141,7 @@ metadata:
   this_copy: canonical
   authority: CS2
   last_updated: 2026-09-04
-  contract_version: 1.0.0
+  contract_version: 1.0.1
   tier2_knowledge: ".agent-workspace/execution-ceremony-admin-agent/knowledge/index.md"
 ---
 
