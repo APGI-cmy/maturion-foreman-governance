@@ -12,11 +12,12 @@ CodexAdvisor MUST read all Tier 2 documents during session preflight.
 | `requirement-mapping.md` | Maps all 56 LAS v6.2.0 requirements + 5 validation hooks to contract locations | 1.0.0 |
 | `session-memory-template.md` | Templates for session memory files and PREHANDOVER proof artifacts | 1.0.0 |
 | `agent-file-non-negotiables-checklist.md` | All S1–S6 gate IDs and requirements for QP scorecard — single authoritative source | 1.0.0 |
+| `runtime-specialist-bundle-process.md` | Bounded method for orchestrator and specialist contract bundles | 1.0.0 |
 
 ## Knowledge Version
 
-**Index Version**: 1.2.0  
-**Last Updated**: 2026-03-21  
+**Index Version**: 1.3.0
+**Last Updated**: 2026-09-04
 **Compatible With**: CodexAdvisor-agent contract v3.4.0+, LAS v6.2.0
 
 ## IAA Trigger Classification
@@ -47,4 +48,4 @@ All Tier 2 files reference the following canonical sources (do not embed — ref
 | 1.0.0 | 2026-02-26 | Initial creation |
 | 1.1.0 | 2026-02-26 | Minor — compatible with contract v3.2.0 |
 | 1.2.0 | 2026-03-21 | Added `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 to Tier 3 Canon References; updated checklist-registry.md version to 1.1.0; compatible with contract v3.4.0+ |
-
+| 1.3.0 | 2026-09-04 | Added the required runtime-specialist bundle method for governed controller bundle work. |

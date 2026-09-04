@@ -1,9 +1,9 @@
 #!/bin/bash
 ###############################################################################
 # LIVING_AGENT_SYSTEM: Wake-Up Protocol
-# Version: 1.0.0
+# Version: 1.1.0
 # Authority: governance/canon/LIVING_AGENT_SYSTEM.md
-# Purpose: Mandatory session start protocol for all agents
+# Purpose: Mandatory session start protocol for all agents without mutating repository worktrees
 ###############################################################################
 
 set -euo pipefail
@@ -17,10 +17,12 @@ NC='\033[0m' # No Color
 
 # Configuration
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-WORKSPACE_ROOT="${REPO_ROOT}/.agent-workspace"
+REPOSITORY_WORKSPACE_ROOT="${REPO_ROOT}/.agent-workspace"
+WORKSPACE_ROOT=""
 GOVERNANCE_CANON="${REPO_ROOT}/governance/canon"
 CANON_INVENTORY_MANIFEST="${REPO_ROOT}/governance/CANON_INVENTORY.json"
 GOVERNANCE_INVENTORY="${REPO_ROOT}/GOVERNANCE_ARTIFACT_INVENTORY.md"
+STATE_PERSISTENCE_AVAILABLE=false
 
 ###############################################################################
 # Helper Functions
@@ -40,6 +42,42 @@ log_warning() {
 
 log_error() {
     echo -e "${RED}[✗]${NC} $*"
+}
+
+initialize_state_workspace() {
+    local requested_root="${WAKE_UP_STATE_DIR:-}"
+
+    if [ -n "$requested_root" ]; then
+        case "$requested_root" in
+            /*) ;;
+            *)
+                log_warning "WAKE_UP_STATE_DIR must be an absolute path; generated state will not persist"
+                return 0
+                ;;
+        esac
+
+        case "$requested_root" in
+            "$REPO_ROOT"|"$REPO_ROOT"/*)
+                log_warning "WAKE_UP_STATE_DIR must be outside the repository; generated state will not persist"
+                return 0
+                ;;
+        esac
+
+        if ! mkdir -p "$requested_root"; then
+            log_warning "Unable to create external state directory; generated state will not persist"
+            return 0
+        fi
+        WORKSPACE_ROOT="$requested_root"
+    else
+        if ! WORKSPACE_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/maturion-wake-up.XXXXXX")"; then
+            log_warning "Unable to create temporary state directory; generated state will not persist"
+            return 0
+        fi
+    fi
+
+    STATE_PERSISTENCE_AVAILABLE=true
+    export WORKSPACE_ROOT STATE_PERSISTENCE_AVAILABLE
+    log_info "Generated state directory: $WORKSPACE_ROOT"
 }
 
 ###############################################################################
@@ -84,14 +122,12 @@ identify_agent() {
 scan_memory() {
     log_info "Step 2: Memory Scan"
     
-    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
     local memory_dir="${agent_workspace}/memory"
     
     # Create workspace if it doesn't exist
     if [ ! -d "$agent_workspace" ]; then
-        log_warning "Workspace not found. Initializing new workspace..."
-        initialize_workspace
-        log_success "Workspace initialized at $agent_workspace"
+        log_warning "Repository workspace not found. Read-only protocol will continue without repository initialization."
         return 0
     fi
     
@@ -119,7 +155,7 @@ scan_memory() {
 load_context() {
     log_info "Step 3: Context Load"
     
-    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
     local context_dir="${agent_workspace}/context"
     
     if [ -d "$context_dir" ]; then
@@ -135,7 +171,7 @@ load_context() {
             done
         fi
     else
-        log_warning "Context directory not initialized. Will create during workspace setup."
+        log_warning "Context directory not initialized. Read-only protocol will not create it."
     fi
 }
 
@@ -436,6 +472,7 @@ generate_working_contract() {
     log_info "Step 6: Working Contract Generation"
     
     local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local repository_agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
     local working_contract="${agent_workspace}/working-contract.md"
     
     # Ensure workspace exists
@@ -519,7 +556,7 @@ ${AGENT_DESCRIPTION}
 EOF
 
     # Append recent session summaries if they exist
-    local memory_dir="${agent_workspace}/memory"
+    local memory_dir="${repository_agent_workspace}/memory"
     if [ -d "$memory_dir" ]; then
         local recent_sessions=$(find "$memory_dir" -maxdepth 1 -name "session-*.md" | sort -r | head -3)
         if [ -n "$recent_sessions" ]; then
@@ -552,7 +589,7 @@ EOF
 
 EOF
 
-    local personal_dir="${agent_workspace}/personal"
+    local personal_dir="${repository_agent_workspace}/personal"
     if [ -f "${personal_dir}/lessons-learned.md" ]; then
         echo "### Lessons Learned" >> "$working_contract"
         head -10 "${personal_dir}/lessons-learned.md" >> "$working_contract" || true
@@ -597,7 +634,7 @@ EOF
 check_escalations() {
     log_info "Step 7: Escalation Check"
     
-    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
     local escalation_inbox="${agent_workspace}/escalation-inbox"
     
     if [ -d "$escalation_inbox" ]; then
@@ -791,27 +828,42 @@ main() {
     
     echo ""
     echo "═══════════════════════════════════════════════════════════════"
-    echo "  LIVING_AGENT_SYSTEM: Wake-Up Protocol v1.0.0"
+    echo "  LIVING_AGENT_SYSTEM: Wake-Up Protocol v1.1.0"
     echo "═══════════════════════════════════════════════════════════════"
     echo ""
     
     # Execute wake-up sequence
     identify_agent "$agent_type" || exit 1
+    initialize_state_workspace
     scan_memory
     load_context
     check_environment || exit 1
-    environment_health_scan || exit 1
+    if [ "$STATE_PERSISTENCE_AVAILABLE" = true ]; then
+        environment_health_scan || exit 1
+    else
+        log_warning "Environment health remediation skipped because external state storage is unavailable"
+    fi
     analyze_gaps
-    generate_working_contract
+    if [ "$STATE_PERSISTENCE_AVAILABLE" = true ]; then
+        generate_working_contract
+    else
+        log_warning "Working contract was not persisted because external state storage is unavailable"
+    fi
     check_escalations
-    assess_health
+    if [ "$STATE_PERSISTENCE_AVAILABLE" = true ]; then
+        assess_health
+    else
+        log_warning "Environment health record was not persisted because external state storage is unavailable"
+    fi
     
     echo ""
     echo "═══════════════════════════════════════════════════════════════"
     log_success "Wake-up protocol complete!"
     echo "═══════════════════════════════════════════════════════════════"
     echo ""
-    log_info "Working contract: ${WORKSPACE_ROOT}/${agent_type}/working-contract.md"
+    if [ "$STATE_PERSISTENCE_AVAILABLE" = true ]; then
+        log_info "Working contract: ${WORKSPACE_ROOT}/${agent_type}/working-contract.md"
+    fi
     log_info "Next steps:"
     echo "  1. Read working contract for session context"
     echo "  2. Perform assigned task per governance"
