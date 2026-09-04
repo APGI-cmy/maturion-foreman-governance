@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "APGI-cmy/maturion-foreman-governance",
+  "issue": 1400,
+  "producer_submission_head": "15df76d64ef2c71a4b67d6f631412c0b30ebfe2f",
+  "posture": "BOOTSTRAP_ROOT_PENDING_CS2_REVIEW",
+  "local_validation": {
+    "shell_syntax": "PASS",
+    "wake_up_contract_resolution": "PASS",
+    "wake_up_repository_status_stable_over_two_runs": "PASS",
+    "wake_up_watched_repository_artifacts_stable_over_two_runs": "PASS",
+    "wake_up_external_state_persistence": "PASS",
+    "canon_inventory_utf8_hash_validation": "PASS",
+    "canon_inventory_provenance_fixture_suite": "PASS",
+    "json_yaml_parsing": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "provenance_repair": {
+    "path": "governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md",
+    "canonical_commit": "5a38f26bdd706829b0bfcaba0790c1b866cfcd14",
+    "basis": "The commit is the sole path history entry that produces the declared canonical bytes."
+  },
+  "foreman_qp": "PENDING",
+  "direct_cs2_review": "PENDING",
+  "ecap_administrative_validation": "NOT_PERFORMED_ROOT_EXCEPTION",
+  "iaa_final_assurance": "NOT_PERFORMED_ROOT_EXCEPTION"
+}
