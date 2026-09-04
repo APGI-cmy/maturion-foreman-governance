@@ -13,6 +13,7 @@ const REQUIRED_AGENT_IDS = [
   "governance-repo-administrator-v2",
   "governance-repo-administrator-v2.agent",
   "independent-assurance-agent",
+  "execution-ceremony-admin-agent",
 ];
 
 const CANONICAL_AGENT_ID_ALIASES = Object.freeze({

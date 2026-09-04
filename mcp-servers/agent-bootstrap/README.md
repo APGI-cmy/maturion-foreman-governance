@@ -36,6 +36,7 @@ npm test
 - foreman-v2.agent
 - governance-repo-administrator-v2.agent
 - independent-assurance-agent
+- execution-ceremony-admin-agent
 
 ## MCP configuration
 
