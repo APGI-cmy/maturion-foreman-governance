@@ -33,7 +33,7 @@
 **ECAP administrative validation**: Not performed under the one-time Issue #1400 root route.
 **IAA final assurance**: Not requested or performed under the one-time Issue #1400 root route.
 **Foreman QP**: Pending independent review.
-**direct CS2 review**: Pending.  
+**direct CS2 review**: Pending.
 **merge authority**: CS2 only.
 
 ## Improvement Note
