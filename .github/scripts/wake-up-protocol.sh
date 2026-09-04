@@ -17,6 +17,9 @@ NC='\033[0m' # No Color
 
 # Configuration
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+if command -v cygpath >/dev/null 2>&1; then
+    REPO_ROOT="$(cygpath -u "$REPO_ROOT")"
+fi
 REPOSITORY_WORKSPACE_ROOT="${REPO_ROOT}/.agent-workspace"
 WORKSPACE_ROOT=""
 GOVERNANCE_CANON="${REPO_ROOT}/governance/canon"
@@ -48,6 +51,10 @@ initialize_state_workspace() {
     local requested_root="${WAKE_UP_STATE_DIR:-}"
 
     if [ -n "$requested_root" ]; then
+        if command -v cygpath >/dev/null 2>&1 && [[ "$requested_root" =~ ^[A-Za-z]: ]]; then
+            requested_root="$(cygpath -u "$requested_root")"
+        fi
+
         case "$requested_root" in
             /*) ;;
             *)
