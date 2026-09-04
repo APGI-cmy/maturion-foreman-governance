@@ -16,11 +16,7 @@
     "mcp-servers/agent-bootstrap/test-bootstrap.js",
     "governance/quality/agent-integrity/execution-ceremony-admin-agent.md",
     "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
-    ".admin/pr.json",
-    ".agent-admin/evidence/issue-1396-current-head-eligibility.md",
-    ".agent-admin/gates/gate-results-issue-1396-ecap-foundation.json",
-    ".agent-admin/prehandover/prehandover-proof-1396.md",
-    ".agent-workspace/CodexAdvisor-agent/memory/session-020-20260904.md"
+    ".admin/pr.json"
   ],
   "risk": "high",
   "requires_iaa": true,
