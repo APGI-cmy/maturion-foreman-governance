@@ -92,8 +92,11 @@ identify_agent() {
     # Check if agent contract exists
     local agent_contract="${REPO_ROOT}/.github/agents/${agent_type}.agent.md"
     if [ ! -f "$agent_contract" ]; then
-        # Fallback for v2 contract naming (governance-repo-administrator)
-        if [ -f "${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md" ]; then
+        # Established contracts may use the repository-standard .md extension.
+        if [ -f "${REPO_ROOT}/.github/agents/${agent_type}.md" ]; then
+            agent_contract="${REPO_ROOT}/.github/agents/${agent_type}.md"
+        # Fallback for v2 contract naming (governance-repo-administrator).
+        elif [ -f "${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md" ]; then
             agent_contract="${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md"
         else
             log_error "Agent contract not found: $agent_contract"
