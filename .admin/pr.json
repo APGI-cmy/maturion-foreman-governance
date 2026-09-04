@@ -20,7 +20,16 @@
   ],
   "risk": "high",
   "requires_iaa": true,
+  "requires_ecap": true,
   "merge_authority": "CS2",
+  "evidence_required": [
+    ".agent-admin/assurance/iaa-prebrief-wave1396.md",
+    ".agent-admin/waves/wave-1396-current-tasks.md",
+    ".agent-admin/evidence/issue-1396-current-head-eligibility.md",
+    ".agent-admin/gates/gate-results-issue-1396-ecap-foundation.json",
+    ".agent-admin/prehandover/prehandover-proof-1396.md",
+    ".agent-workspace/CodexAdvisor-agent/memory/session-020-20260904.md"
+  ],
   "exclusions": [
     "No reusable Foreman appointment path or template.",
     "No runtime, controller, workflow, canon, consumer, ISMS, product, or MMM change.",
