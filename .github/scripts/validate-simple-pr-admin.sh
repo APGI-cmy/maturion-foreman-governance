@@ -44,6 +44,7 @@ pass()  { echo -e "${GREEN}✅ $*${NC}"; }
 fail()  { echo -e "${RED}❌ $*${NC}"; }
 warn()  { echo -e "${YELLOW}⚠️  $*${NC}"; }
 info()  { echo "   $*"; }
+normalize_path_list() { sed 's/\r$//'; }
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 MANIFEST=".admin/pr.json"
@@ -304,7 +305,7 @@ else
             fail "Changed files input file not found: ${CHANGED_FILES_INPUT}"
             FAILURES=$((FAILURES + 1))
         else
-            CHANGED_FILES=$(cat "$CHANGED_FILES_INPUT")
+            CHANGED_FILES=$(normalize_path_list < "$CHANGED_FILES_INPUT")
         fi
     else
         # Derive from git diff
@@ -315,7 +316,7 @@ else
                 info "Fetch the base branch first, or pass --changed-files <file> or --skip-diff"
                 CHANGED_FILES=""
             else
-                CHANGED_FILES=$(git diff --name-only "${BASE_REF}...HEAD" 2>&1) || {
+                CHANGED_FILES=$(git diff --name-only "${BASE_REF}...HEAD" 2>&1 | normalize_path_list) || {
                     warn "git diff failed for base ref '${BASE_REF}' — skipping changed-files-in-scope check"
                     CHANGED_FILES=""
                 }
@@ -332,7 +333,7 @@ else
 
     if [[ -n "$CHANGED_FILES" ]]; then
         # Get scope files from manifest
-        SCOPE_FILES=$(jq -r '.scope[]' "${MANIFEST}" 2>/dev/null || true)
+        SCOPE_FILES=$(jq -r '.scope[]' "${MANIFEST}" 2>/dev/null | normalize_path_list || true)
 
         OUT_OF_SCOPE=()
         while IFS= read -r changed_file; do

@@ -2448,7 +2448,7 @@
       "description": "This document establishes **canonical governance for interim CS2/AMC automation**, defining role boundaries, authority limits, escalation procedures, and operational constraints for the bounded MMM #2004 pilot.",
       "type": "canon",
       "path": "governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md",
-      "canonical_commit": "fcbb9f01582d1959c0ae89abc58ac238f5289c05",
+      "canonical_commit": "5a38f26bdd706829b0bfcaba0790c1b866cfcd14",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "52327b7356e6497c3e437b79f20a5e1adebba35fa70f84cfd836911d94dadfc2"
     }

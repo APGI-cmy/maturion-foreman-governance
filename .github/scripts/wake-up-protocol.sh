@@ -16,8 +16,12 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-WORKSPACE_ROOT="${REPO_ROOT}/.agent-workspace"
+REPO_ROOT="$(cd -P "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && pwd)"
+REPOSITORY_WORKSPACE_ROOT="${REPO_ROOT}/.agent-workspace"
+SESSION_STATE_ROOT="${MATURION_SESSION_STATE_ROOT:-${TMPDIR:-/tmp}/maturion-agent-sessions}"
+SESSION_STATE_ID="${MATURION_SESSION_STATE_ID:-$(date -u +"%Y%m%d-%H%M%S")-$$}"
+WORKSPACE_ROOT=""
+SESSION_STATE_WRITABLE=false
 GOVERNANCE_CANON="${REPO_ROOT}/governance/canon"
 CANON_INVENTORY_MANIFEST="${REPO_ROOT}/governance/CANON_INVENTORY.json"
 GOVERNANCE_INVENTORY="${REPO_ROOT}/GOVERNANCE_ARTIFACT_INVENTORY.md"
@@ -42,6 +46,60 @@ log_error() {
     echo -e "${RED}[✗]${NC} $*"
 }
 
+canonicalize_path() {
+    local candidate="$1"
+
+    if [[ "$candidate" =~ ^[A-Za-z]:[\\/] ]]; then
+        if ! command -v cygpath >/dev/null 2>&1; then
+            return 1
+        fi
+        candidate="$(cygpath -u "$candidate")"
+    fi
+
+    realpath -m "$candidate"
+}
+
+prepare_session_state() {
+    local resolved_repository_root
+    local resolved_state_root
+
+    if [[ "$SESSION_STATE_ROOT" != /* && ! "$SESSION_STATE_ROOT" =~ ^[A-Za-z]:[\\/] ]]; then
+        log_error "Session state root must be an absolute path: $SESSION_STATE_ROOT"
+        return 1
+    fi
+
+    if ! command -v realpath >/dev/null 2>&1; then
+        log_warning "Cannot canonicalize session state root; reporting without persisted generated state"
+        return 0
+    fi
+
+    if ! resolved_repository_root="$(realpath -e "$REPO_ROOT")"; then
+        log_error "Cannot canonicalize repository root: $REPO_ROOT"
+        return 1
+    fi
+
+    if ! resolved_state_root="$(canonicalize_path "$SESSION_STATE_ROOT")"; then
+        log_warning "Cannot canonicalize session state root; reporting without persisted generated state"
+        return 0
+    fi
+
+    if [ "$resolved_state_root" = "$resolved_repository_root" ] ||
+       [[ "${resolved_state_root%/}/" == "${resolved_repository_root%/}/"* ]]; then
+        log_error "Session state must be outside the repository worktree: $resolved_state_root"
+        return 1
+    fi
+
+    WORKSPACE_ROOT="${resolved_state_root%/}/$(basename "${resolved_repository_root}")-${SESSION_STATE_ID}"
+
+    if mkdir -p "$WORKSPACE_ROOT"; then
+        SESSION_STATE_WRITABLE=true
+        export SESSION_STATE_WRITABLE
+        log_info "Generated session state root: $WORKSPACE_ROOT"
+    else
+        log_warning "Session state is unavailable; reporting without persisted generated state"
+    fi
+}
+
 ###############################################################################
 # Step 1: Self-Identification
 ###############################################################################
@@ -54,8 +112,11 @@ identify_agent() {
     # Check if agent contract exists
     local agent_contract="${REPO_ROOT}/.github/agents/${agent_type}.agent.md"
     if [ ! -f "$agent_contract" ]; then
+        # Support contracts using the non-.agent.md naming convention.
+        if [ -f "${REPO_ROOT}/.github/agents/${agent_type}.md" ]; then
+            agent_contract="${REPO_ROOT}/.github/agents/${agent_type}.md"
         # Fallback for v2 contract naming (governance-repo-administrator)
-        if [ -f "${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md" ]; then
+        elif [ -f "${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md" ]; then
             agent_contract="${REPO_ROOT}/.github/agents/${agent_type}-v2.agent.md"
         else
             log_error "Agent contract not found: $agent_contract"
@@ -84,16 +145,8 @@ identify_agent() {
 scan_memory() {
     log_info "Step 2: Memory Scan"
     
-    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
-    local memory_dir="${agent_workspace}/memory"
-    
-    # Create workspace if it doesn't exist
-    if [ ! -d "$agent_workspace" ]; then
-        log_warning "Workspace not found. Initializing new workspace..."
-        initialize_workspace
-        log_success "Workspace initialized at $agent_workspace"
-        return 0
-    fi
+    local repository_agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local memory_dir="${repository_agent_workspace}/memory"
     
     # Scan last 5 sessions
     if [ -d "$memory_dir" ]; then
@@ -108,7 +161,7 @@ scan_memory() {
             done
         fi
     else
-        log_warning "Memory directory not found. First session for this agent."
+        log_warning "Repository memory directory not found. No session history loaded."
     fi
 }
 
@@ -119,8 +172,8 @@ scan_memory() {
 load_context() {
     log_info "Step 3: Context Load"
     
-    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
-    local context_dir="${agent_workspace}/context"
+    local repository_agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local context_dir="${repository_agent_workspace}/context"
     
     if [ -d "$context_dir" ]; then
         log_success "Context directory found"
@@ -135,7 +188,7 @@ load_context() {
             done
         fi
     else
-        log_warning "Context directory not initialized. Will create during workspace setup."
+        log_warning "Repository context directory not initialized."
     fi
 }
 
@@ -242,6 +295,18 @@ environment_health_scan() {
     
     local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
     ENVIRONMENT_HEALTH_STATUS="HEALTHY"
+
+    if [ "$SESSION_STATE_WRITABLE" != "true" ]; then
+        log_warning "Generated session state will not be persisted"
+        if [ ! -f "$CANON_INVENTORY_MANIFEST" ]; then
+            log_error "CRITICAL: CANON_INVENTORY.json missing - cannot verify governance alignment"
+            ENVIRONMENT_HEALTH_STATUS="CRITICAL"
+            return 1
+        fi
+        ENVIRONMENT_HEALTH_STATUS="OBSERVED"
+        export ENVIRONMENT_HEALTH_STATUS
+        return 0
+    fi
     
     # 1. Check and create workspace structure
     log_info "Checking workspace structure..."
@@ -344,20 +409,14 @@ ${AGENT_DESCRIPTION}
 
 *(Initialized by environment health scan)*"
     
-    # 4. Check memory rotation (max 5 sessions)
+    # 4. Report tracked session-memory rotation without mutating the repository.
     log_info "Checking memory rotation..."
-    local memory_dir="${agent_workspace}/memory"
+    local memory_dir="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}/memory"
     if [ -d "$memory_dir" ]; then
         local session_count=$(find "$memory_dir" -maxdepth 1 -name "session-*.md" 2>/dev/null | wc -l)
         
         if [ "$session_count" -gt 5 ]; then
-            log_warning "Memory rotation required: $session_count sessions (max 5)"
-            local sessions_to_archive=$((session_count - 5))
-            find "$memory_dir" -maxdepth 1 -name "session-*.md" | sort | head -n "$sessions_to_archive" | while read -r session; do
-                mv "$session" "$memory_dir/.archive/"
-                log_success "[REMEDIATED] Archived session: $(basename "$session")"
-            done
-            ENVIRONMENT_HEALTH_STATUS="REMEDIATED"
+            log_warning "Memory rotation required: $session_count tracked sessions (max 5); deferred to session closure"
         else
             log_success "Memory rotation OK: $session_count sessions (max 5)"
         fi
@@ -392,6 +451,8 @@ ${AGENT_DESCRIPTION}
     elif [ "$ENVIRONMENT_HEALTH_STATUS" = "CRITICAL" ]; then
         log_error "Environment Health: CRITICAL ✗ (session cannot proceed)"
         return 1
+    else
+        log_warning "Environment Health: OBSERVED (generated state not persisted)"
     fi
     echo ""
     
@@ -437,6 +498,11 @@ generate_working_contract() {
     
     local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
     local working_contract="${agent_workspace}/working-contract.md"
+
+    if [ "$SESSION_STATE_WRITABLE" != "true" ]; then
+        log_warning "Working contract not persisted because session state is unavailable"
+        return 0
+    fi
     
     # Ensure workspace exists
     mkdir -p "$agent_workspace"
@@ -519,7 +585,7 @@ ${AGENT_DESCRIPTION}
 EOF
 
     # Append recent session summaries if they exist
-    local memory_dir="${agent_workspace}/memory"
+    local memory_dir="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}/memory"
     if [ -d "$memory_dir" ]; then
         local recent_sessions=$(find "$memory_dir" -maxdepth 1 -name "session-*.md" | sort -r | head -3)
         if [ -n "$recent_sessions" ]; then
@@ -552,7 +618,7 @@ EOF
 
 EOF
 
-    local personal_dir="${agent_workspace}/personal"
+    local personal_dir="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}/personal"
     if [ -f "${personal_dir}/lessons-learned.md" ]; then
         echo "### Lessons Learned" >> "$working_contract"
         head -10 "${personal_dir}/lessons-learned.md" >> "$working_contract" || true
@@ -597,7 +663,7 @@ EOF
 check_escalations() {
     log_info "Step 7: Escalation Check"
     
-    local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
+    local agent_workspace="${REPOSITORY_WORKSPACE_ROOT}/${AGENT_TYPE}"
     local escalation_inbox="${agent_workspace}/escalation-inbox"
     
     if [ -d "$escalation_inbox" ]; then
@@ -625,6 +691,11 @@ assess_health() {
     
     local agent_workspace="${WORKSPACE_ROOT}/${AGENT_TYPE}"
     local health_file="${agent_workspace}/environment-health.json"
+
+    if [ "$SESSION_STATE_WRITABLE" != "true" ]; then
+        log_warning "Health assessment not persisted because session state is unavailable"
+        return 0
+    fi
     
     # Ensure workspace exists
     mkdir -p "$agent_workspace"
@@ -797,6 +868,7 @@ main() {
     
     # Execute wake-up sequence
     identify_agent "$agent_type" || exit 1
+    prepare_session_state || exit 1
     scan_memory
     load_context
     check_environment || exit 1

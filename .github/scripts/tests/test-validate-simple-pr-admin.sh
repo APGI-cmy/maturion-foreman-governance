@@ -2,8 +2,8 @@
 # test-validate-simple-pr-admin.sh
 #
 # Regression tests for .github/scripts/validate-simple-pr-admin.sh
-# Covers Check 11 (governance-control path enforcement) and
-# Check 13 (execution_model enforcement for implementation PRs).
+# Covers Check 11 (governance-control path enforcement), Check 12
+# (exact scope matching), and Check 13 (execution_model enforcement).
 #
 # Authority: governance/canon/MMM_SIMPLE_PR_ADMIN_MODEL.md v1.2.0
 #            governance/canon/POLC_EXECUTION_MODEL_CANON.md
@@ -23,6 +23,9 @@
 #   17. governance/ non-canon path in scope with requires_iaa=true and requires_ecap=true → PASS
 #   18. governance/canon/ path (existing pattern, now subsumed by governance/) → PASS (IAA enforced)
 #   19. Product-fix scope without governance-control paths → PASS without IAA/ECAP enforcement
+#
+#   Check 12 — exact scope matching:
+#   20. CRLF-delimited changed path equals declared scope → PASS
 #
 #   Check 13 — execution_model enforcement:
 #   1.  Implementation files in scope + missing execution_model → FAIL
@@ -469,6 +472,32 @@ assert_output_contains \
     "Test 19 — no governance-control enforcement" \
     "${M}" \
     "No governance-control files in scope"
+echo ""
+
+# ── Test 20: CRLF-delimited changed paths compare exactly → PASS ─────────────
+echo "Test 20: CRLF-delimited changed path equals declared scope → PASS"
+M="${WORK_DIR}/t20.json"
+CHANGED="${WORK_DIR}/t20-changed-files.txt"
+write_manifest "${M}" '{
+  "pr": 1605,
+  "issue": 1365,
+  "type": "governance-change",
+  "owner": "Copilot",
+  "scope": [".github/scripts/wake-up-protocol.sh"],
+  "risk": "high",
+  "requires_iaa": true,
+  "requires_ecap": true,
+  "evidence_required": ["tests pass"],
+  "merge_authority": "CS2"
+}'
+printf '.github/scripts/wake-up-protocol.sh\r\n' > "${CHANGED}"
+actual=0
+bash "${VALIDATOR}" --manifest "${M}" --changed-files "${CHANGED}" > /dev/null 2>&1 || actual=$?
+if [[ "$actual" == "0" ]]; then
+    pass "Test 20 — CRLF path comparison passes"
+else
+    fail "Test 20 — expected exit 0, got ${actual}"
+fi
 echo ""
 
 # ── Summary ───────────────────────────────────────────────────────────────────
