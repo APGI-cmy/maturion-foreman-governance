@@ -8,11 +8,16 @@
     "acceptance_obligations": ["integrated-functional-delivery"]
   },
   "envelope": {
+    "envelope_id": "w0-pilot-envelope",
     "max_active_jobs": 1,
     "max_active_waves": 1,
     "max_material_corrections": 1,
     "max_dispatch_runtime_minutes": 30,
     "max_total_runtime_minutes": 120,
+    "expiry_at": null,
+    "stage_attempt_limits": null,
+    "merge_attempt_limit": null,
+    "spend_ceiling": null,
     "spend_telemetry_mode": "RUNTIME_ONLY",
     "human_reset_required": true
   },

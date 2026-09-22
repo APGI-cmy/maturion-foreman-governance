@@ -12,6 +12,7 @@ on:
       - 'governance/policy/**'
       - 'governance/runbooks/**'
       - 'governance/CONSUMER_REPO_REGISTRY.json'
+      - 'governance/ACTIVE_CS2_AUTOMATED_WORKFLOW_CONTROL_MAP.md'
       - 'governance/CONSTITUTION.md'
       - 'BUILD_PHILOSOPHY.md'
       - '.github/agents/**'
@@ -61,7 +62,7 @@ jobs:
             echo "agent_files_changed=false" >> $GITHUB_OUTPUT
           else
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --pretty=format: HEAD)
-            LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^(governance/(canon|schemas|templates|policy|runbooks|executable)/|governance/(CONSUMER_REPO_REGISTRY\.json|CONSTITUTION\.md)|BUILD_PHILOSOPHY\.md|\.github/agents/)' || true)
+            LAYERDOWN_FILES=$(echo "$CHANGED_FILES" | grep -E '^(governance/(canon|schemas|templates|policy|runbooks|executable)/|governance/(CONSUMER_REPO_REGISTRY\.json|CONSTITUTION\.md|ACTIVE_CS2_AUTOMATED_WORKFLOW_CONTROL_MAP\.md)|BUILD_PHILOSOPHY\.md|\.github/agents/)' || true)
             echo "changed_files<<EOF" >> $GITHUB_OUTPUT
             echo "$LAYERDOWN_FILES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT

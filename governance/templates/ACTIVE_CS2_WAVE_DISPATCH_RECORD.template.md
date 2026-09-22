@@ -12,10 +12,20 @@
 - **Dependencies**: `<validated predecessor wave IDs and outcomes>`
 - **PR fingerprint**: `<repository, PR, head SHA, base SHA, reviewed-content SHA256>`
 - **Live blockers**: `<none or identifiers>`
-- **QP reference**: `<evidence reference>`
-- **ECAP reference**: `<evidence reference>`
-- **IAA pre-brief/final assurance reference**: `<evidence reference>`
+- **Evidence envelope**: `<immutable envelope ID; frozen substantive fingerprint; permitted token-only delta if applicable>`
 - **Merge-policy version**: `<version>`
+
+## Stage evidence
+
+Record each item as `PRESENT: <reference>`, `NOT_YET_APPLICABLE`, or `REJECTED: <typed reason>`. Initial dispatch must not claim or require its own future final evidence.
+
+| Evidence | Required at stage |
+|---|---|
+| Pre-brief | `PRE_BRIEF` and later |
+| QP evidence | `QP` and later |
+| ECAP evidence | `ECAP` and later |
+| Final IAA assurance | `FINAL_IAA`, `REVIEW`, `MERGE`, and later |
+| Current checks, conflict, and compare-and-set evidence | `MERGE` |
 
 ## Route and response
 

@@ -6,6 +6,7 @@ These fixtures define the minimum static acceptance set for a downstream evaluat
 |---|---|
 | `valid-two-wave-pilot.json` | Schema-valid record with two approved waves; pilot configuration only |
 | `valid-three-wave-plan.json` | Schema-valid record with three waves, proving no two-wave policy/schema limit |
-| `evaluator-rejection-cases.json` | Deterministic evaluator outcomes for cyclic/unknown dependencies, duplicate/reordered events, budget reset, premature closure, stale assurance, post-PASS blocker, admin-only no-op, and self-authorising merge |
+| `evaluator-rejection-cases.json` | Static evaluator acceptance cases for ordering, budgets, token-only versus material evidence deltas, and policy/authority refusals |
+| `scoped-merge-policy.json` | Schema-valid repository, branch, path, job/wave, approval, and protected-authority-scoped policy |
 
-A consumer implementation must run these as automated tests in addition to schema validation. Graph-cycle detection, event ordering, counter monotonicity, and authority/merge checks are evaluator semantics not expressible solely in JSON Schema.
+A consumer implementation must run the static evaluator cases as automated tests in addition to schema validation. Graph-cycle detection, event ordering, counter monotonicity, and authority/merge checks are evaluator semantics not expressible solely in JSON Schema.

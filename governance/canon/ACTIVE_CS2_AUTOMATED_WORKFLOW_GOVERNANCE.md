@@ -86,13 +86,15 @@ The controller must provide:
 4. an independent deterministic supervisor, human kill switch, and human-only audited reset;
 5. a failure register with root cause, earliest expected and actual detection layer, prevention control, owner, regression identifier, recurrence, and cost/time impact.
 
-Every decision record binds the parent/wave, event and idempotency key, PR and reviewed head/base/content fingerprint, material blockers, delta class, owner, decision/reason, input revision, and envelope counters. Unknown or unverifiable values fail closed.
+Every decision record binds the parent/wave, event and idempotency key, state before/after, envelope identity, evidence references, PR and reviewed head/base/content fingerprint, material blockers, delta class, owner, decision/reason, input revision, and persistent runtime, correction, stage-attempt, merge-attempt, and spend accounting. Unknown or unverifiable values fail closed.
 
 ## 6. Evidence and assurance freshness
 
-The evaluator invalidates prior PASS when current checks are failed, pending, missing, stale, mismatched in identity, conflicted, or bound to different reviewed head/base/content. A material code, rebase, gate, dependency, or policy delta requires the affected pre-brief/assurance and review to be re-evaluated. A verified unchanged final PASS suppresses redundant assurance work.
+The assurance record distinguishes three identities: (1) the frozen substantive submission and its reviewed-content fingerprint; (2) one finite, explicitly identified evidence envelope that may authorise a token-only append; and (3) the current merge head, which is re-read for live checks and atomic compare-and-set. The frozen submission is not retroactively moved to a later Git head.
 
-Delta classification is `ADMIN_TOKEN_ONLY`, `SUBSTANTIVE`, `REBASE`, `GATE_CHANGE`, or `UNKNOWN`. `ADMIN_TOKEN_ONLY` may preserve a PASS only when deterministic comparison proves that no reviewed content, base, gate result, dependency, policy, or authority input changed. `UNKNOWN` fails closed.
+The evaluator invalidates prior PASS when current checks are failed, pending, missing, stale, mismatched in identity, conflicted, or bound to a different substantive content/base/policy/authority/dependency/gate input. A material code, rebase, gate, dependency, policy, authority, or material-evidence delta requires only the affected pre-brief, assurance, and review to be re-evaluated.
+
+Delta classification is `ADMIN_TOKEN_ONLY`, `SUBSTANTIVE`, `REBASE`, `GATE_CHANGE`, or `UNKNOWN`. A changed Git head preserves assurance without fresh pre-brief or assurance dispatch only when the finite evidence envelope expressly permits that exact token append and deterministic comparison verifies the token path/hash plus unchanged frozen reviewed content, base, policy, authority, dependencies, and gate results. The current head must still pass live checks and compare-and-set. A label, filename, or delta class alone is not proof. `UNKNOWN` fails closed.
 
 ## 7. Review, correction, and refusal
 
@@ -112,7 +114,7 @@ Routine merging is permitted only when a versioned, machine-readable merge polic
 6. an unexpired atomic compare-and-set merge claim; and
 7. no reserved matter, breaker condition, or envelope breach.
 
-The policy must identify its allow-list, tests/checks, evidence requirements, and refusal codes. It must not authorise merging authority/safety changes made by the successor. Any condition that cannot be evaluated is a typed refusal, not a discretionary approval.
+The policy must identify approved repository, target branch, permitted paths, parent-job/wave scope, approval binding, allow-list, tests/checks, evidence requirements, protected authority/safety exclusions, and refusal codes. It must not authorise merging authority/safety changes made by the successor. Any condition that cannot be evaluated is a typed refusal, not a discretionary approval.
 
 ## 9. Records and retention
 
@@ -127,7 +129,8 @@ Static/schema validation is required before consumer implementation. The canonic
 * duplicate/reordered event handling;
 * attempted budget reset and premature parent completion;
 * stale assurance and a material blocker after PASS;
-* admin-only no-op preservation and prohibited self-authorising merge.
+* a verified envelope-permitted token-only append that changes Git head but preserves assurance, contrasted with material evidence that invalidates it;
+* refusal of wrong repository, branch, path, job/wave, and prohibited self-authorising merge.
 
 These fixtures are governance acceptance evidence, not a claim that a runtime controller exists. Runtime tests and controller enforcement are consumer implementation work.
 
@@ -162,3 +165,4 @@ Human CS2 retains authority for scope and authority changes, costs/credentials, 
 | Date | Version | Change | Authority |
 |---|---|---|---|
 | 2026-09-22 | 1.0.0 | Initial general parent-job/multi-wave active-CS2 governance | CS2-authorised issue #1409 |
+| 2026-09-22 | 1.0.1 | Defined finite token-only evidence append, stage-aware evidence, scoped merge policy, and durable envelope records | CS2-authorised #1410 correction |
