@@ -1,0 +1,14 @@
+{
+  "pr": 1410,
+  "issue": 1409,
+  "reviewed_head": "643385854d60dd642cfc8823c05ea95cb295b854",
+  "results": [
+    {"check": "json-syntax", "status": "PASS", "evidence": "All new JSON schemas, templates, and fixtures parse."},
+    {"check": "job-wave-schema-fixtures", "status": "PASS", "evidence": "Draft 2020-12 validation accepts the two-wave pilot and the three-wave plan using the same schema."},
+    {"check": "changed-canon-provenance", "status": "PASS", "evidence": "Current bytes match each declared content-producing commit for the seven changed/new canon records."},
+    {"check": "canonical-hash-gate", "status": "BLOCKED_BASELINE", "evidence": "Shallow checkout cannot resolve 199 historical inventory commits; no changed/new active-CS2 canon appears in the failure list."},
+    {"check": "placeholder-check", "status": "PENDING", "evidence": "Run as part of final parity after immutable evidence and scope declaration are committed."},
+    {"check": "IAA-assurance", "status": "PENDING", "evidence": "Independent assurance is required before human CS2 review."},
+    {"check": "layer-down", "status": "POST_MERGE", "evidence": "No dispatch can truthfully be recorded until upstream merge supplies the canonical main commit."}
+  ]
+}
