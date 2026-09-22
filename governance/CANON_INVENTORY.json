@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-05-23",
-  "total_canons": 204,
+  "last_updated": "2026-09-22",
+  "total_canons": 206,
   "generation_timestamp": "2026-05-23T07:57:33Z",
   "canons": [
     {
@@ -15,6 +15,19 @@
       "canonical_commit": "71b2584d5003c2f2e693c6d39c413ece63adf61b",
       "layer_down_status": "INTERNAL",
       "file_hash_sha256": "1748046bfe978d9c7cc35dea6ff472a82038e38469fc1c1da833b241e9c46361"
+    },
+    {
+      "filename": "ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md",
+      "version": "1.0.0",
+      "file_hash": "3616c7768f48ba3b547dce67ddb81edd20858377b55420344a28a337d51fe71b",
+      "effective_date": "2026-09-22",
+      "amended_date": "2026-09-22",
+      "description": "Defines the contract-ready, bounded active-CS2 successor workflow for one approved parent job with an arbitrary approved ordered collection of waves.",
+      "type": "canon",
+      "path": "governance/canon/ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md",
+      "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "3616c7768f48ba3b547dce67ddb81edd20858377b55420344a28a337d51fe71b"
     },
     {
       "filename": "AGENT_BASELINE_MANAGEMENT_PROTOCOL.md",
@@ -726,15 +739,16 @@
     },
     {
       "filename": "CS2_AGENT_FILE_AUTHORITY_MODEL.md",
-      "version": "2.0.0",
-      "file_hash": "a87f99eac31be2fc6d0d9bcf392dec685aa8422be9149520a098dc38ab8e44fe",
+      "version": "2.0.1",
+      "file_hash": "2a75a2ae940743076a997dba380f76ce27460967e59c2c0b5f5a250871e077a6",
       "effective_date": "unknown",
+      "amended_date": "2026-09-22",
       "description": "Canonical governance document: CS2_AGENT_FILE_AUTHORITY_MODEL",
       "type": "canon",
       "path": "governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md",
-      "canonical_commit": "2db2f33eaf14ef87e8e544807ade4bf8c9d02547",
+      "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
       "layer_down_status": "INTERNAL",
-      "file_hash_sha256": "a87f99eac31be2fc6d0d9bcf392dec685aa8422be9149520a098dc38ab8e44fe"
+      "file_hash_sha256": "2a75a2ae940743076a997dba380f76ce27460967e59c2c0b5f5a250871e077a6"
     },
     {
       "filename": "DEFECT_RESOLUTION_MAINTENANCE_CANON.md",
@@ -846,15 +860,16 @@
     },
     {
       "filename": "ESCALATION_POLICY.md",
-      "version": "3.0.0",
-      "file_hash": "27cb87ee3a0466086ee1459698fbf7daa3cd2ac6ba46e5039af92630c52be7ec",
+      "version": "3.0.1",
+      "file_hash": "555852cf30eca3f33aee2cc76c08ccd64eead57f8a2de7cf85e09ccaf1803709",
       "effective_date": "2026-02-17",
+      "amended_date": "2026-09-22",
       "description": "This policy establishes the **canonical escalation hierarchy, triggers, procedures, and authority chain** for the Maturion ecosystem.",
       "type": "canon",
       "path": "governance/canon/ESCALATION_POLICY.md",
-      "canonical_commit": "6d8634ecced04569d77d25a147edfdf0156aa8f2",
+      "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "27cb87ee3a0466086ee1459698fbf7daa3cd2ac6ba46e5039af92630c52be7ec"
+      "file_hash_sha256": "555852cf30eca3f33aee2cc76c08ccd64eead57f8a2de7cf85e09ccaf1803709"
     },
     {
       "filename": "EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md",
@@ -1014,15 +1029,16 @@
     },
     {
       "filename": "FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
-      "version": "1.5.0",
-      "file_hash": "4c8e2f1818cc29fb1a564832a9eedb39724057a3ad0f75b8500a64f3a6c9b5e5",
+      "version": "1.5.1",
+      "file_hash": "8f43f1182441d6469590e1dff5bb177b86842b4d2d90f8c0e8beb7bebc1dc49c",
       "effective_date": "2025-12-24",
+      "amended_date": "2026-09-22",
       "description": "This document formally defines the **Foreman (FM)** as a **managerial authority** within the Maturion ecosystem, establishing its supervisory responsibilities over builders and the execution process.",
       "type": "canon",
       "path": "governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md",
-      "canonical_commit": "02f2fc06bf172b83f9e29ccf3368649f42c834aa",
+      "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "4c8e2f1818cc29fb1a564832a9eedb39724057a3ad0f75b8500a64f3a6c9b5e5"
+      "file_hash_sha256": "8f43f1182441d6469590e1dff5bb177b86842b4d2d90f8c0e8beb7bebc1dc49c"
     },
     {
       "filename": "FOREMAN_MEMORY_PROTOCOL.md",
@@ -1541,6 +1557,19 @@
       "file_hash_sha256": "d0f6d78a97f84cf748f50b1e43150d798a79e45469fadce00ac7ae9a05f0d909"
     },
     {
+      "filename": "MATURION_AGENT_NETWORK_ORGANIGRAM.md",
+      "version": "1.0.1",
+      "file_hash": "7ab67b534875fb6cebf43a42cc05e8ea842ed10906a0aaa40607b18b5f07ef0b",
+      "effective_date": "2026-06-24",
+      "amended_date": "2026-09-22",
+      "description": "Establishes the Maturion agent ecosystem model and its staged, CS2-authorised active-CS2 successor readiness path.",
+      "type": "canon",
+      "path": "governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md",
+      "canonical_commit": "59c4fadb332042df8ed2dc7fa1bb2f2c4046f1bc",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash_sha256": "7ab67b534875fb6cebf43a42cc05e8ea842ed10906a0aaa40607b18b5f07ef0b"
+    },
+    {
       "filename": "MATURION_RUNTIME_EXECUTION_MONITOR_SPEC.md",
       "version": "unknown",
       "file_hash": "e1f82b55131ea8b757ad773c596a0939efeb6788cad5ef3ec624e27ee933546d",
@@ -2046,15 +2075,16 @@
     },
     {
       "filename": "THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md",
-      "version": "1.0.0 | **Authority**: CS2",
-      "file_hash": "3aaf14f2500eeeed93eecdd210d1a7b4defec7e004ad557f7f69c3f4742cd9d3",
+      "version": "1.0.1",
+      "file_hash": "fe51cfb7f7ca8a942b8de7692e7625bf4f3e8cde47d3e5a5ac7179da6f5fd29e",
       "effective_date": "unknown",
+      "amended_date": "2026-09-22",
       "description": "Canonical governance document: THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE",
       "type": "canon",
       "path": "governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md",
-      "canonical_commit": "5d15bc22caa83b16ae992155b6a2bb7c1b339f71",
+      "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "3aaf14f2500eeeed93eecdd210d1a7b4defec7e004ad557f7f69c3f4742cd9d3"
+      "file_hash_sha256": "fe51cfb7f7ca8a942b8de7692e7625bf4f3e8cde47d3e5a5ac7179da6f5fd29e"
     },
     {
       "filename": "UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md",
@@ -2442,15 +2472,16 @@
     },
     {
       "filename": "INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md",
-      "version": "1.0.0",
-      "file_hash": "52327b7356e6497c3e437b79f20a5e1adebba35fa70f84cfd836911d94dadfc2",
+      "version": "1.0.1",
+      "file_hash": "2c43bbaa79a65dd480f644b82d67825d4642c5f9ad804c0a1ce2c75f4d21d9cf",
       "effective_date": "2026-08-11",
+      "amended_date": "2026-09-22",
       "description": "This document establishes **canonical governance for interim CS2/AMC automation**, defining role boundaries, authority limits, escalation procedures, and operational constraints for the bounded MMM #2004 pilot.",
       "type": "canon",
       "path": "governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md",
-      "canonical_commit": "5a38f26bdd706829b0bfcaba0790c1b866cfcd14",
+      "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "52327b7356e6497c3e437b79f20a5e1adebba35fa70f84cfd836911d94dadfc2"
+      "file_hash_sha256": "2c43bbaa79a65dd480f644b82d67825d4642c5f9ad804c0a1ce2c75f4d21d9cf"
     }
   ]
 }

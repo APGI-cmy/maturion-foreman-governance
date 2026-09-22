@@ -64,6 +64,34 @@ Each entry follows this structure:
 
 ## Change History
 
+### ACTIVE-CS2-MULTI-WAVE-WORKFLOW-2026-09-22 — 2026-09-22 — NON_BREAKING_ENHANCEMENT
+
+**Changed By**: governance-repo-administrator-v2  
+**Approved By**: Johan Ras / CS2 — authorised issue #1409  
+**Effective Date**: 2026-09-22
+
+**Summary**: Defines a contract-ready active-CS2 successor to deliver one authorised parent job through an arbitrary explicitly approved ordered wave plan. The model retains interim-CS2 advisory authority, Foreman orchestration, IAA independence, and human-CS2 activation/reserved matters.
+
+**Affected Artifacts**:
+- `governance/canon/ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` (NEW v1.0.0)
+- `governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md` (v1.0.0 → v1.0.1)
+- `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md` (v2.0.0 → v2.0.1)
+- `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.5.0 → v1.5.1)
+- `governance/canon/ESCALATION_POLICY.md` (v3.0.0 → v3.0.1)
+- `governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md` (v1.0.0 → v1.0.1)
+- `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` (v1.0.0 → v1.0.1)
+- `governance/schemas/ACTIVE_CS2_JOB_WAVE.schema.json`, `governance/schemas/ACTIVE_CS2_MERGE_POLICY.schema.json`, fixtures, templates, and control map
+- `governance/CANON_INVENTORY.json` and `GOVERNANCE_ARTIFACT_INVENTORY.md`
+
+**Migration Required**: YES  
+**Migration Guidance**: Layer-down provides the contract-ready model only. ISMS must use a separate CS2-approved CodexAdvisor implementation issue and complete activation prerequisites before any active-CS2 operation.
+
+**Rationale**: Issue #1409 requires bounded automated delivery across multiple waves without treating a two-wave pilot as a permanent design limit or converting interim advisory authority into active authority.
+
+**Impact**: Consumer repositories receive an explicit downstream implementation and activation boundary; no consumer agent contract or runtime controller is created by this change.
+
+**References**: APGI-cmy/maturion-foreman-governance#1409
+
 ### ADMIN-CEREMONY-COMPLIANCE-STACK-2026-04-17 — 2026-04-17 — NON_BREAKING_ENHANCEMENT
 
 **Changed By**: governance-repo-administrator-v2  

@@ -2,7 +2,7 @@
 
 **Purpose**: Complete inventory of all governance artifacts in the maturion-foreman-governance repository
 **Created**: 2025-12-31
-**Last Updated**: 2026-04-19 (Issue #1349 — new canon AGENT_CONTRACT_PLACEHOLDER_CHECK_CANON.md v1.0.0; placeholder-check exception class model established)
+**Last Updated**: 2026-09-22 (Issue #1409 — active-CS2 multi-wave workflow governance and consumer control map)
 **Authority**: Phase 1.1 — Platform Readiness Reset & Build Initiation Plan
 **Scope**: Inventory only — no interpretation, correction, or gap analysis
 
@@ -62,6 +62,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `agent-contracts-guidance/runbooks/AGENT_FILE_VALIDATION.md` | **MOVED (2026-02-04)** - Validation procedures for agent contracts | PR-gates, Readiness |
 | `agent-contracts-guidance/runbooks/AGENT_FILE_MAINTENANCE.md` | **MOVED (2026-02-04)** - Maintenance procedures for agent contracts | PR-gates, Readiness |
 | `ACTIVATION_STATE_MODEL.md` | Defines agent/system activation lifecycle states | Readiness |
+| `ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` | **NEW v1.0.0 (2026-09-22) PUBLIC_API** - Defines the contract-ready active-CS2 successor for one authorised parent job with an arbitrary approved ordered wave plan. Requires evaluator-controlled progression, shared safety accounting, independent assurance, machine-governed merge refusal, and integrated whole-job acceptance; activation remains separately human-CS2 approved. | Readiness, Layer-down, PR-gates |
 | `AGENT_CANONICAL_CONTEXT_SYNCHRONISATION_PROTOCOL.md` | Protocol for keeping agent context synchronized with canon | Layer-down |
 | `AGENT_BASELINE_MANAGEMENT_PROTOCOL.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical protocol for agent baseline management. Defines what baselines are, CS2-only update authority, baseline validation protocol, drift reconciliation, and Living Agent System v5.0.0 integration. Critical foundation for agent self-governance, FM/builder functioning, and governance-liaison baseline enforcement | Readiness, Layer-down, PR-gates |
 | `AGENT_CLASS_SPECIFIC_GATE_PROTOCOLS.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical gate protocols for each agent class (Overseer, Liaison, Builder, Foreman). Defines merge gate requirements, self-alignment authority, escalation triggers, validation methods, and CI/CD integration per agent class. Addresses GAP-001 from Living Agent System v5.0.0 rollout | PR-gates, Readiness, Layer-down |
@@ -143,6 +144,7 @@ Canon files define constitutional governance rules, models, and protocols.
 | `LIVING_AGENT_GOVERNANCE_HEALTH_CHECKS.md` | **NEW v1.0.0 (2026-02-08) PUBLIC_API** - Canonical protocol for dynamic, agent-driven governance discovery and health checking at wake-up. Defines 7-phase wake-up workflow (self-identification, memory scan, governance discovery, environment health, drift detection, auto-remediation, working contract generation). Addresses GAP-004 from Living Agent System v5.0.0 rollout | Readiness, Layer-down, PR-gates |
 | `MANDATORY_CROSS_APP_COMPONENTS.md` | **NEW v1.0.0 (2026-02-13) PUBLIC_API** - Single authoritative specification listing ALL mandatory components and patterns required in every Maturion app/repository. Comprehensive coverage of agent system, watchdog, performance measurement (AI/app/service), observability & telemetry, feedback mechanisms, compliance baseline, startup/commissioning, architecture completeness, AI chat dual pattern (back office/front office), and layer-down propagation rules. Acts as master checklist for new app initialization, audits, and completeness verification with crosswalk appendix linking to constitutional/canonical sources. Eliminates component gaps, rework, and governance drift | Readiness, Layer-down, PR-gates |
 | `MATURION_CONCEPTUAL_DOCTRINE.md` | Defines Maturion philosophical foundations | (philosophy) |
+| `MATURION_AGENT_NETWORK_ORGANIGRAM.md` | **UPDATED v1.0.1 (2026-09-22) PUBLIC_API** - Establishes the staged active-CS2 successor readiness path through App Management Centre without granting activation or Level-4 autonomy. | Readiness, Layer-down, PR-gates |
 | `MATURION_RUNTIME_EXECUTION_MONITOR_SPEC.md` | Specification for runtime execution monitoring | Readiness |
 | `MEMORY_INTEGRITY_AND_CORRUPTION_MODEL.md` | Defines memory integrity requirements | Readiness |
 | `MEMORY_LIFECYCLE_STATE_MACHINE_CONTRACT.md` | Defines memory lifecycle state transitions | Readiness |
