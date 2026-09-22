@@ -1,0 +1,12 @@
+[
+  {"case": "unknown-dependency", "input": {"wave_id": "wave-b", "depends_on": ["wave-missing"]}, "expected_decision": "REJECTED", "expected_reason": "DEPENDENCY_UNMET"},
+  {"case": "cyclic-dependency", "input": {"waves": [["wave-a", "wave-b"], ["wave-b", "wave-a"]]}, "expected_decision": "REJECTED", "expected_reason": "DEPENDENCY_CYCLE"},
+  {"case": "duplicate-event", "input": {"idempotency_key": "claim-1", "event_sequence": 4, "prior_sequence": 4}, "expected_decision": "NO_OP", "expected_reason": "DUPLICATE_EVENT"},
+  {"case": "reordered-event", "input": {"event_sequence": 3, "prior_sequence": 4}, "expected_decision": "REJECTED", "expected_reason": "REORDERED_EVENT"},
+  {"case": "attempted-budget-reset", "input": {"prior_total_runtime_minutes": 119, "event_total_runtime_minutes": 0}, "expected_decision": "REJECTED", "expected_reason": "BUDGET_RESET"},
+  {"case": "premature-parent-closure", "input": {"job_status": "ACTIVE", "unvalidated_wave": "wave-c"}, "expected_decision": "REJECTED", "expected_reason": "INTEGRATED_ACCEPTANCE_MISSING"},
+  {"case": "stale-assurance", "input": {"assured_head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "current_head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}, "expected_decision": "REJECTED", "expected_reason": "EVIDENCE_STALE"},
+  {"case": "material-blocker-after-pass", "input": {"prior_pass": true, "material_blocker": "failed-required-check"}, "expected_decision": "REJECTED", "expected_reason": "MATERIAL_BLOCKER"},
+  {"case": "admin-only-no-op", "input": {"delta_class": "ADMIN_TOKEN_ONLY", "head_base_content_and_gates_unchanged": true}, "expected_decision": "NO_OP", "expected_reason": "VALID_PASS_PRESERVED"},
+  {"case": "self-authorising-merge", "input": {"change_class": "authority-safety", "actor": "active-cs2"}, "expected_decision": "REJECTED", "expected_reason": "RESERVED_MATTER"}
+]

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maturion.example/governance/schemas/active-cs2-merge-policy/v1",
+  "title": "Active CS2 Machine-Governed Merge Policy",
+  "description": "A versioned policy allow-list. Schema conformance alone never permits merge; the evaluator must verify each required condition against current evidence.",
+  "type": "object",
+  "required": ["schema_version", "policy_version", "allowed_change_classes", "required_checks", "independent_evidence_required", "resolved_substantive_threads_required", "fresh_fingerprint_required", "compare_and_set_required", "refusal_codes"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "policy_version": {"type": "string", "minLength": 1},
+    "allowed_change_classes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "required_checks": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "independent_evidence_required": {"const": true},
+    "resolved_substantive_threads_required": {"const": true},
+    "fresh_fingerprint_required": {"const": true},
+    "compare_and_set_required": {"const": true},
+    "refusal_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["UNAPPROVED_SCOPE", "DEPENDENCY_UNMET", "BUDGET_EXHAUSTED", "BREAKER_TRIPPED", "EVIDENCE_STALE", "MATERIAL_BLOCKER", "GATE_UNSATISFIED", "IDENTITY_MISMATCH", "UNKNOWN_DELTA", "CONFLICT", "RESERVED_MATTER"]}}
+  }
+}
