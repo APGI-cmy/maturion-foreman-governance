@@ -1,8 +1,8 @@
 # Active-CS2 Automated Workflow — Control Map and ISMS Handoff
 
-**Version**: 1.0.0  
+**Version**: 1.0.1
 **Status**: CONTRACT_READY — no active-CS2 successor or controller is activated  
-**Authority**: `ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` v1.0.0  
+**Authority**: `ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` v1.0.1
 **Downstream target**: APGI-cmy/maturion-isms after verified layer-down
 
 ## Control-to-artifact map
