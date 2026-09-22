@@ -1,6 +1,6 @@
 # MATURION_AGENT_NETWORK_ORGANIGRAM
 
-**Status**: CANONICAL | **Version**: 1.0.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.0.1 | **Authority**: CS2  
 **Effective Date**: 2026-06-24  
 **Amended**: 2026-09-22 — contract-ready active-CS2 successor position clarified; no activation
 **Source Strategy**: `APGI-cmy/maturion-isms/Maturion/strategy/Maturion_agent_network_organigram_strategy.md` v0.1.0, merged via PR #1849  
