@@ -73,14 +73,14 @@ Each entry follows this structure:
 **Summary**: Defines a contract-ready active-CS2 successor to deliver one authorised parent job through an arbitrary explicitly approved ordered wave plan. The model retains interim-CS2 advisory authority, Foreman orchestration, IAA independence, and human-CS2 activation/reserved matters.
 
 **Affected Artifacts**:
-- `governance/canon/ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` (NEW v1.0.0)
+- `governance/canon/ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` (NEW v1.0.0; corrected to v1.0.1)
 - `governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md` (v1.0.0 → v1.0.1)
 - `governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md` (v2.0.0 → v2.0.1)
 - `governance/canon/FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md` (v1.5.0 → v1.5.1)
 - `governance/canon/ESCALATION_POLICY.md` (v3.0.0 → v3.0.1)
 - `governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md` (v1.0.0 → v1.0.1)
 - `governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md` (v1.0.0 → v1.0.1)
-- `governance/schemas/ACTIVE_CS2_JOB_WAVE.schema.json`, `governance/schemas/ACTIVE_CS2_MERGE_POLICY.schema.json`, fixtures, templates, and control map
+- `governance/schemas/ACTIVE_CS2_JOB_WAVE.schema.json`, `governance/schemas/ACTIVE_CS2_MERGE_POLICY.schema.json`, indexed fixtures, templates, and control map, including token-only evidence, approved-or-null limits, and scoped policy acceptance cases
 - `governance/CANON_INVENTORY.json` and `GOVERNANCE_ARTIFACT_INVENTORY.md`
 
 **Migration Required**: YES  
