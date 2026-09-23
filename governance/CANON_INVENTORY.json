@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-09-22",
+  "last_updated": "2026-09-23",
   "total_canons": 216,
-  "generation_timestamp": "2026-05-23T07:57:33Z",
+  "generation_timestamp": "2026-09-23T08:04:21Z",
   "canons": [
     {
       "filename": "ACTIVATION_STATE_MODEL.md",
@@ -56,38 +56,38 @@
     {
       "filename": "ACTIVE_CS2_MERGE_POLICY.schema.json",
       "version": "1.0.0",
-      "file_hash": "900e544a6ecfa5c46d9e45a71a2bae863dec3a5b4fca70805ea717347f0e2ee5",
+      "file_hash": "15ee9140c5c5a9bd4cde1ee15fc43eaba2662a955c214e2f700c7ce0810fd927",
       "effective_date": "2026-09-22",
       "description": "Schema for an approval-bound, repository and wave-scoped merge policy.",
       "type": "schema",
       "path": "governance/schemas/ACTIVE_CS2_MERGE_POLICY.schema.json",
-      "canonical_commit": "9131b3c96adfae2e6f3db00e93c1966e10a17af9",
+      "canonical_commit": "75d7d715c3945231cd1980cd78263f1fbc35381c",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "900e544a6ecfa5c46d9e45a71a2bae863dec3a5b4fca70805ea717347f0e2ee5"
+      "file_hash_sha256": "15ee9140c5c5a9bd4cde1ee15fc43eaba2662a955c214e2f700c7ce0810fd927"
     },
     {
       "filename": "README.md",
       "version": "1.0.0",
-      "file_hash": "2a2931e5396761c72d4ada299f24547d2cbe5b6ad78bb9ab64b9b022a398e6b5",
+      "file_hash": "2d29ee3acd042b2dd1a28eb3f86e86f69f3a00d066a3c0e8dd8d45405adfab0e",
       "effective_date": "2026-09-22",
       "description": "Static acceptance-fixture index for active-CS2 job/wave governance.",
       "type": "fixture",
       "path": "governance/schemas/fixtures/active-cs2-job-wave/README.md",
-      "canonical_commit": "9131b3c96adfae2e6f3db00e93c1966e10a17af9",
+      "canonical_commit": "75d7d715c3945231cd1980cd78263f1fbc35381c",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "2a2931e5396761c72d4ada299f24547d2cbe5b6ad78bb9ab64b9b022a398e6b5"
+      "file_hash_sha256": "2d29ee3acd042b2dd1a28eb3f86e86f69f3a00d066a3c0e8dd8d45405adfab0e"
     },
     {
       "filename": "evaluator-rejection-cases.json",
       "version": "1.0.0",
-      "file_hash": "d8d384f183b41b29617f7acc91e23fdf157bba2ba8d277066415010d094ac8f3",
+      "file_hash": "84cc4c1130c350b10a0183430be485bac880128b813aa67fff49ad76cd4b3449",
       "effective_date": "2026-09-22",
       "description": "Static evaluator acceptance and refusal cases for active-CS2 governance.",
       "type": "fixture",
       "path": "governance/schemas/fixtures/active-cs2-job-wave/evaluator-rejection-cases.json",
-      "canonical_commit": "9131b3c96adfae2e6f3db00e93c1966e10a17af9",
+      "canonical_commit": "75d7d715c3945231cd1980cd78263f1fbc35381c",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "d8d384f183b41b29617f7acc91e23fdf157bba2ba8d277066415010d094ac8f3"
+      "file_hash_sha256": "84cc4c1130c350b10a0183430be485bac880128b813aa67fff49ad76cd4b3449"
     },
     {
       "filename": "scoped-merge-policy.json",
