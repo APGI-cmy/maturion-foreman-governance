@@ -37,7 +37,7 @@ The delivery defines contract-ready governance only. It does not modify `.github
 - PASS: changed-canon current bytes equal the declared content-producing commits, duplicate wave ID/order rejection cases are explicit downstream evaluator fixtures, and the regenerated inventory now truthfully includes `CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md`.
 - PASS: `validate-canon-hashes.sh` now succeeds for all 217 inventory entries after fetching the missing read-only history required to preserve valid provenance.
 - BLOCKED EXTERNALLY: 12 pull-request workflow runs at frozen head `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` are `action_required` with zero jobs and no API-visible log/reason; repository Actions administration must inspect/approve or disclose the restriction. Seven zero-job failed push runs are inherited from base and are not treated as passing.
-- PENDING: fresh independent IAA audit for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`, then human-CS2 review.
+- PASS: fresh independent IAA audit issued `ASSURANCE-TOKEN` in session `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`; human-CS2 review remains required.
 
 ## Required downstream route
 
