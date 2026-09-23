@@ -7,13 +7,13 @@
 **Authority**: Johan Ras / CS2 authorisation in issue #1409
 
 ```text
-final_state: PENDING_RENEWED_IAA_FOR_82AF126
-iaa_audit_token: PENDING_RENEWED_IAA_FOR_82AF126
-iaa_session_reference: PENDING_RENEWED_IAA_FOR_82AF126
-active_bundle_iaa_coherence: PENDING
+final_state: COMPLETE
+iaa_audit_token: .agent-admin/assurance/assurance-token-pr-1410-active-cs2-20260923.md
+iaa_session_reference: IAA-20260923-PR1410-R2
+active_bundle_iaa_coherence: VERIFIED
 ```
 
-This append-only final packet supersedes the prior producer proof and withdraws the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` PASS packet from active use. That prior committed form remains historic evidence, but a fresh independent assurance token is still required before this file can truthfully return to `final_state: COMPLETE`.
+This append-only final packet supersedes the prior producer proof and withdraws the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` PASS packet from active use. That prior committed form remains historic evidence. Renewed independent assurance for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3` is now recorded through `IAA-20260923-PR1410-R2`.
 
 ## Drift evidence
 
@@ -32,4 +32,4 @@ This append-only final packet supersedes the prior producer proof and withdraws 
 
 ## Final status
 
-Local schema, package, provenance, workflow-filter, scope-parity, generator determinism, and `validate-canon-hashes.sh` checks are PASS for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`. Fresh IAA assurance is still pending. The external GitHub Actions restriction remains a classified blocker: 12 current pull-request runs at `82af126e4469541fcd7c0d8c4dd81b891845b4e3` are `action_required` with zero jobs and no API-visible reason; seven zero-job failed push runs are inherited from base. Repository Actions administration must resolve or explain the former; CS2 retains the merge decision.
+Local schema, package, provenance, workflow-filter, scope-parity, generator determinism, and `validate-canon-hashes.sh` checks are PASS for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`. Renewed IAA assurance is PASS via `IAA-20260923-PR1410-R2`, reviewed at head `dc4321b099029bccdb14749590d50e8a2ce3af9c`, with active bundle coherence verified across the handover-only append. The external GitHub Actions restriction remains a classified blocker: 12 current pull-request runs at `82af126e4469541fcd7c0d8c4dd81b891845b4e3` are `action_required` with zero jobs and no API-visible reason; seven zero-job failed push runs are inherited from base. Repository Actions administration must resolve or explain the former; CS2 retains the merge decision.

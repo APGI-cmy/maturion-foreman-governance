@@ -39,7 +39,7 @@ The full canonical hash gate now passes after fetching the previously missing re
 
 - **Local deterministic checks**: PASS — JSON syntax, Draft 2020-12 positive fixtures, incomplete protected-authority baseline rejection, registered-supporting-artifact generator tests, two-run inventory determinism, `validate-canon-hashes.sh`, workflow control-map filter, manifest structure, and direct base-diff scope parity.
 - **GitHub Actions**: BLOCKED EXTERNALLY — 12 current pull-request runs at frozen head `82af126e4469541fcd7c0d8c4dd81b891845b4e3` report `action_required` with zero jobs, including Governance Gate (`35835302606`), Preflight Evidence Gate (`35835302712`), Admin-Ceremony Defect Gate (`35835302734`), and Merge Gate Interface (`35835302775`). The Actions API exposes no failed jobs for these runs. Repository Actions administration must inspect/approve the runs in GitHub Actions or provide the withheld restriction. Seven failed push workflow runs with the same zero-job condition remain inherited infrastructure defects from the base path.
-- **Independent IAA**: PENDING RENEWAL — the earlier `IAA-20260923-PR1410` token remains historic evidence for `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` only. A fresh independent assurance pass is required for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`.
+- **Independent IAA**: PASS — `ASSURANCE-TOKEN` issued by independent-assurance-agent session `IAA-20260923-PR1410-R2`, reviewed at head `dc4321b099029bccdb14749590d50e8a2ce3af9c` for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`. The earlier `IAA-20260923-PR1410` token remains preserved as historic evidence for `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` only.
 
 ## Layer-down disposition
 
