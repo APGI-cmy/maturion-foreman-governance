@@ -1,17 +1,17 @@
 {
   "pr": 1410,
   "issue": 1409,
-  "reviewed_head": "4fcb0d39d18d1c2fdde149ee2f76c24940140ade",
+  "reviewed_head": "82af126e4469541fcd7c0d8c4dd81b891845b4e3",
   "evidence_envelope": "pr-1410-finalisation-2026-09-23",
   "results": [
     {"check": "json-syntax", "status": "PASS", "evidence": "All new JSON schemas, templates, and fixtures parse."},
-    {"check": "job-wave-schema-fixtures", "status": "PASS", "evidence": "Draft 2020-12 validation accepts the two-wave pilot, three-wave plan, and scoped merge policy using their respective schemas."},
-    {"check": "layer-down-package-parity", "status": "PASS", "evidence": "All ten required supporting artifacts are selected from canons, with matching hashes and content-producing commit bytes; the control-map workflow trigger/filter is present."},
-    {"check": "changed-canon-provenance", "status": "PASS", "evidence": "Current bytes match each declared content-producing commit for changed canon records and supporting artifacts."},
-    {"check": "canonical-hash-gate", "status": "BLOCKED_BASELINE", "evidence": "Shallow checkout cannot resolve 199 historical inventory commits; no changed/new active-CS2 canon appears in the failure list."},
-    {"check": "github-actions-pr-runs", "status": "BLOCKED_EXTERNAL", "evidence": "Twelve pull-request runs at the frozen head are action_required with zero jobs; GitHub exposes no failed log and returns 404 for run logs. Repository Actions administrator must inspect/approve or disclose the restriction."},
-    {"check": "placeholder-check", "status": "PENDING", "evidence": "Run after this final packet and scope declaration are committed."},
-    {"check": "IAA-assurance", "status": "PASS", "evidence": "ASSURANCE-TOKEN issued by independent-assurance-agent session IAA-20260923-PR1410 for frozen substantive submission 4fcb0d39d18d1c2fdde149ee2f76c24940140ade; external CI non-waiver remains."},
+    {"check": "job-wave-schema-fixtures", "status": "PASS", "evidence": "Draft 2020-12 validation accepts the two-wave pilot, three-wave plan, and scoped merge policy. The merge-policy schema now rejects an incomplete protected_authority_exclusions baseline containing only AGENT_CONTRACT."},
+    {"check": "layer-down-package-parity", "status": "PASS", "evidence": "Generator execution selects all ten required supporting artifacts from canons, preserves their declared metadata/provenance route, and two consecutive runs produced identical CANON_INVENTORY.json SHA256 c9bf52a4afc14e37dbecdfcfbc2b51754fccd4b8779ff90aeca4c9602077918f."},
+    {"check": "changed-canon-provenance", "status": "PASS", "evidence": "Current bytes match each declared content-producing commit for changed canon records and correction-touched supporting artifacts, including ACTIVE_CS2_MERGE_POLICY.schema.json, fixtures/README.md, and evaluator-rejection-cases.json."},
+    {"check": "canonical-hash-gate", "status": "PASS", "evidence": "validate-canon-hashes.sh passed for all 216 inventory entries after fetching missing read-only history needed to verify preserved provenance."},
+    {"check": "github-actions-pr-runs", "status": "BLOCKED_EXTERNAL", "evidence": "Twelve pull-request runs at frozen head 82af126e4469541fcd7c0d8c4dd81b891845b4e3 are action_required with zero jobs, including Governance Gate 35835302606, Preflight Evidence Gate 35835302712, Admin-Ceremony Defect Gate 35835302734, and Merge Gate Interface 35835302775. Repository Actions administration must inspect/approve or disclose the restriction."},
+    {"check": "placeholder-check", "status": "PENDING", "evidence": "Run after the pre-IAA scope/evidence refresh is committed."},
+    {"check": "IAA-assurance", "status": "PENDING", "evidence": "Earlier ASSURANCE-TOKEN session IAA-20260923-PR1410 applies only to frozen substantive submission 4fcb0d39d18d1c2fdde149ee2f76c24940140ade. A fresh independent assurance pass is required for 82af126e4469541fcd7c0d8c4dd81b891845b4e3."},
     {"check": "layer-down", "status": "POST_MERGE", "evidence": "No dispatch can truthfully be recorded until upstream merge supplies the canonical main commit."}
   ]
 }
