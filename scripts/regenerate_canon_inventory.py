@@ -238,6 +238,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
     canons = []
     existing_entries = existing_inventory.get("canons", []) if existing_inventory else []
     existing_map = {canon.get("path", ""): canon for canon in existing_entries}
+    registered_paths = set(existing_map)
 
     if existing_inventory is not None:
         missing_paths = []
@@ -270,7 +271,6 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 "Registered inventory paths are missing from the repository: "
                 f"{', '.join(sorted(missing_paths))}"
             )
-        return canons
     
     # Scan governance/canon directory
     canon_dir = base_path / "governance" / "canon"
@@ -280,6 +280,8 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 continue
                 
             rel_path = file_path.relative_to(base_path)
+            if str(rel_path) in registered_paths:
+                continue
             
             print(f"  Processing: {rel_path}")
             metadata = extract_metadata(file_path)
@@ -302,6 +304,8 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 continue
                 
             rel_path = file_path.relative_to(base_path)
+            if str(rel_path) in registered_paths:
+                continue
             
             print(f"  Processing: {rel_path}")
             metadata = extract_metadata(file_path)

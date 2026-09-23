@@ -206,6 +206,31 @@ class CanonInventoryProvenanceGenerationTests(unittest.TestCase):
         self.assertEqual(entries["governance/schemas/SUPPORT.schema.json"]["version"], "1.0.0")
         self.assertEqual(entries["governance/templates/SUPPORT.template.md"]["version"], "1.0.0")
 
+    def test_existing_inventory_still_discovers_new_canon_files(self) -> None:
+        self.write_canon("ALPHA.md", "Alpha bytes.")
+        self.commit("add alpha")
+        beta = self.write_canon("BETA.md", "Beta bytes.")
+        beta_commit = self.commit("add beta")
+        existing = {
+            "canons": [
+                {
+                    "path": "governance/canon/ALPHA.md",
+                    "type": "canon",
+                    "version": "1.0.0",
+                    "effective_date": "unknown",
+                    "description": "Alpha canon",
+                    "layer_down_status": "INTERNAL",
+                }
+            ]
+        }
+
+        entries = self.entries(existing)
+
+        self.assertIn("governance/canon/BETA.md", entries)
+        self.assertEqual(entries["governance/canon/BETA.md"]["canonical_commit"], beta_commit)
+        self.assertEqual(entries["governance/canon/BETA.md"]["file_hash_sha256"], sha256(beta))
+        self.assertEqual(entries["governance/canon/BETA.md"]["type"], "canon")
+
     def test_missing_registered_supporting_artifact_fails_explicitly(self) -> None:
         self.write_canon("ALPHA.md", "Alpha bytes.")
         self.commit("add alpha")

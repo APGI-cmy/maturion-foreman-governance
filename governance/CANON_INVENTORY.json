@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-09-23",
-  "total_canons": 216,
+  "total_canons": 217,
   "generation_timestamp": "2026-09-23T08:04:21Z",
   "canons": [
     {
@@ -2602,6 +2602,18 @@
       "canonical_commit": "f91a65db898ac44350aa2bacadd4728a0117330d",
       "layer_down_status": "PUBLIC_API",
       "file_hash_sha256": "2c43bbaa79a65dd480f644b82d67825d4642c5f9ad804c0a1ce2c75f4d21d9cf"
+    },
+    {
+      "filename": "CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md",
+      "version": "1.0.0",
+      "effective_date": "2026-06-01",
+      "description": "This canon defines how Maturion build gates must route pull requests by class before applying evidence requirements.",
+      "type": "canon",
+      "path": "governance/canon/CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md",
+      "layer_down_status": "PUBLIC_API",
+      "file_hash": "11a47884de0ed476914a25eb151539487f6a7d1b3a7108f92f7d0ba3ceda35a0",
+      "canonical_commit": "bc161506a3ee0c834d7a0aa5c54ba0f3abad9a17",
+      "file_hash_sha256": "11a47884de0ed476914a25eb151539487f6a7d1b3a7108f92f7d0ba3ceda35a0"
     }
   ]
 }
