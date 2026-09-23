@@ -1,17 +1,17 @@
 {
   "pr": 1410,
   "issue": 1409,
-  "reviewed_head": "82af126e4469541fcd7c0d8c4dd81b891845b4e3",
+  "reviewed_head": "cf0c3e8ae54e936ad516266d6adda4c94d9a4be5",
   "evidence_envelope": "pr-1410-finalisation-2026-09-23",
   "results": [
     {"check": "json-syntax", "status": "PASS", "evidence": "All new JSON schemas, templates, and fixtures parse."},
     {"check": "job-wave-schema-fixtures", "status": "PASS", "evidence": "Draft 2020-12 validation accepts the two-wave pilot, three-wave plan, and scoped merge policy. The merge-policy schema now rejects an incomplete protected_authority_exclusions baseline containing only AGENT_CONTRACT."},
-    {"check": "layer-down-package-parity", "status": "PASS", "evidence": "Generator execution selects all ten required supporting artifacts from canons, preserves their declared metadata/provenance route, and two consecutive runs produced identical CANON_INVENTORY.json SHA256 c9bf52a4afc14e37dbecdfcfbc2b51754fccd4b8779ff90aeca4c9602077918f."},
-    {"check": "changed-canon-provenance", "status": "PASS", "evidence": "Current bytes match each declared content-producing commit for changed canon records and correction-touched supporting artifacts, including ACTIVE_CS2_MERGE_POLICY.schema.json, fixtures/README.md, and evaluator-rejection-cases.json."},
-    {"check": "canonical-hash-gate", "status": "PASS", "evidence": "validate-canon-hashes.sh passed for all 216 inventory entries after fetching missing read-only history needed to verify preserved provenance."},
-    {"check": "github-actions-pr-runs", "status": "BLOCKED_EXTERNAL", "evidence": "Twelve pull-request runs at frozen head 82af126e4469541fcd7c0d8c4dd81b891845b4e3 are action_required with zero jobs, including Governance Gate 35835302606, Preflight Evidence Gate 35835302712, Admin-Ceremony Defect Gate 35835302734, and Merge Gate Interface 35835302775. Repository Actions administration must inspect/approve or disclose the restriction."},
+    {"check": "layer-down-package-parity", "status": "PASS", "evidence": "Generator execution selects all ten required supporting artifacts from canons, preserves their declared metadata/provenance route, continues discovering new canon files, and two consecutive runs produced identical 217-entry CANON_INVENTORY.json SHA256 96b2d53b53a996c06cda51ae62c37962f040b508013662ac0bd69678ad05eb12."},
+    {"check": "changed-canon-provenance", "status": "PASS", "evidence": "Current bytes match each declared content-producing commit for changed canon records and correction-touched supporting artifacts, including ACTIVE_CS2_MERGE_POLICY.schema.json, fixtures/README.md, evaluator-rejection-cases.json, and the newly discovered CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md inventory record."},
+    {"check": "canonical-hash-gate", "status": "PASS", "evidence": "validate-canon-hashes.sh passed for all 217 inventory entries after fetching missing read-only history needed to verify preserved provenance."},
+    {"check": "github-actions-pr-runs", "status": "BLOCKED_EXTERNAL", "evidence": "Twelve pull-request runs at frozen head cf0c3e8ae54e936ad516266d6adda4c94d9a4be5 are action_required with zero jobs, including Agent Governance Validation 35836928316, Merge Gate Interface 35836928324, FM Failure Promotion Gate 35836928392, and Preflight Evidence Gate 35836928598. Repository Actions administration must inspect/approve or disclose the restriction."},
     {"check": "placeholder-check", "status": "PASS", "evidence": "validate-placeholder-check.sh reported PASS for the applicable admin path scan; no agent contract placeholder findings apply to this governance PR."},
-    {"check": "IAA-assurance", "status": "PASS", "evidence": "ASSURANCE-TOKEN issued by independent-assurance-agent session IAA-20260923-PR1410-R2, reviewed at head dc4321b099029bccdb14749590d50e8a2ce3af9c for frozen substantive submission 82af126e4469541fcd7c0d8c4dd81b891845b4e3. The earlier IAA-20260923-PR1410 token remains historical-only for 4fcb0d39d18d1c2fdde149ee2f76c24940140ade."},
+    {"check": "IAA-assurance", "status": "PENDING", "evidence": "Earlier ASSURANCE-TOKEN session IAA-20260923-PR1410-R2 applies only to frozen substantive submission 82af126e4469541fcd7c0d8c4dd81b891845b4e3. A fresh independent assurance pass is required for cf0c3e8ae54e936ad516266d6adda4c94d9a4be5."},
     {"check": "layer-down", "status": "POST_MERGE", "evidence": "No dispatch can truthfully be recorded until upstream merge supplies the canonical main commit."}
   ]
 }

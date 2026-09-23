@@ -2,18 +2,18 @@
 
 **Issue / PR**: #1409 / #1410
 **Classification**: governance-change / GOVERNANCE_CONTROL
-**Frozen substantive submission**: `82af126e4469541fcd7c0d8c4dd81b891845b4e3`
+**Frozen substantive submission**: `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`
 **Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Authority**: Johan Ras / CS2 authorisation in issue #1409
 
 ```text
-final_state: COMPLETE
-iaa_audit_token: .agent-admin/assurance/assurance-token-pr-1410-active-cs2-20260923.md
-iaa_session_reference: IAA-20260923-PR1410-R2
-active_bundle_iaa_coherence: VERIFIED
+final_state: PENDING_RENEWED_IAA_FOR_CF0C3E8
+iaa_audit_token: PENDING_RENEWED_IAA_FOR_CF0C3E8
+iaa_session_reference: PENDING_RENEWED_IAA_FOR_CF0C3E8
+active_bundle_iaa_coherence: PENDING
 ```
 
-This append-only final packet supersedes the prior producer proof and withdraws the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` PASS packet from active use. That prior committed form remains historic evidence. Renewed independent assurance for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3` is now recorded through `IAA-20260923-PR1410-R2`.
+This append-only final packet supersedes the prior producer proof, withdraws the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` PASS packet from active use, and now demotes the interim `82af126e4469541fcd7c0d8c4dd81b891845b4e3` PASS packet to historical-only after the final generator-discovery correction. Those prior committed forms remain historic evidence, but a fresh independent assurance token is still required before this file can truthfully return to `final_state: COMPLETE`.
 
 ## Drift evidence
 
@@ -29,7 +29,8 @@ This append-only final packet supersedes the prior producer proof and withdraws 
 | ACTIVE_CS2_MERGE_POLICY.schema.json | N/A (substantive correction post-4fcb packet) | `15ee9140c5c5a9bd4cde1ee15fc43eaba2662a955c214e2f700c7ce0810fd927` |
 | active-cs2-job-wave/README.md | N/A (substantive correction post-4fcb packet) | `2d29ee3acd042b2dd1a28eb3f86e86f69f3a00d066a3c0e8dd8d45405adfab0e` |
 | evaluator-rejection-cases.json | N/A (substantive correction post-4fcb packet) | `84cc4c1130c350b10a0183430be485bac880128b813aa67fff49ad76cd4b3449` |
+| CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md | N/A (inventory-discovery correction post-82af126 packet) | `11a47884de0ed476914a25eb151539487f6a7d1b3a7108f92f7d0ba3ceda35a0` |
 
 ## Final status
 
-Local schema, package, provenance, workflow-filter, scope-parity, generator determinism, and `validate-canon-hashes.sh` checks are PASS for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`. Renewed IAA assurance is PASS via `IAA-20260923-PR1410-R2`, reviewed at head `dc4321b099029bccdb14749590d50e8a2ce3af9c`, with active bundle coherence verified across the handover-only append. The external GitHub Actions restriction remains a classified blocker: 12 current pull-request runs at `82af126e4469541fcd7c0d8c4dd81b891845b4e3` are `action_required` with zero jobs and no API-visible reason; seven zero-job failed push runs are inherited from base. Repository Actions administration must resolve or explain the former; CS2 retains the merge decision.
+Local schema, package, provenance, workflow-filter, scope-parity, generator determinism, and `validate-canon-hashes.sh` checks are PASS for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`. Fresh IAA assurance is still pending. The external GitHub Actions restriction remains a classified blocker: 12 current pull-request runs at `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` are `action_required` with zero jobs and no API-visible reason; seven zero-job failed push runs are inherited from base. Repository Actions administration must resolve or explain the former; CS2 retains the merge decision.

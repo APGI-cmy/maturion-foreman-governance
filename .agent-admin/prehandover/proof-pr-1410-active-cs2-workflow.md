@@ -2,7 +2,7 @@
 
 **Issue / PR**: #1409 / #1410  
 **Classification**: governance-change / GOVERNANCE_CONTROL  
-**Frozen substantive submission**: `82af126e4469541fcd7c0d8c4dd81b891845b4e3`
+**Frozen substantive submission**: `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`
 **Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Authority**: Johan Ras / CS2 authorisation in issue #1409  
 **Status**: PENDING INDEPENDENT ASSURANCE — human-CS2 authority review follows genuine IAA outcome
@@ -33,11 +33,11 @@ The delivery defines contract-ready governance only. It does not modify `.github
 ## Validation
 
 - PASS: JSON syntax and Draft 2020-12 validation for two-wave, three-wave, and scoped-policy fixtures; the merge-policy schema now rejects an incomplete protected-authority baseline.
-- PASS: ten required layer-down artifacts are selected through the consumer's existing `canons` route; explicitly missing registered support files fail; two consecutive inventory regenerations produced identical SHA256 `c9bf52a4afc14e37dbecdfcfbc2b51754fccd4b8779ff90aeca4c9602077918f`.
-- PASS: changed-canon current bytes equal the declared content-producing commits, and duplicate wave ID/order rejection cases are explicit downstream evaluator fixtures.
-- PASS: `validate-canon-hashes.sh` now succeeds for all 216 inventory entries after fetching the missing read-only history required to preserve valid provenance.
-- BLOCKED EXTERNALLY: 12 pull-request workflow runs at frozen head `82af126e4469541fcd7c0d8c4dd81b891845b4e3` are `action_required` with zero jobs and no API-visible log/reason; repository Actions administration must inspect/approve or disclose the restriction. Seven zero-job failed push runs are inherited from base and are not treated as passing.
-- PASS: fresh independent IAA audit issued `ASSURANCE-TOKEN` in session `IAA-20260923-PR1410-R2`, reviewed at head `dc4321b099029bccdb14749590d50e8a2ce3af9c` for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`; human-CS2 review remains required.
+- PASS: ten required layer-down artifacts are selected through the consumer's existing `canons` route; explicitly missing registered support files fail; discovery of new canon files with an existing inventory remains intact; two consecutive inventory regenerations produced identical SHA256 `96b2d53b53a996c06cda51ae62c37962f040b508013662ac0bd69678ad05eb12`.
+- PASS: changed-canon current bytes equal the declared content-producing commits, duplicate wave ID/order rejection cases are explicit downstream evaluator fixtures, and the regenerated inventory now truthfully includes `CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md`.
+- PASS: `validate-canon-hashes.sh` now succeeds for all 217 inventory entries after fetching the missing read-only history required to preserve valid provenance.
+- BLOCKED EXTERNALLY: 12 pull-request workflow runs at frozen head `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` are `action_required` with zero jobs and no API-visible log/reason; repository Actions administration must inspect/approve or disclose the restriction. Seven zero-job failed push runs are inherited from base and are not treated as passing.
+- PENDING: fresh independent IAA audit for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`, then human-CS2 review.
 
 ## Required downstream route
 

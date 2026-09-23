@@ -1,4 +1,4 @@
-# ASSURANCE-TOKEN
+# HISTORICAL ASSURANCE TOKEN — superseded for current submission
 
 ```text
 ASSURANCE-TOKEN
@@ -13,11 +13,12 @@ Agent Integrity: PASS
 Independence: CONFIRMED
 Active bundle coherence: VERIFIED — the 82af126→dc4321 delta is handover-only (7 admin/evidence files), the 31-path scope remains accurate, the prior 4fcb0d39 token is historical-only, and the active final packet no longer claims COMPLETE before renewed assurance
 Verdict: MERGE PERMITTED subject to external blocker resolution and CS2 authority
+Historical-only: applies to 82af126e4469541fcd7c0d8c4dd81b891845b4e3 and not to current submission cf0c3e8ae54e936ad516266d6adda4c94d9a4be5
 Remaining external blocker: 12 pull_request workflow runs at frozen head 82af126e4469541fcd7c0d8c4dd81b891845b4e3 remain action_required with zero jobs, including Governance Gate 35835302606, Preflight Evidence Gate 35835302712, Admin-Ceremony Defect Gate 35835302734, and Merge Gate Interface 35835302775. Repository Actions administration must inspect/approve those runs or disclose the withheld restriction.
 ```
 
-## Scope and non-waiver
+## Historical scope and non-waiver
 
-This token assures the bounded governance content and evidence truthfulness for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`: scope parity, canon/inventory provenance, generator compatibility/determinism, R1 dispatch filter, R2–R4 schema and fixture semantics, and handover coherence across the handover-only evidence append.
+This token remains preserved as historical Git evidence for frozen substantive submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3` only. It is not the active assurance token path for current submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`, which requires fresh independent assurance before any final handback can be claimed.
 
 The 12 `action_required` zero-job pull-request runs and seven inherited zero-job failed push runs are not passing checks. The repository Actions administrator must inspect or approve the pull-request runs, or disclose the withheld restriction, and CS2 retains the merge decision.
