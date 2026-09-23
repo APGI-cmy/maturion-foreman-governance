@@ -5,7 +5,7 @@
 **Frozen substantive submission**: `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`
 **Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Authority**: Johan Ras / CS2 authorisation in issue #1409  
-**Status**: PENDING RENEWED INDEPENDENT ASSURANCE — earlier R3 assurance is historical-only and does not cover frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`
+**Status**: PASS INDEPENDENT ASSURANCE — `IAA-20260923-PR1410-R4` now covers frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`; earlier R3 assurance remains historical-only
 
 ## Scope and authority
 
@@ -37,7 +37,7 @@ The delivery defines contract-ready governance only. It does not modify `.github
 - PASS: changed-canon current bytes equal the declared content-producing commits, duplicate wave ID/order rejection cases are explicit downstream evaluator fixtures, and the regenerated inventory now truthfully includes `CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md`.
 - PASS: `validate-canon-hashes.sh` now succeeds for all 217 inventory entries after fetching the missing read-only history required to preserve valid provenance.
 - BLOCKED EXTERNALLY: 12 pull-request workflow runs at frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b` are `action_required` with zero jobs and no API-visible failure reason; representative runs include FM Failure Promotion Gate `35842775106`, Governance Gate `35842775040`, Merge Gate Interface `35842774938`, and Preflight Evidence Gate `35842774936`. `get_job_logs` for run `35841749280` reports zero failed jobs and `total_jobs=0` for the same approval-blocked zero-job condition. Seven zero-job failed push runs are inherited from base and are not treated as passing.
-- PENDING: renewed independent IAA audit is required for frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`. `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`, is preserved as historical-only evidence.
+- PASS: renewed independent IAA audit issued `ASSURANCE-TOKEN` in session `IAA-20260923-PR1410-R4`, reviewed at head `9e049406a0ddc438a77b696e62cdf705a7ebf7ca` for frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`; active bundle coherence is verified across the final handover-only token append, and `IAA-20260923-PR1410-R3` remains historical-only evidence for `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`.
 
 ## Required downstream route
 
