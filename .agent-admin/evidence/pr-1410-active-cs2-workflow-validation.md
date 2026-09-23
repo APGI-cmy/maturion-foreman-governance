@@ -2,13 +2,13 @@
 
 **Issue**: #1409  
 **PR**: #1410  
-**Frozen substantive submission**: `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`
+**Frozen substantive submission**: `54e2d5fd08d36c7b02468614734467cff32a6039`
 **Base**: `0284e45882d1937c8a7aa0a6280ab1cd2dc29d52`
 **Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Date**: 2026-09-23
 **Producer**: governance-repo-administrator-v2
 
-This is the sole active producer evidence packet for the corrected substantive submission. It supersedes the packet committed at `643385854d60dd642cfc8823c05ea95cb295b854`, which remains preserved as historic Git evidence, replaces the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` assurance packet, and now supersedes the interim `82af126e4469541fcd7c0d8c4dd81b891845b4e3` assurance packet after the final generator-discovery correction. This packet deliberately binds the frozen substantive content rather than the future commit that records this evidence.
+This is the sole active producer evidence packet for the corrected substantive submission. It supersedes the packet committed at `643385854d60dd642cfc8823c05ea95cb295b854`, which remains preserved as historic Git evidence, replaces the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` assurance packet, and preserves both the interim `82af126e4469541fcd7c0d8c4dd81b891845b4e3` assurance packet and the later `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` / `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` assurance state as historical-only after the final field-boundary correction. This packet deliberately binds frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039` rather than the future commit that records this evidence.
 
 ## Static/schema evidence
 
@@ -39,8 +39,8 @@ The full canonical hash gate now passes after fetching the previously missing re
 ## Current control status
 
 - **Local deterministic checks**: PASS — JSON syntax, Draft 2020-12 positive fixtures, incomplete protected-authority baseline rejection, registered-supporting-artifact generator tests, new canon discovery with an existing inventory, two-run inventory determinism, `validate-canon-hashes.sh` over 217 entries, workflow control-map filter, manifest structure, and direct base-diff scope parity.
-- **GitHub Actions**: BLOCKED EXTERNALLY — 12 current pull-request runs at frozen head `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` report `action_required` with zero jobs, including Agent Governance Validation (`35836928316`), Merge Gate Interface (`35836928324`), FM Failure Promotion Gate (`35836928392`), and Preflight Evidence Gate (`35836928598`). The Actions API exposes no failed jobs for these runs. Repository Actions administration must inspect/approve the runs in GitHub Actions or provide the withheld restriction. Seven failed push workflow runs with the same zero-job condition remain inherited infrastructure defects from the base path.
-- **Independent IAA**: PASS — `ASSURANCE-TOKEN` issued by independent-assurance-agent session `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`. The earlier `IAA-20260923-PR1410-R2` token remains preserved as historic evidence for `82af126e4469541fcd7c0d8c4dd81b891845b4e3` only.
+- **GitHub Actions**: BLOCKED EXTERNALLY — 12 current pull-request runs at frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039` report `action_required` with zero jobs, including FM Failure Promotion Gate (`35841749280`), Governance Gate (`35841749215`), Merge Gate Interface (`35841749079`), and Preflight Evidence Gate (`35841749049`). `get_job_logs` for run `35841749280` reports zero failed jobs and `total_jobs=0`. Repository Actions administration must inspect/approve the runs in GitHub Actions or provide the withheld restriction. Seven failed push workflow runs with the same zero-job condition remain inherited infrastructure defects from the base path.
+- **Independent IAA**: PENDING RENEWAL — `IAA-20260923-PR1410-R3` is preserved as historical evidence for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0`. Renewed independent assurance is required for frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039` after this refreshed evidence packet.
 
 ## Layer-down disposition
 
