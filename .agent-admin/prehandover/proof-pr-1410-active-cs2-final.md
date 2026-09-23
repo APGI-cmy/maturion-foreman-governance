@@ -25,7 +25,7 @@ This append-only final packet supersedes the prior producer proof; its prior com
 | FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md | `4c8e2f1818cc29fb1a564832a9eedb39724057a3ad0f75b8500a64f3a6c9b5e5` | `8f43f1182441d6469590e1dff5bb177b86842b4d2d90f8c0e8beb7bebc1dc49c` |
 | INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md | `52327b7356e6497c3e437b79f20a5e1adebba35fa70f84cfd836911d94dadfc2` | `2c43bbaa79a65dd480f644b82d67825d4642c5f9ad804c0a1ce2c75f4d21d9cf` |
 | MATURION_AGENT_NETWORK_ORGANIGRAM.md | Uninventoried pre-change canon | `7ab67b534875fb6cebf43a42cc05e8ea842ed10906a0aaa40607b18b5f07ef0b` |
-| THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md | `3aaf14f2018e0eed93eecdd210d1a7b4defec7e004ad557f7f69c3c4742cd9d3` | `fe51cfb7f7ca8a942b8de7692e7625bf4f3e8cde47d3e5a5ac7179da6f5fd29e` |
+| THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md | `3aaf14f2500eeeed93eecdd210d1a7b4defec7e004ad557f7f69c3f4742cd9d3` | `fe51cfb7f7ca8a942b8de7692e7625bf4f3e8cde47d3e5a5ac7179da6f5fd29e` |
 
 ## Final status
 

@@ -13,5 +13,8 @@
   {"case": "wrong-policy-branch", "input": {"target_branch": "release", "approved_target_branches": ["main"]}, "expected_decision": "REJECTED", "expected_reason": "UNAPPROVED_SCOPE"},
   {"case": "wrong-policy-path", "input": {"path": ".github/agents/active-cs2.agent.md", "permitted_paths": ["governance/**"]}, "expected_decision": "REJECTED", "expected_reason": "RESERVED_MATTER"},
   {"case": "wrong-policy-job", "input": {"job_id": "job-other", "approved_job_ids": ["job-w0-pilot"]}, "expected_decision": "REJECTED", "expected_reason": "UNAPPROVED_SCOPE"},
+  {"case": "incomplete-protected-authority-exclusions", "input": {"protected_authority_exclusions": ["AGENT_CONTRACT"]}, "expected_decision": "REJECTED", "expected_reason": "RESERVED_MATTER"},
+  {"case": "duplicate-wave-id", "input": {"waves": [{"wave_id": "wave-a", "ordinal": 1}, {"wave_id": "wave-a", "ordinal": 2}]}, "expected_decision": "REJECTED", "expected_reason": "AMBIGUOUS_WAVE_ID"},
+  {"case": "duplicate-wave-ordinal", "input": {"waves": [{"wave_id": "wave-a", "ordinal": 1}, {"wave_id": "wave-b", "ordinal": 1}]}, "expected_decision": "REJECTED", "expected_reason": "AMBIGUOUS_WAVE_ORDER"},
   {"case": "self-authorising-merge", "input": {"change_class": "authority-safety", "actor": "active-cs2"}, "expected_decision": "REJECTED", "expected_reason": "RESERVED_MATTER"}
 ]

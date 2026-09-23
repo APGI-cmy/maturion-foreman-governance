@@ -17,7 +17,20 @@
     "resolved_substantive_threads_required": {"const": true},
     "fresh_fingerprint_required": {"const": true},
     "compare_and_set_required": {"const": true},
-    "protected_authority_exclusions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["AGENT_CONTRACT", "AUTHORITY_CHANGE", "SAFETY_CONTROL", "CREDENTIAL", "DESTRUCTIVE_ACTION"]}},
+    "protected_authority_exclusions": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {"enum": ["AGENT_CONTRACT", "AUTHORITY_CHANGE", "SAFETY_CONTROL", "CREDENTIAL", "DESTRUCTIVE_ACTION"]},
+      "allOf": [
+        {"contains": {"const": "AGENT_CONTRACT"}},
+        {"contains": {"const": "AUTHORITY_CHANGE"}},
+        {"contains": {"const": "SAFETY_CONTROL"}},
+        {"contains": {"const": "CREDENTIAL"}},
+        {"contains": {"const": "DESTRUCTIVE_ACTION"}}
+      ]
+    },
     "refusal_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["UNAPPROVED_SCOPE", "DEPENDENCY_UNMET", "BUDGET_EXHAUSTED", "BREAKER_TRIPPED", "EVIDENCE_STALE", "MATERIAL_BLOCKER", "GATE_UNSATISFIED", "IDENTITY_MISMATCH", "UNKNOWN_DELTA", "CONFLICT", "RESERVED_MATTER"]}}
   }
 }
