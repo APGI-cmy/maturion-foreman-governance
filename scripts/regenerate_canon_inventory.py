@@ -207,6 +207,16 @@ def build_inventory_entry(
 
     if existing_entry:
         entry = dict(existing_entry)
+        if metadata is not None:
+            entry["version"] = metadata.get("version", entry.get("version", "unknown"))
+            entry["effective_date"] = metadata.get(
+                "effective_date",
+                entry.get("effective_date", "unknown"),
+            )
+            entry["description"] = (
+                metadata.get("description")
+                or f"Canonical governance document: {file_path.stem}"
+            )
     else:
         entry = {
             "filename": file_path.name,
@@ -239,14 +249,13 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
     existing_entries = existing_inventory.get("canons", []) if existing_inventory else []
     existing_map = {canon.get("path", ""): canon for canon in existing_entries}
     registered_paths = set(existing_map)
+    discovered_paths = set()
 
     if existing_inventory is not None:
-        missing_paths = []
         for existing_entry in existing_entries:
             rel_path = Path(existing_entry["path"])
             file_path = base_path / rel_path
             if not file_path.is_file():
-                missing_paths.append(existing_entry["path"])
                 continue
             print(f"  Processing: {rel_path}")
             metadata = None
@@ -266,11 +275,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                     metadata=metadata,
                 )
             )
-        if missing_paths:
-            raise RuntimeError(
-                "Registered inventory paths are missing from the repository: "
-                f"{', '.join(sorted(missing_paths))}"
-            )
+            discovered_paths.add(existing_entry["path"])
     
     # Scan governance/canon directory
     canon_dir = base_path / "governance" / "canon"
@@ -280,7 +285,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 continue
                 
             rel_path = file_path.relative_to(base_path)
-            if str(rel_path) in registered_paths:
+            if str(rel_path) in discovered_paths:
                 continue
             
             print(f"  Processing: {rel_path}")
@@ -295,6 +300,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                     default_type="canon",
                 )
             )
+            discovered_paths.add(str(rel_path))
     
     # Scan governance/policy directory  
     policy_dir = base_path / "governance" / "policy"
@@ -304,7 +310,7 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 continue
                 
             rel_path = file_path.relative_to(base_path)
-            if str(rel_path) in registered_paths:
+            if str(rel_path) in discovered_paths:
                 continue
             
             print(f"  Processing: {rel_path}")
@@ -319,7 +325,16 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                     default_type="policy",
                 )
             )
+            discovered_paths.add(str(rel_path))
 
+    if existing_inventory is not None:
+        missing_paths = sorted(registered_paths - discovered_paths)
+        if missing_paths:
+            raise RuntimeError(
+                "Registered inventory paths are missing from the repository: "
+                f"{', '.join(missing_paths)}"
+            )
+    
     return canons
 
 

@@ -231,6 +231,30 @@ class CanonInventoryProvenanceGenerationTests(unittest.TestCase):
         self.assertEqual(entries["governance/canon/BETA.md"]["file_hash_sha256"], sha256(beta))
         self.assertEqual(entries["governance/canon/BETA.md"]["type"], "canon")
 
+    def test_existing_inventory_does_not_freeze_canon_metadata(self) -> None:
+        alpha = self.write_canon("ALPHA.md", "Fresh alpha bytes.")
+        alpha_commit = self.commit("add alpha")
+        existing = {
+            "canons": [
+                {
+                    "path": "governance/canon/ALPHA.md",
+                    "type": "canon",
+                    "version": "0.0.1",
+                    "effective_date": "1999-01-01",
+                    "description": "Stale alpha description",
+                    "layer_down_status": "INTERNAL",
+                    "canonical_commit": alpha_commit,
+                    "file_hash_sha256": sha256(alpha),
+                }
+            ]
+        }
+
+        entry = self.entries(existing)["governance/canon/ALPHA.md"]
+
+        self.assertEqual(entry["version"], "1.0.0")
+        self.assertEqual(entry["effective_date"], "unknown")
+        self.assertNotEqual(entry["description"], "Stale alpha description")
+
     def test_missing_registered_supporting_artifact_fails_explicitly(self) -> None:
         self.write_canon("ALPHA.md", "Alpha bytes.")
         self.commit("add alpha")
