@@ -1,0 +1,17 @@
+{
+  "pr": 1410,
+  "issue": 1409,
+  "reviewed_head": "a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b",
+  "evidence_envelope": "pr-1410-finalisation-2026-09-23",
+  "results": [
+    {"check": "json-syntax", "status": "PASS", "evidence": "All new JSON schemas, templates, and fixtures parse."},
+    {"check": "job-wave-schema-fixtures", "status": "PASS", "evidence": "Draft 2020-12 validation accepts the two-wave pilot, three-wave plan, and scoped merge policy. The merge-policy schema now rejects an incomplete protected_authority_exclusions baseline containing only AGENT_CONTRACT."},
+    {"check": "layer-down-package-parity", "status": "PASS", "evidence": "Generator execution selects all ten required supporting artifacts from canons, preserves their declared metadata/provenance route, continues discovering new canon files, and two consecutive runs produced identical 217-entry CANON_INVENTORY.json SHA256 7a474aa7d22ba767a0a7f4800de0763cbc5d901829e2b2a74629f4c43e6a83e1, which now matches the committed inventory."},
+    {"check": "changed-canon-provenance", "status": "PASS", "evidence": "Current bytes match each declared content-producing commit for changed canon records and correction-touched supporting artifacts, including ACTIVE_CS2_MERGE_POLICY.schema.json, fixtures/README.md, evaluator-rejection-cases.json, and the newly discovered CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md inventory record."},
+    {"check": "canonical-hash-gate", "status": "PASS", "evidence": "validate-canon-hashes.sh passed for all 217 inventory entries after fetching missing read-only history needed to verify preserved provenance."},
+    {"check": "github-actions-pr-runs", "status": "BLOCKED_EXTERNAL", "evidence": "Twelve pull-request runs at frozen substantive submission a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b are action_required with zero jobs, including FM Failure Promotion Gate 35842775106, Governance Gate 35842775040, Merge Gate Interface 35842774938, and Preflight Evidence Gate 35842774936. get_job_logs for run 35841749280 reported zero failed jobs and total_jobs=0 for the same approval-blocked zero-job condition, so repository Actions administration must inspect/approve or disclose the withheld restriction."},
+    {"check": "placeholder-check", "status": "PASS", "evidence": "validate-placeholder-check.sh reported PASS for the applicable admin path scan; no agent contract placeholder findings apply to this governance PR."},
+    {"check": "IAA-assurance", "status": "PASS", "evidence": "ASSURANCE-TOKEN issued by independent-assurance-agent session IAA-20260923-PR1410-R4, reviewed at head 9e049406a0ddc438a77b696e62cdf705a7ebf7ca for frozen substantive submission a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b. Active bundle coherence is verified across the final handover-only token append, and IAA-20260923-PR1410-R3 remains historical-only for cf0c3e8ae54e936ad516266d6adda4c94d9a4be5."},
+    {"check": "layer-down", "status": "POST_MERGE", "evidence": "No dispatch can truthfully be recorded until upstream merge supplies the canonical main commit."}
+  ]
+}

@@ -1,7 +1,8 @@
 # MATURION_AGENT_NETWORK_ORGANIGRAM
 
-**Status**: CANONICAL | **Version**: 1.0.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.0.1 | **Authority**: CS2  
 **Effective Date**: 2026-06-24  
+**Amended**: 2026-09-22 — contract-ready active-CS2 successor position clarified; no activation
 **Source Strategy**: `APGI-cmy/maturion-isms/Maturion/strategy/Maturion_agent_network_organigram_strategy.md` v0.1.0, merged via PR #1849  
 **Layer-Down Status**: PUBLIC_API  
 **Canonical Home**: `APGI-cmy/maturion-foreman-governance/governance/canon/MATURION_AGENT_NETWORK_ORGANIGRAM.md`
@@ -708,3 +709,11 @@ Strategy
 ```
 
 Agent names alone do not create authority. Agent contracts alone do not create runtime activation. Runtime activation requires governed knowledge, registry state, guardrails, evidence and CS2 approval.
+
+---
+
+## 20. Active-CS2 Successor Readiness
+
+The active-CS2 successor defined by `ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md` is a build/governance role operated through the future App Management Centre, not a runtime specialist. Its lifecycle is `PROPOSED → CONTRACT_READY → ACTIVATION_READY → ACTIVE`; each state is distinct. It becomes active only after proven W0 containment, implemented controller and merge interfaces, valid policy/permissions, independent assurance, and separate human-CS2 approval.
+
+The successor supports a single authorised parent job with an arbitrary approved ordered set of waves. An initial two-wave pilot is a selected configuration, never an organigram maturity limit or an implied activation.

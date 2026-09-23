@@ -74,6 +74,18 @@ def find_content_commit(base_path: Path, rel_path: Path, full_hash: str) -> str:
     )
 
 
+def path_history(base_path: Path, rel_path: Path) -> List[str]:
+    """Return commits that changed rel_path, newest first."""
+    history = git_output(
+        base_path,
+        "log",
+        "--format=%H",
+        "--",
+        rel_path.as_posix(),
+    )
+    return history.splitlines() if history else []
+
+
 def resolve_canonical_commit(
     base_path: Path,
     rel_path: Path,
@@ -81,11 +93,21 @@ def resolve_canonical_commit(
     existing_entry: Optional[Dict],
 ) -> str:
     """Preserve verified provenance or reconstruct it from path-specific history."""
-    resolved = find_content_commit(base_path, rel_path, full_hash)
     existing = (existing_entry or {}).get("canonical_commit", "")
-    if isinstance(existing, str) and HEX40.fullmatch(existing) and existing == resolved:
+    history = path_history(base_path, rel_path)
+    if (
+        isinstance(existing, str)
+        and HEX40.fullmatch(existing)
+        and existing in history
+        and blob_sha256_at_commit(base_path, existing, rel_path) == full_hash
+    ):
         return existing
-    return resolved
+    for commit in history:
+        if blob_sha256_at_commit(base_path, commit, rel_path) == full_hash:
+            return commit
+    raise RuntimeError(
+        f"No canonical Git commit contains {rel_path.as_posix()} with SHA256 {full_hash}"
+    )
 
 
 def deterministic_generation_time(base_path: Path, canons: List[Dict]) -> datetime:
@@ -116,7 +138,11 @@ def extract_metadata(file_path: Path) -> Dict:
             content = f.read(3000)  # Read first 3000 chars for metadata (expanded for safety)
             
         # Extract version
-        version_match = re.search(r'\*\*Version\*\*:\s*([^\n]+)', content, re.IGNORECASE)
+        version_match = re.search(
+            r"\*\*Version\*\*:\s*(.+?)(?=\s+\|\s+\*\*|$)",
+            content,
+            re.IGNORECASE | re.MULTILINE,
+        )
         if version_match:
             metadata["version"] = version_match.group(1).strip()
         else:
@@ -145,7 +171,11 @@ def extract_metadata(file_path: Path) -> Dict:
                 metadata["layer_down_status"] = status
         
         # Extract description - use the first sentence of Purpose section
-        purpose_match = re.search(r'##\s*1\.\s*Purpose\s*\n+(.*?)(?:\n\n|\n#)', content, re.DOTALL)
+        purpose_match = re.search(
+            r"##\s*1\.\s*Purpose[^\n]*\n+(.*?)(?:\n\n|\n#|$)",
+            content,
+            re.DOTALL,
+        )
         if purpose_match:
             desc = purpose_match.group(1).strip()
             # Get first sentence or first 200 chars
@@ -160,18 +190,99 @@ def extract_metadata(file_path: Path) -> Dict:
     return metadata
 
 
+def build_inventory_entry(
+    base_path: Path,
+    rel_path: Path,
+    existing_entry: Optional[Dict],
+    *,
+    metadata: Optional[Dict] = None,
+    default_type: Optional[str] = None,
+) -> Dict:
+    """Build a regenerated inventory entry for any registered governance artifact."""
+    file_path = base_path / rel_path
+    full_hash = calculate_sha256(file_path)[1]
+    layer_down_status = (
+        (existing_entry or {}).get("layer_down_status")
+        or (metadata or {}).get("layer_down_status")
+        or "INTERNAL"
+    )
+    canonical_commit = resolve_canonical_commit(
+        base_path,
+        rel_path,
+        full_hash,
+        existing_entry,
+    )
+
+    if existing_entry:
+        entry = dict(existing_entry)
+        if metadata is not None:
+            if metadata.get("version") not in (None, "", "unknown"):
+                entry["version"] = metadata["version"]
+            entry["effective_date"] = metadata.get(
+                "effective_date",
+                entry.get("effective_date", "unknown"),
+            )
+            if metadata.get("description"):
+                entry["description"] = metadata["description"]
+    else:
+        entry = {
+            "filename": file_path.name,
+            "version": (metadata or {}).get("version", "unknown"),
+            "effective_date": (metadata or {}).get("effective_date", "unknown"),
+            "description": (metadata or {}).get("description")
+            or f"Canonical governance document: {file_path.stem}",
+            "type": default_type or "canon",
+            "path": str(rel_path),
+            "layer_down_status": layer_down_status,
+        }
+
+    entry.update(
+        {
+            "filename": file_path.name,
+            "file_hash": full_hash,
+            "type": entry.get("type", default_type or "canon"),
+            "path": str(rel_path),
+            "canonical_commit": canonical_commit,
+            "layer_down_status": layer_down_status,
+            "file_hash_sha256": full_hash,
+        }
+    )
+    return entry
+
+
 def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict] = None) -> List[Dict]:
     """Scan governance directory for canon files."""
     canons = []
-    
-    # Build lookup map from existing inventory
-    existing_map = {}
-    if existing_inventory:
-        for canon in existing_inventory.get("canons", []):
-            key = canon.get("path", "")
-            existing_map[key] = canon
-    registered_paths = set(existing_map) if existing_inventory is not None else None
+    existing_entries = existing_inventory.get("canons", []) if existing_inventory else []
+    existing_map = {canon.get("path", ""): canon for canon in existing_entries}
+    registered_paths = set(existing_map)
     discovered_paths = set()
+
+    if existing_inventory is not None:
+        for existing_entry in existing_entries:
+            rel_path = Path(existing_entry["path"])
+            file_path = base_path / rel_path
+            if not file_path.is_file():
+                continue
+            print(f"  Processing: {rel_path}")
+            metadata = None
+            if (
+                rel_path.suffix == ".md"
+                and (
+                    rel_path.is_relative_to(Path("governance/canon"))
+                    or rel_path.is_relative_to(Path("governance/policy"))
+                )
+            ):
+                metadata = extract_metadata(file_path)
+            canons.append(
+                build_inventory_entry(
+                    base_path,
+                    rel_path,
+                    existing_entry,
+                    metadata=metadata,
+                )
+            )
+            discovered_paths.add(existing_entry["path"])
     
     # Scan governance/canon directory
     canon_dir = base_path / "governance" / "canon"
@@ -181,53 +292,22 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 continue
                 
             rel_path = file_path.relative_to(base_path)
-            filename = file_path.name
-            if registered_paths is not None and str(rel_path) not in registered_paths:
+            if str(rel_path) in discovered_paths:
                 continue
-            discovered_paths.add(str(rel_path))
             
             print(f"  Processing: {rel_path}")
-            
-            # Calculate hashes
-            truncated_hash, full_hash = calculate_sha256(file_path)
-            
-            # Extract metadata
             metadata = extract_metadata(file_path)
-            
-            # Preserve layer_down_status from existing inventory if available
             existing_entry = existing_map.get(str(rel_path))
-            if existing_entry:
-                layer_down_status = existing_entry.get("layer_down_status", metadata["layer_down_status"])
-            else:
-                layer_down_status = metadata["layer_down_status"]
-
-            canonical_commit = resolve_canonical_commit(
-                base_path,
-                rel_path,
-                full_hash,
-                existing_entry,
+            canons.append(
+                build_inventory_entry(
+                    base_path,
+                    rel_path,
+                    existing_entry,
+                    metadata=metadata,
+                    default_type="canon",
+                )
             )
-            
-            canon_entry = dict(existing_entry) if existing_entry else {
-                "filename": filename,
-                "version": metadata["version"],
-                "effective_date": metadata["effective_date"],
-                "description": metadata["description"] or f"Canonical governance document: {filename.replace('.md', '')}",
-                "type": "canon",
-                "path": str(rel_path),
-                "layer_down_status": layer_down_status,
-            }
-            canon_entry.update({
-                "filename": filename,
-                "file_hash": full_hash,
-                "type": "canon",
-                "path": str(rel_path),
-                "canonical_commit": canonical_commit,
-                "layer_down_status": layer_down_status,
-                "file_hash_sha256": full_hash,
-            })
-            
-            canons.append(canon_entry)
+            discovered_paths.add(str(rel_path))
     
     # Scan governance/policy directory  
     policy_dir = base_path / "governance" / "policy"
@@ -237,60 +317,29 @@ def scan_governance_directory(base_path: Path, existing_inventory: Optional[Dict
                 continue
                 
             rel_path = file_path.relative_to(base_path)
-            filename = file_path.name
-            if registered_paths is not None and str(rel_path) not in registered_paths:
+            if str(rel_path) in discovered_paths:
                 continue
-            discovered_paths.add(str(rel_path))
             
             print(f"  Processing: {rel_path}")
-            
-            # Calculate hashes
-            truncated_hash, full_hash = calculate_sha256(file_path)
-            
-            # Extract metadata
             metadata = extract_metadata(file_path)
-            
-            # Preserve layer_down_status from existing inventory if available
             existing_entry = existing_map.get(str(rel_path))
-            if existing_entry:
-                layer_down_status = existing_entry.get("layer_down_status", metadata["layer_down_status"])
-            else:
-                layer_down_status = metadata["layer_down_status"]
-
-            canonical_commit = resolve_canonical_commit(
-                base_path,
-                rel_path,
-                full_hash,
-                existing_entry,
+            canons.append(
+                build_inventory_entry(
+                    base_path,
+                    rel_path,
+                    existing_entry,
+                    metadata=metadata,
+                    default_type="policy",
+                )
             )
-            
-            canon_entry = dict(existing_entry) if existing_entry else {
-                "filename": filename,
-                "version": metadata["version"],
-                "effective_date": metadata["effective_date"],
-                "description": metadata["description"] or f"Canonical governance document: {filename.replace('.md', '')}",
-                "type": "policy",
-                "path": str(rel_path),
-                "layer_down_status": layer_down_status,
-            }
-            canon_entry.update({
-                "filename": filename,
-                "file_hash": full_hash,
-                "type": "policy",
-                "path": str(rel_path),
-                "canonical_commit": canonical_commit,
-                "layer_down_status": layer_down_status,
-                "file_hash_sha256": full_hash,
-            })
-            
-            canons.append(canon_entry)
+            discovered_paths.add(str(rel_path))
 
-    if registered_paths is not None:
+    if existing_inventory is not None:
         missing_paths = sorted(registered_paths - discovered_paths)
         if missing_paths:
             raise RuntimeError(
-                "Registered inventory paths are missing from governance/canon or "
-                f"governance/policy: {', '.join(missing_paths)}"
+                "Registered inventory paths are missing from the repository: "
+                f"{', '.join(missing_paths)}"
             )
     
     return canons
