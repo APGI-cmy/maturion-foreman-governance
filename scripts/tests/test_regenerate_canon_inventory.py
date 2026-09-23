@@ -255,6 +255,46 @@ class CanonInventoryProvenanceGenerationTests(unittest.TestCase):
         self.assertEqual(entry["effective_date"], "unknown")
         self.assertNotEqual(entry["description"], "Stale alpha description")
 
+    def test_combined_header_parsing_preserves_field_boundaries(self) -> None:
+        alpha = self.write_supporting_artifact(
+            "governance/canon/ALPHA.md",
+            "\n".join(
+                [
+                    "# ALPHA",
+                    "",
+                    "**Status**: CANONICAL | **Version**: 1.0.1 | **Authority**: CS2",
+                    "**Effective Date**: 2026-09-22  ",
+                    "**Layer-Down Status**: PUBLIC_API  ",
+                    "",
+                    "## 1. Purpose and activation boundary",
+                    "",
+                    "Combined-header purpose.",
+                    "",
+                ]
+            ),
+        )
+        alpha_commit = self.commit("add alpha")
+        existing = {
+            "canons": [
+                {
+                    "path": "governance/canon/ALPHA.md",
+                    "type": "canon",
+                    "version": "1.0.0",
+                    "effective_date": "1999-01-01",
+                    "description": "Verified alpha description",
+                    "layer_down_status": "INTERNAL",
+                    "canonical_commit": alpha_commit,
+                    "file_hash_sha256": sha256(alpha),
+                }
+            ]
+        }
+
+        entry = self.entries(existing)["governance/canon/ALPHA.md"]
+
+        self.assertEqual(entry["version"], "1.0.1")
+        self.assertEqual(entry["effective_date"], "2026-09-22")
+        self.assertEqual(entry["description"], "Combined-header purpose.")
+
     def test_missing_registered_supporting_artifact_fails_explicitly(self) -> None:
         self.write_canon("ALPHA.md", "Alpha bytes.")
         self.commit("add alpha")

@@ -138,7 +138,11 @@ def extract_metadata(file_path: Path) -> Dict:
             content = f.read(3000)  # Read first 3000 chars for metadata (expanded for safety)
             
         # Extract version
-        version_match = re.search(r'\*\*Version\*\*:\s*([^\n]+)', content, re.IGNORECASE)
+        version_match = re.search(
+            r"\*\*Version\*\*:\s*(.+?)(?=\s+\|\s+\*\*|$)",
+            content,
+            re.IGNORECASE | re.MULTILINE,
+        )
         if version_match:
             metadata["version"] = version_match.group(1).strip()
         else:
@@ -167,7 +171,11 @@ def extract_metadata(file_path: Path) -> Dict:
                 metadata["layer_down_status"] = status
         
         # Extract description - use the first sentence of Purpose section
-        purpose_match = re.search(r'##\s*1\.\s*Purpose\s*\n+(.*?)(?:\n\n|\n#)', content, re.DOTALL)
+        purpose_match = re.search(
+            r"##\s*1\.\s*Purpose[^\n]*\n+(.*?)(?:\n\n|\n#|$)",
+            content,
+            re.DOTALL,
+        )
         if purpose_match:
             desc = purpose_match.group(1).strip()
             # Get first sentence or first 200 chars
@@ -208,15 +216,14 @@ def build_inventory_entry(
     if existing_entry:
         entry = dict(existing_entry)
         if metadata is not None:
-            entry["version"] = metadata.get("version", entry.get("version", "unknown"))
+            if metadata.get("version") not in (None, "", "unknown"):
+                entry["version"] = metadata["version"]
             entry["effective_date"] = metadata.get(
                 "effective_date",
                 entry.get("effective_date", "unknown"),
             )
-            entry["description"] = (
-                metadata.get("description")
-                or f"Canonical governance document: {file_path.stem}"
-            )
+            if metadata.get("description"):
+                entry["description"] = metadata["description"]
     else:
         entry = {
             "filename": file_path.name,

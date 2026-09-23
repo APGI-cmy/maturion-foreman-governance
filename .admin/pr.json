@@ -34,7 +34,9 @@
     "governance/templates/ACTIVE_CS2_JOB_WAVE_RECORD.template.json",
     "governance/templates/ACTIVE_CS2_WAVE_DISPATCH_RECORD.template.md",
     "scripts/regenerate_canon_inventory.py",
-    "scripts/tests/test_regenerate_canon_inventory.py"
+    "scripts/tests/test_regenerate_canon_inventory.py",
+    "scripts/tests/test_validate_active_cs2_job_wave.py",
+    "scripts/validate_active_cs2_job_wave.py"
   ],
   "risk": "high",
   "requires_iaa": true,
