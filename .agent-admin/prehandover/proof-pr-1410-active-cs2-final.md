@@ -2,7 +2,7 @@
 
 **Issue / PR**: #1409 / #1410
 **Classification**: governance-change / GOVERNANCE_CONTROL
-**Frozen substantive submission**: `54e2d5fd08d36c7b02468614734467cff32a6039`
+**Frozen substantive submission**: `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`
 **Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Authority**: Johan Ras / CS2 authorisation in issue #1409
 
@@ -13,7 +13,7 @@ iaa_session_reference: PENDING_RENEWED_IAA
 active_bundle_iaa_coherence: PENDING_RENEWED_IAA
 ```
 
-This append-only final packet supersedes the prior producer proof, withdraws the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` PASS packet from active use, and preserves the interim `82af126e4469541fcd7c0d8c4dd81b891845b4e3` PASS packet together with the later `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` / `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` R3 assurance state as historical-only after the final field-boundary correction. Renewed independent assurance for frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039` is pending and must be recorded through a fresh IAA session before this packet returns to COMPLETE.
+This append-only final packet supersedes the prior producer proof, withdraws the earlier `4fcb0d39d18d1c2fdde149ee2f76c24940140ade` PASS packet from active use, and preserves the interim `82af126e4469541fcd7c0d8c4dd81b891845b4e3` PASS packet together with the later `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5` / `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` R3 assurance state as historical-only after the final field-boundary correction and inventory regeneration. Renewed independent assurance for frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b` is pending and must be recorded through a fresh IAA session before this packet returns to COMPLETE.
 
 ## Drift evidence
 
@@ -33,4 +33,4 @@ This append-only final packet supersedes the prior producer proof, withdraws the
 
 ## Final status
 
-Local schema, package, provenance, workflow-filter, scope-parity, generator determinism, restored canon discovery, and `validate-canon-hashes.sh` checks are PASS for frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039`. Renewed IAA assurance is still pending; `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0`, is historical-only and does not cover the current substantive submission. The external GitHub Actions restriction remains a classified blocker: 12 current pull-request runs at `54e2d5fd08d36c7b02468614734467cff32a6039` are `action_required` with zero jobs and no API-visible reason, including FM Failure Promotion Gate `35841749280`, Governance Gate `35841749215`, Merge Gate Interface `35841749079`, and Preflight Evidence Gate `35841749049`; seven zero-job failed push runs are inherited from base. Repository Actions administration must resolve or explain the former; CS2 retains the merge decision.
+Local schema, package, provenance, workflow-filter, scope-parity, generator determinism, restored canon discovery, and `validate-canon-hashes.sh` checks are PASS for frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`. Renewed IAA assurance is still pending; `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0`, is historical-only and does not cover the current substantive submission. The external GitHub Actions restriction remains a classified blocker: 12 current pull-request runs at `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b` are `action_required` with zero jobs and no API-visible reason, including FM Failure Promotion Gate `35842775106`, Governance Gate `35842775040`, Merge Gate Interface `35842774938`, and Preflight Evidence Gate `35842774936`; seven zero-job failed push runs are inherited from base. Repository Actions administration must resolve or explain the former; CS2 retains the merge decision.

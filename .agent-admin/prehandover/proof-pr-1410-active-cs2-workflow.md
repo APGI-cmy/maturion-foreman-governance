@@ -2,10 +2,10 @@
 
 **Issue / PR**: #1409 / #1410  
 **Classification**: governance-change / GOVERNANCE_CONTROL  
-**Frozen substantive submission**: `54e2d5fd08d36c7b02468614734467cff32a6039`
+**Frozen substantive submission**: `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`
 **Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Authority**: Johan Ras / CS2 authorisation in issue #1409  
-**Status**: PENDING RENEWED INDEPENDENT ASSURANCE — earlier R3 assurance is historical-only and does not cover frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039`
+**Status**: PENDING RENEWED INDEPENDENT ASSURANCE — earlier R3 assurance is historical-only and does not cover frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`
 
 ## Scope and authority
 
@@ -33,11 +33,11 @@ The delivery defines contract-ready governance only. It does not modify `.github
 ## Validation
 
 - PASS: JSON syntax and Draft 2020-12 validation for two-wave, three-wave, and scoped-policy fixtures; the merge-policy schema now rejects an incomplete protected-authority baseline.
-- PASS: ten required layer-down artifacts are selected through the consumer's existing `canons` route; explicitly missing registered support files fail; discovery of new canon files with an existing inventory remains intact; two consecutive inventory regenerations produced identical SHA256 `96b2d53b53a996c06cda51ae62c37962f040b508013662ac0bd69678ad05eb12`.
+- PASS: ten required layer-down artifacts are selected through the consumer's existing `canons` route; explicitly missing registered support files fail; discovery of new canon files with an existing inventory remains intact; two consecutive inventory regenerations produced identical SHA256 `7a474aa7d22ba767a0a7f4800de0763cbc5d901829e2b2a74629f4c43e6a83e1`, and that regenerated inventory is now committed.
 - PASS: changed-canon current bytes equal the declared content-producing commits, duplicate wave ID/order rejection cases are explicit downstream evaluator fixtures, and the regenerated inventory now truthfully includes `CS2_GOVERNED_BUILD_GATE_CLASS_ROUTING_CANON.md`.
 - PASS: `validate-canon-hashes.sh` now succeeds for all 217 inventory entries after fetching the missing read-only history required to preserve valid provenance.
-- BLOCKED EXTERNALLY: 12 pull-request workflow runs at frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039` are `action_required` with zero jobs and no API-visible failure reason; representative runs include FM Failure Promotion Gate `35841749280`, Governance Gate `35841749215`, Merge Gate Interface `35841749079`, and Preflight Evidence Gate `35841749049`. `get_job_logs` for run `35841749280` reports zero failed jobs and `total_jobs=0`. Seven zero-job failed push runs are inherited from base and are not treated as passing.
-- PENDING: renewed independent IAA audit is required for frozen substantive submission `54e2d5fd08d36c7b02468614734467cff32a6039`. `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`, is preserved as historical-only evidence.
+- BLOCKED EXTERNALLY: 12 pull-request workflow runs at frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b` are `action_required` with zero jobs and no API-visible failure reason; representative runs include FM Failure Promotion Gate `35842775106`, Governance Gate `35842775040`, Merge Gate Interface `35842774938`, and Preflight Evidence Gate `35842774936`. `get_job_logs` for run `35841749280` reports zero failed jobs and `total_jobs=0` for the same approval-blocked zero-job condition. Seven zero-job failed push runs are inherited from base and are not treated as passing.
+- PENDING: renewed independent IAA audit is required for frozen substantive submission `a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b`. `IAA-20260923-PR1410-R3`, reviewed at head `d61fe2df6d63a1c9e08fc26c7795656f4a36a6e0` for frozen substantive submission `cf0c3e8ae54e936ad516266d6adda4c94d9a4be5`, is preserved as historical-only evidence.
 
 ## Required downstream route
 

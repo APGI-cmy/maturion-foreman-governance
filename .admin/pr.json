@@ -57,6 +57,6 @@
   ],
   "merge_authority": "CS2",
   "posture": "HANDOFF_PENDING_IAA_AND_CS2_REVIEW",
-  "reviewed_implementation_head": "54e2d5fd08d36c7b02468614734467cff32a6039",
+  "reviewed_implementation_head": "a6e8fbc061d6965d78341eb1acbd4b6be19f6b4b",
   "ceremony_constraint": "Issue #1409 authorises contract-ready governance only. It does not authorise agent-contract edits, active-CS2 activation, an ISMS pilot, self-merge, or post-merge layer-down claims before actual dispatch."
 }
