@@ -1,4 +1,4 @@
-# ASSURANCE-TOKEN
+# HISTORICAL ASSURANCE TOKEN — superseded for current submission
 
 ```text
 ASSURANCE-TOKEN
@@ -13,10 +13,11 @@ Phases Verified: 1-PASS, 2-PASS, 3-PASS, 4-PASS
 Agent Integrity: PASS
 Independence: CONFIRMED
 Verdict: MERGE PERMITTED subject to external CI resolution and CS2 authority
+Historical-only: applies to 4fcb0d39d18d1c2fdde149ee2f76c24940140ade and not to current submission 82af126e4469541fcd7c0d8c4dd81b891845b4e3
 ```
 
-## Scope and non-waiver
+## Historical scope and non-waiver
 
-The token assures the bounded governance content and evidence truthfulness: scope parity, canon/inventory provenance, R1 dispatch filter, R2–R4 schema and fixture semantics, and handover evidence.
+This token remains preserved as historical Git evidence for the earlier substantive submission only. It is not the active assurance token path for current submission `82af126e4469541fcd7c0d8c4dd81b891845b4e3`, which requires fresh independent assurance before any final handback can be claimed.
 
 The 12 `action_required` zero-job pull-request runs and seven inherited zero-job failed push runs are not passing checks. The repository Actions administrator must inspect or approve the pull-request runs, or disclose the withheld restriction, and CS2 retains the merge decision.
