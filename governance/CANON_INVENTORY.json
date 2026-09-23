@@ -19,15 +19,15 @@
     {
       "filename": "ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md",
       "version": "1.0.1",
-      "file_hash": "4f17223b3a5bf2e3555bc145b2d1633b26bea3db1fc646b9c49d80b1ddc0b02b",
+      "file_hash": "69cb6cb77d108d1c854420e883f58c7a3bd7b489398d0dd766d1d777ce733889",
       "effective_date": "2026-09-22",
-      "amended_date": "2026-09-22",
+      "amended_date": "2026-09-23",
       "description": "Defines the contract-ready, bounded active-CS2 successor workflow for one approved parent job with an arbitrary approved ordered collection of waves.",
       "type": "canon",
       "path": "governance/canon/ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md",
-      "canonical_commit": "9131b3c96adfae2e6f3db00e93c1966e10a17af9",
+      "canonical_commit": "4fcb0d39d18d1c2fdde149ee2f76c24940140ade",
       "layer_down_status": "PUBLIC_API",
-      "file_hash_sha256": "4f17223b3a5bf2e3555bc145b2d1633b26bea3db1fc646b9c49d80b1ddc0b02b"
+      "file_hash_sha256": "69cb6cb77d108d1c854420e883f58c7a3bd7b489398d0dd766d1d777ce733889"
     },
     {
       "filename": "ACTIVE_CS2_AUTOMATED_WORKFLOW_CONTROL_MAP.md",

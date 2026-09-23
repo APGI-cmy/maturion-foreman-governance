@@ -10,6 +10,7 @@
     ".agent-admin/prehandover/proof-pr-1410-active-cs2-workflow.md",
     ".agent-admin/scope-declarations/pr-1410.md",
     ".agent-workspace/governance-repo-administrator/memory/session-GA-1409-20260922.md",
+    ".github/workflows/governance-layer-down-dispatch.yml",
     "GOVERNANCE_ARTIFACT_INVENTORY.md",
     "governance/ACTIVE_CS2_AUTOMATED_WORKFLOW_CONTROL_MAP.md",
     "governance/CANON_INVENTORY.json",
@@ -25,6 +26,7 @@
     "governance/schemas/ACTIVE_CS2_MERGE_POLICY.schema.json",
     "governance/schemas/fixtures/active-cs2-job-wave/README.md",
     "governance/schemas/fixtures/active-cs2-job-wave/evaluator-rejection-cases.json",
+    "governance/schemas/fixtures/active-cs2-job-wave/scoped-merge-policy.json",
     "governance/schemas/fixtures/active-cs2-job-wave/valid-three-wave-plan.json",
     "governance/schemas/fixtures/active-cs2-job-wave/valid-two-wave-pilot.json",
     "governance/templates/ACTIVE_CS2_JOB_WAVE_RECORD.template.json",
@@ -46,6 +48,6 @@
   ],
   "merge_authority": "CS2",
   "posture": "HANDOFF_PENDING_IAA_AND_CS2_REVIEW",
-  "reviewed_implementation_head": "643385854d60dd642cfc8823c05ea95cb295b854",
+  "reviewed_implementation_head": "4fcb0d39d18d1c2fdde149ee2f76c24940140ade",
   "ceremony_constraint": "Issue #1409 authorises contract-ready governance only. It does not authorise agent-contract edits, active-CS2 activation, an ISMS pilot, self-merge, or post-merge layer-down claims before actual dispatch."
 }

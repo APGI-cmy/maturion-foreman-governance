@@ -2,9 +2,10 @@
 
 **Issue / PR**: #1409 / #1410  
 **Classification**: governance-change / GOVERNANCE_CONTROL  
-**Reviewed head**: `643385854d60dd642cfc8823c05ea95cb295b854`  
+**Frozen substantive submission**: `4fcb0d39d18d1c2fdde149ee2f76c24940140ade`
+**Evidence envelope**: `pr-1410-finalisation-2026-09-23`
 **Authority**: Johan Ras / CS2 authorisation in issue #1409  
-**Status**: BLOCKED — independent IAA assurance and human-CS2 authority review required
+**Status**: PENDING INDEPENDENT ASSURANCE — human-CS2 authority review follows genuine IAA outcome
 
 ## Scope and authority
 
@@ -21,7 +22,7 @@ The delivery defines contract-ready governance only. It does not modify `.github
 
 | Canon | Before SHA256 | After SHA256 |
 |---|---|---|
-| ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md | N/A (new) | `3616c7768f48ba3b547dce67ddb81edd20858377b55420344a28a337d51fe71b` |
+| ACTIVE_CS2_AUTOMATED_WORKFLOW_GOVERNANCE.md | N/A (new) | `69cb6cb77d108d1c854420e883f58c7a3bd7b489398d0dd766d1d777ce733889` |
 | CS2_AGENT_FILE_AUTHORITY_MODEL.md | `a87f99eac31be2fc6d0d9bcf392dec685aa8422be9149520a098dc38ab8e44fe` | `2a75a2ae940743076a997dba380f76ce27460967e59c2c0b5f5a250871e077a6` |
 | ESCALATION_POLICY.md | `27cb87ee3a0466086ee1459698fbf7daa3cd2ac6ba46e5039af92630c52be7ec` | `555852cf30eca3f33aee2cc76c08ccd64eead57f8a2de7cf85e09ccaf1803709` |
 | FOREMAN_AUTHORITY_AND_SUPERVISION_MODEL.md | `4c8e2f1818cc29fb1a564832a9eedb39724057a3ad0f75b8500a64f3a6c9b5e5` | `8f43f1182441d6469590e1dff5bb177b86842b4d2d90f8c0e8beb7bebc1dc49c` |
@@ -31,10 +32,12 @@ The delivery defines contract-ready governance only. It does not modify `.github
 
 ## Validation
 
-- PASS: JSON syntax and Draft 2020-12 validation for two-wave and three-wave fixtures.
+- PASS: JSON syntax and Draft 2020-12 validation for two-wave, three-wave, and scoped-policy fixtures.
+- PASS: ten required layer-down artifacts are selected through the consumer's existing `canons` route; their hashes and content-producing commits match.
 - PASS: changed-canon current bytes equal the declared content-producing commits.
 - BLOCKED BASELINE: full canonical hash validation cannot resolve 199 unrelated historical commits in this shallow clone; no active-CS2 canon record is named in that failure output.
-- PENDING: final local parity, IAA audit, and human-CS2 review.
+- BLOCKED EXTERNALLY: 12 pull-request workflow runs at the frozen head are `action_required` with zero jobs and no API-visible log/reason; repository Actions administration must inspect/approve or disclose the restriction. Seven zero-job failed push runs are inherited from base and are not treated as passing.
+- PENDING: independent IAA audit and human-CS2 review.
 
 ## Required downstream route
 
