@@ -1,6 +1,6 @@
 # ACTIVE CS2 AUTOMATED WORKFLOW GOVERNANCE
 
-**Status**: CANONICAL | **Version**: 1.0.0 | **Authority**: CS2  
+**Status**: CANONICAL | **Version**: 1.0.1 | **Authority**: CS2
 **Effective Date**: 2026-09-22  
 **Type**: Constitutional governance definition  
 **Layer-Down Status**: PUBLIC_API  
