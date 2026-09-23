@@ -7,8 +7,8 @@
 **Authority**: Johan Ras / CS2 authorisation in issue #1409
 
 ```text
-final_state: COMPLETE
-iaa_audit_token: .agent-admin/assurance/assurance-token-pr-1410-active-cs2-20260923.md
+final_state: PENDING_RENEWED_IAA_FOR_82AF126
+iaa_audit_token: PENDING_RENEWED_IAA_FOR_82AF126
 iaa_session_reference: PENDING_RENEWED_IAA_FOR_82AF126
 active_bundle_iaa_coherence: PENDING
 ```
