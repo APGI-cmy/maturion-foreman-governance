@@ -11,7 +11,7 @@
     {"check": "canonical-hash-gate", "status": "BLOCKED_BASELINE", "evidence": "Shallow checkout cannot resolve 199 historical inventory commits; no changed/new active-CS2 canon appears in the failure list."},
     {"check": "github-actions-pr-runs", "status": "BLOCKED_EXTERNAL", "evidence": "Twelve pull-request runs at the frozen head are action_required with zero jobs; GitHub exposes no failed log and returns 404 for run logs. Repository Actions administrator must inspect/approve or disclose the restriction."},
     {"check": "placeholder-check", "status": "PENDING", "evidence": "Run after this final packet and scope declaration are committed."},
-    {"check": "IAA-assurance", "status": "PENDING", "evidence": "Independent assurance is required against the frozen substantive submission before human CS2 review."},
+    {"check": "IAA-assurance", "status": "PASS", "evidence": "ASSURANCE-TOKEN issued by independent-assurance-agent session IAA-20260923-PR1410 for frozen substantive submission 4fcb0d39d18d1c2fdde149ee2f76c24940140ade; external CI non-waiver remains."},
     {"check": "layer-down", "status": "POST_MERGE", "evidence": "No dispatch can truthfully be recorded until upstream merge supplies the canonical main commit."}
   ]
 }

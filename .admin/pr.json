@@ -8,6 +8,8 @@
     ".agent-admin/evidence/pr-1410-active-cs2-workflow-validation.md",
     ".agent-admin/gates/gate-results-pr-1410-active-cs2-workflow.json",
     ".agent-admin/prehandover/proof-pr-1410-active-cs2-workflow.md",
+    ".agent-admin/prehandover/proof-pr-1410-active-cs2-final.md",
+    ".agent-admin/assurance/assurance-token-pr-1410-active-cs2-20260923.md",
     ".agent-admin/scope-declarations/pr-1410.md",
     ".agent-workspace/governance-repo-administrator/memory/session-GA-1409-20260922.md",
     ".github/workflows/governance-layer-down-dispatch.yml",

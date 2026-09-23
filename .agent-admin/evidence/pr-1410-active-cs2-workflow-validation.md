@@ -36,7 +36,7 @@ The normal full inventory gate remains blocked by the shallow clone's missing hi
 
 - **Local deterministic checks**: PASS — JSON syntax, Draft 2020-12 positive fixtures, inventory selection/hash/provenance parity, workflow control-map filter, manifest structure, and direct base-diff scope parity.
 - **GitHub Actions**: BLOCKED EXTERNALLY — each of the 12 pull-request runs at the frozen head reports `action_required` with zero jobs; the Actions API returns no failed job/log and a run-log request returns 404. The exact platform restriction is not exposed to this agent. The repository Actions administrator must inspect/approve the runs in GitHub Actions or provide the withheld restriction. Seven failed push workflow runs have the same zero-job condition and were observed on the base; they are inherited infrastructure defects, not passing checks and not changed here.
-- **Independent IAA**: PENDING — invoked only after this final packet and scope declaration are committed on a clean tree.
+- **Independent IAA**: PASS — `ASSURANCE-TOKEN` issued by independent-assurance-agent session `IAA-20260923-PR1410`, recorded in `.agent-admin/assurance/assurance-token-pr-1410-active-cs2-20260923.md`. Its explicit non-waiver retains the external CI blocker.
 
 ## Layer-down disposition
 
