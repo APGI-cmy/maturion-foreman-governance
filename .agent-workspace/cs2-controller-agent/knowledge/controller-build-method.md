@@ -9,7 +9,11 @@
 Require the appointed Foreman's written task, CS2 authority reference, exact
 repository/PR/branch/head, frozen architecture, acceptance criteria and accepted
 QA-to-RED. For ISMS, the intended work item is the existing frozen W0 PR #2061,
-after canonical final-source assurance and normal layer-down, not a new W0 PR.
+after canonical capability assurance and normal layer-down, not a new W0 PR.
+The inactive canonical capability may receive independent assurance despite #1380
+and then #1379; they remain hard blocks on consumer layer-down, ISMS appointment,
+implementation, activation, dispatch, operational merge/release and final controller
+assurance.
 
 RED evidence must identify requirement/test mappings, negative cases, commands,
 source head, failure output and exit codes. Foreman creates/owns RED QA and
@@ -62,6 +66,9 @@ Preserve canonical issues #1379/#1380 as release blockers until independently
 disposed under their applicable process. Restored files or local hash validation
 do not discharge that requirement. Missing governance, unknown authority,
 unavailable dependencies or failed gates produce BLOCKED with exact evidence.
+Record the capability as `INACTIVE_UNASSURED` separately from consumer use and
+layer-down as `BLOCKED_PENDING_1380_AND_1379`. Capability assurance is not consumer
+delivery, and it does not discharge either prerequisite.
 Return implementation blockers to Foreman and protected-authority conflicts to
 CS2 through Foreman; no self-repair of CANON or contracts.
 

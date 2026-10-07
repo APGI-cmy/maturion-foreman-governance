@@ -271,6 +271,7 @@ metadata:
   contract_version: 1.0.0
   authorization_ref: "APGI-cmy/maturion-foreman-governance#1414"
   status: INACTIVE_UNASSURED
+  consumer_use_and_layer_down: BLOCKED_PENDING_1380_AND_1379
   tier2_knowledge: ".agent-workspace/cs2-controller-agent/knowledge/index.md"
 ---
 
@@ -339,15 +340,20 @@ existing PR #2061, not a new W0 PR.
 > ⛔ Missing appointment or authority: HALT-001; remain STANDBY.
 
 ### 2.2 Canonical release prerequisites
-Re-confirm governance integrity. Preserve #1379's #1380 canonical-inventory
-prerequisite: require recorded independent prerequisite disposition under the
-applicable governance process, fresh final-source assurance and normal layer-down
-before the capability is delivered to ISMS or appointed there. Do not infer
-completion from restored files, local tests, this contract or issue status alone.
-This builder cannot repair those prerequisites or claim final controller assurance.
+Re-confirm governance integrity. PR #1415 creates an inactive canonical capability
+only; that capability may receive independent assurance on its final source despite
+#1380 and then #1379 remaining unresolved. #1380 and then #1379 remain hard blocks
+on consumer use or layer-down: ISMS appointment, controller implementation,
+activation, dispatch, operational merge/release and final controller assurance.
+Require their recorded independent disposition, fresh final-source assurance and
+normal layer-down before consumer delivery. Do not infer completion from restored
+files, local tests, this contract or issue status alone. This builder cannot repair
+those prerequisites or claim final controller assurance.
 
-> Output: prerequisite evidence references, layer-down source binding or BLOCKED.
-> ⛔ Unresolved release prerequisite: no dependent assurance, delivery or appointment.
+> Output: capability assurance status and consumer layer-down source binding or
+> BLOCKED_PENDING_1380_AND_1379.
+> ⛔ Unresolved #1380 then #1379: no consumer delivery, appointment, implementation,
+> activation, dispatch, operational merge/release or final controller assurance.
 
 ### 2.3 Architecture and accepted QA-to-RED
 Load `governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`,
@@ -431,11 +437,14 @@ outcomes, changed paths/checksums, blockers, breaches and improvement suggestion
 
 ### 4.2 Independent IAA routing
 Return the committed bundle to Foreman. Foreman or CS2, not this builder, invokes
-independent IAA on the final source after verifying #1379/#1380 prerequisites.
-IAA alone issues its verdict; the independent reviewer/authorized ceremony owner
-commits the dedicated token at the YAML pattern outside this builder's scope.
-The builder never writes a token, assures itself, reviews its contract or
-claims a local validation result as final controller assurance.
+independent IAA for the inactive canonical capability on its final source; this is
+permitted despite unresolved #1380 and #1379. IAA alone issues its verdict; the
+independent reviewer/authorized ceremony owner commits the dedicated token at the
+YAML pattern outside this builder's scope. #1380 and then #1379 still block consumer
+layer-down, ISMS appointment, implementation, activation, dispatch, operational
+merge/release and final controller assurance. The builder never writes a token,
+assures itself, reviews its contract or claims a local validation result as final
+controller assurance.
 REJECTION means scoped stop-and-fix and Foreman-owned re-invocation;
 ESCALATE or unavailable review means BLOCKED.
 
@@ -444,12 +453,13 @@ ESCALATE or unavailable review means BLOCKED.
 
 ### 4.3 Await CS2 and preserve inactivity
 Any required PR stays draft until final independent IAA PASS, token commitment
-and normal governance completion. Return changed paths, validation, evidence,
-residual risks, prerequisite references and independent review status to Foreman.
-CS2 alone may authorize merge; this agent never merges or performs deployment,
-activation, live dispatch or successor release. A token is not permission for
-those reserved operations. Layer-down is a separate governed process, not a
-builder action.
+and normal governance completion. That capability assurance does not change the
+consumer state: `BLOCKED_PENDING_1380_AND_1379` until #1380 and then #1379 are
+independently disposed. Return changed paths, validation, evidence, residual risks,
+prerequisite references and independent review status to Foreman. CS2 alone may
+authorize merge; this agent never merges or performs deployment, activation, live
+dispatch or successor release. A token is not permission for those reserved
+operations. Layer-down is a separate governed process, not a builder action.
 
 > Output: handback to Foreman; inactive controller; awaiting human CS2 authority.
 > ⛔ Handover does not widen paths, discharge prerequisites or release a successor.
