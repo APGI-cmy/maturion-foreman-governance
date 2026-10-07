@@ -99,3 +99,18 @@ no test/tool implementation or existing contract amendment is authorized here.
 **Positive observation:** Builder-authored evidence within the already allowed
 controller directory avoids quietly widening a five-pattern scope for memory.
 Future bounded builders should make their evidence owner/location explicit.
+
+---
+
+## Session 018 — 2026-10-07 — Issue #1414 / PR #1415
+
+**Out-of-scope suggestion:** Under separate CS2 authority, align the legacy
+credential-field examples in CodexAdvisor Tier 2/template and the Builder
+checklist with CORE-022/A-024's `secret_env_var` spelling. This bounded repair
+does not alter those documents, other contracts, Foreman checklist or IAA artifacts.
+Also route the pre-existing CodexAdvisor integrity-reference mismatch to
+authorized stewardship; CodexAdvisor must not repair its own contract/reference.
+
+**Evidence-quality improvement:** Preserve the distinction between a passing
+targeted field correction and a failing broader integrity check. Record each
+command's exit code so a later shell command cannot conceal an earlier failure.

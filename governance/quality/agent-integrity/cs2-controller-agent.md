@@ -164,7 +164,7 @@ supervision:
 
 execution_identity:
   name: Maturion Bot
-  secret: MATURION_BOT_TOKEN
+  secret_env_var: MATURION_BOT_TOKEN
   never_push_main: true
   write_via_pr: true
 
