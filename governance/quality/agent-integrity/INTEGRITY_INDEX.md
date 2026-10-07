@@ -25,6 +25,22 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 
 ## Verification Command
 
+### Proposed new contract — not an approved active baseline
+
+The following reference accompanies issue #1414 contract authoring atomically.
+It is **INACTIVE_UNASSURED**: independent IAA, prerequisite disposition and CS2
+review remain pending. Its presence does not approve, register or activate it.
+
+| Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
+|---|---|---|---|---|
+| `cs2-controller-agent.md` | `.github/agents/cs2-controller-agent.md` | `21313df4f45725b6f65467f89c68072a20f7c3970c516e65d817870805e255ac` | 2026-10-07 | CodexAdvisor session-018; CS2 issue #1414 / PR #1415; IAA PRE-BRIEF session-046 field repair; independent review pending |
+
+Verify this proposed reference with
+`sha256sum .github/agents/cs2-controller-agent.md` and byte-compare it with
+`governance/quality/agent-integrity/cs2-controller-agent.md`.
+
+### Existing approved baseline verification
+
 ```bash
 # Verify all agent contract files against this index
 sha256sum .github/agents/CodexAdvisor-agent.md \
