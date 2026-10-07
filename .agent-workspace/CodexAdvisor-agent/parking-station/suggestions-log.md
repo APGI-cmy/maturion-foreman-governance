@@ -86,3 +86,16 @@ Per the triggering issue scope boundary: this session is authorized for the meta
 
 *Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-013-20260419 | CS2 authorization required before action*
 
+---
+
+## Session 017 — 2026-10-07 — Issue #1414
+
+**Out-of-scope suggestion:** Under separate CS2 authority, add a reusable
+agent-contract boundary validator asserting the exact five controller patterns,
+Foreman appointment and denial of own-contract and workspace write exceptions.
+Inline deterministic assertions were used for this contract-authoring task;
+no test/tool implementation or existing contract amendment is authorized here.
+
+**Positive observation:** Builder-authored evidence within the already allowed
+controller directory avoids quietly widening a five-pattern scope for memory.
+Future bounded builders should make their evidence owner/location explicit.
