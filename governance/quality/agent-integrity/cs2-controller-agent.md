@@ -23,7 +23,6 @@ governance:
   canon_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   expected_artifacts:
-    - governance/CANON_INVENTORY.json
     - governance/canon/LIVING_AGENT_SYSTEM.md
     - governance/canon/AGENT_CONTRACT_ARCHITECTURE.md
     - governance/canon/THREE_TIER_AGENT_KNOWLEDGE_ARCHITECTURE.md
@@ -84,8 +83,8 @@ iaa_oversight:
     token_file_pattern: >-
       .agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md
   prerequisite_issues:
-    - APGI-cmy/maturion-foreman-governance#1379
     - APGI-cmy/maturion-foreman-governance#1380
+    - APGI-cmy/maturion-foreman-governance#1379
 
 merge_gate_interface:
   required_checks:
