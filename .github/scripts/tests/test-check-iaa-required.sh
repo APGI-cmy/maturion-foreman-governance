@@ -90,6 +90,8 @@ run_case 'governance agent path requires IAA' true main 'governance/agents/examp
 run_case 'contract directory requires IAA' true main 'governance/contracts/example.md'
 run_case 'contract suffix requires IAA' true main 'docs/example-agent-contract.md'
 run_case 'parent final gate remains mandatory' true main '.github/workflows/merge-gate-interface.yml'
+run_case 'checker-only change requires IAA' true main '.github/scripts/check-iaa-required.sh'
+run_case 'checker-only change on stacked branch requires IAA' true copilot/parent '.github/scripts/check-iaa-required.sh'
 run_case 'AAWP label requires IAA on stacked branch' true copilot/parent 'docs/example.md' aawp
 run_case 'MAT label requires IAA on stacked branch' true copilot/parent 'docs/example.md' mat
 run_case 'docs-only actual diff does not require IAA' false main 'docs/example.md'

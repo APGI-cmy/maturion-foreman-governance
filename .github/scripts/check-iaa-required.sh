@@ -38,7 +38,7 @@ if [[ "${AAWP_DELIVERABLE}" == true || "${MAT_DELIVERABLE}" == true ]]; then
 fi
 
 # Apply the existing path triggers on EVERY base. A branch name grants no exception.
-if grep -qE '^\.github/agents/|^governance/agents/|^governance/contracts/|.*-agent-contract\.md$|^governance/canon/|^governance/quality/agent-integrity/|^\.github/workflows/merge-gate-interface\.yml$' <<< "${CHANGED_FILES}"; then
+if grep -qE '^\.github/agents/|^governance/agents/|^governance/contracts/|.*-agent-contract\.md$|^governance/canon/|^governance/quality/agent-integrity/|^\.github/workflows/merge-gate-interface\.yml$|^\.github/scripts/check-iaa-required\.sh$' <<< "${CHANGED_FILES}"; then
   echo "IAA required: qualifying governance path"
   IAA_REQUIRED=true
 fi
