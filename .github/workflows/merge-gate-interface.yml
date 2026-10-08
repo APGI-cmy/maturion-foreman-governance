@@ -255,16 +255,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Test IAA trigger decision and fail-closed diff handling
+        run: bash .github/scripts/tests/test-check-iaa-required.sh
+
       - name: Determine if IAA is required
         id: iaa_required
         env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           BASE_REF: ${{ github.base_ref }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           AAWP_DELIVERABLE: ${{ contains(github.event.pull_request.labels.*.name, 'aawp-deliverable') }}
           MAT_DELIVERABLE: ${{ contains(github.event.pull_request.labels.*.name, 'mat-deliverable') }}
         run: |
-          CHANGED_FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" || echo "")
-          export CHANGED_FILES
           bash .github/scripts/check-iaa-required.sh
 
       - name: Check for ASSURANCE-TOKEN
