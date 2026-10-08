@@ -257,53 +257,15 @@ jobs:
 
       - name: Determine if IAA is required
         id: iaa_required
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          AAWP_DELIVERABLE: ${{ contains(github.event.pull_request.labels.*.name, 'aawp-deliverable') }}
+          MAT_DELIVERABLE: ${{ contains(github.event.pull_request.labels.*.name, 'mat-deliverable') }}
         run: |
-          echo "=== IAA Trigger Check ==="
-
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD || echo "")
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
-
-          IAA_REQUIRED=false
-
-          # Label-based triggers
-          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'aawp-deliverable') }}" == "true" ]]; then
-            echo "🔴 IAA required: label aawp-deliverable"
-            IAA_REQUIRED=true
-          fi
-          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'mat-deliverable') }}" == "true" ]]; then
-            echo "🔴 IAA required: label mat-deliverable"
-            IAA_REQUIRED=true
-          fi
-
-          # Path-based triggers
-          if echo "$CHANGED_FILES" | grep -qE '^\.github/agents/|^governance/agents/'; then
-            echo "🔴 IAA required: agent contract file changed"
-            IAA_REQUIRED=true
-          fi
-          if echo "$CHANGED_FILES" | grep -qE '^governance/contracts/|.*-agent-contract\.md$'; then
-            echo "🔴 IAA required: agent contract changed"
-            IAA_REQUIRED=true
-          fi
-          if echo "$CHANGED_FILES" | grep -qE '^governance/canon/'; then
-            echo "🔴 IAA required: canon file changed"
-            IAA_REQUIRED=true
-          fi
-          if echo "$CHANGED_FILES" | grep -qE '^governance/quality/agent-integrity/'; then
-            echo "🔴 IAA required: agent-integrity folder changed"
-            IAA_REQUIRED=true
-          fi
-          if echo "$CHANGED_FILES" | grep -qE '^\.github/workflows/merge-gate-interface\.yml$'; then
-            echo "🔴 IAA required: merge gate workflow changed"
-            IAA_REQUIRED=true
-          fi
-
-          echo "iaa_required=$IAA_REQUIRED" >> $GITHUB_OUTPUT
-          if [ "$IAA_REQUIRED" == "true" ]; then
-            echo "✅ IAA check is REQUIRED for this PR"
-          else
-            echo "ℹ️  IAA check is NOT required for this PR (docs-only / parking-station / admin)"
-          fi
+          CHANGED_FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" || echo "")
+          export CHANGED_FILES
+          bash .github/scripts/check-iaa-required.sh
 
       - name: Check for ASSURANCE-TOKEN
         if: steps.iaa_required.outputs.iaa_required == 'true'
