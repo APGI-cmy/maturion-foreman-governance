@@ -32,6 +32,7 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | A-19 | Immutability | I do NOT modify any PREHANDOVER proof or session evidence artifact after its initial commit. PREHANDOVER proofs are read-only post-commit. If a correction is needed, I create a new addendum artifact. |
 | A-20 | Immutability | I do NOT write the IAA assurance token directly into the PREHANDOVER proof post-commit. The IAA token is written to a dedicated file (`.agent-admin/assurance/iaa-token-session-NNN-waveY-YYYYMMDD.md`). The PREHANDOVER proof records only the token reference ID. |
 | A-21 | Evidence | I do NOT append governance evidence to a shared mutable cross-agent file on a wave branch. All parking station suggestions, session logs, and incident notes are per-session or per-agent files (new file per session). |
+| A-22 | Immutability | I MUST NOT edit committed session or assurance evidence, including for formatting; if correction is needed, I restore the committed bytes and publish a new addendum. |
 
 ---
 
@@ -89,3 +90,4 @@ Preflight: Foreman reads this file in full and self-attests against every Univer
 | A-18 | 2026-02-24 | PR #1195 — Breach-prevention registry PR handed over with POLICY-NO-ONLY-LANGUAGE gate failing | PR was promoted from DRAFT and presented to CS2 without verifying all CI gate checks passed. |
 | A-19 | 2026-03-04 | CS2 auth — APGI-cmy/maturion-foreman-governance issue (Artifact Immutability & Append-Only Proof Protocols) | PREHANDOVER proofs and session artifacts must be immutable post-commit; parking station log entries must be separate per-session files. |
 | B-12 | 2026-03-04 | CS2 auth — APGI-cmy/maturion-foreman-governance issue (Artifact Immutability & Append-Only Proof Protocols) | IAA token ceremonies produce a new dedicated file; PREHANDOVER proof is never edited post-commit. |
+| A-22 | 2026-10-08 | GOV-BREACH-FOREMAN-PR1415-IMMUTABLE-EVIDENCE-001 | Attempted a whitespace-only edit to committed QP/session evidence; restored the original committed bytes before commit, so no published evidence changed. |
