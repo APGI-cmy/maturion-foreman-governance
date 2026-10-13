@@ -5,6 +5,7 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/assurance/cs2-controller-correction-validation-1415-20261013.md",
     ".agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md",
     ".agent-admin/assurance/rejection-package-1415.md",
     ".agent-admin/gates/gate-results-1415-20261007-060336.json",
@@ -57,6 +58,7 @@
     "Canonical automation-control builder contract and byte-identical integrity-copy/index verification",
     "Mandatory bootstrap read paths, temporary-state and full-contract-read rules are coherent within explicit approved authority",
     "Dedicated Tier2 build-method and canonical evidence ownership are consistent",
+    "Four Integration regression categories have source-bound offline/mocked authoring-conformance evidence; no controller runtime tests are claimed",
     "Actual Foreman task QP and matching real session attribution",
     "Exact PR1415 manifest and submitted-diff parity",
     "Applicable administrative acceptance, independent IAA source-bound assurance and human CS2 merge decision"

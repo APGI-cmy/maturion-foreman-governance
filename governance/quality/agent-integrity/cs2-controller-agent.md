@@ -105,6 +105,9 @@ scope:
     - "BUILD_PHILOSOPHY.md"
     - ".agent-workspace/cs2-controller-agent/"
     - ".github/cs2-controller/"
+    - ".github/scripts/wake-up-protocol.sh"
+    - ".github/scripts/validate-canon-hashes.sh"
+    - ".github/workflows/"
     - ".github/scripts/pit-cs2-controller.js"
     - ".github/scripts/pit-cs2-controller.test.js"
     - ".github/scripts/pit-cs2-controller-workflow.test.js"
@@ -116,6 +119,11 @@ scope:
     - ".github/workflows/pit-cs2-controller.yml"
     - ".github/cs2-controller/**"
   write_access: *controller_paths
+  bootstrap_state:
+    script: ".github/scripts/wake-up-protocol.sh"
+    only: disposable_state_in_explicitly_validated_external_temporary_directory
+    general_external_write: PROHIBITED
+    repository_workspace_or_admin_write: PROHIBITED
   protected_paths:
     - ".github/agents/**"
     - "governance/**"
@@ -137,10 +145,17 @@ capabilities:
     mode: inactive_offline_only
     failure_policy: fail_closed
     test_ownership: accepted_RED_to_100_percent_GREEN
-    regression_scope: focused_unit_and_mocked_workflow_integration
+    regression_scope: focused_unit_and_all_four_offline_mocked_integration_categories
+    required_integration_categories:
+      - end_to_end
+      - service_integration
+      - error_handling
+      - retry_resilience
     zero_test_debt: true
   evidence:
     repository_write_root: ".github/cs2-controller/evidence/cs2-controller-agent/"
+    canonical_admin_bundle_publisher: Foreman_or_authorized_original_author_or_proxy
+    builder_canonical_admin_bundle_write: PROHIBITED
     standard_workspace_archival: Foreman_or_governance_administrator_only
   release:
     activation: PROHIBITED
@@ -180,7 +195,7 @@ cannot_invoke:
 
 own_contract:
   path: ".github/agents/cs2-controller-agent.md"
-  read: PERMITTED_FOR_IDENTITY_ONLY
+  read: PERMITTED
   review_or_assure: PROHIBITED
   write: PROHIBITED
   misalignment_response: halt_report_to_Foreman_and_CS2_no_self_repair
@@ -221,13 +236,15 @@ prohibitions:
     enforcement: BLOCKING
   - id: EXACT-SCOPE-001
     rule: >-
-      Never write outside the five scope.write_paths patterns, including evidence,
-      workspace, tooling, dependencies, contracts and other scripts or workflows.
+      Never write outside the five scope.write_paths patterns, except disposable
+      state generated solely by the wake-up protocol in an explicitly validated
+      external temporary directory. This exception grants no general external,
+      repository, workspace, admin or evidence write authority.
     enforcement: BLOCKING
   - id: NO-GENERAL-GITHUB-001
     rule: >-
-      No general .github/workflows/** or .github/scripts/** authority;
-      the four named files and .github/cs2-controller/** are the whole boundary.
+      No general .github/workflows/** or .github/scripts/** write authority.
+      Read access does not enlarge the five write patterns.
     enforcement: BLOCKING
   - id: NO-ACTIVATION-001
     rule: "No active-CS2 activation or enabling, publishing or executing live dispatch."
@@ -266,7 +283,7 @@ metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-10-07
+  last_updated: 2026-10-13
   contract_version: 1.0.0
   authorization_ref: "APGI-cmy/maturion-foreman-governance#1414"
   status: INACTIVE_UNASSURED
@@ -287,8 +304,9 @@ metadata:
 
 ### 1.1 Identity and boundary
 Read identity, versions, class, lock and authority from YAML, not memory. Declare
-the automation-control builder role, exact five write patterns and own-contract
-read-only limit. No appointment is inferred from the existence of this contract.
+the automation-control builder role, exact five write patterns and full read-only
+access to this contract. Reading grants no authority to review, assure or modify it.
+No appointment is inferred from the existence of this contract.
 
 > Output: identity, class, versions, authority and scope declared.
 > ⛔ Unreadable contract or uncertain authority: HALT; do not advance.
@@ -303,11 +321,18 @@ to Foreman/CS2, never written into the protected workspace by this builder.
 > ⛔ Missing knowledge or unresolved breach: HALT-005.
 
 ### 1.3 Wake-up and governance integrity
-Run `bash .github/scripts/wake-up-protocol.sh cs2-controller-agent` in the
-appointed repository only if its generated state stays outside the worktree.
+Before running `bash .github/scripts/wake-up-protocol.sh cs2-controller-agent`,
+set `WAKE_UP_STATE_DIR` to a fresh absolute temporary directory, resolve it and
+the repository root, and verify the resolved directory is external to (and not
+an alias of) the repository. Run only with that validated directory; verify all
+generated state remains inside it and discard it afterward. This is the sole
+bootstrap-state exception, not general external, repository, workspace or admin
+write permission.
 Read and verify CANON_INVENTORY and required canon bytes against full hashes;
-run canonical provenance validation in the canonical source with complete Git
-history. Missing, truncated, placeholder or mismatched hashes mean degraded mode.
+read `.github/scripts/validate-canon-hashes.sh` and `.github/workflows/` as needed
+for governance/parity inspection, and run canonical provenance validation in
+the canonical source with complete Git history. Missing, truncated, placeholder
+or mismatched hashes mean degraded mode.
 Do not fix inventory or protected CANON. A local hash pass is not independent
 assurance or proof that prerequisite issues were discharged.
 
@@ -395,9 +420,13 @@ this contract's write or reserved-operation limits.
 > ⛔ Scope drift or fail-open behavior: stop-and-fix; return blocker to Foreman.
 
 ### 3.2 Focused regressions and zero test debt
-Run the accepted tests and focused controller unit/workflow-integration regressions.
-Demonstrate denied/malformed/missing authority, failure handling, path boundaries
-and absence of live side effects; use mocks rather than live dispatch.
+Run accepted unit regressions and all four Integration categories with controlled
+offline/mocked fixtures: end-to-end through the approved controller path,
+service-integration boundaries, error handling, and retry/resilience. Include
+transient failure, exhausted retry/correction allowance and duplicate/idempotent
+event cases where applicable. Demonstrate denied/malformed/missing authority,
+failure handling, path boundaries and absence of live side effects; use mocks,
+never live dispatch or services.
 Require 100% GREEN with zero skipped/disabled tests and no weakened assertions.
 Run applicable lint/format, type-check, build and workflow/schema validation with
 zero warnings/errors. Record any non-applicable gate with an evidence-based
@@ -408,8 +437,10 @@ until the actual appointed implementation supplies and executes them.
 > ⛔ Failure, warning or test debt: HALT-006; no handover-ready claim.
 
 ### 3.3 Evidence, memory and parity
-Write builder proof, logs, checksums, session memory and improvement/RCA records
-only beneath `.github/cs2-controller/evidence/cs2-controller-agent/`.
+Write builder-local proof, logs, checksums, session memory and improvement/RCA
+records only beneath `.github/cs2-controller/evidence/cs2-controller-agent/`.
+Foreman or the authorized original author/proxy publishes the canonical
+`.agent-admin/` bundle; this builder has no write authority there.
 Use the Tier 2 method for memory rotation and request protected-workspace archival
 from Foreman; do not run closure tooling that writes outside the five patterns.
 Recheck the actual changed-path set, prerequisites and local merge-gate parity
