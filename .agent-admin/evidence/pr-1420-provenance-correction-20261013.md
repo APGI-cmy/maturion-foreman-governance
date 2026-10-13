@@ -157,3 +157,33 @@ completion is claimed. The actual 13-path scope/manifest remains unchanged.
 - .github/scripts/trusted-iaa-assurance.js: 11ac5be529203a76fe5ac6eafaf3a7c57f32e88022368ef1d3dabb0867959552
 - .github/scripts/tests/test-trusted-iaa-assurance.js: 246c3fa8d722720c478059a6c4db482f8131b99985be72e3e708d2a9c4416951
 - .github/workflows/merge-gate-interface.yml: fb3c2c0f4f325be1a64e266bebb03ff06e3c7531c3378c4d037e427ae4121b96
+
+
+## Actual provider integration finding and schema correction - 2026-10-13
+
+The first real integration at head1987bb66, run38398184798/job115298695732,
+executed original25/25 and trusted49/49 but failed the live activity validation.
+No provider-integration PASS or final assurance was claimed. Bounded diagnostic
+source corrections e8296afe and299f287d retained failed validation while exposing
+the public source metadata; they did not change a role, credential or gate.
+
+The actual GitHub response at API version2026-03-10 differs from the documentation
+example: run38398771323/job115300679328 reports activity46344132654 with
+activity_type:push, actor.login:APGI-cmy, actor.id:253484265, the exact source
+ref, before:e8296afe67d30542350106b166b73ffd2618d8d4 and
+after:299f287d5d758c1d792c2919dc948fa5e22157cb. There is no push_type/pusher field.
+The request succeeded; this is an observed schema incompatibility, not a
+permission denial. No alternate credential or provider-access workaround occurred.
+
+The adapter now requires that actual authenticated actor/activity_type shape
+and retains all query, range, completeness, immutable identity and independence
+checks. Fixtures now model the observed provider shape and reject the obsolete
+pusher/push_type representation, force pushes and invalid actors. Local49/49
+passes. This new source's actual live CI remains to be checked after publication.
+The earlier failure chronology and source owner STOP_AND_FIX are preserved.
+No ECAP acceptance, token, live trusted status, merge or W1/W2 completion follows
+from this correction.
+
+Changed source Git-byte SHA256:
+- .github/scripts/trusted-iaa-assurance.js: 82c4c04668b2a144ea3022e21193321a096ae95086e4b834de42b975d0c85998
+- .github/scripts/tests/test-trusted-iaa-assurance.js: df6c3ec93c452bfa667130bf82a3dc9bc11479913426bfad2dd2aed9ddc3999c

@@ -55,7 +55,7 @@ function batchFixture({ actor = 'builder', activities, activityRead, compareRead
   const f = fixture({ noPushReceipt: sha => sha === 'd'.repeat(40) });
   const before = 'c'.repeat(40), tip = 'e'.repeat(40);
   const activity = { id: 1, before, after: tip, ref: 'refs/heads/feature',
-    push_type: 'normal', pusher: { id: 10, login: actor } };
+    activity_type: 'push', actor: { id: 10, login: actor } };
   const comparison = { base_commit: { sha: before }, merge_base_commit: { sha: before },
     status: 'ahead', behind_by: 0, ahead_by: 2, total_commits: 2,
     commits: [{ sha: 'd'.repeat(40) }, { sha: tip }] };
@@ -95,9 +95,10 @@ test('a matching activity must introduce the commit, not merely surround an unre
 });
 
 test('malformed, foreign-branch, force and unauthenticated push activities are refused', async () => {
-  for (const mutate of [a => { a.ref = 'refs/heads/other'; }, a => { a.push_type = 'force'; },
+  for (const mutate of [a => { a.ref = 'refs/heads/other'; }, a => { a.activity_type = 'force_push'; },
     a => { a.before = '0'.repeat(40); }, a => { a.after = a.before; }, a => { a.id = 0; },
-    a => { a.pusher.id = 0; }, a => { a.pusher.login = ''; }, a => { a.pusher.login = 'forged/name'; }]) {
+    a => { a.actor.id = 0; }, a => { a.actor.login = ''; }, a => { a.actor.login = 'forged/name'; },
+    a => { a.pusher = a.actor; delete a.actor; }, a => { a.push_type = 'normal'; delete a.activity_type; }]) {
     const b = batchFixture(); mutate(b.activity);
     await assert.rejects(evaluate(b.f), /Invalid authenticated source push activity/);
   }

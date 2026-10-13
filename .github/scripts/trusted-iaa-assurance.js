@@ -45,10 +45,10 @@ async function pushActivities(github, repo, branch) {
     demand(Array.isArray(response.data), 'Invalid source push activity response');
     for (const item of response.data) {
       demand(Number.isSafeInteger(item.id) && item.id > 0 && !seen.has(item.id) &&
-        item.ref === ref && item.push_type === 'normal' && SHA.test(item.before) &&
+        item.ref === ref && item.activity_type === 'push' && SHA.test(item.before) &&
         SHA.test(item.after) && item.before !== '0'.repeat(40) && item.before !== item.after &&
-        Number.isSafeInteger(item.pusher?.id) && item.pusher.id > 0 &&
-        typeof item.pusher.login === 'string' && /^[A-Za-z0-9-]+(?:\[bot\])?$/.test(item.pusher.login),
+        Number.isSafeInteger(item.actor?.id) && item.actor.id > 0 &&
+        typeof item.actor.login === 'string' && /^[A-Za-z0-9-]+(?:\[bot\])?$/.test(item.actor.login),
         'Invalid authenticated source push activity: ' + JSON.stringify(item).slice(0,4096));
       seen.add(item.id); items.push(item);
     }
@@ -132,7 +132,7 @@ async function sourcePushActors({ github, repo, branch, sha, cache = {} }) {
   const logins = new Set();
   for (const activity of cache.activities) {
     if (!cache.ranges.has(activity.id)) cache.ranges.set(activity.id, await pushedRange(github, repo, activity));
-    if (cache.ranges.get(activity.id).has(sha)) logins.add(activity.pusher.login.toLowerCase());
+    if (cache.ranges.get(activity.id).has(sha)) logins.add(activity.actor.login.toLowerCase());
   }
   demand(logins.size > 0, 'Authenticated source push provenance unavailable');
   return [...logins];

@@ -85,3 +85,14 @@ appointment is retained; its real return reports read-only capabilities and
 missing existing App/independent-issuer bindings, not completed installation.
 Ordinary source ownership continues until actual required acceptance.
 No role, budget, counter, parent/alias, merge or activation boundary changes.
+
+
+## Live provider schema correction - 2026-10-13
+
+Actual batch integration initially failed because GitHub returns actor and
+activity_type at API version2026-03-10, unlike the documentation example.
+Failed executions and diagnostic source changes are preserved in the evidence
+chronology; no live PASS was claimed. The adapter/fixtures now require the
+observed authenticated metadata shape and keep source/range/independence
+verification fail-closed. Local49/49 passes; new actual CI and affected owner
+assessment remain pending. All final owner and human controls stay pending.
