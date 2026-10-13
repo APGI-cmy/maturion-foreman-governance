@@ -37,6 +37,13 @@
   "source_qp_record": {
     "path": ".agent-admin/quality-professor/qp-verdict-20261013T112204Z-pr1420-source-correction.md",
     "reviewed_head": "f39073215201dbaf24d86e8f241b7077548a5261",
-    "scope": "Bounded previous provenance correction only; not current empty-commit correction or whole-PR acceptance"
+    "scope": "Bounded f390 provenance correction only; not subsequent empty/batched correction or whole-PR acceptance"
+  },
+  "subsequent_bounded_assessment": {
+    "comment": 6144985025,
+    "reviewed_head": "d231e9ddb9a68675e68286d05609f210a3589c11",
+    "scope": "Receiptless verified empty planning commit only",
+    "result": "PASS_FOR_BOUNDED_SCOPE",
+    "separate_finding": "Non-tip batched-push source provenance; corrected source awaits actual CI and affected owner assessment"
   }
 }

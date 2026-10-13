@@ -64,3 +64,24 @@ and proper administrator dispatch route need one concrete disposition, not a
 repeated unchanged appointment or generic agent substitution. CodexAdvisor's
 administrator assignment is already recorded on issue1414; real settings and
 owner outputs are still required. No allowance, identity or budget is reset.
+
+
+## Current bounded batch correction snapshot - 2026-10-13
+
+This dated snapshot supersedes earlier pending-source/testing statements for the
+new delta while preserving their actual chronology. Foreman comment 6144985025
+is PASS for d231e9d's verified empty planning commit only; it is not whole-PR or
+batch acceptance. Its separate batched-push finding is repaired at source commit
+d320bcc585e872035974c3b078e65863519d3eda with documented authenticated push activity
+and complete introduced-range verification. The exact source hashes are in the
+latest evidence section. Local suites are 25/25 and 49/49; current publication CI,
+real read-only provider integration and affected independent owner assessment
+remain pending. Earlier immutable producer/QP evidence is retained.
+
+Foreman also confirms correct ECAP-before-final-IAA sequencing, but that session
+does not expose execution-ceremony-admin-agent through its supported dispatcher.
+No appointment/artifacts were fabricated. The existing CodexAdvisor administrator
+appointment is retained; its real return reports read-only capabilities and
+missing existing App/independent-issuer bindings, not completed installation.
+Ordinary source ownership continues until actual required acceptance.
+No role, budget, counter, parent/alias, merge or activation boundary changes.

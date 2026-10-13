@@ -95,3 +95,65 @@ https://api.github.com/repos/APGI-cmy/maturion-foreman-governance/actions/runs?e
 
 - .github/scripts/trusted-iaa-assurance.js: 50158e7ab89d6b7108554c3baa59cf1680803b97e3e2b0da825a5dfa6e04abeb
 - .github/scripts/tests/test-trusted-iaa-assurance.js: f4b4278b983ec5b95e6205696aabff8279bfc5f6532e766c84eb1c0428cd44b3
+
+
+## Batched-push provenance correction - 2026-10-13
+
+Actual independent Foreman comment 6144985025 accepted d231e9d only for the
+receiptless verified empty planning commit and identified the separate batched
+push limitation. Those bounded results and earlier immutable QP/proofs remain
+history; none is reused as acceptance of this new delta.
+
+Source commit d320bcc585e872035974c3b078e65863519d3eda corrects that concrete
+limitation. Exact-SHA original Actions push receipts remain the primary source.
+For a nonempty commit without one, the evaluator reads GitHub's documented
+repository push activity for the exact source repository/branch and verifies
+the authenticated pusher plus the immutable before...after introduced-commit
+range. It does not infer identity from Git authorship, commit messages, PR text,
+or a rerun actor. The verified empty-commit rule remains unchanged.
+
+Only normal push activities with valid immutable identities and pusher IDs/logins
+qualify. The bounded complete cursor query may not switch host/repository/ref,
+filter by actor/time, repeat cursors/entries, or truncate history. Comparison
+pagination verifies its exact base/merge-base, ahead/behind state, constant
+total, unique complete SHA list and final tip. The submitted commit must occur
+in that introduced range. API permission/rate denial, malformed/missing activity,
+unsupported first/force-push ranges and incomplete comparisons fail closed;
+there is no alternate credential or metadata fallback.
+
+Local validation passed original 25/25 plus trusted 49/49, zero failures/skips/todo.
+The new controls cover actual batch semantics, independent-issuer implementation
+contributions, absent membership, wrong/force/unauthenticated activity, divergent
+or incomplete ranges, paginated comparisons/cursors, query substitution,
+duplicate/truncated/excess history and API denial. These API fixtures are tests,
+not a claim of provider integration or independent assurance.
+
+The changed normal PR CI now includes one read-only integration step for the
+real submission history. It uses contents/pull-request/actions read and the
+ordinary job token only; there is no protected status writer/secret. It verifies
+authenticated actors for actual commits and rechecks the source head. The source
+and its truthful evidence are published together as one bounded two-commit push,
+so this CI can actually exercise a non-tip content commit lacking its own
+exact-SHA push receipt. The source commit is not separately pushed or reviewed
+before the coupled evidence. Real GitHub results are reported after publication,
+never predicted in this record.
+
+The GitHub connector does not expose /activity (client endpoint coverage);
+no provider denial was established from that unsupported connector call.
+This implementation uses the documented Contents:read API in the already
+authorized read-only CI path. If that real execution denies access, ownership
+remains STOP_AND_FIX and the exact restriction is reported without bypass.
+
+Official API definitions:
+https://docs.github.com/en/rest/repos/repos#list-repository-activities
+https://docs.github.com/en/rest/commits/commits#compare-two-commits
+
+No trusted gate installation, App/IAA identity configuration, accepted ECAP,
+independent final IAA/token, human merge, activation, generic dispatch or W1/W2
+completion is claimed. The actual 13-path scope/manifest remains unchanged.
+
+### Batched correction source Git-byte SHA256
+
+- .github/scripts/trusted-iaa-assurance.js: 11ac5be529203a76fe5ac6eafaf3a7c57f32e88022368ef1d3dabb0867959552
+- .github/scripts/tests/test-trusted-iaa-assurance.js: 246c3fa8d722720c478059a6c4db482f8131b99985be72e3e708d2a9c4416951
+- .github/workflows/merge-gate-interface.yml: fb3c2c0f4f325be1a64e266bebb03ff06e3c7531c3378c4d037e427ae4121b96
