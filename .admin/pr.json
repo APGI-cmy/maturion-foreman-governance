@@ -5,9 +5,13 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/evidence/pr-1420-trusted-assurance-20261013.md",
     ".github/scripts/check-iaa-required.sh",
     ".github/scripts/tests/test-check-iaa-required.sh",
-    ".github/workflows/merge-gate-interface.yml"
+    ".github/scripts/tests/test-trusted-iaa-assurance.js",
+    ".github/scripts/trusted-iaa-assurance.js",
+    ".github/workflows/merge-gate-interface.yml",
+    ".github/workflows/trusted-iaa-assurance.yml"
   ],
   "risk": "high",
   "requires_iaa": true,
@@ -24,5 +28,5 @@
   "posture": "STOP_AND_FIX",
   "reviewed_implementation_head": "8fbb36730931748c8ff6bf8a9db30ba40ee7b168",
   "governing_context": "Standalone PR1420 is the governing GitHub work item for this direct-CS2 proxy CI repair; links to PR1419 do not import its issue, scope or one-time exception.",
-  "ceremony_constraint": "Routine manifest identity/scope repair grants no contract/canon/authority/QA/budget change, final readiness, main merge, deployment or activation. Unresolved independent findings retain STOP_AND_FIX."
+  "ceremony_constraint": "Human CS2 authorized the bounded trusted-gate implementation on 2026-10-13 in comment6143369590. Independent IAA, protected identity/admin installation, actual exact-source execution and human merge/activation controls remain required. No budget/counter reset or self-assurance."
 }

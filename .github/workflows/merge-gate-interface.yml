@@ -258,6 +258,9 @@ jobs:
       - name: Test IAA trigger decision and fail-closed diff handling
         run: bash .github/scripts/tests/test-check-iaa-required.sh
 
+      - name: Test trusted decision metadata and adversarial bypass refusals
+        run: node --test .github/scripts/tests/test-trusted-iaa-assurance.js
+
       - name: Determine if IAA is required
         id: iaa_required
         env:
