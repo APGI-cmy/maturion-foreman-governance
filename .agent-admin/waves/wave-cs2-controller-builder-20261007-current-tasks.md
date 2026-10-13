@@ -56,3 +56,47 @@ blocked pending a source-bound IAA result, and manifest Check 12 remains failed
 against the preserved inherited #1410 manifest. The pre-existing CodexAdvisor
 live/reference mismatch is unchanged from `main` and remains a separate
 integrity-stewardship issue, not a task regression.
+
+## New planning entries — 2026-10-13
+
+These are new, pending planning entries made under the approvals below; they do
+not change the chronology or disposition of TASK-cs2-controller-builder-20261007-001.
+The historical status above and original task tick remain scoped to the original
+task/source. The latest current-source evaluation is STOP_AND_FIX in
+`.agent-admin/quality-professor/qp-verdict-1415-r2-20261013.md`; this entry does
+not convert that result to PASS or overwrite its record.
+
+- [ ] TASK-cs2-controller-builder-20261007-002 — Restore the class-matched
+      execution-ceremony-admin-agent contract-creation checklist prerequisite
+      using the approved three-path proposal.
+      builder: PENDING — proper owners per proposal are governance-repo-administrator
+      (canonical checklist) and CodexAdvisor-agent (own Tier 2 registry/index); no
+      new appointment or execution is recorded.
+      qp_verdict: PENDING
+      notes: AUTHORITY — #1414 comment 6150615330 approves exact proposal 6148570092.
+      Proposed paths: `governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`,
+      `.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md`, and
+      `.agent-workspace/CodexAdvisor-agent/knowledge/index.md`. Source publication
+      and validation remain PENDING. The existing IAA wave record is unchanged;
+      its prospective amendment is pending after this real planning input.
+
+- [ ] TASK-cs2-controller-builder-20261007-003 — Resume the bounded eight-path
+      ECAP role task only after the class-matched prerequisite is actually
+      published and validated.
+      builder: PENDING — CodexAdvisor-agent is the approved role-task owner; no
+      new appointment, task acceptance, or execution is recorded.
+      qp_verdict: PENDING
+      notes: AUTHORITY — the eight-path bundle approval at #1414 comment
+      6147907911 remains in force and is reaffirmed by 6150615330; the new
+      prerequisite authority is proposal 6148570092. All ECAP source work remains
+      PENDING and is not started by this checklist entry.
+
+Current planning-state boundaries (2026-10-13):
+- Source publication: PENDING for the three prerequisite paths and the eight-path
+  ECAP role bundle.
+- Administrative-bootstrap acceptance: PENDING; approval to prepare the
+  prerequisite and bundle is not acceptance of a completed bundle.
+- Independent assurance: PENDING; the existing active PRE-BRIEF record was not
+  edited, and the prospective IAA amendment and final IAA remain outstanding.
+- No QP PASS, IAA PASS/token, merge readiness, activation, or layer-down is
+  asserted by these planning entries.
