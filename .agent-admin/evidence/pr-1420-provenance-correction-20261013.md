@@ -50,3 +50,48 @@ attributed history and source ownership continues until actual acceptance.
 | `.github/scripts/trusted-iaa-assurance.js` | `25315e2e3953ec8a91b5550e25ed8b69167bee2240a92641aa7f5703b8f6167f` |
 | `.github/scripts/tests/test-trusted-iaa-assurance.js` | `3e239ccc27058b957141eedb07a545e6ef08760ca6ad342067a6c761a9bbb2b2` |
 | `.github/workflows/trusted-iaa-assurance.yml` | `f50831759ae0e6055443f19ad9d50e2c28ec7b429861802267e51680da823176` |
+
+## Additional actual-source defect and correction - 2026-10-13
+
+During preparation for actual installation, the original proxy queried GitHub's
+real PR1420 commit and push-run metadata. Initial planning commit
+10184fb6e5f6662d1cb033547353c06fd0e033b7 has zero push receipts, zero changed files,
+and stats total/additions/deletions all zero. GitHub reports its tree as
+6ae3584677a64227e9a49894cee18df0d904de0f, identical to the verified parent
+68f3f0525060ec7115414af16b0931e54fae1344. Every content-bearing source commit in
+the inspected PR history has matching authenticated original push actors.
+The previous all-commit receipt requirement would permanently reject this
+verifiable noncontributing planning commit even after authentic final assurance.
+
+The correction admits a receiptless commit only after the GitHub API supplies
+its exact immutable SHA, zero diff stats, an empty files array, exactly one valid
+parent, a valid tree SHA, and that exact parent's identical tree. It does not
+infer emptiness or authorship from a commit message, author/committer fields or
+rerun actor. Missing/inconsistent metadata, changed trees, nonempty source,
+multiple parents, mismatched identities and invalid original push actors fail
+closed. Existing independence, issuer, exact-head/record hash and status controls
+remain unchanged. This is a source correction, not a claim of live enforcement.
+
+Validation on the local changed source: node adversarial suite 40/40 PASS,
+zero failures/skips/todo; original real-temporary-repository checker suite
+25/25 PASS. The positive fixture includes both an empty planning commit and a
+normal source commit with authenticated receipt. Negative controls reject nine
+false/incomplete empty-commit representations. Current-head CI is checked only
+after publication; it is not predicted here.
+
+The actual Foreman QP report published at 6bbcadb remains unchanged and binds
+only the previous f3907321 provenance correction. It is not reused as acceptance
+of this additional delta or whole-PR readiness. Its file is reconciled in the
+same thirteen-path manifest/scope. Required ECAP, final independent IAA, actual
+administrator configuration, installed-source checks and human merge remain
+pending. Historical producer proofs/evidence and all counters are retained.
+
+GitHub source facts:
+https://api.github.com/repos/APGI-cmy/maturion-foreman-governance/commits/10184fb6e5f6662d1cb033547353c06fd0e033b7
+https://api.github.com/repos/APGI-cmy/maturion-foreman-governance/commits/68f3f0525060ec7115414af16b0931e54fae1344
+https://api.github.com/repos/APGI-cmy/maturion-foreman-governance/actions/runs?event=push&head_sha=10184fb6e5f6662d1cb033547353c06fd0e033b7&per_page=100
+
+### Changed-source Git-byte SHA256
+
+- .github/scripts/trusted-iaa-assurance.js: 50158e7ab89d6b7108554c3baa59cf1680803b97e3e2b0da825a5dfa6e04abeb
+- .github/scripts/tests/test-trusted-iaa-assurance.js: f4b4278b983ec5b95e6205696aabff8279bfc5f6532e766c84eb1c0428cd44b3

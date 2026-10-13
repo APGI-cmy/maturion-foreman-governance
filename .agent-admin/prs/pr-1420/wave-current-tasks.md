@@ -42,3 +42,25 @@ Prior independent findings and responses remain history: comments6059310592 and
 6143948027. Missing durable budget evidence is not zero spend. No parent, alias,
 allowance, ledger or counter is reset. The gate remains branch-only; no live
 CS2 dispatch, installation, activation or W1/W2 completion is claimed.
+
+## Source-push history correction and actual QP publication - 2026-10-13
+
+Foreman published bounded QP PASS for the f3907321 provenance repair at
+.agent-admin/quality-professor/qp-verdict-20261013T112204Z-pr1420-source-correction.md.
+That real report remains immutable and scoped to its reviewed source; it is not
+whole-PR acceptance or QP for the subsequent empty-planning-commit correction.
+The source publisher reconciles its addition with the exact thirteen-path diff.
+
+Real GitHub history inspection found the initial planning commit has no push
+receipt and an unchanged verified parent tree. The source now proves immutable
+empty-commit identity before accepting that one noncontributing case, and keeps
+all content-bearing contributor authentication fail-closed. Local tests pass
+40/40 plus original25/25; actual publication CI and affected independent owner
+reassessment remain pending. No installed gate or assurance token is inferred.
+
+Foreman reports no recovered per-job ECAP appointment and no available ECAP
+specialist in that session's dispatch choices. The quoted readiness/parity loop
+and proper administrator dispatch route need one concrete disposition, not a
+repeated unchanged appointment or generic agent substitution. CodexAdvisor's
+administrator assignment is already recorded on issue1414; real settings and
+owner outputs are still required. No allowance, identity or budget is reset.

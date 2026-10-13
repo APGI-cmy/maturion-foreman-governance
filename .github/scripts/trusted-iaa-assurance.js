@@ -98,7 +98,23 @@ async function evaluate({ github, context, issuers = [] }) {
       }, { owner: headOwner, repo: headRepo }, 100);
       const receipts = runs.filter(r => r.event === 'push' && r.head_sha === commit.sha &&
         r.head_branch === pr.head.ref && r.repository?.full_name === pr.head.repo.full_name);
-      demand(receipts.length > 0 && receipts.every(r => r.actor?.login), 'Authenticated source push provenance unavailable');
+      if (receipts.length === 0) {
+        // An empty planning commit contributes no bytes. Prove that through
+        // GitHub's immutable commit/tree identities; never infer it from a message.
+        const sourceRepo = { owner: headOwner, repo: headRepo };
+        const { data: empty } = await github.rest.repos.getCommit({ ...sourceRepo, ref: commit.sha });
+        demand(empty.sha === commit.sha && empty.stats?.total === 0 &&
+          empty.stats.additions === 0 && empty.stats.deletions === 0 &&
+          Array.isArray(empty.files) && empty.files.length === 0 &&
+          Array.isArray(empty.parents) && empty.parents.length === 1 &&
+          SHA.test(empty.parents[0].sha) && SHA.test(empty.commit?.tree?.sha),
+          'Authenticated source push provenance unavailable');
+        const { data: parent } = await github.rest.repos.getCommit({ ...sourceRepo, ref: empty.parents[0].sha });
+        demand(parent.sha === empty.parents[0].sha && parent.commit?.tree?.sha === empty.commit.tree.sha,
+          'Authenticated source push provenance unavailable');
+        continue;
+      }
+      demand(receipts.every(r => r.actor?.login), 'Authenticated source push provenance unavailable');
       const logins = [...new Set(receipts.map(r => r.actor.login.toLowerCase()))];
       let assuranceOnly = false;
       if (logins.some(login => issuers.includes(login))) {

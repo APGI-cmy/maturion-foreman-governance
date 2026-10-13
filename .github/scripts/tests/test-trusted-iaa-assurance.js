@@ -8,7 +8,7 @@ const path = '.agent-admin/assurance/iaa-wave-record-fixture.md';
 const token = `ASSURANCE-TOKEN\nPR: #1420\nDate: 2026-10-13\nIAA Session: fixture-independent-session\nPR Tier: T4\nPhases Verified: 1-PASS, 4-PASS\nFFA Assessment: NOT-REQUIRED\nAgent Integrity: PASS\nIndependence: CONFIRMED\nVerdict: MERGE PERMITTED\n`;
 const digest = createHash('sha256').update(token).digest('hex');
 
-function fixture({ files, labels, reviewChange, fileChange, readChange, commits, assuranceFiles, pushActor, noPushReceipt, tokenText = token } = {}) {
+function fixture({ files, labels, reviewChange, fileChange, readChange, commits, assuranceFiles, pushActor, noPushReceipt, commitRead, tokenText = token } = {}) {
   const fileList = files || [{ filename: '.github/scripts/check-iaa-required.sh', status: 'removed' }];
   const pr = { number: 1420, state: 'open', head: { sha: head, ref: 'feature', repo: { full_name: 'owner/repo' } },
     base: { sha: base, ref: 'main', repo: { full_name: 'owner/repo' } },
@@ -19,7 +19,7 @@ function fixture({ files, labels, reviewChange, fileChange, readChange, commits,
   const statuses = [], calls = [];
   let reads = 0;
   const github = { rest: { actions: {
-    listWorkflowRunsForRepo: async ({ head_sha }) => ({ data: { workflow_runs: noPushReceipt ? [] : [{
+    listWorkflowRunsForRepo: async ({ head_sha }) => ({ data: { workflow_runs: (typeof noPushReceipt === 'function' ? noPushReceipt(head_sha) : noPushReceipt) ? [] : [{
       event: 'push', head_sha, head_branch: 'feature', repository: { full_name: 'owner/repo' },
       actor: { login: pushActor || (head_sha === 'e'.repeat(40) ? 'independent-iaa' : 'builder') }
     }] } })
@@ -30,7 +30,7 @@ function fixture({ files, labels, reviewChange, fileChange, readChange, commits,
     listCommits: async () => ({ data: commits || [{ sha: 'd'.repeat(40), author: { login: 'builder' }, committer: { login: 'builder' } }] }),
     listReviews: async () => ({ data: [review] })
   }, repos: {
-    getCommit: async ({ ref }) => ({ data: { sha: ref, files: assuranceFiles || [{ filename: path, status: 'added' }] } }),
+    getCommit: async ({ ref }) => commitRead ? commitRead(ref) : ({ data: { sha: ref, files: assuranceFiles || [{ filename: path, status: 'added' }] } }),
     getContent: async ({ path: requested, ref }) => { calls.push('content:' + requested + ':' + ref);
       assert.equal(ref, head); assert.equal(requested, path);
       return { data: { type: 'file', encoding: 'base64', content: Buffer.from(tokenText).toString('base64'), size: Buffer.byteLength(tokenText) } }; }
@@ -185,4 +185,40 @@ test('privileged workflow is wired solely to protected-base code and events', ()
   assert.match(workflow, /environment: iaa-trusted-assurance/);
   assert.match(workflow, /secrets\.MATURION_BOT_TOKEN/);
   assert.doesNotMatch(workflow, /\|\|.*(?:github\.token|GITHUB_TOKEN)/);
+});
+
+test('an empty planning commit without a push receipt requires identical verified trees', async () => {
+  const emptySha = 'e'.repeat(40), parentSha = 'f'.repeat(40), tree = '1'.repeat(40);
+  const f = fixture({
+    commits: [{ sha: emptySha }, { sha: 'd'.repeat(40) }],
+    noPushReceipt: sha => sha === emptySha,
+    commitRead: ref => ({ data: ref === emptySha ? {
+      sha: emptySha, stats: { total: 0, additions: 0, deletions: 0 }, files: [],
+      parents: [{ sha: parentSha }], commit: { tree: { sha: tree } }
+    } : { sha: parentSha, commit: { tree: { sha: tree } } } })
+  });
+  assert.equal((await evaluate(f)).state, 'success');
+});
+
+test('a missing receipt cannot be bypassed by a false or incomplete empty-commit claim', async () => {
+  const emptySha = 'e'.repeat(40), parentSha = 'f'.repeat(40), tree = '1'.repeat(40);
+  for (const mutate of [
+    (c, p) => { c.stats.total = 1; },
+    (c, p) => { c.stats.additions = 1; },
+    (c, p) => { c.files = [{ filename: '.github/scripts/trusted-iaa-assurance.js' }]; },
+    (c, p) => { c.parents = []; },
+    (c, p) => { c.parents.push({ sha: '2'.repeat(40) }); },
+    (c, p) => { c.sha = '3'.repeat(40); },
+    (c, p) => { p.sha = '3'.repeat(40); },
+    (c, p) => { p.commit.tree.sha = '4'.repeat(40); },
+    (c, p) => { delete c.commit.tree.sha; }
+  ]) {
+    const empty = { sha: emptySha, stats: { total: 0, additions: 0, deletions: 0 },
+      files: [], parents: [{ sha: parentSha }], commit: { tree: { sha: tree } } };
+    const parent = { sha: parentSha, commit: { tree: { sha: tree } } };
+    mutate(empty, parent);
+    const f = fixture({ commits: [{ sha: emptySha }], noPushReceipt: true,
+      commitRead: ref => ({ data: ref === emptySha ? empty : parent }) });
+    await assert.rejects(evaluate(f), /push provenance unavailable/);
+  }
 });
