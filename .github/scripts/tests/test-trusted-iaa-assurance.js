@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { createHash } = require('node:crypto');
-const { evaluate, run, TRIGGERS } = require('../trusted-iaa-assurance');
+const { evaluate, run, TRIGGERS, sourcePushActors } = require('../trusted-iaa-assurance');
 const head = 'a'.repeat(40), base = 'b'.repeat(40);
 const path = '.agent-admin/assurance/iaa-wave-record-fixture.md';
 const token = `ASSURANCE-TOKEN\nPR: #1420\nDate: 2026-10-13\nIAA Session: fixture-independent-session\nPR Tier: T4\nPhases Verified: 1-PASS, 4-PASS\nFFA Assessment: NOT-REQUIRED\nAgent Integrity: PASS\nIndependence: CONFIRMED\nVerdict: MERGE PERMITTED\n`;
@@ -18,7 +18,7 @@ function fixture({ files, labels, reviewChange, fileChange, readChange, commits,
   if (reviewChange) reviewChange(review);
   const statuses = [], calls = [];
   let reads = 0;
-  const github = { rest: { actions: {
+  const github = { request: async () => ({ data: [], headers: {} }), rest: { actions: {
     listWorkflowRunsForRepo: async ({ head_sha }) => ({ data: { workflow_runs: (typeof noPushReceipt === 'function' ? noPushReceipt(head_sha) : noPushReceipt) ? [] : [{
       event: 'push', head_sha, head_branch: 'feature', repository: { full_name: 'owner/repo' },
       actor: { login: pushActor || (head_sha === 'e'.repeat(40) ? 'independent-iaa' : 'builder') }
@@ -49,6 +49,118 @@ test('valid independent review binds canonical record bytes and current head', a
   assert.equal(result.state, 'success'); assert.equal(result.required, true);
   assert.deepEqual(f.statuses.map(s => s.state), ['pending', 'success']);
   assert(f.statuses.every(s => s.sha === head && s.context === 'iaa/trusted-assurance-check'));
+});
+
+function batchFixture({ actor = 'builder', activities, activityRead, compareRead } = {}) {
+  const f = fixture({ noPushReceipt: sha => sha === 'd'.repeat(40) });
+  const before = 'c'.repeat(40), tip = 'e'.repeat(40);
+  const activity = { id: 1, before, after: tip, ref: 'refs/heads/feature',
+    push_type: 'normal', pusher: { id: 10, login: actor } };
+  const comparison = { base_commit: { sha: before }, merge_base_commit: { sha: before },
+    status: 'ahead', behind_by: 0, ahead_by: 2, total_commits: 2,
+    commits: [{ sha: 'd'.repeat(40) }, { sha: tip }] };
+  const reads = { activity: 0, compare: 0 };
+  f.github.request = async (route, args) => {
+    reads.activity++; assert.equal(route, 'GET /repos/{owner}/{repo}/activity');
+    assert.equal(args.owner, 'owner'); assert.equal(args.repo, 'repo');
+    assert.equal(args.ref, 'refs/heads/feature'); assert.equal(args.activity_type, 'push');
+    assert(!args.actor); assert(!args.time_period);
+    return activityRead ? activityRead(args) : { data: activities || [activity], headers: {} };
+  };
+  f.github.rest.repos.compareCommitsWithBasehead = async args => {
+    reads.compare++; assert.equal(args.basehead, before + '...' + tip);
+    return compareRead ? compareRead(args, structuredClone(comparison)) : { data: comparison };
+  };
+  return { f, activity, comparison, reads };
+}
+
+test('batched source commit before the push tip uses GitHub pusher and verified range', async () => {
+  const { f, reads } = batchFixture();
+  assert.equal((await evaluate(f)).state, 'success');
+  assert.equal(reads.activity, 1); assert.equal(reads.compare, 1);
+});
+
+test('an IAA batched implementation push cannot hide behind commit author metadata', async () => {
+  const { f } = batchFixture({ actor: 'independent-iaa' });
+  f.github.rest.repos.getCommit = async ({ ref }) => ({ data: { sha: ref,
+    author: { login: 'builder' }, files: [{ filename: '.github/scripts/trusted-iaa-assurance.js' }] } });
+  await assert.rejects(evaluate(f), /contributed/);
+});
+
+test('a matching activity must introduce the commit, not merely surround an unrelated SHA', async () => {
+  const { f } = batchFixture({ compareRead: (args, data) => {
+    data.commits[0].sha = 'f'.repeat(40); return { data };
+  } });
+  await assert.rejects(evaluate(f), /push provenance unavailable/);
+});
+
+test('malformed, foreign-branch, force and unauthenticated push activities are refused', async () => {
+  for (const mutate of [a => { a.ref = 'refs/heads/other'; }, a => { a.push_type = 'force'; },
+    a => { a.before = '0'.repeat(40); }, a => { a.after = a.before; }, a => { a.id = 0; },
+    a => { a.pusher.id = 0; }, a => { a.pusher.login = ''; }, a => { a.pusher.login = 'forged/name'; }]) {
+    const b = batchFixture(); mutate(b.activity);
+    await assert.rejects(evaluate(b.f), /Invalid authenticated source push activity/);
+  }
+});
+
+test('incomplete, divergent and substituted push ranges never authenticate a contributor', async () => {
+  for (const mutate of [d => { d.base_commit.sha = 'f'.repeat(40); },
+    d => { d.merge_base_commit.sha = 'f'.repeat(40); }, d => { d.status = 'diverged'; },
+    d => { d.behind_by = 1; }, d => { d.total_commits = 3; d.ahead_by = 3; },
+    d => { d.commits[1].sha = 'f'.repeat(40); }, d => { d.commits[0].sha = d.commits[1].sha; },
+    d => { d.total_commits = 251; d.ahead_by = 251; }, d => { d.commits[0].sha = 'bad'; }]) {
+    const b = batchFixture({ compareRead: (args, data) => { mutate(data); return { data }; } });
+    await assert.rejects(evaluate(b.f), /source push|Source push/);
+  }
+});
+
+test('API permission denial does not fall back to author fields or emit success', async () => {
+  const { f } = batchFixture({ activityRead: () => { throw new Error('403 access denied'); } });
+  assert.equal((await run(f)).state, 'failure'); assert(!f.statuses.some(s => s.state === 'success'));
+});
+
+test('a second compare page proves all introduced commits and caches one activity query', async () => {
+  const b = batchFixture({ compareRead: ({ page }, data) => {
+    data.total_commits = 101; data.ahead_by = 101;
+    data.commits = page === 1 ? Array.from({ length: 100 }, (_, i) => ({ sha: (i + 1).toString(16).padStart(40, '0') })) : [{ sha: b.activity.after }];
+    return { data };
+  } });
+  const cache = {}, args = { github: b.f.github, repo: { owner: 'owner', repo: 'repo' }, branch: 'feature', cache };
+  b.f.github.rest.actions.listWorkflowRunsForRepo = async () => ({ data: { workflow_runs: [] } });
+  assert.deepEqual(await sourcePushActors({ ...args, sha: '1'.padStart(40, '0') }), ['builder']);
+  assert.deepEqual(await sourcePushActors({ ...args, sha: '2'.padStart(40, '0') }), ['builder']);
+  assert.equal(b.reads.activity, 1); assert.equal(b.reads.compare, 2);
+});
+
+test('trusted activity cursor can continue but cannot change origin, branch or filters', async () => {
+  const query = new URLSearchParams({ ref: 'refs/heads/feature', activity_type: 'push', direction: 'desc', per_page: '100', before: 'cursor-from-github' });
+  const next = 'https://api.github.com/repos/owner/repo/activity?' + query;
+  const b = batchFixture();
+  const first = { ...b.activity, id: 2 };
+  b.f.github.request = async (route, args) => args.before ? { data: [b.activity], headers: {} } :
+    { data: [first], headers: { link: '<' + next + '>; rel="next"' } };
+  assert.equal((await evaluate(b.f)).state, 'success');
+  for (const bad of [next.replace('api.github.com', 'attacker.example'), next.replace('owner/repo', 'other/repo'),
+    next.replace('feature', 'other'), next + '&actor=attacker', next + '&before=duplicate']) {
+    const c = batchFixture({ activityRead: () => ({ data: [], headers: { link: '<' + bad + '>; rel="next"' } }) });
+    await assert.rejects(evaluate(c.f), /cursor|Cursor/);
+  }
+});
+
+test('duplicated activities, unpaged full responses and exhausted limits fail closed', async () => {
+  const b = batchFixture();
+  b.f.github.request = async () => ({ data: [b.activity, b.activity], headers: {} });
+  await assert.rejects(evaluate(b.f), /Invalid authenticated/);
+  const c = batchFixture({ activityRead: () => ({ data: Array.from({ length: 100 }, (_, i) => ({ ...b.activity, id: i + 1 })), headers: {} }) });
+  await assert.rejects(evaluate(c.f), /Incomplete source push activity/);
+  let page = 0;
+  const d = batchFixture({ activityRead: () => {
+    const n = page++;
+    const query = new URLSearchParams({ ref: 'refs/heads/feature', activity_type: 'push', direction: 'desc', per_page: '100', before: 'page-' + n });
+    return { data: Array.from({ length: 100 }, (_, i) => ({ ...b.activity, id: n * 100 + i + 1 })),
+      headers: { link: '<https://api.github.com/repos/owner/repo/activity?' + query + '>; rel="next"' } };
+  } });
+  await assert.rejects(evaluate(d.f), /exceeds verified limit/);
 });
 
 for (const name of ['.github/scripts/check-iaa-required.sh', '.github/scripts/trusted-iaa-assurance.js',

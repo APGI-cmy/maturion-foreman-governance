@@ -29,6 +29,115 @@ function identity(pr) {
     (pr.labels || []).map(x => x.name).sort(), pr.changed_files, pr.commits]);
 }
 
+// Normal push activity binds an authenticated pusher to the entire introduced
+// commit range, including commits before the tip of a batched push. Contents:read
+// is sufficient; API denial or incomplete provenance never selects a fallback
+// identity. Cursor links come from GitHub and must stay on this exact query.
+async function pushActivities(github, repo, branch) {
+  const ref = 'refs/heads/' + branch;
+  const items = [], seen = new Set(), cursors = new Set();
+  let cursor = {};
+  for (let page = 0; page < 3; page++) {
+    const response = await github.request('GET /repos/{owner}/{repo}/activity', {
+      ...repo, ref, activity_type: 'push', direction: 'desc', per_page: 100,
+      ...cursor, headers: { 'X-GitHub-Api-Version': '2026-03-10' }
+    });
+    demand(Array.isArray(response.data), 'Invalid source push activity response');
+    for (const item of response.data) {
+      demand(Number.isSafeInteger(item.id) && item.id > 0 && !seen.has(item.id) &&
+        item.ref === ref && item.push_type === 'normal' && SHA.test(item.before) &&
+        SHA.test(item.after) && item.before !== '0'.repeat(40) && item.before !== item.after &&
+        Number.isSafeInteger(item.pusher?.id) && item.pusher.id > 0 &&
+        typeof item.pusher.login === 'string' && /^[A-Za-z0-9-]+(?:\[bot\])?$/.test(item.pusher.login),
+        'Invalid authenticated source push activity');
+      seen.add(item.id); items.push(item);
+    }
+    demand(items.length <= 250, 'Source push activity exceeds verified limit');
+    const links = (response.headers?.link || '').split(',');
+    const next = links.filter(link => /;\s*rel="next"\s*$/.test(link.trim()));
+    demand(next.length <= 1, 'Ambiguous source push cursor');
+    if (!next.length) {
+      demand(response.data.length < 100, 'Incomplete source push activity pagination');
+      return items;
+    }
+    const match = next[0].trim().match(/^<([^>]+)>;\s*rel="next"$/);
+    demand(match, 'Invalid source push cursor');
+    const url = new URL(match[1]);
+    demand(url.origin === 'https://api.github.com' && !url.username && !url.password && !url.hash &&
+      decodeURIComponent(url.pathname) === `/repos/${repo.owner}/${repo.repo}/activity` &&
+      url.searchParams.get('ref') === ref && url.searchParams.get('activity_type') === 'push' &&
+      url.searchParams.get('direction') === 'desc' && url.searchParams.get('per_page') === '100',
+      'Source push cursor changed trusted query');
+    const keys = [...url.searchParams.keys()];
+    demand(new Set(keys).size === keys.length && keys.every(k =>
+      ['ref','activity_type','direction','per_page','before','after'].includes(k)), 'Invalid source push cursor parameters');
+    const names = ['before','after'].filter(k => url.searchParams.has(k));
+    demand(names.length === 1 && url.searchParams.get(names[0]) && !cursors.has(url.href),
+      'Missing or repeated source push cursor');
+    cursors.add(url.href); cursor = { [names[0]]: url.searchParams.get(names[0]) };
+  }
+  throw new Error('Incomplete source push activity pagination');
+}
+
+async function pushedRange(github, repo, activity) {
+  const commits = [];
+  let total;
+  for (let page = 1; page <= 3; page++) {
+    const { data } = await github.rest.repos.compareCommitsWithBasehead({ ...repo,
+      basehead: activity.before + '...' + activity.after, per_page: 100, page });
+    demand(data.base_commit?.sha === activity.before && data.merge_base_commit?.sha === activity.before &&
+      data.status === 'ahead' && data.behind_by === 0 && Number.isSafeInteger(data.total_commits) &&
+      data.total_commits > 0 && data.total_commits <= 250 && data.ahead_by === data.total_commits &&
+      Array.isArray(data.commits), 'Unverified source push commit range');
+    if (total === undefined) total = data.total_commits;
+    demand(total === data.total_commits, 'Source push comparison changed during pagination');
+    commits.push(...data.commits.map(c => c.sha));
+    demand(commits.every(c => SHA.test(c)) && new Set(commits).size === commits.length && commits.length <= total,
+      'Invalid source push range commits');
+    if (commits.length === total) {
+      demand(commits.at(-1) === activity.after, 'Source push range tip mismatch');
+      return new Set(commits);
+    }
+    demand(data.commits.length === 100, 'Incomplete source push range pagination');
+  }
+  throw new Error('Incomplete source push range pagination');
+}
+
+async function sourcePushActors({ github, repo, branch, sha, cache = {} }) {
+  demand(SHA.test(sha) && typeof branch === 'string' && branch &&
+    typeof repo.owner === 'string' && typeof repo.repo === 'string', 'Invalid source push query identity');
+  const runs = await allPages(async opts => {
+    const response = await github.rest.actions.listWorkflowRunsForRepo({ ...opts, head_sha: sha, event: 'push' });
+    return { data: response.data.workflow_runs };
+  }, repo, 100);
+  const receipts = runs.filter(r => r.event === 'push' && r.head_sha === sha &&
+    r.head_branch === branch && r.repository?.full_name === repo.owner + '/' + repo.repo);
+  if (receipts.length) {
+    demand(receipts.every(r => typeof r.actor?.login === 'string' && r.actor.login),
+      'Authenticated source push provenance unavailable');
+    return [...new Set(receipts.map(r => r.actor.login.toLowerCase()))];
+  }
+  const { data: commit } = await github.rest.repos.getCommit({ ...repo, ref: sha });
+  demand(commit.sha === sha, 'Authenticated source push provenance unavailable');
+  if (commit.stats?.total === 0 && commit.stats.additions === 0 && commit.stats.deletions === 0 &&
+    Array.isArray(commit.files) && commit.files.length === 0 && Array.isArray(commit.parents) &&
+    commit.parents.length === 1 && SHA.test(commit.parents[0].sha) && SHA.test(commit.commit?.tree?.sha)) {
+    const { data: parent } = await github.rest.repos.getCommit({ ...repo, ref: commit.parents[0].sha });
+    demand(parent.sha === commit.parents[0].sha && parent.commit?.tree?.sha === commit.commit.tree.sha,
+      'Authenticated source push provenance unavailable');
+    return []; // Verified empty commit contributes no source bytes.
+  }
+  if (!cache.activities) cache.activities = await pushActivities(github, repo, branch);
+  if (!cache.ranges) cache.ranges = new Map();
+  const logins = new Set();
+  for (const activity of cache.activities) {
+    if (!cache.ranges.has(activity.id)) cache.ranges.set(activity.id, await pushedRange(github, repo, activity));
+    if (cache.ranges.get(activity.id).has(sha)) logins.add(activity.pusher.login.toLowerCase());
+  }
+  demand(logins.size > 0, 'Authenticated source push provenance unavailable');
+  return [...logins];
+}
+
 function field(text, name) {
   // Exact fields in an authenticated IAA review, not text/filenames anywhere in a PR.
   const lines = text.replace(/\r/g, '').replace(/\*\*/g, '').replace(/`/g, '').split('\n');
@@ -86,36 +195,16 @@ async function evaluate({ github, context, issuers = [] }) {
     const contributors = new Set([pr.user?.login?.toLowerCase()]);
     demand(typeof pr.head.ref === 'string' && pr.head.ref, 'Missing source branch identity');
     const [headOwner, headRepo] = pr.head.repo.full_name.split('/');
+    const pushCache = {};
     for (const commit of commits) {
       demand(SHA.test(commit.sha), 'Invalid submission commit identity');
       // Git author/committer fields are self-asserted. Only GitHub's authenticated
-      // original actor of a push-triggered run is contributor provenance here.
+      // original actor of a push-triggered run or a verified repository push
+      // activity/range is contributor provenance here.
       // Rerun triggering_actor is deliberately not treated as the original pusher.
-      const runs = await allPages(async opts => {
-        const response = await github.rest.actions.listWorkflowRunsForRepo({ ...opts,
-          head_sha: commit.sha, event: 'push' });
-        return { data: response.data.workflow_runs };
-      }, { owner: headOwner, repo: headRepo }, 100);
-      const receipts = runs.filter(r => r.event === 'push' && r.head_sha === commit.sha &&
-        r.head_branch === pr.head.ref && r.repository?.full_name === pr.head.repo.full_name);
-      if (receipts.length === 0) {
-        // An empty planning commit contributes no bytes. Prove that through
-        // GitHub's immutable commit/tree identities; never infer it from a message.
-        const sourceRepo = { owner: headOwner, repo: headRepo };
-        const { data: empty } = await github.rest.repos.getCommit({ ...sourceRepo, ref: commit.sha });
-        demand(empty.sha === commit.sha && empty.stats?.total === 0 &&
-          empty.stats.additions === 0 && empty.stats.deletions === 0 &&
-          Array.isArray(empty.files) && empty.files.length === 0 &&
-          Array.isArray(empty.parents) && empty.parents.length === 1 &&
-          SHA.test(empty.parents[0].sha) && SHA.test(empty.commit?.tree?.sha),
-          'Authenticated source push provenance unavailable');
-        const { data: parent } = await github.rest.repos.getCommit({ ...sourceRepo, ref: empty.parents[0].sha });
-        demand(parent.sha === empty.parents[0].sha && parent.commit?.tree?.sha === empty.commit.tree.sha,
-          'Authenticated source push provenance unavailable');
-        continue;
-      }
-      demand(receipts.every(r => r.actor?.login), 'Authenticated source push provenance unavailable');
-      const logins = [...new Set(receipts.map(r => r.actor.login.toLowerCase()))];
+      const logins = await sourcePushActors({ github, repo: { owner: headOwner, repo: headRepo },
+        branch: pr.head.ref, sha: commit.sha, cache: pushCache });
+      if (!logins.length) continue;
       let assuranceOnly = false;
       if (logins.some(login => issuers.includes(login))) {
         demand(SHA.test(commit.sha), 'Invalid assurance commit identity');
@@ -205,4 +294,4 @@ async function run({ github, writer, context, core, issuers, producer }) {
   }
 }
 
-module.exports = { STATUS_CONTEXT, TRIGGERS, evaluate, run, attestation, allPages };
+module.exports = { STATUS_CONTEXT, TRIGGERS, evaluate, run, attestation, allPages, sourcePushActors };

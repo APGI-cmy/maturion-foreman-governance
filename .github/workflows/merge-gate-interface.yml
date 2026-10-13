@@ -249,6 +249,10 @@ jobs:
   iaa-assurance-check:
     name: iaa/assurance-check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -260,6 +264,26 @@ jobs:
 
       - name: Test trusted decision metadata and adversarial bypass refusals
         run: node --test .github/scripts/tests/test-trusted-iaa-assurance.js
+
+      - name: Verify source push provenance with real read-only GitHub metadata
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { sourcePushActors } = require('./.github/scripts/trusted-iaa-assurance.js');
+            const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: context.payload.pull_request.number });
+            const [owner, repo] = pr.head.repo.full_name.split('/');
+            const commits = await github.paginate(github.rest.pulls.listCommits, { ...context.repo, pull_number: pr.number, per_page: 100 });
+            if (commits.length !== pr.commits || commits.length > 250) throw new Error('Incomplete live submission history');
+            const cache = {};
+            for (const commit of commits) {
+              const actors = await sourcePushActors({ github, repo: { owner, repo }, branch: pr.head.ref, sha: commit.sha, cache });
+              core.info(JSON.stringify({ live_source_commit: commit.sha, authenticated_push_actors: actors, empty_commit_without_source: actors.length === 0 }));
+            }
+            const { data: current } = await github.rest.pulls.get({ ...context.repo, pull_number: pr.number });
+            if (current.head.sha !== pr.head.sha) throw new Error('Source changed during live provenance check');
+            core.info(JSON.stringify({ live_provenance: 'PASS', checked_head: pr.head.sha, checked_commits: commits.length, normal_push_activity_ranges: cache.ranges?.size || 0 }));
+            // This read-only integration result is not an IAA verdict or trusted
+            // status publication. No protected credential or writer is present.
 
       - name: Determine if IAA is required
         id: iaa_required
