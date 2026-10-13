@@ -49,9 +49,7 @@ async function pushActivities(github, repo, branch) {
         SHA.test(item.after) && item.before !== '0'.repeat(40) && item.before !== item.after &&
         Number.isSafeInteger(item.pusher?.id) && item.pusher.id > 0 &&
         typeof item.pusher.login === 'string' && /^[A-Za-z0-9-]+(?:\[bot\])?$/.test(item.pusher.login),
-        'Invalid authenticated source push activity: ' + JSON.stringify({ id: item.id,
-          ref: item.ref, push_type: item.push_type, before: item.before, after: item.after,
-          pusher: { id: item.pusher?.id, login: item.pusher?.login } }));
+        'Invalid authenticated source push activity: ' + JSON.stringify(item).slice(0,4096));
       seen.add(item.id); items.push(item);
     }
     demand(items.length <= 250, 'Source push activity exceeds verified limit');
