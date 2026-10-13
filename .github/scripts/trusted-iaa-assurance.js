@@ -4,6 +4,7 @@ const { createHash } = require('node:crypto');
 const STATUS_CONTEXT = 'iaa/trusted-assurance-check';
 const SHA = /^[0-9a-f]{40}$/;
 const TOKEN_PATH = /^\.agent-admin\/assurance\/(?:iaa-wave-record-|assurance-token-|iaa-token-session-|iaa-assurance-token-)[A-Za-z0-9._-]+\.md$/;
+const IAA_RECORD = /^(?:\.agent-admin\/assurance\/(?:iaa-wave-record-|assurance-token-|iaa-token-session-|iaa-assurance-token-|rejection-package-)[A-Za-z0-9._-]+\.md|\.agent-workspace\/independent-assurance-agent\/memory\/(?:\.archive\/)?session-[A-Za-z0-9._-]+\.md)$/;
 const TRIGGERS = /^(?:\.github\/agents\/|governance\/agents\/|governance\/contracts\/|governance\/canon\/|governance\/quality\/agent-integrity\/|\.github\/workflows\/(?:merge-gate-interface|trusted-iaa-assurance)\.yml$|\.github\/scripts\/(?:check-iaa-required\.sh|trusted-iaa-assurance\.js)$)|-agent-contract\.md$/;
 
 function demand(condition, message) {
@@ -83,10 +84,22 @@ async function evaluate({ github, context, issuers = [] }) {
     const commits = await allPages(github.rest.pulls.listCommits, args, 250);
     demand(commits.length === pr.commits, 'Incomplete contributor history');
     const contributors = new Set([pr.user?.login?.toLowerCase()]);
+    demand(typeof pr.head.ref === 'string' && pr.head.ref, 'Missing source branch identity');
+    const [headOwner, headRepo] = pr.head.repo.full_name.split('/');
     for (const commit of commits) {
-      // Missing author identity cannot establish independence, so fail closed.
-      demand(commit.author?.login && commit.committer?.login, 'Unattributed submission commit');
-      const logins = [commit.author.login.toLowerCase(), commit.committer.login.toLowerCase()];
+      demand(SHA.test(commit.sha), 'Invalid submission commit identity');
+      // Git author/committer fields are self-asserted. Only GitHub's authenticated
+      // original actor of a push-triggered run is contributor provenance here.
+      // Rerun triggering_actor is deliberately not treated as the original pusher.
+      const runs = await allPages(async opts => {
+        const response = await github.rest.actions.listWorkflowRunsForRepo({ ...opts,
+          head_sha: commit.sha, event: 'push' });
+        return { data: response.data.workflow_runs };
+      }, { owner: headOwner, repo: headRepo }, 100);
+      const receipts = runs.filter(r => r.event === 'push' && r.head_sha === commit.sha &&
+        r.head_branch === pr.head.ref && r.repository?.full_name === pr.head.repo.full_name);
+      demand(receipts.length > 0 && receipts.every(r => r.actor?.login), 'Authenticated source push provenance unavailable');
+      const logins = [...new Set(receipts.map(r => r.actor.login.toLowerCase()))];
       let assuranceOnly = false;
       if (logins.some(login => issuers.includes(login))) {
         demand(SHA.test(commit.sha), 'Invalid assurance commit identity');
@@ -95,9 +108,8 @@ async function evaluate({ github, context, issuers = [] }) {
           demand(response.data.sha === commit.sha, 'Assurance commit identity mismatch');
           return { data: response.data.files };
         }, context.repo);
-        assuranceOnly = changes.length > 0 && changes.every(f =>
-          /^(?:\.agent-admin\/assurance\/|\.agent-workspace\/independent-assurance-agent\/)/.test(f.filename) &&
-          (!f.previous_filename || /^(?:\.agent-admin\/assurance\/|\.agent-workspace\/independent-assurance-agent\/)/.test(f.previous_filename)));
+        assuranceOnly = changes.length > 0 && changes.every(f => IAA_RECORD.test(f.filename) &&
+          (!f.previous_filename || IAA_RECORD.test(f.previous_filename)));
       }
       // IAA may publish its own canonical evidence. It must not author implementation.
       if (!assuranceOnly) for (const login of logins) contributors.add(login);

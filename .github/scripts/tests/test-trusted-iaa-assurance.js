@@ -8,9 +8,9 @@ const path = '.agent-admin/assurance/iaa-wave-record-fixture.md';
 const token = `ASSURANCE-TOKEN\nPR: #1420\nDate: 2026-10-13\nIAA Session: fixture-independent-session\nPR Tier: T4\nPhases Verified: 1-PASS, 4-PASS\nFFA Assessment: NOT-REQUIRED\nAgent Integrity: PASS\nIndependence: CONFIRMED\nVerdict: MERGE PERMITTED\n`;
 const digest = createHash('sha256').update(token).digest('hex');
 
-function fixture({ files, labels, reviewChange, fileChange, readChange, commits, assuranceFiles, tokenText = token } = {}) {
+function fixture({ files, labels, reviewChange, fileChange, readChange, commits, assuranceFiles, pushActor, noPushReceipt, tokenText = token } = {}) {
   const fileList = files || [{ filename: '.github/scripts/check-iaa-required.sh', status: 'removed' }];
-  const pr = { number: 1420, state: 'open', head: { sha: head, repo: { full_name: 'owner/repo' } },
+  const pr = { number: 1420, state: 'open', head: { sha: head, ref: 'feature', repo: { full_name: 'owner/repo' } },
     base: { sha: base, ref: 'main', repo: { full_name: 'owner/repo' } },
     user: { login: 'builder' }, labels: labels || [], changed_files: fileList.length, commits: commits?.length || 1 };
   const review = { id: 7, state: 'APPROVED', commit_id: head, user: { login: 'independent-iaa' },
@@ -18,7 +18,12 @@ function fixture({ files, labels, reviewChange, fileChange, readChange, commits,
   if (reviewChange) reviewChange(review);
   const statuses = [], calls = [];
   let reads = 0;
-  const github = { rest: { pulls: {
+  const github = { rest: { actions: {
+    listWorkflowRunsForRepo: async ({ head_sha }) => ({ data: { workflow_runs: noPushReceipt ? [] : [{
+      event: 'push', head_sha, head_branch: 'feature', repository: { full_name: 'owner/repo' },
+      actor: { login: pushActor || (head_sha === 'e'.repeat(40) ? 'independent-iaa' : 'builder') }
+    }] } })
+  }, pulls: {
     get: async () => { reads++; const p = structuredClone(pr); if (readChange) readChange(p, reads); return { data: p }; },
     listFiles: async ({ page }) => { calls.push('files:' + page); if (fileChange) return fileChange(fileList, page);
       return { data: fileList.slice((page - 1) * 100, page * 100) }; },
@@ -114,9 +119,17 @@ test('a trusted hash cannot make incomplete phase evidence valid', async () => {
   const f = fixture({ tokenText: text, reviewChange: r => { r.body = r.body.replace(digest, hash); } });
   await assert.rejects(evaluate(f), /phases are not PASS/);
 });
-test('unattributed source commits cannot establish independence', async () => {
-  const f = fixture({ commits: [{ author: null, committer: { login: 'builder' } }] });
-  await assert.rejects(evaluate(f), /Unattributed/);
+test('commit-author metadata does not supply contributor authentication', async () => {
+  const f = fixture({ commits: [{ sha: 'd'.repeat(40), author: null, committer: null }] });
+  assert.equal((await evaluate(f)).state, 'success');
+});
+test('forged commit-author attribution cannot hide an issuer push', async () => {
+  const f = fixture({ pushActor: 'independent-iaa',
+    assuranceFiles: [{ filename: '.github/scripts/trusted-iaa-assurance.js', status: 'modified' }] });
+  await assert.rejects(evaluate(f), /contributed/);
+});
+test('missing authenticated push provenance fails closed', async () => {
+  await assert.rejects(evaluate(fixture({ noPushReceipt: true })), /push provenance unavailable/);
 });
 test('head changes during metadata reads block', async () => {
   const f = fixture({ readChange: (pr, n) => { if (n >= 2) pr.head.sha = 'c'.repeat(40); } });
@@ -153,6 +166,11 @@ test('IAA can publish its canonical record without becoming an implementation au
 test('IAA authoring implementation along with its record violates independence', async () => {
   const f = fixture({ commits: [ { sha: 'e'.repeat(40), author: { login: 'independent-iaa' }, committer: { login: 'independent-iaa' } } ],
     assuranceFiles: [{ filename: path, status: 'added' }, { filename: '.github/scripts/trusted-iaa-assurance.js', status: 'modified' }] });
+  await assert.rejects(evaluate(f), /contributed/);
+});
+test('executable code inside the assurance directory is not an IAA record exception', async () => {
+  const f = fixture({ commits: [ { sha: 'e'.repeat(40) } ],
+    assuranceFiles: [{ filename: '.agent-admin/assurance/implementation.js', status: 'added' }] });
   await assert.rejects(evaluate(f), /contributed/);
 });
 test('privileged workflow is wired solely to protected-base code and events', () => {

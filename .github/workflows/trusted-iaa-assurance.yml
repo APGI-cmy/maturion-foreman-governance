@@ -10,6 +10,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  actions: read
 
 # A dedicated protected environment and expected GitHub App status source must be
 # installed by the repository administrator before this gate is operational.

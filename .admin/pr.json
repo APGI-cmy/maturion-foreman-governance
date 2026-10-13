@@ -5,7 +5,11 @@
   "owner": "APGI-cmy",
   "scope": [
     ".admin/pr.json",
+    ".agent-admin/evidence/pr-1420-provenance-correction-20261013.md",
     ".agent-admin/evidence/pr-1420-trusted-assurance-20261013.md",
+    ".agent-admin/prehandover/proof-1420-source-correction-20261013.md",
+    ".agent-admin/prs/pr-1420/wave-current-tasks.md",
+    ".agent-admin/scope-declarations/pr-1420.md",
     ".github/scripts/check-iaa-required.sh",
     ".github/scripts/tests/test-check-iaa-required.sh",
     ".github/scripts/tests/test-trusted-iaa-assurance.js",
