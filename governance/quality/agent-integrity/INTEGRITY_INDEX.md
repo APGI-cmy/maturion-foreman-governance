@@ -33,7 +33,7 @@ review remain pending. Its presence does not approve, register or activate it.
 
 | Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
 |---|---|---|---|---|
-| `cs2-controller-agent.md` | `.github/agents/cs2-controller-agent.md` | `44a00539e7161ac1357a1032266cda900c0c400f591415c008a4497ba7fab309` | 2026-10-13 | CodexAdvisor issue #1418 / child PR #1419 correction for parent PR #1415; human-CS2-authorized #1414 read, bootstrap-state, evidence-ownership and Integration-regression corrections; remains inactive/unassured with consumer use blocked pending #1380 then #1379 |
+| `cs2-controller-agent.md` | `.github/agents/cs2-controller-agent.md` | `ae859efbfd35a4dcc94062519f8cf85eb8bf6cf705ddc16a54b2cfbe58f8d202` | 2026-10-13 | CodexAdvisor issue #1418 / child PR #1419 correction for parent PR #1415; human-CS2-authorized #1414 read, bootstrap-state, evidence-ownership and Integration-regression corrections; #1414 continuation PB-07 / OVL-AC-001 exact AGCFPP-001 policy identifier/name correction; remains inactive/unassured with consumer use blocked pending #1380 then #1379 |
 
 Verify this proposed reference with
 `sha256sum .github/agents/cs2-controller-agent.md` and byte-compare it with

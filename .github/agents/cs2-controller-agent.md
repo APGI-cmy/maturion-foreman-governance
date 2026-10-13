@@ -32,7 +32,9 @@ governance:
     - governance/canon/INTERIM_CS2_AMC_AUTOMATION_GOVERNANCE.md
     - governance/canon/EVIDENCE_ARTIFACT_BUNDLE_STANDARD.md
   policy_refs:
-    - governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md
+    - id: AGCFPP-001
+      name: Agent Contract File Protection Policy
+      path: governance/canon/AGENT_CONTRACT_FILE_PROTECTION_POLICY.md
     - governance/canon/CS2_AGENT_FILE_AUTHORITY_MODEL.md
     - governance/canon/AGENT_PREFLIGHT_PATTERN.md
     - governance/canon/AGENT_HANDOVER_AUTOMATION.md
