@@ -212,3 +212,60 @@ The original PRE-BRIEF is immutable on publication; amendments must be dated,
 numbered append-only subsections of this same wave record.
 
 **IAA signature**: IAA-20261007-PREBRIEF-WAVEcs2-controller-builder-20261007
+
+### PRE-BRIEF AMENDMENT 01 — 2026-10-13
+
+**Producer**: independent-assurance-agent
+
+**Invocation/session**: IAA-20261013-PR1415-PREBRIEF-AMEND — prospective planning action only
+
+**Wave task list**: `.agent-admin/waves/wave-cs2-controller-builder-20261007-current-tasks.md`
+
+**Authority**: `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.3.0, §Pre-Brief Amendment and §Cross-Agent Interactions; CS2 routing instruction, issue #1414 comment 6151117538
+**Input**: PR #1415 head `a5fa1e2c4ea1fbbb7376ab1afa897981c0ec3059`; tasks 002 and 003 are present and remain `[ ]` / `PENDING`.
+
+#### Scope and supersession
+
+This amendment responds to the material prospective scope addition recorded in the task list and authorized for planning by CS2 comments 6150615330 and 6147907911. The original `## PRE-BRIEF`, its task-001 declaration, acceptance criteria, signature, and chronology are preserved unchanged. Its prior one-task description is superseded only for prospective wave coverage: future assurance planning now includes tasks 002 and 003 in addition to the original task-001 criteria. This amendment does not change any task status, certify completion, or convert historical evidence into current evidence.
+
+#### TASK-cs2-controller-builder-20261007-002 — class-matched creation-checklist prerequisite
+
+**Task summary**: Restore the class-matched execution-ceremony-admin-agent contract-creation checklist prerequisite using the approved three-path proposal.
+
+**Prospective assurance requirements**:
+
+1. Verify the published canonical checklist at `governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` is the approved 27-row class-matched creation checklist from proposal 6148570092, with actual source provenance and current applicable canon references. It must remain specific to the administrator/ECAP role; neither the governance-liaison checklist nor the operational ECAP handback checklist is a substitute.
+2. Verify the canonical checklist is published by the properly scoped governance-repo-administrator through the authorized Foreman route. Verify CodexAdvisor does not acquire canonical checklist-writing authority.
+3. Verify CodexAdvisor's only associated Tier 2 updates are the approved additions to `.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md` and `.agent-workspace/CodexAdvisor-agent/knowledge/index.md`; existing entries are preserved, actual versions/history are updated consistently, and the index points to the published checklist/version. Apply `KNOWLEDGE_GOVERNANCE` checks to the Tier 2 files; classify the complete later PR from its actual diff.
+4. Require the responsible owners' actual source-bound phase evidence and validation of row coverage, path/version references, registry/index consistency, scope and provenance. Approval to prepare these sources is not their publication, QP acceptance, or final IAA.
+5. Limit this prerequisite task to the three approved paths and directly required truthful records. No unrelated canon, inventory, protected contract, new authority, role substitution, or extra path is authorized by this amendment.
+
+**Required later evidence**: committed canonical checklist and both committed Tier 2 files; owner-specific source/validation evidence; truthful scope and version-history/index reconciliation; Foreman review/QP as applicable. IAA will assess, not author, those source-owner proofs.
+
+#### TASK-cs2-controller-builder-20261007-003 — bounded ECAP role bundle after prerequisite
+
+**Task summary**: Resume the bounded eight-path ECAP role task only after the class-matched prerequisite is actually published and validated.
+
+**Prospective assurance requirements**:
+
+1. Do not start or accept the ECAP bundle until task 002's canonical checklist and both Tier 2 registrations are actually published, validated, and available as source inputs. The approvals authorize scoped work; they are not evidence that the prerequisite is complete or that the role is accepted.
+2. Verify the eventual bundle remains limited to the eight approved normative paths:
+   - `.github/agents/execution-ceremony-admin-agent.md`
+   - `.agent-workspace/execution-ceremony-admin-agent/knowledge/index.md`
+   - `.agent-workspace/execution-ceremony-admin-agent/knowledge/bundle-checklist.md`
+   - `.agent-workspace/execution-ceremony-admin-agent/knowledge/boundary-decision-rules.md`
+   - `.agent-workspace/execution-ceremony-admin-agent/knowledge/handoff-examples.md`
+   - `.agent-workspace/execution-ceremony-admin-agent/knowledge/foreman-ecap-appointment-template.md`
+   - `governance/quality/agent-integrity/execution-ceremony-admin-agent.md`
+   - `governance/quality/agent-integrity/INTEGRITY_INDEX.md`
+3. Verify the actual contract and Tier 2 content against the approved class-matched checklist, the existing eight-path approval, and ECAP-001. The role remains ceremony-administration-only under actual Foreman appointment and oversight; it must not gain builder, Foreman, IAA, governance-liaison/CANON-writer, or human-CS2 authority. The IAA retains independent final assurance and verdict/token authority.
+4. At the later handover, assess applicable `AGENT_CONTRACT`, `AGENT_INTEGRITY`, and `KNOWLEDGE_GOVERNANCE` requirements and overlays from the actual complete diff, including contract structure, required knowledge/version/index consistency, authorized write scope, byte-identical integrity reference and matching index hash, preserved existing baselines, and truthful phase/gate evidence. Original task-001 requirements remain applicable to their own deliverables; they do not substitute for these task-003 checks.
+5. Keep all work bounded to the approved bundle and required truthful evidence. No product/controller implementation, activation, dispatch, merge, deployment, reset, spend action, consumer layer-down, or unrelated scope is authorized.
+
+**Required later evidence**: actual publication and validation of task 002; actual task appointment and owner acceptance; committed eight-path source bundle and integrity/hash verification; owner-authored phase evidence and Foreman QP; a new source-bound handover that references this wave record and amendment. These are future requirements, not evidence created or assessed by this planning amendment.
+
+#### Continuing gate and verdict boundary
+
+Tasks 002 and 003 remain pending. The final-assurance Wave Checklist Invocation Gate, all prior rejection remediations and acknowledgement requirements, QP, final phase proofs, parity checks, and independent final IAA remain mandatory at their later stages. This amendment is an assurance-planning artifact only: it is not implementation, general governance/canon authoring, checklist or ECAP source authoring, submitting-agent evidence, a QP result, a final review, a partial verdict, an `ASSURANCE-TOKEN`, or a `REJECTION-PACKAGE`. The existing rejection remains operative.
+
+**IAA signature**: IAA-20261013-PR1415-PREBRIEF-AMEND
