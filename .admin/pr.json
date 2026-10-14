@@ -17,6 +17,7 @@
     ".agent-admin/quality-professor/qp-verdict-1415-r1-20261008.md",
     ".agent-admin/quality-professor/qp-verdict-1415-r2-20261013.md",
     ".agent-admin/quality-professor/qp-verdict-1415-r3-20261013.md",
+    ".agent-admin/quality-professor/qp-verdict-1415-task004-20261014.md",
     ".agent-admin/scope-declarations/pr-1415.md",
     ".agent-admin/waves/wave-cs2-controller-builder-20261007-current-tasks.md",
     ".agent-admin/waves/wave-cs2-controller-builder-20261007-qpevaluation-addendum-20261013.md",
@@ -55,8 +56,10 @@
     ".agent-workspace/independent-assurance-agent/memory/session-046-20261007.md",
     ".agent-workspace/independent-assurance-agent/memory/session-047-20261014.md",
     ".github/agents/cs2-controller-agent.md",
+    ".github/agents/governance-repo-administrator-v2.agent.md",
     "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
-    "governance/quality/agent-integrity/cs2-controller-agent.md"
+    "governance/quality/agent-integrity/cs2-controller-agent.md",
+    "governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md"
   ],
   "risk": "high",
   "requires_iaa": true,
