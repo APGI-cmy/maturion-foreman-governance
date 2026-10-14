@@ -1,13 +1,13 @@
 ---
 name: governance-repo-administrator-v2
 id: governance-repo-administrator-v2
-description: "Governance repository administrator with ripple enforcement, inventory integrity, and gate stewardship (Living Agent System v6.2.0 contract v2.0.0)."
+description: "Governance repository administrator with ripple enforcement, inventory integrity, and gate stewardship (Living Agent System v6.2.0 contract v2.0.1)."
 
 agent:
   id: governance-repo-administrator-v2
   class: administrator
   version: 6.2.0
-  contract_version: 2.0.0
+  contract_version: 2.0.1
   contract_pattern: four_phase_canonical
   model: claude-sonnet-4-5
 
@@ -174,11 +174,11 @@ metadata:
   canonical_home: APGI-cmy/maturion-foreman-governance
   this_copy: canonical
   authority: CS2
-  last_updated: 2026-02-27
+  last_updated: 2026-10-13
   tier2_knowledge: .agent-workspace/governance-repo-administrator/knowledge/index.md
 ---
 
-# Governance Repository Administrator — Four-Phase Canonical Contract v2.0.0
+# Governance Repository Administrator — Four-Phase Canonical Contract v2.0.1
 
 > **[GA_H] BOOTSTRAP DIRECTIVE — ABSOLUTE FIRST ACTION — NO EXCEPTIONS**
 > The first file you read in any session is THIS file — `.github/agents/governance-repo-administrator-v2.agent.md`.
@@ -324,14 +324,15 @@ See `governance/canon/AGENT_INDUCTION_PROTOCOL.md` for full template.
 ```bash
 # GA_H: Verify CANON_INVENTORY integrity (CRITICAL)
 echo "[GA_H] Verifying CANON_INVENTORY integrity..."
-if ! jq -e '.constitutional_canon' governance/CANON_INVENTORY.json > /dev/null 2>&1; then
+if ! jq -e 'type == "object" and (.canons | type == "array" and length > 0) and (.total_canons | type == "number") and (.total_canons == (.canons | length))' governance/CANON_INVENTORY.json > /dev/null 2>&1 ||
+   ! bash .github/scripts/validate-canon-hashes.sh governance/CANON_INVENTORY.json; then
   echo "❌ [GA_H] CANON_INVENTORY missing or invalid - DEGRADED MODE"
   exit 1
 fi
 
 # GA_H: Check for placeholder hashes (degraded alignment)
 echo "[GA_H] Checking for placeholder PUBLIC_API hashes..."
-PLACEHOLDER_COUNT=$(jq '(.constitutional_canon // []) | [.[] | .public_api_hash? | select(. == "placeholder" or . == "TBD" or (type == "string" and length < 64))] | length' governance/CANON_INVENTORY.json)
+PLACEHOLDER_COUNT=$(jq '[.canons[] | select(.layer_down_status == "PUBLIC_API") | .file_hash | select(if type == "string" then (test("^[0-9a-f]{64}$") | not) else true end)] | length' governance/CANON_INVENTORY.json)
 if [ "${PLACEHOLDER_COUNT}" -gt 0 ]; then
   echo "⚠️  [GA_H] ${PLACEHOLDER_COUNT} placeholder hashes detected - DEGRADED ALIGNMENT"
   echo "ACTION: Failing alignment gate and escalating to CS2..."
@@ -512,7 +513,8 @@ echo "✅ [GA_H] Agent is cleared to open the PR"
 COMPLIANCE_ISSUES=()
 
 # Check 1: CANON_INVENTORY integrity
-if ! jq -e '.constitutional_canon' governance/CANON_INVENTORY.json > /dev/null 2>&1; then
+if ! jq -e 'type == "object" and (.canons | type == "array" and length > 0) and (.total_canons | type == "number") and (.total_canons == (.canons | length))' governance/CANON_INVENTORY.json > /dev/null 2>&1 ||
+   ! bash .github/scripts/validate-canon-hashes.sh governance/CANON_INVENTORY.json; then
   COMPLIANCE_ISSUES+=("CANON_INVENTORY integrity check failed")
 fi
 
@@ -609,4 +611,4 @@ task(agent_type: "independent-assurance-agent")
 
 **Tier 2 Knowledge Reference**: `.agent-workspace/governance-repo-administrator/knowledge/index.md`
 
-Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Contract v2.0.0 | Approved by CS2 (Johan Ras) | File: .github/agents/governance-repo-administrator-v2.agent.md
+Authority: LIVING_AGENT_SYSTEM.md v6.2.0 | Contract v2.0.1 | Approved by CS2 (Johan Ras) | File: .github/agents/governance-repo-administrator-v2.agent.md

@@ -68,3 +68,14 @@ When a CS2-approved agent contract update is merged:
 ---
 
 *Authority: CS2 (Johan Ras) | Governed by: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0*
+
+### Proposed governance-administrator contract correction — PR #1415
+
+This candidate row records the actual CodexAdvisor-authored source bytes under
+the bounded repair approved in issue #1414 comments 6152016944 and 6153552301.
+It is pending independent assurance and human-CS2 merge; it does not replace the
+installed baseline row above.
+
+| Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
+|---|---|---|---|---|
+| `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `777db4a93b430f45c83d7291d55ca5e72123fd948c529312ce7417429205009d` | 2026-10-13 | CodexAdvisor issue #1414, bounded inventory-schema repair; source QA and human merge pending |
