@@ -7,7 +7,7 @@ CodexAdvisor MUST read all Tier 2 documents during session preflight.
 | File | Purpose | Version |
 |------|---------|---------|
 | `FAIL-ONLY-ONCE.md` | Permanent breach prevention registry — CodexAdvisor self-attests at every session preflight | 1.0.0 |
-| `checklist-registry.md` | Maps job types to canonical checklist files; IAA trigger classification table | 1.0.0 |
+| `checklist-registry.md` | Maps job types to canonical checklist files; IAA trigger classification table | 1.2.0 |
 | `agent-creation-template.md` | YAML frontmatter structure, RAEC model reference, mandatory structural rules for drafting agent contracts | 1.0.0 |
 | `requirement-mapping.md` | Maps all 56 LAS v6.2.0 requirements + 5 validation hooks to contract locations | 1.0.0 |
 | `session-memory-template.md` | Templates for session memory files and PREHANDOVER proof artifacts | 1.0.0 |
@@ -16,8 +16,8 @@ CodexAdvisor MUST read all Tier 2 documents during session preflight.
 
 ## Knowledge Version
 
-**Index Version**: 1.3.0
-**Last Updated**: 2026-09-04
+**Index Version**: 1.4.0
+**Last Updated**: 2026-10-14
 **Compatible With**: CodexAdvisor-agent contract v3.4.0+, LAS v6.2.0
 
 ## IAA Trigger Classification
@@ -37,6 +37,7 @@ All Tier 2 files reference the following canonical sources (do not embed — ref
 - `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`
 - `governance/canon/IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0
 - `governance/checklists/CODEX_ADVISOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`
+- `governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` v1.0.0
 - `governance/CANON_INVENTORY.json`
 
 ---
@@ -49,3 +50,4 @@ All Tier 2 files reference the following canonical sources (do not embed — ref
 | 1.1.0 | 2026-02-26 | Minor — compatible with contract v3.2.0 |
 | 1.2.0 | 2026-03-21 | Added `IAA_PRE_BRIEF_PROTOCOL.md` v1.1.0 to Tier 3 Canon References; updated checklist-registry.md version to 1.1.0; compatible with contract v3.4.0+ |
 | 1.3.0 | 2026-09-04 | Added the required runtime-specialist bundle method for governed controller bundle work. |
+| 1.4.0 | 2026-10-14 | Indexed the published execution-ceremony administrator creation checklist and updated checklist-registry.md to 1.2.0. |
