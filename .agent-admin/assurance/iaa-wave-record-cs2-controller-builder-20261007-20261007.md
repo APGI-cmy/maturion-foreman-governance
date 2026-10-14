@@ -383,3 +383,83 @@ All later phase proofs, applicable gates, independent assurance, and CS2 merge
 authority remain in force.
 
 **IAA signature**: IAA-20261014-PREBRIEF-WAVEcs2-controller-builder-20261007-AMEND-02
+
+### PRE-BRIEF AMENDMENT 03 — 2026-10-14
+
+**Producer**: independent-assurance-agent
+
+**Invocation**: PRE-BRIEF-AMEND only; authorized continuation under CS2 PR #1415
+comment 6169605840. IAA session record: session-049-20261014. This is not a
+final-assurance session or token.
+
+**Wave task list**: `.agent-admin/waves/wave-cs2-controller-builder-20261007-current-tasks.md`
+
+**Authority and input**: Foreman's prospective TASK-003 scope amendment is present
+at input HEAD `9a41d61cedf4beaf33c2d1b6aa5ac107ef159ef8`. CS2 issue #1414 comment
+6169263994, responding to proposal 6164313664, approves exactly one additional
+normative path for the existing TASK-cs2-controller-builder-20261007-003. The
+original eight-path approval remains in force; CodexAdvisor-agent remains the
+approved source owner. CS2 PR #1415 comment 6169605840 confirms the IAA's existing
+own-workspace/assurance write scope for required memory rotation and this carrier
+amendment; it does not authorize edits to previous evidence, other roles' workspaces,
+contracts, CANON, or Tier 2 IAA policy.
+
+#### Scope and supersession
+
+This amendment prospectively extends TASK-003's already-approved eight-path ECAP
+role bundle by the one approved ninth path below. The eight original paths and
+their requirements in Amendment 01 remain active and unchanged. This amendment
+does not revise the original `## PRE-BRIEF`, Amendments 01/02, the session-047
+preflight-halt record, any prior rejection, or any prior source/QP status.
+
+The approved TASK-003 normative bundle is exactly:
+
+1. `.github/agents/execution-ceremony-admin-agent.md`
+2. `.agent-workspace/execution-ceremony-admin-agent/knowledge/index.md`
+3. `.agent-workspace/execution-ceremony-admin-agent/knowledge/bundle-checklist.md`
+4. `.agent-workspace/execution-ceremony-admin-agent/knowledge/boundary-decision-rules.md`
+5. `.agent-workspace/execution-ceremony-admin-agent/knowledge/handoff-examples.md`
+6. `.agent-workspace/execution-ceremony-admin-agent/knowledge/foreman-ecap-appointment-template.md`
+7. `governance/quality/agent-integrity/execution-ceremony-admin-agent.md`
+8. `governance/quality/agent-integrity/INTEGRITY_INDEX.md`
+9. `.agent-workspace/execution-ceremony-admin-agent/knowledge/FAIL-ONLY-ONCE.md`
+
+#### Additional prospective requirements for the ninth path
+
+At later source review, IAA will verify that:
+
+1. The actual CodexAdvisor-authored registry is published at the exact ninth path
+   above, is included in the nine-path source scope, and is not substituted by the
+   proposal payload, a template, or another agent's registry.
+2. The registry is substantive and consistent with the approved proposal and the
+   applicable `UNIVERSAL_FAIL_ONLY_ONCE_POLICY.md`, ECAP role contract, and Tier 2
+   index. Verify its required Sections A/B/C, universal seed rules, conditional
+   rule IDs/triggers, breach-log structure, actual publication metadata and
+   chronology. No ECAP operating incident, prior compliance, appointment, or
+   acceptance may be fabricated.
+3. The already-approved contract/index/integrity paths contain the corresponding
+   registry pointer and Phase 1 full-read/attestation requirement, with consistent
+   file/version references and no additional normative path or authority grant.
+   The role remains ceremony-administration-only under Foreman appointment and
+   oversight; no protected-contract, CANON, controller/product, IAA, or other
+   role-workspace write authority is implied.
+4. The complete later source is assessed against the approved nine-path scope,
+   applicable class checklist, full 27-row/class and S1–S11 coverage, full-history
+   canon validation, strict YAML/metadata and size limits, four-phase contract,
+   admin-only own-workspace boundaries, exact reference copy/hash and target
+   integrity provenance. These are future source checks, not results of this
+   planning amendment.
+
+#### Continuing sequence and verdict boundary
+
+TASK-003 remains `[ ]` / `PENDING`; no source authoring, task acceptance, QP,
+administrative acceptance, task tick, final assurance, merge, activation, dispatch,
+or layer-down is performed or implied here. The source authoring and affected-source
+Foreman QP occur only after this planning input and actual source publication.
+The later human administrative review and mandatory independent final IAA remain
+separate required stages. The final-assurance checklist gate and prior
+REJECTION-PACKAGE remediations/acknowledgement remain unresolved and operative;
+this amendment does not clear the prior session-048 Phase 1 Step 1.5 halt or claim
+that it was cleared.
+
+**IAA signature**: IAA-20261014-PR1415-PREBRIEF-AMEND-03
