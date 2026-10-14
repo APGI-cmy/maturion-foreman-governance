@@ -109,3 +109,10 @@ current status/scope, task-line and builder-field schema, latest-report pointer
 and parent mapping here. Historical task 001, existing proof/rejection and IAA
 carrier bytes are preserved. This correction is not a QP, administrative
 acceptance, IAA authority amendment, token or readiness result.
+
+## New planning entry — 2026-10-14
+
+- [ ] TASK-cs2-controller-builder-20261007-004 — Publish and validate the CS2-approved bounded governance-administrator inventory-check/protected-contract correction as the prerequisite to TASK-cs2-controller-builder-20261007-002's obsolete inventory checks.
+      builder: TBD
+      qp_verdict: PENDING
+      notes: AUTHORITY — #1414 comment 6153552301 approves exact proposal 6152016944. This gates, but does not alter, TASK-002: only after actual corrected-source publication and full canonical validation may the same governance-repo-administrator evaluate the two obsolete constitutional_canon predicates for TASK-002 only. IAA PRE-BRIEF AMENDMENT 01 is the actual append-only section in `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md`, published at `bcce2a140aa8a2da629ec8635d80296debdefdff`. Prospective PRE-BRIEF AMENDMENT 02 for this protected-source scope is REQUIRED/PENDING; IAA must author it in the same wave record before task execution. No source execution, appointment, QP, or tick is implied.
