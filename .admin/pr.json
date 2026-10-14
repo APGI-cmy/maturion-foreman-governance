@@ -57,6 +57,7 @@
     ".agent-workspace/independent-assurance-agent/memory/session-047-20261014.md",
     ".github/agents/cs2-controller-agent.md",
     ".github/agents/governance-repo-administrator-v2.agent.md",
+    "governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md",
     "governance/quality/agent-integrity/INTEGRITY_INDEX.md",
     "governance/quality/agent-integrity/cs2-controller-agent.md",
     "governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md"
