@@ -6,7 +6,7 @@
 **Authorization**: CS2 issue #1414 and explicit Foreman remediation instruction for PR #1415.
 **Status**: IN_PROGRESS — task 001 retains its historical task-level QP tick; TASK-002 and TASK-004 have scoped task-level QP PASS records; TASK-003 remains PENDING. Final handover remains BLOCKED pending remaining source, actual human administrative acceptance and independent assurance.
 **Scope**: Inactive controller contract authoring, the approved class-checklist prerequisite, its approved bounded inventory-check prerequisite and conditional ECAP role authoring. No controller implementation, activation, registration, live operations or consumer layer-down.
-**IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendments 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff` and 02 at `e5beab616d2fd7e2e168bd015a13482582b98658` retained. Amendment 02 records tasks 002–004 as PENDING at its planning input; current task 004 has a scoped source-QP PASS, while tasks 002/003 remain PENDING. No final verdict/token is asserted.
+**IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendments 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff` and 02 at `e5beab616d2fd7e2e168bd015a13482582b98658` retained. Amendment 02 records tasks 002–004 as PENDING at its planning input; current TASK-002 and TASK-004 have scoped QP PASS records, while TASK-003 remains PENDING. No final verdict/token is asserted.
 **Parent Job**: `job-CS2-AUTOMATION-W1-W2-20261008`
 **Parent Alias**: `CS2-AUTOMATION-W1-W2-20261008` — the same parent and shared counters; no reset or new job.
 
