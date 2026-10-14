@@ -269,3 +269,117 @@ This amendment responds to the material prospective scope addition recorded in t
 Tasks 002 and 003 remain pending. The final-assurance Wave Checklist Invocation Gate, all prior rejection remediations and acknowledgement requirements, QP, final phase proofs, parity checks, and independent final IAA remain mandatory at their later stages. This amendment is an assurance-planning artifact only: it is not implementation, general governance/canon authoring, checklist or ECAP source authoring, submitting-agent evidence, a QP result, a final review, a partial verdict, an `ASSURANCE-TOKEN`, or a `REJECTION-PACKAGE`. The existing rejection remains operative.
 
 **IAA signature**: IAA-20261013-PR1415-PREBRIEF-AMEND
+
+### PRE-BRIEF AMENDMENT 02 — 2026-10-14
+
+**Producer**: independent-assurance-agent
+
+**Invocation**: PRE-BRIEF-AMEND, continued in the same IAA instance under CS2 direction
+in PR #1415 comment 6162130930. This is not a final-assurance session or token.
+
+**Wave task list**: `.agent-admin/waves/wave-cs2-controller-builder-20261007-current-tasks.md`
+
+**Authority and input**: TASK-cs2-controller-builder-20261007-004 is present as
+`[ ]` / `PENDING` at input HEAD
+`73d10179e25d86ed72ca3ce6d2d0a3802a35d479`. Its exact bounded proposal is issue
+#1414 comment 6152016944, expressly approved by CS2 comment 6153552301. The current
+task list and wave record are the source-bound planning inputs. The approval permits
+only the scope and sequence below.
+
+#### Scope and supersession
+
+This amendment adds prospective assurance planning for TASK-004 as the protected-source
+prerequisite to the obsolete inventory checks in TASK-002. It does not rewrite the
+original `## PRE-BRIEF` or Amendment 01, which remain unchanged and operative for their
+declared requirements. It does not change TASK-002 or TASK-003, their status, prior
+evidence, acceptance criteria, task ownership, or approval. Tasks 002, 003, and 004
+remain separate pending checklist tasks; no task is accepted, ticked, QP-approved, or
+completed by this amendment.
+
+#### TASK-cs2-controller-builder-20261007-004 — bounded inventory-check repair
+
+**Task summary**: Publish and validate the CS2-approved correction to the governance
+administrator's two obsolete CANON_INVENTORY checks, coupled atomically to its
+byte-identical integrity reference and the exact target index row/provenance.
+
+**Approved paths — exactly three**:
+
+1. `.github/agents/governance-repo-administrator-v2.agent.md`
+2. `governance/quality/agent-integrity/governance-repo-administrator-v2.agent.md`
+   — must remain byte-identical to the canonical contract.
+3. `governance/quality/agent-integrity/INTEGRITY_INDEX.md` — only the
+   governance-administrator target row and directly associated proposal provenance
+   may change; preserve every other baseline and row.
+
+**Prospective assurance requirements**:
+
+1. Verify the author applies only the approved v2.0.1 repair to the two obsolete
+   `.constitutional_canon` presence predicates in the administrator contract. The
+   approved guard must validate an object with a nonempty `.canons` array, numeric
+   `.total_canons` equal to the array length, and then invoke the existing,
+   unchanged `.github/scripts/validate-canon-hashes.sh` against
+   `governance/CANON_INVENTORY.json`. A missing, empty, malformed, mismatched, or
+   degraded inventory must fail closed; this is not permission to weaken or replace
+   the canonical validator.
+2. Verify the PUBLIC_API placeholder check uses the actual inventory schema:
+   `.canons[]`, `.layer_down_status == "PUBLIC_API"`, and `.file_hash`. Non-string or
+   non-64-hex values must be treated as invalid. The full canonical validator remains
+   responsible for its existing full-hash and provenance checks, including
+   `file_hash_sha256`; do not substitute one field for the other.
+3. Verify `contract_version` and the associated description, title, and footer
+   identify v2.0.1, while `agent.version: 6.2.0` remains unchanged. The approved
+   metadata sets `last_updated: 2026-10-13`; any proposed deviation from that
+   approved date or version metadata requires renewed CS2 disposition. The IAA
+   will not silently alter the approved change.
+4. Verify the reference copy is byte-identical to the corrected canonical contract.
+   Verify the exact governance-administrator target row and proposed hash/provenance
+   in `INTEGRITY_INDEX.md`, including the proposal's candidate SHA256
+   `777db4a93b430f45c83d7291d55ca5e72123fd948c529312ce7417429205009d`. Recompute
+   from the actual corrected bytes; the candidate remains proposed and the installed
+   baseline remains `55b87adf5794ceba832051caa3113fb01de0ea6ad8e21f8e4d12368ee585b961`
+   until the required independent assurance and human-CS2 merge. All other approved
+   baselines must be preserved.
+5. Require source-bound evidence of the exact three-path diff, strict contract
+   validation, both corrected guard paths, the unchanged full canonical validator,
+   its real command/output/exit status, reference byte comparison and SHA256, and
+   index-row/provenance coherence. The proposal's reported fixture results are
+   planning context only; they are not execution evidence or a PASS for the later
+   source.
+
+**Unchanged-source boundary**: At this amendment's input HEAD, the canonical
+`governance/CANON_INVENTORY.json` and `.github/scripts/validate-canon-hashes.sh`
+have no diff from the comparison base. They are not among the three approved paths
+and must remain unchanged. No other contract, validator, inventory, canon, checklist,
+or baseline row is authorized by this task.
+
+#### Restricted TASK-002 sequencing
+
+Only after the corrected three-path source is actually published and its full
+canonical validation has succeeded may the same existing governance-repo-administrator
+evaluate the two corrected inventory checks for TASK-002 only, before the later
+human-CS2 main merge, as expressly approved in comment 6153552301. This narrow
+task-specific order does not install or activate a new default-branch profile, modify
+the administrator's contract at runtime, replace any other gate, waive a genuine
+inventory failure, or authorize use for any unrelated task or job. Any actual
+missing, malformed, inconsistent, or degraded inventory still halts.
+
+TASK-004 does not perform TASK-002, publish its checklist, appoint an owner, or
+create QP evidence. TASK-002 remains subject to its own authorized checklist and
+validation requirements. TASK-003 remains separately pending and cannot resume
+before its own prerequisite conditions are actually satisfied.
+
+#### Continuing gates and verdict boundary
+
+The author owns the approved source repair and its source-coupled validation; the IAA
+does not edit or repair any protected contract, integrity reference, inventory, or
+validator. The original PRE-BRIEF, Amendment 01, TASK-001 history, and existing
+REJECTION-PACKAGE remain preserved and operative. Rejection delivery/acknowledgement
+and all prior remediation remain required before a later assurance resubmission.
+
+This is prospective assurance planning only. It is not a QP result, task acceptance,
+source validation, final assurance, partial verdict, `ASSURANCE-TOKEN`,
+`REJECTION-PACKAGE`, merge permission, contract activation, or consumer layer-down.
+All later phase proofs, applicable gates, independent assurance, and CS2 merge
+authority remain in force.
+
+**IAA signature**: IAA-20261014-PREBRIEF-WAVEcs2-controller-builder-20261007-AMEND-02
