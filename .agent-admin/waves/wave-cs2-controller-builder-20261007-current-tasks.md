@@ -4,7 +4,7 @@
 **Foreman**: foreman-v2
 **Date**: 2026-10-07
 **Authorization**: CS2 issue #1414 and explicit Foreman remediation instruction for PR #1415.
-**Status**: IN_PROGRESS — task 001 retains its historical task-level QP tick; TASK-004 has a scoped source-QP PASS; tasks 002 and 003 remain PENDING. Final handover remains BLOCKED pending actual source, administration and independent assurance.
+**Status**: IN_PROGRESS — task 001 retains its historical task-level QP tick; TASK-002 and TASK-004 have scoped task-level QP PASS records; TASK-003 remains PENDING. Final handover remains BLOCKED pending remaining source, actual human administrative acceptance and independent assurance.
 **Scope**: Inactive controller contract authoring, the approved class-checklist prerequisite, its approved bounded inventory-check prerequisite and conditional ECAP role authoring. No controller implementation, activation, registration, live operations or consumer layer-down.
 **IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendments 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff` and 02 at `e5beab616d2fd7e2e168bd015a13482582b98658` retained. Amendment 02 records tasks 002–004 as PENDING at its planning input; current task 004 has a scoped source-QP PASS, while tasks 002/003 remain PENDING. No final verdict/token is asserted.
 **Parent Job**: `job-CS2-AUTOMATION-W1-W2-20261008`
@@ -69,15 +69,13 @@ task/source. The latest committed QP report is the immutable STOP_AND_FIX in
 return 6146205846 reconciles its Draft/stale-check predicates without asserting
 a new overall QP PASS. Neither that report nor the earlier r2 record is rewritten.
 
-- [ ] TASK-cs2-controller-builder-20261007-002 — Restore the class-matched execution-ceremony-admin-agent contract-creation checklist prerequisite using the approved three-path proposal.
-      builder: TBD
-      qp_verdict: PENDING
-      notes: AUTHORITY — #1414 comment 6150615330 approves exact proposal 6148570092. Proper source owners are governance-repo-administrator for the canonical checklist and CodexAdvisor-agent for its own Tier 2 registry/index. Their actual scoped appointments and source execution remain pending; this field does not invent either.
-      Proposed paths: `governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`,
+- [x] TASK-cs2-controller-builder-20261007-002 — Restore the class-matched execution-ceremony-admin-agent contract-creation checklist prerequisite using the approved three-path proposal.
+      builder: CodexAdvisor-agent
+      qp_verdict: PASS
+      notes: AUTHORITY — #1414 comments 6148570092/6150615330 approve the exact class-matched checklist prerequisite; comment 6153552301 authorizes the original governance-repo-administrator to evaluate the corrected inventory guard/validator for TASK-002 only. Foreman task-level QP PASS against source HEAD `fa076c3cc0c0cbbbaf9478de3923b2b37c1c88ff`; report `.agent-admin/quality-professor/qp-verdict-1415-task002-20261014.md` preserves the actual Admin result verbatim. The prior unsupported assertion of a durable Admin report was not used.
+      Verified paths: `governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md`,
       `.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md`, and
-      `.agent-workspace/CodexAdvisor-agent/knowledge/index.md`. Source publication
-      and validation remain PENDING. The existing IAA wave record is unchanged;
-      its prospective amendment is pending after this real planning input.
+      `.agent-workspace/CodexAdvisor-agent/knowledge/index.md`; checklist commit `32b4e7fd2591e8cf62ca434df8342e7bab57a514`, registry/index commit `419650b543603949913d3f705737f27fc189f622`. TASK-003 remains pending and TASK-004 remains separate. This task-QP tick is not administrative acceptance, final IAA/token, overall PR QP, merge readiness, activation, or layer-down.
 
 - [ ] TASK-cs2-controller-builder-20261007-003 — Resume the bounded eight-path ECAP role task only after the class-matched prerequisite is actually published and validated.
       builder: TBD
@@ -127,11 +125,16 @@ scope declaration couples that actual publication into its verified 57-path
 manifest; the current source HEAD is
 `de4525ee5bf2a6151e86ccd51f4646fe24505dea`.
 
-The administrator's actual report records evaluation of the corrected
-inventory checks for TASK-cs2-controller-builder-20261007-002 only, as narrowly
-authorized by #1414 comment 6153552301. This is limited prerequisite progress,
-not TASK-002 completion, QP, administrative acceptance, or final assurance.
-CodexAdvisor-agent's approved registry/index updates remain pending. TASK-002
-remains unchecked with `builder: TBD` and `qp_verdict: PENDING`; TASK-003 remains
-pending. TASK-004 retains its separate scoped source-QP PASS. No final IAA,
-token, overall QP, or merge readiness is asserted.
+Correction: the earlier statement that a durable administrator report recorded
+the TASK-002 inventory evaluation was unsupported. An actual administrator
+follow-up confirmed that no recoverable prior evaluation record/report existed;
+that assertion is not used as evidence. The original administrator subsequently
+performed the authorized current-source TASK-002-only evaluation in session
+`20261014-074349`. Its complete response is preserved verbatim and source-bound
+in `.agent-admin/quality-professor/qp-verdict-1415-task002-20261014.md`.
+
+Foreman completed TASK-002-only QP PASS against that Admin result and the
+approved checklist/registry/index source commits. The tick above records only
+this scoped task-QP result. TASK-003 remains pending; TASK-004 retains its
+separate scoped source-QP PASS. No administrative acceptance, final IAA/token,
+overall PR QP, or merge readiness is asserted.
