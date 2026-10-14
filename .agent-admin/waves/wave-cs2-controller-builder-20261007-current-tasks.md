@@ -4,7 +4,7 @@
 **Foreman**: foreman-v2
 **Date**: 2026-10-07
 **Authorization**: CS2 issue #1414 and explicit Foreman remediation instruction for PR #1415.
-**Status**: IN_PROGRESS — task 001 retains its historical task-level QP tick; TASK-002 and TASK-004 have scoped task-level QP PASS records; TASK-003 has a bounded affected-source QP PASS but remains unticked/PENDING. Final handover remains BLOCKED pending later human administrative acceptance, final independent assurance, and handover parity.
+**Status**: IN_PROGRESS — task 001 retains its historical task-level QP tick; TASK-002 and TASK-004 have scoped task-level QP PASS records; TASK-003 has the published bounded affected-source QP PASS and a partial delivery marker; later ceremony/assurance remains incomplete. Final handover remains BLOCKED pending later human administrative acceptance, final independent assurance, and handover parity.
 **Scope**: Inactive controller contract authoring, the approved class-checklist prerequisite, its approved bounded inventory-check prerequisite and conditional ECAP role authoring. No controller implementation, activation, registration, live operations or consumer layer-down.
 **IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendments 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff`, 02 at `e5beab616d2fd7e2e168bd015a13482582b98658`, and 03 at `9a5372fe70d6825e74b1b078a0b461df7ea0073b` retained. Historical planning statuses remain preserved; current TASK-002 and TASK-004 have scoped QP PASS records, while TASK-003 remains PENDING. No final verdict/token is asserted.
 **Parent Job**: `job-CS2-AUTOMATION-W1-W2-20261008`
@@ -81,9 +81,9 @@ a new overall QP PASS. Neither that report nor the earlier r2 record is rewritte
       `.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md`, and
       `.agent-workspace/CodexAdvisor-agent/knowledge/index.md`; checklist commit `32b4e7fd2591e8cf62ca434df8342e7bab57a514`, registry/index commit `419650b543603949913d3f705737f27fc189f622`. TASK-003 remains pending and TASK-004 remains separate. This task-QP tick is not administrative acceptance, final IAA/token, overall PR QP, merge readiness, activation, or layer-down.
 
-- [ ] TASK-cs2-controller-builder-20261007-003 — Resume the bounded nine-path ECAP role task only after the class-matched prerequisite is actually published and validated.
-      builder: TBD
-      qp_verdict: PENDING
+- [~] TASK-cs2-controller-builder-20261007-003 — Resume the bounded nine-path ECAP role task only after the class-matched prerequisite is actually published and validated.
+      builder: CodexAdvisor-agent
+      qp_verdict: PASS
       notes: AUTHORITY — the eight-path bundle approval at #1414 comment
       6147907911 remains in force and is reaffirmed by 6150615330; the new
       prerequisite authority is proposal 6148570092. All ECAP source work remains
@@ -106,6 +106,10 @@ a new overall QP PASS. Neither that report nor the earlier r2 record is rewritte
       6163985964, prior IAA prospective Amendments 01/02, and rejection/session
       chronology unchanged. TASK-003 remains unticked, builder TBD, and
       qp_verdict PENDING until real source-QP.
+
+      qp_record: .agent-admin/quality-professor/qp-verdict-1415-task003-r2-20261014.md
+      evidence: .agent-workspace/foreman-v2/memory/session-1415-task003-r2-20261014.md; .agent-workspace/CodexAdvisor-agent/memory/validation-session-020-20261014.md
+      publication_note: Original-author proxy records the actual published Foreman affected-source PASS at e04780fc, admitted in 5c9408e4. The partial marker preserves remaining administrative acceptance, final IAA and final handover obligations; it is not whole-task lifecycle acceptance. The older prospective notes above remain historical.
 
 Current planning-state boundaries (2026-10-13):
 - Source publication: PENDING for the three prerequisite paths and the eight-path
@@ -158,3 +162,7 @@ approved checklist/registry/index source commits. The tick above records only
 this scoped task-QP result. TASK-003 remains pending; TASK-004 retains its
 separate scoped source-QP PASS. No administrative acceptance, final IAA/token,
 overall PR QP, or merge readiness is asserted.
+
+## Original-publisher reconciliation — 2026-10-14T17:05:11Z
+
+The published Foreman TASK-003 r2 verdict is PASS for affected source only. This publisher records the genuine builder and source-QP result in the mutable task fields, uses the canonical partial marker with a reason, and preserves all old verdicts and prospective planning chronology. No final-state COMPLETE, overall PR QP, human administrative acceptance, final IAA/token, CI parity, merge readiness, or activation is declared. The current non-final administrative review packet is .agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md; its required-check evidence snapshot is .agent-admin/gates/gate-results-pr-1415-bootstrap-20261014.json. Both remain BLOCKED for final admission.
