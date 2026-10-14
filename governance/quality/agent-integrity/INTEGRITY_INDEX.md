@@ -79,3 +79,14 @@ installed baseline row above.
 | Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
 |---|---|---|---|---|
 | `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `777db4a93b430f45c83d7291d55ca5e72123fd948c529312ce7417429205009d` | 2026-10-13 | CodexAdvisor issue #1414, bounded inventory-schema repair; source QA and human merge pending |
+
+### Proposed execution-ceremony administrator contract — PR #1415
+
+This candidate row records the actual CodexAdvisor-authored bytes for the
+existing TASK-003 under the exact nine-path approval. It remains
+`INACTIVE_UNASSURED`; no registration, commissioning, administrative acceptance,
+IAA verdict, merge, or activation is implied.
+
+| Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
+|---|---|---|---|---|
+| `execution-ceremony-admin-agent.md` | `.github/agents/execution-ceremony-admin-agent.md` | `2f9432d30e3639a7febcc4549398b369a39e58890ae091311eb12ed7a6cc4868` | 2026-10-14 | CodexAdvisor-agent, existing TASK-003; CS2 issue #1414 comment 6169263994 and PR #1415 comment 6169293574; source QP, human administrative review, IAA, and merge remain separate |
