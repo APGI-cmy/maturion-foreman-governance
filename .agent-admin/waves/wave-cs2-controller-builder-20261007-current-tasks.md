@@ -4,9 +4,9 @@
 **Foreman**: foreman-v2
 **Date**: 2026-10-07
 **Authorization**: CS2 issue #1414 and explicit Foreman remediation instruction for PR #1415.
-**Status**: IN_PROGRESS — original task 001 retains its historical task-level QP tick; tasks 002 and 003 are PENDING. Final handover remains BLOCKED pending actual source, administration and independent assurance.
-**Scope**: Inactive controller contract authoring, the approved class-checklist prerequisite and conditional ECAP role authoring. No controller implementation, activation, registration, live operations or consumer layer-down.
-**IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original active PRE-BRIEF retained; prospective amendment for tasks 002/003 remains PENDING.
+**Status**: IN_PROGRESS — original task 001 retains its historical task-level QP tick; tasks 002, 003 and 004 are PENDING. Final handover remains BLOCKED pending actual source, administration and independent assurance.
+**Scope**: Inactive controller contract authoring, the approved class-checklist prerequisite, its approved bounded inventory-check prerequisite and conditional ECAP role authoring. No controller implementation, activation, registration, live operations or consumer layer-down.
+**IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendment 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff` retained; amendment 02 for task 004 remains PENDING after the session-047 preflight halt. No final verdict/token is asserted.
 **Parent Job**: `job-CS2-AUTOMATION-W1-W2-20261008`
 **Parent Alias**: `CS2-AUTOMATION-W1-W2-20261008` — the same parent and shared counters; no reset or new job.
 
