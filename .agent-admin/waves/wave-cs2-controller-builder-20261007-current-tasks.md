@@ -77,7 +77,7 @@ a new overall QP PASS. Neither that report nor the earlier r2 record is rewritte
       `.agent-workspace/CodexAdvisor-agent/knowledge/checklist-registry.md`, and
       `.agent-workspace/CodexAdvisor-agent/knowledge/index.md`; checklist commit `32b4e7fd2591e8cf62ca434df8342e7bab57a514`, registry/index commit `419650b543603949913d3f705737f27fc189f622`. TASK-003 remains pending and TASK-004 remains separate. This task-QP tick is not administrative acceptance, final IAA/token, overall PR QP, merge readiness, activation, or layer-down.
 
-- [ ] TASK-cs2-controller-builder-20261007-003 — Resume the bounded eight-path ECAP role task only after the class-matched prerequisite is actually published and validated.
+- [ ] TASK-cs2-controller-builder-20261007-003 — Resume the bounded nine-path ECAP role task only after the class-matched prerequisite is actually published and validated.
       builder: TBD
       qp_verdict: PENDING
       notes: AUTHORITY — the eight-path bundle approval at #1414 comment
@@ -85,7 +85,23 @@ a new overall QP PASS. Neither that report nor the earlier r2 record is rewritte
       prerequisite authority is proposal 6148570092. All ECAP source work remains
       PENDING and is not started by this checklist entry. CodexAdvisor-agent is
       the approved role-task source owner; actual task acceptance and execution
-      are not invented by the planning entry.
+      are not invented by the planning entry. PROSPECTIVE SCOPE AMENDMENT —
+      2026-10-14: CS2 approval #1414 comment 6169263994, responding to proposal
+      6164313664, approves only this additional ninth normative path for this
+      existing TASK-003:
+      `.agent-workspace/execution-ceremony-admin-agent/knowledge/FAIL-ONLY-ONCE.md`.
+      The original eight-path approval remains in force; CodexAdvisor-agent remains
+      the approved source owner. ORDER: this Foreman planning amendment, then an
+      actual IAA append-only prospective amendment in the existing wave carrier,
+      then CodexAdvisor nine-path source authoring, then affected-source Foreman
+      QP after actual source exists. The existing parent job
+      `job-CS2-AUTOMATION-W1-W2-20261008` and alias
+      `CS2-AUTOMATION-W1-W2-20261008` remain unchanged; no replacement task, job,
+      appointment, or counter reset. This entry does not publish source or claim
+      QP/IAA/admin acceptance. Preserve the actual creator HALT at PR comment
+      6163985964, prior IAA prospective Amendments 01/02, and rejection/session
+      chronology unchanged. TASK-003 remains unticked, builder TBD, and
+      qp_verdict PENDING until real source-QP.
 
 Current planning-state boundaries (2026-10-13):
 - Source publication: PENDING for the three prerequisite paths and the eight-path
