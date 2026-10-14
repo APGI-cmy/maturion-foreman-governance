@@ -4,9 +4,9 @@
 **Foreman**: foreman-v2
 **Date**: 2026-10-07
 **Authorization**: CS2 issue #1414 and explicit Foreman remediation instruction for PR #1415.
-**Status**: IN_PROGRESS — original task 001 retains its historical task-level QP tick; tasks 002, 003 and 004 are PENDING. Final handover remains BLOCKED pending actual source, administration and independent assurance.
+**Status**: IN_PROGRESS — task 001 retains its historical task-level QP tick; TASK-004 has a scoped source-QP PASS; tasks 002 and 003 remain PENDING. Final handover remains BLOCKED pending actual source, administration and independent assurance.
 **Scope**: Inactive controller contract authoring, the approved class-checklist prerequisite, its approved bounded inventory-check prerequisite and conditional ECAP role authoring. No controller implementation, activation, registration, live operations or consumer layer-down.
-**IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendments 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff` and 02 at `e5beab616d2fd7e2e168bd015a13482582b98658` retained. Tasks 002–004 remain PENDING; no final verdict/token is asserted.
+**IAA Wave Record**: `.agent-admin/assurance/iaa-wave-record-cs2-controller-builder-20261007-20261007.md` — original PRE-BRIEF and actual prospective amendments 01 at `bcce2a140aa8a2da629ec8635d80296debdefdff` and 02 at `e5beab616d2fd7e2e168bd015a13482582b98658` retained. Amendment 02 records tasks 002–004 as PENDING at its planning input; current task 004 has a scoped source-QP PASS, while tasks 002/003 remain PENDING. No final verdict/token is asserted.
 **Parent Job**: `job-CS2-AUTOMATION-W1-W2-20261008`
 **Parent Alias**: `CS2-AUTOMATION-W1-W2-20261008` — the same parent and shared counters; no reset or new job.
 
@@ -116,3 +116,4 @@ acceptance, IAA authority amendment, token or readiness result.
       builder: CodexAdvisor-agent
       qp_verdict: PASS
       notes: Source task-level QP PASS only against CS2-approved proposal #1414 comments 6152016944/6153552301 and prospective IAA PRE-BRIEF AMENDMENT 02 at e5beab616d2fd7e2e168bd015a13482582b98658. Verified source commit 4a8727956c535cc4a3e7c4f6cc7f99cb62e7a28b changes exactly the three approved paths; strict YAML/metadata, both embedded guard syntax checks, fail-closed inventory and PUBLIC_API fixtures, byte-identical copy/candidate SHA and target-only index provenance, and unchanged full CANON-HASH-001 validator all passed (217/217). Candidate remains proposed; installed baseline 55b87adf5794ceba832051caa3113fb01de0ea6ad8e21f8e4d12368ee585b961 is preserved. Contract size 26,147 chars: >25K warning disclosed, below 30K hard limit. See `.agent-admin/quality-professor/qp-verdict-1415-task004-20261014.md`. TASK-002/003 remain pending; this task PASS is not overall PR QP, administrative acceptance, final IAA/token, merge readiness, main merge, deployment, activation, or layer-down.
+      qp_record: .agent-admin/quality-professor/qp-verdict-1415-task004-20261014.md
