@@ -86,3 +86,31 @@ Per the triggering issue scope boundary: this session is authorized for the meta
 
 *Recorded by Copilot Coding Agent (CodexAdvisor domain) | session-013-20260419 | CS2 authorization required before action*
 
+---
+
+## Session 017 — 2026-10-07 — Issue #1414
+
+**Out-of-scope suggestion:** Under separate CS2 authority, add a reusable
+agent-contract boundary validator asserting the exact five controller patterns,
+Foreman appointment and denial of own-contract and workspace write exceptions.
+Inline deterministic assertions were used for this contract-authoring task;
+no test/tool implementation or existing contract amendment is authorized here.
+
+**Positive observation:** Builder-authored evidence within the already allowed
+controller directory avoids quietly widening a five-pattern scope for memory.
+Future bounded builders should make their evidence owner/location explicit.
+
+---
+
+## Session 018 — 2026-10-07 — Issue #1414 / PR #1415
+
+**Out-of-scope suggestion:** Under separate CS2 authority, align the legacy
+credential-field examples in CodexAdvisor Tier 2/template and the Builder
+checklist with CORE-022/A-024's `secret_env_var` spelling. This bounded repair
+does not alter those documents, other contracts, Foreman checklist or IAA artifacts.
+Also route the pre-existing CodexAdvisor integrity-reference mismatch to
+authorized stewardship; CodexAdvisor must not repair its own contract/reference.
+
+**Evidence-quality improvement:** Preserve the distinction between a passing
+targeted field correction and a failing broader integrity check. Record each
+command's exit code so a later shell command cannot conceal an earlier failure.

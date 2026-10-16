@@ -1,0 +1,72 @@
+{
+  "session": "1415-20261007-060336",
+  "agent": "foreman-v2",
+  "scope": "Checklist remediation; no final handover or assurance",
+  "reviewed_head": "3bb28974482cb204baa92fae00466f6abc73e9a6",
+  "validation_date": "2026-10-07",
+  "actual_runs": {
+    ".github/scripts/validate-canon-hashes.sh": {
+      "exit_code": 0,
+      "result": "All 217 entries passed hashes, current bytes, versions and path-specific provenance; not independent #1380 disposition"
+    },
+    ".github/scripts/validate-gates-locally.sh": {
+      "exit_code": 0,
+      "result": "Three generic checks passed; discovers pre-existing repository evidence and is not task-specific seven-check parity"
+    },
+    ".github/scripts/session-closure.sh foreman-v2": {
+      "exit_code": 1,
+      "result": "Environment health file not found: wake-up generated state under /tmp/maturion-wake-up.LXmLcM, but closure expects repository workspace state; no repository artifact created"
+    },
+    "Foreman evidence and preservation checks": {
+      "result": "PASS_LOCAL: exactly one pending CodexAdvisor authoring task; five new Foreman files; valid gate JSON; all eleven authoring-bundle files byte-identical to 0632bd46"
+    },
+    "Required supplementary parallel validation": {
+      "result": "Attempted; code-review backend unavailable because configured model was not found, despite wrapper success heading; no completed automated review claimed. CodeQL skipped non-executable evidence changes"
+    },
+    "Secret scanning": {
+      "result": "No secrets detected in the five new Foreman evidence files"
+    }
+  },
+  "required_checks": [
+    {
+      "name": "Merge Gate Interface / merge-gate/verdict",
+      "status": "BLOCKED",
+      "evidence": "Generic script exit 0 is insufficient: task-specific accepted GREEN evidence missing; PR #1415 check-runs response total_count 0"
+    },
+    {
+      "name": "Merge Gate Interface / governance/alignment",
+      "status": "PASS_LOCAL",
+      "evidence": "Current CANON-HASH-001 run passed all 217 entries; no independent prerequisite disposition inferred"
+    },
+    {
+      "name": "Merge Gate Interface / stop-and-fix/enforcement",
+      "status": "BLOCKED",
+      "evidence": "Generic marker scan exited 0, but rejection remediations and QP/evidence blockers remain open"
+    },
+    {
+      "name": "POLC Boundary Validation / foreman-implementation-check",
+      "status": "PASS_LOCAL",
+      "evidence": "Actual staged scope is five new Foreman checklist/evidence files; all eleven existing authoring-bundle files preserved byte-for-byte"
+    },
+    {
+      "name": "POLC Boundary Validation / builder-involvement-check",
+      "status": "PASS_LOCAL",
+      "evidence": "Existing CodexAdvisor session-017 and authoring commit identify mandated author; no new appointment or implementation claimed"
+    },
+    {
+      "name": "POLC Boundary Validation / session-memory-check",
+      "status": "PASS_LOCAL",
+      "evidence": ".agent-workspace/foreman-v2/memory/session-1415-20261007-060336.md exists with required nonblank fields and truthful PENDING/blocked states"
+    },
+    {
+      "name": "Evidence Bundle Validation / prehandover-proof-check",
+      "status": "BLOCKED",
+      "evidence": "New proof records BLOCKED checklist and missing Pre-Brief/final evidence; immutable preparatory proof preserved"
+    }
+  ],
+  "local_gate_implementation_limit": "No named POLC/Evidence workflow or executable for the four contract-specific checks was found under .github; evidence checks are not represented as CI parity",
+  "merge_gate_parity": "BLOCKED",
+  "qp_verdict": "PENDING",
+  "iaa_assurance": "NOT_REQUESTED",
+  "merge_ready": false
+}

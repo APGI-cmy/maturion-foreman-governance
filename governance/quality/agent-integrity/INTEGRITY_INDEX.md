@@ -25,6 +25,22 @@ SHA256 baseline index for all agent contract files held in this integrity store.
 
 ## Verification Command
 
+### Proposed new contract — not an approved active baseline
+
+The following reference accompanies issue #1414 contract authoring atomically.
+It is **INACTIVE_UNASSURED**: independent IAA, prerequisite disposition and CS2
+review remain pending. Its presence does not approve, register or activate it.
+
+| Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
+|---|---|---|---|---|
+| `cs2-controller-agent.md` | `.github/agents/cs2-controller-agent.md` | `ae859efbfd35a4dcc94062519f8cf85eb8bf6cf705ddc16a54b2cfbe58f8d202` | 2026-10-13 | CodexAdvisor issue #1418 / child PR #1419 correction for parent PR #1415; human-CS2-authorized #1414 read, bootstrap-state, evidence-ownership and Integration-regression corrections; #1414 continuation PB-07 / OVL-AC-001 exact AGCFPP-001 policy identifier/name correction; remains inactive/unassured with consumer use blocked pending #1380 then #1379 |
+
+Verify this proposed reference with
+`sha256sum .github/agents/cs2-controller-agent.md` and byte-compare it with
+`governance/quality/agent-integrity/cs2-controller-agent.md`.
+
+### Existing approved baseline verification
+
 ```bash
 # Verify all agent contract files against this index
 sha256sum .github/agents/CodexAdvisor-agent.md \
@@ -52,3 +68,25 @@ When a CS2-approved agent contract update is merged:
 ---
 
 *Authority: CS2 (Johan Ras) | Governed by: INDEPENDENT_ASSURANCE_AGENT_CANON.md v1.1.0*
+
+### Proposed governance-administrator contract correction — PR #1415
+
+This candidate row records the actual CodexAdvisor-authored source bytes under
+the bounded repair approved in issue #1414 comments 6152016944 and 6153552301.
+It is pending independent assurance and human-CS2 merge; it does not replace the
+installed baseline row above.
+
+| Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
+|---|---|---|---|---|
+| `governance-repo-administrator-v2.agent.md` | `.github/agents/governance-repo-administrator-v2.agent.md` | `777db4a93b430f45c83d7291d55ca5e72123fd948c529312ce7417429205009d` | 2026-10-13 | CodexAdvisor issue #1414, bounded inventory-schema repair; source QA and human merge pending |
+
+### Proposed execution-ceremony administrator contract — PR #1415
+
+This candidate row records the actual CodexAdvisor-authored bytes for the
+existing TASK-003 under the exact nine-path approval. It remains
+`INACTIVE_UNASSURED`; no registration, commissioning, administrative acceptance,
+IAA verdict, merge, or activation is implied.
+
+| Agent Contract | Authoritative Path | SHA256 (Proposed) | Last Updated | Updated By |
+|---|---|---|---|---|
+| `execution-ceremony-admin-agent.md` | `.github/agents/execution-ceremony-admin-agent.md` | `2f9432d30e3639a7febcc4549398b369a39e58890ae091311eb12ed7a6cc4868` | 2026-10-14 | CodexAdvisor-agent, existing TASK-003; CS2 issue #1414 comment 6169263994 and PR #1415 comment 6169293574; source QP, human administrative review, IAA, and merge remain separate |

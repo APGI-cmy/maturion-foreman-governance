@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-14T17:05:11Z",
+  "pr": {
+    "number": 1415,
+    "title": "Establish bounded CS2 controller automation builder",
+    "head_sha": "5c9408e4149f423c074d0bbc7a0b04a6cb564fb0"
+  },
+  "overall_status": "REQUIRES_FIX",
+  "gates": [
+    {
+      "name": "Required-check evidence availability / Merge Gate Interface / merge-gate/verdict",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / Merge Gate Interface / governance/alignment",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / Merge Gate Interface / stop-and-fix/enforcement",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / POLC Boundary Validation / foreman-implementation-check",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / POLC Boundary Validation / builder-involvement-check",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / POLC Boundary Validation / session-memory-check",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / Evidence Bundle Validation / prehandover-proof-check",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / Governance Ceremony Gate / governance-ceremony/draft-check",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    },
+    {
+      "name": "Required-check evidence availability / Governance Ceremony Gate / governance-ceremony/verdict",
+      "status": "FAIL",
+      "evidence_paths": [
+        ".agent-admin/prehandover/bootstrap-administration-review-1415-20261014.md",
+        ".github/agents/foreman-v2.agent.md",
+        ".github/agents/execution-ceremony-admin-agent.md"
+      ],
+      "summary": "FAIL is the result of the publisher required-evidence availability check, not a claimed executed CI-job failure. At source 5c9408e4149f423c074d0bbc7a0b04a6cb564fb0, exact check-runs total_count=0. Current Merge Gate Interface run38593382578 and Governance Gate run38593382427 are action_required with zero jobs. No named required-check result or final local Foreman handover parity is established. This required evidence is missing; source-only Task003 QP PASS does not supply it."
+    }
+  ],
+  "stop_and_fix": {
+    "required": true,
+    "resolved": false,
+    "reason": "Whole-PR admission remains blocked: controller read-scope proposal6148219678 is unanswered and source finding4260025334 remains; required CI evidence/final Foreman parity, complete final-state administration and Foreman checkpoint, actual human bootstrap acceptance, and final independent IAA/token are absent. Source Task003 QP passed separately; historical rejection is preserved."
+  }
+}

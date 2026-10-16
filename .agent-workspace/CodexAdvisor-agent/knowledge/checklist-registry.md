@@ -1,8 +1,8 @@
 # CodexAdvisor Checklist Registry
 
-**Version**: 1.1.0  
+**Version**: 1.2.0
 **Created**: 2026-02-26  
-**Updated**: 2026-03-21  
+**Updated**: 2026-10-14
 **Authority**: CS2 (Johan Ras)  
 **Canonical Source**: `governance/checklists/`
 
@@ -24,6 +24,7 @@ If the checklist file is not found at the listed path → **HALT-005. Do not beg
 | New agent creation — Builder class | BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md | `governance/checklists/BUILDER_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` | 1.0.0 |
 | New agent creation — Orchestrator class | ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md | `governance/checklists/ORCHESTRATOR_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` | 1.0.0 |
 | New agent creation — Governance Liaison class | GOVERNANCE_LIAISON_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md | `governance/checklists/GOVERNANCE_LIAISON_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` | 1.0.0 |
+| Agent contract creation/update — Administrator class (`execution-ceremony-admin-agent` only) | EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md | `governance/checklists/EXECUTION_CEREMONY_ADMIN_AGENT_CONTRACT_REQUIREMENTS_CHECKLIST.md` | 1.0.0 |
 | Agent contract update (any class) | Use checklist matching the target agent's class (row above) | — | — |
 | Alignment check only (no file modification) | Not required — Phase 3 skipped | — | — |
 
@@ -55,3 +56,4 @@ IAA canon is live at `governance/canon/INDEPENDENT_ASSURANCE_AGENT_CANON.md`. Ap
 |---------|------|--------|
 | 1.0.0 | 2026-02-26 | Initial creation |
 | 1.1.0 | 2026-03-21 | Removed "Until IAA canon is fully merged" interim note; IAA trigger table marked live per INDEPENDENT_ASSURANCE_AGENT_CANON.md |
+| 1.2.0 | 2026-10-14 | Added the narrowly scoped administrator-class creation/update checklist for execution-ceremony-admin-agent. |
