@@ -1,0 +1,61 @@
+name: Trusted Independent IAA Assurance
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
+  issue_comment:
+    types: [created, edited, deleted]
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+
+# A dedicated protected environment and expected GitHub App status source must be
+# installed by the repository administrator before this gate is operational.
+# PR code never receives the protected status credential.
+concurrency:
+  group: trusted-iaa-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  trusted-assurance:
+    if: github.event_name == 'pull_request_target' || github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    environment: iaa-trusted-assurance
+    timeout-minutes: 5
+    steps:
+      - name: Read protected default-base decision code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: .github/scripts/trusted-iaa-assurance.js
+      - name: Verify protected credential configuration
+        env:
+          STATUS_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+          STATUS_PRODUCER: ${{ vars.IAA_STATUS_PRODUCER_LOGIN }}
+          IAA_ISSUERS: ${{ vars.IAA_ISSUER_LOGINS }}
+        run: |
+          test -n "$STATUS_TOKEN" && test -n "$STATUS_PRODUCER" && test -n "$IAA_ISSUERS"
+          echo "EXEC_IDENTITY: protected MATURION_BOT_TOKEN in use for status publication"
+      - name: Evaluate metadata and publish trusted exact-head status
+        uses: actions/github-script@v7
+        env:
+          STATUS_TOKEN: ${{ secrets.MATURION_BOT_TOKEN }}
+          STATUS_PRODUCER: ${{ vars.IAA_STATUS_PRODUCER_LOGIN }}
+          IAA_ISSUERS: ${{ vars.IAA_ISSUER_LOGINS }}
+        with:
+          # github-script's default GITHUB_TOKEN is read-only. Only the separately
+          # configured, environment-protected identity publishes commit statuses.
+          script: |
+            const gate = require('./.github/scripts/trusted-iaa-assurance.js');
+            const writer = new github.constructor({ auth: process.env.STATUS_TOKEN });
+            if (context.eventName === 'issue_comment') {
+              const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: context.payload.issue.number });
+              context.payload.pull_request = pr;
+            }
+            const issuers = process.env.IAA_ISSUERS.split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+            await gate.run({ github, writer, context, core, issuers, producer: process.env.STATUS_PRODUCER });
